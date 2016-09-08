@@ -134,13 +134,13 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
         <div class="header-container" itemscope itemtype="http://schema.org/WPHeader">
             {hook name="main.header-top"}
             <div class="navbar navbar-default navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
-                <div style="border-bottom:solid 0px; height:30px;background:#e8e8e8; color:#8D8D8D; text-align:center">
+                <!--div style="border-bottom:solid 0px; height:30px;background:#e8e8e8; color:#8D8D8D; text-align:center">
                     <div class="container">
                     <div class="col-sm-4"><span class="shopicon shop-lieferung  fa-flip-horizontal" style="font-size:25px; line-height:30px;vertical-align: middle; padding:3px 3px 3px 3px"></span>30 Tage Rückgabegarantie</div>
                     <div class="col-sm-4"><span class="shopicon shop-lieferung  fa-flip-horizontal" style="font-size:25px; line-height:30px;vertical-align: middle; padding:3px 3px 3px 3px"></span>15€ Neukundengutschein</div>
                     <div class="col-sm-4"><span class="shopicon shop-lieferung  fa-flip-horizontal" style="font-size:25px; line-height:30px;vertical-align: middle; padding:3px 3px 3px 3px"></span>Versandkostenfrei</div>
                         </div>
-                </div>
+                </div-->
                 <div class="container">
                 
                     
