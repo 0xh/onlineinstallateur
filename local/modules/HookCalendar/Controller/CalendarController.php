@@ -7,6 +7,9 @@ use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Core\HttpFoundation\JsonResponse;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Log\Tlog;
+use HookCalendar\Model\BookingsServicesQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use HookCalendar\Model\BookingsServices;
 /**
  * Class CalendarController
  * @package HookCalendar\Controller
@@ -107,16 +110,61 @@ class CalendarController extends BaseFrontController
     				'd14', array('nr' => '07', 'type' => '3', 'start_ts' => '1470546000', 'stop_ts' => '1470582000'))
     				),
     */
-    private function isDayAvailable($current_day,$todayTimestamp){
+/*     
+    1 pj-calendar-day-past
+    2 pj-calendar-day-selected
+    3 pj-calendar-day-today
+    4 pj-calendar-day-inactive
+    5 pjAsCalendarDate
+     */
+    private function isDayAvailable($day,$todayTimestamp,$isSunday){
+    	if($isSunday)
+    		return 4;
     	//past days
-    	if($current_day < $todayTimestamp)
+    	if($day < $todayTimestamp)
     		return 1;
-    	else if($current_day == $todayTimestamp)
+    	else if($day == $todayTimestamp)
     			return 3;
     	return 5;
     	// weekends
     }
-    
+    /*
+     1 pjAsTimeAvailable
+     2 pjAsTimeBooked
+     3 pjAsTimeSelected
+     4 pjAsTimeBooked
+     5 pjAsTimeUnavailable
+     6 pjAsTimeUnavailable
+     */
+    private function isTimeslotAvailable($start_ts,$stop_ts,$currentTimestamp,$booked,$isUnavailable){
+    	//sunday + saturday afternoon
+    	if($isUnavailable)
+    		return 5;
+    	//existing bookings
+    	if($booked)
+    		return 2;
+    	//past timeslots
+    	if($start_ts < $currentTimestamp)
+    		return 5;
+    	
+    	//before 11:00 current day O.Clock only last timeslot is available
+    	$todayTime = time();
+    	$day = date('d', $todayTime);
+    	$month = date('m', $todayTime);
+    	$year = date('Y', $todayTime);
+    	$todayNoon = mktime( 11, 0, 0, $month, $day, $year);
+    	$todayLastStart = mktime( 17, 0, 0, $month, $day, $year); 
+    	
+        if($currentTimestamp < $todayNoon && $start_ts == $todayLastStart)
+        	return 1;
+        else 
+    		if($start_ts >= $todayNoon && $start_ts < mktime( 19, 0, 0, $month, $day, $year))
+    			return 5;
+
+    	
+    	return 1;
+    }
+
     public function getDaysForWeek($week,$year){
     	$weekStartTime = strtotime($year.'W'.$week);
     	$weekDate = date('d-m-Y', $weekStartTime);
@@ -134,27 +182,100 @@ class CalendarController extends BaseFrontController
     		
     		////day 1 past 2 select 3 today 4 inactive 5 available
     		$weekDay = array("nr" => $dayDate, 
-    				  "type" => $this->isDayAvailable($dayTimestamp, $todayTimestamp),
+    				  "type" => $this->isDayAvailable($dayTimestamp, $todayTimestamp,($i == 6 ? true : false)),
     				  "start_ts" => mktime(   7, 0, 0, $dayMonth, $dayDate, $dayYear),
     				  "stop_ts"  => mktime(  17, 0, 0, $dayMonth, $dayDate, $dayYear));
     		$weekStructure["d".($i+1)] = $weekDay;
-    			
-    			$log->error(implode(' ',$weekDay));
+    		//	$log->error(implode(' ',$weekDay));
     	}
     	return $weekStructure;
     }
     
     public function getAppointmentsForDay($day,$month,$year){
-    	return array(	"nr" => $day,
-    					"type" => 3,
-    					"ts" => array(
-    					array("type" => "1", "start" => "07:00", "start_ts" => mktime(  7,  0, 0, $month, $day, $year), "end" => "09:00", "end_ts" => mktime(  9,  0, 0, $month, $day, $year), "employee_id" => "2"),
-    					array("type" => "1", "start" => "09:00", "start_ts" => mktime(  9,  0, 0, $month, $day, $year), "end" => "11:00", "end_ts" => mktime( 11,  0, 0, $month, $day, $year), "employee_id" => "2"),
-    					array("type" => "1", "start" => "11:00", "start_ts" => mktime( 11,  0, 0, $month, $day, $year), "end" => "13:00", "end_ts" => mktime( 13,  0, 0, $month, $day, $year), "employee_id" => "2"),
-    					array("type" => "1", "start" => "13:00", "start_ts" => mktime( 13,  0, 0, $month, $day, $year), "end" => "15:00", "end_ts" => mktime( 15,  0, 0, $month, $day, $year), "employee_id" => "2"),
-    					array("type" => "1", "start" => "15:00", "start_ts" => mktime( 15,  0, 0, $month, $day, $year), "end" => "17:00", "end_ts" => mktime( 17,  0, 0, $month, $day, $year), "employee_id" => "2"),
-    					array("type" => "1", "start" => "17:00", "start_ts" => mktime( 17,  0, 0, $month, $day, $year), "end" => "19:00", "end_ts" => mktime( 19,  0, 0, $month, $day, $year), "employee_id" => "2")
-    	));
+    	$log = Tlog::getInstance ();
+    	
+    	$time = time();
+    	//get existing appointments for day
+    	$day_start_ts = mktime(  7,  0, 0, $month, $day, $year);
+    	$day_stop_ts =  mktime(  19,  0, 0, $month, $day, $year);
+    	
+    	$dayslots = array();
+    	$dayslots[1][1] = $day_start_ts;
+    	$dayslots[2][1] = mktime(  9,  0, 0, $month, $day, $year);
+    	$dayslots[3][1] = mktime( 11,  0, 0, $month, $day, $year);
+    	$dayslots[4][1] = mktime( 13,  0, 0, $month, $day, $year);
+    	$dayslots[5][1] = mktime( 15,  0, 0, $month, $day, $year);
+    	$dayslots[6][1] = mktime( 17,  0, 0, $month, $day, $year);
+    	
+    	$dayslots[1][2] = $dayslots[2][1];
+    	$dayslots[2][2] = $dayslots[3][1];
+    	$dayslots[3][2] = $dayslots[4][1];
+    	$dayslots[4][2] = $dayslots[5][1];
+    	$dayslots[5][2] = $dayslots[6][1];
+    	$dayslots[6][2] = $day_stop_ts;
+    	
+    	$booked = array(0,false,false,false,false,false,false);
+    	
+    	$isSaturday = false;
+    	if(date('w',$day_start_ts) == 6)
+    		$isSaturday = true;
+    	
+    	try {
+    		$bookingServiceQuery = BookingsServicesQuery::create();
+    		$bookingServiceQuery
+    		->condition ( 'start_ts', 'start_ts >= ?', $day_start_ts, \PDO::PARAM_INT )
+    		->condition ( 'stop_ts', 'stop_ts <= ?', $day_stop_ts, \PDO::PARAM_INT )
+    		//->condition ( 'service', 'service_id = ?', $service_id, \PDO::PARAM_INT )
+    		->where ( array ('start_ts','stop_ts'), Criteria::LOGICAL_AND );
+    			
+    		$bookings =$bookingServiceQuery->find();
+
+    		foreach($bookings as $booking)
+    		{
+    		$log->debug ( "-- getAppointmentsForDay ".$booking->getId());
+    		$foundSlotNumber = 0;
+    		for($j=1;$j<7;$j++)
+    			if($booking->getStartTs() == $dayslots[$j][1])$foundSlotNumber = $j;
+    			if($foundSlotNumber > 0)
+    				$booked[$foundSlotNumber] = true;
+    		}
+    		
+    	
+    	} catch (PropelException $e) {
+    		Tlog::getInstance()->error(sprintf("Failed to add item to cart with message : %s", $e->getMessage()));
+    		/*$message = $this->getTranslator()->trans(
+    				"Diese Timeslot ist leider schon gebucht, wählen Sie bitte ein neuen",
+    				[],
+    				Front::MESSAGE_DOMAIN
+    				);*/
+    	}
+    	
+    	return  array(
+    					array("type" => $this->isTimeslotAvailable($dayslots[1][1], $dayslots[1][2], $time, $booked[1], false), 
+    						"start"  => "07:00", "start_ts" => $dayslots[1][1], 
+    						"end"    => "09:00", "end_ts"   => $dayslots[1][2], 
+    						"employee_id" => "2"),
+    					array("type" => $this->isTimeslotAvailable($dayslots[2][1], $dayslots[2][2], $time, $booked[2], false), 
+    						"start"  => "09:00", "start_ts"        => $dayslots[2][1],
+    						"end"    => "11:00", "end_ts"          => $dayslots[2][2],
+    						"employee_id" => "2"),
+    					array("type" => $this->isTimeslotAvailable($dayslots[3][1], $dayslots[3][2], $time, $booked[3], $isSaturday), 
+    						"start"  => "11:00", "start_ts"        => $dayslots[3][1],
+    						"end"    => "13:00", "end_ts"          => $dayslots[3][2],
+    						"employee_id" => "2"),
+    					array("type" => $this->isTimeslotAvailable($dayslots[4][1], $dayslots[4][2], $time, $booked[4], $isSaturday), 
+    						"start"  => "13:00", "start_ts" 		=> $dayslots[4][1],
+    						"end" 	 => "15:00", "end_ts" 			=> $dayslots[4][2],
+    						"employee_id" => "2"),
+    					array("type" => $this->isTimeslotAvailable($dayslots[5][1], $dayslots[5][2], $time, $booked[5], $isSaturday), 
+    						"start"  => "15:00", "start_ts" 		=> $dayslots[5][1],
+    						"end"    => "17:00", "end_ts" 			=> $dayslots[5][2],
+    						"employee_id" => "2"),
+    					array("type" => $this->isTimeslotAvailable($dayslots[6][1], $dayslots[6][2], $time, $booked[6], $isSaturday), 
+    						"start"  => "17:00", "start_ts" 		=> $dayslots[6][1],
+    						"end"    => "19:00", "end_ts" 			=> $dayslots[6][2],
+    						"employee_id" => "2")
+    	);
     }
     
     public function getAppointmentsForWeek($week,$year){

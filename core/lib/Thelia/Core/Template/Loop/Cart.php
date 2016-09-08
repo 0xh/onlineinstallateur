@@ -138,7 +138,7 @@ class Cart extends BaseLoop implements ArraySearchLoopInterface
             $this->addOutputFields($loopResultRow, $cartItem);
             $loopResult->addRow($loopResultRow);
         }
-
+        
         return $loopResult;
     }
 

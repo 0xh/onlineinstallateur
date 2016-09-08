@@ -23,10 +23,11 @@ use HookKonfigurator\Model\HeizungkonfiguratorUserdaten;
 use HookKonfigurator\Model\HeizungkonfiguratorImage;
 use HookKonfigurator\Model\HeizungkonfiguratorUserdatenQuery;
 use HookKonfigurator\Form\PersonalData;
-use Base\BookingsServicesQuery;
+use HookCalendar\Model\BookingsServicesQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use HookCalendar\Model\BookingsServices;
 
 class KonfiguratorController extends BaseFrontController {
-    
     
         public function sendMail(Request $request)
     {
@@ -113,7 +114,6 @@ class KonfiguratorController extends BaseFrontController {
         
         
      //   $contactForm = $this->createForm("konfigurator.personal.data");
-        
     //    $contactForm = new PersonalData();
    //     $form = $this->validateForm($contactForm);
      //  $contactForm
@@ -330,7 +330,7 @@ $log->error(sprintf('message : %s', $message));
 		}
 	}
 	
-	protected function saveServiceAppointment(Request $request){
+	protected function saveServiceBooking(Request $request,CartEvent $cartEvent){
 		$log = Tlog::getInstance ();
 		$log->debug ( "-- addAppointment " );
 		
@@ -342,27 +342,79 @@ $log->error(sprintf('message : %s', $message));
 		
 		$log->debug ( "-- addAppointment service ".$service_id." start ".implode(" ",$ca_start_ts[$service_id])." end ".implode(" ",$ca_end_ts[$service_id])." ".implode(" ",$ca_employee_id[$service_id]) );
 	
-		//$start_ts = $ca_start_ts[0];
-		//$stop_ts = $ca_end_ts[0];
-		/*
+		$start_ts = $ca_start_ts[$service_id][1];
+		$stop_ts = $ca_end_ts[$service_id][1];
+		
+		$currentCustomer = $this->getSecurityContext()->getCustomerUser();
+		
+		$cartItemId = $cartEvent->getCartItem()->getId();
+		
+		//remove any previous bookings with the same cart_item_id and service_id
+		$bookingServiceQuery = BookingsServicesQuery::create();
+		if($cartItemId != null){
+		$bookingServiceQuery
+		->condition ( 'cart_item', 'cart_item_id = ?', $cartItemId, \PDO::PARAM_INT )
+		->condition ( 'service', 'service_id = ?', $service_id, \PDO::PARAM_INT )
+		->where ( array ('cart_item','service' ), Criteria::LOGICAL_AND );
+		
+		$existingServiceBookings = $bookingServiceQuery->find();
+		
+		foreach($existingServiceBookings as $serviceBooking){
+			$serviceBooking->delete();
+		}
+		}
+		
+		//check for bookings in the selected time interval
 		$message = null;
+		$existingBookings = 0;
 		try {
-			$bookingServiceQuery = BookingsServicesQuery::create();
+			$bookingServiceQuery->clear();
 			$bookingServiceQuery
 			->condition ( 'start_ts', 'start_ts >= ?', $start_ts, \PDO::PARAM_INT )
-			->condition ( 'stop_ts', 'stop_ts >= ?', $stop_ts, \PDO::PARAM_INT )
-			->condition ( 'service', 'service_id = ?', $service_id, \PDO::PARAM_INT )
-			;
+			->condition ( 'stop_ts', 'stop_ts <= ?', $stop_ts, \PDO::PARAM_INT )
+			//->condition ( 'service', 'service_id = ?', $service_id, \PDO::PARAM_INT )
+			->where ( array ('start_ts','stop_ts', ), Criteria::LOGICAL_AND );
 			
+			$existingBookings = $bookingServiceQuery->count();
+				
 		} catch (PropelException $e) {
 			Tlog::getInstance()->error(sprintf("Failed to add item to cart with message : %s", $e->getMessage()));
 			$message = $this->getTranslator()->trans(
-					"Failed to add this article to your cart, please try again",
+					"Diese Timeslot ist leider schon gebucht, wählen Sie bitte ein neuen",
 					[],
 					Front::MESSAGE_DOMAIN
 					);
 		}
-		*/
+		$log->debug ( "-- exiting bookins ".$existingBookings );
+		
+		
+		if( $existingBookings == 0 )
+		try{
+			$currentDate = date ( "Y-m-d H:i:s" );
+			
+			$booking = new BookingsServices();
+			$booking->setTmpHash('temp_hash');
+			$booking->setBookingId('1');
+			
+			if($currentCustomer != null)
+				$booking->setCustomerId($currentCustomer->getId());
+			
+			$booking->setCartItemId($cartItemId);
+			$booking->setEmployeeId($ca_employee_id);
+			$booking->setServiceId($service_id);
+			$booking->setStartTs($start_ts);
+			$booking->setStopTs($stop_ts);
+			$booking->setCreatedAt($currentDate);
+			$booking->setUpdatedAt($currentDate);
+			$booking->save();
+		} catch (PropelException $e) {
+			Tlog::getInstance()->error(sprintf("Failed to save service booking : %s", $e->getMessage()));
+			$message = $this->getTranslator()->trans(
+					"Fehler bei termin speicherung, bitte versuchen Sie erneut",
+					[],
+					Front::MESSAGE_DOMAIN
+					);
+		}
 	}
 	
 	protected function addServiceToCart($id,$product_sale_id,Request $request){
@@ -381,11 +433,9 @@ $log->error(sprintf('message : %s', $message));
 			$sp_start_ts = $request->request->get('sp_start_ts_'.$id);
 			$sp_end_ts   = $request->request->get('sp_end_ts_'.$id);
 			$sp_date     = $request->request->get('sp_start_ts_'.$id);
-			
-			$
 
-			$this->saveServiceAppointment($sp_start_ts, $sp_end_ts,$id);
 			
+			//$cartEvent->get
 			if(count($sp_start_ts)>0)
 				$cartEvent->setSpStartTs($sp_start_ts);
 			
@@ -397,6 +447,8 @@ $log->error(sprintf('message : %s', $message));
 			
 			$this->getDispatcher()->dispatch(TheliaEvents::CART_ADDITEM, $cartEvent);
 		
+			$this->saveServiceBooking($request,$cartEvent);
+			
 			$this->afterModifyCart();
 		
 			if ($this->getRequest()->isXmlHttpRequest()) {
@@ -442,11 +494,10 @@ $log->error(sprintf('message : %s', $message));
 			$this->afterModifyCart();
 		
 		//	$log->debug ( "-- addservices ".$cartEvent->getProduct() );
-			
 			$service_appointment = $request->request->get('service_zipcode');
 			
 			if($service_appointment)
-				$this->saveServiceAppointment($request);
+				$this->saveServiceBooking($request, $cartEvent);
 			
 			$service_ids = $request->request->get('service_id');
 			if($service_ids != null){
@@ -455,7 +506,7 @@ $log->error(sprintf('message : %s', $message));
 				if($nr_services > 0)
 					for ($i = 1; $i<=$nr_services; $i++){
 					if($service_ids[$i]){	
-						$log->debug ( "-- service_appointment ".$service_ids[$i]." ".(new JsonResponse($request->request->all())));
+						$log->debug ( "-- service_appointment ".$service_ids[$i]." ".(new JsonResponse($request->request->all()))." ");
 							//$sp_start_ts	." ".implode(" ",$sp_end_ts)." ".implode(" ",$sp_date));
 						$this->addServiceToCart($service_ids[$i], $service_product_sale_ids[$i],$request);
 					}

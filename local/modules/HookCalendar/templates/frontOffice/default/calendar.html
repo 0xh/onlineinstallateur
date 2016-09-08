@@ -10,7 +10,7 @@
 
 <div class="panel-body pjAsCalendarInline col-sm-1">
 <span class="pj-calendar-actions">Liefergebiet</span>
-	<input type="number" name="service_zipcode" min="0999" max="9999" required>
+	<input type="number" id="service_zipcode" name="service_zipcode" min="1010" max="1230" required>
 </div>
 	<div class="panel-body pjAsCalendarInline col-sm-9">
 		<div class="pjIcCalendar">
@@ -49,7 +49,7 @@
 		    			</div>
 
 	    				<span class="selected_employee_id" style="display:none;"></span>
-						<span class="selected_start_ts" {$service_id} style="display:none;"></span>
+						<span class="selected_start_ts"  style="display:none;"></span>
 						<span class="selected_end_ts" style="display:none;"></span>
 										
     				
@@ -260,21 +260,28 @@ function updateTimeslotLinks(){
 			
 			//TODO remove lastSelectedTimeSlot if not in the list
 			//TODO remove timeSlot selected when it is removed from the list
-
-			selectedStartTs.textContent = this.getAttribute("data-start_ts");
-			selectedEndTs.textContent = this.getAttribute("data-end_ts");
-			selectedEmployeeId.textContent = this.getAttribute("data-employee_id");
-
+			className = this.parentNode.className;
 			$currentTimeslot = $('.pjAsTimeSelected');
 			$currentTimeslot.removeClass('pjAsTimeSelected');
 			$currentTimeslot.addClass('pjAsTimeAvailable');
-			
-			className = this.parentNode.className;
-			if(className.indexOf("pjAsTimeAvailable")>-1)
-			if(!className.indexOf("pjAsTimeSelected")>-1)
-				this.parentNode.className =className+ " pjAsTimeSelected";
-			var lastSelectedTimeSlot = this;
-	
+			if(className.indexOf("pjAsTimeUnavailable") < 0 && className.indexOf("pjAsTimeBooked") < 0)
+			{
+				selectedStartTs.textContent = this.getAttribute("data-start_ts");
+				selectedEndTs.textContent = this.getAttribute("data-end_ts");
+				selectedEmployeeId.textContent = this.getAttribute("data-employee_id");
+
+				
+				
+				if(className.indexOf("pjAsTimeAvailable")>-1)
+				if(!className.indexOf("pjAsTimeSelected")>-1)
+					this.parentNode.className =className+ " pjAsTimeSelected";
+				var lastSelectedTimeSlot = this;
+			}
+			else {
+				selectedStartTs.textContent = "";
+				selectedEndTs.textContent = "";
+				selectedEmployeeId.textContent = "";	
+			};
 		}
 	};
 }
@@ -384,8 +391,14 @@ for(var i=0;i<removeSelectedAppointmentButtons.length;i++){
 		e.preventDefault();
 		removeAppointmentValues(this.getAttribute("id"));
 	}
-}	
+}
+
+//check zipcode
+var zipcodeInput = calendar.getElementById('service_zipcode');
+
 })({$service_id});
+
+
 
 //var calendar_for_{$service_id} = attachToCalendar({$service_id});
 </script>

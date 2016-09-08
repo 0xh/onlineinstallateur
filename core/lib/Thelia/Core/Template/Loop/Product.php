@@ -175,6 +175,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
         return [
             "ref",
             "title",
+        	"description"
         ];
     }
 
@@ -200,6 +201,16 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                         "CASE WHEN NOT ISNULL(`requested_locale_i18n`.ID)
                         THEN `requested_locale_i18n`.`TITLE`
                         ELSE `default_locale_i18n`.`TITLE`
+                        END ".$searchCriteria." ?",
+                        $searchTerm,
+                        \PDO::PARAM_STR
+                    );
+                    break;
+                case "description":
+                	$search->where(
+                        "CASE WHEN NOT ISNULL(`requested_locale_i18n`.ID)
+                        THEN `requested_locale_i18n`.`DESCRIPTION`
+                        ELSE `default_locale_i18n`.`DESCRIPTION`
                         END ".$searchCriteria." ?",
                         $searchTerm,
                         \PDO::PARAM_STR

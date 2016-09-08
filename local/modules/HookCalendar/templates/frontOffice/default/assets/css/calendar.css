@@ -191,11 +191,11 @@
  .pjAsTableTimes .pjAsTimeAvailable a { background: #fff; color: #0ab67a; }
  .pjAsTableTimes .pjAsTimeAvailable a:hover { background: #0ab67a; color: #fff; }
  .pjAsTableTimes .pjAsTimeUnavailable a { background: #f1f1f1; color: #b9b7b8; }
- .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #b9b7b8; color: #f1f1f1; }
+ .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #b9b7b8; color: #f1f1f1;cursor: not-allowed; }
  .pjAsTableTimes .pjAsTimeSelected a { background: #0bb97c; color: #fff; }
  .pjAsTableTimes .pjAsTimeSelected a:hover { background: #fff; color: #0ab67a; }
  .pjAsTableTimes .pjAsTimeBooked a { background: #d07364; color: #fff; }
- .pjAsTableTimes .pjAsTimeBooked a:hover { background: #b95d50; }
+.pjAsTimeBooked a:hover { background: #b95d50;cursor: not-allowed; }
 
  .pjAsTableTimesActions { padding: 3px 0 15px; font-size: 0; }
  .pjAsTableTimesActions p { display: inline-block; margin: 0; padding: 0 10px; font-size: 18px; line-height: 1.4; font-weight: 700; vertical-align: middle; }
@@ -524,11 +524,11 @@
  .pjAsTableTimes .pjAsTimeAvailable a { background: #fff; color: #000; }
  .pjAsTableTimes .pjAsTimeAvailable a:hover { background: #86ac33; color: #fff; }
  .pjAsTableTimes .pjAsTimeUnavailable a { background: #FFF; color: #b9b7b8; text-decoration: line-through;}
- .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #FFF; color: #b9b7b8; text-decoration: line-through;}
+ .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #FFF; color: #b9b7b8; text-decoration: line-through;cursor: not-allowed;}
  .pjAsTableTimes .pjAsTimeSelected a { background: #86ac33; color: #fff; }
  .pjAsTableTimes .pjAsTimeSelected a:hover { background: #fff; color: #86ac33; }
  .pjAsTableTimes .pjAsTimeBooked a { background: #d07364; color: #fff; }
- .pjAsTableTimes .pjAsTimeBooked a:hover { background: #b95d50; }
+ .pjAsTableTimes .pjAsTimeBooked a:hover { background: #b95d50;cursor: not-allowed; }
 
  .pjAsTableTimesActions p { color: #86ac33; }
 

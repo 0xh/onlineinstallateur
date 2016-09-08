@@ -62,7 +62,7 @@
             
             {hook name="product.top" product={$ID}}
             
-			{if $service_category==#services_category_id#}
+			{if $service_category == #services_category_id#}
 
         	{else}
             	{ifhook rel="product.gallery"}
@@ -312,11 +312,11 @@
                     	{assign var="service_image_url" value="{$IMAGE_URL}"}
                     {/loop}
                     
-                    <div {if $service_category==#services_category_id#}
+                    <div {if $service_category == #services_category_id#}
                             style="margin-left:15px; margin-right:15px;background:url({$service_image_url nofilter}) no-repeat; height:250px; background-size:100%;"
                          {/if}>
                         
-                        {if $service_category==#services_category_id#}
+                        {if $service_category == #services_category_id#}
                         <div style="background:#FFF; width:300px;border-radius: 10px;box-shadow: 3px 3px 3px rgba(0,0,0,0.35);text-align:center!important; margin-right: 35px;margin-top:35px; float:right">
                         <div class="price-container">
                         {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
@@ -339,7 +339,7 @@
                     <fieldset class="product-cart form-inline">
                         {form_field field='quantity'}
                         <div class="form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
-                             {if $service_category==#services_category_id#}  style="display:none"{/if}>
+                             {if $service_category == #services_category_id#}  style="display:none"{/if}>
                             <label for="{$label_attr.for}">{$label}</label>
                             <input type="number" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
                             {if $error }
@@ -355,10 +355,10 @@
                         </div>
                     </fieldset>
                             
-                    {if $service_category==#services_category_id# }</div>{/if}
+                    {if $service_category == #services_category_id# }</div>{/if}
                     </div>                            
 
-            {if $service_category==#services_category_id# }       
+            {if $service_category == #services_category_id# }       
             <span class="product-service-calendar col-sm-12">
 				{hook name="productservice.bottom" service="{$ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product=true}
 			</span>
@@ -375,7 +375,7 @@
                 {hook name="product.details-bottom" product={$ID}}
                 
                 
-				{if $service_category!=#services_category_id#}
+				{if $service_category != #services_category_id#}
                 	{hook name="product.delivery-delay" product={$ID}}
                 {/if}
                 

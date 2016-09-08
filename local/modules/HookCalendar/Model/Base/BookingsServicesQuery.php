@@ -21,7 +21,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServicesQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildBookingsServicesQuery orderByTmpHash($order = Criteria::ASC) Order by the tmp_hash column
  * @method     ChildBookingsServicesQuery orderByBookingId($order = Criteria::ASC) Order by the booking_id column
- * @method     ChildBookingsServicesQuery orderByUserId($order = Criteria::ASC) Order by the user_id column
+ * @method     ChildBookingsServicesQuery orderByCustomerId($order = Criteria::ASC) Order by the customer_id column
+ * @method     ChildBookingsServicesQuery orderByCartItemId($order = Criteria::ASC) Order by the cart_item_id column
  * @method     ChildBookingsServicesQuery orderByServiceId($order = Criteria::ASC) Order by the service_id column
  * @method     ChildBookingsServicesQuery orderByEmployeeId($order = Criteria::ASC) Order by the employee_id column
  * @method     ChildBookingsServicesQuery orderByDate($order = Criteria::ASC) Order by the date column
@@ -30,11 +31,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServicesQuery orderByStopTs($order = Criteria::ASC) Order by the stop_ts column
  * @method     ChildBookingsServicesQuery orderByReminderEmail($order = Criteria::ASC) Order by the reminder_email column
  * @method     ChildBookingsServicesQuery orderByReminderSms($order = Criteria::ASC) Order by the reminder_sms column
+ * @method     ChildBookingsServicesQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     ChildBookingsServicesQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method     ChildBookingsServicesQuery groupById() Group by the id column
  * @method     ChildBookingsServicesQuery groupByTmpHash() Group by the tmp_hash column
  * @method     ChildBookingsServicesQuery groupByBookingId() Group by the booking_id column
- * @method     ChildBookingsServicesQuery groupByUserId() Group by the user_id column
+ * @method     ChildBookingsServicesQuery groupByCustomerId() Group by the customer_id column
+ * @method     ChildBookingsServicesQuery groupByCartItemId() Group by the cart_item_id column
  * @method     ChildBookingsServicesQuery groupByServiceId() Group by the service_id column
  * @method     ChildBookingsServicesQuery groupByEmployeeId() Group by the employee_id column
  * @method     ChildBookingsServicesQuery groupByDate() Group by the date column
@@ -43,6 +47,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServicesQuery groupByStopTs() Group by the stop_ts column
  * @method     ChildBookingsServicesQuery groupByReminderEmail() Group by the reminder_email column
  * @method     ChildBookingsServicesQuery groupByReminderSms() Group by the reminder_sms column
+ * @method     ChildBookingsServicesQuery groupByCreatedAt() Group by the created_at column
+ * @method     ChildBookingsServicesQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method     ChildBookingsServicesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildBookingsServicesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -54,7 +60,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServices findOneById(int $id) Return the first ChildBookingsServices filtered by the id column
  * @method     ChildBookingsServices findOneByTmpHash(string $tmp_hash) Return the first ChildBookingsServices filtered by the tmp_hash column
  * @method     ChildBookingsServices findOneByBookingId(int $booking_id) Return the first ChildBookingsServices filtered by the booking_id column
- * @method     ChildBookingsServices findOneByUserId(int $user_id) Return the first ChildBookingsServices filtered by the user_id column
+ * @method     ChildBookingsServices findOneByCustomerId(int $customer_id) Return the first ChildBookingsServices filtered by the customer_id column
+ * @method     ChildBookingsServices findOneByCartItemId(int $cart_item_id) Return the first ChildBookingsServices filtered by the cart_item_id column
  * @method     ChildBookingsServices findOneByServiceId(int $service_id) Return the first ChildBookingsServices filtered by the service_id column
  * @method     ChildBookingsServices findOneByEmployeeId(int $employee_id) Return the first ChildBookingsServices filtered by the employee_id column
  * @method     ChildBookingsServices findOneByDate(string $date) Return the first ChildBookingsServices filtered by the date column
@@ -63,11 +70,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServices findOneByStopTs(int $stop_ts) Return the first ChildBookingsServices filtered by the stop_ts column
  * @method     ChildBookingsServices findOneByReminderEmail(boolean $reminder_email) Return the first ChildBookingsServices filtered by the reminder_email column
  * @method     ChildBookingsServices findOneByReminderSms(boolean $reminder_sms) Return the first ChildBookingsServices filtered by the reminder_sms column
+ * @method     ChildBookingsServices findOneByCreatedAt(string $created_at) Return the first ChildBookingsServices filtered by the created_at column
+ * @method     ChildBookingsServices findOneByUpdatedAt(string $updated_at) Return the first ChildBookingsServices filtered by the updated_at column
  *
  * @method     array findById(int $id) Return ChildBookingsServices objects filtered by the id column
  * @method     array findByTmpHash(string $tmp_hash) Return ChildBookingsServices objects filtered by the tmp_hash column
  * @method     array findByBookingId(int $booking_id) Return ChildBookingsServices objects filtered by the booking_id column
- * @method     array findByUserId(int $user_id) Return ChildBookingsServices objects filtered by the user_id column
+ * @method     array findByCustomerId(int $customer_id) Return ChildBookingsServices objects filtered by the customer_id column
+ * @method     array findByCartItemId(int $cart_item_id) Return ChildBookingsServices objects filtered by the cart_item_id column
  * @method     array findByServiceId(int $service_id) Return ChildBookingsServices objects filtered by the service_id column
  * @method     array findByEmployeeId(int $employee_id) Return ChildBookingsServices objects filtered by the employee_id column
  * @method     array findByDate(string $date) Return ChildBookingsServices objects filtered by the date column
@@ -76,6 +86,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByStopTs(int $stop_ts) Return ChildBookingsServices objects filtered by the stop_ts column
  * @method     array findByReminderEmail(boolean $reminder_email) Return ChildBookingsServices objects filtered by the reminder_email column
  * @method     array findByReminderSms(boolean $reminder_sms) Return ChildBookingsServices objects filtered by the reminder_sms column
+ * @method     array findByCreatedAt(string $created_at) Return ChildBookingsServices objects filtered by the created_at column
+ * @method     array findByUpdatedAt(string $updated_at) Return ChildBookingsServices objects filtered by the updated_at column
  *
  */
 abstract class BookingsServicesQuery extends ModelCriteria
@@ -88,7 +100,7 @@ abstract class BookingsServicesQuery extends ModelCriteria
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'default', $modelName = '\\HookCalendar\\Model\\BookingsServices', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\HookCalendar\\Model\\BookingsServices', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -164,7 +176,7 @@ abstract class BookingsServicesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, TMP_HASH, BOOKING_ID, USER_ID, SERVICE_ID, EMPLOYEE_ID, DATE, START, START_TS, STOP_TS, REMINDER_EMAIL, REMINDER_SMS FROM bookings_services WHERE ID = :p0';
+        $sql = 'SELECT ID, TMP_HASH, BOOKING_ID, CUSTOMER_ID, CART_ITEM_ID, SERVICE_ID, EMPLOYEE_ID, DATE, START, START_TS, STOP_TS, REMINDER_EMAIL, REMINDER_SMS, CREATED_AT, UPDATED_AT FROM bookings_services WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -365,16 +377,16 @@ abstract class BookingsServicesQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the user_id column
+     * Filter the query on the customer_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByUserId(1234); // WHERE user_id = 1234
-     * $query->filterByUserId(array(12, 34)); // WHERE user_id IN (12, 34)
-     * $query->filterByUserId(array('min' => 12)); // WHERE user_id > 12
+     * $query->filterByCustomerId(1234); // WHERE customer_id = 1234
+     * $query->filterByCustomerId(array(12, 34)); // WHERE customer_id IN (12, 34)
+     * $query->filterByCustomerId(array('min' => 12)); // WHERE customer_id > 12
      * </code>
      *
-     * @param     mixed $userId The value to use as filter.
+     * @param     mixed $customerId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -382,16 +394,16 @@ abstract class BookingsServicesQuery extends ModelCriteria
      *
      * @return ChildBookingsServicesQuery The current query, for fluid interface
      */
-    public function filterByUserId($userId = null, $comparison = null)
+    public function filterByCustomerId($customerId = null, $comparison = null)
     {
-        if (is_array($userId)) {
+        if (is_array($customerId)) {
             $useMinMax = false;
-            if (isset($userId['min'])) {
-                $this->addUsingAlias(BookingsServicesTableMap::USER_ID, $userId['min'], Criteria::GREATER_EQUAL);
+            if (isset($customerId['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CUSTOMER_ID, $customerId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($userId['max'])) {
-                $this->addUsingAlias(BookingsServicesTableMap::USER_ID, $userId['max'], Criteria::LESS_EQUAL);
+            if (isset($customerId['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CUSTOMER_ID, $customerId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -402,7 +414,48 @@ abstract class BookingsServicesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BookingsServicesTableMap::USER_ID, $userId, $comparison);
+        return $this->addUsingAlias(BookingsServicesTableMap::CUSTOMER_ID, $customerId, $comparison);
+    }
+
+    /**
+     * Filter the query on the cart_item_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCartItemId(1234); // WHERE cart_item_id = 1234
+     * $query->filterByCartItemId(array(12, 34)); // WHERE cart_item_id IN (12, 34)
+     * $query->filterByCartItemId(array('min' => 12)); // WHERE cart_item_id > 12
+     * </code>
+     *
+     * @param     mixed $cartItemId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByCartItemId($cartItemId = null, $comparison = null)
+    {
+        if (is_array($cartItemId)) {
+            $useMinMax = false;
+            if (isset($cartItemId['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($cartItemId['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId, $comparison);
     }
 
     /**
@@ -707,6 +760,92 @@ abstract class BookingsServicesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BookingsServicesTableMap::REMINDER_SMS, $reminderSms, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookingsServicesTableMap::CREATED_AT, $createdAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the updated_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
+     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $updatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    {
+        if (is_array($updatedAt)) {
+            $useMinMax = false;
+            if (isset($updatedAt['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($updatedAt['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookingsServicesTableMap::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
