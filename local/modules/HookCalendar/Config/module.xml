@@ -4,23 +4,23 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>HookCalendar\HookCalendar</fullnamespace>
     <descriptive locale="en_US">
-        <title>Automatically generated module - please update module.xml file</title>
+        <title>Calendar</title>
         <!--
         <subtitle></subtitle>
         <description></description>
         <postscriptum></postscriptum>
         -->
     </descriptive>
-    <descriptive locale="fr_FR">
-        <title>Module généré automatiquement - éditez le fichier module.xml</title>
+    <descriptive locale="de_DE">
+        <title>Calendar</title>
     </descriptive>
     <!-- <logo></logo> -->
     <!--<images-folder>images</images-folder>-->
     <languages>
         <language>en_US</language>
-        <language>fr_FR</language>
+        <language>de_DE</language>
     </languages>
-    <version></version>
+    <version>0.1b</version>
     <authors>
         <author>
             <name></name>
