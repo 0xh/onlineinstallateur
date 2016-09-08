@@ -11109,7 +11109,7 @@ figure.effect-oscar:hover img {
 .shop-dateneingabe:before{ 
     content: "\e906";
     font-size:1.8em;
-    color:#FFF;
+    color:#000;
  } 
 
 .shop-dateneingabe-dark:before{ 
@@ -11120,7 +11120,7 @@ figure.effect-oscar:hover img {
 .shop-angebot:before{ 
     content: "\e905";
     font-size:1.8em;
-    color:#FFF;
+    color:#000;
  } 
 
 .shop-angebot-dark:before{ 
@@ -11131,7 +11131,7 @@ figure.effect-oscar:hover img {
 .shop-montage:before{ 
     content: "\e907";
     font-size:2em;
-    color:#FFF;
+    color:#000;
  } 
 .shop-montage-dark:before{ 
     content: "\e907";
