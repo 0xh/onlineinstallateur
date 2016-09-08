@@ -617,7 +617,7 @@ return [
     'Mexico' => 'Mexiko',
     'Micronesia' => 'Mikronesien',
     'Mini cart' => 'Mini-Warenkorb',
-    'Miss' => 'Fräulein',
+    //'Miss' => 'Fräulein',
     'Miss_short' => 'Fr.',
     'Misses' => 'Frau',
     'Mister' => 'Herr',

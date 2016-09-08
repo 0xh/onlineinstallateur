@@ -244,7 +244,7 @@ class HeizungAngebot extends BaseForm
 						1 => $this->setLabel("windlage_des_gebaudes",1,"Windstark"),
 						2 => $this->setLabel("windlage_des_gebaudes",2,"Windschwach")
 				),
-				"label" => Translator::getInstance()->trans("Windlage des Gebaudes"),
+				"label" => Translator::getInstance()->trans("Windlage des Gebäudes"),
 				"label_attr" => array(
                     "for" => "windlage_des_gebaudes",
                 ),

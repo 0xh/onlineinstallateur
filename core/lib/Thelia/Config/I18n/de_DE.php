@@ -230,7 +230,7 @@ return [
     'Hook title' => 'Andockpunkt Titel',
     'Hooks' => 'Andockpunkte',
     'Host' => 'Host',
-    'I would like to receive the newsletter or the latest news.' => 'Ich möchte den Newsletter abonnieren',
+    'I would like to receive the newsletter or the latest news.' => 'Ich möchte den Newsletter abonnieren.',
     'ISO 4217 code' => 'ISO 4217 Code',
     'ISO 639-1 Code' => 'ISO 639-1 Code',
     'ISO Alpha-2 code' => 'ISO-Alpha-2-code',

@@ -212,8 +212,8 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
       <section class="footer-block">
                     <div class="container">
                         <div class="col col-sm-12 lieferungbedienungen">
-                                <h6><strong>Alle Preise inkl. 20% MwSt., ggf. zzgl. Versandkosten</strong></h6>  *unverbindliche Preisangabe der Hersteller<br>
-                               <small><sup>1)</sup>Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich</small><br>
+                                <h6><strong>Alle Preise inkl. 20% MwSt., zzgl. Versandkosten</strong></h6>  *unverbindliche Preisangabe der Hersteller<br>
+                               <small><sup>1)</sup>Alle Lieferungen innerhalb Österreich werden Versandkostenfrei geliefert  <!--Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich--> </small><br>
                             	<small><sup>2)</sup>Produkte welche nicht von uns bezogen wurden können nur nach Rücksprache montiert werden.</small><br>
                             	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben, und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                         	<small>Produktabbildung kann abweichen</small><br>
