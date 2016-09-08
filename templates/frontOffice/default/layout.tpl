@@ -255,9 +255,11 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                 <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zu Auswahl:"}</small></div>
                                 <div>
                                     <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="master"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/visacard.png'}" alt="visa"/>
+                                    <!--img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="master"/>
+                                    <img src="{image file='assets/dist/img/paymentsystems/visacard.png'}" alt="visa"/-->
+                                    
                                     <img src="{image file='assets/dist/img/paymentsystems/sofort.png'}" alt="sofort"/>
+                                    <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="sofort"/>
                                 </div>
                             </div>
                             <a href="contact">
@@ -410,5 +412,30 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
     {/literal}
 
     {hook name="main.body-bottom"}
+    {literal}
+    <script type="text/javascript">
+  (function () { 
+    var _tsid = 'X4697574E7CAA9A55A32AFAD36E190BEF'; 
+    _tsConfig = { 
+      'yOffset': '0', /* offset from page bottom */
+      'variant': 'reviews', /* text, default, small, reviews, custom, custom_reviews */
+      'customElementId': '', /* required for variants custom and custom_reviews */
+      'trustcardDirection': '', /* for custom variants: topRight, topLeft, bottomRight, bottomLeft */
+      'customBadgeWidth': '', /* for custom variants: 40 - 90 (in pixels) */
+      'customBadgeHeight': '', /* for custom variants: 40 - 90 (in pixels) */
+      'disableResponsive': 'false', /* deactivate responsive behaviour */
+      'disableTrustbadge': 'false', /* deactivate trustbadge */
+      'trustCardTrigger': 'mouseenter' /* set to 'click' if you want the trustcard to be opened on click instead */
+    };
+    var _ts = document.createElement('script');
+    _ts.type = 'text/javascript'; 
+    _ts.charset = 'utf-8'; 
+    _ts.async = true; 
+    _ts.src = '//widgets.trustedshops.com/js/' + _tsid + '.js'; 
+    var __ts = document.getElementsByTagName('script')[0];
+    __ts.parentNode.insertBefore(_ts, __ts);
+  })();
+</script>
+{/literal}
 </body>
 </html>
