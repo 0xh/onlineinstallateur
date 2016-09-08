@@ -76,7 +76,7 @@ return [
     'Edit' => 'Ändern',
     'Edit this address' => 'Diese Adresse ändern',
     'Estimated shipping ' => 'Erwartenden Versandkosten',
-    'Forgot your Password?' => 'Haben sir Ihr Passwort vergessen ?',
+    'Forgot your Password?' => 'Haben Sie Ihr Passwort vergessen ?',
     'Free shipping' => 'Kostenloser Versand',
     'From %price' => 'Ab %price',
     'Go back to the previous page' => 'Zurück auf die vorherige Seite',
