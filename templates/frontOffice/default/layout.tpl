@@ -184,8 +184,8 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                     <div class="hotline-icon"> <span></span></div>
                     <div class="hotline-text">
                     <h3>0800/022573</h3>
-                    <small> Mo-Fr:&nbsp; 8-20 Uhr<br>
-                        Sa:  11-17 Uhr</small>
+                    <small> Mo-Do:&nbsp; 8-20 Uhr<br>
+                        Fr:  8-17 Uhr</small>
                     </div>               
                 </div>
                 <div style="clear:both"></div>
@@ -247,7 +247,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                             <a href="lieferung">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span>
-                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Lieferpreis richtet sich nach einem Fixpreis, abhängig von Ihrer Adresse. Die Standartlieferung erfolgt innerhalb von 2-3 Werktagen."}</small></div>
+                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreich Kostenlos!. Die Standartlieferung erfolgt innerhalb von 2-3 Werktagen."}</small></div>
                                 </div>
                             </a>
                             <div class="col col-sm-4">
@@ -270,8 +270,8 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                 </div>
                                 <div>
                                     <h3><strong>{intl l="0800/022573"}</strong></h3>
-                                    <h5>Mo-Fr: &nbsp;8-20 Uhr</h5>
-                                    <h5>Sa:&nbsp; 11-17 Uhr</h5>
+                                    <h5>Mo-Do: &nbsp;8-20 Uhr</h5>
+                                    <h5>Fr:&nbsp; 8-17 Uhr</h5>
                                 </div>
                             </div>
                                 </a>
