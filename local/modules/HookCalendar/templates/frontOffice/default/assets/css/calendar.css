@@ -46,7 +46,7 @@
 .pj-calendar-day-inactive p:hover,
 .pj-calendar-day-inactive p { cursor: not-allowed;}
 
-.pj-calendar-actions { position: relative; padding: 10px;}
+.pj-calendar-actions { position: relative; padding: 6px;}
 .pj-calendar-actions .btn { position: relative; z-index: 2; }
 
 .pj-calendar-ym { position: absolute; top: 9px; left: 0; width: 100%; z-index: 1; text-align: center; font-weight: bold; font-size: 21px;}
@@ -63,7 +63,7 @@
 
 	.pj-calendar-cell { padding-left: 0; padding-right: 0; }
 }
-.pj-calendar { border: 1px solid #ccc; }
+.pj-calendar { border: 1px solid #ccc; border-radius:5px}
 
 .pj-calendar-day { background: #f7f7f7; }
 .pj-calendar-day p:hover { background-color: #1b6aac; color: #fff; }
@@ -180,25 +180,7 @@
 
  .pjAsEmployeeTime { padding: 0 5px; }
 
-/* ==========================================================================
-	#pjAsTableTimes
-========================================================================== */
- .pjAsTableTimes .table tr { border-left: 1px solid #e2e2e2; }
- .pjAsTableTimes .table td { padding: 0; border-right: 1px solid #e2e2e2; border-bottom: 1px solid #e2e2e2; text-align: center; }
- .pjAsTableTimes td a { display: block; padding: 10px; }
- .pjAsTableTimes .pjAsTime a { background: #fff; -webkit-transition: all .5s ease-in-out; -moz-transition: all .5s ease-in-out; -ms-transition: all .5s ease-in-out; -o-transition: all .5s ease-in-out; transition: all .5s ease-in-out; text-decoration: none; }
- .pjAsTableTimes .pjAsTime a:hover,a:active,a:visited { text-decoration: none; }
- .pjAsTableTimes .pjAsTimeAvailable a { background: #fff; color: #0ab67a; }
- .pjAsTableTimes .pjAsTimeAvailable a:hover { background: #0ab67a; color: #fff; }
- .pjAsTableTimes .pjAsTimeUnavailable a { background: #f1f1f1; color: #b9b7b8; }
- .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #b9b7b8; color: #f1f1f1;cursor: not-allowed; }
- .pjAsTableTimes .pjAsTimeSelected a { background: #0bb97c; color: #fff; }
- .pjAsTableTimes .pjAsTimeSelected a:hover { background: #fff; color: #0ab67a; }
- .pjAsTableTimes .pjAsTimeBooked a { background: #d07364; color: #fff; }
-.pjAsTimeBooked a:hover { background: #b95d50;cursor: not-allowed; }
 
- .pjAsTableTimesActions { padding: 3px 0 15px; font-size: 0; }
- .pjAsTableTimesActions p { display: inline-block; margin: 0; padding: 0 10px; font-size: 18px; line-height: 1.4; font-weight: 700; vertical-align: middle; }
 
 /* ==========================================================================
 	#pjAsChosenServices
@@ -376,7 +358,7 @@
 	#Buttons
 ========================================================================== */
  .pjAsBtnPrimary { color: #fff; text-transform: uppercase; 
-	background: #86ac33;border:none;
+	background: #86ac33;border:none;margin-right:5px;
 	
 }
  .pjAsBtnPrimary:hover { color: #fff; 
@@ -520,15 +502,16 @@
  .pjAsTableTimes .table tr { border-color: #e2e2e2; }
  .pjAsTableTimes .table td { border-color: #e2e2e2; }
 
- .pjAsTableTimes .pjAsTime a { background: #fff; }
- .pjAsTableTimes .pjAsTimeAvailable a { background: #fff; color: #000; }
- .pjAsTableTimes .pjAsTimeAvailable a:hover { background: #86ac33; color: #fff; }
- .pjAsTableTimes .pjAsTimeUnavailable a { background: #FFF; color: #b9b7b8; text-decoration: line-through;}
- .pjAsTableTimes .pjAsTimeUnavailable a:hover { background: #FFF; color: #b9b7b8; text-decoration: line-through;cursor: not-allowed;}
- .pjAsTableTimes .pjAsTimeSelected a { background: #86ac33; color: #fff; }
- .pjAsTableTimes .pjAsTimeSelected a:hover { background: #fff; color: #86ac33; }
- .pjAsTableTimes .pjAsTimeBooked a { background: #d07364; color: #fff; }
- .pjAsTableTimes .pjAsTimeBooked a:hover { background: #b95d50;cursor: not-allowed; }
+ .pjAsTableTimes .pjAsTime { }
+ .pjAsTableTimes .pjAsTimeAvailable  { color: #000;}
+ .pjAsTableTimes .pjAsTimeUnavailable  {  color: #b9b7b8!important; text-decoration: line-through!important;}
+.pjAsTableTimes .pjAsTimeUnavailable  a{  color: #b9b7b8!important; }
+ .pjAsTableTimes .pjAsTimeUnavailable :hover { background: #FFF; color: #b9b7b8!important; text-decoration: line-through!important;cursor: not-allowed;}
+ .pjAsTableTimes .pjAsTimeSelected  { background: #86ac33; color: #fff!important; }
+.pjAsTableTimes .pjAsTimeSelected a {color: #fff!important; }
+ .pjAsTableTimes .pjAsTimeBooked  { background: #C60B0B; color: #fff!important; }
+.pjAsTableTimes .pjAsTimeBooked  a{ color: #fff!important; }
+ .pjAsTableTimes .pjAsTimeBooked :hover { cursor: not-allowed; }
 
  .pjAsTableTimesActions p { color: #86ac33; }
 
@@ -583,3 +566,8 @@
 .pj-calendar-day-today p:hover { background: #86ac33; color: #fff; }
 .pj-calendar-day-inactive p { background: #FFF; color: #b9b7b8; }
 .pj-calendar-day-inactive p:hover {	background: #FFF;color: #b9b7b8; }
+.timeslot{border:solid 1px #ccc; text-align:center;    margin-left: 5%;
+    margin-right:3%;
+    margin-top: 10px;text-decoration:none!important}
+.timeslot a,.timeslot a:hover{text-decoration:none!important}
+.timetable{border-top:solid 1px #CCC; text-align:center; margin-left:auto; margin-right:auto}

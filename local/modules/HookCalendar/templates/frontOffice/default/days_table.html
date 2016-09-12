@@ -9,7 +9,7 @@
 <div class="pj-calendar-body pj-calendar-7-columns">
 	{foreach from=$month_days_array item=week}	
 		{foreach from=$week item=day}  
-			<div class="pj-calendar-day {{daytype day=$day.type}|regex_replace:'/[\r\t\n]/':''}" onclick="dayChoice()" data-start_ts="{$day.start_ts}" data-stop_ts="{$day.stop_ts}">
+			<div class="pj-calendar-day {{daytype day=$day.type}|regex_replace:'/[\r\t\n]/':''}"  data-start_ts="{$day.start_ts}" data-stop_ts="{$day.stop_ts}">
 				<p>{$day.nr}</p>
 			</div>
 		{/foreach}

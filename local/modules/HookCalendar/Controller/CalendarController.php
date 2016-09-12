@@ -193,7 +193,7 @@ class CalendarController extends BaseFrontController
     
     public function getAppointmentsForDay($day,$month,$year){
     	$log = Tlog::getInstance ();
-    	
+    	$isOneSelected = false;
     	$time = time();
     	//get existing appointments for day
     	$day_start_ts = mktime(  7,  0, 0, $month, $day, $year);
@@ -250,6 +250,9 @@ class CalendarController extends BaseFrontController
     				);*/
     	}
     	
+        
+        
+        
     	return  array(
     					array("type" => $this->isTimeslotAvailable($dayslots[1][1], $dayslots[1][2], $time, $booked[1], false), 
     						"start"  => "07:00", "start_ts" => $dayslots[1][1], 

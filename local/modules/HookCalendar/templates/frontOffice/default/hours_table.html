@@ -7,14 +7,11 @@
 		{elseif $slot == 6} pjAsTimeUnavailable
 	{/if}
 {/function}
-<table class="table" border="0" width="100%">
-	<tbody>		
-		<tr>
-			{foreach from=$day_hours_array item=timeslot}				
-				<td class="text-uppercase pjAsTime {{timeslottype slot=$timeslot.type}|regex_replace:'/[\r\t\n ]/':''}">
-					<a href="#" class="asSlotBlock asSlotAvailable" data-start="{$timeslot.start}" data-start_ts="{$timeslot.start_ts}" data-end="{$timeslot.end}" data-end_ts="{$timeslot.end_ts}" data-employee_id="{$timeslot.employee_id}" data-service_id="{$service_id}">{$timeslot.start}-{$timeslot.end}</a>
-				</td>
-			{/foreach}
-		</tr>
-	</tbody>
-</table>
+
+<div class="timetable">
+    {foreach from=$day_hours_array item=timeslot}
+    <div class="col-sm-3 timeslot text-uppercase pjAsTime {{timeslottype slot=$timeslot.type}|regex_replace:'/[\r\t\n ]/':''}">
+        <a href="#" class="asSlotBlock asSlotAvailable" data-start="{$timeslot.start}" data-start_ts="{$timeslot.start_ts}" data-end="{$timeslot.end}" data-end_ts="{$timeslot.end_ts}" data-employee_id="{$timeslot.employee_id}" data-service_id="{$service_id}">{$timeslot.start}-{$timeslot.end}</a>
+    </div>
+   {/foreach}
+</div>
