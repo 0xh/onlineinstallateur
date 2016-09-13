@@ -12,10 +12,12 @@
 <h3>1. Postleitzahl </h3>
     <p>Geben Sie bitte Ihre Postleitzahl an.</p>
 	<div class="zipcode">
-    <span class="glyphicon glyphicon-map-marker prefix"></span><input type="number" id="service_zipcode" name="service_zipcode" class="service_zipcode" min="1010" max="9873" >
+    <span class="glyphicon glyphicon-map-marker prefix"></span><input type="number" id="service_zipcode" name="service_zipcode" class="service_zipcode" >
     </div>
+
+    <div class="error  " style="display:none; color:#FF0000; padding-top:5px">Diese Dienstleistung ist leider in diesem Gebiet nicht verfügbar </div>
 </div>
-	<div class="pjAsCalendarInline col-sm-5 disabled calendarsteps">
+	<div class="pjAsCalendarInline col-sm-5 disabledservice calendarsteps">
         <h3>2. Termin </h3>
         <p>Geben Sie bitte Termindatum und Terminzeit an.</p>
 		<div class="pjIcCalendar">
@@ -73,7 +75,7 @@
 		</div>
 	</div><!-- /.panel-body pjAsCalendarInline -->
 
-<div class="calendarData calendarsteps col-sm-4 disabled">
+<div class="calendarData calendarsteps col-sm-4 disabledservice">
     <h3>3. Bestätigen </h3>
     <p>Ihre Daten:</p>
 	<div class="pjAsCalendarInline selectedTimeSlotsList" {$service_id} style="display:none;">
@@ -175,9 +177,23 @@ return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
 //assumption - there can be more then one calendar on the page
 //navigation previous/next month
 
+    
+    
 (function(service_id){
+
+var zipcodes = [
+  [1010, 1230],
+  [2000, 2899],
+  [3000, 3699],
+  [7000, 7599], 
+  [8000, 8999]
+];
+    
+    
+    
 var monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni",
 	              "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    
 var calendar = document.getElementsByClassName("calendarFor"+service_id)[0];
 
 //month changers
@@ -435,37 +451,47 @@ zipcodeInput.oninput = function(e){
     
     this.value = this.value.replace(/[^0-9.]/g, ""); 
     //this.value = this.value.replace(/(\..*)\./g, '$1');
-    
 
+    isAvailable = false;
+  for(var j=0;j<zipcodes.length;j++){
+	  if(this.value >= zipcodes[j][0] && this.value <= zipcodes[j][1])
+          isAvailable = true;
+  }
+  
 
-    if(this.value >= 1010 && this.value <= 9873) {    
+	
+  
+    if(isAvailable) {    
   for(var i=0;i<calendarColumns.length;i++){
-
-      
-      //calendarColumns[i].classList.remove("fade-out");
+ 
       calendarColumns[i].classList.add("fade-in");
-      calendarColumns[i].classList.remove("disabled");
+      calendarColumns[i].classList.remove("disabledservice");
 
-
-      //calendarColumns[i].removeClass('disabled');
   }
   }
  else 
      if(this.value.length > 4)
         this.value = this.value.slice(0,4);
+     else if(this.value.length == 4){
+
+    	 calendar.getElementsByClassName("error")[0].style.display = 'block';
+     }
+    
     else{
+    	calendar.getElementsByClassName("error")[0].style.display = 'none';
   for(var i=0;i<calendarColumns.length;i++){
       
       calendarColumns[i].classList.remove("fade-in");
-      calendarColumns[i].classList.add("disabled");
-      //calendarColumns[i].classList.add("fade-out");
+      calendarColumns[i].classList.add("disabledservice");
+
       window.setTimeout(function(){
        
     }, 2000); //<-- Delay in milliseconds
       
-      //calendarColumns[i].removeClass('disabled');
+    
   }    
-    }
+  }
+   
 };
 })({$service_id});
 

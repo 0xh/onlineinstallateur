@@ -17,7 +17,7 @@ return [
     'Product' => 'Produkt',
     'Quantity' => 'Menge',
     'Ref' => 'REF',
-    'Tax' => 'MwSt.',
+    'Tax' => '20% Mehrwertsteuer',
     'Taxed total' => 'Gesamtsumme',
     'Total' => 'Gesamtsumme',
     'Total with tax' => 'Gesamtpreis inkl. Steuern',
