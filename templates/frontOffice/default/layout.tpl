@@ -345,7 +345,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                     <li><a href="{url path="/contact"}">{intl l="Contact Us"}</a></li>
                                 </ul-->
                             </nav>
-                            <section class="copyright col-lg-3">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://thelia.net" rel="external">HEIZFABRIK</a></section>
+                            <section class="copyright col-lg-3">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://hausfabrik.at" rel="external">HAUSFABRIK</a></section>
                         </div>
                     </div>
                 </footer><!-- /.footer-info -->
