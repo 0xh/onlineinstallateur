@@ -83,7 +83,7 @@ return [
     'Go home' => 'Zurück zur Startseite',
     'Grid' => 'Raster',
     'Home' => 'Startseite',
-    'I\'ve read and agreed on <a href=\'%link\' class=\'terms-quickview\'>Terms &amp; Conditions</a>' => 'Ich habe gelesen und akzeptiere die <a href=\'%link\' class=\'terms-quickview\'>allgemeine Bedingungen</a> ',
+    'I\'ve read and agreed on <a href=\'%link\' class=\'terms-quickview\'>Terms &amp; Conditions</a>' => 'Ich habe die <a href=\'%link\' class=\'terms-quickview\'>AGBs</a> gelesen und akzeptiere diese. ',
     'If nothing happens within 10 seconds, <a id="force-submit-payment-form" href="#">please click here</a>.' => 'Wenn nichts passiert nach 10 Sekunden, <a id="force-submit-payment-form" href="#">bitte hier klicken</a>. ',
     'If you want to change your email, please contact us.' => 'Wenn Sie Ihre E-Mail wechseln möchten, bitte kontaktieren Sie uns. ',
     'In Stock' => 'Verfügbar',
