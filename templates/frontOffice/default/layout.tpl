@@ -244,10 +244,10 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                     <div class="container">
 
                         <div class="banner row banner-col-3">
-                            <a href="lieferung">
+                            <a href="versandkosten.html">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span>
-                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos!. Die Standartlieferung erfolgt innerhalb von 2-3 Werktagen."}</small></div>
+                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos! Die Standartlieferung erfolgt innerhalb von 1-3 Werktagen."}</small></div>
                                 </div>
                             </a>
                             <div class="col col-sm-4">
