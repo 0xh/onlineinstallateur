@@ -295,7 +295,7 @@
                                	{assign var="service_for_appointment" value = $SERVICE_ID} 
  									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=true width="200" height="100"}
  									<div class="product-service-calendar">
-										{hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"}
+										{*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
 									</div>	
 								{/loop}
  							</ul>
@@ -444,6 +444,7 @@
             {/strip}
 
 		<br>
+            <div class="clearfix"></div>
             <section id="product-tabs" class="row">
                 {hookblock name="product.additional" product=$product_id fields="id,class,title,content"}
                 <ul class="nav nav-tabs" role="tablist">

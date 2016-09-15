@@ -55,6 +55,9 @@ web : http://www.hausfabrik.at
     {stylesheets file='assets/dist/css/minnu.css'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
+    {stylesheets file='assets/dist/css/cookies.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
     {*
      If you want to generate the CSS assets on the fly, just replace the stylesheet inclusion above by the following.
      Then, in your back-office, go to Configuration -> System Variables and set process_assets to 1.
@@ -119,7 +122,19 @@ $.src="//v2.zopim.com/?3xaJNLlpfnXxE25TpnCVCaE9w7UtIkge";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 </script>
 <!--End of Zopim Live Chat Script-->
-   {/literal}  
+   
+   <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {"message":"Diese Seite verwendet Cookies.Für eine uneingeschränkte Nutzung der Webseite werden Cookies benötigt. Bitte stimmen Sie der Verwendung von Cookies zu, um alle Funktionen der Webseite nutzen zu können. Detaillierte Informationen über den Einsatz von Cookies auf dieser Webseite erhalten Sie in unserer Datenschutzerklärung.","dismiss":"OK","learnMore":"Mehr erfahren","link":"http://www.hausfabrik.at/datenschutz.html","theme":"cookies"};
+</script>
+{/literal} 
+ <script src="{javascript file='assets/dist/js/vendors/cookieconsent.min.js'}"></script>
+
+
+<!-- End Cookie Consent plugin -->
+
+
+    
    
     {hook name="main.head-bottom"}
 </head>
@@ -210,15 +225,27 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
             </div><!-- /.container -->
         </main><!-- /.main-container -->
       <section class="footer-block">
+         
                     <div class="container">
+                        <!--div class="vorteile">
+                            <a href=""><div class="col-md-15 col-sm-3"><span class="shopicon shop-lieferung  fa-flip-horizontal vt-icon"></span><span class="vt-title">30 Tage Rückgabegarantie</span></div></a>
+                            
+                           <a href=""> <div class="col-md-15 col-sm-3"><span class="shopicon shop-lieferung  fa-flip-horizontal vt-icon"></span><span class="vt-title">15€ Neukundengutschein</span></div></a>
+                            
+                            <a href=""><div class="col-md-15 col-sm-3"><span class="shopicon shop-lieferung  fa-flip-horizontal vt-icon"></span><span class="vt-title">Versandkostenfrei</span></div></a>
+                            
+                            <a href=""><div class="col-md-15 col-sm-3"><span class="shopicon shop-lieferung  fa-flip-horizontal vt-icon"></span><span class="vt-title">Sicher Einkaufen</span></div></a>
+                            <a href=""><div class="col-md-15 col-sm-3"><span class="shopicon shop-lieferung  fa-flip-horizontal vt-icon"></span><span class="vt-title">Servicetermin buchen</span></div></a>
+
+                        </div-->
                         <div class="col col-sm-12 lieferungbedienungen">
                                 <h6><strong>Alle Preise inkl. 20% MwSt., zzgl. Versandkosten</strong></h6>  *unverbindliche Preisangabe der Hersteller<br>
-                               <small><sup>1)</sup>Alle Lieferungen innerhalb Österreich werden Versandkostenfrei geliefert  <!--Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich--> </small><br>
+                               <small><sup>1)</sup>Alle Lieferungen innerhalb Österreichs werden Versandkostenfrei geliefert  <!--Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich--> </small><br>
                             	<small><sup>2)</sup>Produkte welche nicht von uns bezogen wurden können nur nach Rücksprache montiert werden.</small><br>
                             	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben, und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                         	<small>Produktabbildung kann abweichen</small><br>
                             <small>Die Ergebnisse aus dem Konfigurator haben keinen Anspruch auf Vollständigkeit der Produkte und Pakete.</small><br>
-                            <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="heizungskonfigurator-angebot"> <span style="color:#74A027;">NEU HEIZUNG</a> aus.</small><br>
+                            <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="heizungskonfigurator-angebot"> <span style="color:#74A027;">NEUE HEIZUNG</span></a> aus.</small><br>
                         </div>
                     </div>
       </section>
@@ -247,12 +274,12 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                             <a href="lieferung">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span>
-                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreich Kostenlos!. Die Standartlieferung erfolgt innerhalb von 2-3 Werktagen."}</small></div>
+                                <div><strong>{intl l="LIEFERUNG"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos!. Die Standartlieferung erfolgt innerhalb von 2-3 Werktagen."}</small></div>
                                 </div>
                             </a>
                             <div class="col col-sm-4">
                                 <span class="shopicon shop-bezahlung highlightcolor"></span>
-                                <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zu Auswahl:"}</small></div>
+                                <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
                                 <div>
                                     <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
                                     <!--img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="master"/>
@@ -348,6 +375,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                             <section class="copyright col-lg-3">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://hausfabrik.at" rel="external">HAUSFABRIK</a></section>
                         </div>
                     </div>
+                    
                 </footer><!-- /.footer-info -->
             {/elsehook}
 

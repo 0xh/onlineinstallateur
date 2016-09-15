@@ -13188,3 +13188,25 @@ animation: fadeout 2s;
     -webkit-animation: fadeout 2s; /* Safari and Chrome */
     -o-animation: fadeout 2s; /* Opera */
 }
+.vorteile{
+    background:#999999;
+    height:100px;
+    line-height:100px
+}
+.vorteile div{
+    border-left:solid 1px #FFF;
+    color:#FFF;
+    text-align: center;
+    
+}
+.vorteile div:hover{
+    background:#86AC34;
+}
+.vorteile div .vt-title{
+    display: inline-block;
+    width:70%;
+}
+.vorteile div .vt-icon{
+    display: inline-block;
+    width:30%;
+}
