@@ -27,7 +27,6 @@
 
 namespace Sofort\Hook;
 
-use Sofort\Classes\API\SofortApiLogManager;
 use Sofort\Sofort;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
@@ -40,33 +39,6 @@ class HookManager extends BaseHook
 
     public function onModuleConfigure(HookRenderEvent $event)
     {
-        $logFilePath = SofortApiLogManager::getLogFilePath();
-
-        $traces = @file_get_contents($logFilePath);
-
-        if (false === $traces) {
-            $traces = $this->translator->trans("The log file doesn't exists yet.", [], Sofort::DOMAIN);
-        } elseif (empty($traces)) {
-            $traces = $this->translator->trans("The log file is empty.", [], Sofort::DOMAIN);
-        } else {
-            // Limiter la taille des traces à 1MO
-            if (strlen($traces) > self::MAX_TRACE_SIZE_IN_BYTES) {
-                $traces = substr($traces, strlen($traces) - self::MAX_TRACE_SIZE_IN_BYTES);
-                // Cut a first line break;
-                if (false !== $lineBreakPos = strpos($traces, "\n")) {
-                    $traces = substr($traces, $lineBreakPos+1);
-                }
-
-                $traces = $this->translator->trans(
-                    "(Previous log is in %file file.)\n",
-                    [ '%file' => sprintf("log".DS."%s.log", Sofort::DOMAIN) ],
-                    Sofort::DOMAIN
-                ) . $traces;
-            }
-        }
-
-        $vars = ['trace_content' => nl2br($traces)  ];
-
         if (null !== $params = ModuleConfigQuery::create()->findByModuleId(Sofort::getModuleId())) {
             /** @var ModuleConfig $param */
             foreach ($params as $param) {

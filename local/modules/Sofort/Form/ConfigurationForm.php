@@ -37,7 +37,7 @@ class ConfigurationForm extends BaseForm
     protected function buildForm()
     {
         $this->formBuilder
-            ->add(
+          /*  ->add(
                 'login',
                 'text',
                 [
@@ -69,7 +69,7 @@ class ConfigurationForm extends BaseForm
                         'help' => $this->translator->trans('The Sofort signature', [], Sofort::DOMAIN)
                     ]
                 ]
-            )
+            )*/
             ->add(
                 'sandbox',
                 'checkbox',
@@ -168,7 +168,7 @@ class ConfigurationForm extends BaseForm
                     ]
                 ]
             )
-            ->add(
+           /* ->add(
                 'cart_item_count',
                 'text',
                 [
@@ -186,7 +186,7 @@ class ConfigurationForm extends BaseForm
                         )
                     ]
                 ]
-            )
+            )*/
             ->add(
                 'send_confirmation_message_only_if_paid',
                 'checkbox',
