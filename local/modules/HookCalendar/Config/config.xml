@@ -20,11 +20,12 @@
         -->
     </commands>
 
-    <!--
     <services>
-
+        <service id="calendar.event.listener" class="HookCalendar\Listener\CalendarListener" scope="request">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="request" />
+        </service>
     </services>
-    -->
     
 	<hooks>
             <hook id="hookcalendar.hook.front" class="HookCalendar\Hook\Front" scope="request">

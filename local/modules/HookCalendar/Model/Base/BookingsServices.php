@@ -6,6 +6,10 @@ use \DateTime;
 use \Exception;
 use \PDO;
 use HookCalendar\Model\BookingsServicesQuery as ChildBookingsServicesQuery;
+use HookCalendar\Model\CartItem as ChildCartItem;
+use HookCalendar\Model\CartItemQuery as ChildCartItemQuery;
+use HookCalendar\Model\Order as ChildOrder;
+use HookCalendar\Model\OrderQuery as ChildOrderQuery;
 use HookCalendar\Model\Map\BookingsServicesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -19,7 +23,7 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
-abstract class BookingsServices implements ActiveRecordInterface
+abstract class BookingsServices implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -72,16 +76,22 @@ abstract class BookingsServices implements ActiveRecordInterface
     protected $booking_id;
 
     /**
-     * The value for the customer_id field.
+     * The value for the order_id field.
      * @var        int
      */
-    protected $customer_id;
+    protected $order_id;
 
     /**
      * The value for the cart_item_id field.
      * @var        int
      */
     protected $cart_item_id;
+
+    /**
+     * The value for the customer_id field.
+     * @var        int
+     */
+    protected $customer_id;
 
     /**
      * The value for the service_id field.
@@ -144,6 +154,16 @@ abstract class BookingsServices implements ActiveRecordInterface
      * @var        string
      */
     protected $updated_at;
+
+    /**
+     * @var        CartItem
+     */
+    protected $aCartItem;
+
+    /**
+     * @var        Order
+     */
+    protected $aOrder;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -427,7 +447,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -438,7 +458,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [tmp_hash] column value.
-     *
+     * 
      * @return   string
      */
     public function getTmpHash()
@@ -449,7 +469,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [booking_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getBookingId()
@@ -459,19 +479,19 @@ abstract class BookingsServices implements ActiveRecordInterface
     }
 
     /**
-     * Get the [customer_id] column value.
-     *
+     * Get the [order_id] column value.
+     * 
      * @return   int
      */
-    public function getCustomerId()
+    public function getOrderId()
     {
 
-        return $this->customer_id;
+        return $this->order_id;
     }
 
     /**
      * Get the [cart_item_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getCartItemId()
@@ -481,8 +501,19 @@ abstract class BookingsServices implements ActiveRecordInterface
     }
 
     /**
+     * Get the [customer_id] column value.
+     * 
+     * @return   int
+     */
+    public function getCustomerId()
+    {
+
+        return $this->customer_id;
+    }
+
+    /**
      * Get the [service_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getServiceId()
@@ -493,7 +524,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [employee_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getEmployeeId()
@@ -504,7 +535,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [date] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -524,7 +555,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [start] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -544,7 +575,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [start_ts] column value.
-     *
+     * 
      * @return   int
      */
     public function getStartTs()
@@ -555,7 +586,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [stop_ts] column value.
-     *
+     * 
      * @return   int
      */
     public function getStopTs()
@@ -566,7 +597,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [reminder_email] column value.
-     *
+     * 
      * @return   boolean
      */
     public function getReminderEmail()
@@ -577,7 +608,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [reminder_sms] column value.
-     *
+     * 
      * @return   boolean
      */
     public function getReminderSms()
@@ -588,7 +619,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -608,7 +639,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -628,7 +659,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -649,7 +680,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [tmp_hash] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -670,7 +701,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [booking_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -690,8 +721,58 @@ abstract class BookingsServices implements ActiveRecordInterface
     } // setBookingId()
 
     /**
+     * Set the value of [order_id] column.
+     * 
+     * @param      int $v new value
+     * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
+     */
+    public function setOrderId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->order_id !== $v) {
+            $this->order_id = $v;
+            $this->modifiedColumns[BookingsServicesTableMap::ORDER_ID] = true;
+        }
+
+        if ($this->aOrder !== null && $this->aOrder->getId() !== $v) {
+            $this->aOrder = null;
+        }
+
+
+        return $this;
+    } // setOrderId()
+
+    /**
+     * Set the value of [cart_item_id] column.
+     * 
+     * @param      int $v new value
+     * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
+     */
+    public function setCartItemId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->cart_item_id !== $v) {
+            $this->cart_item_id = $v;
+            $this->modifiedColumns[BookingsServicesTableMap::CART_ITEM_ID] = true;
+        }
+
+        if ($this->aCartItem !== null && $this->aCartItem->getId() !== $v) {
+            $this->aCartItem = null;
+        }
+
+
+        return $this;
+    } // setCartItemId()
+
+    /**
      * Set the value of [customer_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -711,29 +792,8 @@ abstract class BookingsServices implements ActiveRecordInterface
     } // setCustomerId()
 
     /**
-     * Set the value of [cart_item_id] column.
-     *
-     * @param      int $v new value
-     * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
-     */
-    public function setCartItemId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->cart_item_id !== $v) {
-            $this->cart_item_id = $v;
-            $this->modifiedColumns[BookingsServicesTableMap::CART_ITEM_ID] = true;
-        }
-
-
-        return $this;
-    } // setCartItemId()
-
-    /**
      * Set the value of [service_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -754,7 +814,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [employee_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -775,7 +835,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Sets the value of [date] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
@@ -796,7 +856,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Sets the value of [start] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
@@ -817,7 +877,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [start_ts] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -838,7 +898,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Set the value of [stop_ts] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -863,7 +923,7 @@ abstract class BookingsServices implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * 
      * @param      boolean|integer|string $v The new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -892,7 +952,7 @@ abstract class BookingsServices implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * 
      * @param      boolean|integer|string $v The new value
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
      */
@@ -917,7 +977,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
@@ -938,7 +998,7 @@ abstract class BookingsServices implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \HookCalendar\Model\BookingsServices The current object (for fluent API support)
@@ -1011,46 +1071,49 @@ abstract class BookingsServices implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : BookingsServicesTableMap::translateFieldName('BookingId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->booking_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BookingsServicesTableMap::translateFieldName('CustomerId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->customer_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BookingsServicesTableMap::translateFieldName('OrderId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->order_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BookingsServicesTableMap::translateFieldName('CartItemId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->cart_item_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookingsServicesTableMap::translateFieldName('ServiceId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BookingsServicesTableMap::translateFieldName('CustomerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->customer_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BookingsServicesTableMap::translateFieldName('ServiceId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->service_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BookingsServicesTableMap::translateFieldName('EmployeeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BookingsServicesTableMap::translateFieldName('EmployeeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->employee_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BookingsServicesTableMap::translateFieldName('Date', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : BookingsServicesTableMap::translateFieldName('Date', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00') {
                 $col = null;
             }
             $this->date = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : BookingsServicesTableMap::translateFieldName('Start', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : BookingsServicesTableMap::translateFieldName('Start', TableMap::TYPE_PHPNAME, $indexType)];
             $this->start = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : BookingsServicesTableMap::translateFieldName('StartTs', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : BookingsServicesTableMap::translateFieldName('StartTs', TableMap::TYPE_PHPNAME, $indexType)];
             $this->start_ts = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : BookingsServicesTableMap::translateFieldName('StopTs', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : BookingsServicesTableMap::translateFieldName('StopTs', TableMap::TYPE_PHPNAME, $indexType)];
             $this->stop_ts = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : BookingsServicesTableMap::translateFieldName('ReminderEmail', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : BookingsServicesTableMap::translateFieldName('ReminderEmail', TableMap::TYPE_PHPNAME, $indexType)];
             $this->reminder_email = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : BookingsServicesTableMap::translateFieldName('ReminderSms', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : BookingsServicesTableMap::translateFieldName('ReminderSms', TableMap::TYPE_PHPNAME, $indexType)];
             $this->reminder_sms = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : BookingsServicesTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : BookingsServicesTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : BookingsServicesTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : BookingsServicesTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1063,7 +1126,7 @@ abstract class BookingsServices implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = BookingsServicesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = BookingsServicesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \HookCalendar\Model\BookingsServices object", 0, $e);
@@ -1085,6 +1148,12 @@ abstract class BookingsServices implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aOrder !== null && $this->order_id !== $this->aOrder->getId()) {
+            $this->aOrder = null;
+        }
+        if ($this->aCartItem !== null && $this->cart_item_id !== $this->aCartItem->getId()) {
+            $this->aCartItem = null;
+        }
     } // ensureConsistency
 
     /**
@@ -1124,6 +1193,8 @@ abstract class BookingsServices implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCartItem = null;
+            $this->aOrder = null;
         } // if (deep)
     }
 
@@ -1235,6 +1306,25 @@ abstract class BookingsServices implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aCartItem !== null) {
+                if ($this->aCartItem->isModified() || $this->aCartItem->isNew()) {
+                    $affectedRows += $this->aCartItem->save($con);
+                }
+                $this->setCartItem($this->aCartItem);
+            }
+
+            if ($this->aOrder !== null) {
+                if ($this->aOrder->isModified() || $this->aOrder->isNew()) {
+                    $affectedRows += $this->aOrder->save($con);
+                }
+                $this->setOrder($this->aOrder);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1281,11 +1371,14 @@ abstract class BookingsServices implements ActiveRecordInterface
         if ($this->isColumnModified(BookingsServicesTableMap::BOOKING_ID)) {
             $modifiedColumns[':p' . $index++]  = 'BOOKING_ID';
         }
-        if ($this->isColumnModified(BookingsServicesTableMap::CUSTOMER_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'CUSTOMER_ID';
+        if ($this->isColumnModified(BookingsServicesTableMap::ORDER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'ORDER_ID';
         }
         if ($this->isColumnModified(BookingsServicesTableMap::CART_ITEM_ID)) {
             $modifiedColumns[':p' . $index++]  = 'CART_ITEM_ID';
+        }
+        if ($this->isColumnModified(BookingsServicesTableMap::CUSTOMER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CUSTOMER_ID';
         }
         if ($this->isColumnModified(BookingsServicesTableMap::SERVICE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'SERVICE_ID';
@@ -1328,37 +1421,40 @@ abstract class BookingsServices implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'TMP_HASH':
+                    case 'TMP_HASH':                        
                         $stmt->bindValue($identifier, $this->tmp_hash, PDO::PARAM_STR);
                         break;
-                    case 'BOOKING_ID':
+                    case 'BOOKING_ID':                        
                         $stmt->bindValue($identifier, $this->booking_id, PDO::PARAM_INT);
                         break;
-                    case 'CUSTOMER_ID':
-                        $stmt->bindValue($identifier, $this->customer_id, PDO::PARAM_INT);
+                    case 'ORDER_ID':                        
+                        $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
                         break;
-                    case 'CART_ITEM_ID':
+                    case 'CART_ITEM_ID':                        
                         $stmt->bindValue($identifier, $this->cart_item_id, PDO::PARAM_INT);
                         break;
-                    case 'SERVICE_ID':
+                    case 'CUSTOMER_ID':                        
+                        $stmt->bindValue($identifier, $this->customer_id, PDO::PARAM_INT);
+                        break;
+                    case 'SERVICE_ID':                        
                         $stmt->bindValue($identifier, $this->service_id, PDO::PARAM_INT);
                         break;
-                    case 'EMPLOYEE_ID':
+                    case 'EMPLOYEE_ID':                        
                         $stmt->bindValue($identifier, $this->employee_id, PDO::PARAM_INT);
                         break;
-                    case 'DATE':
+                    case 'DATE':                        
                         $stmt->bindValue($identifier, $this->date ? $this->date->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'START':
+                    case 'START':                        
                         $stmt->bindValue($identifier, $this->start ? $this->start->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'START_TS':
+                    case 'START_TS':                        
                         $stmt->bindValue($identifier, $this->start_ts, PDO::PARAM_INT);
                         break;
-                    case 'STOP_TS':
+                    case 'STOP_TS':                        
                         $stmt->bindValue($identifier, $this->stop_ts, PDO::PARAM_INT);
                         break;
                     case 'REMINDER_EMAIL':
@@ -1367,10 +1463,10 @@ abstract class BookingsServices implements ActiveRecordInterface
                     case 'REMINDER_SMS':
                         $stmt->bindValue($identifier, (int) $this->reminder_sms, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':
+                    case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
+                    case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1445,39 +1541,42 @@ abstract class BookingsServices implements ActiveRecordInterface
                 return $this->getBookingId();
                 break;
             case 3:
-                return $this->getCustomerId();
+                return $this->getOrderId();
                 break;
             case 4:
                 return $this->getCartItemId();
                 break;
             case 5:
-                return $this->getServiceId();
+                return $this->getCustomerId();
                 break;
             case 6:
-                return $this->getEmployeeId();
+                return $this->getServiceId();
                 break;
             case 7:
-                return $this->getDate();
+                return $this->getEmployeeId();
                 break;
             case 8:
-                return $this->getStart();
+                return $this->getDate();
                 break;
             case 9:
-                return $this->getStartTs();
+                return $this->getStart();
                 break;
             case 10:
-                return $this->getStopTs();
+                return $this->getStartTs();
                 break;
             case 11:
-                return $this->getReminderEmail();
+                return $this->getStopTs();
                 break;
             case 12:
-                return $this->getReminderSms();
+                return $this->getReminderEmail();
                 break;
             case 13:
-                return $this->getCreatedAt();
+                return $this->getReminderSms();
                 break;
             case 14:
+                return $this->getCreatedAt();
+                break;
+            case 15:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1497,10 +1596,11 @@ abstract class BookingsServices implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['BookingsServices'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -1511,24 +1611,33 @@ abstract class BookingsServices implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTmpHash(),
             $keys[2] => $this->getBookingId(),
-            $keys[3] => $this->getCustomerId(),
+            $keys[3] => $this->getOrderId(),
             $keys[4] => $this->getCartItemId(),
-            $keys[5] => $this->getServiceId(),
-            $keys[6] => $this->getEmployeeId(),
-            $keys[7] => $this->getDate(),
-            $keys[8] => $this->getStart(),
-            $keys[9] => $this->getStartTs(),
-            $keys[10] => $this->getStopTs(),
-            $keys[11] => $this->getReminderEmail(),
-            $keys[12] => $this->getReminderSms(),
-            $keys[13] => $this->getCreatedAt(),
-            $keys[14] => $this->getUpdatedAt(),
+            $keys[5] => $this->getCustomerId(),
+            $keys[6] => $this->getServiceId(),
+            $keys[7] => $this->getEmployeeId(),
+            $keys[8] => $this->getDate(),
+            $keys[9] => $this->getStart(),
+            $keys[10] => $this->getStartTs(),
+            $keys[11] => $this->getStopTs(),
+            $keys[12] => $this->getReminderEmail(),
+            $keys[13] => $this->getReminderSms(),
+            $keys[14] => $this->getCreatedAt(),
+            $keys[15] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
+        if ($includeForeignObjects) {
+            if (null !== $this->aCartItem) {
+                $result['CartItem'] = $this->aCartItem->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aOrder) {
+                $result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1572,39 +1681,42 @@ abstract class BookingsServices implements ActiveRecordInterface
                 $this->setBookingId($value);
                 break;
             case 3:
-                $this->setCustomerId($value);
+                $this->setOrderId($value);
                 break;
             case 4:
                 $this->setCartItemId($value);
                 break;
             case 5:
-                $this->setServiceId($value);
+                $this->setCustomerId($value);
                 break;
             case 6:
-                $this->setEmployeeId($value);
+                $this->setServiceId($value);
                 break;
             case 7:
-                $this->setDate($value);
+                $this->setEmployeeId($value);
                 break;
             case 8:
-                $this->setStart($value);
+                $this->setDate($value);
                 break;
             case 9:
-                $this->setStartTs($value);
+                $this->setStart($value);
                 break;
             case 10:
-                $this->setStopTs($value);
+                $this->setStartTs($value);
                 break;
             case 11:
-                $this->setReminderEmail($value);
+                $this->setStopTs($value);
                 break;
             case 12:
-                $this->setReminderSms($value);
+                $this->setReminderEmail($value);
                 break;
             case 13:
-                $this->setCreatedAt($value);
+                $this->setReminderSms($value);
                 break;
             case 14:
+                $this->setCreatedAt($value);
+                break;
+            case 15:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1634,18 +1746,19 @@ abstract class BookingsServices implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setTmpHash($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setBookingId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCustomerId($arr[$keys[3]]);
+        if (array_key_exists($keys[3], $arr)) $this->setOrderId($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setCartItemId($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setServiceId($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setEmployeeId($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setDate($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setStart($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setStartTs($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setStopTs($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setReminderEmail($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setReminderSms($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCustomerId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setServiceId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setEmployeeId($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setDate($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setStart($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setStartTs($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setStopTs($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setReminderEmail($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setReminderSms($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
     }
 
     /**
@@ -1660,8 +1773,9 @@ abstract class BookingsServices implements ActiveRecordInterface
         if ($this->isColumnModified(BookingsServicesTableMap::ID)) $criteria->add(BookingsServicesTableMap::ID, $this->id);
         if ($this->isColumnModified(BookingsServicesTableMap::TMP_HASH)) $criteria->add(BookingsServicesTableMap::TMP_HASH, $this->tmp_hash);
         if ($this->isColumnModified(BookingsServicesTableMap::BOOKING_ID)) $criteria->add(BookingsServicesTableMap::BOOKING_ID, $this->booking_id);
-        if ($this->isColumnModified(BookingsServicesTableMap::CUSTOMER_ID)) $criteria->add(BookingsServicesTableMap::CUSTOMER_ID, $this->customer_id);
+        if ($this->isColumnModified(BookingsServicesTableMap::ORDER_ID)) $criteria->add(BookingsServicesTableMap::ORDER_ID, $this->order_id);
         if ($this->isColumnModified(BookingsServicesTableMap::CART_ITEM_ID)) $criteria->add(BookingsServicesTableMap::CART_ITEM_ID, $this->cart_item_id);
+        if ($this->isColumnModified(BookingsServicesTableMap::CUSTOMER_ID)) $criteria->add(BookingsServicesTableMap::CUSTOMER_ID, $this->customer_id);
         if ($this->isColumnModified(BookingsServicesTableMap::SERVICE_ID)) $criteria->add(BookingsServicesTableMap::SERVICE_ID, $this->service_id);
         if ($this->isColumnModified(BookingsServicesTableMap::EMPLOYEE_ID)) $criteria->add(BookingsServicesTableMap::EMPLOYEE_ID, $this->employee_id);
         if ($this->isColumnModified(BookingsServicesTableMap::DATE)) $criteria->add(BookingsServicesTableMap::DATE, $this->date);
@@ -1737,8 +1851,9 @@ abstract class BookingsServices implements ActiveRecordInterface
     {
         $copyObj->setTmpHash($this->getTmpHash());
         $copyObj->setBookingId($this->getBookingId());
-        $copyObj->setCustomerId($this->getCustomerId());
+        $copyObj->setOrderId($this->getOrderId());
         $copyObj->setCartItemId($this->getCartItemId());
+        $copyObj->setCustomerId($this->getCustomerId());
         $copyObj->setServiceId($this->getServiceId());
         $copyObj->setEmployeeId($this->getEmployeeId());
         $copyObj->setDate($this->getDate());
@@ -1778,6 +1893,108 @@ abstract class BookingsServices implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildCartItem object.
+     *
+     * @param                  ChildCartItem $v
+     * @return                 \HookCalendar\Model\BookingsServices The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCartItem(ChildCartItem $v = null)
+    {
+        if ($v === null) {
+            $this->setCartItemId(NULL);
+        } else {
+            $this->setCartItemId($v->getId());
+        }
+
+        $this->aCartItem = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCartItem object, it will not be re-added.
+        if ($v !== null) {
+            $v->addBookingsServices($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCartItem object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCartItem The associated ChildCartItem object.
+     * @throws PropelException
+     */
+    public function getCartItem(ConnectionInterface $con = null)
+    {
+        if ($this->aCartItem === null && ($this->cart_item_id !== null)) {
+            $this->aCartItem = ChildCartItemQuery::create()->findPk($this->cart_item_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCartItem->addBookingsServicess($this);
+             */
+        }
+
+        return $this->aCartItem;
+    }
+
+    /**
+     * Declares an association between this object and a ChildOrder object.
+     *
+     * @param                  ChildOrder $v
+     * @return                 \HookCalendar\Model\BookingsServices The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setOrder(ChildOrder $v = null)
+    {
+        if ($v === null) {
+            $this->setOrderId(NULL);
+        } else {
+            $this->setOrderId($v->getId());
+        }
+
+        $this->aOrder = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildOrder object, it will not be re-added.
+        if ($v !== null) {
+            $v->addBookingsServices($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildOrder object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildOrder The associated ChildOrder object.
+     * @throws PropelException
+     */
+    public function getOrder(ConnectionInterface $con = null)
+    {
+        if ($this->aOrder === null && ($this->order_id !== null)) {
+            $this->aOrder = ChildOrderQuery::create()->findPk($this->order_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aOrder->addBookingsServicess($this);
+             */
+        }
+
+        return $this->aOrder;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1785,8 +2002,9 @@ abstract class BookingsServices implements ActiveRecordInterface
         $this->id = null;
         $this->tmp_hash = null;
         $this->booking_id = null;
-        $this->customer_id = null;
+        $this->order_id = null;
         $this->cart_item_id = null;
+        $this->customer_id = null;
         $this->service_id = null;
         $this->employee_id = null;
         $this->date = null;
@@ -1819,6 +2037,8 @@ abstract class BookingsServices implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aCartItem = null;
+        $this->aOrder = null;
     }
 
     /**

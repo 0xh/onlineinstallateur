@@ -11,6 +11,8 @@ return [
     'Account' => 'Benutzerkonto',
     'Add a new address' => 'Neue Adresse hinzufügen',
     'Add to cart' => 'In den Warenkorb',
+	'Add to cart without booking' => 'Buchen ohne Termin',
+	'Add to cart with booking' => 'Buchen mit Termin',
     'Additional Info' => 'Zusätzliche Informationen',
     'Address' => 'Adresse',
     'Address %nb' => 'Adresse %nb',

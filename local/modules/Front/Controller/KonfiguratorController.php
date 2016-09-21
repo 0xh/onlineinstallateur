@@ -387,7 +387,6 @@ $log->error(sprintf('message : %s', $message));
 		}
 		$log->debug ( "-- exiting bookins ".$existingBookings );
 		
-		
 		if( $existingBookings == 0 )
 		try{
 			$currentDate = date ( "Y-m-d H:i:s" );

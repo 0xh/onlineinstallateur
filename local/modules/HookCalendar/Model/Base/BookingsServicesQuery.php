@@ -10,19 +10,23 @@ use HookCalendar\Model\Map\BookingsServicesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
  * Base class that represents a query for the 'bookings_services' table.
  *
- *
+ * 
  *
  * @method     ChildBookingsServicesQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildBookingsServicesQuery orderByTmpHash($order = Criteria::ASC) Order by the tmp_hash column
  * @method     ChildBookingsServicesQuery orderByBookingId($order = Criteria::ASC) Order by the booking_id column
- * @method     ChildBookingsServicesQuery orderByCustomerId($order = Criteria::ASC) Order by the customer_id column
+ * @method     ChildBookingsServicesQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildBookingsServicesQuery orderByCartItemId($order = Criteria::ASC) Order by the cart_item_id column
+ * @method     ChildBookingsServicesQuery orderByCustomerId($order = Criteria::ASC) Order by the customer_id column
  * @method     ChildBookingsServicesQuery orderByServiceId($order = Criteria::ASC) Order by the service_id column
  * @method     ChildBookingsServicesQuery orderByEmployeeId($order = Criteria::ASC) Order by the employee_id column
  * @method     ChildBookingsServicesQuery orderByDate($order = Criteria::ASC) Order by the date column
@@ -37,8 +41,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServicesQuery groupById() Group by the id column
  * @method     ChildBookingsServicesQuery groupByTmpHash() Group by the tmp_hash column
  * @method     ChildBookingsServicesQuery groupByBookingId() Group by the booking_id column
- * @method     ChildBookingsServicesQuery groupByCustomerId() Group by the customer_id column
+ * @method     ChildBookingsServicesQuery groupByOrderId() Group by the order_id column
  * @method     ChildBookingsServicesQuery groupByCartItemId() Group by the cart_item_id column
+ * @method     ChildBookingsServicesQuery groupByCustomerId() Group by the customer_id column
  * @method     ChildBookingsServicesQuery groupByServiceId() Group by the service_id column
  * @method     ChildBookingsServicesQuery groupByEmployeeId() Group by the employee_id column
  * @method     ChildBookingsServicesQuery groupByDate() Group by the date column
@@ -54,14 +59,23 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBookingsServicesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildBookingsServicesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method     ChildBookingsServicesQuery leftJoinCartItem($relationAlias = null) Adds a LEFT JOIN clause to the query using the CartItem relation
+ * @method     ChildBookingsServicesQuery rightJoinCartItem($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CartItem relation
+ * @method     ChildBookingsServicesQuery innerJoinCartItem($relationAlias = null) Adds a INNER JOIN clause to the query using the CartItem relation
+ *
+ * @method     ChildBookingsServicesQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
+ * @method     ChildBookingsServicesQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
+ * @method     ChildBookingsServicesQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
+ *
  * @method     ChildBookingsServices findOne(ConnectionInterface $con = null) Return the first ChildBookingsServices matching the query
  * @method     ChildBookingsServices findOneOrCreate(ConnectionInterface $con = null) Return the first ChildBookingsServices matching the query, or a new ChildBookingsServices object populated from the query conditions when no match is found
  *
  * @method     ChildBookingsServices findOneById(int $id) Return the first ChildBookingsServices filtered by the id column
  * @method     ChildBookingsServices findOneByTmpHash(string $tmp_hash) Return the first ChildBookingsServices filtered by the tmp_hash column
  * @method     ChildBookingsServices findOneByBookingId(int $booking_id) Return the first ChildBookingsServices filtered by the booking_id column
- * @method     ChildBookingsServices findOneByCustomerId(int $customer_id) Return the first ChildBookingsServices filtered by the customer_id column
+ * @method     ChildBookingsServices findOneByOrderId(int $order_id) Return the first ChildBookingsServices filtered by the order_id column
  * @method     ChildBookingsServices findOneByCartItemId(int $cart_item_id) Return the first ChildBookingsServices filtered by the cart_item_id column
+ * @method     ChildBookingsServices findOneByCustomerId(int $customer_id) Return the first ChildBookingsServices filtered by the customer_id column
  * @method     ChildBookingsServices findOneByServiceId(int $service_id) Return the first ChildBookingsServices filtered by the service_id column
  * @method     ChildBookingsServices findOneByEmployeeId(int $employee_id) Return the first ChildBookingsServices filtered by the employee_id column
  * @method     ChildBookingsServices findOneByDate(string $date) Return the first ChildBookingsServices filtered by the date column
@@ -76,8 +90,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findById(int $id) Return ChildBookingsServices objects filtered by the id column
  * @method     array findByTmpHash(string $tmp_hash) Return ChildBookingsServices objects filtered by the tmp_hash column
  * @method     array findByBookingId(int $booking_id) Return ChildBookingsServices objects filtered by the booking_id column
- * @method     array findByCustomerId(int $customer_id) Return ChildBookingsServices objects filtered by the customer_id column
+ * @method     array findByOrderId(int $order_id) Return ChildBookingsServices objects filtered by the order_id column
  * @method     array findByCartItemId(int $cart_item_id) Return ChildBookingsServices objects filtered by the cart_item_id column
+ * @method     array findByCustomerId(int $customer_id) Return ChildBookingsServices objects filtered by the customer_id column
  * @method     array findByServiceId(int $service_id) Return ChildBookingsServices objects filtered by the service_id column
  * @method     array findByEmployeeId(int $employee_id) Return ChildBookingsServices objects filtered by the employee_id column
  * @method     array findByDate(string $date) Return ChildBookingsServices objects filtered by the date column
@@ -92,7 +107,7 @@ use Propel\Runtime\Exception\PropelException;
  */
 abstract class BookingsServicesQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \HookCalendar\Model\Base\BookingsServicesQuery object.
      *
@@ -176,9 +191,9 @@ abstract class BookingsServicesQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, TMP_HASH, BOOKING_ID, CUSTOMER_ID, CART_ITEM_ID, SERVICE_ID, EMPLOYEE_ID, DATE, START, START_TS, STOP_TS, REMINDER_EMAIL, REMINDER_SMS, CREATED_AT, UPDATED_AT FROM bookings_services WHERE ID = :p0';
+        $sql = 'SELECT ID, TMP_HASH, BOOKING_ID, ORDER_ID, CART_ITEM_ID, CUSTOMER_ID, SERVICE_ID, EMPLOYEE_ID, DATE, START, START_TS, STOP_TS, REMINDER_EMAIL, REMINDER_SMS, CREATED_AT, UPDATED_AT FROM bookings_services WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -377,6 +392,92 @@ abstract class BookingsServicesQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the order_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByOrderId(1234); // WHERE order_id = 1234
+     * $query->filterByOrderId(array(12, 34)); // WHERE order_id IN (12, 34)
+     * $query->filterByOrderId(array('min' => 12)); // WHERE order_id > 12
+     * </code>
+     *
+     * @see       filterByOrder()
+     *
+     * @param     mixed $orderId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByOrderId($orderId = null, $comparison = null)
+    {
+        if (is_array($orderId)) {
+            $useMinMax = false;
+            if (isset($orderId['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::ORDER_ID, $orderId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($orderId['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::ORDER_ID, $orderId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookingsServicesTableMap::ORDER_ID, $orderId, $comparison);
+    }
+
+    /**
+     * Filter the query on the cart_item_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCartItemId(1234); // WHERE cart_item_id = 1234
+     * $query->filterByCartItemId(array(12, 34)); // WHERE cart_item_id IN (12, 34)
+     * $query->filterByCartItemId(array('min' => 12)); // WHERE cart_item_id > 12
+     * </code>
+     *
+     * @see       filterByCartItem()
+     *
+     * @param     mixed $cartItemId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByCartItemId($cartItemId = null, $comparison = null)
+    {
+        if (is_array($cartItemId)) {
+            $useMinMax = false;
+            if (isset($cartItemId['min'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($cartItemId['max'])) {
+                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId, $comparison);
+    }
+
+    /**
      * Filter the query on the customer_id column
      *
      * Example usage:
@@ -415,47 +516,6 @@ abstract class BookingsServicesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BookingsServicesTableMap::CUSTOMER_ID, $customerId, $comparison);
-    }
-
-    /**
-     * Filter the query on the cart_item_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCartItemId(1234); // WHERE cart_item_id = 1234
-     * $query->filterByCartItemId(array(12, 34)); // WHERE cart_item_id IN (12, 34)
-     * $query->filterByCartItemId(array('min' => 12)); // WHERE cart_item_id > 12
-     * </code>
-     *
-     * @param     mixed $cartItemId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildBookingsServicesQuery The current query, for fluid interface
-     */
-    public function filterByCartItemId($cartItemId = null, $comparison = null)
-    {
-        if (is_array($cartItemId)) {
-            $useMinMax = false;
-            if (isset($cartItemId['min'])) {
-                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($cartItemId['max'])) {
-                $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItemId, $comparison);
     }
 
     /**
@@ -849,6 +909,156 @@ abstract class BookingsServicesQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query by a related \HookCalendar\Model\CartItem object
+     *
+     * @param \HookCalendar\Model\CartItem|ObjectCollection $cartItem The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByCartItem($cartItem, $comparison = null)
+    {
+        if ($cartItem instanceof \HookCalendar\Model\CartItem) {
+            return $this
+                ->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItem->getId(), $comparison);
+        } elseif ($cartItem instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BookingsServicesTableMap::CART_ITEM_ID, $cartItem->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByCartItem() only accepts arguments of type \HookCalendar\Model\CartItem or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CartItem relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function joinCartItem($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CartItem');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CartItem');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CartItem relation CartItem object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \HookCalendar\Model\CartItemQuery A secondary query class using the current class as primary query
+     */
+    public function useCartItemQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinCartItem($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CartItem', '\HookCalendar\Model\CartItemQuery');
+    }
+
+    /**
+     * Filter the query by a related \HookCalendar\Model\Order object
+     *
+     * @param \HookCalendar\Model\Order|ObjectCollection $order The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function filterByOrder($order, $comparison = null)
+    {
+        if ($order instanceof \HookCalendar\Model\Order) {
+            return $this
+                ->addUsingAlias(BookingsServicesTableMap::ORDER_ID, $order->getId(), $comparison);
+        } elseif ($order instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BookingsServicesTableMap::ORDER_ID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByOrder() only accepts arguments of type \HookCalendar\Model\Order or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Order relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildBookingsServicesQuery The current query, for fluid interface
+     */
+    public function joinOrder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Order');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Order');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Order relation Order object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \HookCalendar\Model\OrderQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinOrder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Order', '\HookCalendar\Model\OrderQuery');
+    }
+
+    /**
      * Exclude object from result
      *
      * @param   ChildBookingsServices $bookingsServices Object to remove from the list of results
@@ -924,10 +1134,10 @@ abstract class BookingsServicesQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         BookingsServicesTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             BookingsServicesTableMap::clearRelatedInstancePool();
             $con->commit();

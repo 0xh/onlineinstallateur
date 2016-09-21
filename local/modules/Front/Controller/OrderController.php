@@ -386,7 +386,6 @@ class OrderController extends BaseFrontController
         }
 
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_CART_CLEAR, $this->getOrderEvent());
-
         $this->getParserContext()->set("placed_order_id", $placedOrder->getId());
     }
 
@@ -458,7 +457,6 @@ class OrderController extends BaseFrontController
     {
         $this->checkOrderCustomer($order_id);
 
-
         return $this->generateOrderPdf($order_id, ConfigQuery::read('pdf_invoice_file', 'invoice'));
     }
 
@@ -495,7 +493,6 @@ class OrderController extends BaseFrontController
         }
 
         throw new AccessDeniedHttpException();
-
     }
 
     private function checkOrderCustomer($order_id)

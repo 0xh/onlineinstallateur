@@ -193,10 +193,10 @@ var zipcodes = [
   [8000, 8999]
 ];
     
-    
-    
 var monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni",
 	              "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    
+document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen ohne Termin";
     
 var calendar = document.getElementsByClassName("calendarFor"+service_id)[0];
 
@@ -379,6 +379,8 @@ var setAppointmentValues = function(st_pos,priority,start_ts,end_ts,employee_id)
 		timeslot.getElementsByClassName("ca_start_ts")[0].value = start_ts;
 		timeslot.getElementsByClassName("ca_end_ts")[0].value = end_ts;
 		timeslot.getElementsByClassName("ca_employee_id")[0].value = employee_id;
+		//Buchen mit Termin
+		document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen mit Termin";
 	}
 }
 
@@ -459,6 +461,7 @@ for(var i=0;i<removeSelectedAppointmentButtons.length;i++){
 	removeSelectedAppointmentButtons[i].onclick = function(e){
 		e.preventDefault();
 		removeAppointmentValues(this.getAttribute("id"));
+		document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen ohne Termin";
 	}
 }
 

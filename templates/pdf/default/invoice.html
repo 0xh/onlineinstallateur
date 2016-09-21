@@ -279,6 +279,22 @@
                         {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
                     {/loop}
                     {/ifloop}
+                    
+                    {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
+	                        	{assign var="parent_category" value=$PARENT}
+	                        {/loop}
+
+	                        {if $parent_category == 12}
+	                        	{loop type="bookingsservice" name="calendar_appointment" order_id="$order_id" service_id="$PRODUCT_ID"}
+	                        		{if $BOOKING_START_TS == 0}
+	                        			Kein gebuchter Termin
+	                        		{else}
+	                            		Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
+	                            	{/if}
+	                            {/loop}
+	                         {else}
+	                         <p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
+	                         {/if}
                 </td>
                 <td><p class="align-right">{format_money number=$realPrice currency_id=$CURRENCY}</p></td>
                 <td><p class="align-right">{format_money number=$realTax currency_id=$CURRENCY}</p></td>

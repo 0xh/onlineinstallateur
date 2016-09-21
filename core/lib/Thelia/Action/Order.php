@@ -436,7 +436,6 @@ class Order extends BaseAction implements EventSubscriberInterface
         //$cart = new Cart();
         $existingOrders = OrderQuery::create()->findOneByCartId($cart->getId());
         
-        
        if($existingOrders == null)
         $placedOrder = $this->createOrder(
             $dispatcher,

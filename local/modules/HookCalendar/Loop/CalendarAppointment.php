@@ -34,7 +34,9 @@ class CalendarAppointment extends BaseI18nLoop implements PropelSearchLoopInterf
 	 */
 	protected function getArgDefinitions() {
 		return new ArgumentCollection ( 
-				Argument::createIntTypeArgument('cart_item_id'));
+				Argument::createIntTypeArgument('cart_item_id'),
+				Argument::createIntTypeArgument('order_id'),
+				Argument::createIntTypeArgument('service_id'));
 	}
 	public function getSearchIn() {
 		return [ 
@@ -136,16 +138,35 @@ class CalendarAppointment extends BaseI18nLoop implements PropelSearchLoopInterf
 			$currentCustomer	= 0;//$this->getCurrentRequest()->getSession()->getId();
 		else $currentCustomer = $currentCustomer->getId();
 		
-		$log->error(" create userdatenquery ".$currentCustomer);
 		$log->error(" building modelCriteria for ".BookingsServicesTableMap::TABLE_NAME);
 		
 		$search = BookingsServicesQuery::create();
 		
 		$cart_item_id = $this->getCartItemId();
-		$log->error(" cart_item_id ".$cart_item_id);
+		$order_id = $this->getOrderId();
+		$service_id = $this->getServiceId();
 		
-		$search->findByCartItemId($cart_item_id);
+		$conditionsArray = array();
 		
+		if($cart_item_id != null){
+			$search->condition('cart_item','cart_item_id = ?',$cart_item_id,\PDO::PARAM_INT);
+			array_push($conditionsArray,"cart_item");
+		}
+			
+		if($order_id != null){
+			$search->condition('order','order_id = ?',$order_id,\PDO::PARAM_INT);
+			array_push($conditionsArray,"order");
+		}
+		
+		if($service_id != null){
+			$search->condition('service','service_id = ?',$service_id,\PDO::PARAM_INT);
+			array_push($conditionsArray,"service");
+		}
+		
+		$log->error(" conditions ".implode(" ",$conditionsArray));
+		
+		$search->where( $conditionsArray, Criteria::LOGICAL_AND);
+
 		return $search;
 	}
 }

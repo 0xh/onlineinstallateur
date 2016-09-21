@@ -108,13 +108,16 @@ class MailerFactory
         $messageParameters['customer_id'] = $customer->getId();
 
         Tlog::getInstance()->error(" sendEmailToCustomer ".$customer->getEmail()." lang ".$customer->getCustomerLang()->getLocale()." messagecode ".$messageCode);
-        $this->sendEmailMessage(
+        
+        	$this->sendEmailMessage(
+       
             $messageCode,
             [ ConfigQuery::getStoreEmail() => ConfigQuery::getStoreName() ],
             [ $customer->getEmail() => $customer->getFirstname()." ".$customer->getLastname() ],
             $messageParameters,
             $customer->getCustomerLang()->getLocale()
         );
+         
     }
 
     /**
@@ -161,10 +164,18 @@ class MailerFactory
 
         if (! empty($store_email)) {
             if (! empty($to)) {
-                $instance = $this->createEmailMessage($messageCode, $from, $to, $messageParameters, $locale, $cc, $bcc);
 
+                $instance = $this->createEmailMessage($messageCode, $from, $to, $messageParameters, $locale, $cc, $bcc);
+              //  Tlog::getInstance()->error("email headers ".$instance->getHeaders()." body ".$instance->getBody());
+                try{
                 $sentCount = $this->send($instance, $failedRecipients);
 
+                }
+                catch (\Exception $e){
+                	Tlog::getInstance()->error(" exception ".$e);
+                }
+                
+                
                 if ($sentCount == 0) {
                     Tlog::getInstance()->addError(
                         Translator::getInstance()->trans(
