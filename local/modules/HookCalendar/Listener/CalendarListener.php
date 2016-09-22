@@ -20,6 +20,7 @@ use Thelia\Log\Tlog;
 use HookCalendar\Model\BookingsServicesQuery;
 use HookCalendar\Model\BookingsServices;
 use Thelia\Model\CartItemQuery;
+use Thelia\Core\Event\Cart\CartItemDuplicationItem;
 
 /**
  * Class AreaDeletedListener
@@ -58,16 +59,31 @@ class CalendarListener implements EventSubscriberInterface
     			
     	}
     }
+    
+    public static function restoreOrderIdInBookingService(CartItemDuplicationItem $event){
+    	$originalCartItem = $event->getOldItem();
+    	$dublicatedCartItem = $event->getNewItem();
+    	$log = Tlog::getInstance ();
+    	
+    	$log->error("bookingservice old item  |".$originalCartItem->getId()."| new item ".$dublicatedCartItem->getId());
+    	$bookingService = BookingsServicesQuery::create()->findOneByCartItemId($originalCartItem->getId());
+    	
+    	if($bookingService != null){
+    		$bookingService->setCartItemId($dublicatedCartItem->getId());
+    		$bookingService->save();
+    		$log->error("bookingservice updated id from  |".$originalCartItem->getId()."| to ".$dublicatedCartItem->getId());
+    	}
+    	
+    }
 
     /**
      * @return array
      */
     public static function getSubscribedEvents()
     {
-        return [
-            TheliaEvents::ORDER_AFTER_CREATE => [
-                'addOrderToBookingServices', 128
-            ]
-        ];
+        return array(
+        		TheliaEvents::ORDER_AFTER_CREATE => array("addOrderToBookingServices", 128),
+        		TheliaEvents::CART_ITEM_DUPLICATE => array("restoreOrderIdInBookingService", 128)
+        		);
     }
 }

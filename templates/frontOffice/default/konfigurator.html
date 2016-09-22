@@ -69,7 +69,7 @@
 
                                         <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
                                         {foreach $choices as $choice}
-                                            <span><input class="brennstoffmomentan" id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
+                                            <span><input class="brennstoffzukunft" id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
                                         {/foreach}
                                         </div>
                                 </div> 
@@ -360,7 +360,7 @@
 							
 							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
                                 {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" class="radiovalue" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" class="warmwasseuberheizung" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
 								{/foreach}
 							</div>
                             {/form_field}
@@ -395,7 +395,21 @@
                             {/form_field}
                             </div>
                             
-                            
+                            <!-- Fragen für Öl und Holz -->
+                            <div id="warmwasserversorgung-extra-oel-holz" style="display:none">                       
+                             {form_field field="warmwasserversorgung-extra-oel-holz"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            </div>
+                                                       
                             
 						</li>
                         
@@ -467,27 +481,28 @@
 <script> 
     
    $("#warmwasserversorgung").change(function(){
-       var radiovalue =  $('.radiovalue:checked').val();
-       var radiovaluebrennstoff =  $('.radiovaluebrennstoff:checked').val();
-      
-       if((radiovaluebrennstoff==4) || (radiovaluebrennstoff==2) || (radiovaluebrennstoff==3)){
-        if(radiovalue==1){
+       var warmwasseuberheizung =  $('.warmwasseuberheizung:checked').val();
+       var brennstoffzukunft =  $('.brennstoffzukunft:checked').val();
+
+     //bei öl,holz,wärme
+       if((brennstoffzukunft==2) || (brennstoffzukunft==3) || (brennstoffzukunft==4)){
+        if(warmwasseuberheizung==1){
           
         $("#warmwasserversorgung-extra").hide();
-        $("#warmwasserversorgung-extra-waermepumpe").show();
+        $("#warmwasserversorgung-extra-oel-holz").show();
         }
             else{
-           $("#warmwasserversorgung-extra-waermepumpe").hide();
+           $("#warmwasserversorgung-extra-oel-holz").hide();
             $("#warmwasserversorgung-extra").hide();
             } 
         }
        else  
-           if(radiovalue==1){
-           $("#warmwasserversorgung-extra-waermepumpe").hide();
+           if(warmwasseuberheizung==1){
+           $("#warmwasserversorgung-extra-oel-holz").hide();
             $("#warmwasserversorgung-extra").show();
             }   
             else{
-           $("#warmwasserversorgung-extra-waermepumpe").hide();
+           $("#warmwasserversorgung-extra-oel-holz").hide();
             $("#warmwasserversorgung-extra").hide();
             }  
 });
@@ -497,7 +512,7 @@
        var radiovalue =  $('.radiovalue:checked').val();
       if(radiovaluebrennstoff==4){
           //alert("waermepumpe")
-          if(radiovalue==1){
+          if(warmwasse-uber-heizung==1){
         $("#warmwasserversorgung-extra").hide();
         $("#warmwasserversorgung-extra-waermepumpe").show();
               }

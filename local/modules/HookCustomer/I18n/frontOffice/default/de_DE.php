@@ -4,7 +4,7 @@ return [
     'Email address' => 'E-mail Adresse',
     'Forgot your Password?' => 'Haben Sie Ihr Passwort vergessen?',
     'Log In!' => 'Anmelden!',
-    'Log out!' => 'Log out!',
+    'Log out!' => 'Ausloggen!',
     'My Account' => 'Mein Kundenkonto',
     'Password' => 'Passwort',
     'Register' => 'Registrieren',

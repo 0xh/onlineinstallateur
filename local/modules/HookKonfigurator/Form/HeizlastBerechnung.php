@@ -323,7 +323,6 @@ class HeizlastBerechnung extends BaseForm
 				"choices" => array (
 						1 => $this->setLabel("warmwasserversorgung",1,"Ja"),
 						2 => $this->setLabel("warmwasserversorgung",2,"Nein")
-
 				),
 				"label" => Translator::getInstance()->trans("Soll die Warmwasserversorgung über die Heizung erfolgen? "),
 				"label_attr" => array(
@@ -336,8 +335,6 @@ class HeizlastBerechnung extends BaseForm
 						1 => $this->setLabel("warmwasserversorgung-extra",1,"Warmwasserspeicher"),
 						2 => $this->setLabel("warmwasserversorgung-extra",2,"Kombigerät / Durchlauferhitzer"),
                         3 => $this->setLabel("warmwasserversorgung-extra",3,"Sonstige")
-                    
-
 				),
 				"label" => Translator::getInstance()->trans("Wie wollen Sie die Warmwasserversorgung haben mit einem?"),
 				"label_attr" => array(
@@ -345,12 +342,20 @@ class HeizlastBerechnung extends BaseForm
                 ),
 				"data" => 1
 		))
+		->add("warmwasserversorgung-extra-oel-holz", "choice", array(
+				"choices" => array (
+						1 => $this->setLabel("warmwasserversorgung-extra-oel-holz",1,"Warmwasserspeicher"),
+				),
+				"label" => Translator::getInstance()->trans("Wie wollen Sie die Warmwasserversorgung haben mit einem?"),
+				"label_attr" => array(
+						"for" => "warmwasserversorgung"
+				),
+				"data" => 1
+		))		
         ->add("warmwasserversorgung-extra-waermepumpe", "choice", array(
 				"choices" => array (
 						1 => $this->setLabel("warmwasserversorgung-extra-waermepumpe",1,"Warmwasserspeicher"),
                         2 => $this->setLabel("warmwasserversorgung-extra-waermepumpe",2,"Sonstige")
-                    
-
 				),
 				"label" => Translator::getInstance()->trans("Wie wollen Sie die Warmwasserversorgung haben mit einem?"),
 				"label_attr" => array(
