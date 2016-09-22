@@ -63,9 +63,10 @@
 
         <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size:13px;line-height:2em">
             <tr style="color:#999;font-size:11px">
-                <td style="color:#999;border-bottom:1px solid #000">{intl l="What You Purchased"}</td>
-                <td align="right" style="color:#999;border-bottom:1px solid #000">{intl l="Price in"} {$orderCurrencyIsoCode}</td>
+                <td style="color:#999;border-bottom:1px solid #000;width:60%">{intl l="What You Purchased"}</td>
+                <td align="right" style="color:#999;border-bottom:1px solid #000;width:40%">{intl l="Price in"} {$orderCurrencyIsoCode}</td>
             </tr>
+            {assign var="order_id" value=$ID}
             {loop type="order_product" name="order-products" order=$ID}
             {if $WAS_IN_PROMO == 1}
                 {assign "realPrice" $PROMO_PRICE}
@@ -77,7 +78,7 @@
                 {assign "realTaxedPrice" $TAXED_PRICE}
             {/if}
                 <tr>
-                    <td style="border-bottom:1px solid #000">
+                    <td><!--  style="border-bottom:1px solid #000" -->
                         <b>{$TITLE}</b> <i>({$REF})</i>
                         {ifloop rel="combinations"}<br />
                         {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
@@ -85,11 +86,30 @@
                         {/loop}
                         {/ifloop}
                     </td>
-                    <td align="right" style="border-bottom:1px solid #000; white-space:nowrap">
+                    <td align="right" ><!-- style="border-bottom:1px solid #000; white-space:nowrap" -->
                         {$QUANTITY} x {format_money number=$realTaxedPrice currency_id=$CURRENCY}
                     </td>
                 </tr>
+                <tr>
+                <td style="border-bottom:1px solid #000" colSpan="2">
 
+	                        {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
+	                        	{assign var="parent_category" value=$PARENT}
+	                        {/loop}
+
+	                        {if $parent_category == 12}
+	                        	{loop type="bookingsservice" name="calendar_appointment" order_id="$order_id" service_id="$PRODUCT_ID"}
+	                        		{if $BOOKING_START_TS == 0}
+	                        			Kein gebuchter Termin
+	                        		{else}
+	                            		Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
+	                            	{/if}
+	                            {/loop}
+	                         {else}
+	                         <p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
+	                         {/if}
+	        		</td>
+                </tr>
                 {hook name="email-html.order-notification.order-product" order="{$order_id}" order_product="{$ID}"}
 
             {/loop}

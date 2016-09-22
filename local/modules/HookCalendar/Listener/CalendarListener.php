@@ -35,7 +35,7 @@ class CalendarListener implements EventSubscriberInterface
     {
     	$log = Tlog::getInstance ();
     	
-    	$log->debug("-- bookingservice_order_id |".$event->getOrder()->getCartId()."|");
+    	$log->error("-- bookingservice_order_id |".$event->getOrder()->getCartId()."|");
     	
     	$cart_id = $event->getOrder()->getCartId();
     	
@@ -44,15 +44,18 @@ class CalendarListener implements EventSubscriberInterface
     	$bookingsServicesQuery = BookingsServicesQuery::create();
     	
     	foreach($cart_items as $cart_item){
-    		$log->debug("-- bookingservice cartItem ".$cart_item->getId());
+    		$log->error("-- bookingservice cartItem ".$cart_item->getId());
     		$bookingsServicesQuery->clear();
     		$bookingService = $bookingsServicesQuery->findOneByCartItemId($cart_item->getId());
     		if($bookingService != null){
     		//	$bookingService = new BookingsServices();
     			$bookingService->setOrderId($event->getOrder()->getId());
     			$bookingService->save();
-    			$log->debug("-- bookingservice ".$bookingService->getId()." updated with orderId |".$event->getOrder()->getId()."|");
-    		}		
+    			$log->error("-- bookingservice ".$bookingService->getId()." updated with orderId |".$event->getOrder()->getId()."|");
+    		}
+    		else
+    			$log->error("-- bookingservice booking not found for ".$cart_item->getId());
+    			
     	}
     }
 
@@ -62,7 +65,7 @@ class CalendarListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            TheliaEvents::ORDER_BEFORE_PAYMENT => [
+            TheliaEvents::ORDER_AFTER_CREATE => [
                 'addOrderToBookingServices', 128
             ]
         ];
