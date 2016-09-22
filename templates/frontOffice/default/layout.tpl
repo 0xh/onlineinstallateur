@@ -119,7 +119,17 @@ $.src="//v2.zopim.com/?3xaJNLlpfnXxE25TpnCVCaE9w7UtIkge";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 </script>
 <!--End of Zopim Live Chat Script-->
-   {/literal}  
+    
+    
+<!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+<script type="text/javascript">
+    window.cookieconsent_options = {"message":"Diese Seite verwendet Cookies.Für eine uneingeschränkte Nutzung der Webseite werden Cookies benötigt. Bitte stimmen Sie der Verwendung von Cookies zu, um alle Funktionen der Webseite nutzen zu können. Detaillierte Informationen über den Einsatz von Cookies auf dieser Webseite erhalten Sie in unserer Datenschutzerklärung.","dismiss":"OK","learnMore":"Mehr erfahren","link":"http://www.hausfabrik.at/datenschutz.html","theme":"cookies"};
+</script>
+{/literal} 
+ <script src="{javascript file='assets/dist/js/vendors/cookieconsent.min.js'}"></script>
+
+
+<!-- End Cookie Consent plugin -->
    
     {hook name="main.head-bottom"}
 </head>
