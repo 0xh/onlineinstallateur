@@ -78,11 +78,13 @@
                     </tr>
                     </thead>
                     <tbody>
-
+                    {assign var="servicesInPage" value=0}
+                        
                     {loop type="cart" name="cartloop"}
                     
                     	{loop name="category" type="category" product=$PRODUCT_ID limit="1"}
                         	{assign var="parent_category" value=$PARENT}
+                        
                         {/loop}
                     <tr>
                         <td class="image">
@@ -119,6 +121,7 @@
                                 </dl>
                                 
                                 {if $parent_category == #services_category_id#}
+                                {$servicesInPage = true}
                            			{loop type="bookingsservice" name="calendar_appointment" cart_item_id="$ITEM_ID"}
                            				Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
                            			{/loop}
@@ -362,7 +365,7 @@
                                             {$termsAndConditionsUrl=$URL}
                                         {/loop}
                                     {/if}
-                                    {intl l="I've read and agreed on <a href='%link' class='terms-quickview'>Terms &amp; Conditions</a>" link={$termsAndConditionsUrl nofilter}}.
+                                    {intl l="I've read and agreed on <a href='%link' class='terms-quickview'>Terms &amp; Conditions</a>" link={$termsAndConditionsUrl nofilter}}
                                 </label>
                                 {if $error }
                                     <span class="help-block">{$message}</span>
@@ -370,9 +373,39 @@
                             </div>
                         </div>
                     </div><!--/.form-group-->
+                    
+                            {if $servicesInPage}
+                    
+                    <div class="form-group group-agreed{if $error} has-error{/if}">
+                        <div class="control-input">
+                            <div class="checkbox">
+                                <label class="control-label" for="{$label_attr.for}">
+                                    <input type="checkbox" name="{$name}" id="{$label_attr.for}" value="{$value}"{if $checked} checked{/if}  {if $required} aria-required="true" required{/if}>
+                                    {$termsAndConditionsId={config key="services_terms_conditions_content_id"}}
+                                    {if $termsAndConditionsId}
+                                        {loop name="content-terms" type="content" id=$termsAndConditionsId}
+                                            {$termsAndConditionsUrl=$URL}
+                                        {/loop}
+                                    {/if}
+                                    {intl l="Ich habe <a href='%link' class='terms-quickview'>Widderrufserklärung </a>" link={$termsAndConditionsUrl nofilter}}gelesen und akeptiere diese
+                                </label>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                {/if}
+                            </div>
+                        </div>
+                    </div><!--/.form-group-->
+                
+        
+        {/if}
+                    
+                    
                 </div>
+        
                 {/form_field}
 
+
+      
                 <a href="{url path="/order/delivery"}" role="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> {intl l="Back"}</a>
                 <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-chevron-right"></i> {intl l="Kaufen"}</button>
             </form>

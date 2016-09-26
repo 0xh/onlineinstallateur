@@ -20,7 +20,7 @@
 {/ifloop}
 {* Display "regular" promos, if any, only if we don't have active sales *}
 
-{elseloop rel="current-sales"}
+{*elseloop rel="current-sales"*}
 {ifloop rel="product_promo"}
     <section id="products-offer" class="grid">
         <div class="products-heading">
@@ -36,4 +36,4 @@
         </div>
     </section><!-- #products-offer -->
 {/ifloop}
-{/elseloop}
+{*/elseloop*}

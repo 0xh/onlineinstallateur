@@ -149,7 +149,7 @@
  
     <page_footer style="padding:20px">
 		{hook name="invoice.footer-top" order=$order_id}
-       <table style="padding:20px; margin:5px">
+       <!--table style="padding:20px; margin:5px">
             <tr>
                 <td><h2>Danke für Ihre Bestellung</h2></td>
            </tr>
@@ -157,7 +157,45 @@
                 <td>Erste BANK Sparkasse <br>IBAN: AT26 2011 1291 5791 1800<br> BIC:GIBAATWWXXX</td>
                 <td>HAUSFABRIK<br>Marke der Nwing-Networking GmbH <br>UID: ATU64598867<br> FN: 326758 b </td>
             </tr>
-        </table>
+        </table-->
+       
+        <hr style="border:solid  #86AC34 1px;">
+        <table style="font-size:11px; padding:10px">
+            <tr>
+    <td style="width:25%">
+        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
+        {config key="nwing"}<br/>
+        {config key="store_address1"}<br/>
+        {config key="store_zipcode"}, {config key="store_city"}<br />
+        {if {config key="store_country"}}
+            {loop type="country" name="store_country" id={config key="store_country"}}
+                {$TITLE}
+            {/loop}
+        {/if} 
+    </td>
+                
+    <td style="width:25%">
+        Tel.{config key="store_phone"}<br>
+        {config key="store_email"}<br/>
+        {config key="url_site"}<br />
+    </td>
+
+    <td style="width:25%">
+        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
+        IBAN: {config key="iban"}<br>
+        BIC: {config key="bic"}<br />
+        UID-Nr: {config key="uid-nr"}<br />
+        FN: {config key="fn"}<br />
+    </td>
+    <td style="width:25%">
+          Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
+    </td>
+                
+    </tr>
+    
+</table>
+
+
 
       
 		{hook name="invoice.footer-bottom" order=$order_id}

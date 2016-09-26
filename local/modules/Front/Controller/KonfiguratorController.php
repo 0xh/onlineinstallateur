@@ -118,7 +118,7 @@ class KonfiguratorController extends BaseFrontController {
    //     $form = $this->validateForm($contactForm);
      //  $contactForm
         $subject = "Heizungskonfigurator neue Anfrage ";
-        $emailTest = "ani.jalavyan@sepa.at";
+        $emailTest = "angebote@hausfabrik.at";
         $firstname = $this->getRequest()->get('konfiguratorpersonaldata')['firstname'];
         $lastname =  $this->getRequest()->get('konfiguratorpersonaldata')['lastname'];
         $phone =  $this->getRequest()->get('konfiguratorpersonaldata')['phone'];
@@ -138,7 +138,7 @@ class KonfiguratorController extends BaseFrontController {
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         
         $storeName="Hausfabrik";
-        $contactEmail="angebote@hausfabrik.at";
+        $contactEmail="office@hausfabrik.at";
         $instance = \Swift_Message::newInstance()
         ->addTo($emailTest, $storeName)
         ->addFrom($contactEmail, $storeName)
