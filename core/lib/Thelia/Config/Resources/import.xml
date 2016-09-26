@@ -7,10 +7,12 @@
         <import_category id="thelia.import.products">
             <title locale="fr_FR">Produits</title>
             <title locale="en_US">Products</title>
+            <title locale="de_DE">Produkte</title>
         </import_category>
         <import_category id="thelia.import.modules">
             <title locale="en_US">Modules</title>
             <title locale="fr_FR">Modules</title>
+            <title locale="de_DE">Modulen</title>
         </import_category>
     </import_categories>
 
@@ -77,6 +79,35 @@
                        <li>promo_price: the promo price excluding taxes of the product attribute combinations</li>
                        <li>promo: If this value is 0, set the product not in promo, if 1, it sets the product in promo</li>
                     </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+        </import>
+        <import id="thelia.import.price" class="Thelia\ImportExport\Import\Type\ProductPricesHausfabrikImport" category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Import your prices excluding taxes</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>id: The id of your product sale elements </li>
+                        <li>price: The price excluding taxes of the product attribute combinations</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Preis importieren</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>id: The id of your product sale elements </li>
+                        <li>price: The price excluding taxes of the product attribute combinations</li>
+                        <li>ek_price_sht</li>
+                        <li>ek_price_gc</li>
+                    </ul>
+
                     ]]>
                 </description>
             </import_descriptive>

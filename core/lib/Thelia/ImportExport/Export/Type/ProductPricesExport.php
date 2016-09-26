@@ -45,7 +45,7 @@ class ProductPricesExport extends AbstractExport
     const FILE_NAME = 'product_price';
 
     protected $orderAndAliases = [
-        ProductSaleElementsTableMap::ID => 'Id',
+        ProductSaleElementsTableMap::ID => 'product_sale_id',
         'productID' => 'Product_id',
         'product_i18nTITLE' => 'Title',
         'attribute_av_i18n_ATTRIBUTES' => 'Attributes',
