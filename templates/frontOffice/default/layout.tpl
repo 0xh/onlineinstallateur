@@ -339,9 +339,9 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                 	<li><a href="/presse.html">Presse</a></li>
                                 	<li><a href="faq">Häufig gestellte Fragen (FAQ)</a></li>
                                     <li><a href="/agb.html">AGB</a></li>
-                                    <!--li><a href="?view=content&lang=de_DE&content_id=2">Datenschutz</a></li-->
                                     <li><a href="/datenschutz.html">Datenschutz</a></li>
                                     <li><a href="/impressum">Impressum</a></li>
+                                    <li><a href="/widerrufsrecht.html">Widerrufsrecht</a></li>
                                     <li><a href="/wir-ueber-uns.html">Über uns</a></li>
                                		<!--li><a href="widerruf">Widerrufsrerklärung</a></li--> 
                                     <!--li><a href="faq">Häufig gestellte Fragen (FAQ)</a></li-->
