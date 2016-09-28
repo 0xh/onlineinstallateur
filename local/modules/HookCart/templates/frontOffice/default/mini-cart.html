@@ -40,7 +40,7 @@
                                 {assign "real_price" $TAXED_PRICE}
                                 {assign "real_total_price" $TOTAL_TAXED_PRICE}
                             {/if}
-                            <span class="qty">{$QUANTITY}</span> X <span class="price" style="font-size:1em;">{format_money number=$real_price}</span>
+                            <span class="qty">{$QUANTITY}</span> X <span class="price" style="font-size:1em;">{format_money number=$real_price}</span> 
                             {assign "total_price" $total_price + $real_total_price}
                         </td>
                     </tr>

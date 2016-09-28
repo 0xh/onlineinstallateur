@@ -96,6 +96,7 @@ class Paypal extends AbstractPaymentModule
                 $products[0][ "AMT" . $itemIndex ]  = urlencode(round($amount, 2));
                 $products[0][ "QTY" . $itemIndex ]  = urlencode($product->getQuantity());
                 $itemIndex ++;
+                $logger->getLogger()->error("amountnt ".$tax->getPromoAmount()." ".$tax->getAmount());
             }
         }
 
@@ -114,6 +115,7 @@ class Paypal extends AbstractPaymentModule
         /*
          * Create setExpressCheckout request
          */
+        $logger->getLogger()->error("total amount ".$order->getTotalAmount());
         $setExpressCheckout = new PaypalNvpOperationsSetExpressCheckout(
             $api,
             round($order->getTotalAmount(), 2),

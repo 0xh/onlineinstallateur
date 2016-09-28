@@ -112,13 +112,13 @@ class Cart extends BaseLoop implements ArraySearchLoopInterface
             }
             $loopResultRow->set("PRICE", $cartItem->getPrice())
                 ->set("PROMO_PRICE", $cartItem->getPromoPrice())
-                ->set("TAXED_PRICE", $cartItem->getTaxedPrice($taxCountry))
-                ->set("PROMO_TAXED_PRICE", $cartItem->getTaxedPromoPrice($taxCountry))
+                ->set("TAXED_PRICE", round($cartItem->getTaxedPrice($taxCountry),2))
+                ->set("PROMO_TAXED_PRICE", round($cartItem->getTaxedPromoPrice($taxCountry),2))
                 ->set("IS_PROMO", $cartItem->getPromo() === 1 ? 1 : 0);
             $loopResultRow->set("TOTAL_PRICE", $cartItem->getPrice()*$cartItem->getQuantity())
                 ->set("TOTAL_PROMO_PRICE", $cartItem->getPromoPrice()*$cartItem->getQuantity())
-                ->set("TOTAL_TAXED_PRICE", $cartItem->getTotalTaxedPrice($taxCountry))
-                ->set("TOTAL_PROMO_TAXED_PRICE", $cartItem->getTotalTaxedPromoPrice($taxCountry));
+                ->set("TOTAL_TAXED_PRICE", round($cartItem->getTotalTaxedPrice($taxCountry),2))
+                ->set("TOTAL_PROMO_TAXED_PRICE", round($cartItem->getTotalTaxedPromoPrice($taxCountry),2));
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_ID", $productSaleElement->getId());
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_REF", $productSaleElement->getRef());
             

@@ -10,6 +10,7 @@ use Thelia\Model\Map\OrderProductTaxTableMap;
 use Thelia\Model\Base\Order as BaseOrder;
 use Thelia\Model\Tools\ModelEventDispatcherTrait;
 use Thelia\TaxEngine\Calculator;
+use Thelia\Log\Tlog;
 
 class Order extends BaseOrder
 {
@@ -150,12 +151,12 @@ class Order extends BaseOrder
             $taxAmount = $taxAmountQuery->filterByOrderProductId($orderProduct->getId(), Criteria::EQUAL)
                 ->findOne();
             $price = ($orderProduct->getWasInPromo() == 1 ? $orderProduct->getPromoPrice() : $orderProduct->getPrice());
-            $amount += $price * $orderProduct->getQuantity();
-            $tax += $taxAmount->getVirtualColumn('total_tax') * $orderProduct->getQuantity();
+            $amount += round($price * $orderProduct->getQuantity(),2);
+            $tax += round($taxAmount->getVirtualColumn('total_tax') * $orderProduct->getQuantity(),2);
         }
-
+        
         $total = $amount + $tax;
-
+        Tlog::getInstance()->error("totalamount ".$total);
         // @todo : manage discount : free postage ?
         if (true === $includeDiscount) {
             $total -= $this->getDiscount();

@@ -34,7 +34,6 @@ use Thelia\Core\Translation\Translator;
 use Thelia\Type\EnumListType;
 use Thelia\Type\EnumType;
 use Thelia\Type\TypeCollection;
-use Thelia\Log\Tlog;
 
 /**
  * Class BaseLoop
@@ -472,7 +471,6 @@ abstract class BaseLoop
                 $this->setupSearchContext($searchModelCriteria);
 
                 $count = $searchModelCriteria->count();
-                Tlog::getInstance()->error("baseloopsearch ".$count);
             }
         } elseif ($this instanceof ArraySearchLoopInterface) {
             $searchArray = $this->extendsBuildArray($this->buildArray());
@@ -481,7 +479,6 @@ abstract class BaseLoop
             } else {
                 $count = count($searchArray);
             }
-            Tlog::getInstance()->error("baseloopsearch else ".$count);
         }
 
         if ($isCaching) {
