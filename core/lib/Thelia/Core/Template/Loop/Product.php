@@ -192,9 +192,10 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
             if ($index > 0) {
                 $search->_or();
             }
+            Tlog::getInstance()->error("searchinelement ".$searchInElement." ".$index);
             switch ($searchInElement) {
                 case "ref":
-                    $search->filterByRef($searchTerm, $searchCriteria);
+                    $search->filterByRef($searchTerm);
                     break;
                 case "title":
                     $search->where(
