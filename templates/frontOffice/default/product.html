@@ -125,10 +125,47 @@
                 <div class="product-info">
                     <h1 class="name"><span itemprop="name">{$TITLE}</span><span id="pse-name" class="pse-name"></span></h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
+<table class="price-table" style="font-size:12px; color:#7a7a7a">
 
-                    {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <p><a href="{$URL nofilter}" title="{intl l="More information about this brand"}"><span itemprop="brand">{$TITLE}</span></a></p>
-                    {/loop}
+    <tr>
+        <td>
+            Marke:
+        </td>
+        <td>
+             {loop name="brand_info" type="brand" product={$ID} limit="1"}
+                        <p> <a href="{$URL nofilter}" title="{intl l="More information about this brand"}"><span itemprop="brand">{$TITLE}</span></a></p>
+            {/loop}
+        </td>
+        
+    </tr>
+     {if $WEIGHT}
+        <tr>
+        <td>
+            Gewicht:&nbsp; 
+        </td>
+        <td>
+            
+              {$WEIGHT} kg
+             
+        </td>
+    </tr>
+     {/if}
+    <tr>
+    <td>Lieferzeit:&nbsp; </td>
+    <td class="highlight">
+       {hook name="product.details-bottom" product={$ID}}
+                
+                
+				{if $service_category != #services_category_id#}
+                	{hook name="product.delivery-delay" product={$ID}}
+                {/if} 
+    </td>
+        
+    </tr>
+                    
+                
+                   
+</table>
 
                     {if $POSTSCRIPTUM}<div class="short-description">
                         <p>{$POSTSCRIPTUM}</p>
@@ -169,6 +206,7 @@
                             <span class="special-price">
                             {if $parent_category != #services_category_id# AND $LISTEN_PRICE!=0}
                             <table class="price-table">
+
                                 <tr>
                                     <td>Statt:</td>
                                     <td>
@@ -192,7 +230,7 @@
                                 <tr>
                                     <td style="height:50px" colspan="2"></td>
                                 </tr>
-                                
+
                                 <tr id="zwischensumme" style="display:none">
                                      <td><div>Zwischensumme:</div></td>
                                     <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span><span>€</span></td>
@@ -202,8 +240,9 @@
                                     <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="/versandkosten.html">Versandkosten</a></small></td>
                                 </tr>
                                 <tr>
-                                    <td ><small><!--Ab 300 € Warenwert versandkostenfrei<sup>1)--></sup></small></td>
+                                    <td ><small><!--Ab 300 € Warenwert versandkostenfrei<sup>1)--></small></td>
                                 </tr>
+
                                 
                                 <!--tr>
                                     <td><br><em>Folgende Services sind mit diesem Produkt verfügbar:</em></td>
@@ -372,13 +411,7 @@
                      <script type="text/javascript" src="schedule/index.php?controller=pjFrontEnd&action=pjActionLoad&service_appointment={$service_for_appointment}"></script>
                 </div> -->
                 
-                {hook name="product.details-bottom" product={$ID}}
-                
-                
-				{if $service_category != #services_category_id#}
-                	{hook name="product.delivery-delay" product={$ID}}
-                {/if}
-                
+
             </section>
 
             {strip}

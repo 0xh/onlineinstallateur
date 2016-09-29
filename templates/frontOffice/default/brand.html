@@ -50,7 +50,7 @@
 {hook name="brand.top" brand="$brand_id"}
     {if $brand_id}
     <div class="main row">
-        {$limit={$smarty.get.limit|default:8}}
+        {$limit={$smarty.get.limit|default:24}}
         {$product_page={$smarty.get.page|default:1}}
         {$product_order={$smarty.get.order|default:'alpha'}}
         {$mode=$smarty.get.mode|default:'grid'}
@@ -100,6 +100,7 @@
                                     <option value="{url current="1" limit="4"}" {if $limit==4}selected{/if}>4</option>
                                     <option value="{url current="1" limit="8"}" {if $limit==8}selected{/if}>8</option>
                                     <option value="{url current="1" limit="12"}" {if $limit==12}selected{/if}>12</option>
+                                    <option value="{url current="1" limit="24"}" {if $limit==24}selected{/if}>24</option>
                                     <option value="{url current="1" limit="50"}" {if $limit==50}selected{/if}>50</option>
                                     <option value="{url current="1" limit="100000"}" {if $limit==100000}selected{/if}>{intl l="All"}</option>
                                 </select>

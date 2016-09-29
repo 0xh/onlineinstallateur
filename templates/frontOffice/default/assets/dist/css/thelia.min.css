@@ -6,7 +6,10 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 @import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
-
+@font-face {
+    font-family: quicksand;
+    src: url(../fonts/quicksand/Quicksand.otf);
+}
 html, body, .container1 {
 	height: 100%;
 }
@@ -1101,7 +1104,7 @@ html {
     -webkit-tap-highlight-color: transparent
 }
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'quicksand'!important;
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: #000
@@ -1192,7 +1195,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: inherit;
+    font-family: "quicksand"!important;
     font-weight: 500;
     line-height: 1.1;
     color: inherit
@@ -5676,7 +5679,7 @@ button.list-group-item-danger.active:hover {
 }
 .popover,
 .tooltip {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'quicksand', sans-serif;
     font-style: normal;
     font-weight: 400;
     letter-spacing: normal;
@@ -9890,9 +9893,9 @@ header .header .logo {
     background-image: none
 }
 .products-heading h2 {
-    color: #7a7a7a;
+    //*color: #7a7a7a;
     font-size: 18px;
-    font-weight: 700
+    font-weight: 700*/
 }
 .products-heading .btn-all,
 .products-heading .btn-all:focus,
@@ -10075,7 +10078,7 @@ td.product .name>a:hover {
 #products-offer .overlay:after,
 #products-upsell .overlay:after {
     content: '+';
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'lato', sans-serif;
     font-size: 80px;
     font-weight: 100;
     -webkit-font-smoothing: antialiased;
@@ -10771,18 +10774,16 @@ td.product .name>a:hover {
 
 .block-main .mini-title{
     font-size:120%;
-    font-weight: bold;
 }
-.block-main .main-title{
+.block-main .main-title,.block-main .main-title-line {
     font-size:210%;
-    font-weight: bold;
     position:relative;
 }
 .block-main .mini-title{
     list-style: none;
 }
 .block-main .mini-title a:before{
-        display: inline-block;
+    display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     -webkit-font-smoothing: antialiased;
@@ -10848,7 +10849,7 @@ td.product .name>a:hover {
     background-size:100%;
      min-height:370px;
 }
-.block-main .main-title:after {
+.block-main .main-title-line:after {
 
     position: absolute;
     content: '';
@@ -10859,7 +10860,11 @@ td.product .name>a:hover {
     margin-left: 0;
     bottom: 0;
     z-index: 1;
-    margin-bottom: 0px;
+    margin-bottom: -5px;
+}
+
+.block-main .main-title span{
+font-weight:500;
 }
 /* Button 1 */
 .btn-1 {
@@ -10989,8 +10994,8 @@ td.product .name>a:hover {
 }
 
 .grid figure h2 span {
-	font-weight: 800;
-    margin-left:10px;
+	//font-weight: 500;
+    //margin-left:10px;
 }
 
 .grid figure h2,
@@ -11085,6 +11090,8 @@ figure.effect-oscar:hover img {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
 }
+
+
 .shopicon {
 	 font-family: 'icomoon' !important;
     speak: none;
@@ -13209,4 +13216,56 @@ animation: fadeout 2s;
 .vorteile div .vt-icon{
     display: inline-block;
     width:30%;
+}
+.highlight{
+    color: #86ac34;
+    font-weight: 600;
+}
+.happyclient{
+    background: url(../img/homepage/happyclientbg.png) no-repeat;
+    min-height:325px;
+    text-align: center;
+}
+.happyclient h4{
+    font-style:italic;
+    color:#7a7a7a;
+}
+.infrarot-container{
+    padding:20px;
+    margin-top:15px;
+    margin-bottom:50px;
+    background:#e5e5e5;
+    height:250px;
+    position:relative;
+}
+.infrarot-bild{
+    position:absolute;
+    top:-50px;
+    margin-bottom:50px;
+}
+
+
+@media (min-width: 768px) {
+    .ebay img.bigimg {
+        height:330px;
+    }
+    .ebay img.smallimg {
+        height:110px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ebay img.bigimg {
+        height:auto;
+    }
+    .ebay img.smallimg {
+        height:auto;
+    }
+    .infrarot-container img{
+        display:none
+    }  
+        .infrarot-container {
+        height:auto
+    } 
+   
 }

@@ -436,7 +436,8 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
       'customBadgeHeight': '', /* for custom variants: 40 - 90 (in pixels) */
       'disableResponsive': 'false', /* deactivate responsive behaviour */
       'disableTrustbadge': 'false', /* deactivate trustbadge */
-      'trustCardTrigger': 'mouseenter' /* set to 'click' if you want the trustcard to be opened on click instead */
+      'trustCardTrigger': 'mouseenter', /* set to 'click' if you want the trustcard to be opened on click instead */
+      'customCheckoutElementId': 'customCheckoutDiv' 
     };
     var _ts = document.createElement('script');
     _ts.type = 'text/javascript'; 

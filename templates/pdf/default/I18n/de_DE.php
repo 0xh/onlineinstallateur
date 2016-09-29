@@ -5,7 +5,7 @@ return [
     'DELIVERY' => 'LIEFERUNG',
     'Delivery address' => 'Lieferadresse',
     'Delivery module' => 'Liefermodul',
-    'Discount' => 'Rabatt',
+    'Discount' => 'Anzahlung/Rabatt',
     'Email: ' => 'E-Mail-Adresse: ',
     'INVOICE' => 'RECHNUNG',
     'Invoice REF' => 'Rechnungs REF',

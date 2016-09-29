@@ -373,7 +373,7 @@
                 <table class="table-3">
                     <col style="width: 50%; padding: 1mm;">
                     <col style="width: 50%; padding: 1mm;">
-                    {if $DISCOUNT}
+                    {if $DISCOUNT!=0}
                     <tr>
                         <td class="table-3-1"><p>{intl l="Discount"}</p></td>
                         <td class="table-3-1 align-right"><p>{format_money number=$DISCOUNT currency_id=$CURRENCY}</p></td>
@@ -416,10 +416,12 @@
                         <td class="table-3-1"><p>{intl l="Total with tax"}</p></td>
                         <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_TAXED_AMOUNT - $POSTAGE} currency_id=$CURRENCY}</p></td>
                     </tr-->
+                    {if $POSTAGE!=0}
                     <tr>
                         <td class="table-3-1"><p>{intl l="Postage"}</p></td>
                         <td class="table-3-1 align-right"><p>{format_money number=$POSTAGE currency_id=$CURRENCY}</p></td>
                     </tr>
+                    {/if}
                     <tr>
                         <td class="table-3-1" style="background:#86ac34;"><h3 style="color:white;">{intl l="Gesamtbetrag"}</h3></td>
                         <td class="table-3-1 align-right" style="background:#86ac34;"><h3 style="color:white;">{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</h3></td>

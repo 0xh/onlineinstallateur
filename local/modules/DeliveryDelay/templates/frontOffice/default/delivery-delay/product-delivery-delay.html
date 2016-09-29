@@ -5,5 +5,5 @@
 {elseif $deliveryMin === $deliveryMax}
   {intl l="Versand: %date" date={format_date date={$deliveryMin} output="date"} d="deliverydelay.fo.default"}
 {else}
-  {intl l="Versand zwischen %min und %max" min={format_date date={$deliveryMin} output="date"} max={format_date date={$deliveryMax} output="date"} d="deliverydelay.fo.default"}
+  {intl l="zwischen %min und %max" min={format_date date={$deliveryMin} output="date"} max={format_date date={$deliveryMax} output="date"} d="deliverydelay.fo.default"}
 {/if} 
