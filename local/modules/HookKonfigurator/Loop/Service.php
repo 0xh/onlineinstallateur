@@ -112,8 +112,8 @@ class Service extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
 			} catch (TaxEngineException $e) {
 				$taxedPrice = null;
 			}
-			
 			$loopResultRow
+			->set("LOCALE", "de_DE")
 			->set("SERVICE_SALE_ELEMENT", $product->getVirtualColumn('pse_id'))
 			->set("SERVICE_PSE_COUNT", $product->getVirtualColumn('pse_count'))
 			->set("SERVICE_QUANTITY", $product->getVirtualColumn('quantity'))
@@ -144,12 +144,12 @@ class Service extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
 	 */
 	private function associateValues($loopResultRow, $product, $default_category_id) {
 		$log = Tlog::getInstance ();
-		
 		$loopResultRow
+		->set ( "LOCALE", "de_DE" )
 		->set ( "SERVICE_ID", $product->getId() )
 		->set ( "SERVICE_REF", $product->getRef () )
 		->set ( "SERVICE_LOCALE", $this->locale )
-		->set ( "SERVICE_URL", $product->getUrl ( $this->locale ) )
+		->set ( "SERVICE_URL", $product->getUrl ( "de_DE" ) )
 		->set ( "SERVICE_POSITION", $product->getPosition () )
 		->set ( "SERVICE_VIRTUAL", $product->getVirtual () ? "1" : "0" )
 		->set ( "SERVICE_VISIBLE", $product->getVisible () ? "1" : "0" )
