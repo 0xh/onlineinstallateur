@@ -187,7 +187,7 @@ class CartItem extends BaseCartItem
     {
         $taxCalculator = new Calculator();
 
-        return $taxCalculator->load($this->getProduct(), $country, $state)->getTaxedPrice($this->getPrice()*$this->getQuantity());
+        return $taxCalculator->load($this->getProduct(), $country, $state)->getTaxedPrice($this->getPrice())*$this->getQuantity();
     }
 
     /**

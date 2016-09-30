@@ -1,4 +1,6 @@
+
 {extends file="layout.tpl"}
+{include file="debug.tpl"}
 
 {* Body Class *}
 {block name="body-class"}page-klimakonfigurator{/block}
@@ -19,7 +21,7 @@
 				<h1>IHR ANGEBOT</h1>
 			</div>
               
-          
+          {$raum_label = "Raum"}
         
             {form name="konfigurator.klima.berechnung"}
 				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/klimakonfigurator/suggestions"}" method="post" autocomplete="off" style="height:auto" >
@@ -32,13 +34,18 @@
 					<ol class="fs-fields">
 						<li>
 							<h3 class="fs-anim-upper">Grundfläche und Raumhöhe</h3>
-                            {form_field field="grundflaeche"}
-                            <div><label class="fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
-                            
-                            
-							<input class="fs-anim-lower"   name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  placeholder="30" step="1" min="1"  style="width:80%; float:left"/>
-                             {/form_field}
-                            <div style="float:left; padding:10px" class="fs-anim-lower">m2</div>
+							{form_field field="grundflaeche" value_key=0}
+								<div><label class="fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+							{/form_field}
+							
+							{for $var=0 to 7}
+                            	{form_field field="grundflaeche" value_key=$var}
+								<div class="col-sm-6 fs-anim-lower" >
+									{$raum_label} {$var+1}<input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  placeholder="30" step="1" min="1" style="display: inline-block;"/>
+                             		<small>m<sup>2</sup></small>
+                             	</div>
+                             	{/form_field}
+                            {/for}
                             <div style="clear:both"></div>
                             
                             {form_field field="raumhoehe"}
@@ -50,48 +57,70 @@
 						</li>
                         
                         <li>
-                            {form_field field="fenster"}
-							<h3 class="fs-anim-upper">{$label}</h3>
-                            <input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="width:80%; float:left"/>
+                            {form_field field="fenster" value_key=0}
+								<h3 class="fs-anim-upper">{$label}</h3>
                             {/form_field}
-                            <div style="float:left; padding:10px"  class="fs-anim-lower">m</div>
+                            
+                            {for $var=0 to 7}
+                            	{form_field field="fenster" value_key=$var}
+                            	<div class="col-sm-6 fs-anim-lower" >
+                            		{$raum_label} {$var+1}<input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="display: inline-block;"/>
+                            		<small>m</small>
+                            	</div>
+                            	{/form_field}
+                            {/for}
 						</li>
-                        
+
 						<li>
-                            {form_field field="decke"}
+						
+                            {form_field field="decke" value_key=0}
+                            
                             <h3 class="fs-anim-upper">{$label}</h3>
 							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-								
-								
-                                    
-                                    {foreach $choices as $choice}
-										<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								 	{/foreach} 
+							
+                            	{foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
 							</div>
                             {/form_field}
+
 						</li>
-                        
-                        
+
 						<li>
-                            <h3 class="fs-anim-upper">Anzahl der Personen</h3>
-                                {form_field field="personen"}
-                                <label class="fs-field-label-sm fs-anim-upper" for="q7" >{$label}</label>
-                            
-				                <input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="1" step="1" min="1" max="8" />
-                            	{/form_field}
-                        
+						
+						<h3 class="fs-anim-upper">Anzahl der Personen</h3>
+							{form_field field="personen" value_key=0}
+								<div><label class="fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+							{/form_field}
+							
+							{for $var=0 to 7}
+                            	{form_field field="personen" value_key=$var}
+								<div class="col-sm-6 fs-anim-lower" >
+									{$raum_label} {$var+1}<input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  placeholder="30" step="1" min="1" style="display: inline-block;"/>
+                             		
+                             	</div>
+                             	{/form_field}
+                            {/for}
 						</li>
+                        
                         
                         <li>
                             <h3 class="fs-anim-upper">Zusätzliche Wärme-Verursacher im Raum</h3>
-                            {form_field field="zusaetzliche_waerme"}
+                            
+                            {form_field field="zusaetzliche_waerme" value_key=0}
 							<label class="fs-field-label-sm fs-anim-upper" for="q10" >{$label}</label>
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">     
-                                <input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  style="width:80%; float:left"/>
-                                <div style="float:left; padding:10px"  class="fs-anim-lower">Watt</div>
+                            {/form_field}
+                            
+                            {for $var=0 to 7}
+                            {form_field field="zusaetzliche_waerme" value_key=$var}
+                            <div class="col-sm-6 fs-anim-lower" >
+								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">     
+                                	<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  style="display: inline-block;"/>
+                                	<small>Watt</small>
+                            	</div>
                             </div>
                             {/form_field}
-                             
+                            {/for} 
   
 						</li>
                         
@@ -102,14 +131,20 @@
                             
                             <div style="float:left">
                             
-                           {form_field field="wegstrecke"}
-							<div><label class="fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
-                            
-                           
-							<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="width:30%; float:left"/>
-                            
-                             {/form_field}
-                            <div style="float:left; padding:10px" class="fs-anim-lower">m2</div>
+                            {form_field field="wegstrecke" value_key=0}
+						   		<div><label class="fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+                            {/form_field}
+                              
+                            {for $var=0 to 7}
+                            	{form_field field="wegstrecke" value_key=$var}
+                            	<div class="col-sm-6 fs-anim-lower" >
+									<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="display: inline-block;"/>
+                            		<small>m<sup>2</sup></small>
+                            	</div>
+                            	{/form_field}
+                            {/for} 
+                             
+
                            
                             
                             

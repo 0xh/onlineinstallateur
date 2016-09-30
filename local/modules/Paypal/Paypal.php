@@ -92,6 +92,7 @@ class Paypal extends AbstractPaymentModule
                     $amount += $product->getWasInPromo() ? $tax->getPromoAmount() : $tax->getAmount();
                 }
                 $products_amount += $amount * $product->getQuantity();
+                $logger->getLogger()->error("paypal ".$product->getTitle()." quantity ".$product->getQuantity()." amount ".round($amount, 2));
                 $products[0][ "NAME" . $itemIndex ] = urlencode($product->getTitle());
                 $products[0][ "AMT" . $itemIndex ]  = urlencode(round($amount, 2));
                 $products[0][ "QTY" . $itemIndex ]  = urlencode($product->getQuantity());

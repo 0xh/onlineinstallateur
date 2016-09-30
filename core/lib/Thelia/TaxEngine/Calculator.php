@@ -164,12 +164,12 @@ class Calculator
             $taxType = $taxRule->getTypeInstance();
 
             if ($currentPosition !== $position) {
-                $taxedPrice += $currentTax;
+                $taxedPrice += round($currentTax,2);
                 $currentTax = 0;
                 $currentPosition = $position;
             }
 
-            $taxAmount = $taxType->calculate($this->product, $taxedPrice);
+            $taxAmount = round($taxType->calculate($this->product, $taxedPrice),2);
             $currentTax += $taxAmount;
 
             if (null !== $taxCollection) {

@@ -151,8 +151,8 @@ class Order extends BaseOrder
             $taxAmount = $taxAmountQuery->filterByOrderProductId($orderProduct->getId(), Criteria::EQUAL)
                 ->findOne();
             $price = ($orderProduct->getWasInPromo() == 1 ? $orderProduct->getPromoPrice() : $orderProduct->getPrice());
-            $amount += round($price * $orderProduct->getQuantity(),2);
-            $tax += round($taxAmount->getVirtualColumn('total_tax') * $orderProduct->getQuantity(),2);
+            $amount += round($price ,2)* $orderProduct->getQuantity();
+            $tax += round($taxAmount->getVirtualColumn('total_tax') ,2)* $orderProduct->getQuantity();
         }
         
         $total = $amount + $tax;
