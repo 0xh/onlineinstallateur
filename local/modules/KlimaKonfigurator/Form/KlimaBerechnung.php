@@ -47,7 +47,14 @@ class KlimaBerechnung extends BaseForm
     protected function buildForm()
     {
          $formBuilder = $this->formBuilder
-         
+         //Anzahl von Räume
+         ->add("raumanzahl", "integer", array(
+         		"label" => Translator::getInstance()->trans("Raumanzahl"),
+         		"label_attr" => array(
+         				"for" => "raumanzahl"
+         		),
+         		"data" => 1
+         ))         
          //grundfläche in m2 für jede Raum bis $max_raum
          ->add('grundflaeche', 'collection', array(
          		'entry_type'         => NumberType::class,
@@ -79,7 +86,21 @@ class KlimaBerechnung extends BaseForm
          		'allow_delete' => true,
          		'data' => array(1,2,3,4,5,6,7,8)
          ))
-          
+         ->add('decke', CollectionType::class, array(
+         		'entry_type'    => ChoiceType::class,
+         		'entry_options'  => array(
+         				'choices' => array (
+         						1 => Translator::getInstance()->trans("Nicht klimatisierter Raum"),
+         						2 => Translator::getInstance()->trans("Dachboden"),
+         						3 => Translator::getInstance()->trans("Isoliertes Flachdach"),
+         				),
+         				),
+         		'label'        => Translator::getInstance()->trans('Lage der Zimmer - Decke'),
+         		'label_attr'   => array('for' => 'decke'),
+         		'allow_add'    => true,
+         		'allow_delete' => true,
+         		'data' => array(1,1,1,1,1,1,1,1)
+         ))       
          ->add('decke', ChoiceType::class, array(
          				'choices' => array (
          						1 => Translator::getInstance()->trans("Nicht klimatisierter Raum"),
@@ -88,17 +109,9 @@ class KlimaBerechnung extends BaseForm
          				),
          		'label'        => Translator::getInstance()->trans('Lage der Zimmer - Decke'),
          		'label_attr'   => array('for' => 'decke'),
+         		'data' => 1
          ))
-         
-         
-         
-         
-         
-         
-         
-         
-         
-         
+
          
          ->add('personen', CollectionType::class, array(
          		'entry_type'         => NumberType::class,
@@ -125,7 +138,20 @@ class KlimaBerechnung extends BaseForm
          		'data' => array(2,2,2,2,2,2,2,2)
          ))
          
-         
+         ->add('kondensatablauf', CollectionType::class, array(
+         		'entry_type'    => ChoiceType::class,
+         		'entry_options'  => array(
+         				'choices' => array (
+         						1 => Translator::getInstance()->trans("Gefälle"),
+         						2 => Translator::getInstance()->trans("Pumpe")
+         				),
+         		),
+         		'label'        => Translator::getInstance()->trans('Kondensatablauf mit'),
+         		'label_attr'   => array('for' => 'Pumpe'),
+         		'allow_add'    => true,
+         		'allow_delete' => true,
+         		'data' => array(1,1,1,1,1,1,1,1)
+         ))         
          ->add("kondensatablauf", "choice", array(
          		"choices" => array (
          				1 => Translator::getInstance()->trans("Gefälle"),
@@ -170,8 +196,7 @@ class KlimaBerechnung extends BaseForm
          				"for" => "anmerkungen"
          		)/*,
          		"disabled" => true*/
-         ))
-         
+         ));         
              /*
      		->add("grundflaeche", "integer", array(
 				"label" => Translator::getInstance()->trans("Grundfläche des Räumes"),
@@ -264,7 +289,7 @@ class KlimaBerechnung extends BaseForm
                 )/*,
 		"disabled" => true
 		))*/
-		;
+		
     }
 
     public function getName()
