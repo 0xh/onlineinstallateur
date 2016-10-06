@@ -67,7 +67,7 @@ class KlimaBerechnung extends BaseForm
          						"methods" => array(array($this, "checkAttributeAv")),
          				)),
          		)*/
-         		'data' => array(1,2,3,4,5,6,7,8)
+         		'data' => array(10,10,10,10,10,10,10,10)
          ))
          //höhe von alle räumen
          ->add("raumhoehe", "integer", array(
@@ -84,11 +84,12 @@ class KlimaBerechnung extends BaseForm
          		'label_attr'   => array('for' => 'fenster'),
          		'allow_add'    => true,
          		'allow_delete' => true,
-         		'data' => array(1,2,3,4,5,6,7,8)
+         		'data' => array(2,2,2,2,2,2,2,2)
          ))
          ->add('decke', CollectionType::class, array(
          		'entry_type'    => ChoiceType::class,
          		'entry_options'  => array(
+         				//not working choices array is empty in template
          				'choices' => array (
          						1 => Translator::getInstance()->trans("Nicht klimatisierter Raum"),
          						2 => Translator::getInstance()->trans("Dachboden"),
@@ -100,7 +101,8 @@ class KlimaBerechnung extends BaseForm
          		'allow_add'    => true,
          		'allow_delete' => true,
          		'data' => array(1,1,1,1,1,1,1,1)
-         ))       
+         ))   
+         //workaround in order to have a collection of choices - this field is used only to have a 'choices' array in template
          ->add('decke', ChoiceType::class, array(
          				'choices' => array (
          						1 => Translator::getInstance()->trans("Nicht klimatisierter Raum"),
