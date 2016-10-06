@@ -32,7 +32,8 @@
             {elsehook rel="order-placed.body"}
                 <div id="payment-success" class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">{intl l="You choose"} : <span class="payment-method label label-primary">{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span></h3>
+                        <h3 class="panel-title">{intl l="You choose"} : <span class="payment-method label label-primary">{loop name="payment-module" type="module" id=$PAYMENT_MODULE}
+                           {assign var="payment_title" value = $TITLE}  {$TITLE}{/loop}</span></h3>
                     </div>
                     <div class="panel-body">
                         <h3>{intl l="Thank you for the trust you place in us."}</h3>
@@ -53,12 +54,12 @@
                     </div>
                     <div id="customCheckoutDiv" style="width: 500px;margin:auto"></div>
                     <div id="trustedShopsCheckout" style="display: none;">
-<span id="tsCheckoutOrderNr">%Value: ORDER_NUMBER%</span>
-<span id="tsCheckoutBuyerEmail">%Value: BUYER_EMAIL_ADDRESS%</span>
-<span id="tsCheckoutOrderAmount">%Value: SHOPPING_BASKET_TOTAL%</span>
-<span id="tsCheckoutOrderCurrency">%Value: ORDER_CURRENCY%</span>
-<span id="tsCheckoutOrderPaymentType">%Value: PAYMENT_METHOD%</span>
-<span id="tsCheckoutOrderEstDeliveryDate">%Value: DELIVERYDATE (YYYY-MM-DD)%</span></div> 
+<span id="tsCheckoutOrderNr">{$REF}</span>
+<span id="tsCheckoutBuyerEmail"> {customer attr="email"}</span>
+<span id="tsCheckoutOrderAmount">{$TOTAL_TAXED_AMOUNT}</span>
+<span id="tsCheckoutOrderCurrency">{currency attr="code"}</span>
+<span id="tsCheckoutOrderPaymentType">{$payment_title}</span>
+<span id="tsCheckoutOrderEstDeliveryDate"></span></div> 
                 </div>
             {/elsehook}
             {/loop}

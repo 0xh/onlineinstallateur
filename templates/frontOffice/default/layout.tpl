@@ -3,7 +3,7 @@
 
 
 
-Copyright (c) SEPA
+Copyright (c) SEPA ENGINEERING
 email : office@sepa.at
 web : http://www.hausfabrik.at
 
@@ -46,7 +46,7 @@ web : http://www.hausfabrik.at
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     {block name="meta"}
-        <meta name="description" content="{if $page_description}{$page_description}{else}{$store_description|strip|truncate:120}{/if}">
+        <meta name="description" content="{if $page_description}{$page_description}{else}{$store_description|strip|truncate:500}{/if}">
     {/block}
 
     {stylesheets file='assets/dist/css/thelia.min.css'}
@@ -189,12 +189,12 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                 <img src={image file='assets/dist/img/shk_innung.png'}  style="width:80px">       
                 </div-->
                 
-                <div class="hotline">
+                <div class="hotline" itemscope itemtype="http://schema.org/Store">
                
                     <div class="hotline-icon"> <span></span></div>
                     <div class="hotline-text">
-                    <h3>0800/022573</h3>
-                    <small> Mo-Do:&nbsp; 8-20 Uhr<br>
+                    <h3 itemprop="telephone" content="0800/022573">0800/022573</h3>
+                    <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr<br>
                         Fr:  8-17 Uhr</small>
                     </div>               
                 </div>
@@ -278,10 +278,12 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                 <div>
                                     <strong>{intl l="SUPPORT"} </strong>
                                 </div>
-                                <div>
-                                    <h3><strong>{intl l="0800/022573"}</strong></h3>
+                                <div itemscope itemtype="http://schema.org/Store">
+                                    <h3 itemprop="telephone" content="0800/022573"><strong>{intl l="0800/022573"}</strong></h3>
+                                    <span itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00">
                                     <h5>Mo-Do: &nbsp;8-20 Uhr</h5>
                                     <h5>Fr:&nbsp; 8-17 Uhr</h5>
+                                    </span>
                                 </div>
                             </div>
                                 </a>

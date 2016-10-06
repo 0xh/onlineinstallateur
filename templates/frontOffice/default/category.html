@@ -47,29 +47,9 @@
 {block name="main-content"}
 
 {$limit={$smarty.get.limit|default:8}}
-{$product_page={$smarty.get.page|default:1}}
+{$page={$smarty.get.page|default:1}}
 {$product_order={$smarty.get.order|default:'alpha'}}
 
-<!-- div class="main">
-				<ul id="og-grid" class="og-grid">
-					<li>
-						<a href="#" data-largesrc="http://localhost/cache/images/1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">
-							<img src="http://localhost/cache/images/thumbs/1.jpg" alt="img01"/>
-						</a>
-					</li>
-					<li>
-						<a href="#" data-largesrc="http://localhost/cache/images/2.jpg" data-title="Veggies sunt bona vobis" data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">
-							<img src="http://localhost/cache/images/thumbs/2.jpg" alt="img02"/>
-						</a>
-					</li>
-					<li>
-						<a href="#" data-largesrc="http://localhost/cache/images/3.jpg" data-title="Dandelion horseradish" data-description="Cabbage bamboo shoot broccoli rabe chickpea chard sea lettuce lettuce ricebean artichoke earthnut pea aubergine okra brussels sprout avocado tomato.">
-							<img src="http://localhost/cache/images/thumbs/3.jpg" alt="img03"/>
-						</a>
-					</li>
-				</ul>
-
-			</div-->
 
 {hook name="category.top" category="$category_id"}
 
@@ -120,88 +100,19 @@
             {/if}
 
             {ifloop rel="product_list"}
-                {$amount={count type="product" category=$category_id}}
-                <div class="toolbar toolbar-top" role="toolbar">
-                    <div class="sorter-container clearfix">
-                    <span class="amount">{if ($amount > 1)}{intl l="%nb Items" nb={$amount}}{else}{intl l="%nb Item" nb={$amount}}{/if}</span>
+                
+            
+            {hook name="criteria-search.search-page" limit=$limit }
+            
 
-                    <span class="limiter">
-                        <label for="limit-top">{intl l="Show"}</label>
-                        <select id="limit-top" name="limit">
-                            <option value="{url current="1" page=1 limit="4"}" {if $limit==4}selected{/if}>4</option>
-                            <option value="{url current="1" page=1 limit="8"}" {if $limit==8}selected{/if}>8</option>
-                            <option value="{url current="1" page=1 limit="12"}" {if $limit==12}selected{/if}>12</option>
-                            <option value="{url current="1" page=1 limit="50"}"{if $limit==50}selected{/if}>50</option>
-                            <option value="{url current="1" page=1 limit="100000"}" {if $limit==100000}selected{/if}>{intl l="All"}</option>
-                        </select>
-                        <span class="per-page">{intl l="per page"}</span>
-                    </span><!-- /.limiter -->
-
-                    <span class="sort-by">
-                        <label for="sortby-top">{intl l="Sort By"}</label>
-                        <select id="sortby-top" name="sortby">
-                            {*<option value="{url path="{category attr="url"}" order="manual"}">{intl l="Position"}</option>*}
-                            <option value="{url current="1" limit=$limit order="alpha"}" {if $product_order=="alpha"}selected{/if}>{intl l="Name ascending"}</option>
-                            <option value="{url current="1" limit=$limit order="alpha_reverse"}" {if $product_order=="alpha_reverse"}selected{/if}>{intl l="Name descending"}</option>
-                            <option value="{url current="1" limit=$limit order="min_price"}" {if $product_order=="min_price"}selected{/if}>{intl l="Price ascending"}</option>
-                            <option value="{url current="1" limit=$limit order="max_price"}" {if $product_order=="max_price"}selected{/if}>{intl l="Price descending"}</option>
-                        </select>
-                    </span><!-- /.sort-by -->
-
-                    <span class="view-mode">
-                        <span class="view-mode-label sr-only">{intl l="View as"}:</span>
-                        <span class="view-mode-btn">
-                            <a href="{url current="1" mode="grid"}" data-toggle="view" role="button" title="{intl l="Grid"}" rel="nofollow" class="btn btn-default btn-grid"><i class="fa fa-th"></i></a>
-                            <a href="{url current="1" mode="list"}" data-toggle="view" role="button" title="{intl l="List"}" rel="nofollow" class="btn btn-default btn-list"><i class="fa fa-th-list"></i></a>
-                        </span>
-                    </span><!-- /.view-mode -->
-
-                </div><!-- /.sorter -->
-            </div>
             <div id="category-products">
                 <div class="products-content">
                     <ul class="list-unstyled row">
-                        {loop type="product" name="product_list" category=$category_id limit=$limit page=$product_page order=$product_order brand=$brand_id}
-                            {include file="includes/single-product.html" product_id=$ID hasBtn=true hasDescription=true hasQuickView=true width="436" height="292"}
-                        {/loop}
+                                {include file="criteria-search/search-results.html"}
                     </ul>
                 </div>
             </div><!-- /#category-products -->
-            <div class="toolbar toolbar-bottom" role="toolbar">
-                {if $amount > $limit}
-                    <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}}">
-                        <strong id="pagination-label-{$toolbar}}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
-                        <ul class="pagination pagination-sm">
-                            {if $product_page le 1}
-                                <li class="disabled">
-                                    <span class="prev"><i class="fa fa-caret-left"></i></span>
-                                </li>
-                            {else}
-                                <li>
-                                    <a href="{url current="1" page={$product_page-1} }" title="{intl l="Previous"}" class="prev"><i class="fa fa-caret-left"></i></a>
-                                </li>
-                            {/if}
 
-                            {pageloop rel="product_list"}
-                                <li{if $PAGE eq $CURRENT} class="active"{/if}>
-                                    <a href="{url current="1" page=$PAGE }"> {$PAGE} </a>
-                                </li>
-                                {if $PAGE eq $LAST}
-                                    {if $CURRENT eq $LAST}
-                                        <li class="disabled">
-                                            <span class="next"><i class="fa fa-caret-right"></i></span>
-                                        </li>
-                                    {else}
-                                        <li>
-                                            <a href="{url current="1" page={$NEXT} }" title="{intl l="Next"}" class="next"><i class="fa fa-caret-right"></i></a>
-                                        </li>
-                                    {/if}
-                                {/if}
-                            {/pageloop}
-                        </ul>
-                    </div>
-                {/if}
-            </div><!-- /.toolbar toolbar-bottom -->
             {/ifloop}
             {elseloop rel="product_list"}
                 {if $category_id eq #services_category_id#}<!-- services_category_id is set in configs\variables.conf -->
@@ -248,9 +159,8 @@
 
         <aside class="col-left col-md-3 col-md-pull-9" role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
             {include file="includes/menu.html"}
+            
         </aside>
-
-        {hook name="category.main-bottom" category="$category_id"}
 
     </div>
     {hook name="category.bottom" category="$category_id"}
@@ -289,6 +199,7 @@
 
 {block name="stylesheet"}
 {hook name="category.stylesheet"}
+{hook name="criteria-search.search-css"}
 {/block}
 
 {block name="after-javascript-include"}
@@ -299,6 +210,8 @@
 	});
    </script>
 {hook name="category.after-javascript-include"}
+{hook name="criteria-search.search-js"}
+
 {/block}
 
 {block name="javascript-initialization"}

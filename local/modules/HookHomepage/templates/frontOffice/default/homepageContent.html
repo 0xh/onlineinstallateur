@@ -4,17 +4,36 @@
     <div class="col-sm-6 ebay"><!--VAILLANT-->
         <div class="row">
             <div class="col-sm-10 row" >
-                <img src={image file='assets/dist/img/homepage/vaillant/img1.jpg'} alt="VAILLANT"  class="img-responsive bigimg" >
+                {loop name="ani.homepage.new" type="product" id=3194 limit="1"}
+              
+                
+                <a href="{$URL nofilter}"><img src={image file='assets/dist/img/homepage/vaillant/vaillant-ecoTecPlus.jpg'} alt="{$TITLE}" class="img-responsive bigimg"></a>
+                    
+                 
+                {/loop}
             </div>
             <div class="col-sm-3 row">
+                
                 <div>
-                    <img src={image file='assets/dist/img/homepage/vaillant/img1.jpg'} alt="VAILLANT"  class="img-responsive smallimg" >
+                    {loop name="ani.homepage.new" type="product" id=2314 limit="1"}
+                    <a href="{$URL nofilter}">
+                    <img src={image file='assets/dist/img/homepage/vaillant/vaillant3.jpg'} alt="VAILLANT"   class="img-responsive smallimg" >
+                    </a>
+                     {/loop}
                 </div>
                 <div>
-                    <img src={image file='assets/dist/img/homepage/grohe/img1.png'} alt="VAILLANT"   class="img-responsive smallimg" > 
+                    {loop name="ani.homepage.new" type="product" id=1982 limit="1"}
+                    <a href="{$URL nofilter}"><img alt="VAILLANT" src={image file='assets/dist/img/homepage/vaillant/vaillant2.jpg'} class="img-responsive smallimg" ></a>
+                     {/loop}
                 </div>
+                
                 <div>
-                    <img src={image file='assets/dist/img/homepage/grohe/img1.png'} alt="VAILLANT"  class="img-responsive smallimg" >
+                    
+                    {loop name="ani.homepage.new" type="product" id=3224 limit="1"}
+                    <a href="{$URL nofilter}">
+                    <img src={image file='assets/dist/img/homepage/vaillant/vaillant4.jpg'} alt="VAILLANT"   class="img-responsive smallimg" >
+                    </a>
+                    {/loop}
                 </div>
             </div>
             
@@ -28,7 +47,7 @@
 Alle Produkte können inklusive Montage durch die wiener Installateure der Hausfabrik bestellt werden. </p>
             </div>
             <div class="col-sm-4" >
-               <br><br><a href="/heizungskonfigurator-angebot"><button class="btn btn-1 btn-1a">KAUFEN</button></a>
+               <br><br><a href="/?view=brand&lang=de_DE&brand_id=44&limit=8&order=max_price"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
             </div>
         </div>
     </div>  
@@ -36,28 +55,48 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
     <div class="col-sm-6 ebay" ><!--GROHE-->
         <div class="row" >
             <div class="col-sm-10 row">
-                <img src={image file='assets/dist/img/homepage/grohe/img1.png'} alt="VAILLANT" class="img-responsive bigimg">
+                {loop name="ani.homepage.new" type="product" id=1982 limit="1"}
+               
+                 <a href="/?view=brand&brand_id=94">
+                        <img src={image file='assets/dist/img/homepage/bad/hansgrohe.jpg'} alt="HANSGROHE" class="img-responsive bigimg">
+                  </a>
+                {/loop}
             </div>
             <div class="col-sm-3 row" >
-                <div>
-                    <img src={image file='assets/dist/img/homepage/vaillant/img1.jpg'} alt="VAILLANT"   class="img-responsive smallimg"  >
-                </div>
-                <div  >
-                    <img src={image file='assets/dist/img/homepage/vaillant/img1.jpg'} alt="VAILLANT"  class="img-responsive smallimg"  >
-                </div>
-                <div>
-                    <img src={image file='assets/dist/img/homepage/vaillant/img1.jpg'} alt="VAILLANT"   class="img-responsive smallimg"  >
-                </div>
+            <div>
+                <a href="/?view=brand&brand_id=93">
+                <img src={image file='assets/dist/img/homepage/bad/grohe.png'} alt="GROHE" class="img-responsive smallimg">
+                </a>
+                
+            </div>
+            <div>
+                {loop name="ani.homepage.new" type="product" id=3410 limit="1"}
+                 <a href="{$URL nofilter}">
+                <img src={image file='assets/dist/img/homepage/bad/geberit.jpg'} alt="GEBERIT" class="img-responsive smallimg">  
+                </a>
+                {/loop}
+            </div>
+            
+            <div>  
+                <a href="/?view=brand&brand_id=96">
+               <img src={image file='assets/dist/img/homepage/bad/laufen.png'} alt="LAUFEN" class="img-responsive smallimg">     
+                </a>
+                
+            </div>
+            
+                
+               
+           
             </div>
 
     </div> 
     <div class="row">
             <div class="col-sm-8 " >
-                <h1 class="main-title">BAD/WC GROHE</h1>
-                <p>Große Auswahl an Waschbecken, Wasserhähnen und Duschköpfen, Toiletten für Bad/WC und Küchevon Grohe. Brauchen Sie Hilfe beim Austausch von Sanitärprodukten? Hausfabrik freut sich einen Termin mit Ihnen zu vereinbaren.  </p>
+                <h1 class="main-title">BAD/WC</h1>
+                <p>Große Auswahl an Waschbecken, Wasserhähnen und Duschköpfen, Toiletten für Bad/WC und Küche. Brauchen Sie Hilfe beim Austausch von Sanitärprodukten? Hausfabrik freut sich einen Termin mit Ihnen zu vereinbaren.  </p>
             </div>
             <div class="col-sm-4" >
-                <br><br><a href="/heizungskonfigurator-angebot"><button class="btn btn-1 btn-1a">KAUFEN</button></a>
+                <br><br><a href="/sanitär.html"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
             </div>
         </div>
 </div>
@@ -70,7 +109,7 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
         <h1 class="mini-title">TAUSCHEN SIE</h1>
         <h1 class="main-title">IHRE <span>HEIZUNG</span></h1>
         <h4>Mittels unseres Heizungskonfigurators</h4>
-        <div><br><a href="/heizungskonfigurator-angebot"><button class="btn btn-1 btn-1a">ZUM ANGEBOT</button></a></div>
+        <div><br><a href="/konfigurator"><button class="btn btn-1 btn-1a">ZUM ANGEBOT</button></a></div>
     </div>
     <div class="col-sm-6">
         <img src={image file='assets/dist/img/homepage/heizungstausch.png'} alt="Heizungstausch" class="img-responsive">
@@ -78,7 +117,7 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
 </div>
   <div class="clearfix"></div>   
 <!---------INSTALLATEUR------------>
-<div class="aside-banners">
+<div class="aside-banners row">
     <div class="col-sm-6">
         <img src={image file='assets/dist/img/homepage/installateur.png'} alt="Heizungstausch" class="img-responsive">
     </div>
@@ -89,17 +128,17 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
         <div class="col-sm-1"><h1><i class="glyphicon glyphicon-calendar"></i></h1></div><div class="col-sm-6"><h4>Mit Ihrem gewünschtem Datum und Uhrzeit</h4></div>
          <div class="clearfix"></div> 
         <ul class="col-sm-6">
-        <li>Thermenwartung</li>
-        <li>Abgasmessung</li>
-        <li>Montage Gasheizgerät</li>
+        <li><a href="/Thermenwartung-mit-Online-Terminbuchung.html">Thermenwartung</a></li>
+        <li><a href="/Abgasmessung-mit-Online-Terminbuchung-1.html">Abgasmessung</a></li>
+        <li><a href="/montage-gasheizgerät-mit-Online-Terminbuchung">Montage Gasheizgerät</a></li>
         </ul>
         <ul class="col-sm-6">
-        <li>Toiletten Austausch</li>
-        <li>Elektrik</li>
-        <li>Fliesen verlegen</li>
+        <li><a href="/Toiletten-Austausch-mit-Online-Terminbuchung.html">Toiletten Austausch</a></li>
+        <li><a href="/Wartungsvertrag-für-Gas-bis-30kW-mit-Online-Terminbuchung.html">Wartungsvereinbarung</a></li>
+        <li><a href="/Hydraulischer-Abgleich-mit-Online-Terminbuchung.html">Hydraulischer Abgleich</a></li>
         </ul>
         
-        <div><br><a href="/heizungskonfigurator-angebot"><button class="btn btn-1 btn-1a">ZU ALLEN SERVICES</button></a></div>
+        <div><br><a href="/services-1.html"><button class="btn btn-1 btn-1a">ZU ALLEN SERVICES</button></a></div>
     </div>
 </div>
  <div class="clearfix"></div>
@@ -109,7 +148,7 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
         <div class="col-sm-8">
          <h1 class="main-title"><span>INFRAROT</span> HEIZUNG</h1>
             <p>Infrarot Heizung gibt es in allen Varianten. Ob Sie sich für eine Spiegel- oder Stahlinfrarot Heizung entscheiden, ob Wand- oder Deckenmontage, jedes Produkt kann inklusive Montage bestellt werden.</p>
-            <div><br><a href="/heizungskonfigurator-angebot"><button class="btn btn-1 btn-1a">JETZT ENTDECKEN</button></a></div>
+            <div><br><a href="/infrarot-heizung.html?lang=de_DE"><button class="btn btn-1 btn-1a">JETZT ENTDECKEN</button></a></div>
         </div>
         <div class="col-sm-4">
             <img src={image file='assets/dist/img/homepage/infrarot-heizung.png'} alt="Infrarot Heizung" class="img-responsive infrarot-bild" >
@@ -136,6 +175,7 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
     <div class="block-main col col-sm-4 aside-banner-thermen-wartung">
         <h1 class="mini-title">THERMEN</h1>
         <h1 class="main-title">WARTUNG</h1>
+        <h4>mit Online-Terminbuchung</h4>
         
     </div>
     </a>
@@ -259,7 +299,7 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 </div>
 <br>
 <!---------SO FUNKTIONIERTS------------>
-<div class="so-funktionierst row">
+<!--div class="so-funktionierst row">
     <h2 class="title">SO FUNKTIONIERT'S</h2>
     <a href="/sofunktionierts">
         <div class="howitworks">
@@ -277,7 +317,7 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
             </div>
         </div>
         </a>
-</div>
+</div-->
 </div>
 
 <!--div class="partners ">

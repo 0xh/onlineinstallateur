@@ -14,13 +14,17 @@
 {* Content  *}
 {block name="email-content"}
 
-<a href="http://www.hausfabrik.at"><img class="bodyImage" src="{image file='assets/img/gutschein-15eur.png'}" alt="" border="0" style="border:none;width: 650px;margin: 0;padding: 0;max-width: 650px;" width="650" ></a>
+<a href="http://www.hausfabrik.at">
+    <!--img class="bodyImage" src="{image file='assets/img/gutschein-15eur.png'}" alt="" border="0" style="border:none;width: 650px;margin: 0;padding: 0;max-width: 650px;" width="650" -->
+    <img class="bodyImage" src="{image file='assets/img/header.jpg'}" alt="" border="0" style="border:none;width: 650px;margin: 0;padding: 0;max-width: 650px;" width="650" >
+</a>
     {if $firstname || $lastname}
         <p>{intl l="Dear %firstname %lastname," firstname=$firstname lastname=$lastname}</p>
     {else}
         <p>{intl l="Hello,"}</p>
     {/if}
     <p>{intl l="Thank you for your registration. You will now receive the %store newsletter on your email address %email." store={config key="store_name"} email=$email}</p>
+<!--
     <p>Ihr persönlicher Gutschein-Code lautet:  hausfabrik15<br>
 Geben Sie einfach hausfabrik15 bei Ihrer Bestellung im Warenkorb an! Ihnen wird dann automatisch die Reduktion gewährt.
 </p>
@@ -31,6 +35,7 @@ Geben Sie einfach hausfabrik15 bei Ihrer Bestellung im Warenkorb an! Ihnen wird 
     <li>Keine Barablöse möglich </li>
     <li>Nicht gültig auf bereits getätigte Aufträge </li>
 </ul>
+-->
     <p>{intl l="To unsubscribe from our newsletter, please"} <a href='{url path="/newsletter-unsubscribe" email=$email}'>{intl l="click here"}</a> </p>
 
 

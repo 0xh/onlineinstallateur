@@ -8,7 +8,7 @@
 @import url(//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800);
 @font-face {
     font-family: quicksand;
-    src: url(../fonts/quicksand/Quicksand.otf);
+    src: url(../fonts/quicksand/Quicksand-Regular.otf);
 }
 html, body, .container1 {
 	height: 100%;
@@ -10766,9 +10766,9 @@ td.product .name>a:hover {
 .block-main{
     color:#000;
     padding:20px;
-    border:solid 5px  #FFF;
+    //border:solid 5px  #FFF;
     min-height: 250px;
-    min-width:370px;
+    //min-width:370px;
 }
 
 
@@ -10817,11 +10817,12 @@ td.product .name>a:hover {
      color:#FFF;
     padding-top:80px;
     //background-color: rgba(58,52,42,0.7);
+    background-size:cover;
 }
 .aside-banner-thermen-wartung{
      background: url(../img/aside-banners/aside-banner-thermen-wartung.png)  no-repeat;
      color:#FFF;
-    //background-size:100%;
+    background-size:cover;
     padding-top:80px;
     //background-color: rgba(58,52,42,0.7);
 }
@@ -10829,6 +10830,7 @@ td.product .name>a:hover {
      background: url(../img/aside-banners/aside-banner-wc.png) no-repeat;
      color:#FFF;
     padding-top:80px;
+    background-size:cover;
 }
 
 /*@media (max-width: 768px){
@@ -10927,7 +10929,7 @@ font-weight:500;
 .grid {
 	position: relative;
 	margin: 0 auto;
-	padding: 1em 0 4em;
+	padding: 1em 0 1em;
 	max-width: 1200px;
 	list-style: none;
 	text-align: center;
@@ -13233,7 +13235,7 @@ animation: fadeout 2s;
 .infrarot-container{
     padding:20px;
     margin-top:15px;
-    margin-bottom:50px;
+    margin-bottom:90px;
     background:#e5e5e5;
     height:250px;
     position:relative;

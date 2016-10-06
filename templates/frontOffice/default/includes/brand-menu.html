@@ -9,7 +9,10 @@
         <nav class="nav-brands">
             <ul id="brand" class="accordion">
                 {loop name="brands-list" type="brand"}
-                    <li><a href="{$URL nofilter}">{$TITLE} ({count type="product" brand="{$ID}"})</a></li>
+               {assign var="count" value={count type="product" brand=$ID}}
+                {if $count!=0}
+                    <li><a href="{$URL nofilter}">{$TITLE} ({$count})</a></li>
+                 {/if}
                 {/loop}
             </ul>
         </nav>
