@@ -158,12 +158,12 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 		$request = $this->request;
 		$konfigurator = new KlimaKonfiguratorEinstellungen();
 		$konfigurator->populateKonfiguratorFromRequest ( $request );
-		$klimabedarf = $konfigurator->calculateKlimaBedarf ();
+		$klimabedarf = $konfigurator->calculateKlimaBedarfMultipleRooms();
 		header ( 'klimabedarf:' . $klimabedarf/1000 );
 		
 		//$klimabedarf = $this->getPower();
 		$log = Tlog::getInstance ();
-		$log->debug(" building modelCriteria for Klima sets ".$klimabedarf." ".$set_category);
+		$log->debug(" building modelCriteria for Klima sets ".$klimabedarf." ");
 
 		$search = ProductQuery::create();
 		
@@ -177,7 +177,7 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 		$search->withColumn('`pse`.QUANTITY', 'quantity');
 		$search->withColumn('COUNT(`pse_count`.ID)', 'pse_count');
 		
-		//$search->groupBy(ProductTableMap::ID);	
+		$search->groupBy(ProductTableMap::ID);	
 		
 		//join with sets
 		$setsJoin = new Join ();
@@ -208,7 +208,7 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 
 		
 		$search
-		->condition ( 'power_larger_then', 'power >= ?', $klimabedarf - 1500, \PDO::PARAM_INT )
+		->condition ( 'power_larger_then', 'power >= ?', $klimabedarf, \PDO::PARAM_INT )
 		//->condition ( 'power_smaller_then', 'power <= ?', $klimabedarf + 1500, \PDO::PARAM_INT )
 		//->where ( 'set_id = ?', 1866, \PDO::PARAM_INT );
 		//->condition ( 'klima_category', 'category_id = ?', $set_category, \PDO::PARAM_INT )

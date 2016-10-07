@@ -5,6 +5,8 @@ namespace KlimaKonfigurator\Model;
 use Thelia\Log\Tlog;
 
 class KlimaKonfiguratorEinstellungen {
+	
+	private $raum_anzahl;
 	private $raum_flaeche;
 	private $raum_hoehe;
 	private $fenster_anzahl;
@@ -60,8 +62,16 @@ class KlimaKonfiguratorEinstellungen {
 		$this->anschlusswert_in_watt = $anschlusswert_in_watt;
 		return $this;
 	}
+	public function getRaumAnzahl() {
+		return $this->raum_anzahl;
+	}
+	public function setRaumAnzahl($raum_anzahl) {
+		$this->raum_anzahl = $raum_anzahl;
+		return $this;
+	}
 	
 	public function populateKonfiguratorFromRequest($request){
+		$this->setRaumAnzahl($request->request->get('klimakonfigurator')['raumanzahl']);
 		$this->setRaumFlaeche($request->request->get('klimakonfigurator')['grundflaeche']);
 		$this->setRaumHoehe($request->request->get('klimakonfigurator')['raumhoehe']);
 		$this->setFensterAnzahl($request->request->get('klimakonfigurator')['fenster']);
@@ -70,20 +80,31 @@ class KlimaKonfiguratorEinstellungen {
 		$this->setAnschlusswertInWatt($request->request->get('klimakonfigurator')['zusaetzliche-waerme']);
 	}
 	
-	public function calculateKlimaBedarf() {
+	public function calculateKlimaBedarf($room_id) {
 		
 		$lage_der_zimmer_bedarf = 0;
-		switch($this->lage_der_zimmer){
+		switch($this->lage_der_zimmer[$room_id]){
 			case 1:$lage_der_zimmer_bedarf = $this->decke_lage_nk;break;
 			case 2:$lage_der_zimmer_bedarf = $this->decke_lage_db;break;
 			case 3:$lage_der_zimmer_bedarf = $this->decke_lage_i;break;
 		}
-		
-		$pro_meter2 = $this->raum_hoehe*$this->hoehe_basis + $lage_der_zimmer_bedarf;
-		$klima_bedarf = $this->raum_flaeche*$pro_meter2+$this->fenster_anzahl*$this->fenster_basis+
-		                $this->personen*$this->person_basis+$this->anschlusswert_in_watt*$this->anschlusswert_anteil;
+		$pro_meter2 = $this->raum_hoehe[$room_id]*$this->hoehe_basis + $lage_der_zimmer_bedarf;
+		$klima_bedarf = $this->raum_flaeche[$room_id]*$pro_meter2+$this->fenster_anzahl[$room_id]*$this->fenster_basis+
+		                $this->personen[$room_id]*$this->person_basis+$this->anschlusswert_in_watt[$room_id]*$this->anschlusswert_anteil;
 		                
 		return $klima_bedarf;
 	}
+	
+	public function calculateKlimaBedarfMultipleRooms(){
+	
+		$gesamte_klima_bedarf = 0;
+		
+		for($i = 0; $i<$this->raum_anzahl; $i++){
+			$gesamte_klima_bedarf += $this->calculateKlimaBedarf($i);
+		}
+		
+		return $gesamte_klima_bedarf;
+	}
+	
 	
 }
