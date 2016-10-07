@@ -11092,6 +11092,57 @@ figure.effect-oscar:hover img {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'icomoon' !important;
 }
+/* VORTEILE ICONS*/
+.advantages{
+     text-align: center;
+     color:#8d8d8d;
+}
+.advantages .vorteile{
+     font-family: 'vorteile' !important;
+    font-size: 4em; 
+}
+.advantages div:hover{
+color:#86ac34;
+}
+.advantages .text{
+    font-size:1.2em;
+    font-family:quicksand!important;
+}
+@media only screen and (max-device-width: 480px) {
+ .advantages .text{
+    font-size:10px!important;
+    font-family:quicksand!important;
+}
+
+}
+@font-face {
+    font-family: 'vorteile';
+    src:    url('../fonts/vorteile/vorteile.eot');
+    src:    url('../fonts/vorteile/vorteile.eot') format('embedded-opentype'),
+        url('../fonts/vorteile/vorteile.ttf') format('truetype'),
+        url('../fonts/vorteile/vorteile.woff') format('woff'),
+        url('../fonts/vorteile/vorteile.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.icon-punktual:before {
+  content: "\e900";
+}
+.icon-jahre:before {
+  content: "\e901";
+}
+.icon-beratung:before {
+  content: "\e902";
+}
+.icon-calendar:before {
+  content: "\e903";
+}
+.icon-delivery:before {
+  content: "\e904";
+}
+
 
 
 .shopicon {
@@ -13197,28 +13248,7 @@ animation: fadeout 2s;
     -webkit-animation: fadeout 2s; /* Safari and Chrome */
     -o-animation: fadeout 2s; /* Opera */
 }
-.vorteile{
-    background:#999999;
-    height:100px;
-    line-height:100px
-}
-.vorteile div{
-    border-left:solid 1px #FFF;
-    color:#FFF;
-    text-align: center;
-    
-}
-.vorteile div:hover{
-    background:#86AC34;
-}
-.vorteile div .vt-title{
-    display: inline-block;
-    width:70%;
-}
-.vorteile div .vt-icon{
-    display: inline-block;
-    width:30%;
-}
+
 .highlight{
     color: #86ac34;
     font-weight: 600;
