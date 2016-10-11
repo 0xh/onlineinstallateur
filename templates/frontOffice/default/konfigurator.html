@@ -698,31 +698,24 @@
 		onReview : function() {
 			//classie.add( document.body, 'overview' ); // for demo purposes only
             $('#review' ).show();
-       
-  
-$formvalues = $( "#form-konfigurator .frage");
-       //$formvalues = $("#form-konfigurator").serializeArray();
 
+			$formvalues = $( "#form-konfigurator .frage");
+       		//$formvalues = $("#form-konfigurator").serializeArray();
 
-      $.each( $formvalues, function( i, field ) {
-
-            frage = $( field).find(".fragelabel" ).text();
-           antwort = $( field).find("span :checked + label" ).text();
-          if(!antwort)
-           antwort = $( field).find("span :selected" ).text();
-          if(!antwort)
-            antwort = $( field).find("span input" ).val();
-          if(!antwort)
-            antwort = $( field).find("span textarea" ).val();
-            $( "#review" ).append( frage + ": <strong><br>" + antwort + "</strong><br><br>");
-        });
-        
-            
-
-           
-            
+		    $.each( $formvalues, function( i, field ) {
+		
+		    	frage = $( field).find(".fragelabel" ).text();
+		        antwort = $( field).find("span :checked + label" ).text();
+		        if(!antwort)
+		           antwort = $( field).find("span :selected" ).text();
+		        if(!antwort)
+		            antwort = $( field).find("span input" ).val();
+		        if(!antwort)
+		            antwort = $( field).find("span textarea" ).val();
+		        $( "#review" ).append( frage + ": <strong><br>" + antwort + "</strong><br><br>");
+		        });  
 		}
-	} );
+	});
 })();
 </script>
 

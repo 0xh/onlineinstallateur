@@ -42,6 +42,7 @@ use Thelia\Model\Map\ProductTableMap;
  */
 class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, SearchLoopInterface {
 	
+	private $klimaKonfigurator ;
 	/**
 	 *
 	 * @return ArgumentCollection
@@ -156,9 +157,9 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 		$set_category = 25;//$this->getCategory();
 		
 		$request = $this->request;
-		$konfigurator = new KlimaKonfiguratorEinstellungen();
-		$konfigurator->populateKonfiguratorFromRequest ( $request );
-		$klimabedarf = $konfigurator->calculateKlimaBedarfMultipleRooms();
+		$this->klimaKonfigurator = new KlimaKonfiguratorEinstellungen();
+		$this->klimaKonfigurator->populateKonfiguratorFromRequest ( $request );
+		$klimabedarf = $this->klimaKonfigurator->calculateKlimaBedarfMultipleRooms();
 		header ( 'klimabedarf:' . $klimabedarf/1000 );
 		
 		//$klimabedarf = $this->getPower();
