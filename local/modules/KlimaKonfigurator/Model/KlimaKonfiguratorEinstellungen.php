@@ -90,8 +90,7 @@ class KlimaKonfiguratorEinstellungen {
 		}
 		$pro_meter2 = $this->raum_hoehe[$room_id]*$this->hoehe_basis + $lage_der_zimmer_bedarf;
 		$klima_bedarf = $this->raum_flaeche[$room_id]*$pro_meter2+$this->fenster_anzahl[$room_id]*$this->fenster_basis+
-		                $this->personen[$room_id]*$this->person_basis+$this->anschlusswert_in_watt[$room_id]*$this->anschlusswert_anteil;
-		                
+		                $this->personen[$room_id]*$this->person_basis+$this->anschlusswert_in_watt[$room_id]*$this->anschlusswert_anteil;               
 		return $klima_bedarf;
 	}
 	

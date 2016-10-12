@@ -12,16 +12,37 @@
 		<table border="0" cellpadding="1" celspacing="0" >	
 			<tbody >
 			<!-- <p>Set id {$SET_ID} {$SET_PSE_COUNT}, priority {$PRIORITY},efficiency {$EFFICIENCY}, complete power {$POWER}, composed image {$COMPOSED_IMAGE}, storage {$STORAGE}</p> -->
+				
 				{loop type="klima_products" name="product_list" setid=$SET_ID limit="8" }
+				{assign var="innen_price" value=$BEST_TAXED_PRICE}
 					{include file="includes/klima_product-suggestion.html" product=$ID hasBtn=true hasDescription=true hasQuickView=true width="300" height="230"}
 				{/loop}
-				innenteil<br>
-				aussenteil<br>
-				wandkonsole<br>
-				kältmittelleitung<br>
-				pumpe<br>
-				diverse<br>
-				montahge<br>
+				
+				{loop type="product" name="service_inner" id=$SERVICE_INNER limit="8" }
+				{assign var="innen_price" value=$BEST_TAXED_PRICE}
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+				
+				{loop type="product" name="kaeltemittellung" id=$KAELTEMITTELLEITUNG limit="8" }
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+				
+				{loop type="product" name="servicematerial" id=$SERVICEMATERIAL limit="8" }
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+				
+				{loop type="product" name="wandkonsole" id=$WANDKONSOLE limit="8" }
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+				
+				{loop type="product" name="pumpe" id=$PUMPE limit="8" }
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+				
+				{loop type="product" name="service_inner" id=$PUMPE_ZUBEHOER limit="8" }
+					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+		
 			<tr>
 				<td style="text-align:right;border-top:1px solid black;"></td>
 				<td style="text-align:left;border-top:1px solid black;"></td>

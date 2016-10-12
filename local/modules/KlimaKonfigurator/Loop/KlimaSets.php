@@ -104,9 +104,8 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
                 ->set("SET_PRODUCT_SALE_ELEMENT", $set->getVirtualColumn('pse_id'))
                 ->set("SET_PSE_COUNT", $set->getVirtualColumn('pse_count'))
                 ->set("SET_QUANTITY", $set->getVirtualColumn('quantity'))
-            ;
-           //   	$log->debug ( "prod ".$product->getId()." pse count ".$product->getVirtualColumn('pse_count')." quantity ".$product->getVirtualColumn('quantity'));
-			
+                ;
+
 			$this->addOutputFields ( $loopResultRow, $set);
 			$associatedValues = $this->associateValues ( $loopResultRow, $set );
 			$loopResult->addRow ( $associatedValues );
@@ -125,9 +124,6 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 	 */
 	private function associateValues($loopResultRow, $set) {
 
-	//	$set = new Sets();
-		
-		
 		$loopResultRow
 		//product
 		->set ( "REF", $set->getRef () )
@@ -148,6 +144,12 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 		->set ( "POWER", $set->getVirtualColumn('power') )
 		->set ( "COMPOSED_IMAGE", $set->getVirtualColumn('composed_image') )
 		->set ( "STORAGE", $set->getVirtualColumn('storage') )
+		->set ( "SERVICE_INNER","2311")
+		->set ( "KAELTEMITTELLEITUNG","3451")
+		->set ( "SERVICEMATERIAL", "3452")
+		->set ( "WANDKONSOLE", "3453")
+		->set ( "PUMPE", "1911")
+		->set ( "PUMPE_ZUBEHOER", "3454")
 		;
 		return $loopResultRow;
 	}
