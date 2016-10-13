@@ -160,7 +160,7 @@ class HirePlumberController extends BaseFrontController
         
         
         $storeName="Hausfabrik";
-        $contactEmail="ani.jalavyan@sepa.at";
+        $contactEmail="angebote@hausfabrik.at";
         $kundenEmail = $email;
         $kundenEmailSubject = "Vielen Dank für Ihre Anfrage";
         $instance = \Swift_Message::newInstance()
