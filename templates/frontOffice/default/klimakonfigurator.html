@@ -198,7 +198,6 @@
                             </div>
 						</li>
 
-
 						<li>  
 							<div class="frage">
                             {form_field field="kondensatablauf" value_key=0}
@@ -222,8 +221,7 @@
                             {/for}
                             </div>
 						</li>
-				
-				
+
                        	<li>
                             {form_field field="anmerkungen"} 
                             <div class="frage"> 
@@ -246,16 +244,14 @@
                 {/form}
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->
-            
-            
-            
+
 		<section id="products-new">	
 			<div class="products-heading">  
             	<div id="klimabedarf"></div>        
 			</div>
 			<div id="category-products">
-            </div><!-- /#category-products -->
-		</section><!-- #products-heizung -->	
+            </div>
+		</section>	
 		
 		<div id="product_suggestion">
 			<ul id="products"></ul>
@@ -266,7 +262,6 @@
 {block name="stylesheet"}
 	{hook name="register.stylesheet"}
 {/block}
-
 
 {block name="after-javascript-include"}
  <script src="{javascript file='assets/dist/js/vendors/classie.js'}"></script>
@@ -297,7 +292,7 @@ numberOfRooms.oninput = function(e){
 		data: $(this).serialize()
 	})
 	.done(function (data, textStatus, request) {
-		$klimabedarf = request.getResponseHeader('klimabedarf');
+		$klimabedarf = request.getResponseHeader('klimabedarftotal');
 		if($klimabedarf != null) 
 			$('#klimabedarf').text("Klimabedarf ist: "+$klimabedarf+"KW");
 		$("#category-products").empty().append(data);
@@ -334,9 +329,8 @@ numberOfRooms.oninput = function(e){
        		//$formvalues = $("#form-konfigurator").serializeArray();
 
 		    $.each( $formvalues, function( i, field ) {
-		
 		    	frage = $(field).find('.fragelabel').text();
-		    	
+		
 		    	$mehrereantworten = $(field).find(('[class*=" raum"]'));
 		    	
 		    	if($mehrereantworten.length > 0){

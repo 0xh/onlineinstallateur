@@ -162,7 +162,7 @@ class KlimaSets extends BaseI18nLoop implements PropelSearchLoopInterface, Searc
 		$this->klimaKonfigurator = new KlimaKonfiguratorEinstellungen();
 		$this->klimaKonfigurator->populateKonfiguratorFromRequest ( $request );
 		$klimabedarf = $this->klimaKonfigurator->calculateKlimaBedarfMultipleRooms();
-		header ( 'klimabedarf:' . $klimabedarf/1000 );
+		//header ( 'klimabedarf:' . $klimabedarf/1000 );
 		
 		//$klimabedarf = $this->getPower();
 		$log = Tlog::getInstance ();

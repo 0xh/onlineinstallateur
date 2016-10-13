@@ -7,16 +7,16 @@
 {if	not $product_id} 
 	{assign var="set_id" value=$SET_ID} 
 {/if}
-
 	<article class="row" style="padding-left:15px; margin-bottom:35px;width:80%" itemscope itemtype="http://schema.org/Product">
 		{hook name="klimaset.top" set="$SET_ID"} 
 		<table border="0" cellpadding="1" celspacing="0" >	
 			<tbody >
 			<!-- <p>Set id {$SET_ID} {$SET_PSE_COUNT}, priority {$PRIORITY},efficiency {$EFFICIENCY}, complete power {$POWER}, composed image {$COMPOSED_IMAGE}, storage {$STORAGE}</p> -->
+			{$ROOMLABEL}<br>
 			{if $SET_ID != null}
 				{loop type="klima_products" name="product_list" setid=$SET_ID limit="8" }
 					{assign var="innen_price" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_product-suggestion.html" product=$ID hasBtn=true hasDescription=true hasQuickView=true width="300" height="230"}
+					{include file="klima_product-suggestion.html" product=$ID hasBtn=true hasDescription=true hasQuickView=true width="300" height="230"}
 				{/loop}
 			{else}
 			    no innen gerät gefunden <br>
@@ -25,7 +25,7 @@
 			{if $SERVICE_INNER != null} 
 				{loop type="product" name="service_inner" id=$SERVICE_INNER limit="8" }
 					{assign var="service_price" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop}
 			{else}
 			   no montage service gefunden <br>
@@ -34,7 +34,7 @@
 			{if $KAELTEMITTELLEITUNG != null}
 				{*loop type="product" name="kaeltemittellung" id=$KAELTEMITTELLEITUNG limit="8" }
 					{assign var="kaeltemittellung" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop*}
 			{else}
 				no kältemittelleitung wurde gefunden
@@ -43,7 +43,7 @@
 			{if $SERVICEMATERIAL != null}
 				{loop type="product" name="servicematerial" id=$SERVICEMATERIAL limit="8" }
 				{assign var="servicematerial" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop}
 			{else}
 				no servicematerial würde gefunden
@@ -52,21 +52,21 @@
 			{if $WANDKONSOLE != null}
 				{*loop type="product" name="wandkonsole" id=$WANDKONSOLE limit="8" }
 					{assign var="wandkonsole" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop*}
 			{/if}
 			
 			{if $PUMPE != null}
 				{*loop type="product" name="pumpe" id=$PUMPE limit="8" }
 					{assign var="pumpe" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop*}
 			{/if}
 			
 			{if $PUMPE_ZUBEHOER}
 				{*loop type="product" name="pumpe_zubehoer" id=$PUMPE_ZUBEHOER limit="8" }
 					{assign var="service_inner" value=$BEST_TAXED_PRICE}
-					{include file="includes/klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
 				{/loop*}
 			{/if}
 			

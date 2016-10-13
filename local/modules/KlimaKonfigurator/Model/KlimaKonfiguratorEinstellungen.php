@@ -13,6 +13,7 @@ class KlimaKonfiguratorEinstellungen {
 	private $lage_der_zimmer;
 	private $personen;
 	private $anschlusswert_in_watt;
+	private $klimabedarf_raum = array();
 	
 	private $hoehe_basis = 30;
 	private $fenster_basis = 150;
@@ -69,6 +70,13 @@ class KlimaKonfiguratorEinstellungen {
 		$this->raum_anzahl = $raum_anzahl;
 		return $this;
 	}
+	public function getKlimabedarfRaum() {
+		return $this->klimabedarf_raum;
+	}
+	public function setKlimabedarfRaum($klimabedarf_raum) {
+		$this->klimabedarf_raum = $klimabedarf_raum;
+		return $this;
+	}	
 	
 	public function populateKonfiguratorFromRequest($request){
 		$this->setRaumAnzahl($request->request->get('klimakonfigurator')['raumanzahl']);
@@ -88,7 +96,7 @@ class KlimaKonfiguratorEinstellungen {
 			case 2:$lage_der_zimmer_bedarf = $this->decke_lage_db;break;
 			case 3:$lage_der_zimmer_bedarf = $this->decke_lage_i;break;
 		}
-		$pro_meter2 = $this->raum_hoehe[$room_id]*$this->hoehe_basis + $lage_der_zimmer_bedarf;
+		$pro_meter2 = $this->raum_hoehe*$this->hoehe_basis + $lage_der_zimmer_bedarf;
 		$klima_bedarf = $this->raum_flaeche[$room_id]*$pro_meter2+$this->fenster_anzahl[$room_id]*$this->fenster_basis+
 		                $this->personen[$room_id]*$this->person_basis+$this->anschlusswert_in_watt[$room_id]*$this->anschlusswert_anteil;               
 		return $klima_bedarf;
@@ -97,13 +105,14 @@ class KlimaKonfiguratorEinstellungen {
 	public function calculateKlimaBedarfMultipleRooms(){
 	
 		$gesamte_klima_bedarf = 0;
-		
+		$log = Tlog::getInstance ();
 		for($i = 0; $i<$this->raum_anzahl; $i++){
-			$gesamte_klima_bedarf += $this->calculateKlimaBedarf($i);
+			$klimabedarf_eine_raum = $this->calculateKlimaBedarf($i);
+			array_push($this->klimabedarf_raum, $klimabedarf_eine_raum);
+			$log->error("klimabedarf2 ".$i." ".$klimabedarf_eine_raum);
+			$gesamte_klima_bedarf += $klimabedarf_eine_raum;
 		}
-		
 		return $gesamte_klima_bedarf;
 	}
-	
 	
 }

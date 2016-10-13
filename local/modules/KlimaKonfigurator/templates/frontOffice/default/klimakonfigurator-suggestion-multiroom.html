@@ -1,0 +1,61 @@
+<div class="products-content">
+	<ul class="list-unstyled">
+		<!-- "klima_products" -->
+		<table border="0" cellpadding="1" celspacing="0" >	
+			<tbody >
+		{$KLIMA_ERGEBNISSE nofilter}
+				//disclaimer: Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen. Irrtum und Fehler vorbehalten. Das Angebot wurde anhand Ihrer Angaben erstellt.
+		{assign var="set_price" value=($innen_price + $service_price + $kaeltemittellung + $servicematerial + $wandkonsole + $pumpe + $service_inner)}
+			<tr>
+				<td style="text-align:right;border-top:1px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;">SUMME exkl. Mwst.</td>
+				<td style="text-align:right;border-top:1px solid black;"><span class="price"> {$set_price}€</span></td>
+			</tr>
+		
+			<tr>
+				<td style="text-align:right;"></td>
+				<td style="text-align:left;"></td>
+				<td style="text-align:left;">zzgl. 20% Mwst.</td>
+				<td style="text-align:right;"><span class="price">{$SET_BEST_TAXED_PRICE*0.2}€</span></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;border-top:1px solid black;border-bottom:2px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;border-bottom:2px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;border-bottom:2px solid black;">SUMME inkl. Mwst.</td>
+				<td style="text-align:right;border-top:1px solid black;border-bottom:2px solid black;"><span class="price">{$SET_BEST_TAXED_PRICE*1.2}€</span></td>
+			</tr>
+			</tbody>
+		</table>
+	</ul>
+</div>
+{block name="after-javascript-include"}
+<script>
+$('.products-content').on('click', '.thumbnail', function (event) {
+	if($(this).hasClass("selected")){
+   
+	$(this).removeClass("selected");
+    //now disable inputs
+     $(this).find($("[name^=service]")).prop('disabled',true);
+    //remove price
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //remove service price from product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productObject.text(parseInt($productObject.text())-parseInt($serviceObject.text()) );
+	}
+	else  {
+		$(this).addClass("selected");
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //add service price to product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productObject.text(parseInt($productObject.text())+parseInt($serviceObject.text()) );
+	}
+
+});
+</script>
+{hook name="register.after-javascript-include"}
+{/block}
