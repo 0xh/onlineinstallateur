@@ -1,10 +1,13 @@
 {if $SET_ID != null}
 	{loop type="klima_products" name="product_list" setid=$SET_ID limit="8" }
 <tr>
-<td>
- {$ROOMLABEL}
-</td>
-	<td style="text-align:right;">
+	<td style="text-align:center;">
+ 		{$ROOMLABEL}
+	</td>
+	<td style="text-align:center;">
+		{$PRODUCT_QUANTITY}
+	</td>
+	<td  style="text-align:center;">
 		<a href="{$URL nofilter}" itemprop="url" tabindex="-1" class="product-image col-sm-8">
 			{loop name="product_thumbnail" type="image" product=$ID width="{$WIDTH}" height="{$HEIGHT}" resize_mode="borders" limit="1"}
 				<img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$TITLE}"> 
@@ -14,11 +17,11 @@
 			{/elseloop}
 		</a>
 	</td>
-	<td style="text-align:left;" colspan="2">
+	<td style="text-align:center;">
 		<div class="product-info col-sm-8">
-			<h2 class="name">
+			<h3 class="name">
 				<a href="{$URL nofilter}"><span itemprop="name">{$TITLE}</span></a>
-			</h2>
+			</h3>
 		</div>
 	</td>
 	<td style="text-align:right;">
@@ -48,7 +51,7 @@
 						{else} 
 							<span class="regular-price">
 							<span itemprop="price" style="display: none;" class="price" name="price_product">{format_money number=$BEST_TAXED_PRICE symbol={currency attr="symbol"}}</span>
-							<div name="price_product_{$product_id}" style="font-size:30px; font-weight:bold;float:left" >{$BEST_TAXED_PRICE|string_format:"%d"}€</div>
+							<div name="price_product_{$product_id}" style="font-size:30px; font-weight:bold;float:left" >{$BEST_TAXED_PRICE*$PRODUCT_QUANTITY|string_format:"%d"}€</div>
 							</span> 
 						{/if}
 			</div>

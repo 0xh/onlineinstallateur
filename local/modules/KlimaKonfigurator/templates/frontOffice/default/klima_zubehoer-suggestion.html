@@ -1,5 +1,12 @@
 <tr>
-	<td style="text-align:left;" colspan="3">
+	<td>
+	</td>
+	<td style="text-align:center;">
+		{$quantity}
+	</td>
+		<td>
+	</td>
+	<td style="text-align:center;">
 		<div class="product-info col-sm-8">
 			<h2 class="name">
 				<a href="{$URL nofilter}"><span itemprop="name">{$TITLE}</span></a>
@@ -30,10 +37,10 @@
 							<span class="price" >{format_money number=$TAXED_PRICE symbol={currency attr="symbol"}}</span>
 							</span> 
 						{/if} 
-						{else} 
+						{else}
 							<span class="regular-price">
 							<span itemprop="price" style="display: none;" class="price" name="price_product">{format_money number=$BEST_TAXED_PRICE symbol={currency attr="symbol"}}</span>
-							<div name="price_product_{$product_id}" style="font-size:30px; font-weight:bold;float:left" >{$BEST_TAXED_PRICE|string_format:"%d"}€</div>
+							<div name="price_product_{$product_id}" style="font-size:30px; font-weight:bold;float:left;text-align:right;" >{$BEST_TAXED_PRICE*$quantity|string_format:"%d"}€</div>
 							</span> 
 						{/if}
 			</div>

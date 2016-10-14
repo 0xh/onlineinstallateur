@@ -13,8 +13,11 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Model\Map\ProductCategoryTableMap;
 use Thelia\Log\Tlog;
 use Thelia\Model\Product;
+use HookKonfigurator\Model\Sets;
+use HookKonfigurator\Model\SetsQuery;
 
 class Front extends BaseHook{
+	private $maxPowerDevice = null;
 
     public function onMainHeadBottom(HookRenderEvent $event)
     {
@@ -37,15 +40,19 @@ class Front extends BaseHook{
 		$log = Tlog::getInstance ();
 
 		$klima_ergebnisse = "";
+		$products_cost = 0;
+		$service_quantity = 0;
 		
 		$raum_nr = 1;
 		foreach($klimaBedarfRooms as $klimaBedarf){
-			//$candidates = ProductQuery::create();
+			// find devices with klimabedarf larger than necessary
 			$candidatesQuery = $this->getInnenGeraetFuerKlimaBedarf($klimaBedarf);
 			$candidates = $candidatesQuery->find();
 			$log->debug(" klimabedarf für ".$raum_nr." ".$klimaBedarf);
 			
 			$found_candidate = null;
+			$device_quantity = 1;
+			//TODO choose one device
 			foreach($candidates as $candidate){
 				
 				
@@ -53,22 +60,52 @@ class Front extends BaseHook{
 					$found_candidate = $candidate;
 			}
 			
-			$log->debug(" candidate für ".$raum_nr." product id ".$found_candidate->getId());
-			//$found_candidate = new Product();
-			if($found_candidate != null)
+			
+			// if no one device is enough find largest and multiply until klimabedarf is covered
+			if($found_candidate == null)
+			if($this->maxPowerDevice == null){
+				$maxQuery = SetsQuery::create()->withColumn('MAX(power)')->find();
+				$maxValue = 0;
+				if($maxQuery != null)
+					$maxValue = $maxQuery[0]->getVirtualColumn('MAXpower');
+				if($maxValue != 0){
+					$this->maxPowerDevice = $this->getInnenGeraetFuerKlimaBedarf($maxValue)->find()[0];
+					$found_candidate = $this->maxPowerDevice;
+					$device_quantity = ceil($klimaBedarf/$maxValue);
+				}
+			}
+			else 
+			{
+				$found_candidate = $this->maxPowerDevice;
+				$device_quantity = ceil($klimaBedarf/$this->maxPowerDevice->getPower());
+			}
+			
+			if($found_candidate != null){
 				$klima_ergebnisse .= $this->render('klima_product-suggestion.html',
 						array('SET_ID' => $found_candidate->getId(),
-						      'ROOMLABEL' => 'RAUM '.$raum_nr.' '.$klimaBedarf,
+						      'ROOMLABEL' => $raum_nr,
 							  'WIDTH' => '300',
 							  'HEIGHT' => '230',
-								'hasQuickView' => 'false'
+							  'hasQuickView' => 'false',
+							  'PRODUCT_QUANTITY' => $device_quantity
 				));
+				$service_quantity += $device_quantity;
+				//$found_candidate = new Product();
+				$products_cost += $device_quantity*ProductQuery::create()->findOneById($found_candidate->getId())->getProductSaleElementss()[0]->getProductPrices()[0]->getPrice();
+				$log->debug(" candidate für ".$raum_nr." product id ".$found_candidate->getId()." serviceq ".$service_quantity);
+			}
+			
 			$raum_nr += 1;
 			$found_candidate = null;
 		};
-		
 		//$event->add($klima_ergebnisse);
-		$content = $this->render('klimakonfigurator-suggestion-multiroom.html',array('KLIMA_ERGEBNISSE' => $klima_ergebnisse));
+		$content = $this->render('klimakonfigurator-suggestion-multiroom.html',
+				array('KLIMA_ERGEBNISSE' => $klima_ergebnisse,
+					  'SERVICE' => "2311",
+					  'SERVICE_QUANTITY' => $service_quantity,
+					  'SERVICEMATERIAL' => "3452",
+					  'PRODUCTS_COST' => $products_cost
+				));
 		$event->add($content);
 		/*
 		$content = $this->render('klimakonfigurator-suggestions.html');
