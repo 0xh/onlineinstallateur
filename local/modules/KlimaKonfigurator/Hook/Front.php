@@ -83,11 +83,11 @@ class Front extends BaseHook{
 			if($found_candidate != null){
 				$klima_ergebnisse .= $this->render('klima_product-suggestion.html',
 						array('SET_ID' => $found_candidate->getId(),
-						      'ROOMLABEL' => $raum_nr,
+						      'ROOMNUMBER' => $raum_nr,
 							  'WIDTH' => '300',
 							  'HEIGHT' => '230',
 							  'hasQuickView' => 'false',
-							  'PRODUCT_QUANTITY' => $device_quantity
+							  'PRODUCT_QUANTITY' => $device_quantity,
 				));
 				$service_quantity += $device_quantity;
 				//$found_candidate = new Product();
@@ -104,7 +104,8 @@ class Front extends BaseHook{
 					  'SERVICE' => "2311",
 					  'SERVICE_QUANTITY' => $service_quantity,
 					  'SERVICEMATERIAL' => "3452",
-					  'PRODUCTS_COST' => $products_cost
+					  'PRODUCTS_COST' => $products_cost,
+					  'ROOMNUMBER' => $raum_nr,
 				));
 		$event->add($content);
 		/*

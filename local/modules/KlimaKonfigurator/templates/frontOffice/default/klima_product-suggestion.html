@@ -2,7 +2,7 @@
 	{loop type="klima_products" name="product_list" setid=$SET_ID limit="8" }
 <tr>
 	<td style="text-align:center;">
- 		{$ROOMLABEL}
+ 		{$ROOMNUMBER}
 	</td>
 	<td style="text-align:center;">
 		{$PRODUCT_QUANTITY}
@@ -58,11 +58,9 @@
        </div>				
 	</td>
 </tr>	
-							<input type="hidden" class="pse-id" name="thelia_cart_add[product_sale_elements_id]" value="2356"> 
-							
-							<input id="cart_product" type="hidden" name="thelia_cart_add[product]" value="2311">
-							
-							<input id="quantity" type="hidden" name="thelia_cart_add[quantity]" class="form-control" value="7" min="0" required="">
+							<input type="hidden" class="pse-id" name="set_product_sale_elements_id[{$ROOMNUMBER}]" value="{$PRODUCT_SALE_ELEMENT}"> 
+							<input id="cart_product" type="hidden" name="set_product[{$ROOMNUMBER}]" value="{$ID}">
+							<input id="quantity" type="hidden" name="set_quantity[{$ROOMNUMBER}]" class="form-control" value="{$PRODUCT_QUANTITY}" min="0">
 				{/loop}
 			{else}
 			    no innen gerät gefunden <br>

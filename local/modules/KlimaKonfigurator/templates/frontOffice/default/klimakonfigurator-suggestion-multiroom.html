@@ -17,22 +17,31 @@
 			<tr>
 			<td style="text-align:center;border-top:1px  #dddddd;">RAUM</td>
 			<td style="text-align:center;border-top:1px  #dddddd;">MENGE</td>
-			<td style="text-align:center;border-top:1px  #dddddd;" colspan="3">PRODUKT</td>
+			<td style="text-align:center;border-top:1px  #dddddd;" colspan="2">PRODUKT</td>
+			<td style="text-align:center;border-top:1px  #dddddd;" >PREIS exkl. Mwst.</td>
 			</tr>
 		{$KLIMA_ERGEBNISSE nofilter}
 
 		{if $SERVICE != null} 
 				{loop type="product" name="service" id=$SERVICE limit="8" }
-					{assign var="service_price" value=$BEST_TAXED_PRICE*$SERVICE_QUANTITY}
+					{assign var="service_price" value=$BEST_PRICE*$SERVICE_QUANTITY}
 					{assign var="service_pse" value=$PRODUCT_SALE_ELEMENT}
 					{include file="klima_zubehoer-suggestion.html" product=$ID quantity=$SERVICE_QUANTITY}
+<!-- 					<input type="hidden" class="pse-id" name="set_product_sale_elements_id[{$ROOMNUMBER}]" value="{$PRODUCT_SALE_ELEMENT}">  -->
+<!-- 					<input id="cart_product" type="hidden" name="set_product[{$ROOMNUMBER}]" value="{$ID}"> -->
+<!-- 					<input id="quantity" type="hidden" name="set_quantity[{$ROOMNUMBER}]" class="form-control" value="{$PRODUCT_QUANTITY}" min="0"> -->
+				    {*$ROOMNUMBER = $ROOMNUMBER + 1*}
 				{/loop}
 		{/if}
 		
 		{if $SERVICEMATERIAL != null}
 				{loop type="product" name="servicematerial" id=$SERVICEMATERIAL limit="8" }
-				{assign var="servicematerial" value=$BEST_TAXED_PRICE*$SERVICE_QUANTITY}
+				{assign var="servicematerial" value=$BEST_PRICE*$SERVICE_QUANTITY}
 					{include file="klima_zubehoer-suggestion.html" product=$ID quantity=$SERVICE_QUANTITY}
+					<input type="hidden" class="pse-id" name="set_product_sale_elements_id[{$ROOMNUMBER}]" value="{$PRODUCT_SALE_ELEMENT}"> 
+					<input id="cart_product" type="hidden" name="set_product[{$ROOMNUMBER}]" value="{$ID}">
+					<input id="quantity" type="hidden" name="set_quantity[{$ROOMNUMBER}]" class="form-control" value="{$SERVICE_QUANTITY}" min="0">
+					{$ROOMNUMBER = $ROOMNUMBER + 1}
 				{/loop}
 		{/if}
 		{assign var="set_price" value=($PRODUCTS_COST + $service_price + $kaeltemittellung + $servicematerial + $wandkonsole + $pumpe + $service_inner)}
