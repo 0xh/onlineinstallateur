@@ -501,9 +501,9 @@ $log->error(sprintf('message : %s', $message));
 				$service_product_sale_ids = $request->request->get('service_product_sale_id');
 				$nr_services = count($service_ids);
 				if($nr_services > 0)
-					for ($i = 1; $i<=$nr_services; $i++){
-					if($service_ids[$i]){	
-						$log->debug ( "-- service_appointment ".$service_ids[$i]." ".(new JsonResponse($request->request->all()))." ");
+					for ($i = 0; $i<=$nr_services; $i++){
+					if(isset($service_ids[$i])){	
+						//$log->debug ( "-- service_appointment ".$service_ids[$i]." ".(new JsonResponse($request->request->all()))." ");
 							//$sp_start_ts	." ".implode(" ",$sp_end_ts)." ".implode(" ",$sp_date));
 						$this->addServiceToCart($service_ids[$i], $service_product_sale_ids[$i],$request);
 					}
