@@ -16,7 +16,7 @@
 
 	<div class="container1">
 
-		<div class="fs-form-wrap" id="fs-form-wrap">
+		<div class="fs-form-wrap" id="fs-form-wrap" style="margin-top:120px">
 			<div class="fs-title">
 				<h1>IHR ANGEBOT</h1>
 			</div>
@@ -236,28 +236,27 @@
                     <div id="review" class="col-sm-3" style="display:none">
                         <h3>Ihre Daten</h3>
                     </div>
-                    
-                    <div class="konfigurator-buttons col-sm-9">            	
-	                  	<!--a href="/login"><button type="button" class="fs-submit"style="margin-bottom:20px">Individuelles Angebot</button></a-->
+                               	
 						<button type="submit" class="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
 						
-						<div style="clear:left"></div>
-						<section id="products-new" class="konfigurator-ergebniss">	
+						
+				</form><!-- /fs-form -->
+                {/form}
+               <!--  <div style="clear:left"></div> -->
+						<section id="products-new" class="konfigurator-ergebniss" style="margin:-100px">	
 							<div class="products-heading">  
 	            				<div id="klimabedarf"></div>        
 							</div>
-							<div id="category-products"></div>
+							<div id="category-products">
+							
+							</div>
 						</section>	
 			
 						<div id="product_suggestion">
 							<ul id="products"></ul>
 						</div>
-					</div>
-				</form><!-- /fs-form -->
-                {/form}
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->
-
 
     </div><!-- /.layout -->
 {/block}
@@ -327,7 +326,7 @@ numberOfRooms.oninput = function(e){
 		onReview : function() {
 			//classie.add( document.body, 'overview' ); // for demo purposes only
             $('#review').show();
-
+            $('#fs-form-wrap').css("margin-top",'0px');
 			$formvalues = $('#form-konfigurator .frage');
        		//$formvalues = $("#form-konfigurator").serializeArray();
 

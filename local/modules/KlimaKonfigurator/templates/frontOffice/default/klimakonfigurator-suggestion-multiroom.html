@@ -1,16 +1,17 @@
 <div class="products-content">
 {form name="thelia.cart.add" }
- <form id="form-product-details{$set_id}" action="{url path="/konfigurator/add" }" method="post" class="form-product">
-	<ul class="list-unstyled">
+ <form id="form-product-details{$set_id}" action="{url path="/klimakonfigurator/add" }" method="post" class="form-product">
+	<ul class="list-unstyled col-sm-7">
           <div class="contact-success alert alert-info" style="display: table;">
               <div class="fa fa-warning col-sm-1" style="font-size:4em; display: table-cell;vertical-align: middle;"></div>
-              <div class="col-sm-11">
-              Das Konfigurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen. Irrtum und Fehler vorbehalten.<br>
+              <div class="col-sm-11" style="padding-left:55px">
+              Das Konfigurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen. <br>
+              Irrtum und Fehler vorbehalten.<br>
               Das Angebot wurde anhand Ihrer Angaben erstellt.
               </div>
               <div class="clearfix"></div>
         </div>
-        <div class="col-sm-11">
+        <div class="col-sm-12">
 		<table border="1px" bordercolor="#dddddd" cellpadding="1" celspacing="0" style="padding:10px;">	
 			<tbody >
 			<tr>
@@ -23,6 +24,7 @@
 		{if $SERVICE != null} 
 				{loop type="product" name="service" id=$SERVICE limit="8" }
 					{assign var="service_price" value=$BEST_TAXED_PRICE*$SERVICE_QUANTITY}
+					{assign var="service_pse" value=$PRODUCT_SALE_ELEMENT}
 					{include file="klima_zubehoer-suggestion.html" product=$ID quantity=$SERVICE_QUANTITY}
 				{/loop}
 		{/if}
@@ -61,7 +63,7 @@
 		</div>
 								{form_hidden_fields} 
 							<input type="hidden" name="view" value="product"> 
-							<input type="hidden" name="product_id" value="2301"> 
+							<input type="hidden" name="product_id" value="{$SERVICE}"> 
 							{form_field field="append"} 
 								<input type="hidden" name="{$name}" value="1"> 
 							{/form_field} 
@@ -69,18 +71,20 @@
 								<div class="alert alert-error">{$form_error_message}</div>
 							{/if} 
 							{form_field field='product_sale_elements_id'} 
-								<input type="hidden" class="pse-id" name="{$name}" value="{$SET_PRODUCT_SALE_ELEMENT}"{$attr}> 
+								<input type="hidden" class="pse-id" name="{$name}" value="{$service_pse}"{$attr}> 
 							{/form_field}
 							{form_field field="product"} 
-								<input id="{$label_attr.for}" type="hidden" name="{$name}" value="2301"{$attr} >
+								<input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$SERVICE}"{$attr} >
 							{/form_field}
+							
+
 <div class="col-sm-8"></div>
 						<fieldset class="product-cart form-inline col-sm-3">
 							{form_field field='quantity'}
 							<div
 								class="form-group group-qty hide {if $error}has-error{elseif $value != "" && !$error}has-success{/if}">
 								<label for="{$label_attr.for}">{$label}</label> 
-								<input	type="number" name="{$name}" id="{$label_attr.for}"	class="form-control" value="{$value|default:1}" min="0" required>
+								<input	type="number" name="{$name}" id="{$label_attr.for}"	class="form-control" value="{$SERVICE_QUANTITY}" min="0" required>
 								{if $error } 
 									<span class="help-block">
 										<i class="fa fa-remove"></i> {$message}
@@ -98,6 +102,7 @@
 									<button type="submit" class="btn btn-primary btn-block">
 										<i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="klimakonfigurator.fo.default"}
 									</button>
+									
 								</div>
 							</div>
 						</fieldset>

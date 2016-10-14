@@ -201,7 +201,9 @@
 	<route id="klimakonfigurator.suggestions" path="/klimakonfigurator/suggestions">
         <default key="_controller">Front\Controller\KlimaKonfiguratorController::suggestionsAction</default>
     </route>
-	
+    
+        <default key="_controller">Front\Controller\KlimaKonfiguratorController::addKlimaSet</default>
+    </route>
 	<!-- end klimakonfigurator routes -->
 	
 	<!-- homepage routes -->

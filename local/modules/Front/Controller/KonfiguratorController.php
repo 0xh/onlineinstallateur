@@ -29,7 +29,7 @@ use HookCalendar\Model\BookingsServices;
 
 class KonfiguratorController extends BaseFrontController {
     
-        public function sendMail(Request $request)
+	public function sendMail(Request $request)
     {
         $log = Tlog::getInstance();
         
@@ -212,7 +212,7 @@ $log->error(sprintf('message : %s', $message));
            return $this->generateRedirectFromRoute('klima.angebot.success');
     }
     
-    	public function personalData(Request $request) {
+    public function personalData(Request $request) {
 		//if ($request->isXmlHttpRequest ()) {
 			$view = $request->get ( 'ajax-view', "includes/heizungskonfigurator-personal-data" );
 			
@@ -300,7 +300,6 @@ $log->error(sprintf('message : %s', $message));
 		}*/
 	}
     
-	
 	public function suggestionsAction(Request $request) {
 
 		//TODO sequence diagramm with the operations starting from konfigurator form and ending to the response products
@@ -314,7 +313,6 @@ $log->error(sprintf('message : %s', $message));
 		}
 	}
     
-	
 	public function servicesAction(Request $request) {
 		if ($request->isXmlHttpRequest ()) {
 			$view = $request->get ( 'ajax-view', "includes/category-services" );
@@ -340,7 +338,7 @@ $log->error(sprintf('message : %s', $message));
 		$ca_employee_id = $request->request->get('ca_employee_id');
 		//$sp_date     = $request->request->get('sp_start_ts_'.$service_id);
 		
-		$log->debug ( "-- addAppointment service ".$service_id." start ".implode(" ",$ca_start_ts[$service_id])." end ".implode(" ",$ca_end_ts[$service_id])." ".implode(" ",$ca_employee_id[$service_id]) );
+		//$log->debug ( "-- addAppointment service ".$service_id." start ".implode(" ",$ca_start_ts[$service_id])." end ".implode(" ",$ca_end_ts[$service_id])." ".implode(" ",$ca_employee_id[$service_id]) );
 	
 		$start_ts = $ca_start_ts[$service_id][1];
 		$stop_ts = $ca_end_ts[$service_id][1];
@@ -511,7 +509,6 @@ $log->error(sprintf('message : %s', $message));
 					}
 				};
 			}
-			
 		
 			if ($this->getRequest()->isXmlHttpRequest()) {
 				$this->changeViewForAjax();

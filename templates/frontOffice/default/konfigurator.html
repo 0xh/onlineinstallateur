@@ -21,7 +21,7 @@
 
 	<div class="container1">
 
-		<div class="fs-form-wrap" id="fs-form-wrap">
+		<div class="fs-form-wrap" id="fs-form-wrap" style="margin-top:120px">
 			<div class="fs-title">
 				<h1>HEIZUNGSTAUSCH</h1>
 			</div>
@@ -445,24 +445,23 @@
                     <div class="konfigurator-buttons col-sm-9">
                	    <button type="button" id="fs-submit-angebot"  class="fs-submit"  style="margin-bottom:20px; float:left; margin:10px;font-size:20px">Individuelles Angebot</button> 
 					<button type="submit" class="fs-submit" id="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
-                        <div style="clear:left"></div>
-                        <section id="products-new" class="konfigurator-ergebniss">	
-			<div class="products-heading">  
-            	<div id="waermebedarf"></div>        
-			</div>
-			<div id="category-products">
-            </div><!-- /#category-products -->
-		</section><!-- #products-heizung -->	
-		
-		<div id="product_suggestion ">
-			<ul id="products"></ul>
-		</div>
                         
                         
                     </div>
 
 				</form><!-- /fs-form -->
                 {/form}
+                 <!-- <div style="clear:left"></div> -->
+                <section id="products-new" class="konfigurator-ergebniss" style="margin:-100px">	
+					<div class="products-heading">  
+            			<div id="waermebedarf"></div>        
+					</div>
+					<div id="category-products"></div><!-- /#category-products -->
+				</section><!-- #products-heizung -->	
+		
+				<div id="product_suggestion ">
+					<ul id="products"></ul>
+				</div>
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->
             
@@ -698,7 +697,7 @@
 		onReview : function() {
 			//classie.add( document.body, 'overview' ); // for demo purposes only
             $('#review' ).show();
-
+            $('#fs-form-wrap').css("margin-top",'0px');
 			$formvalues = $( "#form-konfigurator .frage");
        		//$formvalues = $("#form-konfigurator").serializeArray();
 
