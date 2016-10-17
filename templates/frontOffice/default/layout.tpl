@@ -165,6 +165,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                         </button>
                         <a class="navbar-brand visible-xs" href="{navigate to="index"}">
                             <img src="{image file='assets/dist/img/logo.png'}" style="max-width:100px;" alt="{$store_name}">
+                            <h3>IHR ONLINE INSTALLATEUR</h3>
                         </a>
                     </div>
 
@@ -181,6 +182,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                 <h1 class="logo  hidden-xs col-sm-4" >
                         <a href="{navigate to="index"}" title="{$store_name}">
                             <img src="{image file='assets/dist/img/logo.png'}" style="max-width:200px" alt="{$store_name}">
+                             <h1 class="slogan">IHR ONLINE INSTALLATEUR</h1>
                         </a> 
                 </h1>
                            
@@ -219,6 +221,40 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                 {hook name="main.content-bottom"}
             </div><!-- /.container -->
         </main><!-- /.main-container -->
+        
+
+        <br>
+<!---------SO FUNKTIONIERTS------------>  
+   
+<div class="so-funktionierst row">
+    <h2 class="title">SO FUNKTIONIERT'S</h2>
+                    <div class="col-md-12 col-md-offset-0 col-sm-11 col-sm-offset-1">
+                        <div class="col-md-2 col-sm-12 text-center"></div>
+                        <div class="col-md-2 col-sm-3 text-center">
+                            <img src="{image file='assets/dist/img/sofunktionierts/produkt.svg'}" width="100">
+                            <h4 class="font-medium">PRODUKT</h4>
+                           Unser Online Shop bietet Ihnen zahlreiche Heizungs-, Sanitär- und Klimaprodukte 
+                        </div>
+                        <div class="col-md-1 col-sm-1 text-center">
+                            <img src="{image file='assets/dist/img/sofunktionierts/plus.svg'}" width="35">
+                        </div>
+                        <div class="col-md-2 col-sm-3 text-center">
+                            <img src="{image file='assets/dist/img/sofunktionierts/service.svg'}" width="100">
+                            <h4 class="font-medium">INSTALLATEUR</h4>
+                             Unsere Monteure stellen sicher, dass Ihre neue Produkte optimal montiert und installiert wird
+                        </div>
+                        <div class="col-md-1 col-sm-1 text-center">
+                            <img src="{image file='assets/dist/img/sofunktionierts/equal.svg'}" width="35">
+                        </div>
+                        <div class="col-md-2 col-sm-3 text-center">
+                            <img src="{image file='assets/dist/img/sofunktionierts/relax.svg'}" width="100">
+                            <h4 class="font-medium">RELAX</h4>
+                            Unser erfahrenes Team wird die Aufgabe erfüllen, während Sie sich entspannen.
+                        </div>
+                        <div class="col-md-2 col-sm-12 text-center"></div>
+                    </div>
+                </div>    
+        
       <section class="footer-block">
                     <div class="container">
                         <div class="col col-sm-12 lieferungbedienungen">

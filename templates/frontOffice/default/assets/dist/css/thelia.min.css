@@ -1124,7 +1124,7 @@ a {
 a:focus,
 a:hover {
     color: #7a7a7a;
-    text-decoration: underline
+   
 }
 a:focus {
     outline: dotted thin;
@@ -13300,4 +13300,11 @@ animation: fadeout 2s;
         height:auto
     } 
    
+}
+
+.slogan{
+    font-size:0.4em;
+    padding-left:5px;
+    margin-bottom:0px;
+    color:#58524c;
 }
