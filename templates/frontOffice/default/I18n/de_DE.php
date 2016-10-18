@@ -205,7 +205,7 @@ return [
     'Status' => 'Status',
     'Subscribe' => 'Abonnieren',
     'Taxed Price' => 'Besteuert Preis',
-    'Thank you for the trust you place in us.' => 'Vielen Dank für das Vertrauen, das Sie in uns setzen.',
+    'Thank you for the trust you place in us.' => 'Vielen Dank für das Vertrauen, dass Sie in uns setzen.',
     'Thanks !' => 'Vielen Dank!',
     'Thanks for signing up! We\'ll keep you posted whenever we have any new updates.' => 'Vielen Dank für Ihre Anmeldung! Wir halten Sie auf dem Laufenden über neuen Updates.',
     'Thanks for your message, we will contact as soon as possible.' => 'Vielen Dank für Ihre Nachricht, wir melden uns so bald wie möglich.',
