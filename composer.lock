@@ -291,6 +291,7 @@
                 "html2pdf",
                 "pdf"
             ],
+            "abandoned": "spipu/html2pdf",
             "time": "2013-09-13 12:23:43"
         },
         {
@@ -346,6 +347,7 @@
                 "TCPDF",
                 "pdf"
             ],
+            "abandoned": "tecnickcom/tcpdf",
             "time": "2013-09-12 17:00:40"
         },
         {
@@ -2054,6 +2056,7 @@
                 "icu",
                 "intl"
             ],
+            "abandoned": "symfony/intl",
             "time": "2013-06-03 18:32:07"
         },
         {
