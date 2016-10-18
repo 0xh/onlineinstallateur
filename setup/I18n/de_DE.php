@@ -819,7 +819,7 @@ return [
     'Profiles - at the top' => 'Profile - oben',
     'Profiles - bottom' => 'Profile - unten',
     'Qatar' => 'Katar',
-    'Refunded' => 'Zrückerstattet',
+    'Refunded' => 'Zurückerstattet',
     'Register - CSS stylesheet' => 'Konto-Erstellung - CSS-Stylesheet',
     'Register - after javascript include' => 'Konto-Erstellung - Nach Integration von JavaScript',
     'Register - after javascript initialisation' => 'Konto-Erstellung - nach der Initialisierung von Javascript',

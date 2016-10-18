@@ -9,7 +9,7 @@ return [
     'Email: ' => 'E-Mail-Adresse: ',
     'INVOICE' => 'RECHNUNG',
     'Invoice REF' => 'Rechnungs REF',
-    'Invoice address' => 'Rechungsadresse',
+    'Invoice address' => 'Rechnungsadresse',
     'Invoice date' => 'Rechnungsdatum',
     'Payment module' => 'Zahlungsmodul',
     'Phone: ' => 'Telefonnummer: ',
