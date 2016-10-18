@@ -516,7 +516,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/d9d21cfcc3e202ee34777d6da38897695d4d208d",
+            "url": "https://api.github.com/repos/symfony/process/zipball/6f1979c3b0f4c22c77a8a8971afaa7dd07f082ac",
             "reference": "6f1979c3b0f4c22c77a8a8971afaa7dd07f082ac",
             "shasum": ""
         },
@@ -2281,7 +2281,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/config/zipball/ee4cdda66aff834c8125e8f2c15932461667c521",
+            "url": "https://api.github.com/repos/symfony/config/zipball/41ee6c70758f40fa1dbf90d019ae0a66c4a09e74",
             "reference": "41ee6c70758f40fa1dbf90d019ae0a66c4a09e74",
             "shasum": ""
         },
@@ -2701,7 +2701,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/form/zipball/b629051c77a4f37c625651d03002760385df4575",
+            "url": "https://api.github.com/repos/symfony/form/zipball/7fd5e4034cb8e215887136f5e176430bbf5ef085",
             "reference": "7fd5e4034cb8e215887136f5e176430bbf5ef085",
             "shasum": ""
         },
@@ -4354,6 +4354,63 @@
         },
         "installation-source": "dist",
         "notification-url": "https://packagist.org/downloads/"
+    },
+    {
+        "name": "stripe/stripe-php",
+        "version": "v3.23.0",
+        "version_normalized": "3.23.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/stripe/stripe-php.git",
+            "reference": "c702a2ed92f4b39603c4a796492d87bcc16c819c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c702a2ed92f4b39603c4a796492d87bcc16c819c",
+            "reference": "c702a2ed92f4b39603c4a796492d87bcc16c819c",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-json": "*",
+            "ext-mbstring": "*",
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0",
+            "satooshi/php-coveralls": "~0.6.1",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "time": "2016-09-15 18:16:59",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Stripe\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Stripe and contributors",
+                "homepage": "https://github.com/stripe/stripe-php/contributors"
+            }
+        ],
+        "description": "Stripe PHP Library",
+        "homepage": "https://stripe.com/",
+        "keywords": [
+            "api",
+            "payment processing",
+            "stripe"
+        ]
     },
     {
         "name": "thelia/hooktest-template",

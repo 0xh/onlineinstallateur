@@ -100,6 +100,19 @@
                     ]]>
                 </description>
             </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Import your stock</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns to work:
+                    <ul>
+                        <li>id: The id of your product sale elements </li>
+                        <li>stock: The quantity of product you have </li>
+                    </ul>
+                    It can have the column "ean" that defines the product's EAN code.
+                    ]]>
+                </description>
+            </import_descriptive>
         </import>
         
         
@@ -123,6 +136,24 @@
                 </description>
             </import_descriptive>
             <import_descriptive locale="en_US">
+                <title>Import your prices excluding taxes</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>id: The id of your product sale elements </li>
+                        <li>price: The price excluding taxes of the product attribute combinations</li>
+                    </ul>
+                    It may also optionally have those columns:
+                    <ul>
+                       <li>currency: the currency code (example: EUR, USD)</li>
+                       <li>promo_price: the promo price excluding taxes of the product attribute combinations</li>
+                       <li>promo: If this value is 0, set the product not in promo, if 1, it sets the product in promo</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
                 <title>Import your prices excluding taxes</title>
                 <description>
                     <![CDATA[

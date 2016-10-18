@@ -111,7 +111,9 @@ class Paypal extends AbstractPaymentModule
             $products[0][ "AMT" . $itemIndex ]  = - $delta;
             $products[0][ "QTY" . $itemIndex ]  = 1;
         }
-
+        $logger->getLogger()->error("paypal total1 ".round($order->getTotalAmount(), 2));
+        $logger->getLogger()->error("paypal total2 ".round($order->getTotalAmount($useless, false), 2));
+        
         /*
          * Create setExpressCheckout request
          */
@@ -274,6 +276,9 @@ class Paypal extends AbstractPaymentModule
                 ->setTitle('Paypal payment confirmation')
                 ->setSubject('Payment of order {$order_ref}')
                 ->setLocale('fr_FR')
+                ->setTitle('Confirmation de paiement par Paypal')
+                ->setSubject('Confirmation du paiement de votre commande {$order_ref}')
+                ->setLocale('de_DE')
                 ->setTitle('Confirmation de paiement par Paypal')
                 ->setSubject('Confirmation du paiement de votre commande {$order_ref}')
                 ->save()

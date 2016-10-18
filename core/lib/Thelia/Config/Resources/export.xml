@@ -7,22 +7,27 @@
     <export_categories>
         <export_category id="thelia.export.customer">
             <title locale="en_US">Customers</title>
+            <title locale="de_DE">Kunden</title>
             <title locale="fr_FR">Clients</title>
         </export_category>
         <export_category id="thelia.export.products">
             <title locale="en_US">Products</title>
+            <title locale="de_DE">Produkte</title>
             <title locale="fr_FR">Produits</title>
         </export_category>
         <export_category id="thelia.export.content">
             <title locale="en_US">Content</title>
+            <title locale="de_DE">Inhalt</title>
             <title locale="fr_FR">Contenu</title>
         </export_category>
         <export_category id="thelia.export.orders">
             <title locale="en_US">Orders</title>
+            <title locale="de_DE">Bestellungen</title>
             <title locale="fr_FR">Commandes</title>
         </export_category>
         <export_category id="thelia.export.modules">
             <title locale="en_US">Modules</title>
+            <title locale="de_DE">Modulen</title>
             <title locale="fr_FR">Modules</title>
         </export_category>
     </export_categories>
@@ -37,6 +42,10 @@
                 <title>Mailing</title>
                 <description>Export the last name, first name and email address of the newsletter subscribers</description>
             </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Mailing</title>
+                <description>Export the last name, first name and email address of the newsletter subscribers</description>
+            </export_descriptive>
         </export>
 
         <export id="thelia.export.complete" category_id="thelia.export.customer" class="Thelia\ImportExport\Export\Type\CustomerExport">
@@ -45,6 +54,10 @@
                 <description>Exporter toutes les informations à propos de vos clients</description>
             </export_descriptive>
             <export_descriptive locale="en_US">
+                <title>Customers</title>
+                <description>Export all the information about your customers</description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
                 <title>Customers</title>
                 <description>Export all the information about your customers</description>
             </export_descriptive>
@@ -59,6 +72,10 @@
                 <title>Product prices excluding taxes</title>
                 <description>Export the prices of the products excluding taxes</description>
             </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Product prices excluding taxes</title>
+                <description>Export the prices of the products excluding taxes</description>
+            </export_descriptive>
         </export>
 
         <export id="thelia.export.taxed_prices" class="Thelia\ImportExport\Export\Type\ProductTaxedPricesExport" category_id="thelia.export.products">
@@ -67,6 +84,10 @@
                 <description>Exporter le prix TTC de vos produits</description>
             </export_descriptive>
             <export_descriptive locale="en_US">
+                <title>Product prices including taxes</title>
+                <description>Export the prices of the products including taxes</description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
                 <title>Product prices including taxes</title>
                 <description>Export the prices of the products including taxes</description>
             </export_descriptive>
@@ -86,6 +107,12 @@
                     ( url réécrites, meta description et mots clés, titre ) de vos produits
                 </description>
             </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Product SEO information</title>
+                <description>
+                    Export the SEO information ( rewritten url, meta description and keywords, page title ) of your products
+                </description>
+            </export_descriptive>
         </export>
 
         <export id="thelia.export.content" class="Thelia\ImportExport\Export\Type\ContentExport" category_id="thelia.export.content">
@@ -101,6 +128,12 @@
                     Exporter vos contenus et les dossiers associés
                 </description>
             </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Contents and folder</title>
+                <description>
+                    Export your contents and their related folders
+                </description>
+            </export_descriptive>
         </export>
 
         <export id="thelia.export.orders" class="Thelia\ImportExport\Export\Type\OrderExport" category_id="thelia.export.orders">
@@ -114,6 +147,12 @@
                 <title>Commandes complètes</title>
                 <description>
                     Exporter vos commandes
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Full orders</title>
+                <description>
+                    Export your orders
                 </description>
             </export_descriptive>
         </export>
