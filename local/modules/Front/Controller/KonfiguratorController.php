@@ -12,7 +12,6 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Form\Definition\FrontForm;
 use Thelia\Form\Exception\FormValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use HookKonfigurator\Model\Products;
 use Thelia\Log\Tlog;
 use Thelia\Model\OrderPostage;
 use Thelia\Model\AddressQuery;

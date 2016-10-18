@@ -24,14 +24,6 @@
 namespace Front\Controller;
 
 use Thelia\Controller\Front\BaseFrontController;
-use HookKlimaAngebot\Form\KlimaAngebot;
-use Thelia\Form\Definition\FrontForm;
-use Thelia\Form\Exception\FormValidationException;
-use Thelia\Log\Tlog;
-use Thelia\Model\ConfigQuery;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\FileBag;
 /**
  * Class ContactController
  * @package Thelia\Controller\Front

@@ -4,10 +4,8 @@
 namespace DeliveryDelay\Controller\Admin;
 
 use DeliveryDelay\DeliveryDelay;
-use DeliveryDelay\Model\ProductDelayQuery;
 use DeliveryDelay\Model\UndeliverableDate;
 use DeliveryDelay\Model\UndeliverableDateQuery;
-use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 

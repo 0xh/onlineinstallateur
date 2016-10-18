@@ -10,7 +10,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Model\ProductPriceQuery;
-use Thelia\Model\ProductQuery;
 
 class CriteriaSearchHook extends BaseHook
 {

@@ -4,14 +4,10 @@ namespace Front\Controller;
 
 use Thelia\Controller\Front\BaseFrontController;
 use HookCustomServices\Form\CustomServices;
-use Thelia\Form\Definition\FrontForm;
-use Thelia\Form\Exception\FormValidationException;
 use Thelia\Log\Tlog;
 use Thelia\Model\ConfigQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 /**
  * Class ContactController
  * @package Thelia\Controller\Front

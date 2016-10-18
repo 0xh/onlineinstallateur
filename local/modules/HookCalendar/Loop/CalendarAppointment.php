@@ -11,7 +11,6 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use HookCalendar\Model\Map\BookingsServicesTableMap;
 use HookCalendar\Model\BookingsServicesQuery;
-use HookCalendar\Model\BookingsServices;
 use Propel\Runtime\ActiveQuery\Criteria;
 
 /**

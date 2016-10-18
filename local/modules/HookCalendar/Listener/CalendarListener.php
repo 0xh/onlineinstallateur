@@ -18,7 +18,6 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Log\Tlog;
 use HookCalendar\Model\BookingsServicesQuery;
-use HookCalendar\Model\BookingsServices;
 use Thelia\Model\CartItemQuery;
 use Thelia\Core\Event\Cart\CartItemDuplicationItem;
 

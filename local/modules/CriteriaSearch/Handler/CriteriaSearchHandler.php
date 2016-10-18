@@ -3,14 +3,9 @@
 
 namespace CriteriaSearch\Handler;
 
-use CriteriaSearch\Model\Map\CriteriaSearchCategoryTaxRuleTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
-use Propel\Runtime\ActiveQuery\Join;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Thelia\Core\HttpFoundation\Request;
-use Thelia\Model\Map\TaxRuleTableMap;
-use Thelia\Model\TaxRuleQuery;
-use Thelia\TaxEngine\Calculator;
 
 class CriteriaSearchHandler
 {

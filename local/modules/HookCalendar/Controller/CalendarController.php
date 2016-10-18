@@ -9,7 +9,6 @@ use Thelia\Core\HttpFoundation\Request;
 use Thelia\Log\Tlog;
 use HookCalendar\Model\BookingsServicesQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
-use HookCalendar\Model\BookingsServices;
 /**
  * Class CalendarController
  * @package HookCalendar\Controller

@@ -7,7 +7,6 @@ use DeliveryDelay\DeliveryDelay;
 use DeliveryDelay\Model\ProductDelayQuery;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
-use Symfony\Component\Validator\Constraints;
 
 class DeliveryDelayForm extends BaseForm
 {
