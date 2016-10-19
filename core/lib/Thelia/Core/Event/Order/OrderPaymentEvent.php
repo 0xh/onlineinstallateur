@@ -12,8 +12,8 @@
 
 namespace Thelia\Core\Event\Order;
 
-use Thelia\Core\Event\ActionEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Thelia\Core\Event\ActionEvent;
 use Thelia\Model\Order;
 
 /**
