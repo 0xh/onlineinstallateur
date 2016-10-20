@@ -9105,7 +9105,8 @@ a {
     font-size: inherit;
     -webkit-font-smoothing: antialiased;
     transform: translate(0, 0);
-    content: "\f078"
+    content: "\f078";
+    z-index:100
 }
 .alert-warning:before,
 .block-default .block-content li:before {
@@ -13266,7 +13267,7 @@ animation: fadeout 2s;
     padding:20px;
     margin-top:15px;
     margin-bottom:90px;
-    background:#e5e5e5;
+    background:#f3f5f8;
     height:250px;
     position:relative;
 }
@@ -13307,4 +13308,7 @@ animation: fadeout 2s;
     padding-left:5px;
     margin-bottom:0px;
     color:#58524c;
+}
+.text-left{
+	text-align:left
 }

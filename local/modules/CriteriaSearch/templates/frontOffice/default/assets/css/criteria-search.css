@@ -72,3 +72,14 @@ span.criteria-pagination{
 .radio label input[type="radio"]:disabled + .cr {
     opacity: .5;
 }
+.multiselect {
+	min-width:180px;
+}
+
+.multiselect .multiselect-selected-text{
+	display:inline-block;
+	min-width:150px;
+}
+.product-filter{
+	background:#F3F5F8;
+}

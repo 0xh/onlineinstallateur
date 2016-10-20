@@ -14,14 +14,14 @@
     <div class="main">
 
     {* Parameters *}
-    {$limit={$smarty.get.limit|default:8}}
+    {$limit={$smarty.get.limit|default:24}}
     {$product_page={$smarty.get.page|default:1}}
     {$product_order={$smarty.get.order|default:'new'}}
     {$product_type={$smarty.get.type|default:'new'}}
 
     <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
 
-        <h1 id="main-label" class="page-header">{if $product_type == "new"}{intl l="Latest products"}{elseif $product_type == "offers"}{intl l="Product Offers"}{/if}</h1>
+        <h1 id="main-label" class="page-header" style="font-size:36px">{if $product_type == "new"}{intl l="Latest products"}{elseif $product_type == "offers"}{intl l="Product Offers"}{/if}</h1>
         {assign var="amount" value={count type="product" promo="{$product_type == "offers"}" new="{$product_type == "new"}"}}
 
         {hook name="viewall.top"}

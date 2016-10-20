@@ -8,6 +8,9 @@ return array(
      'In stock' => 'Verfügbar',
      'Price filter' => 'Preis',
      'New' => 'Neu',
-     'Promo' => 'Reduziert'
+     'Promo' => 'Reduziert',
+	 'Choice options' => 'Wählen',
+	 'Selected' => 'Gewählt',
+	 'All selected' => 'Alle gewählt'
     
 );
