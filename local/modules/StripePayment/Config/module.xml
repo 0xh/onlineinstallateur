@@ -6,12 +6,16 @@
     <descriptive locale="en_US">
         <title>Stripe</title>
     </descriptive>
+    <descriptive locale="de_DE">
+        <title>Stripe</title>
+    </descriptive>
     <descriptive locale="fr_FR">
         <title>Stripe</title>
     </descriptive>
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
+        <language>de_DE</language>
     </languages>
     <version>1.0.1</version>
     <author>

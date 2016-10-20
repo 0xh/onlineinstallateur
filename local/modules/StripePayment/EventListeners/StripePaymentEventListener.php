@@ -8,7 +8,6 @@ use StripePayment\StripePayment;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Validator\Constraints;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\Event\TheliaFormEvent;
@@ -52,11 +51,11 @@ class StripePaymentEventListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        $events[TheliaEvents::FORM_AFTER_BUILD . ".thelia_order_payment"] = ["addStripeInput", 128];
-        $events[TheliaEvents::ORDER_SET_PAYMENT_MODULE] = ["getStripeTokenAndAmount", 128];
-        $events[TheliaEvents::ORDER_PAY] = ["stripePayment", 128];
-
-        return $events;
+    	return array(
+    			TheliaEvents::FORM_AFTER_BUILD . ".thelia_order_payment" => array("addStripeInput", 128),
+    			TheliaEvents::ORDER_SET_PAYMENT_MODULE => array("getStripeTokenAndAmount", 128),
+    			TheliaEvents::ORDER_PAY => array("stripePayment", 128),
+    	);    	
     }
 
     /**

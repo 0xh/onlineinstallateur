@@ -3,6 +3,7 @@
 namespace StripePayment;
 
 use Propel\Runtime\Connection\ConnectionInterface;
+use Stripe\Stripe;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Thelia\Core\Translation\Translator;
 use Thelia\Model\ConfigQuery;
@@ -12,8 +13,6 @@ use Thelia\Model\Message;
 use Thelia\Model\MessageQuery;
 use Thelia\Model\Order;
 use Thelia\Module\AbstractPaymentModule;
-use Thelia\Log\Tlog;
-use Stripe\Stripe;
 
 /**
  * Class StripePayment
@@ -122,8 +121,8 @@ class StripePayment extends AbstractPaymentModule
                 )
             );
         }
-        $version_compare = version_compare(self::STRIPE_VERSION_MAX, $stripeVersion);
-        if ($version_compare < 1 && $version_compare > 0) {
+
+        if (version_compare(self::STRIPE_VERSION_MAX, $stripeVersion) < 1) {
             throw new \Exception(
                 Translator::getInstance()->trans(
                     "Stripe version is greater than max version (< %version). Current version: %curVersion.",
