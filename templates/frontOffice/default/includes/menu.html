@@ -11,8 +11,8 @@
         <nav class="nav-categories">
 
             {assign var="parent_cat" value={category attr="parent"}}
-
             {assign var="parent_cat_ids" value=[]}
+            {assign var="nav_category" value={category attr="id"}}
 
             {* While it's not the top level category *}
             {while $parent_cat != 0}
@@ -32,7 +32,11 @@
                 {if in_array($parent, $parent_cat_ids)}
                     <ul id="collapse{$parent}" class="in">
                 {else}
-                    <ul id="collapse{$parent}" class="collapse">
+				    {if $nav_category == $ID}
+                    <ul id="collapse{$parent}" class="collapse in" ><!-- collapse in to have the accordion open-->
+					{else}
+					<ul id="collapse{$parent}" class="collapse" >
+					{/if}
                 {/if}
             {/if}
 
@@ -44,9 +48,15 @@
                         {assign var="collapsed" value="collapsed"}
                     {/if}
 
+
+                {if $nav_category != 0 && $nav_category != $ID && $collapsed == "collapsed"}
+                    <li ><!-- display:none to hide other categories-->
+                {else }
                     <li>
+                {assign var="collapsed" value=""}
+                {/if}
                         <a href="{$URL nofilter}">
-                            {$TITLE} ({count type="product" category=$ID})
+                            {$TITLE}
                         </a>
 
                         <a href="#collapse{$ID}" class="accordion-toggle {$collapsed}" data-toggle="collapse" data-parent="#collapse{$ID}"></a>
@@ -72,3 +82,4 @@
 </section>
 {/elsehook}
 {hook name="category.sidebar-bottom"}
+			
