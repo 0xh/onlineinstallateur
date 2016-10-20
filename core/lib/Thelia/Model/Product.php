@@ -141,7 +141,7 @@ class Product extends BaseProduct implements FileModelParentInterface
     }
 
     /**
-     * @deprecated since 2.3, and will be removed in 2.4, please use Product::setDefaultFolder
+     * @deprecated since 2.3, and will be removed in 2.4, please use Product::setDefaultCategory
      * @param int $defaultCategoryId
      * @return $this
      */

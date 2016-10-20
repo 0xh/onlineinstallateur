@@ -18,6 +18,7 @@ use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 use Thelia\Model\Currency as ChildCurrency;
 use Thelia\Model\CurrencyQuery as ChildCurrencyQuery;
+use Thelia\Model\ProductPrice as ChildProductPrice;
 use Thelia\Model\ProductPriceQuery as ChildProductPriceQuery;
 use Thelia\Model\ProductSaleElements as ChildProductSaleElements;
 use Thelia\Model\ProductSaleElementsQuery as ChildProductSaleElementsQuery;
@@ -1296,8 +1297,19 @@ abstract class ProductPrice implements ActiveRecordInterface
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(ProductPriceTableMap::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(ProductPriceTableMap::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(ProductPriceTableMap::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -2078,6 +2090,19 @@ abstract class ProductPrice implements ActiveRecordInterface
         return (string) $this->exportTo(ProductPriceTableMap::DEFAULT_STRING_FORMAT);
     }
 
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     ChildProductPrice The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[ProductPriceTableMap::UPDATED_AT] = true;
+
+        return $this;
+    }
     /**
      * Code to be run before persisting the object
      * @param  ConnectionInterface $con

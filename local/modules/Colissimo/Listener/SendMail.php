@@ -21,6 +21,8 @@ use Thelia\Log\Tlog;
 use Thelia\Mailer\MailerFactory;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\MessageQuery;
+use Thelia\Model\OrderStatus;
+use Thelia\Module\PaymentModuleInterface;
 
 
 /**

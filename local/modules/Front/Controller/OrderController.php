@@ -43,6 +43,7 @@ use Thelia\Model\AreaDeliveryModuleQuery;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\Order;
+use Thelia\Model\OrderPostage;
 use Thelia\Model\OrderProductQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Module\AbstractDeliveryModule;
@@ -123,7 +124,7 @@ class OrderController extends BaseFrontController
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_ADDRESS, $orderEvent);
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
-        
+
         return $this->generateRedirectFromRoute("order.invoice");
     }
 
@@ -330,8 +331,9 @@ class OrderController extends BaseFrontController
         $this->checkValidInvoice();
 
         $orderEvent = $this->getOrderEvent();
+
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_PAY, $orderEvent);
-      
+
         $placedOrder = $orderEvent->getPlacedOrder();
 
         if (null !== $placedOrder && null !== $placedOrder->getId()) {
@@ -385,6 +387,7 @@ class OrderController extends BaseFrontController
         }
 
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_CART_CLEAR, $this->getOrderEvent());
+
         $this->getParserContext()->set("placed_order_id", $placedOrder->getId());
     }
 
@@ -425,6 +428,7 @@ class OrderController extends BaseFrontController
     protected function getOrderEvent()
     {
         $order = $this->getOrder($this->getRequest());
+
         return new OrderEvent($order);
     }
 
@@ -435,7 +439,6 @@ class OrderController extends BaseFrontController
         if (null !== $order = $session->getOrder()) {
             return $order;
         }
-
 
         $order = new Order();
 
@@ -455,6 +458,7 @@ class OrderController extends BaseFrontController
     public function generateInvoicePdf($order_id)
     {
         $this->checkOrderCustomer($order_id);
+
 
         return $this->generateOrderPdf($order_id, ConfigQuery::read('pdf_invoice_file', 'invoice'));
     }
@@ -492,6 +496,7 @@ class OrderController extends BaseFrontController
         }
 
         throw new AccessDeniedHttpException();
+
     }
 
     private function checkOrderCustomer($order_id)

@@ -1164,6 +1164,40 @@ abstract class ProductQuery extends ModelCriteria
      ->endUse();
     }
 
+	/**
+     * Filter the query by a related Product object
+     * using the accessory table as cross reference
+     *
+     * @param Product $product the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByProductRelatedByAccessory($product, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useAccessoryRelatedByProductIdQuery()
+            ->filterByProductRelatedByAccessory($product, $comparison)
+            ->endUse();
+    }
+
+    /**
+     * Filter the query by a related Product object
+     * using the accessory table as cross reference
+     *
+     * @param Product $product the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductQuery The current query, for fluid interface
+     */
+    public function filterByProductRelatedByProductId($product, $comparison = Criteria::EQUAL)
+    {
+        return $this
+            ->useAccessoryRelatedByAccessoryQuery()
+            ->filterByProductRelatedByProductId($product, $comparison)
+            ->endUse();
+    }
+	
     /**
      * Adds a JOIN clause to the query using the AccessoryRelatedByAccessory relation
      *
