@@ -31,24 +31,11 @@
                             <div class="col-md-4">
                                 <p class="title title-without-tabs">{intl d='sofort.bo.default' l="Sofort Production parameters"}</p>
 
-                                {*render_form_field form=$form field="login" value=$login*}
-                                {*render_form_field form=$form field="password" value=$password*}
-                                {*render_form_field form=$form field="signature" value=$signature*}
+                             {render_form_field form=$form field="key" value=$key}
                             </div>
     
                             <div class="col-md-4">
-                                <p class="title title-without-tabs">{intl d='sofort.bo.default' l="Sofort Sandbox parameters"}</p>
 
-                                {custom_render_form_field form=$form field="sandbox"}
-                                    <input type="checkbox" {form_field_attributes form=$form field="sandbox"} {if $sandbox}checked{/if}>
-                                    {$label}
-                                {/custom_render_form_field}
-
-                                {render_form_field form=$form field="sandbox_login" value=$sandbox_login}
-                                {render_form_field form=$form field="sandbox_password" value=$sandbox_password}
-                                {render_form_field form=$form field="sandbox_signature" value=$sandbox_signature}
-                                
-                                {render_form_field form=$form field="allowed_ip_list" value=$allowed_ip_list}
                             </div>
     
                             <div class="col-md-4">
@@ -68,22 +55,6 @@
                                     <span class="glyphicon glyphicon-info-sign"></span>
                                     {intl d='sofort.bo.default' l='You can <a href="%url">edit the payment confirmation email</a> sent to the customer after a successful payment.' url={url path="/admin/configuration/messages"}}
                                 </div>
-
-                                {custom_render_form_field form=$form field="minimum_amount"}
-                                    <div class="input-group">
-                                        <input type="text" {form_field_attributes form=$form field="minimum_amount" value=$minimum_amount}>
-                                        <span class="input-group-addon">{currency attr='symbol'}</span>
-                                    </div>
-                                {/custom_render_form_field}
-
-                                {custom_render_form_field form=$form field="maximum_amount"}
-                                    <div class="input-group">
-                                        <input type="text" {form_field_attributes form=$form field="maximum_amount" value=$maximum_amount}>
-                                        <span class="input-group-addon">{currency attr='symbol'}</span>
-                                    </div>
-                                {/custom_render_form_field}
-
-                                {*render_form_field form=$form field="cart_item_count" value=$cart_item_count*}
                             </div>
                         </div>
                     </form>

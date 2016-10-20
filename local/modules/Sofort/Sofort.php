@@ -126,18 +126,20 @@ class Sofort extends AbstractPaymentModule
         	$products[0][ "QTY" . $itemIndex ]  = 1;
         }
         
-    	
+        $this->getLogger()->error("Sofort Amount: ".round($order->getTotalAmount(), 2)."Delta:".$delta);
+    /*	
         $this->getLogger()->error("Sofort SuccessUrl:".$successUrl);
         $this->getLogger()->error("Sofort CancelUrl:".$cancelUrl); 
-        $this->getLogger()->error("Sofort Amount:".round($order->getTotalAmount(), 2)."Delta:".$delta);
+       
         $this->getLogger()->error("Sofort  PendingUrl:".$pendingUrl);
         $this->getLogger()->error("Sofort LossUrl".$lossUrl);
         $this->getLogger()->error("Sofort ReceivedUrl".$receivedUrl);
         $this->getLogger()->error("Sofort RefundedUrl".$refundedUrl);
         $this->getLogger()->error("Sofort UntraceableUrl".$untraceableUrl);
-        $configkey = '136500:298540:ab1acabad886cbea351a5fa4aa085e0d';//userId:ProjectID:API Key
+        */
+        $configkey = Sofort::getConfigValue('key','missing');//;//userId:ProjectID:API Key
 $Sofortueberweisung = new Sofortueberweisung($configkey);
-
+//$this->getLogger()->error("Sofort-pay key ".$configkey);
 $this->getLogger()->error("Sofort-pay order ".$order->getId()." amount ".round($order->getTotalAmount(), 2)." currency ".$order->getCurrency()->getCurrentTranslation()->getCurrency()->getCode());
 
 $Sofortueberweisung->setAmount(round($order->getTotalAmount(), 2));
@@ -201,10 +203,10 @@ if($Sofortueberweisung->isError()) {
 
     public function isValidPayment()
     {
-        $valid = false;
+        $valid = true;//false;
 
         // Check if total order amount is within the module's limits
-        $order_total = $this->getCurrentOrderTotalAmount();
+       /* $order_total = $this->getCurrentOrderTotalAmount();
 
         $min_amount = Sofort::getConfigValue('minimum_amount', 0);
         $max_amount = Sofort::getConfigValue('maximum_amount', 0);
@@ -237,7 +239,7 @@ if($Sofortueberweisung->isError()) {
                     $valid = in_array($client_ip, $allowed_client_ips);
                 }
             }
-        }
+        }*/
 
         return $valid;
     }

@@ -48,7 +48,7 @@ class ConfigurationController extends BaseAdminController
             return $response;
         }
 
-        $logFilePath = SofortApiLogManager::getLogFilePath();
+        $logFilePath = THELIA_LOG_DIR . DS . "log-sofort-payment.txt";
 
         return Response::create(
             @file_get_contents($logFilePath),

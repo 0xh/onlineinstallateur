@@ -58,7 +58,7 @@ class SofortResponse extends BasePaymentModuleController
     public function ok($order_id)
     {
     	
-    	$this->getLogger()->error("anisofort response ");
+    	//$this->getLogger()->error("anisofort response ");
 
         
         	/*
@@ -70,23 +70,22 @@ class SofortResponse extends BasePaymentModuleController
 */
         	$content = $this->getRequest()->getContent();
         	$transaction_id = "";
-        	if($content == null) 
-        		$this->getLogger()->error("Sofort-ok content is null ");
-        	else {
+        	if($content != null) 
+        	//	$this->getLogger()->error("Sofort-ok content is null ");
+        	// else 
+        	{
         		$transaction_array = explode("transaction",$content);
         		$transaction_id = $transaction_array[2];
         		$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
-        		$this->getLogger()->error("Sofort-ok transaction-id ".$transaction_id);
+        		$this->getLogger()->error("Sofort valid transaction-id ".$transaction_id);
         	}
         	//if($transaction_id == "")
-
-        		
         		
         		$orderQuery=OrderQuery::create();
         		$order =$orderQuery->findOneById($order_id);
         		
         		$transaction_id = $order->getTransactionRef();
-        		$this->getLogger()->error("Sofort-ok transaction_id ".$transaction_id);
+        		$this->getLogger()->error("Sofort valid transaction_id ".$transaction_id);
         		
         		
         	if($transaction_id)	{
@@ -103,8 +102,7 @@ class SofortResponse extends BasePaymentModuleController
         	}
         	else 
         	{
-        		$this->getLogger()->error("Sofort-ok transaction_id is null");
-        		// order payment status .. pending?
+        		$this->getLogger()->error("Sofort transaction_id is null, order contains no valid transaction_id");
         	}
             /*
              * $payerid string value returned by sofort
@@ -379,7 +377,7 @@ class SofortResponse extends BasePaymentModuleController
         	 		);
         }
         else 
-        	 $this->getLogger()->error("Sofort response transaction_details for ".$transaction_id." ".implode('<br />', $output));
+        	 $this->getLogger()->error("Sofort response transaction successful for id: ".$transaction_id);//." ".implode('<br />', $output));
         
         }
         
