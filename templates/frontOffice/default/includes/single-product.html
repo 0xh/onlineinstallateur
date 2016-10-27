@@ -53,9 +53,9 @@
                     {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
                     <span class="special-price col-xs-6">
                     	<meta itemprop="price" content="{$BEST_TAXED_PRICE}">
-                    	<span class="price-label">{intl l="Special Price:"} </span><span class="price">
+                    	<span class="price-label">{intl l="Special Price:" d="fo.default"} </span><span class="price">
                         {if $combination_count > 1}
-                            {intl l="From %price" price={format_money number=$BEST_TAXED_PRICE}}
+                            {intl l="From %price" d="fo.default" price={format_money number=$BEST_TAXED_PRICE}}
                         {else}
                             {format_money number=$BEST_TAXED_PRICE}
                         {/if}
@@ -63,7 +63,7 @@
                     	</span>
                     </span>
                     {if $SHOW_ORIGINAL_PRICE}
-                    <span class="old-price col-xs-6"><span class="price-label">{intl l="Regular Price:"} </span><span class="price">{format_money number=$TAXED_PRICE}</span></span>
+                    <span class="old-price col-xs-6"><span class="price-label">{intl l="Regular Price:" d="fo.default"} </span><span class="price">{format_money number=$TAXED_PRICE}</span></span>
                     {/if}
                 {else}
                     
@@ -114,7 +114,7 @@
                             {/form_field}
                             <div>
                                 <div class="product-btn">
-                                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
+                                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="fo.default"}</button>
                                 </div>
                             </div>
                         </fieldset>
@@ -123,7 +123,7 @@
                 {else}
                     <div>
                         <div class="product-btn">
-                            <a href="{$URL nofilter}" class="btn btn-primary btn-block"><i class="fa fa-eye"></i> {intl l="View product"}</a>
+                            <a href="{$URL nofilter}" class="btn btn-primary btn-block"><i class="fa fa-eye"></i> {intl l="View product" d="fo.default"}</a>
                         </div>
                     </div>
                 {/if}

@@ -271,11 +271,13 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                 <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
                                 <div>
                                     <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
-                                    <!--img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="master"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/visacard.png'}" alt="visa"/-->
-                                    
                                     <img src="{image file='assets/dist/img/paymentsystems/sofort.png'}" alt="sofort"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="sofort"/>
+                                    <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="nachnahme"/>
+                                </div>
+                                <div>
+                                    <img src="{image file='assets/dist/img/paymentsystems/visa.png'}" alt="visa"/>
+                                    <img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="mastercard"/>
+                                    <img src="{image file='assets/dist/img/paymentsystems/amex.png'}" alt="amex"/>
                                 </div>
                             </div>
                             <a href="contact">

@@ -31,7 +31,7 @@
        
     <hooks>
         <hook id="hookcustomservices.hook" class="HookCustomServices\Hook\Front" scope="request">
-            <tag name="hook.event_listener" event="main.head-bottom" />
+            <tag name="hook.event_listener" event="main.head-bottom" active="0"/>
         </hook>
     </hooks>
       
