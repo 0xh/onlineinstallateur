@@ -234,8 +234,10 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                             	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben, und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                         	<small>Produktabbildung kann abweichen</small><br>
                             <small>Die Ergebnisse aus dem Konfigurator haben keinen Anspruch auf Vollständigkeit der Produkte und Pakete.</small><br>
-                            <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="heizungskonfigurator-angebot"> <span style="color:#74A027;">NEUE HEIZUNG</a> aus.</small><br>
-                        </div>
+                            <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="heizungskonfigurator-angebot"> <span style="color:#74A027;">NEUE HEIZUNG</span></a> aus.</small><br>
+                            
+                            <br>
+                           
                     </div>
       </section>
             
@@ -296,6 +298,9 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                             </div>
                                 </a>
                         </div>
+                        
+                        
+                         
                     </div>
                    
                 </section><!-- /.footer-banner -->
@@ -306,7 +311,19 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                     
                     <div class="container">
                         <div class="blocks row">
-
+<div class="seo-text">
+                            <div class="col-sm-6">
+                            <h5>Die Hausfabrik ist Ihr verlässlicher Partner in den Bereichen Heizung, Klima und Sanitär. </h5>
+                                    <small>
+                                    In unserem Shop finden Sie eine große Auswahl an Produkten von Vaillant, Junkers, Grohe, Laufen und vielen mehr zu Bestpreisen, um Ihre Heizungs- und Klimaprojekte zu realisieren. Auch für Bad und WC gibt es ein großes Angebot an Armaturen, Duschköpfen und Toiletten.
+Unsere Installateure stehen Ihnen für eine Vielzahl an Serviceleistungen zur Verfügung. Mieten Sie sich einen Installateur für eine Montage, Austausch, Inbetriebnahme oder für eine Wartung Ihrer Heizungstherme.</small> </div>
+<div class="col-sm-6">
+<h5>Warum sollten Sie einen Installateur der Hausfabrik beauftragen?</h5>
+<small>Einen guten Installateur zu finden, kann sich schwierig gestalten. Unser Team verfügt über 40 Jahre Erfahrung und übt die Services mit Leidenschaft aus, unabhängig davon ob es sich dabei um eine Thermenwartung oder um eine Installation der neuen Heizung  handelt. Bei unseren Serviceleistungen und Angeboten gibt es keine versteckten Kosten. Sie erhalten ein unverbindliches Angebot und wir stehen Ihnen immer für Fragen oder Anregungen zur Verfügung.
+Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.</small><br><br><br>
+                                    </div>
+                        </div>
+                            <hr>
                             {hookblock name="main.footer-body"  fields="id,class,title,content"}
                             {forhook rel="main.footer-body"}
                                 <div class="col col-sm-4">
@@ -344,6 +361,9 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                 <footer class="footer-info" role="contentinfo">
                     <div class="container">
                         <div class="info row">
+                            
+                            
+                            </div>
                             <nav class="nav-footer col-lg-9" role="navigation">
                                 <ul class="list-unstyled list-inline">
                                 	<li><a href="/presse.html">Presse</a></li>
@@ -366,6 +386,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                                     <li><a href="{url path="/contact"}">{intl l="Contact Us"}</a></li>
                                 </ul-->
                             </nav>
+                            
                             <section class="copyright col-lg-3">{intl l="Copyright"} &copy; <time datetime="{'Y-m-d'|date}">{'Y'|date}</time> <a href="http://hausfabrik.at" rel="external">HAUSFABRIK</a></section>
                         </div>
                     </div>

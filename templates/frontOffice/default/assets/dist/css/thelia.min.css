@@ -13312,3 +13312,11 @@ animation: fadeout 2s;
 .text-left{
 	text-align:left
 }
+.seo-text{
+    border-bottom: 1px solid #e5e5e5;
+}
+.seo-text small{
+    font-size:0.8em;
+    color:#777;
+    padding-top:20px;
+}
