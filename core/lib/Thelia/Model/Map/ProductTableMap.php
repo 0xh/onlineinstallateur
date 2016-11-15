@@ -2,8 +2,6 @@
 
 namespace Thelia\Model\Map;
 
-use Thelia\Model\Product;
-use Thelia\Model\ProductQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -13,6 +11,8 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
+use Thelia\Model\Product;
+use Thelia\Model\ProductQuery;
 
 
 /**
@@ -263,21 +263,21 @@ class ProductTableMap extends TableMap
     {
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+				ProductCategoryTableMap::clearInstancePool();
+				FeatureProductTableMap::clearInstancePool();
+				ProductSaleElementsTableMap::clearInstancePool();
+				ProductImageTableMap::clearInstancePool();
+				ProductDocumentTableMap::clearInstancePool();
                 AccessoryTableMap::clearInstancePool();
                 CartItemTableMap::clearInstancePool();
-                FeatureProductTableMap::clearInstancePool();
-                //MontageTableMap::clearInstancePool();
-                ProductAssociatedContentTableMap::clearInstancePool();
-                ProductCategoryTableMap::clearInstancePool();
-                ProductDocumentTableMap::clearInstancePool();
-                //ProductHeizungTableMap::clearInstancePool();
-                ProductI18nTableMap::clearInstancePool();
-                ProductImageTableMap::clearInstancePool();
-                ProductSaleElementsTableMap::clearInstancePool();
-                ProductVersionTableMap::clearInstancePool();
-                SaleProductTableMap::clearInstancePool();
+                ProductAssociatedContentTableMap::clearInstancePool();           
+                SaleProductTableMap::clearInstancePool();           
+				ProductI18nTableMap::clearInstancePool();
+                ProductVersionTableMap::clearInstancePool();             
                 //SetProductsTableMap::clearInstancePool();
                 //SetsTableMap::clearInstancePool();
+				//ProductHeizungTableMap::clearInstancePool();
+				//MontageTableMap::clearInstancePool();
             }
 
     /**

@@ -11,6 +11,7 @@ return array(
      'Promo' => 'Reduziert',
 	 'Choice options' => 'Wählen',
 	 'Selected' => 'Gewählt',
-	 'All selected' => 'Alle gewählt'
+	 'All selected' => 'Alle gewählt',
+	 'Add to cart' => 'In den Warenkorb'
     
 );
