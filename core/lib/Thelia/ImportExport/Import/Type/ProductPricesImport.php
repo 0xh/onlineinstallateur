@@ -53,11 +53,10 @@ class ProductPricesImport extends AbstractImport
 
             $price = ProductPriceQuery::create()
                 ->filterByProductSaleElementsId($pse->getId())
-                ->findOneByCurrencyId($currency->getId())
-            ;
+                ->findOneByCurrencyId($currency->getId());
 
             if ($price === null) {
-                $price = new ProductPrice;
+                $price = new ProductPrice();
 
                 $price
                     ->setProductSaleElements($pse)

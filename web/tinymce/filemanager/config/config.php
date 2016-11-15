@@ -32,15 +32,15 @@ function generateFolder($env)
 
 $env = getenv('THELIA_ENV') ?: 'prod';
 
-if (file_exists(__DIR__.'/../../../../../../../../core/vendor/autoload.php')) {
+if (file_exists(__DIR__.'/../../../../core/vendor/autoload.php')) {
     // Symlinked with std install
-    require_once __DIR__.'/../../../../../../../../core/vendor/autoload.php';
+    require_once __DIR__.'/../../../../core/vendor/autoload.php';
 } elseif (file_exists(__DIR__.'/../../../../core/vendor/autoload.php')) {
     // Hard copy with std install
     require_once __DIR__.'/../../../../core/vendor/autoload.php';
-} elseif (file_exists(__DIR__.'/../../../../../../../../bootstrap.php')) {
+} elseif (file_exists(__DIR__.'/../../../../bootstrap.php')) {
     // Symlinked with thelia-project
-    require_once __DIR__.'/../../../../../../../../bootstrap.php';
+    require_once __DIR__.'/../../../../bootstrap.php';
 } elseif (file_exists(__DIR__.'/../../../../bootstrap.php')) {
     // Hard copy with thelia-project
     require_once __DIR__.'/../../../../bootstrap.php';

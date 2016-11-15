@@ -1,0 +1,12 @@
+{
+  "name": "HookToolbar",
+  "version": "1.0.0",
+  "authors": [
+    "Michaël Espeche <michael.espeche@gmail.com>"
+  ],
+  "description": "Bower configuration",
+  "license": "MIT",
+  "dependencies": {
+    "fontawesome": "~4.3.0"
+  }
+}

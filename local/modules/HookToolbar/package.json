@@ -1,0 +1,14 @@
+{
+  "name": "HookToolbar",
+  "version": "1.0.0",
+  "description": "Grunt configuration",
+  "author": "Michaël Espeche <michael.espeche@gmail.com>",
+  "dependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-less": "~1.0.0",
+    "grunt-contrib-cssmin": "~0.11.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "load-grunt-tasks": "~3.0.0",
+    "grunt-contrib-copy": "~0.7.0"
+  }
+}

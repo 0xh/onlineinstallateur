@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <!-- sample definition
+        <loop name="MySuperLoop" class="HookImporter\Loop\MySuperLoop" />
+        -->
+    </loops>
+
+    <forms>
+        <!--
+        <form name="MyFormName" class="HookImporter\Form\MySuperForm" />
+        -->
+    </forms>
+
+    <commands>
+        <!--
+        <command class="HookImporter\Command\MySuperCommand" />
+        -->
+    </commands>
+
+    <!--
+    <services>
+
+    </services>
+    -->
+
+    <!--
+    <hooks>
+        <hook id="hookimporter.hook" class="HookImporter\Hook\MySuperHook">
+            <tag name="hook.event_listener" event="main.body.bottom" type="front|back|pdf|email" method="onMainBodyBottom" />
+        </hook>
+    </hooks>
+    -->
+
+    <!--
+    <exports>
+
+    </exports>
+    -->
+
+<imports>
+		<import id="hookimporter.import.genericproduct" class="HookImporter\Import\GenericProductImport" category_id="thelia.import.products">
+			<import_descriptive locale="en_US">
+				<title>Import Full Product </title>
+				 <description>
+				  <![CDATA[
+                    Importer.2 supports the following structure:</br>
+                    Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Produkt_titel, Kurze_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
+                    Meta_beschreibung, Meta_keywords, Menge, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
+					Bild_kurz_beschreibung, Bild_postscriptum, Bild_file, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
+					
+                    Indications:
+                    <ul>
+                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
+                        <li>Decimal numbers must use "," as separator : 12,34</li>
+                        <li>Values are always numbers(even constraint vales)</li>
+                        <li>"False" and "true" must be replaced with 0 and 1</li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+			<import_descriptive locale="de_DE">
+				<title>Gesamte Produkten importieren </title>
+				 <description>
+				  <![CDATA[
+                    Importer.2 supports the following structure:</br>
+                    Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Produkt_titel, Kurz_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
+                    Meta_beschreibung, Meta_keywords, Menge, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
+					Bild_kurz_beschreibung, Bild_postscriptum, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
+					
+					Indications:
+                    <ul>
+                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
+                        <li>Decimal numbers must use "," as separator : 12,34</li>
+                        <li>Values are always numbers(even constraint vales)</li>
+                        <li>"False" and "true" must be replaced with 0 and 1</li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+		</import>
+	</imports>
+</config>

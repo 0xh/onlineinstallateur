@@ -19,7 +19,7 @@ class StripePaymentLog
     const NOTICE    = 'NOTICE';
     const INFO      = 'INFO';
     const DEBUG     = 'DEBUG';
-    const LOGCLASS = "\\Thelia\\Log\\Destination\\TlogDestinationFile";
+    const LOGCLASS = "\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile";
 
     /** @var Tlog $log */
     protected $log;
@@ -49,8 +49,10 @@ class StripePaymentLog
          * Write Log
          */
         $this->log = Tlog::getInstance();
+        $this->log->setPrefix("#LEVEL: #DATE #HOUR: ");
         $this->log->setDestinations(self::LOGCLASS);
         $this->log->setConfig(self::LOGCLASS, 0, THELIA_ROOT . "log" . DS . "log-stripe.txt");
+        $this->log->setLevel(Tlog::ERROR);
     }
 
     protected function getBackToPreviousState()

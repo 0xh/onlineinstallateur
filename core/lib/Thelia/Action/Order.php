@@ -52,6 +52,7 @@ use Thelia\Log\Tlog;
 use Thelia\Model\OrderQuery;
 
 
+
 /**
  *
  * Class Order
@@ -459,6 +460,8 @@ class Order extends BaseAction implements EventSubscriberInterface
         	if($eventOrder->getTransactionRef())
         		$placedOrder->setTransactionRef($eventOrder->getTransactionRef());
         	$placedOrder->setPostage($eventOrder->getPostage());
+        	//$placedOrder = new Order();
+        	$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
         	//$placedOrder->setLangId($eventOrder->getLang());
         	$placedOrder->setDiscount($eventOrder->getDiscount())
         	->save();

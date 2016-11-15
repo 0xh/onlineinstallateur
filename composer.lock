@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ab5f45471788545bcebb0446d123cbf",
-    "content-hash": "89c192c727d862f95e102badb8b54ad7",
+    "hash": "34243f7620775500e644522876abe4d4",
+    "content-hash": "28904b0d89062188cd4ce56fa788e3bc",
     "packages": [
         {
             "name": "commerceguys/addressing",
@@ -3203,6 +3203,81 @@
             "time": "2015-11-05 16:15:32"
         },
         {
+            "name": "thelia/hook-toolbar-module",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thelia-modules/HookToolbar.git",
+                "reference": "38eee4f98b25c79d605c625913ad4f07511765d7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thelia-modules/HookToolbar/zipball/38eee4f98b25c79d605c625913ad4f07511765d7",
+                "reference": "38eee4f98b25c79d605c625913ad4f07511765d7",
+                "shasum": ""
+            },
+            "require": {
+                "thelia/installer": "~1.1"
+            },
+            "type": "thelia-module",
+            "extra": {
+                "installer-name": "HookToolbar"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "time": "2015-03-14 19:32:44"
+        },
+        {
+            "name": "thelia/installer",
+            "version": "1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thelia/installer.git",
+                "reference": "da27ff8bc633452913590ee5bc26ee4c79ff61ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thelia/installer/zipball/da27ff8bc633452913590ee5bc26ee4c79ff61ee",
+                "reference": "da27ff8bc633452913590ee5bc26ee4c79ff61ee",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Thelia\\Composer\\TheliaInstallerPlugin"
+            },
+            "autoload": {
+                "psr-0": {
+                    "Thelia\\Composer": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL V3"
+            ],
+            "authors": [
+                {
+                    "name": "Manuel Raynaud",
+                    "email": "raynaud.manu@gmail.com",
+                    "homepage": "https://github.com/lunika"
+                }
+            ],
+            "description": "custom installer for Thelia.",
+            "keywords": [
+                "Thelia",
+                "Thelia-module",
+                "Thelia-template"
+            ],
+            "time": "2015-06-11 14:04:43"
+        },
+        {
             "name": "thelia/math-tools",
             "version": "1.0.2",
             "source": {
@@ -4246,54 +4321,6 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "time": "2014-12-24 09:51:48"
-        },
-        {
-            "name": "thelia/installer",
-            "version": "1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thelia/installer.git",
-                "reference": "da27ff8bc633452913590ee5bc26ee4c79ff61ee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thelia/installer/zipball/da27ff8bc633452913590ee5bc26ee4c79ff61ee",
-                "reference": "da27ff8bc633452913590ee5bc26ee4c79ff61ee",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0"
-            },
-            "require-dev": {
-                "composer/composer": "1.0.*@dev"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Thelia\\Composer\\TheliaInstallerPlugin"
-            },
-            "autoload": {
-                "psr-0": {
-                    "Thelia\\Composer": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL V3"
-            ],
-            "authors": [
-                {
-                    "name": "Manuel Raynaud",
-                    "email": "raynaud.manu@gmail.com",
-                    "homepage": "https://github.com/lunika"
-                }
-            ],
-            "description": "custom installer for Thelia.",
-            "keywords": [
-                "Thelia",
-                "Thelia-module",
-                "Thelia-template"
-            ],
-            "time": "2015-06-11 14:04:43"
         }
     ],
     "aliases": [],

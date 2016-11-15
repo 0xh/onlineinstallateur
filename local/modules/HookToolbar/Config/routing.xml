@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="toolbar.clearcache.internal" path="/admin-toolbar/clear-cache/internal">
+        <default key="_controller">HookToolbar\Controller\ToolbarController::flushInternalAction</default>
+    </route>
+
+    <route id="toolbar.clearcache.assets" path="/admin-toolbar/clear-cache/assets">
+        <default key="_controller">HookToolbar\Controller\ToolbarController::flushAssetsAction</default>
+    </route>
+
+    <route id="toolbar.clearcache.files" path="/admin-toolbar/clear-cache/files">
+        <default key="_controller">HookToolbar\Controller\ToolbarController::flushImagesAndDocumentsAction</default>
+    </route>
+</routes>
