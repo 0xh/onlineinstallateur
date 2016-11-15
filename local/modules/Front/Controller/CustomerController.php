@@ -153,7 +153,7 @@ class CustomerController extends BaseFrontController
     {
         if (! $this->getSecurityContext()->hasCustomerUser()) {
             $customerCreation = $this->createForm(FrontForm::CUSTOMER_CREATE);
-
+            
             try {
                 $form = $this->validateForm($customerCreation, "post");
 

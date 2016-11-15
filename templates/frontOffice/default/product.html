@@ -233,7 +233,7 @@
 
                                 <tr id="zwischensumme" style="display:none">
                                      <td><div>Zwischensumme:</div></td>
-                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span><span>€</span></td>
+                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
                                <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
                                 </tr>
                                 <tr>
@@ -262,7 +262,7 @@
                                     </tr>
                                     <tr id="zwischensumme" style="display:none">
                                      <td><div>Zwischensumme:</div></td>
-                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span><span>€</span></td>
+                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
                                <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
                                 </tr>
                                     <tr>
@@ -671,7 +671,13 @@
 
 
 
-<script>     
+<script>    
+var formatter = new Intl.NumberFormat('de-DE', {
+	  style: 'currency',
+	  currency: 'EUR',
+	  minimumFractionDigits: 2,
+	});
+	
 $('.products-content').on('click', '.thumbnail', function (event) {
             $("#zwischensumme").show();
 	if($(this).hasClass("selected")){
@@ -689,7 +695,7 @@ $('.products-content').on('click', '.thumbnail', function (event) {
 	    $productObject = $("[name=price_product_"+$productid+"]");
 	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
 	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())-parseFloat($serviceObject.text()));
-	    $productObject.text(parseFloat($productOriginalPrice.text()).formatMoney(2, ',', '.')   );
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text()))   );
 	}
 	else  {
         $("#services-appointments").show();
@@ -702,20 +708,10 @@ $('.products-content').on('click', '.thumbnail', function (event) {
 	    $productObject = $("[name=price_product_"+$productid+"]");
 	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
 	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())+parseFloat($serviceObject.text()));
-	    $productObject.text(parseFloat($productOriginalPrice.text()).formatMoney(2, ',', '.'));
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())) );
 	}
 });
 
-Number.prototype.formatMoney = function(c, d, t){
-	var n = this, 
-	    c = isNaN(c = Math.abs(c)) ? 2 : c, 
-	    d = d == undefined ? "," : d, 
-	    t = t == undefined ? "." : t, 
-	    s = n < 0 ? "-" : "", 
-	    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", 
-	    j = (j = i.length) > 3 ? j % 3 : 0;
-	   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-	 }
 </script>
 {hook name="product.after-javascript-include"}
 {/block}

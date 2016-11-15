@@ -4440,5 +4440,34 @@
             "payment processing",
             "stripe"
         ]
+    },
+    {
+        "name": "thelia/hook-toolbar-module",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thelia-modules/HookToolbar.git",
+            "reference": "38eee4f98b25c79d605c625913ad4f07511765d7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thelia-modules/HookToolbar/zipball/38eee4f98b25c79d605c625913ad4f07511765d7",
+            "reference": "38eee4f98b25c79d605c625913ad4f07511765d7",
+            "shasum": ""
+        },
+        "require": {
+            "thelia/installer": "~1.1"
+        },
+        "time": "2015-03-14 19:32:44",
+        "type": "thelia-module",
+        "extra": {
+            "installer-name": "HookToolbar"
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0+"
+        ]
     }
 ]

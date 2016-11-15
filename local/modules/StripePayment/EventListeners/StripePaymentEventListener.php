@@ -278,7 +278,7 @@ class StripePaymentEventListener implements EventSubscriberInterface
     {
         $stripeAmount = $this->request->getSession()->get('stripeAmount');
         $orderAmount = $order->getTotalAmount() * 100;
-
+        Tlog::getInstance()->error(" stripe amounttotal stripe ".$stripeAmount." order ".$orderAmount);
         if (strval($stripeAmount) != strval($orderAmount)) {
             throw new StripePaymentException(Translator::getInstance()
                 ->trans(

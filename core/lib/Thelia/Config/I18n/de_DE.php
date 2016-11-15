@@ -759,7 +759,7 @@ return [
     'main area' => 'Hauptgebiet',
     'middle' => 'Mitte',
     'minute(s)' => 'Minute(n)',
-    'password confirmation is not the same as password field' => 'Die Passwort-Bestätigung sctimmt nicht',
+    'password confirmation is not the same as password field' => 'Die Passwort-Bestätigung stimmt nicht',
     'password must be composed of at least 4 characters' => 'Das Passwort muss aus mindestens 4 Zeichen bestehen',
     'payment module %s is not a Thelia\Module\PaymentModuleInterface' => 'Zahlungsmodul %s ist nicht ein Thelia\Module\PaymentModuleInterface ',
     'pdf' => 'Pdf',
