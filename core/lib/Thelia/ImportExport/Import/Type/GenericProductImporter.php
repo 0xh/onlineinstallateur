@@ -12,19 +12,18 @@
 
 namespace Thelia\ImportExport\Import\Type;
 
-use Thelia\Core\Translation\Translator;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Model\Currency;
-use Thelia\Model\CurrencyQuery;
 use Thelia\Model\ProductPrice;
 use Thelia\Model\ProductPriceQuery;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Log\Tlog;
-use Thelia\Model\BrandI18nQuery;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Product;
 use Thelia\Model\ProductI18n;
 use Thelia\Model\ProductSaleElements;
+use Thelia\Model\ProductImageI18n;
+use Thelia\Model\ProductImage;
 
 /**
  * Class ProductPricesImport
@@ -46,10 +45,8 @@ class GenericProductImporter extends AbstractImport
     public function importData(array $row)
     {
         
-    	$errors = [];
+    	$errors = null;
     	$log = Tlog::getInstance ();
-    	$log->debug(" generic_product_import ");
-    	
     	
     	//$brandI18nQuerry = BrandI18nQuery::create ();
     	$productQuerry = ProductQuery::create ();
@@ -58,7 +55,7 @@ class GenericProductImporter extends AbstractImport
     	
     	$i = 0;
     			
-    		$log->debug(" importing_product_heizung ".$i.implode(" ",$row));
+    		$log->debug(" generic_product_import input ".$i.implode(" ",$row));
     		$this->checkMandatoryColumns($row);
     	
     		//$produkt_id = $this->rowHasField($row, "Produkt_id");
@@ -76,9 +73,10 @@ class GenericProductImporter extends AbstractImport
     		$menge = $this->rowHasField($row, "Menge");
     		$ist_in_Angebot = $this->rowHasField($row, "Ist_in_Angebot");
     		$ist_neu = $this->rowHasField($row, "Ist_neu");
+    		$ist_online = $this->rowHasField($row, "Ist_online");
     		$gewicht = $this->rowHasField($row, "Gewicht");
     		$EAN_code = $this->rowHasField($row, "EAN_code");
-    		$bild_name = $this->rowHasField($row, "Bild_name");
+    		//$bild_name = $this->rowHasField($row, "Bild_name");
     		$bild_titel = $this->rowHasField($row, "Bild_titel");
     		$bild_beschreibung = $this->rowHasField($row, "Bild_beschreibung");
     		$bild_kurz_beschreibung = $this->rowHasField($row, "Bild_kurz_beschreibung");
@@ -118,25 +116,40 @@ class GenericProductImporter extends AbstractImport
     					$productThelia->setVersion ( 1 );
     					$productThelia->setVersionCreatedAt ( $currentDate );
     					$productThelia->setVersionCreatedBy ( "importer.2" );
+    					if($ist_online != null)
+    						$productThelia->setVisible($ist_online);
+    					
     					 
     					if($gewicht == null)$gewicht = 'NULL';
     					if($price == null)$price = 'NULL';
     					$productThelia->create ( $kategorie_id, $price, 1, 1, $gewicht, 20 );
     					 
-    					$log->debug ( " genericproductimporter save us data " );
     					// product description en_US
     					$productI18n = new ProductI18n ();
     					$productI18n->setProduct ( $productThelia );
     					$productI18n->setLocale ( "en_US" );
-    					$productI18n->setTitle ( $produkt_titel );
-    					$productI18n->setDescription ( $beschreibung );
+    					
+    					if($produkt_titel != null)
+    						$productI18n->setTitle ( $produkt_titel );
+    					
+    					if($beschreibung != null)
+    						$productI18n->setDescription ( $beschreibung );
+    					
+    					if($kurze_beschreibung != null)
     					$productI18n->setChapo ( $kurze_beschreibung );
+    					
+    					if($postscriptum != null)
     					$productI18n->setPostscriptum ( $postscriptum );
-    					$log->debug ( " genericproductimporter metatitel ".$meta_titel );
-    					$productI18n->setMetaTitle( $meta_titel );
-    					$productI18n->setMetaDescription( $meta_beschreibung );
-    					$productI18n->setMetaKeywords( $meta_keywords );
-    					$log->debug ( " genericproductimporter save us data " );
+    					
+    					if($meta_titel != null)
+    						$productI18n->setMetaTitle( $meta_titel );
+    					
+    					if($meta_beschreibung != null)
+    						$productI18n->setMetaDescription( $meta_beschreibung );
+    					
+    					if($meta_keywords != null)
+    						$productI18n->setMetaKeywords( $meta_keywords );
+    					
     					$productI18n->save ();
     					$log->debug ( " product_i18n en_US is added ".$productI18n->__toString() );
     					$productThelia->addProductI18n ( $productI18n );
@@ -145,22 +158,37 @@ class GenericProductImporter extends AbstractImport
     					$productI18n = new ProductI18n ();
     					$productI18n->setProduct ( $productThelia );
     					$productI18n->setLocale ( "de_DE" );
-    					$productI18n->setTitle ( $produkt_titel );
-    					$productI18n->setDescription ( $beschreibung );
+    					if($produkt_titel != null)
+    						$productI18n->setTitle ( $produkt_titel );
+    					
+    					if($beschreibung != null)
+    						$productI18n->setDescription ( $beschreibung );
+    					
+    					if($kurze_beschreibung != null)
     					$productI18n->setChapo ( $kurze_beschreibung );
+    					
+    					if($postscriptum != null)
     					$productI18n->setPostscriptum ( $postscriptum );
-    					$productI18n->setMetaTitle( $meta_titel );
-    					$productI18n->setMetaDescription( $meta_beschreibung );
-    					$productI18n->setMetaKeywords( $meta_keywords );
+    					
+    					if($meta_titel != null)
+    						$productI18n->setMetaTitle( $meta_titel );
+    					
+    					if($meta_beschreibung != null)
+    						$productI18n->setMetaDescription( $meta_beschreibung );
+    					
+    					if($meta_keywords != null)
+    						$productI18n->setMetaKeywords( $meta_keywords );
+    					
     					$productI18n->save ();
-    					$log->debug ( " product_i18n de_DE is added ".$productI18n->__toString() );
+    					$log->debug ( " generic_product_import product_i18n de_DE is added ".$productI18n->__toString() );
     					$productThelia->addProductI18n ( $productI18n );
     					 
     					// find product sale element
     					$pse = ProductSaleElementsQuery::create()->findOneByProductId( $productThelia->getId() );
-    	
+    					
     					if($pse != null){
     							
+    						$log->debug ( " generic_product_import pse found ".$pse->__toString() );
     						$currency = Currency::getDefaultCurrency();
     						$price = ProductPriceQuery::create()
     						->filterByProductSaleElementsId( $pse->getId() )
@@ -176,91 +204,105 @@ class GenericProductImporter extends AbstractImport
     					if($menge != null)
     						$pse->setQuantity($menge);
     	
-    						if($ist_in_Angebot != null)
-    							$pse->setPromo($ist_in_Angebot);
+    					if($ist_in_Angebot != null)
+    						$pse->setPromo($ist_in_Angebot);
     	
-    							if($ist_neu != null)
-    								$pse->setNewness($ist_neu);
+    					if($ist_neu != null)
+    						$pse->setNewness($ist_neu);
     	
-    								if($gewicht != null)
-    									$pse->setWeight($gewicht);
+    					if($gewicht != null)
+    						$pse->setWeight($gewicht);
     	
-    									if($EAN_code != null)
-    										$pse->setEanCode($EAN_code);
+    					if($EAN_code != null)
+    						$pse->setEanCode($EAN_code);
     	
-    										$pse->save();
+    						$pse->save();
     	
-    										//save price
-    										if ($price === null) {
-    											$price = new ProductPrice();
-    											$price->setProductSaleElements($pse);
-    											$price->setCurrency($currency);
-    										}
+    										
+    						//save price
+    						if ($price === null) {
+    								$price = new ProductPrice();
+    								$price->setProductSaleElements($pse);
+    								$price->setCurrency($currency);
+    						}
+    						else 
+    							$log->debug ( " generic_product_import price found ".$price->__toString() );
     											
-    										if($promo_price != null)
-    											$price->setPromoPrice($promo_price);
+    							if($promo_price != null)
+    								$price->setPromoPrice($promo_price);
+
+    							if($listen_price != null)
+    								$price->setListenPrice($listen_price);
+
+    							if($ek_preis_sht != null)
+    								$price->setEkPreisSht($ek_preis_sht);
+
+    							if($ek_preis_gc != null)
+    								$price->setEkPreisGc($ek_preis_gc);
+
+    							if($ek_preis_oag != null)
+    								$price->setEkPreisOag($ek_preis_oag);
+
+    							if($ek_preis_holter != null)
+    								$price->setEkPreisHolter($ek_preis_holter);
+
+    							if($preis_reuter != null)
+    								$price->setPreisReuter($preis_reuter);
+
+    							if($vergleich_ek != null)
+    								$price->setVergleichEk($vergleich_ek);
+
+    							if($aufschlag != null)
+    								$price->setAufschlag($aufschlag);
+
+    							$price->save();
+    							$log->debug ( " generic_product_import price saved");
+    							
+    							//save images
+    							$image_path = THELIA_LOCAL_DIR."media".DS."images".DS."product".DS;
+    							$image_name = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/","", $bild_file).'.jpg';
+    										
+    							$log->debug ( " generic_product_import image");
+    										
+    							try{
+    								$log->debug ( " generic_product_import image from ".THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file.'.jpg');
+    								$image_from_server =@file_get_contents ( THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file.'.jpg' );
+    								
+    							}
+    							catch (Exception $e) {
+    								$log->debug ("ProductImageException :".$e->getMessage());
+    							}
     	
-    											if($listen_price != null)
-    												$price->setListenPrice($listen_price);
-    													
-    												if($ek_preis_sht != null)
-    													$price->setEkPreisSht($ek_preis_sht);
-    														
-    													if($ek_preis_gc != null)
-    														$price->setEkPreisGc($ek_preis_gc);
-    															
-    														if($ek_preis_oag != null)
-    															$price->setEkPreisOag($ek_preis_oag);
+    							if($image_from_server){
+    								$log->debug ( " generic_product_import image saved to ".$image_path);
+    								file_put_contents ( $image_path . $image_name, $image_from_server );
     	
-    															if($ek_preis_holter != null)
-    																$price->setEkPreisHolter($ek_preis_holter);
+    								$product_image = new ProductImage ();
+    								$product_image->setProduct ( $productThelia );
+    								$product_image->setVisible ( 1 );
+    								$product_image->setCreatedAt ( $currentDate );
+    								$product_image->setUpdatedAt ( $currentDate );
+    								$product_image->setFile ( $image_name );
+    								$product_image->save ();
+    								
+    								$product_image_i18n = new ProductImageI18n();
+    								$product_image_i18n->setProductImage($product_image);
+    								$product_image_i18n->setTitle($bild_titel);
+    								$product_image_i18n->setDescription($bild_beschreibung);
+    								$product_image_i18n->setChapo($bild_kurz_beschreibung);
+    								$product_image_i18n->setPostscriptum($bild_postscriptum);
     	
-    																if($preis_reuter != null)
-    																	$price->setPreisReuter($preis_reuter);
-    	
-    																	if($vergleich_ek != null)
-    																		$price->setVergleichEk($vergleich_ek);
-    																			
-    																		if($aufschlag != null)
-    																			$price->setAufschlag($aufschlag);
-    	
-    																			$price->save();
-    	
-    	
-    																			//save images
-    																			$image_path = THELIA_LOCAL_DIR;
-    																			$image_name = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $bild_file) . '.jpg';
-    																			/*
-    																			 try{
-    																			 $image_from_server =@file_get_contents ( THELIA_LOCAL_DIR.DS."importer".DS.$bild_file.'jpg' );
-    																			 }
-    																			 catch (Exception $e) {
-    																			 $log->debug ("ProductImageException :".$e->getMessage());
-    																			 }
-    	
-    																			 if($image_from_server){
-    																			 file_put_contents ( $image_path . $image_name, $image_from_server );
-    	
-    																			 $product_image = new ProductImage ();
-    																			 $product_image->setProduct ( $productThelia );
-    																			 $product_image->setVisible ( 1 );
-    																			 $product_image->setCreatedAt ( $currentDate );
-    																			 $product_image->setUpdatedAt ( $currentDate );
-    																			 $product_image->setFile ( $image_name );
-    																			 $product_image->save ();
-    	
-    																			 $productThelia->addProductImage ( $product_image );
-    	
-    																			 }*/
+    								$productThelia->addProductImage ( $product_image );
+    								}
     		}
     	
     		else
     		{
-    			$errors[] ="Product reference number ".$row["ref"]." is already in the database ";
+    			$errors .= "Product reference number ".$ref." is already in the database ";
     			$log->debug ( " ref number already in the database '" . $ref . "'" );
     		}
     	
-    	
+    		if($errors == null)$this->importedRows++;
     	return $errors;
     }
 }

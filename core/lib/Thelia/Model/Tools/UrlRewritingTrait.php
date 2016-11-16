@@ -22,7 +22,6 @@ use Thelia\Model\RewritingUrl;
 use Thelia\Rewriting\RewritingResolver;
 use Thelia\Tools\URL;
 use Thelia\Model\ConfigQuery;
-use Thelia\Log\Tlog;
 
 /**
  * A trait for managing Rewritten URLs from model classes
@@ -69,7 +68,7 @@ trait UrlRewritingTrait
         if ($generateEvent->isRewritten()) {
             return $generateEvent->getUrl();
         }
-        Tlog::getInstance ()->error("title23 ".$this);
+
         $title = $this->getTitle();
 
         if (null == $title) {

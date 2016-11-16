@@ -295,9 +295,9 @@
         </service>
 
         <!-- tar.bz2 -->
-        <service id="thelia.archiver.bz2" class="Thelia\Core\Archiver\Archiver\TarBz2Archiver">
+<!--         <service id="thelia.archiver.bz2" class="Thelia\Core\Archiver\Archiver\TarBz2Archiver">
             <tag name="thelia.archiver" />
-        </service>
+        </service> -->
 
 
         <!-- Thelia simple token provider -->
