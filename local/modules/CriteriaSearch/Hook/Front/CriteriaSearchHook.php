@@ -10,6 +10,10 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Model\ProductPriceQuery;
+use Thelia\Log\Tlog;
+use Thelia\Model\ProductCategoryQuery;
+use Thelia\Model\CategoryQuery;
+use HookCalendar\Model\Category;
 
 class CriteriaSearchHook extends BaseHook
 {
@@ -49,13 +53,30 @@ class CriteriaSearchHook extends BaseHook
         $params['stock_filter'] = CriteriaSearch::getConfigValue('stock_filter');
 
         $this->criteriaSearchHandler->getLoopParamsFromQuery($params, $request);
+        
+       
 
         if (null !== $params['category_id']) {
+        	
+        	$subcategories = CategoryQuery::create()->findAllChild($params['category_id'],99);
+        	$log = Tlog::getInstance ();
+        	
+        	$categories_array=array();
+        	array_push($categories_array,$params['category_id']);
+        	if($subcategories != null){
+        		
+        		foreach ($subcategories as $subcategory)
+        			array_push($categories_array,$subcategory->getId());
+        			
+        		
+        	$log->info("criteriasearch categories ".implode(" ",$categories_array));
+        	}
+        	
             $categoryProductMaxPrice = ProductPriceQuery::create()
                 ->useProductSaleElementsQuery()
                     ->useProductQuery()
                         ->useProductCategoryQuery()
-                            ->filterByCategoryId($params['category_id'])
+                            ->filterByCategoryId($categories_array)
                         ->endUse()
                     ->endUse()
                 ->endUse()
@@ -64,7 +85,12 @@ class CriteriaSearchHook extends BaseHook
             ->limit(1)
             ->findOne();
 
+            
+            
+            
             $params['max_price_filter'] = ceil($categoryProductMaxPrice/10)*10;
+            
+            $log->info("criteriasearch max_price_filter ".$categoryProductMaxPrice);
 
             if ( $params['max_price_filter']>0) {
                 $params['value_price_filter'] = [];
