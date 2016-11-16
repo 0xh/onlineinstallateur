@@ -1,0 +1,17 @@
+{
+  "name": "thelia/brand-product-display-module",
+  "license": "LGPL-3.0+",
+  "type": "thelia-module",
+  "authors": [
+    {
+      "name": "Penalver Antony"
+    }
+  ],
+  "extra": {
+    "installer-name": "BrandProductDisplay"
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "thelia/installer": "~1.0"
+  }
+}
