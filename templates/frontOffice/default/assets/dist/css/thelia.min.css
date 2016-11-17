@@ -13277,6 +13277,12 @@ animation: fadeout 2s;
     margin-bottom:50px;
 }
 
+.danfoss-bild{
+    position:absolute;
+    top:-21px;
+    margin-bottom:50px;
+}
+
 
 @media (min-width: 768px) {
     .ebay img.bigimg {
@@ -13294,7 +13300,7 @@ animation: fadeout 2s;
     .ebay img.smallimg {
         height:auto;
     }
-    .infrarot-container img{
+    .infrarot-container img.infrarot-bild, img.danfoss-bild{
         display:none
     }  
         .infrarot-container {

@@ -10,7 +10,7 @@
 /*      file that was distributed with this source code.                             */
 /*************************************************************************************/
 
-namespace Nachnahme;
+namespace Abholung;
 
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
@@ -20,9 +20,9 @@ use Thelia\Module\BaseModule;
 use Thelia\Module\PaymentModuleInterface;
 use Thelia\Model\ModuleQuery;
 
-class Nachnahme extends BaseModule implements PaymentModuleInterface
+class Abholung extends BaseModule implements PaymentModuleInterface
 {
-    const MESSAGE_DOMAIN = "Nachnahme";
+    const MESSAGE_DOMAIN = "abholung";
 
     public function pay(Order $order)
     {
@@ -40,7 +40,7 @@ class Nachnahme extends BaseModule implements PaymentModuleInterface
      */
     public function isValidPayment()
     {
-    	if(ModuleQuery::create()->findOneByCode("LocalPickup")->getId() == $this->getRequest()->getSession()->getOrder()->getDeliveryModuleId())
+    	if(ModuleQuery::create()->findOneByCode("Colissimo")->getId() == $this->getRequest()->getSession()->getOrder()->getDeliveryModuleId())
     		return false;
         return $this->getCurrentOrderTotalAmount() > 0;
     }
@@ -56,7 +56,7 @@ class Nachnahme extends BaseModule implements PaymentModuleInterface
     public function destroy(ConnectionInterface $con = null, $deleteModuleData = false)
     {
         // Delete our message
-        if (null !== $message = MessageQuery::create()->findOneByName('order_confirmation_nachnahme')) {
+        if (null !== $message = MessageQuery::create()->findOneByName('order_confirmation_abholung')) {
             $message->delete($con);
         }
 
