@@ -377,7 +377,7 @@ var pseManager = (function($){
             .ajaxError(function () { $loader.hide(); });
 
         // Check if the size of the window is appropriate for ajax
-        var doAjax = ($(window).width() > 768) ? true : false;
+        var doAjax = true;//($(window).width() > 768) ? true : false;
 
         // Main Navigation Hover
         $('.navbar')

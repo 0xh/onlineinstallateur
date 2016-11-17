@@ -483,13 +483,13 @@ $log->error(sprintf('message : %s', $message));
 			$cartEvent->bindForm($form);
 		
 			$log = Tlog::getInstance ();
-		//	$log->debug ( "-- addservices ".$cartEvent->getProduct() );
+			$log->debug ( "-- addservices ".$cartEvent->getProduct() );
 			
 			$this->getDispatcher()->dispatch(TheliaEvents::CART_ADDITEM, $cartEvent);
 		
 			$this->afterModifyCart();
 		
-		//	$log->debug ( "-- addservices ".$cartEvent->getProduct() );
+			$log->debug ( "-- addservices ".$cartEvent->getProduct() );
 			$service_appointment = $request->request->get('service_zipcode');
 			
 			if($service_appointment)
@@ -510,8 +510,10 @@ $log->error(sprintf('message : %s', $message));
 			}
 		
 			if ($this->getRequest()->isXmlHttpRequest()) {
+				$log->debug ( "-- addservices isxmlrequest true" );
 				$this->changeViewForAjax();
 			} elseif (null !== $response = $this->generateSuccessRedirect($cartAdd)) {
+				$log->debug ( "-- addservices isxmlrequest false redirect" );
 				return $response;
 			}
 		
