@@ -99,59 +99,52 @@
             {/ifloop}
             {/if}
 
-            {ifloop rel="product_list"}
-                
+            {*ifloop rel="product_list"*}
             
-            {hook name="criteria-search.search-page" limit=$limit }
+            {assign var="search_criteria" value=$smarty.get.criteria}
+            {assign var="search_category" value=$smarty.get.category_id}
+            {assign var="search_brands" value=$smarty.get.brands}
+            {assign var="search_price_min" value=$smarty.get.price_min}
+            {assign var="search_price_max" value=$smarty.get.price_max}
+            {assign var="search_new" value=$smarty.get.new}
+            {assign var="search_promo" value=$smarty.get.promo} 
+            {assign var="search_limit" value=$smarty.get.limit}
+            {assign var="search_page" value=$smarty.get.page}
+            {assign var="search_order" value=$smarty.get.order}
+               
+            {hook name="criteria-search.search-page" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
             
-
             <div id="category-products">
                 <div class="products-content">
-                    <ul class="list-unstyled row">
-                                {include file="criteria-search/search-results.html"}
+                    <ul class="list-unstyled row"> 
+                                {include file="criteria-search/search-results.html" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
                     </ul>
                 </div>
             </div><!-- /#category-products -->
 
-            {/ifloop}
-            {elseloop rel="product_list"}
+            {*/ifloop*}
+            {*elseloop rel="product_list"*}
                 {if $category_id eq #services_category_id#}<!-- services_category_id is set in configs\variables.conf -->
-  				
 
-  				
+  					<ul id="og-grid" class="og-grid">
+						{loop name="subcategories" type="category" parent=$category_id }
+							{assign var="subcategorie_title" value=$TITLE}
+							{assign var="subcategorie_id" value=$ID}	
 
-  				<ul id="og-grid" class="og-grid">
-				{loop name="subcategories" type="category" parent=$category_id }
-				{assign var="subcategorie_title" value=$TITLE}
-				{assign var="subcategorie_id" value=$ID}	
-   				
-        			
-						{loop name="category.image" type="image" source="category" source_id={$ID}  resize_mode="borders"}
-						<li>
-							<a class="service_category"   >
-								<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$subcategorie_title}" onClick="showSubcategoryServices({$subcategorie_id})">
-							</a>
-        					<h4>{$subcategorie_title}</h4>
-        					<!--div><br><button class="btn btn-1 btn-1a" onClick="showSubcategoryServices({$subcategorie_id})">SERVICES ANSEHEN</button></div-->
-      	 				</li>
+							{loop name="category.image" type="image" source="category" source_id={$ID}  resize_mode="borders"}
+								<li>
+									<a class="service_category"   >
+										<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$subcategorie_title}" onClick="showSubcategoryServices({$subcategorie_id})">
+									</a>
+        							<h4>{$subcategorie_title}</h4>
+        							<!--div><br><button class="btn btn-1 btn-1a" onClick="showSubcategoryServices({$subcategorie_id})">SERVICES ANSEHEN</button></div-->
+      	 						</li>
+							{/loop}
 						{/loop}
-     
-            
- 
-
-         <!-- div class ="service_category_products{$subcategorie_id}" id="{$subcategorie_id}" style="display: none; ">
-							this is service_category_{$subcategorie_id}
-		</div-->
-       
-            
-           
-            
-				{/loop}
-				</ul> 
-				
-            <div class="service_category_products"></div>
-			{/if}
-            {/elseloop}
+					</ul>
+            		<div class="service_category_products"></div>
+				{/if}
+            {*/elseloop*}
 
             {hook name="category.content-bottom" category="$category_id"}
 

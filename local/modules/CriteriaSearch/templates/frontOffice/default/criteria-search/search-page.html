@@ -36,13 +36,14 @@
             {/ifloop}
         {/if}
     {/loop}
+    
     {if $brand_filter === "true"}
         {ifloop rel="brand-filter"}
             <div id="search-brand" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
                 <h4  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h4>
                 <select class="select-search" id="brand-{$ID}" name="brands[]" multiple="multiple">
                     {loop type="search_brand" name="brand-filter" category={', '|implode:$categories}}
-                        <option class="input-search" value="{$ID}">{$TITLE}</option>
+                        <option class="input-search" value="{$ID}" {if $brands|strstr:"$ID"}selected{/if}>{$TITLE}</option>
                     {/loop}
                 </select>
             </div>

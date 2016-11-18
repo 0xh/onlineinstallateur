@@ -5,6 +5,7 @@ namespace CriteriaSearch\Controller\Front;
 
 use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Core\HttpFoundation\JsonResponse;
+use Thelia\Log\Tlog;
 
 class SearchController extends BaseFrontController
 {
@@ -84,8 +85,11 @@ class SearchController extends BaseFrontController
         foreach ($criterias as $criteria) {
             $criteriaParams = explode('_', $criteria);
             $criteria = $criteriaParams[0];
+            Tlog::getInstance ()->error("criteriasearchparam ".$criteria);
+            if(isset($criteriaParams[1])){
             $criteriaAvailabilities = explode("|", str_replace(['(',')'], '', $criteriaParams[1]));
             $checkedBox[$criteriaName.'-'.$criteria] = $criteriaAvailabilities;
+            }
         }
     }
 
