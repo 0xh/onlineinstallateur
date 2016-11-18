@@ -157,12 +157,12 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
                     <div class="navbar-header">
                         
                         <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-secondary">
+                        <!-- button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-secondary">
                             <span class="sr-only">{intl l="Toggle navigation"}</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
-                        </button>
+                        </button-->
                         <a class="navbar-brand visible-xs" href="{navigate to="index"}">
                             <img src="{image file='assets/dist/img/logo.png'}" style="max-width:100px;" alt="{$store_name}">
                             <h3>IHR ONLINE INSTALLATEUR</h3>
@@ -171,7 +171,7 @@ type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 
                     {ifhook rel="main.navbar-secondary"}
                         {* Place everything within .nav-collapse to hide it until above 768px *}
-                        <nav class="navbar-collapse collapse nav-secondary" role="navigation" aria-label="{intl l="Secondary Navigation"}">
+                        <nav class="nav-secondary" role="navigation" aria-label="{intl l="Secondary Navigation"}"><!-- add class="navbar-collapse collapse" for mobile menu  -->
                             {hook name="main.navbar-secondary"}
                         </nav>
                     {/ifhook}
