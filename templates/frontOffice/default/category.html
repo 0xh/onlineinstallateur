@@ -125,7 +125,7 @@
             {*/ifloop*}
             {*elseloop rel="product_list"*}
                 {if $category_id eq #services_category_id#}<!-- services_category_id is set in configs\variables.conf -->
-
+<!--  
   					<ul id="og-grid" class="og-grid">
 						{loop name="subcategories" type="category" parent=$category_id }
 							{assign var="subcategorie_title" value=$TITLE}
@@ -137,12 +137,14 @@
 										<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$subcategorie_title}" onClick="showSubcategoryServices({$subcategorie_id})">
 									</a>
         							<h4>{$subcategorie_title}</h4>
+-->
         							<!--div><br><button class="btn btn-1 btn-1a" onClick="showSubcategoryServices({$subcategorie_id})">SERVICES ANSEHEN</button></div-->
-      	 						</li>
+<!--      	 						</li>
 							{/loop}
 						{/loop}
 					</ul>
             		<div class="service_category_products"></div>
+-->
 				{/if}
             {*/elseloop*}
 
