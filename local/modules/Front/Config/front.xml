@@ -220,6 +220,10 @@
     <route id="homepage.sofunktionierts" path="/sofunktionierts">
         <default key="_controller">Front\Controller\HomepageController::soFunktioniertsAction</default>
     </route>
+	
+	<route id="homepage.blackfriday" path="/blackfriday">
+        <default key="_controller">Front\Controller\HomepageController::blackfridayAction</default>
+    </route>
      <route id="homepage.klimasets" path="/klimasets">
         <default key="_controller">Front\Controller\HomepageController::klimaSetsAction</default>
     </route>
