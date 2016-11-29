@@ -9,3 +9,4 @@ web/schedule/app/config/config.inc.php
 templates/frontOffice/default/layout.tpl
 templates/frontOffice/default/layout.tpl
 templates/frontOffice/default/layout.tpl
+templates/frontOffice/default/order-placed.html

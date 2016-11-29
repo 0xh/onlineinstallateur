@@ -126,6 +126,29 @@ $zopim(function(){
 <!--End of Zopim Live Chat Script-->
     
     
+    
+   <!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+
+ fbq('init', '1710133262638327'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+ <img height="1" width="1" 
+src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
+&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+    
+    
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
 <script type="text/javascript">
     window.cookieconsent_options = {"message":"Diese Seite verwendet Cookies.Für eine uneingeschränkte Nutzung der Webseite werden Cookies benötigt. Bitte stimmen Sie der Verwendung von Cookies zu, um alle Funktionen der Webseite nutzen zu können. Detaillierte Informationen über den Einsatz von Cookies auf dieser Webseite erhalten Sie in unserer Datenschutzerklärung.","dismiss":"OK","learnMore":"Mehr erfahren","link":"http://www.hausfabrik.at/datenschutz.html","theme":"cookies"};
@@ -206,6 +229,25 @@ $zopim(function(){
                     </div>               
                 </div>
                 <div style="clear:both"></div>
+                <!--div class="events">
+                    <div class="col-sm-1">
+                    <h1 style="font-size:1.5em">BLACK FRIDAY</h1>
+                        <h5>Tolle Angebote<br>
+                       </h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="/hansgrohe-handbrause-croma-select-s-multi-weiss-chrom-m.3-strahlarten-26800400-1.html"><img src="{image file='assets/dist/img/blackfriday/duschkopf.png'}"  alt="Hansgrohe Handbrause Raindance Select E120"> </a>
+                    </div>
+                     <div class="col-sm-3">
+                       <a href="/Vaillant-Raumthermostat-calorMatic-250-0020170569-de.html"> <img src="{image file='assets/dist/img/blackfriday/thermostat.png'}"  alt="Vaillant Raumthermostat calorMatic 250"> </a>
+                    </div>
+                    <div class="col-sm-3">
+                       <a href="/danfoss-link-starterkit.html"> <img src="{image file='assets/dist/img/blackfriday/danfosslink.png'}"  alt="Danfoss Link Starterkit"> </a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="/ap-brause-thermostat-grohtherm-2000-neu-o.-brausegarnitur-m.-rv-verchromt.html"><img src="{image file='assets/dist/img/blackfriday/brausengarnitur.png'}"  alt="AP-Brause-Thermostat Grohtherm 2000 NEU o. Brausegarnitur mit Halterungsbügel"> </a>
+                    </div>
+                </div-->
                 <div class="header row">
 
                     

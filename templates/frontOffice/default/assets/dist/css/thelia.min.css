@@ -13325,3 +13325,9 @@ animation: fadeout 2s;
     color:#777;
     padding-top:20px;
 }
+.events{
+    background:#000;
+    min-height:100px;
+    color:#FFF;
+    padding:0px 0px;
+}
