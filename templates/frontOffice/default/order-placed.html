@@ -1,5 +1,5 @@
 {extends file="layout.tpl"}
-
+{include file="debug.tpl"}
 {* Security *}
 {block name="no-return-functions" prepend}
     {check_auth role="CUSTOMER" login_tpl="login"}
@@ -18,6 +18,7 @@
 
 
 {block name="main-content"}
+aaaa{debug}aaaa
     <div class="main">
         <article class="col-main clearfix" role="main" aria-labelledby="main-label">
 
@@ -49,6 +50,12 @@
                         </dl>
 
                         {block name='additional-payment-info'}{/block}
+
+{loop type="module" name="module-payment" id="$PAYMENT_MODULE"}
+                            @@{$TITLE}@@
+                            {/loop}
+
+
 
                         {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
                     </div>

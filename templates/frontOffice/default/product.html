@@ -332,7 +332,7 @@
 							<ul class="thumbnails image_picker_selector">
 								{loop type="service"  name="services_list" product_id=$product_id limit="8"}
                                	{assign var="service_for_appointment" value = $SERVICE_ID} 
- 									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=true width="200" height="100"}
+ 									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=false width="200" height="100"}
  									<div class="product-service-calendar">
 										{*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
 									</div>	

@@ -118,6 +118,11 @@ _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");
 $.src="//v2.zopim.com/?3xaJNLlpfnXxE25TpnCVCaE9w7UtIkge";z.t=+new Date;$.
 type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");
 </script>
+<script>
+$zopim(function(){
+          $zopim.livechat.prechatForm.setGreetings("welcome");
+    });
+</script>
 <!--End of Zopim Live Chat Script-->
     
     
