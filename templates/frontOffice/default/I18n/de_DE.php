@@ -8,6 +8,8 @@ return [
     'A new password has been sent to your e-mail address. Please check your mailbox.' => 'Ein neues Passwort wurde an Ihre E-Mail-Adresse geschickt. Bitte überprüfen Sie Ihre Mailbox.',
     'A problem occured' => 'Ein Problem ist aufgetreten',
     'A summary of your order has been sent to the following address' => 'Eine Zusammenfassung Ihrer Bestellung wurde an die folgende Adresse gesendet',
+    'We will contact you if your goods are ready for pickup' => 'Wir kontaktieren Sie telefonisch oder per E-mail wenn Ihre Waren abholbereit sind.',
+    'The pickup address is:' => 'Die Abholadresse ist:',
     'Account' => 'Benutzerkonto',
     'Add a new address' => 'Neue Adresse hinzufügen',
     'Add to cart' => 'In den Warenkorb',
