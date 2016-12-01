@@ -38,6 +38,7 @@ use Thelia\Model\Map\OrderCouponTableMap;
 use Thelia\Model\OrderCoupon;
 use Thelia\Model\OrderCouponCountry;
 use Thelia\Model\OrderCouponModule;
+use Thelia\Log\Tlog;
 
 /**
  * Process Coupon Events
@@ -187,6 +188,8 @@ class Coupon extends BaseAction implements EventSubscriberInterface
                 ;
             }
         }
+        $log = Tlog::getInstance();
+        $log->error("coupondiscount ".$coupon->getEffects());
 
         $event->setIsValid($isValid);
         $event->setDiscount($totalDiscount);

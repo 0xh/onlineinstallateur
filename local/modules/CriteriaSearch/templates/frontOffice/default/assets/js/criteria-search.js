@@ -54,7 +54,7 @@ jQuery(function($){
 
     function fillForm(displayProduct) {
         $.ajax({
-            url : "/index_dev.php/criteria/page/info/search"+window.location.search,
+            url : "/criteria/page/info/search"+window.location.search,
             type: "GET"
         }).done(function(data) {
             $.each(data.multiCheckBox, function(k, v) {
@@ -81,7 +81,7 @@ jQuery(function($){
     function displaySearchProductList() {
 
         $.ajax({
-            url: "/index_dev.php/criteria/render/search/",
+            url: "/criteria/render/search/",
             type: "GET",
             data: search_form.serialize()
         }).done(function(data) {
@@ -127,7 +127,7 @@ jQuery(function($){
 
     function updateUrl() {
         $.ajax({
-            url : "/index_dev.php/criteria/url/search/",
+            url : "/criteria/url/search/",
             type: "GET",
             data: search_form.serialize()
         }).done(function(data) {
