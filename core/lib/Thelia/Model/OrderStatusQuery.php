@@ -20,6 +20,11 @@ class OrderStatusQuery extends BaseOrderStatusQuery
     {
         return OrderStatusQuery::create()->findOneByCode(OrderStatus::CODE_NOT_PAID);
     }
+    
+    public static function getOfferStatus()
+    {
+    	return OrderStatusQuery::create()->findOneByCode(OrderStatus::CODE_OFFER);
+    }
 
     public static function getPaidStatus()
     {

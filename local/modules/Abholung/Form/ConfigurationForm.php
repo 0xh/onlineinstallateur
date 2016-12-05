@@ -22,9 +22,9 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace abholung\Form;
+namespace Abholung\Form;
 
-use abholung\abholung;
+use Abholung\Abholung;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;

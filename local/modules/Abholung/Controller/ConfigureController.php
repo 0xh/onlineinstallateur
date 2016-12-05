@@ -21,10 +21,10 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace abholung\Controller;
+namespace Abholung\Controller;
 
-use abholung\abholung;
-use abholung\Form\ConfigurationForm;
+use Abholung\Abholung;
+use Abholung\Form\ConfigurationForm;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;

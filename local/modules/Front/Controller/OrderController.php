@@ -528,25 +528,30 @@ class OrderController extends BaseFrontController
         // Change the delivery address if customer has changed it
         $address = null;
         $session = $this->getSession();
+        $log = Tlog::getInstance();
+        
         $addressId = $this->getRequest()->get('address_id', null);
+        
         if (null !== $addressId && $addressId !== $session->getOrder()->getChoosenDeliveryAddress()) {
             $address = AddressQuery::create()->findPk($addressId);
+
             if (null !== $address && $address->getCustomerId() === $session->getCustomerUser()->getId()) {
                 $session->getOrder()->setChoosenDeliveryAddress($addressId);
             }
         }
 
-        $address = AddressQuery::create()->findPk($session->getOrder()->getChoosenDeliveryAddress());
-
+        $deliveryAddressId = $session->getOrder()->getChoosenDeliveryAddress();
+        $address = AddressQuery::create()->findPk($deliveryAddressId);
+        $log->error("backofficeorder address2  ".$deliveryAddressId." ".$address);
         $countryId = $address->getCountryId();
         $stateId = $address->getStateId();
 
         $args = array(
             'country' => $countryId,
             'state' => $stateId,
-            'address' => $session->getOrder()->getChoosenDeliveryAddress()
+            'address' => $deliveryAddressId//$session->getOrder()->getChoosenDeliveryAddress()
         );
-
+        $log->error("backofficeorder render list for  ".$countryId." ".$stateId." ".$deliveryAddressId);
         return $this->render('ajax/order-delivery-module-list', $args);
     }
     

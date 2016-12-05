@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\Event\Cart\CartItemDuplicationItem;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\Base\Cart as BaseCart;
+use Thelia\Log\Tlog;
 
 class Cart extends BaseCart
 {
@@ -191,17 +192,23 @@ class Cart extends BaseCart
      */
     public function isVirtual()
     {
+    	if($this->getCartItems()->count() == 0){
+    		return false;
+    	}
+    	
         foreach ($this->getCartItems() as $cartItem) {
             if (0 < $cartItem->getProductSaleElements()->getWeight()) {
+            	
                 return false;
             }
 
             $product = $cartItem->getProductSaleElements()->getProduct();
             if (!$product->getVirtual()) {
+            	
                 return false;
             }
         }
-
+        
         return true;
     }
 }

@@ -21,9 +21,9 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace abholung\Listener;
+namespace Abholung\Listener;
 
-use abholung\abholung;
+use Abholung\Abholung;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Action\BaseAction;
 use Thelia\Core\Event\Order\OrderEvent;

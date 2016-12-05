@@ -324,6 +324,7 @@
                                         {assign "orderStatus" $TITLE}
                                         {assign "orderStatusLabel" "order_$CODE"}
                                         {/loop}
+                                        aa|{#$orderStatusLabel#}|aa
                                             <tr>
                                                 <td><a href="{url path="/admin/order/update/%id" id=$ID}">{$REF}</a></td>
                                                 <td>{format_date date=$CREATE_DATE}</td>
@@ -522,7 +523,8 @@
                 {if $address_id > 0}
 
                     // JS stuff for update form
-                    {include
+                    {
+                    	include
 	                    file      = "includes/generic-js-dialog.html"
 	                    dialog_id = "address_update_dialog"
 	                    form_name = "thelia.admin.address.update"

@@ -528,11 +528,11 @@
                    {ifloop rel="accessories"}
                     <aside id="products-upsell" class="grid" role="complementary" aria-labelledby="products-upsell-label">
                         <div class="products-heading">
-                            <h3 id="products-upsell-label">{intl l="Upsell Products"}</h3>
+                            <h3 id="products-upsell-label">{intl l="Product accessories" d="bo.default"}</h3>
                         </div>
                         <div class="products-content">
                             <ul class="list-unstyled row products-grid">
-                                {loop type="accessory" name="accessories" product="$ID" order="random" limit="3"}
+                                {loop type="accessory" name="accessories" product="$ID" order="random" limit="8"}
                                     {include file="includes/single-product.html" product_id=$ACCESSORY_ID hasBtn=false hasDescription=false width="218" height="146"}
                                 {/loop}
                             </ul>

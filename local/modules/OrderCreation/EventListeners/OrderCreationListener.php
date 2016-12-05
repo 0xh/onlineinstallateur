@@ -97,10 +97,12 @@ class OrderCreationListener implements EventSubscriberInterface
             ->setCustomerId($customer->getId())
             ->setCurrencyId($currency->getId())
             ->setCurrencyRate($currency->getRate())
-            ->setStatusId(OrderStatusQuery::getNotPaidStatus()->getId())
+            ->setStatusId(OrderStatusQuery::getOfferStatus()->getId())
+        //    ->setStatusId(OrderStatusQuery::getNotPaidStatus()->getId())
             ->setLangId($lang->getDefaultLanguage()->getId())
             ->setChoosenDeliveryAddress($deliveryAddress)
             ->setChoosenInvoiceAddress($invoiceAddress)
+            
         ;
 
         $cart = new Cart();
@@ -155,6 +157,7 @@ class OrderCreationListener implements EventSubscriberInterface
         $orderEvent = new OrderEvent($order);
         $orderEvent->setDeliveryAddress($deliveryAddress->getId());
         $orderEvent->setInvoiceAddress($invoiceAddress->getId());
+        $orderEvent->setStatus(OrderStatusQuery::getOfferStatus()->getId());
 
         $moduleInstance = $deliveryModule->getModuleInstance($event->getContainer());
         $postage = OrderPostage::loadFromPostage(
@@ -171,6 +174,7 @@ class OrderCreationListener implements EventSubscriberInterface
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_PAYMENT_MODULE, $orderEvent);
+       	$event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $orderEvent);
 
         //DO NOT FORGET THAT THE DISCOUNT ORDER HAS TO BE PLACED IN CART
         if ($this->request->getSession()->getSessionCart($event->getDispatcher()) != null) {
