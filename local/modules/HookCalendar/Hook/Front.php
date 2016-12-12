@@ -32,7 +32,7 @@ class Front extends BaseHook{
         $content = $this->render('calendar.html',
             array(
                 "service_id"      => $event->getArgument("service"),
-                "month_available" => $initial_appointments->getDaysForMonth($event->getArgument("month"),$event->getArgument("year")),
+                "month_available" => $initial_appointments->getDaysForMonth($event->getArgument("month"),$event->getArgument("year"),null),
             	"day_available"   => $initial_appointments->getAppointmentsForDay($event->getArgument("day"),$event->getArgument("month"),$event->getArgument("year")),
             	"single_product"  => $event->getArgument("single_product"),
             	"btn_booking"     => $event->getArgument("btn_booking")

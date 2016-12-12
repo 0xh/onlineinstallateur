@@ -26,17 +26,10 @@ class CalendarController extends BaseFrontController
     		$direction =$request->get('direction');
     			$month =date('m', time());
     			$year = date('Y', time());
-    			$correctMonthIncrement = array();
-    		if($direction == "next")
-    			$correctMonthIncrement = $this->adjustDate($month+1, $year);
-    		
-    		if($direction == "prev")
-    			$correctMonthIncrement = $this->adjustDate($month, $year);
-    		
-    		$month = $correctMonthIncrement[0];
-    		$year  = $correctMonthIncrement[1];
+
+    		//Tlog::getInstance()->error("calendarmonth ".$month." ".$year);
     		$content =$this->render('days_table',
-    		array("month_days_array" => $this->getDaysForMonth($month, $year)));
+    		array("month_days_array" => $this->getDaysForMonth($month, $year,$direction)));
     		//TODO redirect to the service category
     		return $content; 
     	}
@@ -73,17 +66,41 @@ class CalendarController extends BaseFrontController
      * 18 19 20 21 22 23 24
      * 25 26 27 28 29 30 31
      * */
-    public function getDaysForMonth($month,$year){
+    public function getDaysForMonth($month, $year, $direction){
+    	
+    	//Tlog::getInstance()->error("getDaysForMonth ".$month." ".$direction." year ".$year);
+    	$correctMonthIncrement = array();
+    	
+    	if($direction == "next")
+    		$correctMonthIncrement = $this->adjustDate($month+1, $year);
+    	
+    	if($direction == "prev")
+    		$correctMonthIncrement = $this->adjustDate($month, $year);
+    	
+    	if($direction == null)
+    		$correctMonthIncrement = array($month,$year);
+    	
+    	$correctedMonth = $correctMonthIncrement[0];
+    	$correctedYear  = $correctMonthIncrement[1];
 
     	//$time = strtotime("monday ".$year."-".$month);
-    	$startingDate = mktime(0,0,0, $month, "1", $year);
-    	$endingDate = mktime(0,0,0, $month, date('t',$startingDate), $year);
+    	$startingDate = mktime(0,0,0, $correctedMonth, '1', $correctedYear); //start with last year
+    	$endingDate   = mktime(0,0,0, $correctedMonth, date('t',$startingDate), $correctedYear);
     	$firstWeekNumber = (int)date('W',$startingDate);
     	$lastWeekNumber  = (int)date('W',$endingDate);
-    	$monthStructure = array();
     	
+    	//Tlog::getInstance()->error("calendarmonth ")
+    	
+    	$monthStructure = array();
+    	$startingWeek = 0;
+    	//Tlog::getInstance()->error("calendarmonth ".$firstWeekNumber." ".$lastWeekNumber." year ".$year." corrected_year ".$correctedYear);
+    	if($firstWeekNumber == 52){//last week of the previous year
+    		$monthStructure["w".(1)] = $this->getDaysForWeek($firstWeekNumber, $year);
+    		$firstWeekNumber = 1;
+    		$startingWeek = 1;
+    	}
     	for($i=$firstWeekNumber;$i<=$lastWeekNumber;$i++)
-    		$monthStructure["w".($i-$firstWeekNumber+1)] = $this->getDaysForWeek($i, $year);
+    		$monthStructure["w".($i-$firstWeekNumber+$startingWeek+1)] = $this->getDaysForWeek($i, $correctedYear);
     	return $monthStructure;//$monthStructure;
     }
     
@@ -135,7 +152,7 @@ class CalendarController extends BaseFrontController
      5 pjAsTimeUnavailable
      6 pjAsTimeUnavailable
      */
-    private function isTimeslotAvailable($start_ts,$stop_ts,$currentTimestamp,$booked,$isUnavailable){
+    private function isTimeslotAvailable($start_ts, $stop_ts, $currentTimestamp, $booked, $isUnavailable){
     	//sunday + saturday afternoon
     	if($isUnavailable)
     		return 5;
@@ -155,22 +172,24 @@ class CalendarController extends BaseFrontController
     	$todayLastStart = mktime( 17, 0, 0, $month, $day, $year); 
     	
         if($currentTimestamp < $todayNoon && $start_ts == $todayLastStart)
+        //before noon with start ts at the last timeslot second
         	return 1;
         else 
     		if($start_ts >= $todayNoon && $start_ts < mktime( 19, 0, 0, $month, $day, $year))
     			return 5;
-
     	
     	return 1;
     }
 
     public function getDaysForWeek($week,$year){
+    	if($week < "9")$week = "0".$week;
     	$weekStartTime = strtotime($year.'W'.$week);
     	$weekDate = date('d-m-Y', $weekStartTime);
 
     	$todayTime = time();
     	$todayTimestamp  =  mktime( 0, 0, 0, date('m', $todayTime), date('d', $todayTime), date('Y', $todayTime));
-    	$log = Tlog::getInstance();
+    	//$log = Tlog::getInstance();
+    	//$log->error("week ".$week." ".$year." weekstarttime ".$weekStartTime." strtotime from ".$year.'W'.$week." returns ".strtotime($year.'W'.$week));
     	
     	$weekStructure = array();
     	for($i = 0;$i<7;$i++){
@@ -178,7 +197,7 @@ class CalendarController extends BaseFrontController
     		$dayDate  = date('d', $dayTimestamp);
     		$dayMonth = date('m', $dayTimestamp);
     		$dayYear  = date('Y', $dayTimestamp);
-    		
+    		//$log->error("days ".$dayMonth." ".$dayDate." ".$dayYear);
     		////day 1 past 2 select 3 today 4 inactive 5 available
     		$weekDay = array("nr" => $dayDate, 
     				  "type" => $this->isDayAvailable($dayTimestamp, $todayTimestamp,($i == 6 ? true : false)),
