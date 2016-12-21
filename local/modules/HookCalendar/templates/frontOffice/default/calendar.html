@@ -208,6 +208,7 @@ for(var i=0;i<monthChangers.length;i++){
 		$monthChanger = $(this);
 		$direction = $(this).attr('data-direction');
 		$currentMonth = new Date().getMonth();
+		$currentYear = new Date().getFullYear();
 
 		$.ajax({
 			type: "post",
@@ -220,10 +221,15 @@ for(var i=0;i<monthChangers.length;i++){
 				$direction_sign.removeClass("glyphicon-chevron-right");	
 				$direction_sign.addClass("glyphicon-chevron-left");
 				$monthChanger.attr('data-direction',"prev");
-				if($currentMonth == 12)
-					$('#calendar_month').text(monthNames[1]);//monthNames
-				else
+				if($currentMonth == 11){
+					$('#calendar_month').text(monthNames[0]);//monthNames
+					$('#calendar_year').text($currentYear+1);
+				}
+				else {
 					$('#calendar_month').text(monthNames[$currentMonth+1]);
+					$('#calendar_year').text($currentYear);
+				}
+					
 			}
 			else{
 				$direction_sign = $(".glyphicon-chevron-left");
@@ -231,6 +237,7 @@ for(var i=0;i<monthChangers.length;i++){
 				$direction_sign.addClass("glyphicon-chevron-right");
 				$monthChanger.attr('data-direction',"next");
 				$('#calendar_month').text(monthNames[$currentMonth]);
+				$('#calendar_year').text($currentYear);
 			}
 			$month_table = $("#month_table");
 			$month_table.hide().html(data).fadeIn();

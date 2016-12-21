@@ -109,7 +109,7 @@
     .table-3-module span {
         font-size: 11px;
     }
-
+    
     .align-left {
         text-align: left;
     }
@@ -119,7 +119,6 @@
     .align-right{
         text-align: right;
     }
-
     .clear {
         padding: 0.5%;
         border-bottom:solid 1px #dddddd;
@@ -132,11 +131,9 @@
         position:absolute;
         bottom:50px;
         left:20px
-
     }
 	
 	{hook name="invoice.css"}
-
 </style>
 {/literal}
 <page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm">
@@ -200,23 +197,18 @@
 
 {loop name="order.invoice" type="order" id=$order_id customer="*"}
 
-    
-	
 	{hook name="delivery.after-information" order=$order_id}
 
-    
     <table class="table-address">
         <col style="width: 60%; padding: 3mm;padding-left:10mm" />
         <col style="width: 40%; padding: 3mm;" />
-
-        
 
         <tr>
            <td>
                <h1>{intl l="DELIVERY"}</h1>
            </td>
                 <td style="text-align:right">
-            <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br>
+            <!-- <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br> -->
             Marke der Nwing-network GmbH<br>
             Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
             Tel: 0800 / 022573 <br>
@@ -224,11 +216,7 @@
         </td>
         </tr>
         <tr>
-             <td style="border-left: solid 1mm #86ac34;">
-                <h3>{intl l="Invoice address"}</h3>
-                {format_address order_address=$INVOICE_ADDRESS locale=$locale}
-            </td>
-            <td style="border-left: solid 1mm #86ac34;" >
+            <td style="border-left: solid 1mm #86ac34;">
                 <h3>{intl l="Delivery address"}</h3>
 				{ifhook rel="invoice.delivery-address"}
                     {* delivery module can customize the delivery address *}
@@ -238,9 +226,15 @@
 				    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
                	{/elsehook}
             </td>
-           
+            <td style="border-left: solid 1mm #86ac34;">
+                <h3>{intl l="Invoice address"}</h3>
+                {format_address order_address=$INVOICE_ADDRESS locale=$locale}
+            </td>
         </tr>
     </table>
+    
+
+    
     <table>
     <col style="width: 70%;padding: 3mm; padding-top:10mm" />
     <col style="width: 30%; padding: 3mm;" />

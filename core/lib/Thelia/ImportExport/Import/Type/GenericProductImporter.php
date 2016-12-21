@@ -40,7 +40,6 @@ class GenericProductImporter extends AbstractImport
     		return utf8_encode($row[$field]);
     	}
     	return null;
-    
     }
     public function importData(array $row)
     {

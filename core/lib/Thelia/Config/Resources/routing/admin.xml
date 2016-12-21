@@ -393,6 +393,10 @@
     <route id="admin.products.accessories.add" path="/admin/products/accessory/add">
         <default key="_controller">Thelia\Controller\Admin\ProductController::addAccessoryAction</default>
     </route>
+    
+    <route id="admin.products.accessories.add.ref" path="/admin/products/accessory/add/ref">
+        <default key="_controller">Thelia\Controller\Admin\ProductController::addAccessoryRefAction</default>
+    </route>
 
     <route id="admin.products.accessories.delete" path="/admin/products/accessory/delete">
         <default key="_controller">Thelia\Controller\Admin\ProductController::deleteAccessoryAction</default>

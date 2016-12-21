@@ -699,7 +699,35 @@ class ProductController extends AbstractSeoCrudController
 
         return $this->jsonResponse(json_encode($result));
     }
-
+    
+    public function addAccessoryRefAction()
+    {
+    	// Check current user authorization
+    	if (null !== $response = $this->checkAuth($this->resourceCode, array(), AccessManager::UPDATE)) {
+    		return $response;
+    	}
+    
+    	$accessory_ref = $this->getRequest()->get('accessory_ref');
+    	$accessory = ProductQuery::create()->findOneByRef($accessory_ref);
+    	if($accessory == null)
+    		return $this->errorPage("Ein Produkt mit dieser Ref existiert nicht");
+    	$accessory_id = $accessory->getId();
+    	if ($accessory_id > 0) {
+    		$event = new ProductAddAccessoryEvent(
+    				$this->getExistingObject(),
+    				$accessory_id
+    				);
+    		try {
+    			$this->dispatch(TheliaEvents::PRODUCT_ADD_ACCESSORY, $event);
+    		} catch (\Exception $ex) {
+    			// Any error
+    			return $this->errorPage($ex);
+    		}
+    	}
+    
+    	return $this->redirectToEditionTemplate();
+    }
+    
     public function addAccessoryAction()
     {
         // Check current user authorization
@@ -708,7 +736,7 @@ class ProductController extends AbstractSeoCrudController
         }
 
         $accessory_id = intval($this->getRequest()->get('accessory_id'));
-
+		Tlog::getInstance()->error("accessoryid ".$accessory_id);
         if ($accessory_id > 0) {
             $event = new ProductAddAccessoryEvent(
                 $this->getExistingObject(),
@@ -722,7 +750,6 @@ class ProductController extends AbstractSeoCrudController
                 return $this->errorPage($ex);
             }
         }
-
         return $this->redirectToEditionTemplate();
     }
 

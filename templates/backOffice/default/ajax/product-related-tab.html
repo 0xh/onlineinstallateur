@@ -137,53 +137,23 @@
 	    <div class="col-md-6">
 	        <div class=" well well-sm">
 		        <div class="form-group">
-		            <form method="POST" action="{url path='/admin/products/accessory/add'}" id="accessory_form">
+		            <form method="POST" action="{url path='/admin/products/accessory/add/ref'}" id="accessory_form">
 
-		                <p class="title title-without-tabs">{intl l='Product accessories'}</p>
-		                <p>{intl l='Define here this product\'s accessories'}</p>
+		                <p class="title title-without-tabs">{intl l='Product accessories'} REF</p>
+		                <p>{intl l='Write here the product\'s ref that should be added at accessory'}</p>
 
 		                <input type="hidden" name="product_id" value="{$product_id}" />
 		                <input type="hidden" name="current_tab" value="related" />
 
-		                {ifloop rel="categories"}
 		                <div class="form-group">
-		                
-		                </div>
-		                <div class="form-group">
-		                    <select name="accessory_category_id" id="accessory_category_id" class="form-control">
-		                        <option value="">{intl l='Select a category...'}</option>
-		                        {loop name="categories" type="category-tree" category="0" backend_context="1" visible="*" lang="$edit_language_id" return_url=false}
-		                            <option value="{$ID}" style="padding-left: {3 + $LEVEL * 20}px">{$TITLE}</option>
-		                        {/loop}
-		                    </select>
-
-		                    <span class="help-block">{intl l='Select a category to get its products'}</span>
-		                </div>
-
-		                <div id="accessory_selector" class="hide">
-		                    <div class="input-group">
-		                        <select required="required" name="accessory_id" id="accessory_id" class="form-control">
-		                            <option value="">{intl l='Select a product...'}</option>
-		                        </select>
+		                	<div class="input-group">
+                                <input type="text" id="accessory_ref" name="accessory_ref" class="form-control" placeholder="{intl l='Ref'}">
 		                        <span class="input-group-btn" id="accessory_add_button">
 		                           <button class="btn btn-primary action-btn" type="submit"><span class="glyphicon glyphicon-plus-sign"></span></button>
 		                        </span>
 		                    </div>
-
 		                    <span class="help-block">{intl l='Select a product and click (+) to add it as an accessory'}</span>
 		                </div>
-
-		                <div id="accessory_selector_empty" class="hide">
-		                   <div class="alert alert-info">
-		                       {intl l="No available product in this category"}
-		                   </div>
-		                </div>
-
-		                {/ifloop}
-
-		                {elseloop rel="categories"}
-		                    <div class="alert alert-info">{intl l="No categories found"}</div>
-		                {/elseloop}
 
 		            </form>
 		        </div>
@@ -356,6 +326,112 @@
 	        </div>
         </div>
         {* -- End categories management ------------------------------------- *}
+        
+         {* -- Begin accessories management ---------------------------------- *}
+
+	    <div class="col-md-6">
+	        <div class=" well well-sm">
+		        <div class="form-group">
+		            <form method="POST" action="{url path='/admin/products/accessory/add'}" id="accessory_form">
+
+		                <p class="title title-without-tabs">{intl l='Product accessories'}</p>
+		                <p>{intl l='Define here this product\'s accessories'}</p>
+
+		                <input type="hidden" name="product_id" value="{$product_id}" />
+		                <input type="hidden" name="current_tab" value="related" />
+
+		                {ifloop rel="categories"}
+		                <div class="form-group">
+		                    <select name="accessory_category_id" id="accessory_category_id" class="form-control">
+		                        <option value="">{intl l='Select a category...'}</option>
+		                        {loop name="categories" type="category-tree" category="0" backend_context="1" visible="*" lang="$edit_language_id" return_url=false}
+		                            <option value="{$ID}" style="padding-left: {3 + $LEVEL * 20}px">{$TITLE}</option>
+		                        {/loop}
+		                    </select>
+
+		                    <span class="help-block">{intl l='Select a category to get its products'}</span>
+		                </div>
+
+		                <div id="accessory_selector_empty" class="hide">
+		                   <div class="alert alert-info">
+		                       {intl l="No available product in this category"}
+		                   </div>
+		                </div>
+
+		                {/ifloop}
+
+		                {elseloop rel="categories"}
+		                    <div class="alert alert-info">{intl l="No categories found"}</div>
+		                {/elseloop}
+
+		            </form>
+		        </div>
+
+		        <div class="table-responsive">
+		            <table class="table table-striped table-condensed table-left-aligned">
+		                <thead>
+		                    <tr>
+		                        <th>{intl l='ID'}</th>
+
+		                        <th>{intl l='Accessory title'}</th>
+
+		                        <th class="text-center">{intl l='Position'}</th>
+
+                                {hook name="product.accessories-table-header" location="product_accessories_table_header-bottom" }
+
+		                        <th class="actions">{intl l="Actions"}</th>
+		                    </tr>
+		                </thead>
+
+		                <tbody>
+		                    {loop name="assigned_accessories" order="accessory" visible="*" type="accessory" product="$product_id" backend_context="1" lang="$edit_language_id" return_url=false}
+		                    <tr>
+		                        <td>{$ID}</td>
+
+		                        <td>
+		                            {$TITLE}
+		                        </td>
+
+		                         <td class="text-center">
+		                         {admin_position_block
+                                     resource="admin.product"
+                                     access="UPDATE"
+		                             path={url path='/admin/product/update-accessory-position' product_id=$product_id current_tab="related"}
+		                             url_parameter="accessory_id"
+		                             in_place_edit_class="accessoryPositionChange"
+		                             position=$POSITION
+		                             id=$ID
+		                          }
+		                         </td>
+
+                                {hook name="product.accessories-table-row" location="product_accessories_table_row-bottom" }
+
+		                        <td class="actions">
+                                    {loop type="auth" name="can_create" role="ADMIN" resources="admin.product" access="UPDATE"}
+                                    <a class="btn btn-default btn-xs delete-accessory" title="{intl l='Delete this accessory'}" href="#delete_accessory_dialog" data-id="{$ACCESSORY_ID}" data-toggle="modal">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                    {/loop}
+		                        </td>
+		                    </tr>
+		                     {/loop}
+
+		                     {elseloop rel="assigned_accessories"}
+		                         <tr>
+		                             <td colspan="4">
+		                                 <div class="alert alert-info">
+		                                     {intl l="This product contains no accessories"}
+		                                 </div>
+		                             </td>
+		                         </tr>
+		                     {/elseloop}
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>
+	    </div>
+
+        {* -- End accessories management ------------------------------------ *}
     </div>
 
 </div>

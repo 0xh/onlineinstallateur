@@ -27,28 +27,39 @@ use Thelia\Model\ProductSaleElementsQuery;
 class ProductPricesHausfabrikImport extends AbstractImport
 {
     protected $mandatoryColumns = [
-        'Id',
-    	'Product_id',
-        'price',
-    	'ek_price_sht',
-    	'ek_price_gc'
+    		'Ref'
+        //'Id',
+    	//'Product_id',
+        //'price',
+    	//'ek_price_sht',
+    	//'ek_price_gc'
     ];
+    
+    public function rowHasField($row,$field){
+    	if(isset($row[$field])){
+    		return utf8_encode($row[$field]);
+    	}
+    	return null;
+    }
 
-    public function importData(array $data)
+    public function importData(array $row)
     {
-        $pse = ProductSaleElementsQuery::create()->findPk($data['Id']);
+    	$pse = ProductSaleElementsQuery::create();
+    	
+    	if($this->rowHasField($row, "Id"))
+        $pse = $pse->findPk($row['Id']);
 
         if ($pse === null) {
             return Translator::getInstance()->trans(
                 'The product sale element id %id doesn\'t exist',
                 [
-                    '%id' => $data['Id']
+                    '%id' => $row['Id']
                 ]
             );
         } else {
             $currency = null;
-            if (isset($data['currency'])) {
-                $currency = CurrencyQuery::create()->findOneByCode($data['currency']);
+            if (isset($$row['currency'])) {
+                $currency = CurrencyQuery::create()->findOneByCode($row['currency']);
             }
             if ($currency === null) {
                 $currency = Currency::getDefaultCurrency();
@@ -68,21 +79,21 @@ class ProductPricesHausfabrikImport extends AbstractImport
                 ;
             }
 
-            $price->setPrice($data['price']);
+            $price->setPrice($row['price']);
 
-            if (isset($data['promo_price'])) {
-                $price->setPromoPrice($data['promo_price']);
+            if (isset($row['promo_price'])) {
+                $price->setPromoPrice($row['promo_price']);
             }
 
-            if (isset($data['promo'])) {
+            if (isset($row['promo'])) {
                 $price
                     ->getProductSaleElements()
-                    ->setPromo((int) $data['promo'])
+                    ->setPromo((int) $row['promo'])
                     ->save()
                 ;
             }
-            $price->setEkPreisSht($data['ek_price_sht']);
-            $price->setEkPreisGc($data['ek_price_gc']);
+            $price->setEkPreisSht($row['ek_price_sht']);
+            $price->setEkPreisGc($row['ek_price_gc']);
 
             $price->save();
             $this->importedRows++;
