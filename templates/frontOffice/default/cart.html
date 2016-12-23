@@ -56,9 +56,9 @@
                         </th>
                     </tr>
                     </thead>
+                   
                     <tbody>
                         {loop type="cart" name="cartloop"}
-                        
                         {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
                         	{assign var="parent_category" value=$PARENT}
                         {/loop}
@@ -156,7 +156,9 @@
                         {/loop}
                         {if {cart attr="is_virtual"} != 1}
                         {postage}
+
                         {assign var="postageAmount" value=$postage }
+                        
                         <tr>
                             <td class="product" colspan="2">
                                 <form action="{url path="/cart/country"}" class="form-inline" method="post">
@@ -305,6 +307,24 @@
         {/if}
     });
 </script>
+<!-- Google Code for Warenkorb anschauen Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 868738130;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "IFrVCNGvmmwQ0sifngM";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/868738130/?label=IFrVCNGvmmwQ0sifngM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
 {hook name="cart.after-javascript-include"}
 {/block}
 
