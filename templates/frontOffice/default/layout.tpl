@@ -275,10 +275,10 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
       <section class="footer-block">
                     <div class="container">
                         <div class="col col-sm-12 lieferungbedienungen">
-                                <h6><strong>Alle Preise inkl. 20% MwSt.,<a href="/versandkosten.html"> zzgl. Versandkosten</a></strong></h6>  *unverbindliche Preisangabe der Hersteller<br>
+                                <h6><strong>Alle Preise inkl. 20% MwSt.,<a href="/versandkosten.html"> zzgl. Versandkosten</a></strong></h6>  *Unverbindliche Preisangabe der Hersteller<br>
                                <small><sup>1)</sup>Alle Lieferungen innerhalb Österreichs werden Versandkostenfrei geliefert  <!--Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich--> </small><br>
-                            	<small><sup>2)</sup>Produkte welche nicht von uns bezogen wurden können nur nach Rücksprache montiert werden.</small><br>
-                            	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben, und beinhaltet nur das Produkt ohne Montagematerial</small><br>
+                            	<small><sup>2)</sup>Produkte welche nicht von uns bezogen wurden, können nur nach Rücksprache montiert werden.</small><br>
+                            	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                         	<small>Produktabbildung kann abweichen</small><br>
                             <small>Die Ergebnisse aus dem Konfigurator haben keinen Anspruch auf Vollständigkeit der Produkte und Pakete.</small><br>
                             <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="heizungskonfigurator-angebot"> <span style="color:#74A027;">NEUE HEIZUNG</span></a> aus.</small><br>
