@@ -185,41 +185,59 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                     <div class="navbar-header">
                         
                         <!-- .navbar-toggle is used as the toggle for collapsed navbar content -->
-                        <!-- button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-secondary">
+                        <!--button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-secondary">
                             <span class="sr-only">{intl l="Toggle navigation"}</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button-->
-                        <a class="navbar-brand visible-xs" href="{navigate to="index"}">
-                            <img src="{image file='assets/dist/img/logo.png'}" style="max-width:100px;" alt="{$store_name}">
-                            <h3>IHR ONLINE INSTALLATEUR</h3>
+                        <a class="navbar-brand " href="{navigate to="index"}">
+                            <img src="{image file='assets/dist/img/logo.png'}" style="max-width:150px;" alt="{$store_name}">
+                            <h1 class="slogan">IHR ONLINE INSTALLATEUR</h1>
                         </a>
+                    <div class="hotline" itemscope itemtype="http://schema.org/Store">
+               
+                    <div class="hotline-icon"> <span></span></div>
+                    <div class="hotline-text">
+                    <h3 itemprop="telephone" content="0800/022573">0800/022573</h3>
+                    <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr,
+                        Fr:  8-17 Uhr</small>
+                    </div>               
+                </div>
+                        
                     </div>
-
+     
                     {ifhook rel="main.navbar-secondary"}
                         {* Place everything within .nav-collapse to hide it until above 768px *}
-                        <nav class="nav-secondary" role="navigation" aria-label="{intl l="Secondary Navigation"}"><!-- add class="navbar-collapse collapse" for mobile menu  -->
+                        <nav class="sec-nav"  role="navigation" aria-label="{intl l="Secondary Navigation"}"><!-- add class="navbar-collapse collapse" for mobile menu  -->
                             {hook name="main.navbar-secondary"}
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary">
+                <span class="sr-only">{intl l="Toggle navigation" d="hooknavigation.fo.default"}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
                         </nav>
                     {/ifhook}
+                    
+       
                 </div>
             </div>
 			
 			<header class="container" role="banner">
-                <h1 class="logo  hidden-xs col-sm-4" >
+                <!--h1 class="logo  hidden-xs col-sm-4" >
                         <a href="{navigate to="index"}" title="{$store_name}">
-                            <img src="{image file='assets/dist/img/logo.png'}" style="max-width:200px" alt="{$store_name}">
+                            <img src="{image file='assets/dist/img/logo.png'}" style="max-width:155px" alt="{$store_name}">
                              <h1 class="slogan">IHR ONLINE INSTALLATEUR</h1>
                         </a> 
-                </h1>
+                </h1-->
                            
                 <!--div class="col-sm-4 zertifikat-logos">
                <img src={image file='assets/dist/img/installateur_fachbetrieb-logo.png'} style="width:80px">
                 <img src={image file='assets/dist/img/shk_innung.png'}  style="width:80px">       
                 </div-->
                 
-                <div class="hotline" itemscope itemtype="http://schema.org/Store">
+                <!--div class="hotline" itemscope itemtype="http://schema.org/Store">
                
                     <div class="hotline-icon"> <span></span></div>
                     <div class="hotline-text">
@@ -228,7 +246,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                         Fr:  8-17 Uhr</small>
                     </div>               
                 </div>
-                <div style="clear:both"></div>
+                <div style="clear:both"></div-->
                 <!--div class="events">
                     <div class="col-sm-1">
                     <h1 style="font-size:1.5em">BLACK FRIDAY</h1>
@@ -286,6 +304,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                             <br>
                            
                     </div>
+          </div>
       </section>
             
             

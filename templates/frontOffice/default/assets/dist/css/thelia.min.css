@@ -3936,7 +3936,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     list-style: none
 }
 .nav>li>a {
-    padding: 10px 15px
+    padding: 10px 8px
 }
 .nav>li>a:focus,
 .nav>li>a:hover {
@@ -4101,7 +4101,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .navbar {
     position: relative;
     min-height: 50px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     border: 1px solid transparent
 }
 .navbar-collapse {
@@ -4184,7 +4184,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 }
 .navbar-brand {
     float: left;
-    padding: 15px;
+    padding: 5px 10px 5px 10px;
     font-size: 18px;
     line-height: 20px;
     //height: 50px
@@ -4238,7 +4238,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     margin-top: 4px
 }
 .navbar-nav {
-    margin: 7.5px -15px
+   // margin: 7.5px -15px
 }
 .navbar-nav>li>a {
     padding-top: 10px;
@@ -4418,7 +4418,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     }
 }
 .navbar-default {
-    background-color: #f5f5f5;
+    //background-color: #f5f5f5;
     border-color: #fff
 }
 .navbar-default .navbar-brand {
@@ -4449,7 +4449,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
     background-color: transparent
 }
 .navbar-default .navbar-toggle {
-    border-color: #ddd
+    //border-color: #ddd
 }
 .navbar-default .navbar-toggle:focus,
 .navbar-default .navbar-toggle:hover {
@@ -6283,7 +6283,7 @@ header .header .logo {
     margin-top: 0
 }
 .logo{
-    padding-bottom:10px;
+   
 }
 .block-thumbnail:after,
 .block-thumbnail:before,
@@ -8433,6 +8433,53 @@ header .header .language-container .language-switch .select {
     z-index: 3
 }
 @media (min-width: 992px) {
+    .navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container{
+    //height:100px;
+    line-height:57px
+}
+}
+@media (max-width: 992px) {
+    .navbar .navbar-customer, .navbar .navbar-cart{
+float:left;
+}
+  .sec-nav{
+    width:100%;
+} 
+    .slogan{
+        padding-left:0px!important
+    }
+.hotline{
+    float:right;
+    padding:2px 2px 0px 0px;
+    margin-left:1px!important;
+    margin-top:11px!important;
+    }
+    .navbar-brand {
+    float:left;
+
+    }
+    .hotline-icon{
+        display:none;
+    }
+    .hotline-text h3{
+        font-size: 18px;
+    }
+    .navbar-brand img{
+        width:110px;
+    }
+    .navbar{
+        min-height:auto;
+    }
+    .about_us div{
+    padding-left: 1rem!important;
+    padding-right: 2rem!important;
+}
+    
+}
+.sec-nav{
+    float:right;
+}
+@media (min-width: 992px) {
     .navbar .navbar-cart .dropdown>a:after,
     .navbar .navbar-customer .dropdown>a:after {
         padding-left: .3em;
@@ -9064,8 +9111,11 @@ a {
     }
 }
 .navbar.navbar-secondary {
-    z-index: 1001
+    z-index: 1001;
+    background: #f5f5f5;
 }
+
+
 @media (min-width: 992px) {
     .navbar .list-subnav {
         background-color: #86AC34;
@@ -9822,7 +9872,7 @@ label {
     color: #86AC34
 }
 .navbar li.cart-not-empty>a.cart {
-    background-color: #FFF;
+    //background-color: #FFF;
     color: #000
 }
 .navbar li.cart-not-empty>a.cart>.badge {
@@ -9831,8 +9881,8 @@ label {
 }
 .navbar li.cart-not-empty>a.cart:focus,
 .navbar li.cart-not-empty>a.cart:hover {
-    background-color: #86AC34;
-    color: #fff
+    //background-color: #86AC34;
+    //color: #fff
 }
 /*.navbar li.cart-not-empty>a.cart:before {
     display: inline-block;
@@ -10767,7 +10817,7 @@ td.product .name>a:hover {
     color:#000;
     padding:20px;
     //border:solid 5px  #FFF;
-    min-height: 250px;
+    min-height: 259px;
     //min-width:370px;
 }
 
@@ -10797,49 +10847,52 @@ td.product .name>a:hover {
     padding-top:30px;
     font-size:90%;
 }
-.aside-banner-konfigurator{
-    background: url(../img/aside-banners/aside-konfigurator.png) #f3f5f8 right no-repeat;
+.aside-banners{
+    background:#F3F5F8;
+    border:1px solid #FFFFFF;
+    
 }
-.aside-banner-shop{
-     background: url(../img/aside-banners/aside-banner-shop.png) #f3f5f8 right no-repeat;
+.aside-banners .textbereich{
+    float:left;
+    width:60%;
 }
-.aside-banner-neue-heizung{
-     background: url(../img/aside-banners/aside-banner-neue-heizung.png) #f3f5f8 right no-repeat;
-}
-.aside-banner-services{
-     background: url(../img/aside-banners/aside-banner-services.png) #f3f5f8 right no-repeat;
-}
-.aside-banner-wartung{
-     background: url(../img/aside-banners/aside-banner-services.png) #f3f5f8 right no-repeat;
-}
-.aside-banner-installator{
-     background: url(../img/aside-banners/aside-banner-installator.png)  no-repeat;
-     color:#FFF;
-    padding-top:80px;
-    //background-color: rgba(58,52,42,0.7);
-    background-size:cover;
-}
-.aside-banner-thermen-wartung{
-     background: url(../img/aside-banners/aside-banner-thermen-wartung.png)  no-repeat;
-     color:#FFF;
-    background-size:cover;
-    padding-top:80px;
-    //background-color: rgba(58,52,42,0.7);
-}
-.aside-banner-wc{
-     background: url(../img/aside-banners/aside-banner-wc.png) no-repeat;
-     color:#FFF;
-    padding-top:80px;
-    background-size:cover;
+.aside-banners .iconbereich{
+    float:left;
+    width:40%;
 }
 
-/*@media (max-width: 768px){
+.aside-banner-shop{
+     background: url(../img/aside-banners/aside-banner-shop.png);
+}
+.aside-banner-neue-heizung{
+     //background: url(../img/aside-banners/aside-banner-neue-heizung.png);
+}
+.aside-banner-services{
+     //background: url(../img/aside-banners/aside-banner-services.png);
+}
+.aside-banner-wartung{
+     //background: url(../img/aside-banners/aside-banner-services.png);
+}
+
+
    .aside-banner-installator,.aside-banner-thermen-wartung,.aside-banner-wc,.aside-banner-konfigurator,.aside-banner-neue-heizung,.aside-banner-wartung {
-       background-size:300px 203px;
+       background-color:#F3F5F8;
    
 }
 
-}*/
+
+
+
+@media (max-width: 1200px){
+   .iconbereich{
+       display:none!important; 
+}
+    .aside-banners .textbereich{
+    clear:left;
+    width:100%;
+}
+
+}
     
 .fertige-badezimmer-set{
     background: url(../img/fertige-badezimmer.png)   no-repeat;
@@ -11105,7 +11158,7 @@ figure.effect-oscar:hover img {
 color:#86ac34;
 }
 .advantages .text{
-    font-size:1.2em;
+    font-size:1.5vmin;
     font-family:quicksand!important;
 }
 @media only screen and (max-device-width: 480px) {
@@ -11153,11 +11206,15 @@ color:#86ac34;
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    font-size:3.5em;
+    font-size:3em;
    
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.shopicon img{
+    width:80px
 }
 .highlightcolor{
     color:#86ac34;
@@ -11243,7 +11300,7 @@ h2.title{
     position:relative;
     text-align: center;
     color:#000;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     margin-left:15px;
     margin-right:15px;
 }
@@ -11266,7 +11323,7 @@ h2.title:after{
 }
 
 
-@media (max-width: 768px){
+@media (max-width: 992px){
     .grey{
     background:#fff!important;
     color:#000!important;
@@ -11275,7 +11332,7 @@ h2.title:after{
     margin-right:15px;
 }
 }
-@media (min-width: 769px){
+@media (min-width: 992px){
 .grey{
     background:#58585a;
     color:#FFF;
@@ -11310,7 +11367,7 @@ ul.dropdown-menu li:hover{
    
     margin-top:15px;
     font-family: 'icomoon' !important;
-     vertical-align: -50%;
+     vertical-align: -10%;
     padding: 15px 5px 0 0;
 }
 
@@ -11318,13 +11375,14 @@ ul.dropdown-menu li:hover{
     float:right;
     text-align: right;
     color:#000;
+    margin-left:50px
 }
 .hotline-icon{
      float:left;
      font-family: 'icomoon' !important;
-    font-size:4em;
+    font-size:3em;
      vertical-align: -40%;
-    padding: 25px 15px 0 0;
+    padding: 25px 0px 0 0;
     
 }
 .hotline .hotline-icon:before{
@@ -13258,6 +13316,18 @@ animation: fadeout 2s;
     min-height:325px;
     text-align: center;
 }
+.about_us{
+
+    background: #f3f5f8;
+    margin-left: 3px;
+    margin-right:3px;
+    display: table-cell;
+    vertical-align: bottom;
+}
+.about_us div{
+    //padding-left: 9rem;
+    //padding-right: 12rem;
+}
 .happyclient h4{
     font-style:italic;
     color:#7a7a7a;
@@ -13309,7 +13379,7 @@ animation: fadeout 2s;
 }
 
 .slogan{
-    font-size:0.4em;
+    font-size:0.6em;
     padding-left:5px;
     margin-bottom:0px;
     color:#58524c;
@@ -13330,4 +13400,29 @@ animation: fadeout 2s;
     min-height:100px;
     color:#FFF;
     padding:0px 0px;
+}
+
+.highlight{
+    background:#86AC34;
+    color:#FFF;
+}
+@media (min-width: 768px) {
+    .kundenvideo iframe{
+    width:444px;
+    height:250px;
+    text-align: center;
+}
+}
+@media (max-width: 768px) {
+    .kundenvideo iframe{
+    width:320px;
+    height:180px;
+    text-align: center
+}
+    .kundenvideo{
+    max-width:300px;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    }
 }
