@@ -127,6 +127,8 @@ class CustomerCreateForm extends AddressCreateForm
     {
         $customer = CustomerQuery::getCustomerByEmail($value);
         if ($customer) {
+        	$test_email = ConfigQuery::read("backoffice_account_creation_email");
+        	if($customer->getEmail() != $test_email)
             $context->addViolation(Translator::getInstance()->trans("This email already exists."));
         }
     }

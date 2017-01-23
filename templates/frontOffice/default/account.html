@@ -149,6 +149,7 @@
                                     <th>{intl l="Amount"}</th>
                                     <th>{intl l="Status"}</th>
                                     <th>{intl l="View"}</th>
+                                    <th>{intl l="PDF invoice"}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -168,10 +169,18 @@
                                                 {assign "orderStatusLabel" #$orderStatusCode#}
                                             {/if}
                                             <span class="label {$defaultLabel} label-{$orderStatusLabel}">{$TITLE}</span>
+                                            {assign "statusTitle" $TITLE}
                                         {/loop}
                                     </td>
                                     <td>
                                         <a href="{url path="/account/order/%id" id=$ID}" class="btn btn-link" data-toggle="tooltip" title="{intl l="View order %ref details" ref={$REF}}">{intl l="Order details"}</a>
+                                    </td>
+                                    <td>
+                                    {if $IS_PAID}
+                                    	<a href="{url path="/account/order/pdf/invoice/%id" id=$ID}">{intl l="Download"}</a>
+                                    {else}
+                                    	{$statusTitle}
+                                    {/if}
                                     </td>
                                 </tr>
                                 {/loop}
