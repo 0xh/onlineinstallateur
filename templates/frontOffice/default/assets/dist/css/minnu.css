@@ -2,6 +2,9 @@
 .minnu{
 	font-size: 12px;
 	border-radius:0px;
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .minnu .navbar-brand{
 	padding:0px;

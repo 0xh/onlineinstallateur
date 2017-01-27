@@ -89,7 +89,9 @@
 
 		// all fields
 		this.fields = [].slice.call( this.fieldsList.children );
-		
+        
+		this.formEl.height=this.fields.maxHeight;
+        alert(this.fieldsList);
 		// total fields
 		this.fieldsCount = this.fields.length;
 		

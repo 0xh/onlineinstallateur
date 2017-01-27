@@ -8345,8 +8345,9 @@ header .header .logo {
 header .header {
     //margin-bottom: 20px
 }
-header .header .language-container .search-container {
-    margin-bottom: 10px
+ .search-container {
+    margin-bottom: 15px;
+     margin-top:15px;
 }
 header .header .language-container .search-container .form-control {
     width: auto
@@ -8433,7 +8434,7 @@ header .header .language-container .language-switch .select {
     z-index: 3
 }
 @media (min-width: 992px) {
-    .navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container{
+    .navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout,  .navbar li a.account{
     //height:100px;
     line-height:57px
 }
@@ -8464,6 +8465,9 @@ float:left;
     .hotline-text h3{
         font-size: 18px;
     }
+    .hotline small{
+        font-size: 10px;
+    }
     .navbar-brand img{
         width:110px;
     }
@@ -8479,6 +8483,10 @@ float:left;
 .sec-nav{
     float:right;
 }
+.navbar-customer{
+    margin-top:4px
+ }   
+
 @media (min-width: 992px) {
     .navbar .navbar-cart .dropdown>a:after,
     .navbar .navbar-customer .dropdown>a:after {
@@ -8493,7 +8501,8 @@ float:left;
         -ms-transform: translate(0, 0);
         transform: translate(0, 0);
         content: "\f078";
-        float: none
+        float: none;
+       
     }
 }
 @media (min-width: 992px) and (min-width: 992px) {
@@ -11336,7 +11345,7 @@ h2.title:after{
 .grey{
     background:#58585a;
     color:#FFF;
-    border-top:solid 1px #58585a;
+    //border-top:solid 1px #58585a;
     margin-left:15px;
     margin-right:15px;
 }
@@ -11375,14 +11384,15 @@ ul.dropdown-menu li:hover{
     float:right;
     text-align: right;
     color:#000;
-    margin-left:50px
+    margin-left:30px;
+    margin-top:7px;
 }
 .hotline-icon{
      float:left;
      font-family: 'icomoon' !important;
     font-size:3em;
      vertical-align: -40%;
-    padding: 25px 0px 0 0;
+    padding: 10px 0px 0 0;
     
 }
 .hotline .hotline-icon:before{
@@ -11422,7 +11432,7 @@ ul.dropdown-menu li:hover{
 .fs-form-wrap {
 	position: relative;
 	width: 100%;
-	height: 550px;
+	//height: 550px;
 	//color: #fff;
 }
 
@@ -11575,7 +11585,11 @@ button.fs-continue,
 .fs-form .fs-submit {
 	display: none;
 }
+.fs-controls{
+    width:10%;
+    float:left;
 
+}
 /* Fields */
 .fs-fields {
 	position: relative;
@@ -11589,7 +11603,9 @@ button.fs-continue,
 .fs-form-overview ol {
 	
 }
-
+.fs-current{
+	height:auto!important;
+}
 .fs-fields > li {
 	position: relative;
 	z-index: 1;
@@ -11605,7 +11621,8 @@ button.fs-continue,
 
 .js .fs-form-full .fs-fields > li {
 	position: absolute;
-	width: 90%;
+top:0;
+    height:auto!important
 }
 
 .fs-form-overview .fs-fields > li,
@@ -11696,7 +11713,7 @@ label.fs-field-label-sm {
 /* Inputs */
 .fs-fields input {
 	display: block;
-	margin:5px;
+	/*margin:5px;
 	padding:  0 0 0.15em ;
 
 	border: none;
@@ -11706,7 +11723,7 @@ label.fs-field-label-sm {
 	text-overflow: ellipsis;
 	font-weight: bold;
 	//font-size: 1.5em;
-	border-radius: 0;
+	border-radius: 0;*/
 }
 
 .fs-fields input:invalid {
@@ -11752,6 +11769,7 @@ label.fs-field-label-sm {
 	cursor: pointer;
 }
 
+
 .fs-fields > li .fs-radio-custom span {
 	float: left;
 	position: relative;
@@ -11764,6 +11782,16 @@ label.fs-field-label-sm {
 	font-size: 50%;
 
 }
+
+@media (max-width: 768px) {
+    .fs-fields > li .fs-radio-custom span {
+	width: 30%;
+
+}
+   
+}
+
+
 
 .fs-fields > li .fs-radio-custom span label {
 	color: rgba(0,0,0,0.4);
@@ -11927,12 +11955,12 @@ label.fs-field-label-sm {
 
 /* Dot navigation */
 .fs-nav-dots {
-	position: absolute;
+	/*position: absolute;
 	top: 50%;
 	right: 60px;
 	left: auto;
 	-webkit-transform: translateY(-50%);
-	transform: translateY(-50%);
+	transform: translateY(-50%);*/
 }
 
 .fs-nav-dots button {
@@ -11988,6 +12016,7 @@ label.fs-field-label-sm {
 	background: #86ac34;
 	-webkit-transition: width 0.3s ease-in-out;
 	transition: width 0.3s ease-in-out;
+    display: none;
 }
 
 /* Number indicator */
@@ -12278,12 +12307,12 @@ input[type=text]::-ms-clear {
 	}
 
 	.fs-form {
-		top: 6em;
+		/*top: 2em;
 		right: 2em;
 		left: 0;
 		padding: 0 3.75em 0 1em;
 		width: auto;
-		font-size: 2em;
+		font-size: 2em;*/
 	}
 
 	.fs-form.fs-form-overview {
@@ -12302,7 +12331,7 @@ input[type=text]::-ms-clear {
 	}
 
 	.fs-nav-dots {
-		right: 25px;
+		right: 5px;
 	}
 
 	button.fs-continue {
@@ -13425,4 +13454,7 @@ animation: fadeout 2s;
     margin-left:auto;
     margin-right:auto;
     }
+}
+form-personal-data{
+    //background:none!important;
 }

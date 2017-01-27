@@ -5,7 +5,7 @@ return [
     'Forgot your Password?' => 'Haben Sie Ihr Passwort vergessen?',
     'Log In!' => 'Anmelden!',
     'Log out!' => 'Ausloggen!',
-    'My Account' => 'Mein Kundenkonto',
+    'My Account' => 'Mein Konto',
     'Password' => 'Passwort',
     'Register' => 'Registrieren',
     'Register!' => 'Registrieren!',

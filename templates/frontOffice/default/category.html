@@ -55,9 +55,13 @@
 
     <div class="main row">
 
-        {hook name="category.main-top" category="$category_id"}
 
-        <article class="col-main col-md-9 col-md-push-3 {$smarty.get.mode|default:"grid"}" role="main">
+        {hook name="category.main-top" category="$category_id"}
+        <aside class="col-left col-md-3 " role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
+            {include file="includes/menu.html"}
+            
+        </aside>  
+        <article class="col-main col-md-9  {$smarty.get.mode|default:"grid"}" role="main">
 
             {hook name="category.content-top" category="$category_id"}
 
@@ -152,10 +156,7 @@
 
         </article>
 
-        <aside class="col-left col-md-3 col-md-pull-9" role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
-            {include file="includes/menu.html"}
-            
-        </aside>
+
 
     </div>
     {hook name="category.bottom" category="$category_id"}

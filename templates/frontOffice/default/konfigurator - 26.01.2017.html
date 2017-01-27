@@ -19,32 +19,26 @@
     <div class="main">
             <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
 
-	<div class="">
+	<div class="container1">
 
-		<div class="fs-form-wrap" id="fs-form-wrap" >
-			<div>
+		<div class="fs-form-wrap" id="fs-form-wrap" style="margin-top:120px">
+			<div class="fs-title">
 				<h1>HEIZUNGSTAUSCH</h1>
 			</div>
               
           
         {hook name="konfigurator.top"}
             {form name="konfigurator.heizlast.berechnung"}
-            <div  style="float:left; width:90%; height:auto">
-                sadsdsd
 				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/konfigurator/suggestions"}" method="post" autocomplete="off" enctype="multipart/form-data">
-                   
-                   
+                    
                 {form_field field='error_message'}
                 	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
                 {/form_field} 
-                {form_hidden_fields}   
+                {form_hidden_fields}
                 {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
                 {hook name="konfigurator.form-top"}
-               
-                    <ol class="fs-fields">
-                       
+					<ol class="fs-fields">
 						<li>
-                              asasas
 							<h3>Brennstoff</h3>
                             
                             {form_field field="brennstoff_momentan"} 
@@ -62,6 +56,7 @@
                             </div>
                             {/form_field}
 						</li>
+                        
                         <li>
 							<h3>Brennstoff</h3>
                             <div id="brennstoff_zukunft">
@@ -441,33 +436,32 @@
                             
                             
 						</li>
-                        
-                    </ol>
+						
+					</ol><!-- /fs-fields -->
+         
                     <div id="review" class="col-sm-3" style="display:none">
                         <h3>Ihre Daten</h3>
                     </div>
                     <div class="konfigurator-buttons col-sm-9">
                	    <button type="button" id="fs-submit-angebot"  class="fs-submit"  style="margin-bottom:20px; float:left; margin:10px;font-size:20px">Individuelles Angebot</button> 
 					<button type="submit" class="fs-submit" id="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
-                        <div style="clear:left"></div>
-                        <section id="products-new" class="konfigurator-ergebniss">	
-                            <div class="products-heading">  
-                                <div id="waermebedarf"></div>        
-                            </div>
-                            <div id="category-products">
-                            </div><!-- /#category-products -->
-                        </section><!-- #products-heizung -->	
-		
-                        <div id="product_suggestion ">
-                            <ul id="products"></ul>
-                        </div>
+                        
+                        
                     </div>
-                    
-                    
+
 				</form><!-- /fs-form -->
-                </div>
                 {/form}
-               
+                 <!-- <div style="clear:left"></div> -->
+                <section id="products-new" class="konfigurator-ergebniss" style="margin:-100px">	
+					<div class="products-heading">  
+            			<div id="waermebedarf"></div>        
+					</div>
+					<div id="category-products"></div><!-- /#category-products -->
+				</section><!-- #products-heizung -->	
+		
+				<div id="product_suggestion ">
+					<ul id="products"></ul>
+				</div>
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->
             
