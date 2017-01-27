@@ -90,8 +90,13 @@
 		// all fields
 		this.fields = [].slice.call( this.fieldsList.children );
         
-		this.formEl.height=this.fields.maxHeight;
-        alert(this.fieldsList);
+		
+		var maxHeight = 0;
+		for(var i=0;i<this.fields.length;i++)
+			if(maxHeight<this.fields[i].offsetHeight)
+				maxHeight = this.fields[i].offsetHeight;
+		//alert(maxHeight);
+		this.formEl.style.height= maxHeight+"px";
 		// total fields
 		this.fieldsCount = this.fields.length;
 		
