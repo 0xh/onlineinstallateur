@@ -29,6 +29,9 @@ use Thelia\Install\Database;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleQuery;
 use Thelia\Module\AbstractDeliveryModule;
+use Thelia\Model\AreaDeliveryModule;
+use Thelia\Model\AreaDeliveryModuleQuery;
+use Thelia\Log\Tlog;
 
 /**
  * Class LocalPickup
@@ -86,6 +89,13 @@ class LocalPickup extends AbstractDeliveryModule
      */
     public function isValidDelivery(Country $country)
     {
-        return true;
+    	//if($countr)
+    	$areaDeliveryModules = AreaDeliveryModuleQuery::create()->findByAreaId($country->getAreaId());
+    	foreach($areaDeliveryModules as $areaModule){
+    		Tlog::getInstance()->err("localpickup ".$areaModule->getDeliveryModuleId());
+    	if($areaModule->getDeliveryModuleId() == ModuleQuery::create()->findOneByCode("LocalPickup")->getId())
+    		return true;
+    	}
+        return false;
     }
 }
