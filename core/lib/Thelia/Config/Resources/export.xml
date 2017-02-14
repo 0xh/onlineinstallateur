@@ -115,6 +115,28 @@
             </export_descriptive>
         </export>
 
+        <export id="thelia.export.product_idealo" class="Thelia\ImportExport\Export\Type\IdealoProductExport" category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Idealo Product Export</title>
+                <description>
+                    Export the SEO information ( rewritten url, meta description and keywords, page title ) of your products
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Idealo Product Export</title>
+                <description>
+                    Exporter les informations SEO de vos produits
+                    ( url réécrites, meta description et mots clés, titre ) de vos produits
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Idealo Product Export</title>
+                <description>
+                    Export the SEO information ( rewritten url, meta description and keywords, page title ) of your products
+                </description>
+            </export_descriptive>
+        </export>
+
         <export id="thelia.export.content" class="Thelia\ImportExport\Export\Type\ContentExport" category_id="thelia.export.content">
             <export_descriptive locale="en_US">
                 <title>Contents and folder</title>

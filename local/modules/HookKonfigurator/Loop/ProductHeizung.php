@@ -707,7 +707,7 @@ class ProductHeizung extends BaseI18nLoop implements PropelSearchLoopInterface, 
 //			if($warm_water >0)
 				$search->where ( array ('power_larger_then','brennstoff_zukunft','warmwasserversorgung' ), Criteria::LOGICAL_AND );			
 		//if ($visible !== Type\BooleanOrBothType::ANY) {
-			$search->filterByVisible(1);
+		//	$search->filterByVisible(1);
 		//}
 /*
 		$servicesJoin = new Join();

@@ -25,13 +25,14 @@ use HookKonfigurator\Form\PersonalData;
 use HookCalendar\Model\BookingsServicesQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use HookCalendar\Model\BookingsServices;
+use Thelia\Model\CustomerQuery;
+use Thelia\Model\Address;
 
 class KonfiguratorController extends BaseFrontController {
     
 	public function sendMail(Request $request)
     {
         $log = Tlog::getInstance();
-        
         
         $heizungskonfigurator_userdata = $this->getSession()->get ( 'heizungkonfiguratoruserdaten');
         
@@ -118,11 +119,33 @@ class KonfiguratorController extends BaseFrontController {
      //  $contactForm
         $subject = "Heizungskonfigurator neue Anfrage ";
         $emailTest = "angebote@hausfabrik.at";
-        $firstname = $this->getRequest()->get('konfiguratorpersonaldata')['firstname'];
-        $lastname =  $this->getRequest()->get('konfiguratorpersonaldata')['lastname'];
-        $phone =  $this->getRequest()->get('konfiguratorpersonaldata')['phone'];
-        $cellphone = $this->getRequest()->get('konfiguratorpersonaldata')['cellphone'];
-        $email = $this->getRequest()->get('konfiguratorpersonaldata')['email'];
+        
+        $currentCustomer = $this->getSecurityContext()->getCustomerUser();
+        if($currentCustomer == null){
+        	$firstname = $this->getRequest()->get('konfiguratorpersonaldata')['firstname'];
+        	$lastname =  $this->getRequest()->get('konfiguratorpersonaldata')['lastname'];
+        	$phone =  $this->getRequest()->get('konfiguratorpersonaldata')['phone'];
+        	$cellphone = $this->getRequest()->get('konfiguratorpersonaldata')['cellphone'];
+        	$email = $this->getRequest()->get('konfiguratorpersonaldata')['email'];
+        }
+        else{
+        	$userId = $currentCustomer->getId();
+        	$user = CustomerQuery::create()->findOneById($userId);
+        	
+        	if($user != null){
+        		$firstname = $user->getFirstname();
+        		$lastname =  $user->getLastname();
+        		$email = $user->getEmail();
+        		
+        		$address = $user->getAddresses()[0];
+
+        		if($address != null){
+        			$phone =  $address->getPhone();
+        			$cellphone = $address->getCellphone();
+        		}
+        		
+        	}
+        }
         //$building_etage = $this->getRequest()->get('konfiguratorpersonaldata')['building_etage'];
         //$etage = $this->getRequest()->get('konfiguratorpersonaldata')['etage'];
         //§gebaeudeart = $this->getRequest()->get('klimaangebot')['gebaeudeart'];
@@ -208,7 +231,7 @@ $log->error(sprintf('message : %s', $message));
                 $log->error(sprintf('message : %s', $ex->getMessage()));
             }
 
-           return $this->generateRedirectFromRoute('klima.angebot.success');
+           return $this->generateRedirectFromRoute('heizung.angebot.success');
     }
     
     public function personalData(Request $request) {
@@ -299,6 +322,12 @@ $log->error(sprintf('message : %s', $message));
 		}*/
 	}
     
+	
+	public function konfiguratorFrame(Request $request) {
+		
+		$this->render("konfigurator");
+	}
+	
 	public function suggestionsAction(Request $request) {
 
 		//TODO sequence diagramm with the operations starting from konfigurator form and ending to the response products
