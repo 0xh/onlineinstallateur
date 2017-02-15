@@ -181,7 +181,7 @@ class KlimaProducts extends BaseI18nLoop implements PropelSearchLoopInterface, S
 		->withColumn ( '`sp`.product_position', 'product_position' )
 		->condition ( 'same_product_id', 'product.id = `sp`.product_id' )
 		->setJoinCondition ( 'KlimaSetProduct', 'same_product_id' )
-		//->condition ( 'set_id_condition', 'power >= ?', $setid, \PDO::PARAM_INT )
+		//->condition ( 'set_id_condition', 'power >= ?', 1900, \PDO::PARAM_INT )
 		->where ( 'set_id = ?', $setid, \PDO::PARAM_INT )
 		->orderBy('product_position'); // power_condition
 		

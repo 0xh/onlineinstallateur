@@ -29,6 +29,7 @@ use Thelia\Log\Tlog;
 use Thelia\Model\ConfigQuery;
 use Symfony\Component\HttpFoundation\FileBag;
 use HookKonfigurator\Model\HeizungkonfiguratorAngebot;
+use Thelia\Model\CustomerQuery;
 /**
  * Class ContactController
  * @package Thelia\Controller\Front
@@ -55,12 +56,33 @@ class HeizungAngebotController extends BaseFrontController
         $form = $this->validateForm($contactForm);
         $subject = "Heizung Individuelles Angebot";
         $emailTest = "angebote@hausfabrik.at";
-        $firstname = $this->getRequest()->get('heizungangebot')['firstname'];
-        $lastname =  $this->getRequest()->get('heizungangebot')['lastname'];
-        $phone =  $this->getRequest()->get('heizungangebot')['phone'];
-        $cellphone = $this->getRequest()->get('heizungangebot')['cellphone'];
+        
+        
+        $currentCustomer = $this->getSecurityContext()->getCustomerUser();
+        if($currentCustomer == null){
+        	$firstname = $this->getRequest()->get('heizungangebot')['firstname'];
+        	$lastname =  $this->getRequest()->get('heizungangebot')['lastname'];
+        	$phone =  $this->getRequest()->get('heizungangebot')['phone'];
+        	$cellphone = $this->getRequest()->get('heizungangebot')['cellphone'];
+        	$email = $this->getRequest()->get('heizungangebot')['email'];
+        }
+        else{
+        	$userId = $currentCustomer->getId();
+        	$user = CustomerQuery::create()->findOneById($userId);
+        	 
+        	if($user != null){
+        		$firstname = $user->getFirstname();
+        		$lastname =  $user->getLastname();
+        		$email = $user->getEmail();
+        
+        		$address = $user->getAddresses()[0];
+        		if($address != null){
+        			$phone =  $address->getPhone();
+        			$cellphone = $address->getCellphone();
+        		}
+        	}
+        }
         $building_etage = $this->getRequest()->get('heizungangebot')['building_etage'];
-        $email = $this->getRequest()->get('heizungangebot')['email'];
         
         
         $brennstoffZukunft = $request->request->get('heizungangebot')['brennstoff_zukunft'];
