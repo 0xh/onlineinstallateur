@@ -68,7 +68,7 @@
 		// show navigation dots
 		ctrlNavDots : true,
 		// show [current field]/[total fields] status
-		ctrlNavPosition : true,
+		ctrlNavPosition : false,
 		// reached the review and submit step
 		onReview : function() { return false; }
 	};
@@ -119,15 +119,19 @@
 	 */
 	FForm.prototype._addControls = function() {
 		// main controls wrapper
-		this.ctrls = createElement( 'div', { cName : 'fs-controls', appendTo : this.el } );
+		//this.ctrls = createElement( 'div', { cName : 'fs-controls', appendTo : this.el } );
+        this.ctrls = this.el.querySelector( '.fs-controls');
 
 		// continue button (jump to next field)
-		this.ctrlContinue = createElement( 'button', { cName : 'fs-continue', inner : 'Weiter', appendTo : this.ctrls } );
+		//this.ctrlContinue = createElement( 'button', { cName : 'fs-continue', inner : 'Weiter', appendTo : this.ctrls } );
+        
+        this.ctrlContinue =this.el.querySelector( '.fs-continue');
 		this._showCtrl( this.ctrlContinue );
 
 		// navigation dots
 		if( this.options.ctrlNavDots ) {
-			this.ctrlNav = createElement( 'nav', { cName : 'fs-nav-dots', appendTo : this.ctrls } );
+			//this.ctrlNav = createElement( 'nav', { cName : 'fs-nav-dots', appendTo : this.ctrls } );
+            this.ctrlNav = this.el.querySelector( 'nav.fs-nav-dots');
 			var dots = '';
 			for( var i = 0; i < this.fieldsCount; ++i ) {
 				dots += i === this.current ? '<button class="fs-dot-current"></button>' : '<button disabled></button>';
@@ -139,7 +143,8 @@
 
 		// field number status
 		if( this.options.ctrlNavPosition ) {
-			this.ctrlFldStatus = createElement( 'span', { cName : 'fs-numbers', appendTo : this.ctrls } );
+			//this.ctrlFldStatus = createElement( 'span', { cName : 'fs-numbers', appendTo : this.ctrls } );
+            this.ctrlFldStatus = this.el.querySelector( 'span.fs-numbers');
 
 			// current field placeholder
 			this.ctrlFldStatusCurr = createElement( 'span', { cName : 'fs-number-current', inner : Number( this.current + 1 ) } );
@@ -294,9 +299,13 @@
 				if( self.isLastStep ) {
 					// show the complete form and hide the controls
 					self._hideCtrl( self.ctrlNav );
-					self._hideCtrl( self.ctrlProgress );
+					//self._hideCtrl( self.ctrlProgress );
 					self._hideCtrl( self.ctrlContinue );
-					self._hideCtrl( self.ctrlFldStatus );
+                    self.ctrls.style.display="none";
+                    self.formEl.style.display="none";
+                    document.querySelector( '.vorschlag-button' ).style.display="block";
+                    
+					//self._hideCtrl( self.ctrlFldStatus );
 					// replace class fs-form-full with fs-form-overview
 					//classie.remove( self.formEl, 'fs-form-full' );
 					classie.add( self.formEl, 'fs-form-overview' );
@@ -354,6 +363,8 @@
 			// first, create next field number placeholder
 			this.ctrlFldStatusNew = document.createElement( 'span' );
 			this.ctrlFldStatusNew.className = 'fs-number-new';
+            //this.ctrlFldStatusNew = this.el.querySelector(".fs-number-new");
+            
 			this.ctrlFldStatusNew.innerHTML = Number( this.current + 1 );
 			
 			// insert it in the DOM

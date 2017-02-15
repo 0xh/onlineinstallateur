@@ -16,13 +16,13 @@
 
 	<div class="container1">
 
-		<div class="fs-form-wrap" id="fs-form-wrap" style="margin-top:120px">
-			<div class="fs-title">
+		<div class="fs-form-wrap" id="fs-form-wrap" style="">
+			<div class="">
 				<h1>IHR ANGEBOT</h1>
 			</div>
               
           	{$raum_label = "Raum"}
-        
+         <div  style="float:left; width:90%; height:auto">
             {form name="konfigurator.klima.berechnung"}
 				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/klimakonfigurator/suggestions"}" method="post" autocomplete="off" style="height:auto" >
                 {form_field field='error_message'}
@@ -93,9 +93,14 @@
                             {form_field field="decke" value_key=0}
                             	<h3 class="fragelabel fs-anim-upper">{$label}</h3>
 								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower" >
-                            		{foreach $choices as $choice}
-                             			<span><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+                                    <table>
+                                        <tr>
+                                            <th style="width:30%"></th>
+                                    {foreach $choices as $choice}
+                             			<th style="width:30%"><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></th>
 									{/foreach}
+                                        </tr>
+                                    </table>
 								</div>
 							
                             {/form_field}
@@ -104,10 +109,15 @@
 								{form_field field="decke" value_key=$var}
 									{*debug*}
 									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
-									<span class="raumtext">{$raum_label} {$var+1}</span>
+                                       <table style="width:100%">
+                                        <tr>
+                                        
+									<td class="raumtext" style="width:30%">{$raum_label} {$var+1}</td>
                             			{foreach $choices as $choice}
-											<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></span>
+											<td style="width:30%"><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></td>
 										{/foreach}
+                                            </tr>
+                                    </table>
 									</div>
                             	{/form_field}
                             {/for}
@@ -163,7 +173,7 @@
                               
                             {for $var=0 to 7}
                             	{form_field field="wegstrecke" value_key=$var}
-                            		<div class="col-sm-6 fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+                            		<div class="fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
 										<span class="raumtext">{$raum_label} {$var+1}</span><input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="display: inline-block;"/>
                             			<small>m<sup>2</sup></small>
                             		</div>
@@ -203,20 +213,28 @@
                             {form_field field="kondensatablauf" value_key=0}
                             	<h3 class="fragelabel fs-anim-upper">{$label}</h3>
 								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                    <table style="with:100%">
+                                        <tr>
+                                            <td style="width:30%"></td>
                             		{foreach $choices as $choice}
-                             			<span><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+                             			<td style="width:30%"><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></td>
 									{/foreach}
+                                        </tr>
+                                    </table>
 								</div>
                             {/form_field}
                             
                             {for $var=0 to 7}
 								{form_field field="kondensatablauf" value_key=$var}
 									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
-									<span class="raumtext">{$raum_label} {$var+1}</span>
+                                    <table style="with:100%"><tr>
+									<td class="raumtext" style="width:30%">{$raum_label} {$var+1}</td>
                             			{foreach $choices as $choice}
-											<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></span>
+											<td style="width:30%"><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></td>
 										{/foreach}
+                                            </tr> </table>
 									</div>
+                                        
                             	{/form_field}
                             {/for}
                             </div>
@@ -232,18 +250,19 @@
 						</li>
 						
 					</ol><!-- /fs-fields -->
-					
-                    <div id="review" class="col-sm-3" style="display:none">
+                     </form><!-- /fs-form -->
+                {/form}				
+              <div class="row">
+					<div id="review" class="col-sm-3" style="display:none">
                         <h3>Ihre Daten</h3>
                     </div>
-                               	
-						<button type="submit" class="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
-						
-						
-				</form><!-- /fs-form -->
-                {/form}
-               <!--  <div style="clear:left"></div> -->
-						<section id="products-new" class="konfigurator-ergebniss" style="margin:-100px">	
+                    <div class="col-sm-9 vorschlag-button" style="display:none">      	
+				<button type="submit" class="fs-submit" style="margin:10px; font-size:20px">Vorschlag sehen</button>
+						 
+                   
+                    <div style="clear:left"></div>
+                    
+                    		<section id="products-new" class="konfigurator-ergebniss" style="">	
 							<div class="products-heading">  
 	            				<div id="klimabedarf"></div>        
 							</div>
@@ -255,6 +274,27 @@
 						<div id="product_suggestion">
 							<ul id="products"></ul>
 						</div>
+                    </div>
+             </div>
+                    <div style="clear:left"></div>
+						
+
+            </div>
+             
+            
+            <div class="fs-controls fs-show">
+            
+                   <nav class="fs-nav-dots fs-show"></nav>
+                   <span class="fs-numbers">
+                      <span class="fs-number-new">
+                   
+                   </span>
+                   </span>
+                   <button class="fs-continue fs-show">weiter</button>
+               </div> 
+            
+               <!--  <div style="clear:left"></div> -->
+				
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->
 
@@ -285,14 +325,14 @@ numberOfRooms.oninput = function(e){
 			room[j].style.display = 'none';
 	}		
 }
+$(".fs-submit").click(function(e) {
 
-    $( ".form-horizontal" ).submit(function( e ) {
-	e.preventDefault();
-	$.ajax({
-		type: $(this).attr('method'),
-		url: $(this).attr('action'),
-		data: $(this).serialize()
-	})
+        e.preventDefault();
+    $.ajax({
+                      type: $("#form-konfigurator").attr('method'),
+                      url: $("#form-konfigurator").attr('action'),
+                      data: $("#form-konfigurator").serialize()
+                     })
 	.done(function (data, textStatus, request) {
 		$klimabedarf = request.getResponseHeader('klimabedarftotal');
 		if($klimabedarf != null) 

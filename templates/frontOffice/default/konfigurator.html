@@ -30,7 +30,7 @@
         {hook name="konfigurator.top"}
             {form name="konfigurator.heizlast.berechnung"}
             <div  style="float:left; width:90%; height:auto">
-                sadsdsd
+                
 				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/konfigurator/suggestions"}" method="post" autocomplete="off" enctype="multipart/form-data">
                    
                    
@@ -44,7 +44,7 @@
                     <ol class="fs-fields">
                        
 						<li>
-                              asasas
+                             
 							<h3>Brennstoff</h3>
                             
                             {form_field field="brennstoff_momentan"} 
@@ -443,10 +443,13 @@
 						</li>
                         
                     </ol>
+                    </form><!-- /fs-form -->
+                {/form}
+                    <div class="row">
                     <div id="review" class="col-sm-3" style="display:none">
                         <h3>Ihre Daten</h3>
                     </div>
-                    <div class="konfigurator-buttons col-sm-9">
+                    <div class="konfigurator-buttons vorschlag-button col-sm-9" style="display:none">
                	    <button type="button" id="fs-submit-angebot"  class="fs-submit"  style="margin-bottom:20px; float:left; margin:10px;font-size:20px">Individuelles Angebot</button> 
 					<button type="submit" class="fs-submit" id="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
                         <div style="clear:left"></div>
@@ -462,11 +465,22 @@
                             <ul id="products"></ul>
                         </div>
                     </div>
+                        </div>
+                 
                     
-                    
-				</form><!-- /fs-form -->
+				
                 </div>
-                {/form}
+                
+               <div class="fs-controls fs-show">
+            
+                   <nav class="fs-nav-dots fs-show"></nav>
+                   <span class="fs-numbers">
+                                      <span class="fs-number-new">
+                   
+                   </span>
+                   </span>
+                   <button class="fs-continue fs-show">weiter</button>
+              </div> 
                
 			</div><!-- /fs-form-wrap -->
 		</div><!-- /container -->

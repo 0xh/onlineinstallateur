@@ -1623,7 +1623,7 @@ pre code {
 }
 @media (min-width: 1200px) {
     .container {
-        width: 1170px
+        width: 1200px
     }
 }
 .row {
@@ -11621,8 +11621,9 @@ button.fs-continue,
 
 .js .fs-form-full .fs-fields > li {
 	position: absolute;
-top:0;
-    height:auto!important
+    top:0;
+    height:auto!important;
+    width:100%
 }
 
 .fs-form-overview .fs-fields > li,
@@ -12021,7 +12022,7 @@ label.fs-field-label-sm {
 
 /* Number indicator */
 .fs-numbers {
-	position: absolute;
+	//position: absolute;
 	top: 0;
 	right: 0;
 	overflow: hidden;
@@ -12034,13 +12035,13 @@ label.fs-field-label-sm {
 }
 
 .fs-numbers:after {
-	position: absolute;
-	width: 100%;
+	//position: absolute;
+	//width: 100%;
 	text-align: center;
 	content: '/';
 	font-weight: 300;
 	opacity: 0.4;
-	left: 0;
+	float:left
 }
 
 .fs-numbers span {
@@ -12054,17 +12055,17 @@ label.fs-field-label-sm {
 }
 
 .fs-numbers .fs-number-new {
-	position: absolute;
+	/*position: absolute;
 	left: 0;
 	-webkit-transform: translateY(100%);
-	transform: translateY(100%);
+	transform: translateY(100%);*/
 }
 
 /* Animations for numbers */
 /* Show next number */
 .fs-numbers.fs-show-next .fs-number-new {
-	-webkit-animation: animMoveUpFromDown 0.4s both;
-	animation: animMoveUpFromDown 0.4s both;
+	/*-webkit-animation: animMoveUpFromDown 0.4s both;
+	animation: animMoveUpFromDown 0.4s both;*/
 }
 
 @-webkit-keyframes animMoveUpFromDown {
@@ -12141,7 +12142,7 @@ button.fs-continue {
 }
 
 button.fs-continue {
-	position: absolute;
+	//position: absolute;
 	right: 0;
 	bottom: 0;
 	margin: 0 40px 60px 0;
@@ -12156,7 +12157,7 @@ button.fs-continue:hover {
 }
 
 .fs-continue::after {
-	position: absolute;
+	/*position: absolute;
 	top: 100%;
 	left: 0;
 	width: 100%;
@@ -12166,7 +12167,7 @@ button.fs-continue:hover {
 	color: rgba(0,0,0,0.3);
 	content: 'or press ENTER';
 	font-size: 0.65em;
-	pointer-events: none;
+	pointer-events: none;*/
 }
 
 /* Error message */
@@ -12343,6 +12344,7 @@ input[type=text]::-ms-clear {
 		height: 50px;
 		border-radius: 50%;
 		font-size: 2em;
+        position:relative
 	}
 
 	button.fs-continue::before {
@@ -13458,3 +13460,175 @@ animation: fadeout 2s;
 form-personal-data{
     //background:none!important;
 }
+
+.main-banner{
+    background: url(../img/installateur-banner.png) no-repeat center top;
+    
+margin-top: 0px;
+text-align: right;
+background-attachment: relative;
+background-position: top right;
+min-height: 580px;
+//width: 100%;
+-webkit-background-size: 100%;
+-moz-background-size: 100%;
+-o-background-size: 100%;
+background-size: 100%;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+/* background-size: cover; */
+position:relative;
+}
+
+.main-banner .main-content{
+    margin-top:16.5%;
+    margin-right:5%;
+
+}
+.main-banner h1{
+    margin: 11px auto 16px;
+    font-size:48px;
+    line-height: 1.04167;
+    font-weight: 500;
+    letter-spacing: .006em;  
+}
+
+
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1200px){
+   .main-banner h1{
+    font-size:30px; 
+}
+    .main-banner {
+background-position: top right;
+
+}
+    .main-banner .main-content{
+    margin-top:5%;
+    margin-right:5%;
+    text-align:right;
+
+}
+    
+
+}
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+   .main-banner h1{
+    font-size:30px; 
+}
+    .main-banner{
+        text-align: center;
+        min-height: 280px;
+        background-position: bottom right;
+        }
+
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+  
+    .main-banner{
+        text-align: right;
+        
+        }
+
+}
+
+
+/*Wartungspackete*/
+
+.whitegray-bg {
+    background: #ebebeb;
+}
+.wartungspackete .packet h1 {
+    font-size: 54px;
+    line-height: 71px;
+    font-weight: 200;
+}
+.wartungspackete .packet h1 span{
+    font-size:30px;
+font-family:helvetica;
+}
+.wartungspackete .packet {
+    border: 8px solid;
+    margin: 10px;
+    padding-bottom: 7px;
+    padding-top: 30px;
+    text-align: center;
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+    
+}
+.wartungspackete .packet1, .wartungspackete .packet3{
+    border-color: #ebebeb;
+
+}
+.wartungspackete .packet3{
+    border-color: #545453;
+
+}
+
+.wartungspackete .packet2{
+    border-color: #86AC34;
+
+}
+.wartungspackete .packet h5 {
+    font-size: 20px;
+    line-height: 21px;
+    font-weight: 200;
+    padding: 10px;
+}
+.wartungspackete .packet3 h5 {
+    background: #545453;
+    color:#FFF;
+}
+.wartungspackete .packet2 h5 {
+    background: #86AC34;
+    color:#FFF;
+}
+
+.packet small{
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.wartungspackete .packet ul li{
+    padding:8px;
+    display: block;
+    text-align: left;
+}
+
+.wartungspackete .packet ul li:before {
+    /*Using a Bootstrap glyphicon as the bullet point*/
+    content: "\e013";
+    font-family: 'Glyphicons Halflings';
+    font-size: 9px;
+    float: left;
+    margin-top: 4px;
+    margin-left: -17px;
+    color: #CCCCCC;
+}
+
+.wartungspackete .packet:hover {
+    border-color: #86AC34 !important;
+}
+.wartungspackete .packet:hover {
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
