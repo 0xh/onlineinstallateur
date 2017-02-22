@@ -17,7 +17,7 @@
 					<img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}" style="margin-top:8px"> 
 				{/loop}
 				{elseloop rel="product_thumbnail"} 
-					<img itemprop="image" src="{image file='assets/dist/img/218x146.png'}" class="img-responsive" alt="{$productTitle}" style="margin-top:8px> 
+					<img itemprop="image" src="{image file='assets/dist/img/218x146.png'}" class="img-responsive" alt="{$productTitle}" style="margin-top:8px"> 
 				{/elseloop}
 			</a>
 
@@ -104,7 +104,6 @@
 					{/if}
 				</div>
         </div>
-
 				{if $hasBtn == true} 
 					{if $hasSubmit == true && $current_stock_content == "in_stock"} 
 						{form name="thelia.cart.add" }

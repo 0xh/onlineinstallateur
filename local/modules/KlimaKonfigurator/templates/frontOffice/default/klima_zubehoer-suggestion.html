@@ -13,7 +13,7 @@
 			</h2>
 		</div>
 	</td>
-	<td style="text-align:right;">
+	<td style="text-align:center;">
 		<div class="product-price col-sm-3">
 			<div class="price-container row" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 				<meta itemprop="category" content="{category attr="title"}">
@@ -40,7 +40,7 @@
 						{else}
 							<span class="regular-price">
 							<span itemprop="price" style="display: none;" class="price" name="price_product">{format_money number=$BEST_TAXED_PRICE symbol={currency attr="symbol"}}</span>
-							<div name="price_product_{$product_id}" style="font-size:30px; font-weight:bold;float:left;text-align:right;" >{$BEST_PRICE*$quantity|string_format:"%d"}€</div>
+							<div name="price_product_{$product_id}" style="text-align:center;" >{$BEST_PRICE*$quantity|string_format:"%d"}€</div>
 							</span> 
 						{/if}
 			</div>

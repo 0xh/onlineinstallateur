@@ -225,6 +225,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
             </div>
 			
 			<header class="container" role="banner">
+               
                 <!--h1 class="logo  hidden-xs col-sm-4" >
                         <a href="{navigate to="index"}" title="{$store_name}">
                             <img src="{image file='assets/dist/img/logo.png'}" style="max-width:155px" alt="{$store_name}">
@@ -279,12 +280,16 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
         </div><!-- /.header-container -->
 
         <main class="main-container" role="main">
+            
             <div class="container">
+
                 {hook name="main.content-top"}
                 {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
                 <div id="content">{block name="main-content"}{/block}</div>
                 {hook name="main.content-bottom"}
+                
             </div><!-- /.container -->
+            
         </main><!-- /.main-container -->
         
 
