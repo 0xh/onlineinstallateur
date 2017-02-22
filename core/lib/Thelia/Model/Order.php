@@ -265,7 +265,8 @@ class Order extends BaseOrder
         return $this->hasStatusHelper(
             $exact ?
             OrderStatus::CODE_PAID :
-            [ OrderStatus::CODE_PAID, OrderStatus::CODE_PROCESSING, OrderStatus::CODE_SENT ]
+            [ OrderStatus::CODE_PAID, OrderStatus::CODE_PROCESSING, OrderStatus::CODE_SENT,
+              OrderStatus::CODE_SERVICE, OrderStatus::CODE_COMPLETED ]
         );
     }
 
@@ -340,6 +341,75 @@ class Order extends BaseOrder
     {
         return $this->hasStatusHelper(OrderStatus::CODE_REFUNDED);
     }
+    
+    /**
+     * Set the status of the current order to SERVICE
+     */
+    public function setService()
+    {
+    	$this->setStatusHelper(OrderStatus::CODE_REFUNDED);
+    }
+    
+    /**
+     * Check if the current status of this order is SERVICE
+     
+     */
+    public function isService()
+    {
+    	return $this->hasStatusHelper(OrderStatus::CODE_REFUNDED);
+    }
+    
+    /**
+     * Set the status of the current order to REFUNDED
+     */
+    public function setCompleted()
+    {
+    	$this->setStatusHelper(OrderStatus::CODE_COMPLETED);
+    }
+    
+    /**
+     * Check if the current status of this order is COMPLETED
+     *
+     */
+    public function isCompleted()
+    {
+    	return $this->hasStatusHelper(OrderStatus::CODE_COMPLETED);
+    }
+    
+    /**
+     * Set the status of the current order to ORDER
+     */
+    public function setOffer()
+    {
+    	$this->setStatusHelper(OrderStatus::CODE_OFFER);
+    }
+    
+    /**
+     * Check if the current status of this order is ORDER
+     *
+     */
+    public function isOffer()
+    {
+    	return $this->hasStatusHelper(OrderStatus::CODE_OFFER);
+    }
+    
+    /**
+     * Set the status of the current order to REFUNDED
+     */
+    public function setRefundedTest()
+    {
+    	$this->setStatusHelper(OrderStatus::CODE_REFUNDED_TEST);
+    }
+    
+    /**
+     * Check if the current status of this order is REFUNDED_TEST
+     *
+     */
+    public function isRefundedTest()
+    {
+    	return $this->hasStatusHelper(OrderStatus::CODE_REFUNDED_TEST);
+    }
+    
 
     /**
      * Set the status of the current order to the provided status
