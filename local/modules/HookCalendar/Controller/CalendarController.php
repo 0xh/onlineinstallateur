@@ -89,7 +89,7 @@ class CalendarController extends BaseFrontController
     	$firstWeekNumber = (int)date('W',$startingDate);
     	$lastWeekNumber  = (int)date('W',$endingDate);
     	
-    	//Tlog::getInstance()->error("calendarmonth ")
+    	//Tlog::getInstance()->error("calendarmonth ");
     	
     	$monthStructure = array();
     	$startingWeek = 0;
@@ -182,7 +182,7 @@ class CalendarController extends BaseFrontController
     }
 
     public function getDaysForWeek($week,$year){
-    	if($week < "9")$week = "0".$week;
+    	if($week <= "9")$week = "0".$week;
     	$weekStartTime = strtotime($year.'W'.$week);
     	$weekDate = date('d-m-Y', $weekStartTime);
 
@@ -204,7 +204,7 @@ class CalendarController extends BaseFrontController
     				  "start_ts" => mktime(   7, 0, 0, $dayMonth, $dayDate, $dayYear),
     				  "stop_ts"  => mktime(  17, 0, 0, $dayMonth, $dayDate, $dayYear));
     		$weekStructure["d".($i+1)] = $weekDay;
-    		//	$log->error(implode(' ',$weekDay));
+    		//$log->error(implode(' ',$weekDay));
     	}
     	return $weekStructure;
     }

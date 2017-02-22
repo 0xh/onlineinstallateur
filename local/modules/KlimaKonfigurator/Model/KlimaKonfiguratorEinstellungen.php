@@ -14,6 +14,7 @@ class KlimaKonfiguratorEinstellungen {
 	private $personen;
 	private $anschlusswert_in_watt;
 	private $klimabedarf_raum = array();
+	private $wegstrecke;
 	
 	private $hoehe_basis = 30;
 	private $fenster_basis = 150;
@@ -77,7 +78,13 @@ class KlimaKonfiguratorEinstellungen {
 		$this->klimabedarf_raum = $klimabedarf_raum;
 		return $this;
 	}	
-	
+	public function getWegstrecke() {
+		return $this->wegstrecke;
+	}
+	public function setWegstrecke($wegstrecke) {
+		$this->wegstrecke = $wegstrecke;
+		return $this;
+	}
 	public function populateKonfiguratorFromRequest($request){
 		$this->setRaumAnzahl($request->request->get('klimakonfigurator')['raumanzahl']);
 		$this->setRaumFlaeche($request->request->get('klimakonfigurator')['grundflaeche']);
@@ -86,6 +93,7 @@ class KlimaKonfiguratorEinstellungen {
 		$this->setLageDerZimmer($request->request->get('klimakonfigurator')['decke']);
 		$this->setPersonen($request->request->get('klimakonfigurator')['personen']);
 		$this->setAnschlusswertInWatt($request->request->get('klimakonfigurator')['zusaetzliche-waerme']);
+		$this->setWegstrecke($request->request->get('klimakonfigurator')['wegstrecke']);
 	}
 	
 	public function calculateKlimaBedarf($room_id) {
@@ -113,6 +121,14 @@ class KlimaKonfiguratorEinstellungen {
 			$gesamte_klima_bedarf += $klimabedarf_eine_raum;
 		}
 		return $gesamte_klima_bedarf;
+	}
+	
+	public function calculateWegstreckeGesamt(){
+		$wegstrecke_gesamt = 0;
+		for($i = 0; $i<$this->raum_anzahl; $i++){
+			$wegstrecke_gesamt += $this->wegstrecke[$i];
+		}
+		return $wegstrecke_gesamt;
 	}
 	
 }

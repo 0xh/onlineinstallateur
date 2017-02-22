@@ -66,7 +66,7 @@ class Front extends BaseHook{
 			$log->debug(" aussen klimabedarf candidate ".$ergebniss);
 			
 			$klima_ergebnisse .= $ergebniss;
-			$service_quantity +=1;
+			
 			//$found_candidate = new Product();
 			$products_cost += 1*ProductQuery::create()->findOneById($candidate->getId())->getProductSaleElementss()[0]->getProductPrices()[0]->getPrice();
 			$log->debug("aussen candidate für  product id ".$candidate->getId()." serviceq ".$service_quantity);
@@ -90,13 +90,15 @@ class Front extends BaseHook{
 			$log->debug("innen candidate für  product id ".$innengeraet_id." serviceq ".$service_quantity);
 			
 			
-			
 			//generate html response
 			$content = $this->render('klimakonfigurator-suggestion-multiroom.html',
 					array('KLIMA_ERGEBNISSE' => $klima_ergebnisse,
-							'SERVICE' => "2311",
+							'WAND_KONSOLE' => '3453',
+							'SERVICE_INNEN' => '2311',
 							'SERVICE_QUANTITY' => $service_quantity,
-							'SERVICEMATERIAL' => "3452",
+							'SERVICEMATERIAL' => '3452',
+							'KAELTEMITTELLEITUNG' => '3451',
+							'LEITUNGMETER' => $klimaKonfiguratorEinstellungen->calculateWegstreckeGesamt(),
 							'PRODUCTS_COST' => $products_cost,
 							'ROOMNUMBER' => 1,
 					));
