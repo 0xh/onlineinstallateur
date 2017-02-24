@@ -20,6 +20,14 @@ use Thelia\Model\Map\ProductCategoryTableMap;
 use Thelia\Model\Map\CategoryI18nTableMap;
 use Thelia\Model\Map\RewritingUrlTableMap;
 use Thelia\Model\Product;
+use Thelia\Model\RewritingUrl;
+use Thelia\Model\ConfigQuery;
+use Thelia\Model\Map\ProductImageTableMap;
+use Thelia\Log\Tlog;
+use Thelia\Tools\URL;
+use Thelia\Action\Image;
+use Thelia\Core\Event\Image\ImageEvent;
+use Thelia\Core\Event\TheliaEvents;
 
 /**
  * Class IdealoProductExport
@@ -28,6 +36,7 @@ use Thelia\Model\Product;
 class IdealoProductExport extends AbstractExport
 {
     const FILE_NAME = 'product_idealo';
+    private $url_site ;
     
     protected $orderAndAliases = [
     		'productID' => 'Artikelnummer',
@@ -40,8 +49,76 @@ class IdealoProductExport extends AbstractExport
     		'product_priceLISTEN_PRICE' => 'Streichpreis',
     		ProductSaleElementsTableMap::PROMO => 'Promo',
     		'productVISIBLE' => 'Lieferzeit',
-    		'product_URL' => 'Produkt_URL'
+    		'rewriting_urlURL' => 'Produkt_URL',
+    		'product_imageFILE' => 'Produkt_BILD'
+    		
     ];
+    
+    /**
+     * Apply order and aliases on data
+     *
+     * @param array $data Raw data
+     *
+     * @return array Ordered and aliased data
+     */
+    public function applyOrderAndAliases(array $data)
+    {
+    	if ($this->orderAndAliases === null) {
+    		return $data;
+    	}
+    
+    	$processedData = [];
+    
+    	foreach ($this->orderAndAliases as $key => $value) {
+    		if (is_integer($key)) {
+    			$fieldName = $value;
+    			$fieldAlias = $value;
+    		} else {
+    			$fieldName = $key;
+    			$fieldAlias = $value;
+    		}
+    
+    		$processedData[$fieldAlias] = null;
+    		if (array_key_exists($fieldName, $data)) {
+    			$processedData[$fieldAlias] = $data[$fieldName];
+    		}
+    		
+    	}
+    	
+    	if($this->url_site == null)
+    		$this->url_site = ConfigQuery::read('url_site');
+    	$processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
+    	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
+    	return $processedData;
+    }
+    
+    public function getImageUrl($safe_filename){
+    	//Tlog::getInstance()->error("subdir ".$subdir." source_file ".$filename." safe ".sprintf("%s/%s-%s", $path, $hashed_options, $safe_filename));
+    //	$path = '/cache/';
+    //	$image = new Image($fileManager)
+    //	return URL::getInstance()->absoluteUrl(sprintf("%s/%s", $path, $safe_filename), null, URL::PATH_TO_FILE);
+    
+    	$event = new ImageEvent();
+    	
+    	$baseSourceFilePath = ConfigQuery::read('images_library_path');
+    	if ($baseSourceFilePath === null) {
+    		$baseSourceFilePath = THELIA_LOCAL_DIR . 'media' . DS . 'images';
+    	} else {
+    		$baseSourceFilePath = THELIA_ROOT . $baseSourceFilePath;
+    	}
+    	
+    	$sourceFilePath = sprintf(
+    			'%s/%s/%s',
+    			$baseSourceFilePath,
+    			$this->objectType,
+    			$result->getFile()
+    			);
+    	
+    	$event->setSourceFilepath($sourceFilePath);
+    	$event->setCacheSubdirectory($this->objectType);
+    	$this->dispatcher->dispatch(TheliaEvents::IMAGE_PROCESS, $event);
+    	
+    }
     
     protected function getData()
     {
@@ -52,6 +129,7 @@ class IdealoProductExport extends AbstractExport
     	$attributeAvJoin = new Join(AttributeAvTableMap::ID, AttributeAvI18nTableMap::ID, Criteria::LEFT_JOIN);
     	$brandJoin = new Join(ProductTableMap::ID, BrandI18nTableMap::ID, Criteria::LEFT_JOIN);
     	$categoryJoin = new Join(ProductCategoryTableMap::CATEGORY_ID, CategoryI18nTableMap::ID, Criteria::LEFT_JOIN);
+    	$imageJoin = new Join(ProductTableMap::ID, ProductImageTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
     
     	$query = ProductSaleElementsQuery::create()
     	->addSelfSelectColumns()
@@ -85,6 +163,7 @@ class IdealoProductExport extends AbstractExport
     					null,
     					\PDO::PARAM_STR
     					)
+    					->withColumn(RewritingUrlTableMap::URL)
     					->addJoinCondition(
     							'rewriting_url_join',
     							RewritingUrlTableMap::VIEW . ' = ?',
@@ -95,9 +174,21 @@ class IdealoProductExport extends AbstractExport
     							->addJoinCondition('rewriting_url_join', 'ISNULL(' . RewritingUrlTableMap::REDIRECTED . ')')
     							->addJoinObject($productJoin, 'product_join')
     							->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-    			
-    			->addJoinObject($brandJoin, 'brand_join')
-    			->addJoinCondition(
+    				
+    				->addJoinObject($imageJoin, 'product_image_join')
+    				->addJoinCondition(
+    						'product_image_join',
+    						ProductImageTableMap::POSITION. '= ?',
+    						"1",
+    						null,
+    						\PDO::PARAM_INT
+    						)
+    				->withColumn(ProductImageTableMap::FILE)
+
+    				//->addJoinCondition('product_image_join,')
+    				
+    				->addJoinObject($brandJoin, 'brand_join')
+    				->addJoinCondition(
     					'brand_join',
     					BrandI18nTableMap::LOCALE . ' = ?',
     					$locale,
@@ -137,7 +228,8 @@ class IdealoProductExport extends AbstractExport
     											->endUse()
     											->orderBy(ProductSaleElementsTableMap::ID)
     											->groupBy(ProductSaleElementsTableMap::ID)
-    											;
+
+    ->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL);
     
     											return $query;
     }
