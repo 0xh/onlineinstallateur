@@ -23,6 +23,11 @@ use Thelia\Model\CategoryQuery;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
+use Thelia\Log\Tlog;
+use Thelia\Controller\Admin\ExportController;
+use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Controller uses to generate RSS Feeds
@@ -97,10 +102,63 @@ class FeedController extends BaseFrontController {
         }
 
         $flush = $request->query->get("flush", "");
-
+Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         // check if feed already in cache
         $cacheContent = false;
 
+        $format = $request->query->get("format","xml");
+
+        if($format == "csv"){
+        //	$export = new ExportController();
+        //	$export->setContainer($this->container);
+       // 	$export_result = $export->exportAction(8);
+        	
+        	
+        	$exportHandler = $this->container->get('thelia.export.handler');
+        	
+        	$export = $exportHandler->getExport(8);//8 = product_idealo
+        	if ($export === null) {
+        		return $this->pageNotFound();
+        	}
+        	
+        		set_time_limit(0);
+        	
+        		/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
+        		$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
+        		$serializer = $serializerManager->get("thelia.csv");//
+        
+        	$lang = (new LangQuery)->findPk($lang);
+        				$exportEvent = $exportHandler->export(
+        						$export,
+        						$serializer,
+        						null, // no archiver
+        						$lang,
+        						false,
+        						false,
+        						null
+        						);
+        	
+        				$contentType = $exportEvent->getSerializer()->getMimeType();
+        				$fileExt = $exportEvent->getSerializer()->getExtension();
+        	
+        				if ($exportEvent->getArchiver() !== null) {
+        					$contentType = $exportEvent->getArchiver()->getMimeType();
+        					$fileExt = $exportEvent->getArchiver()->getExtension();
+        				}
+        	
+        				$header = [
+        						'Content-Type' => $contentType,
+        						'Content-Disposition' => sprintf(
+        								'%s; filename="%s.%s"',
+        								ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        								$exportEvent->getExport()->getFileName(),
+        								$fileExt
+        								)
+        				];
+        	
+        				return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
+        }
+        else{
         $cacheDir = $this->getCacheDir();
         $cacheKey = self::FEED_CACHE_KEY . $lang . $context . $id;
         $cacheExpire = intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
@@ -130,7 +188,7 @@ class FeedController extends BaseFrontController {
         $response = new Response();
         $response->setContent($cacheContent);
         $response->headers->set('Content-Type', 'application/rss+xml');
-
+        }
         return $response;
     }
 
