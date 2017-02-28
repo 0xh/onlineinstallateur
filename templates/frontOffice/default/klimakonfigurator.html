@@ -1,6 +1,5 @@
 
 {extends file="layout.tpl"}
-{*include file="debug.tpl"*}
 
 {* Body Class *}
 {block name="body-class"}page-klimakonfigurator{/block}
@@ -107,7 +106,6 @@
                             
                             {for $var=0 to 7}
 								{form_field field="decke" value_key=$var}
-									{*debug*}
 									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
                                        <table style="width:100%">
                                         <tr>
