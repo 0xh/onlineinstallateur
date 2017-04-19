@@ -181,6 +181,8 @@ class ExportHandler
                 $rangeDate['start']['year'] . '-' . $rangeDate['start']['month'] . '-1 00:00:00'
             );
         }
+        
+        if(isset($rangeDate['end']))
         if ($rangeDate['end'] && !($rangeDate['end'] instanceof \DateTime)) {
             $rangeDate['end'] = \DateTime::createFromFormat(
                 'Y-m-d H:i:s',

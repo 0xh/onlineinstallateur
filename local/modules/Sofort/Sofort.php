@@ -125,9 +125,9 @@ class Sofort extends AbstractPaymentModule
         	$products[0][ "AMT" . $itemIndex ]  = - $delta;
         	$products[0][ "QTY" . $itemIndex ]  = 1;
         }
-        
+        /*
         $this->getLogger()->error("Sofort Amount: ".round($order->getTotalAmount(), 2)."Delta:".$delta);
-    /*	
+    	
         $this->getLogger()->error("Sofort SuccessUrl:".$successUrl);
         $this->getLogger()->error("Sofort CancelUrl:".$cancelUrl); 
        
@@ -152,11 +152,11 @@ $Sofortueberweisung->setAbortUrl($cancelUrl);
 
 //$Sofortueberweisung->setSenderSepaAccount('SFRTDE20XXX', 'DE06000000000023456789', 'Max Mustermann');
 //$Sofortueberweisung->setSenderCountryCode('AT');
-$Sofortueberweisung->setNotificationUrl("http://www.hausfabrik.at/module/sofort/pending/".$orderId, 'pending');
-$Sofortueberweisung->setNotificationUrl("http://www.hausfabrik.at/module/sofort/loss/".$orderId, 'loss');
-$Sofortueberweisung->setNotificationUrl("http://www.hausfabrik.at/module/sofort/received/".$orderId, 'received');
-$Sofortueberweisung->setNotificationUrl("http://www.hausfabrik.at/module/sofort/refunded/".$orderId, 'refunded');
-$Sofortueberweisung->setNotificationUrl( "http://www.hausfabrik.at/module/sofort/untraceable/".$orderId, 'untraceable');
+$Sofortueberweisung->setNotificationUrl($pendingUrl, 'pending');
+$Sofortueberweisung->setNotificationUrl($lossUrl, 'loss');
+$Sofortueberweisung->setNotificationUrl($receivedUrl, 'received');
+$Sofortueberweisung->setNotificationUrl($refundedUrl, 'refunded');
+$Sofortueberweisung->setNotificationUrl($untraceableUrl, 'untraceable');
 //$Sofortueberweisung->setCustomerprotection(true);
 
 
@@ -164,11 +164,10 @@ $Sofortueberweisung->sendRequest();
 
 if($Sofortueberweisung->isError()) {
 	//SOFORT-API didn't accept the data
-	$this->getLogger()->error("anisofort ".$Sofortueberweisung->getError());
+	$this->getLogger()->error("Sofort ".$Sofortueberweisung->getError());
 	return new RedirectResponse(
 			$this->getPaymentFailurePageUrl(
 					$order->getId(),
-					// Pas de point final, sinon 404 !
 					Translator::getInstance()->trans(
 							"Sorry, something did not worked with Sofort:<br>".$Sofortueberweisung->getError()."<br>. Please try again, or use another payment type",
 							[],
@@ -190,7 +189,6 @@ if($Sofortueberweisung->isError()) {
         return new RedirectResponse(
             $this->getPaymentFailurePageUrl(
                 $order->getId(),
-                // Pas de point final, sinon 404 !
                 Translator::getInstance()->trans(
                     "Sorry, something did not worked with Sofort. Please try again, or use another payment type",
                     [],
@@ -200,7 +198,7 @@ if($Sofortueberweisung->isError()) {
         );
         
     }
-
+	//TODO - future 
     public function isValidPayment()
     {
         $valid = true;//false;
@@ -240,14 +238,13 @@ if($Sofortueberweisung->isError()) {
                 }
             }
         }*/
-
         return $valid;
     }
 
     public function postActivation(ConnectionInterface $con = null)
     {
         // Setup some default values at first install
-        if (null === self::getConfigValue('minimum_amount', null)) {
+      /*  if (null === self::getConfigValue('minimum_amount', null)) {
             self::setConfigValue('minimum_amount', 0);
             self::setConfigValue('maximum_amount', 0);
             self::setConfigValue('send_payment_confirmation_message', 1);
@@ -269,7 +266,7 @@ if($Sofortueberweisung->isError()) {
                 ->save()
             ;
         }
-
+	*/
         /* Deploy the module's image */
         $module = $this->getModuleModel();
 
@@ -278,6 +275,7 @@ if($Sofortueberweisung->isError()) {
         }
     }
 
+    //TODO 
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
     {
         if (null === self::getConfigValue('login', null)) {

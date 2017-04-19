@@ -28,6 +28,7 @@ use Thelia\Tools\URL;
 use Thelia\Action\Image;
 use Thelia\Core\Event\Image\ImageEvent;
 use Thelia\Core\Event\TheliaEvents;
+use Thelia\Model\ProductQuery;
 
 /**
  * Class IdealoProductExport
@@ -48,10 +49,9 @@ class IdealoProductExport extends AbstractExport
     		'product_pricePROMO_PRICE' => 'Spezialpreis',
     		'product_priceLISTEN_PRICE' => 'Streichpreis',
     		ProductSaleElementsTableMap::PROMO => 'Promo',
-    		'productVISIBLE' => 'Lieferzeit',
     		'rewriting_urlURL' => 'Produkt_URL',
-    		'product_imageFILE' => 'Produkt_BILD'
-    		
+    		'product_imageFILE' => 'Produkt_BILD',
+    		'category_i18nTITLE' => 'Produktgruppe'
     ];
     
     /**
@@ -89,6 +89,16 @@ class IdealoProductExport extends AbstractExport
     		$this->url_site = ConfigQuery::read('url_site');
     	$processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
     	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
+    	$processedData['Lieferzeit'] = "2-3 Arbeitstagen";
+    	$processedData['Nachnahme/Barzahkung/Kreditkarte/Paypal'] = "0";
+    	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
+    	$processedData['Spezialpreis'] = number_format((float)($processedData['Spezialpreis']*1.2), 2, '.', '');
+    	
+    	if($processedData['Promo'] == 0)
+    		$processedData['Spezialpreis'] = "";
+
+    	unset($processedData['Promo']);
+    	
     	return $processedData;
     }
     
@@ -127,10 +137,12 @@ class IdealoProductExport extends AbstractExport
     	$urlJoin = new Join(ProductTableMap::ID, RewritingUrlTableMap::VIEW_ID, Criteria::LEFT_JOIN);
     	$productJoin = new Join(ProductTableMap::ID, ProductI18nTableMap::ID, Criteria::LEFT_JOIN);
     	$attributeAvJoin = new Join(AttributeAvTableMap::ID, AttributeAvI18nTableMap::ID, Criteria::LEFT_JOIN);
-    	$brandJoin = new Join(ProductTableMap::ID, BrandI18nTableMap::ID, Criteria::LEFT_JOIN);
+    	$brandJoin = new Join(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID, Criteria::LEFT_JOIN);
+    	//$categoryJoin = new Join(ProductTableMap::ID, ProductCategoryTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
     	$categoryJoin = new Join(ProductCategoryTableMap::CATEGORY_ID, CategoryI18nTableMap::ID, Criteria::LEFT_JOIN);
     	$imageJoin = new Join(ProductTableMap::ID, ProductImageTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
-    
+    	
+    	
     	$query = ProductSaleElementsQuery::create()
     	->addSelfSelectColumns()
     	->useProductPriceQuery()
@@ -142,6 +154,17 @@ class IdealoProductExport extends AbstractExport
     	->withColumn(ProductPriceTableMap::LISTEN_PRICE)
     	->endUse()
     	->useProductQuery()
+    		->useProductCategoryQuery()
+    			->addJoinObject($categoryJoin, 'category_join')
+    			->addJoinCondition(
+    				'category_join',
+    				CategoryI18nTableMap::LOCALE . ' = ?',
+    				$locale,
+    				null,
+    				\PDO::PARAM_STR
+    				)
+    				->withColumn(CategoryI18nTableMap::TITLE)
+    		->endUse()
     	->addJoinObject($productJoin, 'product_join')
     	->addJoinCondition(
     			'product_join',
@@ -154,7 +177,6 @@ class IdealoProductExport extends AbstractExport
     			->withColumn(ProductTableMap::ID)
     			->withColumn(ProductTableMap::REF)
     			->withColumn(ProductTableMap::VISIBLE)
-    			
     			->addJoinObject($urlJoin, 'rewriting_url_join')
     			->addJoinCondition(
     					'rewriting_url_join',
@@ -196,18 +218,6 @@ class IdealoProductExport extends AbstractExport
     					\PDO::PARAM_STR
     					)
     					->withColumn(BrandI18nTableMap::TITLE)
-    
-    					->useProductCategoryQuery()
-    					->addJoinObject($categoryJoin, 'category_join')
-    					->addJoinCondition(
-    							'category_join',
-    							CategoryI18nTableMap::LOCALE . ' = ?',
-    							$locale,
-    							null,
-    							\PDO::PARAM_STR
-    							)
-    							->withColumn(CategoryI18nTableMap::TITLE)
-    							->endUse()
     							->endUse()
     
     							->useAttributeCombinationQuery(null, Criteria::LEFT_JOIN)
