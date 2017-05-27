@@ -126,7 +126,6 @@
                     <h1 class="name"><span itemprop="name">{$TITLE}</span><span id="pse-name" class="pse-name"></span></h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
 <table class="price-table" style="font-size:12px; color:#7a7a7a">
-
     <tr>
         <td>
             Marke:
@@ -135,36 +134,27 @@
              {loop name="brand_info" type="brand" product={$ID} limit="1"}
                         <p> <a href="{$URL nofilter}" title="{intl l="More information about this brand"}"><span itemprop="brand">{$TITLE}</span></a></p>
             {/loop}
-        </td>
-        
+        </td>       
     </tr>
      {if $WEIGHT}
         <tr>
+        	<td>
+            	Gewicht:&nbsp; 
+        	</td>
         <td>
-            Gewicht:&nbsp; 
-        </td>
-        <td>
-            
-              {$WEIGHT} kg
-             
+              {$WEIGHT}kg
         </td>
     </tr>
      {/if}
     <tr>
     <td>Lieferzeit:&nbsp; </td>
     <td class="highlight">
-       {hook name="product.details-bottom" product={$ID}}
-                
-                
+       {hook name="product.details-bottom" product={$ID}}               
 				{if $service_category != #services_category_id#}
                 	{hook name="product.delivery-delay" product={$ID}}
                 {/if} 
-    </td>
-        
-    </tr>
-                    
-                
-                   
+    </td>  
+    </tr>              
 </table>
 
                     {if $POSTSCRIPTUM}<div class="short-description">

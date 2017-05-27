@@ -31,25 +31,29 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\ProductQuery;
 
 /**
- * Class IdealoProductExport
+ * Class GeizhalsProductExport
  * @author Emanuel Plopu <emanuel.plopu@sepa.at>
  */
-class IdealoProductExport extends AbstractExport
+class GeizhalsProductExport extends AbstractExport
 {
-    const FILE_NAME = 'catalog_idealo';
+    const FILE_NAME = 'catalog_geizhals';
     private $url_site ;
     
     protected $orderAndAliases = [
+    		'product_i18nTITLE' => 'Produktbezeichnung',
+    		'brand_i18nTITLE' => 'Herstellername',
+    		'product_pricePRICE' => 'Preis',
+    		'rewriting_urlURL' => 'Produkt_URL',
+    		'productREF' => 'Herstellernummer',
+    		'product_i18nDESCRIPTION' => 'Beschreibung',
+    		
     		'productID' => 'Artikelnummer',
     		ProductSaleElementsTableMap::EAN_CODE => 'EAN',
-    		'productREF' => 'Herstellerartikelnummern',
-    		'brand_i18nTITLE' => 'Marke/Anbieter',
-    		'product_i18nTITLE' => 'Produktname',    		
-    		'product_pricePRICE' => 'Preis',
+    		
     		'product_pricePROMO_PRICE' => 'Spezialpreis',
     		'product_priceLISTEN_PRICE' => 'Streichpreis',
     		ProductSaleElementsTableMap::PROMO => 'Promo',
-    		'rewriting_urlURL' => 'Produkt_URL',
+    		
     		'product_imageFILE' => 'Produkt_BILD',
     		'category_i18nTITLE' => 'Produktgruppe'
     ];
@@ -89,10 +93,13 @@ class IdealoProductExport extends AbstractExport
     		$this->url_site = ConfigQuery::read('url_site');
     	$processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
     	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
-    	$processedData['Lieferzeit'] = "2-3 Arbeitstagen";
-    	$processedData['Nachnahme/Barzahkung/Kreditkarte/Paypal'] = "0";
+    	$processedData['Verfügbarkeit'] = "2-3 Arbeitstagen";
+    	$processedData['Versand Nachnahme'] = "0";
+    	$processedData['Versand Vorkasse'] = "0";
+    	$processedData['Kreditkarte'] = "0";
+    	$processedData['Versand Paypal'] = "0";
     	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
-    	$processedData['Spezialpreis'] = number_format((float)($processedData['Spezialpreis']*1.2), 2, '.', '');
+    	
     	
     	if($processedData['Promo'] == 0)
     		$processedData['Spezialpreis'] = "";
@@ -174,6 +181,7 @@ class IdealoProductExport extends AbstractExport
     			\PDO::PARAM_STR
     			)
     			->withColumn(ProductI18nTableMap::TITLE)
+    			->withColumn(ProductI18nTableMap::DESCRIPTION)
     			->withColumn(ProductTableMap::ID)
     			->withColumn(ProductTableMap::REF)
     			->withColumn(ProductTableMap::VISIBLE)

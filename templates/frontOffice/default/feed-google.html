@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<rss version="2.0"  xmlns:g="http://base.google.com/ns/1.0">
+{* @todo order item by create date desc *}
+{assign var="store_name" value="{config key="store_name"}"}
+{assign var="check_available_stock" value="{config key="check-available-stock"}"}
+{loop type="lang" name="lang" id=$_lang_}
+    {assign var="locale" value="{$LOCALE}"}
+{/loop}
+
+{if $_context_ == "catalog"}
+    <channel>
+        {if $_id_ == "" }
+            <title>{intl l="All products in"} {$store_name}</title>
+            <link>{url path="/"}</link>
+            <description>{$store_name}</description>
+            <language>{$locale|replace:'_':'-'|lower}</language>
+            <lastBuildDate>{$smarty.now|date_format:'r'}</lastBuildDate>
+            <generator>Thelia 2.0</generator>
+        {else}
+            {loop type="category" name="category" id=$_id_ lang=$_lang_ }
+                <title>{intl l="All products in"} {$TITLE} - {$store_name}</title>
+                <link>{$URL nofilter}</link>
+                <description>{$CHAPO}</description>
+                <language>{$LOCALE|replace:'_':'-'|lower}</language>
+                <pubDate>{format_date date=$UPDATE_DATE format="r"}</pubDate>
+                <lastBuildDate>{$smarty.now|date_format:'r'}</lastBuildDate>
+                <generator>Thelia 2.0</generator>
+            {/loop}
+        {/if}
+        {loop type="product" name="product" category_default=$_id_ lang=$_lang_ order="id_reverse" has_ean=true limit="601"}
+        <item>
+                <title>{$TITLE}</title>
+                <link>{$URL}</link>
+                <description>{$DESCRIPTION}</description>
+                <pubDate>{format_date date=$CREATE_DATE format="r"}</pubDate>
+                <guid>{$ID}</guid>
+                <g:price>{format_money number=$BEST_TAXED_PRICE symbol="EUR"}</g:price>
+                <g:id>{$ID}</g:id>
+                <g:gtin>{$EAN_CODE}</g:gtin>
+                <g:image_link>{strip}
+					{loop type="image" name="image.main" product={$ID} limit="1"}
+                    	{$IMAGE_URL nofilter}
+                    {/loop}
+                {/strip}</g:image_link>
+                <g:availability>{strip}
+				{assign var="current_stock_content" value = "in stock"}
+				{if $check_available_stock != 0}
+					{if $VIRTUAL == 0 && $QUANTITY <= 0}
+                		{assign var="current_stock_content" value = "out of stock"}
+            		{/if}
+				{/if}
+				{$current_stock_content}
+				{/strip}</g:availability>
+				{if $IS_PROMO == 1}
+				<g:sale_price>{format_money number=$TAXED_PROMO_PRICE symbol="EUR"}</g:sale_price>
+				{/if}
+				<g:google_product_category>581</g:google_product_category>
+				<g:brand>{strip}
+				{loop name="brand_info" type="brand" product={$ID} limit="1"}
+					{$TITLE}
+				{/loop}
+				{/strip}</g:brand>
+				<g:condition>new</g:condition>
+				<g:shipping>
+					<g:price>0</g:price>
+					<g:country>AT</g:country>
+				</g:shipping>
+				<g:shipping_weight>{$WEIGHT}</g:shipping_weight>
+		</item>
+        {/loop}
+    </channel>
+{/if}
+</rss>

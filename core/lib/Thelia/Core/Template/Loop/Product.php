@@ -70,6 +70,7 @@ use Thelia\Type\TypeCollection;
  * @method bool|string getVisible()
  * @method int getCurrency()
  * @method string getTitle()
+ * @method bool hasEan()
  * @method string[] getOrder()
  * @method int[] getExclude()
  * @method int[] getExcludeCategory()
@@ -112,6 +113,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
             Argument::createBooleanOrBothTypeArgument('visible', 1),
             Argument::createIntTypeArgument('currency'),
             Argument::createAnyTypeArgument('title'),
+        	Argument::createBooleanTypeArgument('has_ean'),
             new Argument(
                 'order',
                 new TypeCollection(
@@ -750,7 +752,10 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
         $max_weight = $this->getMaxWeight();
         $min_price  = $this->getMinPrice();
         $max_price  = $this->getMaxPrice();
+        $has_ean    = $this->getHasEan();
 
+
+        
         if ($complex) {
             if ($new === true) {
                 $isPSELeftJoinList[] = 'is_new';
@@ -774,6 +779,13 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                 $search->joinProductSaleElements('is_promo', Criteria::LEFT_JOIN)
                     ->where('`is_promo`.PROMO' . Criteria::EQUAL . '0')
                     ->where('NOT ISNULL(`is_promo`.ID)');
+            }
+            
+            if ($has_ean === true) {
+            	$search->joinProductSaleElements('has_ean', Criteria::LEFT_JOIN)
+            	->where('`has_ean`.EAN_CODE' . Criteria::EQUAL . '1')
+            	->where('NOT ISNULL(`has_ean`.ID)');
+            	Tlog::getInstance()->error("-- has_ean complex ".$has_ean);
             }
 
             if (null != $min_stock) {
@@ -973,6 +985,11 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                 $search->where('`pse`.PROMO' . Criteria::EQUAL . '1');
             } elseif ($promo === false) {
                 $search->where('`pse`.PROMO' . Criteria::EQUAL . '0');
+            }
+            
+            if ($has_ean === true) {
+            	$search->where('`pse`.EAN_CODE' . Criteria::ISNOTNULL . " and " . '`pse`.EAN_CODE' . Criteria::NOT_EQUAL .'""');
+            	Tlog::getInstance()->error("-- has_ean simple ".$has_ean);
             }
 
             if (null != $min_stock) {
