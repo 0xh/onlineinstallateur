@@ -6243,11 +6243,12 @@ button.close {
 .carousel-caption {
     position: absolute;
     //left: 15%;
-    right: 15%;
-    bottom: 20px;
+    right: 2%;
+    top: 20px;
     z-index: 10;
    // padding-bottom: 20px;
-    color: #fff
+    color: #000;
+    text-align: right;
 }
 @media screen and (min-width: 768px) {
     .carousel-control .glyphicon-chevron-left,
@@ -6269,13 +6270,48 @@ button.close {
     }
     .carousel-caption {
         //left: 30%;
-        right: 15%;
+        right: 5%;
         padding-bottom: 30px;
-        bottom:5px;
+        top:10%;
     }
     .carousel-indicators {
         bottom: 20px
     }
+     .carousel-caption h1{
+       font-size: 50px!important;
+       
+    }
+    .carousel-caption h2{
+       font-size: 25px!important;
+       
+    }
+    .carousel-caption h3{
+       font-size: 20px!important;
+       
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .ebay{
+        display:none
+    }
+    .carousel-caption {
+       
+        top:2%;
+    }
+    .carousel-caption h1{
+       font-size: 20px!important;
+       
+    }
+    .carousel-caption h2{
+       font-size: 14px!important;
+       
+    }
+    .carousel-caption h3{
+       font-size: 12px!important;
+       
+    }
+    
 }
 .table-cart tbody td.product .name,
 .table-order tbody td.product .name,
@@ -11002,10 +11038,10 @@ font-weight:500;
 	float: left;
 	overflow: hidden;
 	margin: 10px 1%;
-	min-width: 320px;
+	min-width: 238px;
 	max-width: 550px;
 	max-height: 360px;
-	width: 48%;
+	//width: 48%;
 	background: #3085a3;
 	text-align: center;
 	cursor: pointer;
@@ -13631,4 +13667,71 @@ font-family:helvetica;
     -o-transition: all .4s ease-in-out;
     transition: all .4s ease-in-out;
 }
+.heizungscontracting{
+    line-height:25px;
+    //border:1px solid #8d8d8d;
+    padding:20px;
+    //background:#ebebeb;
+}
+.heizungscontracting h3{
+    font-family:helvetica!important;
+}
 
+figure.effect-marley figcaption {
+	text-align: right;
+}
+
+figure.effect-marley h3,
+figure.effect-marley p {
+	position: absolute;
+	right: 30px;
+	left: 30px;
+	padding: 10px 0;
+}
+
+
+figure.effect-marley p {
+	bottom: 30px;
+	line-height: 1.5;
+	-webkit-transform: translate3d(0,100%,0);
+	transform: translate3d(0,100%,0);
+}
+
+figure.effect-marley h3 {
+	top: 30px;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0,20px,0);
+	transform: translate3d(0,20px,0);
+}
+
+figure.effect-marley:hover h3 {
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+
+figure.effect-marley h3::after {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: #fff;
+	content: '';
+	-webkit-transform: translate3d(0,40px,0);
+	transform: translate3d(0,40px,0);
+}
+
+figure.effect-marley h3::after,
+figure.effect-marley p {
+	opacity: 0;
+	-webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+	transition: opacity 0.35s, transform 0.35s;
+}
+
+figure.effect-marley:hover h3::after,
+figure.effect-marley:hover p {
+	opacity: 1;
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}

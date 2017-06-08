@@ -285,7 +285,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
                 {hook name="main.content-top"}
                 {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
-                <div id="content">{block name="main-content"}{/block}</div>
+                <div id="content" class="row">{block name="main-content"}{/block}</div>
                 {hook name="main.content-bottom"}
                 
             </div><!-- /.container -->

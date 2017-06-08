@@ -49,9 +49,7 @@
                             </div>
                             {/if}
                             <div class="col-sm-3">
-                            {loop name="category.image" type="image" source="category" source_id={$ID}  limit="1"}
-                                <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
-                            {/loop}
+                            
                             </div>
                             <div class="col-sm-3">
                             {loop name="category.image" type="image" source="category" source_id={$ID} offset="1" limit="1"}
