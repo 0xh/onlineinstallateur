@@ -6,6 +6,7 @@
     {loop type="category" name="categories" parent=$category_id}
         {$categories[] = $ID}
     {/loop}
+    
     {loop type="search_feature" name="search_feature_loop" category=$category_id}
         {if $SEARCHABLE}
             {$featureId = $ID}
@@ -21,6 +22,7 @@
             {/ifloop}
         {/if}
     {/loop}
+    
     {loop type="search_attribute" name="search_attribute_loop" category=$category_id}
         {if $SEARCHABLE}
             {$attributeId = $ID}

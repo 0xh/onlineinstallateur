@@ -27,7 +27,7 @@
                 <generator>Thelia 2.0</generator>
             {/loop}
         {/if}
-        {loop type="product" name="product" category_default=$_id_ lang=$_lang_ order="id_reverse" has_ean=true limit="601"}
+        {loop type="product" name="product" category_default=$_id_ lang=$_lang_ order="id_reverse" has_ean=true}
         <item>
                 <title>{$TITLE}</title>
                 <link>{$URL}</link>
@@ -54,7 +54,7 @@
 				{if $IS_PROMO == 1}
 				<g:sale_price>{format_money number=$TAXED_PROMO_PRICE symbol="EUR"}</g:sale_price>
 				{/if}
-				<g:google_product_category>581</g:google_product_category>
+				<g:google_product_category>499873</g:google_product_category>
 				<g:brand>{strip}
 				{loop name="brand_info" type="brand" product={$ID} limit="1"}
 					{$TITLE}

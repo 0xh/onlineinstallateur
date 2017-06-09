@@ -40,20 +40,17 @@ class GeizhalsProductExport extends AbstractExport
     private $url_site ;
     
     protected $orderAndAliases = [
-    		'product_i18nTITLE' => 'Produktbezeichnung',
-    		'brand_i18nTITLE' => 'Herstellername',
-    		'product_pricePRICE' => 'Preis',
-    		'rewriting_urlURL' => 'Produkt_URL',
+    		'product_i18nTITLE' => 'Bezeichnung',
+    		'brand_i18nTITLE' => 'Hersteller',
     		'productREF' => 'Herstellernummer',
-    		'product_i18nDESCRIPTION' => 'Beschreibung',
-    		
-    		'productID' => 'Artikelnummer',
+    		'product_pricePRICE' => 'Preis',
     		ProductSaleElementsTableMap::EAN_CODE => 'EAN',
-    		
+    		'rewriting_urlURL' => 'Deeplink',
+    		//'product_i18nDESCRIPTION' => 'Beschreibung',    		
+    		'productID' => 'Artikelnummer',
     		'product_pricePROMO_PRICE' => 'Spezialpreis',
     		'product_priceLISTEN_PRICE' => 'Streichpreis',
     		ProductSaleElementsTableMap::PROMO => 'Promo',
-    		
     		'product_imageFILE' => 'Produkt_BILD',
     		'category_i18nTITLE' => 'Produktgruppe'
     ];
@@ -91,13 +88,10 @@ class GeizhalsProductExport extends AbstractExport
     	
     	if($this->url_site == null)
     		$this->url_site = ConfigQuery::read('url_site');
-    	$processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
+    	$processedData['Deeplink'] = $this->url_site . "/" . $processedData['Deeplink'];
     	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
     	$processedData['Verfügbarkeit'] = "2-3 Arbeitstagen";
-    	$processedData['Versand Nachnahme'] = "0";
-    	$processedData['Versand Vorkasse'] = "0";
-    	$processedData['Kreditkarte'] = "0";
-    	$processedData['Versand Paypal'] = "0";
+    	$processedData['Versand AT'] = "0";
     	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
     	
     	

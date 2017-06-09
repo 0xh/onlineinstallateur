@@ -115,24 +115,89 @@
             </export_descriptive>
         </export>
 
-        <export id="thelia.export.product_idealo" class="Thelia\ImportExport\Export\Type\IdealoProductExport" category_id="thelia.export.products">
+        <export id="thelia.export.catalog.idealo" class="Thelia\ImportExport\Export\Type\IdealoProductExport" category_id="thelia.export.products">
             <export_descriptive locale="en_US">
-                <title>Idealo Product Export</title>
+                <title>Idealo Product Catalog Export</title>
                 <description>
-                    Export the SEO information ( rewritten url, meta description and keywords, page title ) of your products
+                <![CDATA[
+                    Export the Product Catalog in the required IDEALO CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
                 </description>
             </export_descriptive>
             <export_descriptive locale="fr_FR">
-                <title>Idealo Product Export</title>
+                <title>Idealo Product Catalog Export</title>
                 <description>
-                    Exporter les informations SEO de vos produits
-                    ( url réécrites, meta description et mots clés, titre ) de vos produits
+                <![CDATA[
+                    Export the Product Catalog in the required IDEALO CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
                 </description>
             </export_descriptive>
             <export_descriptive locale="de_DE">
-                <title>Idealo Product Export</title>
+                <title>Idealo Product Catalog Export</title>
                 <description>
-                    Export the SEO information ( rewritten url, meta description and keywords, page title ) of your products
+                <![CDATA[
+                    Export the Product Catalog in the required IDEALO CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+        </export>
+
+        <export id="thelia.export.catalog.geizhals" class="Thelia\ImportExport\Export\Type\GeizhalsProductExport" category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Geizhals Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Geizhals CSV format:
+                    <ul>
+                    	<li>Produktbezeichnung,Herstellername,Preis,Beschreibung,EAN</li>
+                    	<li>Versand Vorkasse,Versand Nachnahme,Versand Kreditkarte,Versand Paypal</li>
+    					<li>Verfügbarkeit,HerstellernummerDeeplink</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Geizhals Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Geizhals CSV format:
+                    <ul>
+                    	<li>Produktbezeichnung,Herstellername,Preis,Beschreibung,EAN</li>
+                    	<li>Versand Vorkasse,Versand Nachnahme,Versand Kreditkarte,Versand Paypal</li>
+    					<li>Verfügbarkeit,HerstellernummerDeeplink</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Geizhals Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Geizhals CSV format:
+                    <ul>
+                    	<li>Produktbezeichnung,Herstellername,Preis,Beschreibung,EAN</li>
+                    	<li>Versand Vorkasse,Versand Nachnahme,Versand Kreditkarte,Versand Paypal</li>
+    					<li>Verfügbarkeit,HerstellernummerDeeplink</li>
+                    </ul>
+                    ]]>
                 </description>
             </export_descriptive>
         </export>

@@ -191,6 +191,7 @@ class FeedController extends BaseFrontController {
 
         // if not in cache
         if (false === $cacheContent){
+        	Tlog::getInstance()->err("got here");
             // render the view
             $cacheContent = $this->renderRaw(
                 "feed-google",
@@ -200,6 +201,7 @@ class FeedController extends BaseFrontController {
                     "_id_"      => $id
                 )
             );
+            Tlog::getInstance()->err("google ".$cacheContent);
             // save cache
             $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);
         }

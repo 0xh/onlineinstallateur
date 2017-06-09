@@ -19,6 +19,7 @@ use Thelia\Core\Template\ParserInterface;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Model\AddressQuery;
 use Thelia\Model\ModuleQuery;
+use Thelia\Log\Tlog;
 
 class BaseFrontController extends BaseController
 {
@@ -95,7 +96,7 @@ class BaseFrontController extends BaseController
             $template ?: $this->getTemplateHelper()->getActiveFrontTemplate(),
             $this->useFallbackTemplate
         );
-
+//Tlog::getInstance()->err(" parsertype ".get_class($parser));
         return $parser;
     }
 
