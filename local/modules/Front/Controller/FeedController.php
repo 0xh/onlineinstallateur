@@ -120,22 +120,20 @@ Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         	if ($export === null) {
         		return $this->pageNotFound();
         	}
-        	
         		set_time_limit(0);
-        	
         		/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
         		$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
         		$serializer = $serializerManager->get("thelia.csv");//
         
         	$lang = (new LangQuery)->findPk($lang);
-        				$exportEvent = $exportHandler->export(
+        	$exportEvent = $exportHandler->export(
         						$export,
         						$serializer,
         						null, // no archiver
         						$lang,
         						false,
         						false,
-        						null
+        						 null
         						);
         	
         				$contentType = $exportEvent->getSerializer()->getMimeType();
@@ -155,8 +153,17 @@ Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         								$fileExt
         								)
         				];
-        	
-        				return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
+        				$response = new Response();
+        				$response->setContent(readfile($exportEvent->getFilePath()));
+        				$response->headers->set('Content-Type', $contentType);
+        				$response->headers->set('Content-Disposition' , sprintf(
+        								'%s; filename="%s.%s"',
+        								ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        								$exportEvent->getExport()->getFileName(),
+        								$fileExt
+        								));
+        				return $response;
+        				//return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
         }
         else{
         $cacheDir = $this->getCacheDir();

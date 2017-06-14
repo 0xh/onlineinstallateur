@@ -57,9 +57,6 @@ class SofortResponse extends BasePaymentModuleController
      */
     public function ok($order_id)
     {
-    	
-    	//$this->getLogger()->error("anisofort response ");
-
         
         	/*
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -201,22 +198,10 @@ class SofortResponse extends BasePaymentModuleController
      */
     public function cancel($order_id)
     {
-        $transaction_id = null;
+        $transaction_id = $this->extractTransactionId("Sofort-cancel",$order_id);
         
-        $content = $this->getRequest()->getContent();
-        if($content == null)
-        	$this->getLogger()->error("Sofort-cancel content is null ");
-        	else {
-        		$transaction_array = explode("transaction",$content);
-        		$transaction_id = $transaction_array[2];
-        		$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
-        		$this->getLogger()->error("Sofort-cancel transaction-id ".$transaction_id);
-        	}
-
         try {
             $order = $this->checkorder($order_id, $transaction_id);
-
-            
             $this->getLogger()->error("User canceled payment of order ".$order->getRef());
 
             $event = new OrderEvent($order);
@@ -239,16 +224,7 @@ class SofortResponse extends BasePaymentModuleController
     
     public function pending($order_id)
     {
-    	$content = $this->getRequest()->getContent();
-    	$transaction_id = "";
-    	if($content == null)
-    		$this->getLogger()->error("Sofort-pending content is null");
-    		else {
-    			$transaction_array = explode("transaction",$content);
-    			$transaction_id = $transaction_array[1];
-    			$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
-    		}
-    	$this->getLogger()->error("Sofort-pending ". $order_id." request ".$this->getRequest()->getContent());
+    	$transaction_id = $this->extractTransactionId("Sofort-pending",$order_id);
     	
     	if($transaction_id){
     		//get order object
@@ -277,6 +253,23 @@ class SofortResponse extends BasePaymentModuleController
     public function untraceable($order_id)
     {
     	$this->getLogger()->error("Sofort-untraceable ". $order_id." request ".implode(" ",$this->getRequest()->request->all()));
+    }
+    
+    private function extractTransactionId($notification,$order_id){
+    	$content = $this->getRequest()->getContent();
+    	$this->getLogger()->error($notification." ". $order_id." request ".$content);
+    	$transaction_id = "";
+    	if($content == null)
+    	{
+    		$this->getLogger()->error($notification." content is null");
+    	}
+    	else {
+    		//$this->getLogger()->info("")
+    		$transaction_array = explode("transaction",$content);
+    		$transaction_id = $transaction_array[1];
+    		$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
+    	}
+    	return $transaction_id;
     }
     
 
