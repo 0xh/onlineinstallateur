@@ -58,7 +58,7 @@ class Smarty_Internal_Filter_Handler
         if (!empty($template->smarty->registered_filters[$type])) {
             foreach ($template->smarty->registered_filters[$type] as $key => $name) {
                 if (is_array($template->smarty->registered_filters[$type][$key])) {
-                    $output = call_user_func($template->smarty->registered_filters[$type][$key], $output, $template);
+                //    $output = call_user_func($template->smarty->registered_filters[$type][$key], $output, $template);
                    // Tlog::getInstance()->err("ab34carray ".$output);
                 } else {
                     $output = $template->smarty->registered_filters[$type][$key]($output, $template);

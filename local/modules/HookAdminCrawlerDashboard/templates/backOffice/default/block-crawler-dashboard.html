@@ -1,0 +1,170 @@
+{loop type="auth" name="can_view" role="ADMIN" resource="admin.order" access="VIEW"}
+<div class="general-block-decorator dashboard">
+    <div class="title title-without-tabs clearfix">
+      {intl l='Dashboard Crawler' d='hookadmincrawlerdashboard.bo.default'}
+      </div>
+  <ul class="nav nav-tabs nav-justified">
+    <li class="active"><a href="#statjour" data-toggle="tab">{intl l="Product Position"  d='hookadminhome.bo.default'} (25)</a></li>
+    <li><a href="#statmois" data-toggle="tab">{intl l="Price Low"  d='hookadminhome.bo.default'} (10)</a></li>
+    <li><a href="#statannee" data-toggle="tab">{intl l="Price High"  d='hookadminhome.bo.default'} (101)</a></li>
+  </ul>
+
+  {capture assign=defaultCurrency}
+    {loop type="currency" name="default-currency" default_only="1"}
+    {$SYMBOL}
+    {/loop}
+  {/capture}
+  
+  <div class="tab-content">
+    <div class="tab-pane fade active in" id="statjour">
+    
+    	<div class="col-md-1">
+    	ID
+    	</div>
+    	    	<div class="col-md-6">
+    	Product
+    	</div>
+    <div class="col-md-1">
+    	Amazon
+    	</div>
+    <div class="col-md-1">
+    	Idealo
+    	</div>
+    <div class="col-md-1">
+    	Geizhals
+    	</div>
+    <div class="col-md-1">
+    	Google
+    	</div>
+    <div class="col-md-1">
+    	Willhaben
+    	</div>
+    	
+    <div class="crawlerdebug">
+    aa
+    </div>>
+    {loop name="product.details" type="product" has_ean="1" limit="10" with_prev_next_info="1" with_prev_next_visible="1"}
+    {$ID} {$EAN_CODE} {$PRICE}</br>
+    {/loop}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <th>{intl l="Overall sales"  d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="today" endDate="today"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Sales excluding shipping" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$salesNoShipping = {stats key="sales" startDate="today" endDate="today" includeShipping="false"}}
+              {$salesNoShipping} {$defaultCurrency}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Yesterday sales" d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="yesterday" endDate="yesterday"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Orders" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$orderCount =  {stats key="orders" startDate="today" endDate="today"}}
+              {$orderCount}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Average cart" d='hookadminhome.bo.default'}</th>
+            <td>
+              {if $orderCount == 0}
+                0 {$defaultCurrency}
+              {else}
+                {($salesNoShipping/$orderCount)|round:"2"} {$defaultCurrency}
+              {/if}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="statmois">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <th>{intl l="Overall sales" d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="this_month" endDate="this_month"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Sales excluding shipping" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$salesNoShipping = {stats key="sales" startDate="this_month" endDate="this_month" includeShipping="false"}}
+              {$salesNoShipping} {$defaultCurrency}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Previous month sales" d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="last_month" endDate="last_month"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Orders" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$orderCount =  {stats key="orders" startDate="this_month" endDate="this_month"}}
+              {$orderCount}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Average cart" d='hookadminhome.bo.default'}</th>
+            <td>
+              {if $orderCount == 0}
+                0 {$defaultCurrency}
+              {else}
+                {($salesNoShipping/$orderCount)|round:"2"} {$defaultCurrency}
+              {/if}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="statannee">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <th>{intl l="Overall sales" d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="this_year" endDate="this_year"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Sales excluding shipping" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$salesNoShipping = {stats key="sales" startDate="this_year" endDate="this_year" includeShipping="false"}}
+              {$salesNoShipping} {$defaultCurrency}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Previous year sales" d='hookadminhome.bo.default'}</th>
+            <td>{stats key="sales" startDate="last_year" endDate="last_year"} {$defaultCurrency}</td>
+          </tr>
+          <tr>
+            <th>{intl l="Orders" d='hookadminhome.bo.default'}</th>
+            <td>
+              {$orderCount =  {stats key="orders" startDate="this_year" endDate="this_year"}}
+              {$orderCount}
+            </td>
+          </tr>
+          <tr>
+            <th>{intl l="Average cart" d='hookadminhome.bo.default'}</th>
+            <td>
+              {if $orderCount == 0}
+                0 {$defaultCurrency}
+              {else}
+                {($salesNoShipping/$orderCount)|round:"2"} {$defaultCurrency}
+              {/if}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ </div>
+{/loop}
