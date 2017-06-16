@@ -1,39 +1,49 @@
-<div style="max-width:1200px">
+<div >
 <!---------AKTUELL BEI HAUSFABRIK------------> 
-<div class="row">
-    <!--div class="col-sm-6 ebay">
+<div class="">
+    <div class="col-sm-6 ebay">
         <div class="row">
             <div class="col-sm-10 row" >
                 {loop name="ani.homepage.new" type="product" id=3194 limit="1"}
               
                 
-                <a href="{$URL nofilter}"><img src={image file='assets/dist/img/homepage/vaillant/vaillant-ecoTecPlus.jpg'} alt="{$TITLE}" class="img-responsive bigimg"></a>
-                    
+                <a href="/search?q=grohe+eurostyle"><div style="position:relative"><img src={image file='assets/dist/img/marken/grohe/eurostyle.png'} alt="Grohe armaturen" class="img-responsive bigimg"><h2 style="position:absolute; top:10%; left:5%">Grohe <br>Eurostyle</h2></div></a>
+                  
                  
                 {/loop}
             </div>
             <div class="col-sm-3 row">
                 
                 <div>
-                    {loop name="ani.homepage.new" type="product" id=2314 limit="1"}
+                    {loop name="ani.homepage.new" type="product" id=2847 limit="1"}
                     <a href="{$URL nofilter}">
-                    <img src={image file='assets/dist/img/homepage/vaillant/vaillant3.jpg'} alt="VAILLANT"   class="img-responsive smallimg" >
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="Grohe"   class="img-responsive smallimg" >
+                     {/loop} 
                     </a>
                      {/loop}
                 </div>
-                <div>
-                    {loop name="ani.homepage.new" type="product" id=1982 limit="1"}
-                    <a href="{$URL nofilter}"><img alt="VAILLANT" src={image file='assets/dist/img/homepage/vaillant/vaillant2.jpg'} class="img-responsive smallimg" ></a>
+               <div>
+                    {loop name="ani.homepage.new" type="product" id=2084 limit="1"}
+                    <a href="{$URL nofilter}">
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    
+                    <img src="{$IMAGE_URL nofilter}" alt="Grohe"   class="img-responsive smallimg" >
+                   
+                     {/loop} 
+                    </a>
                      {/loop}
                 </div>
                 
-                <div>
-                    
-                    {loop name="ani.homepage.new" type="product" id=3224 limit="1"}
+               <div>
+                    {loop name="ani.homepage.new" type="product" id=2822 limit="1"}
                     <a href="{$URL nofilter}">
-                    <img src={image file='assets/dist/img/homepage/vaillant/vaillant4.jpg'} alt="VAILLANT"   class="img-responsive smallimg" >
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="Grohe"   class="img-responsive smallimg" >
+                   
+                     {/loop} 
                     </a>
-                    {/loop}
+                     {/loop}
                 </div>
             </div>
             
@@ -42,12 +52,11 @@
          <div class="clearfix"></div>
         <div class="row">
             <div class="col-sm-8 " >
-                <h1 class="main-title">VAILLANT HEIZUNG</h1>
-                <p>Top Heizungsgeräte von Vaillant: Gas-Durchlauferhitzer, Thermen und vieles mehr von Vaillant. 
-Alle Produkte können inklusive Montage durch die wiener Installateure der Hausfabrik bestellt werden. </p>
+                <h1 class="main-title">GROHE Badarmaturen</h1>
+                <p>Mit Qualität "Made in Germany", zeitlosem Design und außergewöhnlichen Produkten gibt GROHE Ihnen die Möglichkeit, jeden Tag die "Pure Freude an Wasser" zu genießen. </p>
             </div>
             <div class="col-sm-4" >
-               <br><br><a href="/?view=brand&lang=de_DE&brand_id=44&limit=8&order=max_price"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
+               <br><br><a href="/grohe"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
             </div>
         </div>
     </div>  
@@ -57,32 +66,40 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
             <div class="col-sm-10 row">
                 {loop name="ani.homepage.new" type="product" id=1982 limit="1"}
                
-                 <a href="/?view=brand&brand_id=94">
-                        <img src={image file='assets/dist/img/homepage/bad/hansgrohe.jpg'} alt="HANSGROHE" class="img-responsive bigimg">
+                 <a href="/?view=brand&brand_id=96">
+                         <img src={image file='assets/dist/img/marken/laufen/laufen.png'} alt="LAUFEN" class="img-responsive bigimg">     
                   </a>
                 {/loop}
             </div>
             <div class="col-sm-3 row" >
-            <div>
-                <a href="/?view=brand&brand_id=93">
-                <img src={image file='assets/dist/img/homepage/bad/grohe.png'} alt="GROHE" class="img-responsive smallimg">
-                </a>
-                
-            </div>
-            <div>
-                {loop name="ani.homepage.new" type="product" id=3410 limit="1"}
-                 <a href="{$URL nofilter}">
-                <img src={image file='assets/dist/img/homepage/bad/geberit.jpg'} alt="GEBERIT" class="img-responsive smallimg">  
-                </a>
-                {/loop}
-            </div>
+               <div>
+                    {loop name="ani.homepage.new" type="product" id=2767 limit="1" height="110"}
+                    <a href="{$URL nofilter}">
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="LAUFEN"   class="img-responsive smallimg" >
+                     {/loop} 
+                    </a>
+                     {/loop}
+                </div>
+                <div>
+                    {loop name="ani.homepage.new" type="product" id=2759 limit="1"}
+                    <a href="{$URL nofilter}">
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="LAUFEN"   class="img-responsive smallimg" >
+                     {/loop} 
+                    </a>
+                     {/loop}
+                </div>
             
-            <div>  
-                <a href="/?view=brand&brand_id=96">
-               <img src={image file='assets/dist/img/homepage/bad/laufen.png'} alt="LAUFEN" class="img-responsive smallimg">     
-                </a>
-                
-            </div>
+                <div>
+                    {loop name="ani.homepage.new" type="product" id=2639 limit="1"}
+                    <a href="{$URL nofilter}">
+                    {loop type="image" name="image.main" product={$ID} limit="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="LAUFEN"   class="img-responsive smallimg" >
+                     {/loop} 
+                    </a>
+                     {/loop}
+                </div>
             
                 
                
@@ -92,16 +109,16 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
     </div> 
     <div class="row">
             <div class="col-sm-8 " >
-                <h1 class="main-title">BAD/WC</h1>
-                <p>Große Auswahl an Waschbecken, Wasserhähnen und Duschköpfen, Toiletten für Bad/WC und Küche. Brauchen Sie Hilfe beim Austausch von Sanitärprodukten? Hausfabrik freut sich einen Termin mit Ihnen zu vereinbaren.  </p>
+                <h1 class="main-title">LAUFEN</h1>
+                <p>Bei uns finden Sie eine große Auswahl an Waschbecken, Badmöbel,  Toiletten, Badewannen und viel mehr. Brauchen Sie Hilfe beim Austausch von Sanitärprodukten? Hausfabrik freut sich einen Termin mit Ihnen zu vereinbaren.  </p>
             </div>
             <div class="col-sm-4" >
-                <br><br><a href="/sanitär.html"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
+                <br><br><a href="/laufen.html"><button class="btn btn-1 btn-1a">ENTDECKEN</button></a>
             </div>
         </div>
 </div>
     <div class="clearfix"></div> 
-    <br><br-->
+    <br><br>
     
     <!---------DANFOSS------------>
 <!--div>
@@ -148,15 +165,7 @@ Alle Produkte können inklusive Montage durch die wiener Installateure der Hausf
 
     
 <div class="container">
-<div class="row main-banner">
 
-    <div class="main-content">
-           <h1> HEIZUNGSTAUSCH</h1>
-        <h3>Finden Sie einfach<br> die passende Heizung in 5 Min</h3><br>
-        <a href="/konfigurator"><button class="btn btn-1 btn-1a">ZUM KOSTENLOSEN ANGEBOT</button></a>
-    </div>
-
-</div> 
 
     
 <!---------SERVICES------------>
@@ -393,7 +402,7 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 <div class="wartungspackete row">
     
     <br><br>
-      <h2 class="title">UNSERE WARTUNGSPACKETE</h2> 
+      <h2 class="title">UNSERE WARTUNGSPAKETE</h2> 
     
         <div class="col-sm-4">
             <div class="packet packet1">
@@ -407,6 +416,9 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 								<li>24h Notdienst ganzjährig</li>
                                 <li>1 Monat Wartungsgarantie*</li>
                                 </ul> 
+                <div>
+                <a href="/wartungspaket-light.html"><button class="btn btn-1 btn-1a" >MEHR DAZU</button></a>
+                </div>
                  <small>*Keine Verrechnung von Arbeitszeit und Fahrkosten (bei Störungen) ein Monat nach der durchgeführten Wartung </small>
 
             </div>
@@ -423,6 +435,10 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 								<li>24h Notdienst ganzjährig</li>
                                 <li>4 Monat Wartungsgarantie**</li>
                                 </ul>
+               
+               <div>
+                <a href="/wartungspaket-komfort.html"><button class="btn btn-1 btn-1a" >MEHR DAZU</button></a>
+                </div>
                 <small>**Keine Verrechnung von Arbeitszeit und Fahrkosten (bei Störungen) 4 Monate nach der durchgeführten Wartung</small>
 							
 							
@@ -440,6 +456,10 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 								<li>24h Notdienst ganzjährig</li>
                                <li> Kostenlose Reparatur und Anfahrt innerhalb eines Monats nach der Wartung</li>
                             </ul>
+                
+                <div>
+                <a href="/wartungspaket-premium.html"><button class="btn btn-1 btn-1a" >MEHR DAZU</button></a>
+                </div>
              <small> Dieses Paket gilt nur für Kunden, die einen Heizungstausch der Hausfabrik in Anspruch genommen haben.</small>
 
 							
@@ -451,17 +471,41 @@ inkl. <strong>Montage</strong> & 10-Jahresgarantie für<span class="slide__price
 </div>
     
     <!---------Heizungscontracting------------>
-<div class="wartungspackete row">
-    
+<div class="row">
     <br><br>
-      <h2 class="title">HEIZUNGSCONTRACTING</h2> 
     
+      <h2 class="title">HEIZUNGSCONTRACTING</h2> 
+     <div class="col-sm-5" >
+        <div class="heizungscontracting block-main" >
+        <h1 class="mini-title">Heizungstausch</h1>
+        <h2 class="mini-title"><strong>BEISPIELRECHNUNG</strong></h2>
+        <div class="row">
+         <div class="col-sm-5"><h3>3.600€</h3></div>
+         <div class="col-sm-7">Thermentausch<br> inkl. Montage<br>  inkl. Inbetriebnahme<br><br></div>
+            <div class="col-sm-5">Laufzeit<br><br></div><hr>
+         <div class="col-sm-7">60 Monate (5 Jahre) <br> <br></div>
+         <div class="col-sm-5"> </div>
+         <div class="col-sm-7">0€ Anzahlung<br> 60€ Heizungsrate<br>25€ Premium Wartungspacket</div>
+         <div class="clearfix"></div>
+        <hr>
+         <div class="col-sm-12" style="text-align:center"><div><h3>85€ Monatsrate</h3></div></div>
+            <div class="clearfix"></div>
+        </div>
+        
+    </div>
+         </div>
+    <div class="col-sm-7" style="text-align:right">
+        
+        <img src={image file='assets/dist/img/homepage/contracting.png'} alt="Heizungscontracting" class="img-responsive">
+       
+    </div>
         
         
         
 
 
-</div>
+
+    </div>
     
   <br><br>    
 

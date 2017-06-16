@@ -51,7 +51,9 @@
             </div>
         {/ifloop}
     {/if}
+    {if $new_filter === "true" || $promo_filter === "true"}
     <div id="search-others" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label" >
+         
         <h4  id="search-label">{intl l="Others filters" d="criteriasearch.fo.default"}</h4>
             {if $new_filter === "true"}
                 <div >
@@ -71,7 +73,9 @@
                     <label for="in-stock">{intl l="In stock" d="criteriasearch.fo.default"}</label>
                 </div-->
             {/if}
+        
     </div>
+    {/if}
     {if $price_filter != "true"}
         <div id="search-price" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
         <h4  id="search-label">{intl l="Price filter" d="criteriasearch.fo.default"}</h4>

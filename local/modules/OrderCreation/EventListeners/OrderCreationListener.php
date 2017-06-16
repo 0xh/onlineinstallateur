@@ -91,7 +91,6 @@ class OrderCreationListener implements EventSubscriberInterface
         $lang = new Lang();
 
         /** @var \Thelia\Model\Customer $customer */
-        Tlog::getInstance()->error("here ".$event->getCustomerId());
         $customer = CustomerQuery::create()->findPk($event->getCustomerId());
 
         $order = new Order();
@@ -99,8 +98,8 @@ class OrderCreationListener implements EventSubscriberInterface
             ->setCustomerId($customer->getId())
             ->setCurrencyId($currency->getId())
             ->setCurrencyRate($currency->getRate())
-       //     ->setStatusId(OrderStatusQuery::getOfferStatus()->getId())
-            ->setStatusId(OrderStatusQuery::getNotPaidStatus()->getId())
+      //      ->setStatusId(OrderStatusQuery::getOfferStatus()->getId())
+            ->setStatusId(OrderStatusQuery::getPaidStatus()->getId())
             ->setLangId($lang->getDefaultLanguage()->getId())
             ->setChoosenDeliveryAddress($deliveryAddress)
             ->setChoosenInvoiceAddress($invoiceAddress)
@@ -159,7 +158,7 @@ class OrderCreationListener implements EventSubscriberInterface
         $orderEvent = new OrderEvent($order);
         $orderEvent->setDeliveryAddress($deliveryAddress->getId());
         $orderEvent->setInvoiceAddress($invoiceAddress->getId());
-        $orderEvent->setStatus(OrderStatusQuery::getOfferStatus()->getId());
+        $orderEvent->setStatus(OrderStatusQuery::getNotPaidStatus()->getId());
 
         $moduleInstance = $deliveryModule->getModuleInstance($event->getContainer());
         $postage = OrderPostage::loadFromPostage(
@@ -176,8 +175,8 @@ class OrderCreationListener implements EventSubscriberInterface
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_PAYMENT_MODULE, $orderEvent);
-       // $event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $orderEvent);
-
+       	$event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $orderEvent);
+Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
         //DO NOT FORGET THAT THE DISCOUNT ORDER HAS TO BE PLACED IN CART
         if ($this->request->getSession()->getSessionCart($event->getDispatcher()) != null) {
             $cart->setCartItems($this->request->getSession()->getSessionCart($event->getDispatcher())->getCartItems());
@@ -185,7 +184,7 @@ class OrderCreationListener implements EventSubscriberInterface
         }
 
         $cart->save();
-
+        Tlog::getInstance()->error("ordercreationbug after cart->save ");
         $orderManualEvent = new OrderManualEvent(
             $orderEvent->getOrder(),
             $orderEvent->getOrder()->getCurrency(),
@@ -196,7 +195,7 @@ class OrderCreationListener implements EventSubscriberInterface
 
         $this->request->getSession()->set("thelia.cart_id", $cart->getId());
 
-        Tlog::getInstance()->error("createorderbug ".$event->getCustomerId());
+
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_CREATE_MANUAL, $orderManualEvent);
 
         $event->getDispatcher()->dispatch(
