@@ -36,36 +36,27 @@ class CrawlerController extends BaseAdminController
     {
     	$crawler = new Crawler();
     	$crawler->setServiceLinks("https://geizhals.at/", "?fs=");
-    	$crawler->setFirstResult("offer offer--shortly", "</div>");
-    	$crawler->setPriceResult('gh_price">&euro; ', "</span>");
+    	$crawler->setProductResultMarker("offer offer--shortly", "</div>");
+    	$crawler->setPriceResultMarker('gh_price">&euro; ', "</span>");
+    	$crawler->setHausfabrikOfferMarker("1", "2");
     	
-    	$firstProduct = $crawler->findFirstProduct("4005176847981");
+    	$searchResponse = $crawler->searchByEANCode("4005176847981");
     	
-    	/*
-    	//init
-    	$ch1 = curl_init("https://geizhals.at/?fs=4005176847981&in=");
-
+    	// get first product
+    	$firstProduct = $crawler->getFirstProduct($searchResponse);
     	
-    //	$result1 = curl_exec($ch1); 
-    	//curl_close ( $ch1 );
+    	//get price of the first product displayed
+    	$firstProductPrice = $crawler->getProductPrice($firstProduct);
     	
-    	$searchPathBase="https://geizhals.at/?fs=";//https://geizhals.at/?fs=4005176847981
-    	$searchPathProduct=$searchPathBase."4005176847982";
+    	//get position of Hausfabrik offer
+    	$hausfabrikOfferPosition = $crawler->getHausfabrikOfferPosition($searchResponse);
     	
-    	$ch1 = curl_init($searchPathProduct);
+    	//get display price of Hausfabrik offer
     	
-    	$result1 = curl_exec($ch1); 
+    	//
     	
     	
-    	//Tlog::getInstance()->error("returnall".$result1);
-    	
-    	//get first result
-    	$goToDivClass = explode($this->resultClass, $result1);
-    	$firstResult = explode($this->resultClassClosing, $goToDivClass[1]);
-    	*/
-    	//get price from first result
-    	
-    	return $this->jsonResponse(json_encode(array('result'=>"|".$crawler->productPrice($firstProduct)."|",'cookies'=>$this->cookiefile)));
+    	return $this->jsonResponse(json_encode(array('result'=> $firstProductPrice)));
     }
     
     

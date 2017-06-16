@@ -11,16 +11,20 @@ use Thelia\Log\Tlog;
  */
 class Crawler 
 {
+	const TAG = "crawler";
 	private $cookiefile;
-	private $request;
+	private $debug = false;
+	private $sampleData = false;
 	
 	private $baseUrl ="https://geizhals.at/";
 	private $searchPath ="?fs=";
-	private $notFoundMessage = "";
-	private $resultClass = "offer offer--shortly";
-	private $resultClassClosing = "</div>";
-	private $priceClass = 'gh_price">&euro; ';
-	private $priceClassClosing = "</span>";
+	private $notFoundMarker = "";
+	private $productResultStartMarker = "offer offer--shortly";
+	private $productResultEndMarker = "</div>";
+	private $productPriceStartMarker = 'gh_price">&euro; ';
+	private $productPriceEndMarker = "</span>";
+	private $hausfabrikOfferStartMarker = "";
+	private $hausfabrikOfferEndMarker = "";
 	private $sslCertificate = THELIA_CONF_DIR."key".DS."cacert.pem";
 	
 	private $userAgents = array(1 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/601.4.4 (KHTML, like Gecko) Version/9.0.3 Safari/601.4.4',
@@ -43,22 +47,28 @@ class Crawler
 		$this->searchPath = $searchPath;
 	}
 	
-	public function setFirstResult($class, $closing){
-		$this->resultClass = $class;
-		$this->resultClassClosing = $closing;
+	public function setProductResultMarker($start,$end){
+		$this->productResultEndMarker = $start;
+		$this->productResultEndMarker = $end;
 	}
 	
-	public function setPriceResult($class, $closing){
-		$this->priceClass = $class;
-		$this->priceClassClosing = $closing;
+	public function setPriceResultMarker($start,$end){
+		$this->productPriceStartMarker = $start;
+		$this->productPriceEndMarker = $end;
 	}
 	
-	public function setSSLCertificateFile(String $certificate){
+	public function setSSLCertificateFile($certificate){
 		$this->sslCertificate = $certificate;
 	}
 	
-	public function init(){
-		
+	public function setHausfabrikOfferMarker($start,$end){
+		$this->hausfabrikOfferStartMarker = $start;
+		$this->hausfabrikOfferEndMarker = $end;
+	}
+	
+	public function init($debugMode, $sampleData){
+		$this->debug = $debugMode;
+		$this->sampleData = $sampleData;
 	}
 	
 	private function setChannelOptions($channel){
@@ -72,16 +82,51 @@ class Crawler
 		return $channel;
 	}
 	
-	public function findFirstProduct($ean_code){
-		$channel = curl_init($ean_code);
-		$channel = $this->setChannelOptions($channel);
+	public function searchByEANCode($ean_code){
+		if(!$this->sampleData){
+			$url = $this->baseUrl.$this->searchPath.$ean_code;
+			$channel = curl_init($url);
+			$channel = $this->setChannelOptions($channel);
+			$this->request = curl_exec($channel);
+		}
 		
-		//$result1 = curl_exec($ch1);
-		$request = '<!DOCTYPE HTML><html lang="de"><head>
+		return $this->request;
+	}
+	
+	public function getFirstProduct($request){
+		Tlog::getInstance()->error(sprintf(self::TAG.' message "%s"',$this->productResultStartMarker));
+
+		$removeBeforePart = explode($this->productResultStartMarker, $this->request);
+		
+		$removeAfterPart = explode($this->productResultEndMarker, $removeBeforePart[1]);
+		//,'error'=>curl_error ( $ch1 )
+		return $removeAfterPart[0];
+	}
+	
+	public function getProductPrice($productResult){
+		$removeBeforePart = explode($this->productPriceStartMarker, $productResult);
+		$removeAfterPart = explode($this->productPriceEndMarker, $removeBeforePart[1]);
+		
+		return $removeAfterPart[0];
+	}
+	
+   public function getHausfabrikOfferPosition($request){
+   	//count 
+   	return 1;
+   }
+	
+	
+	
+	
+	
+	
+	
+	
+	private $request = '<!DOCTYPE HTML><html lang="de"><head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>19468000 GROHE Grohtherm 3000 Cosmopolitan Wandarmatur spiegelnder Glanz und viel Funktion Dieses runde spiegelnd sch&ouml;ne Bedienelement passt zu allen GROHE Cosmopolitan Badserien. Mit den zylindrischen Griffen regeln Sie bequem Wassertemperatur und -menge. Nach Bedarf wechseln Sie mit dem integrierten AquaDimmer zwischen Wannenzulauf und Brause oder zwischen Kopf- und Handbrause. Die SafeStop Taste verhindert dabei ein versehentliches Einstellen zu hei&szlig;er Wassertemperaturen. G&ouml;nnen Sie sich ... Preisvergleich &#124; Geizhals &Ouml;sterreich</title>
 <meta name="description" content="Preisvergleich, Bewertungen f&uuml;r 19468000 GROHE Grohtherm 3000 Cosmopolitan Wandarmatur spiegelnder Glanz und viel Funktion Dieses runde spiegelnd sch&ouml;ne Bedienelement passt zu allen GROHE Cosmopolitan Badserien. Mit den zylindrischen Griffen regeln Sie bequem Wassertemperatur und -menge. Nach Bedarf wechseln Sie mit dem integrierten AquaDimmer zwischen Wannenzulauf und Brause oder zwischen Kopf- und Handbrause. Die SafeStop Taste verhindert dabei ein versehentliches Einstellen zu hei&szlig;er Wassertemperaturen. G&ouml;nnen Sie sich ... (&Ouml;sterreich)">
-				
+			
 <style>html {margin: 0;}</style>
 <!--[if lt IE 9]>
 <script src="///b/js/html5-els.js"></script>
@@ -104,7 +149,7 @@ gads.src = (useSSL ? "https:" : "http:") +
 var node = document.getElementsByTagName("script")[0];
 node.parentNode.insertBefore(gads, node);
 })();
-				
+			
 googletag.cmd.push(function() {
     googletag.pubads().collapseEmptyDivs(true);
 });
@@ -117,14 +162,14 @@ googletag.cmd.push(function() {
 <link rel="canonical" href="https://geizhals.at/146767602" />
 </head><!-- starttrans -->
 <body id="ghbody" class="">
-				
+			
 <div id="gh_wrap" class="">
     <div id="gh_main">
 <script type="text/javascript">
     _gh_pre.addLoadEvent(function(){_gh.do_focus(1,0);});
 </script>
 <div id=gh_hdr>
-				
+			
     <div id=gh_hdr_toplogo>
         <a href="./" target=_top title="Geizhals" onclick="_gh.cm.event("header_click","2", "Logo", "0");"><img src="///b/gh_logo_top.png" alt="Zum Preisvergleich"></a>
     </div>
@@ -132,54 +177,54 @@ googletag.cmd.push(function() {
         <div id=gh_hdr_toplinks>
             <a class=gh_toplinks
        href="./?o=1"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Wunschlisten", "0");">Wunschlisten</a> &middot; <a class=gh_toplinks
        href="https://forum.geizhals.at/"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Forum", "0");">Forum</a> &middot; <a class=gh_toplinks
        href="https://geizhalsblog.wordpress.com"
          rel="nofollow"
-				
-				
+			
+			
        onclick="_gh.cm.event("header_click","2", "Blog", "0");">Blog</a> &middot; <a class=gh_toplinks
        href="https://geizhals.at/kleinanzeigen/"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Kleinanzeigen", "0");">Kleinanzeigen</a> &middot; <a class=gh_toplinks
        href="./?cat=top100"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Top-100", "0");">Top-100</a> &middot; <a class=gh_toplinks
        href="./?trends"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Trends", "0");">Trends</a> &middot; <a class=gh_toplinks
        href="./?bpnew=2"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Neue Bestpreise", "0");">Neue Bestpreise</a> &middot; <a class=gh_toplinks
        href="./?hlist"
          rel="nofollow"
-				
-				
+			
+			
        onclick="_gh.cm.event("header_click","2", "H&auml;ndlerliste", "0");">H&auml;ndlerliste</a> &middot; <a class=gh_toplinks
        href="./?help"
-				
-				
-				
+			
+			
+			
        onclick="_gh.cm.event("header_click","2", "Hilfe", "0");">Hilfe</a> &middot;
 <a href="./?conf" rel="nofollow" onclick="_gh.cm.event("header_click","2", "Einstellungen", "0");"><img width=16 height=16 src=///b/cog2.png style="vertical-align: middle" alt="Einstellungen"></a> &middot;    <a class=gh_toplinks
        href="https://forum.geizhals.at/login.jsp?from=https://geizhals.at"
          rel="nofollow"
-				
+			
          id="gh__login-trigger"
        onclick="_gh.cm.event("header_click","2", "Login/Registrierung", "0");">Login/Registrierung</a>
     <script type="text/javascript">
@@ -203,7 +248,7 @@ googletag.cmd.push(function() {
             return false;
         };
         var autotrigger = false;
-				
+			
         loginEl.addEventListener("click", prematureClick);
         _gh_pre.addLoadEvent(function() {
             loginEl.removeEventListener("click", prematureClick);
@@ -224,7 +269,7 @@ googletag.cmd.push(function() {
         accesskey=q
         value=""
      size=35 class=gh_searchfld
-				
+			
 >
 <script>_gh_pre.addLoadEvent(function(){var t=_gh.ref_arg("fs"); var v=document.forms["gh_searchform"].elements["fs"]; if (t && !v.value) v.value=t;})</script>
                     <div id="gh_srch_ctrls">
@@ -236,7 +281,7 @@ googletag.cmd.push(function() {
     <option value="">in allen Kategorien</option>        <option value="1"        >in Hardware</option>        <option value="2"        >in Software</option>        <option value="3"        >in Games</option>        <option value="4"        >in Video/Foto/TV</option>        <option value="5"        >in Telefon &amp; Co</option>        <option value="6"        >in Audio/HIFI</option>        <option value="7"        >in Filme</option>        <option value="8"        >in Haushalt</option>        <option value="9"        >in Sport &amp; Freizeit</option>        <option value="10"        >in Drogerie</option>        <option value="11"        >in Auto &amp; Motorrad</option>        <option value="12"        >in Spielzeug &amp; Modellbau</option>        <option value="13"        >in Baumarkt &amp; Garten</option></select>
                         </span>
                         <button type=submit
-				
+			
         class=gh_searchbt
         id="gh_suchen_bt_i"
         title="Suchen"
@@ -369,8 +414,8 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 <meta itemprop="name" content="Unsortierter Artikel" />Unsortierter Artikel
 </span></span></span>    <div class=clr></div>
 </div><!-- top-end -->
-				
-				
+			
+			
 <div id=gh_leftnav>
 <style>
 .subitem { margin-left: 1em; }
@@ -419,7 +464,7 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 </li>
 </ul>
 </nav>
-				
+			
     <div class="nl_box"><br/>
         <b>Newsletter</b><br/>
         (<a href="//unternehmen.geizhals.at/about/de/info/kontakt-und-impressum/#newsletter" target="_blank">Mehr dar&uuml;ber...</a>)
@@ -430,7 +475,7 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         </form>
         <span id="pleaseFill">Bitte eine g&uuml;ltige E-Mail-Adresse eingeben.</span>
     </div>
-				
+			
 <div class=gh_stat_nav>Letzte Aktualisierung: <nobr>14.06.2017, 15:50</nobr></div>
 <div class="gha_leftnav">
     <div id="div-gpt-ad-leftrect">
@@ -440,13 +485,13 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         </script>
     </div>
 </div>
-				
-				
+			
+			
 </div>
 <div id=gh_content_wrapper>
     <!-- templated v5 -->
-				
-				
+			
+			
         <div id="div-gpt-ad-top" class="gha_lead">
         <script type="text/javascript">
             window._gh_gpa_price_range = [] ;
@@ -456,50 +501,50 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         </script>
         <span class="gh-ad__disclaimer">Werbung</span><span class="gh-ad__close" onclick="_gh.closeStickyBottomAd(event)"></span>
     </div>
-				
-				
+			
+			
     <div id="gh_artbox" itemscope itemtype="http://schema.org/Product">
         <link itemprop="url" href="146767602" />
-				
-				
-				
+			
+			
+			
 <a name="art"></a>
-				
-				
+			
+			
     <a NAME="146767602"></a>
     <b itemprop="name">19468000 GROHE Grohtherm 3000 Cosmopolitan Wandarmatur spiegelnder Glanz und viel Funktion Dieses runde spiegelnd sch&ouml;ne Bedienelement passt zu allen GROHE Cosmopolitan Badserien. Mit den zylindrischen Griffen regeln Sie bequem Wassertemperatur und -menge. Nach Bedarf wechseln Sie mit dem integrierten AquaDimmer zwischen Wannenzulauf und Brause oder zwischen Kopf- und Handbrause. Die SafeStop Taste verhindert dabei ein versehentliches Einstellen zu hei&szlig;er Wassertemperaturen. G&ouml;nnen Sie sich ...</b>
-				
-				
-				
+			
+			
+			
     <br>
-				
+			
 <div class="clr npm"></div>
-				
-				
-				
-				
+			
+			
+			
+			
     <div style="clear: left; float:left" id="gh_proddesc_left">
-				
-				
+			
+			
         <div id=gh_prod_misc_controls>
-				
+			
                 <form method=post accept-charset="iso-8859-1" action="146767602" id="gh_wl_save_form">
                     <nobr><input type="hidden" name="a" value="146767602"  /><input type="hidden" name="merke" value="146767602"  /></nobr>
                     <select name="wl"  class="minibutt" id="gh_wl_save_select" style="width: 150px">
 <option title="Wunschliste zum Speichern ausw&auml;hlen" disabled="disabled" value="-">--- Wunschliste w&auml;hlen: ---</option>
 <option title="Meine Wunschliste" value="WL">Meine Wunschliste</option>
 </select><input type=hidden name=csrf value="DB685132-5108-11E7-ABFB-8F0EC32C3D63">
-				
+			
                     <input type="submit" class="gh_wl_save_bt" id="gh_wl_save_bt_i" value=" speichern "
                            onclick="_gh.cm.event("saved_to_wishlist","2", window.ghPageTypeCM, "0");_gh.ghp_show("ghp_wishlist",event);return _gh.postToURL("146767602", {a:"146767602",merke:"146767602",wl:document.getElementById("gh_wl_save_select").options[document.getElementById("gh_wl_save_select").selectedIndex].value,csrf:"DB685132-5108-11E7-ABFB-8F0EC32C3D63"},"post","ghp_wishlist_hidden");"></nobr>
                 </form>
-				
+			
             <img src="///b/maill.png" height=12 align=absmiddle alt="[Produktempfehlung]"> <a rel=nofollow href=mailto:?subject=Produktempfehlung&amp;body=Dieses%20Produkt%20k%C3%B6nnte%20f%C3%BCr%20dich%20interessant%20sein%3A%0A%0A19468000%20GROHE%20Grohtherm%203000%20Cosmopolitan%20Wandarmatur%20spiegelnder%20Glanz%20und%20viel%20Funktion%20Dieses%20runde%20spiegelnd%20sch%C3%B6ne%20Bedienelement%20passt%20zu%20allen%20GROHE%20Cosmopolitan%20Badserien.%20Mit%20den%20zylindrischen%20Griffen%20regeln%20Sie%20bequem%20Wassertemperatur%20und%20-menge.%20Nach%20Bedarf%20wechseln%20Sie%20mit%20dem%20integrierten%20AquaDimmer%20zwischen%20Wannenzulauf%20und%20Brause%20oder%20zwischen%20Kopf-%20und%20Handbrause.%20Die%20SafeStop%20Taste%20verhindert%20dabei%20ein%20versehentliches%20Einstellen%20zu%20hei%C3%9Fer%20Wassertemperaturen.%20G%C3%B6nnen%20Sie%20sich%20...%20um%20EUR%20196%2C40%0AURL%3A%20https%3A%2F%2Fgeizhals.at%2F146767602 onclick="_gh.cm.event("product_recommend", "2", window.ghPageTypeCM, "0");">Produkt empfehlen</a><br>
-				
-				
+			
+			
             <img border=0 src="///b/av2/bugg.png" width=11 height=12 align="absmiddle">&nbsp;<a href="./?report=146767602" rel="nofollow" onclick="_gh.cm.event("reporterror_click", "1", window.ghPageTypeCM, "0"); return _gh.ghp_show("ghp_reperror",event);">Fehler&nbsp;melden</a>
-				
-				
+			
+			
                 <div id=ghp_tnx style="display:none; z-index:99999;">Danke!</div>
 <div id="ghp_reperror" style="display: none; z-index:99999;">
     <div class=ghp_h>
@@ -533,26 +578,26 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 </form>
     </div>
 </div>
-				
-				
+			
+			
         </div>
     </div>
     <div style="text-align:center; float:left; " id="gh_proddesc_right">
-				
-				
-				
+			
+			
+			
                 <div align=center>
                     <img class=large_resize src="https://images-eu.ssl-images-amazon.com/images/I/41KLfg9eYJL.jpg" alt="via Amazon Partnerprogramm" title="via Amazon Partnerprogramm">
                     <br>
                     <span class=p_comment>Bild via Amazon Partnerprogramm</span>
                 </div>
-				
-				
-				
+			
+			
+			
     </div>
     <div style="float:left" id="gh_artstuff">
-				
-				
+			
+			
 	    <div id="div-gpt-ad-appendix" class="gha_appendix">
         <script type="text/javascript">
             window._gh_gpa_price_range = [] ;
@@ -560,23 +605,23 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                 googletag.display("div-gpt-ad-appendix");
             });
         </script>
-				
+			
     </div>
-				
+			
     </div>
-				
+			
 <div style="clear:both"></div>
-				
-				
-				
+			
+			
+			
     </div>
     <div style="clear:both"></div>
-				
-				
-				
-				
-				
-				
+			
+			
+			
+			
+			
+			
 <a name=ang></a>
 <div id="gh_afilterbox" class="gh_gradient0">
     <a name="filterform"></a>
@@ -626,7 +671,7 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                                 <option value="cc"  >Kreditkarte</option>
                                 <option value="pa"  >Vorkasse</option>
                                 <option value="pp"  >PayPal</option>
-				
+			
                             </select>
                             <span class=mid>nach</span>
                             <select name=vl onchange="_gh.cm.event("productpage_destination","2", event.target.value, "0");document.filter.t_versand.checked=true; document.filter.submit()" class="mid gh_input_select">
@@ -643,40 +688,40 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         <div class="gh_afilterbox_sec gh_afilterbox_sec_cntry">
             <h3 class="gh_afilterbox_h">Angebote aus</h3>
             <ul class="gh_reset">
-				
+			
                 <li class="gh_reset gh_countryItem">
                     <label class="cntryfltr">
                         <input class="mid" name="hloc" value="at" checked="checked" type="checkbox" onclick="_gh.cm.event("productpage_from_country","2", event.target.value, "0");_gh.frm_fltr(this, "filter")">                            <img class="mid gh_flag" src="///b/flags/at-18x12.png" alt="&Ouml;sterreich">                        <span class="mid">&Ouml;sterreich</span>
                     </label>
                 </li>
-				
+			
                 <li class="gh_reset gh_countryItem">
                     <label class="cntryfltr">
                         <input class="mid" name="hloc" value="de" type="checkbox" onclick="_gh.cm.event("productpage_from_country","2", event.target.value, "0");_gh.frm_fltr(this, "filter")">                            <img class="mid gh_flag" src="///b/flags/de-18x12.png" alt="Deutschland">                        <span class="mid">Deutschland</span>
                     </label>
                 </li>
-				
+			
                 <li class="gh_reset gh_countryItem">
                     <label class="cntryfltr">
                         <input class="mid" name="hloc" value="pl" type="checkbox" onclick="_gh.cm.event("productpage_from_country","2", event.target.value, "0");_gh.frm_fltr(this, "filter")">                            <img class="mid gh_flag" src="///b/flags/pl-18x12.png" alt="Polen">                        <span class="mid">Polen</span>
                     </label>
                 </li>
-				
+			
                 <li class="gh_reset gh_countryItem">
                     <label class="cntryfltr">
                         <input class="mid" name="hloc" value="uk" type="checkbox" onclick="_gh.cm.event("productpage_from_country","2", event.target.value, "0");_gh.frm_fltr(this, "filter")">                            <img class="mid gh_flag" src="///b/flags/uk-18x12.png" alt="UK">                        <span class="mid">UK</span>
                     </label>
                 </li>
-				
+			
                 <li class="gh_reset gh_countryItem">
                     <label class="cntryfltr">
                         <input class="mid" name="hloc" value="eu" type="checkbox" onclick="_gh.cm.event("productpage_from_country","2", event.target.value, "0");_gh.frm_fltr(this, "filter")">                        <span class="mid">allen  L&auml;ndern</span>
                     </label>
                 </li>
-				
+			
             </ul>
         </div>
-				
+			
         <div class="gh_afilterbox_sec gh_afilterbox_sec_available">
             <h3 class="gh_afilterbox_h">Verf&uuml;gbarkeit</h3>
             <ul class="gh_reset">
@@ -703,16 +748,16 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                 <button type="submit">aktualisieren</button>
             </noscript>
         </div>
-				
+			
     </form>
     <div class="clr"></div>
-				
+			
 </div>
-				
+			
             <a id="productlist"></a>    <form accept-charset="iso-8859-1" action="./146767602#filterform" method="get" name="filterbox" class="productpage__pagination"><div class="blaettern" id="paginator__blaettern">
 </div>
     </form>    <div class="offerlist" id="lazy-loaded__list">
-				
+			
         <div class="tr1 offerlist__header">
             <div class="lh1 offer__price">
                 <a class="menulink0" title="Bitte beachten Sie die Hinweise zur Preisdarstellung am Ende der Seite" href="#preishinw">Preis <sup>*</sup></a>
@@ -725,8 +770,8 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
             </div>
             <div class="lh1 offer__details">Artikelbezeichnung des H&auml;ndlers</div>
         </div>
-				
-				
+			
+			
     <div class="offer offer--shortly" id="offer__0">
         <div class="offer__price"  id="offer__price-0"><span class="gh_price">&euro; 196,40</span>            <div class="offer__clickout"><a rel="nofollow" target="_blank" onClick="javascript:cmCreateConversionEventTag("offer_click","2","/outprice/B%E4dermaxx", "196.4");" class=offer_bt href="/redir.cgi?h=baedermaxx-at&amp;loc=https%3A%2F%2Fwww.baedermaxx.at%2Fbad%2Fbadarmaturen%2Fwannen-duscharmaturen%2F9643%2Fgrohe-grohtherm-3000-cosmopolitan-thermostat-mit-integrierter-2-wege-umstellung-chrom-19468000&amp;ghaID=146767602&amp;key=4f4722ccd2b2882880b7481c17d728bb">zum Angebot</a>            </div>
             <div class="offer__payment-options">                                <img src="///b/mastercard_t.png"
@@ -756,33 +801,33 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                  alt="[AT]"><a rel=" nofollow"
    class="merchant"
    target="_blank"
-				
+			
         onClick="_gh.cm.event("offer_click","2","/outprice/B&auml;dermaxx", "196.4");"
-				
-				
-				
+			
+			
+			
     href="/redir.cgi?h=baedermaxx-at&amp;loc=https%3A%2F%2Fwww.baedermaxx.at%2Fbad%2Fbadarmaturen%2Fwannen-duscharmaturen%2F9643%2Fgrohe-grohtherm-3000-cosmopolitan-thermostat-mit-integrierter-2-wege-umstellung-chrom-19468000&amp;ghaID=146767602&amp;key=4f4722ccd2b2882880b7481c17d728bb"
     class="gh_offerlist__offerurl ntd ">
-				
+			
     <span class="merchant__logo-caption">
-				
+			
         <span class=notrans>
         B&auml;dermaxx
-				
-				
+			
+			
         </span>
-				
+			
     </span>
 </a>
             <div class="offer__merchant-link"></div>
             <div class="offer__merchant-info-links">                    <a href="./?qlink=B%E4dermaxx&subi=infos&kuerzel=baedermaxx-at">Infos</a>                <a rel="nofollow" href="/redir.cgi?h=baedermaxx-at&amp;loc=http%3A%2F%2Fwww.baedermaxx.at%2Fagb&amp;ghaID=146767602&amp;key=3c69c024dbae4a849f346ae22b0f67a9" target="_blank" onClick="_gh.cm.event("offer_click","2","/agb/B&auml;dermaxx", "0");">AGB</a>
-				
+			
             </div>
         </div>
         <div class="block-click offer__merchant-rating">
-				
+			
                 <a href="./?sb=227245"><img border=0 valign=absmiddle vspace=2 width=15 height=15 src=///b/1_ani.gif alt="Note: 1,05" title="Note: 1,05 - Spitze!"></a><br><small>Note: 1,05</small><br><small><a href="./?sb=227245">4 Bewertungen</a></small>
-				
+			
         </div>
         <div class="offer__delivery">
             <div class="offer__delivery-time">1-3 Werktagen            </div>
@@ -791,7 +836,7 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         <div class="block-click offer__details">19468000 GROHE Grohtherm 3000 Cosmopolitan Wandarmatur spiegelnder Glanz und viel Funktion Dieses runde spiegelnd sch&ouml;ne Bedienelement passt zu allen GROHE Cosmopolitan Badserien. Mit den zylindrischen Griffen regeln Sie bequem Wassertemperatur und -menge. Nach Bedarf wechseln Sie mit dem integrierten AquaDimmer zwischen Wannenzulauf und Brause oder zwischen Kopf- und Handbrause. Die SafeStop Taste verhindert dabei ein versehentliches Einstellen zu hei&szlig;er Wassertemperaturen. G&ouml;nnen Sie sich ...            <div class="offer__disclaimer">                    <b>Preis vom: 14.06.2017, 15:46:06</b><br>                    (Preis kann jetzt h&ouml;her sein!)            </div>
                             <div class="offer__badges"><a href="/redir.cgi?h=guetezeichen&amp;loc=http%3A%2F%2Fwww.euro-label.com%2Fzertifizierte-shops%2Fzertifikat%2Findex.html%3Fmemberkey%3DWKO%26shopurl%3Dwww.baedermaxx.at&amp;key=b32187ff31478c80e3b01dc53f37697d" target=_blank rel="nofollow"><img alt="[&Ouml;sterreichisches e-Commerce G&uuml;tezeichen]" title="&Ouml;sterreichisches e-Commerce G&uuml;tezeichen" src="///b/ecg_logo.png" width=75 height=51 align=absmiddle></a>                 </div>        </div>
     </div>
-				
+			
     <div class="offer offer--available" id="offer__1">
         <div class="offer__price"  id="offer__price-1"><span class="gh_price">&euro; 210,57</span>            <div class="offer__clickout"><a rel="nofollow" target="_blank" onClick="javascript:cmCreateConversionEventTag("offer_click","2","/outprice/Amazon.at", "210.57");" class=offer_bt href="/redir.cgi?h=amazon-at&amp;loc=http%3A%2F%2Fwww.amazon.de%2Fdp%2FB001T7CIAI%3Fsmid%3DA3JWKAKR8XB7XF%26linkCode%3Ddf0%26creative%3D22502%26creativeASIN%3DB001T7CIAI%26childASIN%3DB001T7CIAI%26tag%3Dgeizhals1-21&amp;ghaID=146767602&amp;key=e71c84a511186fdbcac1047fc9276838">zum Angebot</a>            </div>
             <div class="offer__payment-options">                                <img src="///b/amex_s.png"
@@ -816,14 +861,14 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                  alt="[AT]"><a rel=" nofollow"
    class="merchant"
    target="_blank"
-				
+			
         onClick="_gh.cm.event("offer_click","2","/outprice/Amazon.at", "210.57");"
-				
-				
-				
+			
+			
+			
     href="/redir.cgi?h=amazon-at&amp;loc=http%3A%2F%2Fwww.amazon.de%2Fdp%2FB001T7CIAI%3Fsmid%3DA3JWKAKR8XB7XF%26linkCode%3Ddf0%26creative%3D22502%26creativeASIN%3DB001T7CIAI%26childASIN%3DB001T7CIAI%26tag%3Dgeizhals1-21&amp;ghaID=146767602&amp;key=e71c84a511186fdbcac1047fc9276838"
     class="gh_offerlist__offerurl ntd ">
-				
+			
     <div class="merchant__logo-image">
         <img title="Amazon.at"
              src="///b/logos/5010.gif"
@@ -831,38 +876,38 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
               width=&quot;90&quot; height=&quot;46&quot;
              class="gh_offerlist__merchant_logo hllnk flagl">
     </div>
-				
+			
     <span class="merchant__logo-caption">
-				
+			
         <span class=notrans>
         Amazon.at
-				
-				
+			
+			
         </span>
-				
+			
     </span>
 </a>
             <div class="offer__merchant-link"><br>Hinweis: Firmensitz in Deutschland</div>
             <div class="offer__merchant-info-links">                    <a href="./?qlink=Amazon.at&subi=infos&kuerzel=amazon-at">Infos</a>                <a rel="nofollow" href="/redir.cgi?h=amazon-at&amp;loc=http%3A%2F%2Fwww.amazon.de%2Fexec%2Fobidos%2Fredirect%3Ftag%3Dgeizhals1-21%26path%3Dtg%2Fbrowse%2F-%2F505048&amp;ghaID=146767602&amp;key=087313066cb006f9f62bc9c1d3fbb632" target="_blank" onClick="_gh.cm.event("offer_click","2","/agb/Amazon.at", "0");">AGB</a>
-				
+			
             </div>
         </div>
         <div class="block-click offer__merchant-rating">
-				
+			
                 <a href="./?sb=183"><img border=0 valign=absmiddle vspace=2 width=15 height=15 src=///b/3.gif alt="Note: 2,43" title="Note: 2,43"></a><br><small>Note: 2,43</small><br><small><a href="./?sb=183">2902 Bewertungen</a></small>
-				
+			
         </div>
         <div class="offer__delivery">
             <div class="offer__delivery-time">Gew&ouml;hnlich versandfertig in 24 Stunden            </div>
             <div class="offer__delivery-payment">Kreditkarte, Bankeinzug<br><font color="red"><b>GRATISVERSAND</b></font>.<br><br>            </div>
         </div>
         <div class="block-click offer__details">Grohe 19468000<br>GROHE Grohtherm 3000 Cosmopolitan Armatur mit 2-Wege-Umstellung (Wanne oder Dusche mit mehr als 1 Brause) f&uuml;r GROHE Rapido T Unterputz-Thermostat 19468000 (Heimwerken) (b001t7ciai)            <div class="offer__disclaimer">                    <b>Preis vom: 14.06.2017, 11:19:33</b><br>                    (Preis kann jetzt h&ouml;her sein!)            </div>
-				
+			
             <div class="offer__extra-info">                    ACHTUNG: die Preise auf der Amazon-Website enthalten die deutsche Mehrwertsteuer (19%).
                     Die hier angezeigten Preise entsprechen bereits den Preisen, die Kunden aus &Ouml;sterreich
                     bei einer Bestellung verrechnet werden!            </div>        </div>
     </div>
-				
+			
     <div class="offer offer--unavailable" id="offer__2">
         <div class="offer__price"  id="offer__price-2"><span class="gh_price">&euro; 219,--</span>            <div class="offer__clickout"><a rel="nofollow" target="_blank" onClick="javascript:cmCreateConversionEventTag("offer_click","2","/outprice/Hornbach%20%D6sterreich", "219");" class=offer_bt href="/redir.cgi?h=hornbachoesterreich-at&amp;loc=http%3A%2F%2Fclick.cptrack.de%2F%3Frd%3Dtrue%26k%3DdnqjLRF2uUVznKtjJ3dWedH4nq8ybpYRZm_v4URzjzI&amp;ghaID=146767602&amp;key=8081c76eb14a920aa6bfea501b826af3">zum Angebot</a>            </div>
             <div class="offer__payment-options">                                <img src="///b/mc_secure.png"
@@ -892,14 +937,14 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                  alt="[AT]"><a rel=" nofollow"
    class="merchant"
    target="_blank"
-				
+			
         onClick="_gh.cm.event("offer_click","2","/outprice/Hornbach &Ouml;sterreich", "219");"
-				
-				
-				
+			
+			
+			
     href="/redir.cgi?h=hornbachoesterreich-at&amp;loc=http%3A%2F%2Fclick.cptrack.de%2F%3Frd%3Dtrue%26k%3DdnqjLRF2uUVznKtjJ3dWedH4nq8ybpYRZm_v4URzjzI&amp;ghaID=146767602&amp;key=8081c76eb14a920aa6bfea501b826af3"
     class="gh_offerlist__offerurl ntd ">
-				
+			
     <div class="merchant__logo-image">
         <img title="Hornbach &Ouml;sterreich"
              src="///b/logos/176295.png"
@@ -907,26 +952,26 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
               width=&quot;90&quot; height=&quot;32&quot;
              class="gh_offerlist__merchant_logo hllnk flagl">
     </div>
-				
+			
     <span class="merchant__logo-caption">
-				
+			
         <span class=notrans>
         Hornbach &Ouml;sterreich
-				
-				
+			
+			
         </span>
-				
+			
     </span>
 </a>
             <div class="offer__merchant-link"><br>30 Tage R&uuml;ckgaberecht - auch im Markt</div>
             <div class="offer__merchant-info-links">                    <a href="./?qlink=Hornbach%20%D6sterreich&subi=infos&kuerzel=hornbachoesterreich-at">Infos</a>                <a rel="nofollow" href="/redir.cgi?h=hornbachoesterreich-at&amp;loc=http%3A%2F%2Fwww.hornbach.at%2Fcms%2Fde%2Fat%2Fagb.html&amp;ghaID=146767602&amp;key=44740e2c110cab380e5195393e78462e" target="_blank" onClick="_gh.cm.event("offer_click","2","/agb/Hornbach &Ouml;sterreich", "0");">AGB</a>
-				
+			
             </div>
         </div>
         <div class="block-click offer__merchant-rating">
-				
+			
                 <a href="./?sb=123564"><img border=0 valign=absmiddle vspace=2 width=15 height=15 src=///b/1_ani.gif alt="Note: 1,11" title="Note: 1,11 - Spitze!"></a><br><small>Note: 1,11</small><br><small><a href="./?sb=123564">7 Bewertungen</a></small>
-				
+			
         </div>
         <div class="offer__delivery">
             <div class="offer__delivery-time">ca. 5 Werktage            </div>
@@ -935,7 +980,7 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
         <div class="block-click offer__details">Thermostatarmatur Grohe Grohtherm 3000 C mit integrierter 2-Wege-Umstellung f&uuml;r Wanne oder Dusche mit mehr als einer Brause 19468000 chrom<br>(Art# 8283787)            <div class="offer__disclaimer">                    <b>Preis vom: 14.06.2017, 15:47:45</b><br>                    (Preis kann jetzt h&ouml;her sein!)            </div>
                             <div class="offer__badges"><a href="/redir.cgi?h=handelsverband&amp;loc=http%3A%2F%2Fwww.handelsverband.at%2F&amp;key=b0225363f2b900ef9f67d84756102023" target=_blank rel="nofollow"><img alt="[&quot;Trustmark Austria&quot; des &Ouml;sterreichischen Handelsverbandes]" title="&quot;Trustmark Austria&quot; des &Ouml;sterreichischen Handelsverbandes" src="///b/HV_Trustmark_rgb.png" width=60 height=60 align=absmiddle></a> <a href="/redir.cgi?h=guetezeichen&amp;loc=http%3A%2F%2Fwww.euro-label.com%2Fzertifizierte-shops%2Fzertifikat%2Findex.html%3Fmemberkey%3DWKO%26shopurl%3Dwww.hornbach.at&amp;key=9442457050b4d9df9acf6a7e5efa15fb" target=_blank rel="nofollow"><img alt="[&Ouml;sterreichisches e-Commerce G&uuml;tezeichen]" title="&Ouml;sterreichisches e-Commerce G&uuml;tezeichen" src="///b/ecg_logo.png" width=75 height=51 align=absmiddle></a>                 </div>        </div>
     </div>
-				
+			
     <div class="offer offer--available" id="offer__3">
         <div class="offer__price"  id="offer__price-3"><span class="gh_price">&euro; 224,39</span>            <div class="offer__clickout"><a rel="nofollow" target="_blank" onClick="javascript:cmCreateConversionEventTag("offer_click","2","/outprice/Amailo.at", "224.39");" class=offer_bt href="/redir.cgi?h=eurovend-de&amp;loc=https%3A%2F%2Fwww.amailo.at%2Fproduct_info.php%3Finfo%3Dp196332%26utm_campaign%3Dgeizhalsat_196332%26utm_source%3Dgeizhalsat%26utm_medium%3DCPC%26utm_content%3Dtextanzeige%26campaign%3Dgeizhalsat&amp;ghaID=146767602&amp;key=382c4a6e12e46659d26543622ebb14ed">zum Angebot</a>            </div>
             <div class="offer__payment-options">                                <img src="///b/mastercard_t.png"
@@ -965,14 +1010,14 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
                  alt="[AT]"><a rel=" nofollow"
    class="merchant"
    target="_blank"
-				
+			
         onClick="_gh.cm.event("offer_click","2","/outprice/Amailo.at", "224.39");"
-				
-				
-				
+			
+			
+			
     href="/redir.cgi?h=eurovend-de&amp;loc=https%3A%2F%2Fwww.amailo.at%2Fproduct_info.php%3Finfo%3Dp196332%26utm_campaign%3Dgeizhalsat_196332%26utm_source%3Dgeizhalsat%26utm_medium%3DCPC%26utm_content%3Dtextanzeige%26campaign%3Dgeizhalsat&amp;ghaID=146767602&amp;key=382c4a6e12e46659d26543622ebb14ed"
     class="gh_offerlist__offerurl ntd ">
-				
+			
     <div class="merchant__logo-image">
         <img title="Amailo.at"
              src="///b/logos/Logo_Amailo_90x32_schwarz.png"
@@ -980,26 +1025,26 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
               width=&quot;90&quot; height=&quot;32&quot;
              class="gh_offerlist__merchant_logo hllnk flagl">
     </div>
-				
+			
     <span class="merchant__logo-caption">
-				
+			
         <span class=notrans>
         Amailo.at
-				
-				
+			
+			
         </span>
-				
+			
     </span>
 </a>
             <div class="offer__merchant-link"><br>Hinweis: Versand aus Deutschland</div>
             <div class="offer__merchant-info-links">                    <a href="./?qlink=Amailo.at&subi=infos&kuerzel=eurovend-de">Infos</a>                <a rel="nofollow" href="/redir.cgi?h=eurovend-de&amp;loc=http%3A%2F%2Fwww.amailo.at%2Fshop_content.php%2FcoID%2F3%2Fcontent%2FUnsere-AGB&amp;ghaID=146767602&amp;key=96ff90561159768e46cd127e31c832af" target="_blank" onClick="_gh.cm.event("offer_click","2","/agb/Amailo.at", "0");">AGB</a>
-				
+			
             </div>
         </div>
         <div class="block-click offer__merchant-rating">
-				
+			
                 <a href="./?sb=4747"><img border=0 valign=absmiddle vspace=2 width=15 height=15 src=///b/2.gif alt="Note: 1,68" title="Note: 1,68"></a><br><small>Note: 1,68</small><br><small><a href="./?sb=4747">555 Bewertungen</a></small>
-				
+			
         </div>
         <div class="offer__delivery">
             <div class="offer__delivery-time">auf Lager. Lieferzeit: 2-3 Werktage            </div>
@@ -1012,25 +1057,25 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 <div class=gh_blatext>Alle Angaben ohne Gew&auml;hr. Die gelisteten Angebote sind keine verbindlichen Werbeaussagen der Anbieter!<br><br>
 <a name="preishinw"></a><b class="disclaimer__star">*</b> Preise in Euro inkl. MwSt. zzgl. Verpackungs- und Versandkosten, sofern diese nicht bei der gew&auml;hlten Art der Darstellung hinzugerechnet wurden. Bitte beachten Sie die Lieferbedingungen und Versandspesen bei Online-Bestellungen. Bei Sortierung nach einer anderen als der Landesw&auml;hrung des H&auml;ndlers basiert die W&auml;hrungsumrechnung auf einem von uns ermittelten Tageskurs, der oft nicht mit dem im Shop verwendeten identisch ist. <a name=ps></a>Bitte bedenken Sie, dass die angef&uuml;hrten Preise periodisch erzeugte Momentaufnahmen darstellen und technisch bedingt teilweise veraltet sein k&ouml;nnen. Insbesondere sind Preiserh&ouml;hungen zwischen dem Zeitpunkt der Preis&uuml;bernahme durch uns und dem sp&auml;teren Besuch dieser Website m&ouml;glich, H&auml;ndler haben keine M&ouml;glichkeit die Darstellung der Preise direkt zu beeinflussen und sofortige &Auml;nderungen auf unserer Seite zu veranlassen. Ma&szlig;geblich f&uuml;r den Verkauf durch den H&auml;ndler ist der tats&auml;chliche Preis des Produkts, der zum Zeitpunkt des Kaufs auf der Website des Verk&auml;ufers steht.</div>
 <p><div class=gh_blatext><a name="versandhinw"></a><b class="disclaimer__star">**</b> Hinweis zur Spalte "Versand": die angezeigten Versandkosten sind, sofern nicht anders angegeben, die Kosten f&uuml;r den Versand
-				
-				
+			
+			
     nach &Ouml;sterreich. Die nicht angef&uuml;hrten Kosten f&uuml;r weitere Versandl&auml;nder entnehmen Sie bitte der Website des H&auml;ndlers.
-				
-				
-				
+			
+			
+			
 </p></div>
-				
+			
 <script type="text/javascript">
         _gh_pre.addLoadEvent(function() {
-				
+			
         });
 </script>
-				
-				
-				
-				
-				
-				
+			
+			
+			
+			
+			
+			
 <script>
     var OEWA = {
         "s":"geizhals",
@@ -1049,136 +1094,136 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 <script type="text/javascript">
     cmCreatePageviewTag(" (id:146767602)","gh_at-cat-unsorted",undefined,undefined);
     window.ghPageTypeCM = "gh_at-cat-unsorted";
-				
+			
 </script>
 </div></div></div>
 <div style="clear:both"></div>
 <div id="ghfooter">
             <ul id="ghfooterpc">
                 <h3 class="ghfootlh">Unsere Preisvergleiche:</h3>
-				
-				
+			
+			
                         <li>                                <img alt="&Ouml;sterreich" width=10 height=9 src="///b/at_s.gif">                            <a class=hl
                                 href="//geizhals.at/"
                                onclick="_gh.cm.event("footer_click","2", "geizhals.at", "0");">geizhals.at</a>
-				
+			
                                 (<a class=hl href="//geizhals.at/kleinanzeigen/" onclick="_gh.cm.event("footer_click","2", "kleinanzeigen", "0");">Kleinanzeigen</a>,
                                 <a class=hl href="//forum.geizhals.at/" onclick="_gh.cm.event("footer_click","2", "forum", "0");">Forum</a>,
                                 <a class=hl href="//gewinnspiel.geizhals.at/?f_gf=1" onclick="_gh.cm.event("footer_click","2", "gewinnspiel", "0");">Gewinnspiel</a>)
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                                <img alt="Deutschland" width=10 height=9 src="///b/lang_de.gif">                            <a class=hl
                                 href="//geizhals.de/"
                                onclick="_gh.cm.event("footer_click","2", "geizhals.de", "0");">geizhals.de</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                                <img alt="UK" width=10 height=9 src="///b/lang_en.gif">                            <a class=hl
                                 href="//skinflint.co.uk/"
                                onclick="_gh.cm.event("footer_click","2", "skinflint.co.uk", "0");">skinflint.co.uk</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                                <img alt="Polen" width=10 height=9 src="///b/pl_s.gif">                            <a class=hl
                                 href="//cenowarka.pl/"
                                onclick="_gh.cm.event("footer_click","2", "cenowarka.pl", "0");">cenowarka.pl</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                                <img alt="EU" width=10 height=9 src="///b/eu_s.gif">                            <a class=hl
                                 href="//geizhals.eu/"
                                onclick="_gh.cm.event("footer_click","2", "geizhals.eu", "0");">geizhals.eu</a>
-				
+			
                         </li>
-				
-				
+			
+			
             </ul>
-				
+			
             <ul id="ghfootersites">
                 <h3 class="ghfootlh">Andere Websites:</h3>
-				
-				
+			
+			
                         <li>                                <img alt="&Ouml;sterreich" width=10 height=9 src="///b/at_s.gif">                                <img alt="Deutschland" width=10 height=9 src="///b/lang_de.gif">                            <a class=hl
                                 href="https://bepixelung.org/"
                                onclick="_gh.cm.event("footer_click","2", "bepixelung.org", "0");">bepixelung.org</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                                <img alt="&Ouml;sterreich" width=10 height=9 src="///b/at_s.gif">                            <a class=hl
                                 href="https://metashop.at/"
                                onclick="_gh.cm.event("footer_click","2", "metashop.at", "0");">metashop.at</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                            <a class=hl                                rel="nofollow"
                                 href="http://666k.com/"
                                onclick="_gh.cm.event("footer_click","2", "666k.com", "0");">666k.com</a>
-				
+			
                         </li>
-				
-				
+			
+			
             </ul>
-				
+			
             <ul id="ghfooterab">
                 <h3 class="ghfootlh">&Uuml;ber uns:</h3>
-				
-				
+			
+			
                         <li>                            <a class=hl
                                 href="//unternehmen.geizhals.at/about/de/info/kontakt-und-impressum/"
                                onclick="_gh.cm.event("footer_click","2", "Impressum", "0");">Impressum</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                            <a class=hl
                                 href="//unternehmen.geizhals.at/about/de/sales/"
                                onclick="_gh.cm.event("footer_click","2", "Informationen f&uuml;r H&auml;ndler", "0");">Informationen f&uuml;r H&auml;ndler</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                            <a class=hl
                                 href="//unternehmen.geizhals.at/about/de/werben/"
                                onclick="_gh.cm.event("footer_click","2", "Werbung schalten", "0");">Werbung schalten</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                            <a class=hl
                                 href="//unternehmen.geizhals.at/about/de/jobs/"
                                onclick="_gh.cm.event("footer_click","2", "Jobs", "0");">Jobs</a>
-				
+			
                         </li>
-				
-				
-				
+			
+			
+			
                         <li>                            <a class=hl
                                 href="//unternehmen.geizhals.at/about/de/presse/"
                                onclick="_gh.cm.event("footer_click","2", "Presse", "0");">Presse</a>
-				
+			
                         </li>
-				
+			
                         <li><a class=hl rel="nofollow" href="https://www.facebook.com/geizhals.at" onclick="_gh.cm.event("footer_click","2", "facebook", "0");">Facebook</a>,
                             <a class=hl rel="nofollow" href="https://twitter.com/Geizhals" onclick="_gh.cm.event("footer_click","2", "twitter", "0");">Twitter</a></li>
-				
-				
+			
+			
             </ul>
-				
+			
         <div id="ghfootersitemap">
             Sitemap:                <a href="/smap/sitemap-de-01.html" class="hl">1</a> |                             <a href="/smap/sitemap-de-02.html" class="hl">2</a> |                             <a href="/smap/sitemap-de-03.html" class="hl">3</a> |                             <a href="/smap/sitemap-de-04.html" class="hl">4</a> |                             <a href="/smap/sitemap-de-05.html" class="hl">5</a> |                             <a href="/smap/sitemap-de-06.html" class="hl">6</a> |                             <a href="/smap/sitemap-de-07.html" class="hl">7</a> |                             <a href="/smap/sitemap-de-08.html" class="hl">8</a> |                             <a href="/smap/sitemap-de-09.html" class="hl">9</a> |                             <a href="/smap/sitemap-de-10.html" class="hl">10</a> |                             <a href="/smap/sitemap-de-11.html" class="hl">11</a> |                             <a href="/smap/sitemap-de-12.html" class="hl">12</a> |                             <a href="/smap/sitemap-de-13.html" class="hl">13</a> |                             <a href="/smap/sitemap-de-14.html" class="hl">14</a> |                             <a href="/smap/sitemap-de-15.html" class="hl">15</a> |                             <a href="/smap/sitemap-de-16.html" class="hl">16</a> |                             <a href="/smap/sitemap-de-17.html" class="hl">17</a> |                             <a href="/smap/sitemap-de-18.html" class="hl">18</a> |                             <a href="/smap/sitemap-de-19.html" class="hl">19</a> |                             <a href="/smap/sitemap-de-20.html" class="hl">20</a>
         </div>
@@ -1189,22 +1234,5 @@ googletag.pubads().addEventListener("slotRenderEnded", function(event) {
 <div id="gh_login"></div>
 <div id="fb-root"></div>
 </body></html>';
-		
-		//$request = curl_exec($channel);
-		Tlog::getInstance()->error("mewithyou ".$this->resultClass." ");
-		$goToDivClass = explode($this->resultClass, $request);
-		
-		Tlog::getInstance()->error("mewithyou2 ".$this->resultClass." ".$goToDivClass[1]);
-		$firstResult = explode($this->resultClassClosing, $goToDivClass[1]);
-		//,'error'=>curl_error ( $ch1 )
-		return $firstResult;
-	}
-	
-	public function getProductPrice($productResult){
-		$goToPriceClass = explode($this->priceClass, $productResult);
-		$resultPrice = explode($this->priceClassClosing, $goToPriceClass[1]);
-		
-		return $resultPrice;
-	}
 	
 }
