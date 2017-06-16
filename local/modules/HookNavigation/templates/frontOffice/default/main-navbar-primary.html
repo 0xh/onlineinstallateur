@@ -11,7 +11,7 @@
                 {loop type="category" name="category.navigation" parent="0" need_count_child="yes"}
                 {if $CHILD_COUNT > 0}
                     <li class="dropdown mega-minnu ">
-                        <a href="{$URL}" class="dropdown-toggle">{$TITLE}</a>
+                        <a href="{$URL}">{$TITLE}</a>
                         <ul class="dropdown-menu minnu-menu" role="menu">
 
                             {assign var="parent_id" value=$ID}
@@ -109,7 +109,7 @@
                             	{loop name="category.image" type="image" source="category" source_id={$ID}  limit="1"}
                                 	<a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
                             	{/loop}
-                            
+                            </br>
                             	{loop name="category.image" type="image" source="category" source_id={$ID} offset="1" limit="1"}
                                 	<a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border"></a>
                             	{/loop}
