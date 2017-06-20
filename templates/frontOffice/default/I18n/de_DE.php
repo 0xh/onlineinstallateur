@@ -239,7 +239,7 @@ return [
     'Warning' => 'Warnung',
     'We apologize but some of the ordered products are not available any more.' => 'Es tut uns Leid, aber einige der bestellten Produkte sind nicht mehr erhältlich.',
     'We\'re sorry but an error occured. Please try to contact the site <a href=\'mailto:%mail\'>administrator</a>' => 'Ein Fehler ist aufgetreten. Bitte probieren Sie den <a href=\'mailto:%mail\'>Administrator</a> zu kontaktieren',
-    'We\'re sorry, a problem occured and your payment was not successful.' => 'Es tut uns Leid, ein Problem ist aufgetreten und Ihre Zahlung war nicht erfolgreich',
+    'We\'re sorry, a problem occurred and your payment was not successful. Please contact Customer Support.' => 'Es tut uns Leid, ein Problem ist aufgetreten und Ihre Zahlung war nicht erfolgreich. Bitte wenden Sie sich an den Kundendienst.',
     'You are here:' => 'Sie sind hier:',
     'You choose' => 'Sie haben gewählt',
     'You choose to pay by' => 'Gewähltes Zahlungsmittel',

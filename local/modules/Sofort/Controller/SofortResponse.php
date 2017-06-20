@@ -268,6 +268,10 @@ class SofortResponse extends BasePaymentModuleController
     		$transaction_array = explode("transaction",$content);
     		$transaction_id = $transaction_array[1];
     		$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
+    		
+    		if(!$transaction_id) {
+    			$this->getLogger()->error("Sofort transaction_id is null, order contains no valid transaction_id");
+    		}
     	}
     	return $transaction_id;
     }
@@ -283,6 +287,8 @@ class SofortResponse extends BasePaymentModuleController
     {
 // thelia
         if (null === $order = OrderQuery::create()->findPk($order_id)) {
+        	$this->getLogger()->error("Invalid order ID. This order doesn't exists.");
+        	
             throw new \Exception(
                 $this->getTranslator()->trans(
                     "Invalid order ID. This order doesn't exists or doesn't belong to you.",
