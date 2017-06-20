@@ -34,7 +34,7 @@ class Smarty_Internal_Filter_Handler
     public static function runFilter($type, $content, Smarty_Internal_Template $template)
     {
         $output = $content;
-        Tlog::getInstance()->err("ab34c ".$output);
+        //Tlog::getInstance()->err("ab34c ".$output);
         // loop over autoload filters of specified type
         if (!empty($template->smarty->autoload_filters[$type])) {
             foreach ((array) $template->smarty->autoload_filters[$type] as $name) {
