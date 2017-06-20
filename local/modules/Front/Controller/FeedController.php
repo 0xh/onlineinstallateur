@@ -28,6 +28,7 @@ use Thelia\Controller\Admin\ExportController;
 use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Thelia\Model\ExportQuery;
 
 /**
  * Controller uses to generate RSS Feeds
@@ -62,20 +63,21 @@ class FeedController extends BaseFrontController {
      * @return Response
      * @throws \RuntimeException
      */
+    
+    //TODO generate error pages and not only pageNotFound
     public function generateAction($context, $lang, $id)
     {
-
         /** @var Request $request */
         $request = $this->getRequest();
 
-        // context
+        /** @var String $context */
         if ("" === $context){
             $context = "catalog";
         } else if (! in_array($context, array("catalog", "content", "brand")) ){
             $this->pageNotFound();
         }
 
-        // the locale : fr_FR, en_US,
+        /** @var String $locale */
         if ("" !== $lang) {
             if (! $this->checkLang($lang)){
                 $this->pageNotFound();
@@ -89,6 +91,7 @@ class FeedController extends BaseFrontController {
                 throw new \RuntimeException("No default language is defined. Please define one.");
             }
         }
+        //find language in db
         if (null === $lang = LangQuery::create()->findOneByLocale($lang)){
             $this->pageNotFound();
         }
@@ -102,59 +105,69 @@ class FeedController extends BaseFrontController {
         }
 
         $flush = $request->query->get("flush", "");
-Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
+		Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         // check if feed already in cache
         $cacheContent = false;
 
         $format = $request->query->get("format","xml");
-
+        $platform = $request->query->get("platform","idealo");
+        
+       
         if($format == "csv"){
         //	$export = new ExportController();
         //	$export->setContainer($this->container);
-       // 	$export_result = $export->exportAction(8);
+        // 	$export_result = $export->exportAction(8);
         	
+        	$exportDBReference = "thelia.export.".$context.".".$platform;//ex: thelia.export.catalog.idealo
         	
+        	//get export Object from DB based on reference
+        	$exportDBObject = ExportQuery::create()->findOneByRef($exportDBReference);
+        	
+        	if($exportDBObject === null){
+        		$this->pageNotFound();
+        	}
+        	
+        	//get the service for the thelia export handler
+        	/** @var \Thelia\Handler\ExportHandler $exportHandler */
         	$exportHandler = $this->container->get('thelia.export.handler');
+        	$export = $exportHandler->getExport($exportDBObject->getId());//8 = catalog.idealo
         	
-        	$export = $exportHandler->getExport(8);//8 = product_idealo
         	if ($export === null) {
         		return $this->pageNotFound();
         	}
-        		set_time_limit(0);
+        		set_time_limit(0);//give the script some breathing room - this only gives an extra max_execution_time (world4you php configuration)
         		/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
         		$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
         		$serializer = $serializerManager->get("thelia.csv");//
         
         	$lang = (new LangQuery)->findPk($lang);
         	$exportEvent = $exportHandler->export(
-        						$export,
-        						$serializer,
-        						null, // no archiver
-        						$lang,
-        						false,
-        						false,
-        						 null
-        						);
+        						$export,$serializer,null, $lang,false,false, null);
+
+        	/** $var \Thelia\Core\Archiver\ArchiverInterface $archiver */
+        	$archiver = $exportEvent->getArchiver();
+        	if ($archiver !== null) {
+        		$contentType = $exportEvent->getArchiver()->getMimeType();
+        		$fileExt = $exportEvent->getArchiver()->getExtension();
+        	}
+        	else {
+        		/** @var \Thelia\Core\Serializer\SerializerInterface $serializer */
+        		$serializer = $exportEvent->getSerializer();
+        		$contentType = $serializer->getMimeType();
+        		$fileExt = $serializer->getExtension();
+        	}
         	
-        				$contentType = $exportEvent->getSerializer()->getMimeType();
-        				$fileExt = $exportEvent->getSerializer()->getExtension();
-        	
-        				if ($exportEvent->getArchiver() !== null) {
-        					$contentType = $exportEvent->getArchiver()->getMimeType();
-        					$fileExt = $exportEvent->getArchiver()->getExtension();
-        				}
-        	
-        				$header = [
-        						'Content-Type' => $contentType,
-        						'Content-Disposition' => sprintf(
+        	$header = [
+        				'Content-Type' => $contentType,
+        				'Content-Disposition' => sprintf(
         								'%s; filename="%s.%s"',
         								ResponseHeaderBag::DISPOSITION_ATTACHMENT,
         								$exportEvent->getExport()->getFileName(),
-        								$fileExt
-        								)
+        								$fileExt)
         				];
+        				$content = mb_convert_encoding(readfile($exportEvent->getFilePath()), 'UTF-8', 'auto');
         				$response = new Response();
-        				$response->setContent(readfile($exportEvent->getFilePath()));
+        				$response->setContent($content);
         				$response->headers->set('Content-Type', $contentType);
         				$response->headers->set('Content-Disposition' , sprintf(
         								'%s; filename="%s.%s"',
@@ -162,7 +175,6 @@ Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         								$exportEvent->getExport()->getFileName(),
         								$fileExt
         								));
-        				return $response;
         				//return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
         }
         else{
@@ -179,15 +191,17 @@ Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
 
         // if not in cache
         if (false === $cacheContent){
+        	Tlog::getInstance()->err("got here");
             // render the view
             $cacheContent = $this->renderRaw(
-                "feed",
+                "feed-google",
                 array(
                     "_context_" => $context,
                     "_lang_"    => $lang,
                     "_id_"      => $id
                 )
             );
+            Tlog::getInstance()->err("google ".$cacheContent);
             // save cache
             $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);
         }
@@ -210,7 +224,6 @@ Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
         $cacheDir = $this->container->getParameter("kernel.cache_dir");
         $cacheDir = rtrim($cacheDir, '/');
         $cacheDir .= '/' . self::FEED_CACHE_DIR . '/';
-
         return $cacheDir;
     }
 

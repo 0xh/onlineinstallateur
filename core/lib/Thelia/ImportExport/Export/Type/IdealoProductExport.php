@@ -36,7 +36,7 @@ use Thelia\Model\ProductQuery;
  */
 class IdealoProductExport extends AbstractExport
 {
-    const FILE_NAME = 'product_idealo';
+    const FILE_NAME = 'catalog_idealo';
     private $url_site ;
     
     protected $orderAndAliases = [

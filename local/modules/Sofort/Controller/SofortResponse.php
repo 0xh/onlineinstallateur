@@ -65,25 +65,33 @@ class SofortResponse extends BasePaymentModuleController
 <time>2016-08-26T23:17:53+02:00</time>
 </status_notification>
 */
+    	//check for transaction_id in request body
         	$content = $this->getRequest()->getContent();
         	$transaction_id = "";
-        	if($content != null) 
-        	//	$this->getLogger()->error("Sofort-ok content is null ");
-        	// else 
+        	if($content != null)  
         	{
         		$transaction_array = explode("transaction",$content);
         		$transaction_id = $transaction_array[2];
         		$transaction_id = substr($transaction_id,1,strlen($transaction_id)-3);
-        		$this->getLogger()->error("Sofort valid transaction-id ".$transaction_id);
+        		$this->getLogger()->error("Sofort valid transaction-id content ".$transaction_id);
         	}
-        	//if($transaction_id == "")
         		
+        	// check for transaction_id in database
+        	$timeout = 0;
+        	while($timeout<5 && $transaction_id == ""){
         		$orderQuery=OrderQuery::create();
         		$order =$orderQuery->findOneById($order_id);
         		
         		$transaction_id = $order->getTransactionRef();
-        		$this->getLogger()->error("Sofort valid transaction_id ".$transaction_id);
-        		
+        		if($transaction_id)
+        			$this->getLogger()->error("Sofort valid transaction_id ok() ".$transaction_id. " ".$content);
+        		else
+        		{
+        			$this->getLogger()->error("Sofort transaction_id is null for order ".$order_id." - pausing for one second and trying again ".$timeout);
+        			sleep(1);
+        			$timeout+=1;
+        		}
+        	}
         		
         	if($transaction_id)	{
             	$order = $this->checkorder($order_id, $transaction_id);
@@ -99,95 +107,8 @@ class SofortResponse extends BasePaymentModuleController
         	}
         	else 
         	{
-        		$this->getLogger()->error("Sofort transaction_id is null, order contains no valid transaction_id");
+        		$this->getLogger()->error("Sofort transaction_id is null, order contains no valid transaction_id after 5 retries");
         	}
-            /*
-             * $payerid string value returned by sofort
-             * $logger SofortApiLogManager used to log transctions with sofort
-             */
-           // $payerid = $this->getRequest()->get('PayerID');
-           
-
-            /*if (! empty($payerid)) {
-                /*
-                 * $config ConfigInterface Object that contains configuration
-                 * $api SofortApiCredentials Class used by the library to store and use 3T login(username, password, signature)
-                 * $sandbox bool true if sandbox is enabled
-                 *
-                $api     = new SofortApiCredentials();
-                $sandbox = Sofort::isSandboxMode();
-                
-                 // Send getExpressCheckout & doExpressCheckout
-                 // empty cart
-                 
-                $getExpressCheckout = new SofortNvpOperationsGetExpressCheckoutDetails(
-                    $api,
-                    $token
-                );
-
-                $request  = new SofortNvpMessageSender($getExpressCheckout, $sandbox);
-                $response = SofortApiManager::nvpToArray($request->send());
-
-                $this->logger->logTransaction($response);
-
-                if (isset($response['ACK']) && $response['ACK'] === 'Success' &&
-                    isset($response['PAYERID']) && $response['PAYERID'] === $payerid &&
-                    isset($response['TOKEN']) && $response['TOKEN'] === $token
-                ) {*/
-                   /* $doExpressCheckout = new SofortNvpOperationsDoExpressCheckoutPayment(
-                        $api,
-                        round($order->getTotalAmount(), 2),
-                        $order->getCurrency()->getCode(),
-                        $payerid,
-                        SofortApiManager::PAYMENT_TYPE_SALE,
-                        $token,
-                        URL::getInstance()->absoluteUrl("/module/sofort/listen")
-                    );
-
-                    $request  = new SofortNvpMessageSender($doExpressCheckout, $token);
-                    $response = SofortApiManager::nvpToArray($request->send());*/
-
-                   // $this->logger->logTransaction($response);
-
-                    // In case of pending status, log the reason to get usefull information (multi-currency problem, ...)
-                    /*if (isset($response['ACK']) && $response['ACK'] === "Success" &&
-                        isset($response['PAYMENTINFO_0_PAYMENTSTATUS']) && $response['PAYMENTINFO_0_PAYMENTSTATUS'] === "Pending") {
-                        $this->getTranslator()->trans(
-                            "Sofort transaction is pending. Reason: %reason",
-                            [ 'reason' => $response['PAYMENTINFO_0_PENDINGREASON'] ],
-                            Sofort::DOMAIN
-                        );
-                    }*/
-
-                    /*
-                     * In case of success, go to success page
-                     * In case of error, show it
-                     */
-                   /* if (isset($response['ACK']) && $response['ACK'] === "Success"
-                        && isset($response['PAYMENTINFO_0_PAYMENTSTATUS']) && $response['PAYMENTINFO_0_PAYMENTSTATUS'] === "Completed"
-                        && isset($response['TOKEN']) && $response['TOKEN'] === $token
-                    ) {*/
-                        
-                   /* } else {
-                        $message = $this->getTranslator()->trans("Failed to validate your payment", [], Sofort::DOMAIN);
-                    }
-                } else {
-                    $message = $this->getTranslator()->trans("Failed to validate payment parameters", [], Sofort::DOMAIN);
-                }
-            }/* else {
-                $message = $this->getTranslator()->trans("Failed to find PayerID", [], Sofort::DOMAIN);
-            }*/
-         /*catch (RedirectException $ex) {
-            throw $ex;
-        } catch (\Exception $ex) {
-            $this->logger->getLogger()->error("Error occured while processing express checkout : " . $ex->getMessage());
-
-            $message = $this->getTranslator()->trans(
-                "Unexpected error: %mesg",
-                [ '%mesg' => $ex->getMessage()],
-                Sofort::DOMAIN
-            );
-        }*/
 
         $this->redirectToFailurePage($order_id, "failed to verify sofort transaction_id ");
     }
@@ -233,6 +154,7 @@ class SofortResponse extends BasePaymentModuleController
     		if($order){
     			$order->setTransactionRef($transaction_id);
     			$order->save();
+
     		}	
     	}
     	 

@@ -121,7 +121,7 @@
             <div id="category-products">
                 <div class="products-content">
                     <ul class="list-unstyled row"> 
-                                {include file="criteria-search/search-results.html" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+                                {include file="criteria-search/search-results.html" search_attribute_loop=true criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
                     </ul>
                 </div>
             </div><!-- /#category-products -->

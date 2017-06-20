@@ -1,0 +1,57 @@
+{javascripts file='assets/js/jqplot/jquery.jqplot.min.js'}
+  <script src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/jqplot/plugins/jqplot.highlighter.min.js'}
+  <script type="text/javascript" src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/jqplot/plugins/jqplot.barRenderer.min.js'}
+  <script type="text/javascript" src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/jqplot/plugins/jqplot.pieRenderer.min.js'}
+  <script type="text/javascript" src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/moment-with-locales.min.js'}
+  <script src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+  <script src="{$asset_url}"></script>
+{/javascripts}
+
+<script>
+jQuery(function($) {
+  {$langcode = {lang attr="code"}|substr:0:2}
+
+  var url = "{url path='/admin/crawler/data'}";
+
+  {literal}
+
+  // Get initial data Json
+  retrieveJQPlotJson();
+  
+  
+  function retrieveJQPlotJson() {
+	  
+    // JS month range is [0..11], the url requires a PHP month range [1..12]
+    $.getJSON(url)
+        .done(function (data) {
+          jsonSuccessLoad(data);
+
+        })
+        .fail(jsonFailLoad);
+  }
+
+
+  function jsonFailLoad(data) {
+    $('#jqplot').html('<div class="alert alert-danger">An error occurred while reading from JSON file</div>');
+  }
+
+  function jsonSuccessLoad(data) {
+
+	//  var response = JSON.parse(data);
+    console.log(data);
+    $('.crawlerdebug').html(data.result);
+
+  }
+  {/literal}
+});
+</script>

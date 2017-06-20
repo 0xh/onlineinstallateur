@@ -1,0 +1,104 @@
+{loop type="auth" name="can_view" role="ADMIN" resource="admin.order" access="VIEW"}
+<div class="general-block-decorator dashboard">
+    <div class="title title-without-tabs clearfix">
+      {intl l='Dashboard Crawler' d='hookadmincrawlerdashboard.bo.default'}
+      </div>
+  <ul class="nav nav-tabs nav-justified">
+    <li class="active"><a href="#statjour" data-toggle="tab">{intl l="Product Position"  d='hookadminhome.bo.default'} (25)</a></li>
+    <li><a href="#statmois" data-toggle="tab">{intl l="Price Low"  d='hookadminhome.bo.default'} (10)</a></li>
+    <li><a href="#statannee" data-toggle="tab">{intl l="Price High"  d='hookadminhome.bo.default'} (101)</a></li>
+  </ul>
+
+  {capture assign=defaultCurrency}
+    {loop type="currency" name="default-currency" default_only="1"}
+    {$SYMBOL}
+    {/loop}
+  {/capture}
+  
+  <div class="tab-content">
+    <div class="tab-pane fade active in" id="statjour">
+    
+    	<div class="col-md-1">
+    	ID
+    	</div>
+    <div class="col-md-6">
+    	Product
+    	</div>
+    <div class="col-md-1">
+    	Amazon
+    	</div>
+    <div class="col-md-1">
+    	Idealo
+    	</div>
+    <div class="col-md-1">
+    	Geizhals
+    	</div>
+    <div class="col-md-1">
+    	Google
+    	</div>
+    <div class="col-md-1">
+    	Willhaben
+    	</div>
+    	
+    <div class="crawlerdebug">
+    </div>
+        <div class="table-responsive">
+        	<table class="table table-striped table-condensed">
+        		<tbody>    
+            	{loop name="product_position_list" type="product" visible="*" has_ean="1" order=$product_order page=$page backend_context="on" limit={config key="number_default_results_per_page.category_list" default=20} return_url=false}
+                     <tr>
+                         <td>{$ID}</td>
+
+                         <td>
+                         {loop type="image" name="cat_image" source="product" source_id="$ID" limit="1" width="50" height="50" resize_mode="crop" backend_context="1"}
+                           <a href="{url path='/admin/products/update' product_id=$OBJECT_ID page=$page}" title="{intl l='Edit this product'}">
+                             <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" />
+                           </a>
+                         {/loop}
+                         </td>
+
+                         <td class="object-title">
+                             <a href="{url path='/admin/products/update' product_id=$ID page=$page}" title="{intl l='Edit this product'}">{$REF}</a>
+                             {if $VIRTUAL}<span class="glyphicon glyphicon-download text-muted" title="{intl l='Virtual product'}"></span>{/if}
+                         </td>
+
+                         <td class="text-right"><a href="{url path='/admin/products/update' product_id=$ID page=$page current_tab='prices'}" title="{intl l='Edit Prices'}">{format_money number=$BEST_PRICE symbol=$currency_symbol}</a></td>
+                     </tr>  
+                {/loop}
+                </tbody>
+            </table>
+         </div>
+         <tfoot>
+             <tr>
+                 <td colspan="100">
+                     {include
+                     file = "includes/pagination.html"
+                     loop_ref       = "product_position_list"
+                     max_page_count = 10
+                     page_url       = {url path="/admin/home" product_order=$product_order}
+                     }
+                 </td>
+             </tr>
+         </tfoot>
+    </div>
+    <div class="tab-pane fade" id="statmois">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+          	price too low
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="statannee">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <tbody>
+			price is too high
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ </div>
+{/loop}

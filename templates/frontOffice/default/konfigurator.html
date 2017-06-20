@@ -560,11 +560,9 @@
                       $waermebedarf = request.getResponseHeader('waermebedarf');
                       if($waermebedarf != null) 
                        //$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-
-                      
                       if(data.indexOf("product-info")>0)
                       $("#category-products").empty().append(data);
-                      else $("#category-products").empty().append('Kein Ergebniss, nutzen Sie bitte unser  individuelles Angebot');
+                      else $("#category-products").empty().append('Kein Ergebnis, nutzen Sie bitte unser  individuelles Angebot');
                      })
                      .fail(function (jqXHR, textStatus, errorThrown) {
                       if (typeof jqXHR.responseJSON !== 'undefined') {
