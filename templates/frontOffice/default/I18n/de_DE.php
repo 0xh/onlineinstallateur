@@ -257,4 +257,8 @@ return [
     'update' => 'Aktualisieren',
     'with:' => 'mit : ',
     '404' => '404',
+    'notes' => 'Anmerkungen',
+    'Placeholder notes' => 'Ihre Anmerkungen',
+    'package' => 'Wartungspaket',
+    'Placeholder package' => 'Ihr ausgewähltes Wartungspaket',
 ];

@@ -281,6 +281,14 @@
         <default key="_controller">Front\Controller\ContactController::sendAction</default>
         <default key="_view">contact</default>
     </route>
+    <route id="wartungspaket.send" path="/wartungspaket-bestellen" methods="post">
+        <default key="_controller">Front\Controller\WartungspaketController::sendAction</default>
+        <default key="_view">wartungspaket</default>
+    </route>
+    <route id="wartungspaket.success" path="/wartungspaket-bestellen/success">
+        <default key="_controller">Thelia\Controller\Front\DefaultController::noAction</default>
+        <default key="_view">wartungspaket-success</default>
+    </route>
      <route id="custom.services.send" path="/custom-services/sendmail" methods="post">
         <default key="_controller">Front\Controller\CustomServicesController::sendAction</default>
         <default key="_view">custom-services</default>
