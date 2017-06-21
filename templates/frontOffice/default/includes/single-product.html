@@ -14,7 +14,34 @@
 
         <a href="{$URL nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}  col-sm-3">
             {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}" resize_mode="borders" limit="1"}
+            <div style="position:relative">
                 <img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}">
+             
+            {if $LISTEN_PRICE!=0}
+               
+             <div class="badge-container ">
+
+
+                 {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}
+                  <span> -{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%</span>
+               </div>
+            {/if}
+            
+            {loop name="badge_info" type="feature" product=$product_id}
+                    
+                
+                {if $TITLE=="badge"}  
+                {ifloop rel="feature_value_info"}
+                            {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+                               
+                                <span class="badge badge-hersteller">{$TITLE}</span>
+                                
+                            {/loop}
+                 {/ifloop}
+                    {/if} 
+                   
+            {/loop}
+            </div>
             {/loop}
             {elseloop rel="product_thumbnail"}
                 <img itemprop="image" src="{image file='assets/dist/img/218x146.png'}" class="img-responsive" alt="{$productTitle}">
@@ -22,6 +49,7 @@
         </a>
 
         <div class="product-info col-sm-6">
+     
             <h2 class="name"><a href="{$URL nofilter}"><span itemprop="name">{$productTitle}</span></a></h2>
             {if $hasDescription}
             <div class="description" itemprop="description">

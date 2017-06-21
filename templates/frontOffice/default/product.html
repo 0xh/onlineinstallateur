@@ -61,20 +61,27 @@
             *}
             
             {hook name="product.top" product={$ID}}
+                       
+                            
+                       
             
 			{if $service_category == #services_category_id#}
 
         	{else}
             	{ifhook rel="product.gallery"}
                		{hook name="product.gallery" product={$ID}}
+            
             	{/ifhook}
             	{elsehook rel="product.gallery"}
             	<section id="product-gallery" class="col-sm-6">
+                    
                 	{ifloop rel="image.main"}
                 		<figure class="product-image">
                     		{loop type="image" name="image.main" product={$ID} width="560" height="445" resize_mode="borders" limit="1"}
+                  
                         		<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive" itemprop="image" data-toggle="magnify">
-                    		{/loop}
+                            {/loop}
+                    		
                 		</figure>
                 	{/ifloop}
 
@@ -125,17 +132,40 @@
                 <div class="product-info">
                     <h1 class="name"><span itemprop="name">{$TITLE}</span><span id="pse-name" class="pse-name"></span></h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
+                    
+                
 <table class="price-table" style="font-size:12px; color:#7a7a7a">
-    <tr>
-        <td>
-            Marke:
+    <tr style="padding-top:7px;">
+        <td colspan="2" style="position:relative;padding-top:7px;">
+        {loop name="badge_info" type="feature" product=$product_id}
+                  
+                
+                {if $TITLE=="badge"}   
+                {ifloop rel="feature_value_info"} 
+                            {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+                               
+                                <span class="badge badge-hersteller">{$TITLE}</span>
+                              
+                            {/loop}
+                     {/ifloop}
+                    {/if} 
+
+                {/loop}
         </td>
-        <td>
+    </tr>
+    <tr style="padding-top:7px;">
+
+        <td colspan="2">
              {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <p> <a href="{$URL nofilter}" title="{intl l="More information about this brand"}"><span itemprop="brand">{$TITLE}</span></a></p>
+            
+                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
+                        
+                        <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
+                    {/loop}
             {/loop}
         </td>       
     </tr>
+    
      {if $WEIGHT}
         <tr>
         	<td>
@@ -301,6 +331,7 @@
                         {* We have more than 1 combination: custom form *}
                         <fieldset id="pse-options" class="product-options">
                             {loop name="attributes" type="attribute" product="$product_id" order="manual"}
+                            
                             <div class="option option-option">
                                 <label for="option-{$ID}" class="option-heading">{$TITLE}</label>
                                 <div class="option-content clearfix">

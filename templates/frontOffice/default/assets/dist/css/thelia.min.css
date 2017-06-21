@@ -4806,7 +4806,7 @@ a.label:hover {
     min-width: 10px;
     padding: 3px 7px;
     font-size: 12px;
-    color: #fff;
+    color: #CCC;
     vertical-align: middle;
     background-color: #e5e5e5;
     border-radius: 10px
@@ -10211,6 +10211,7 @@ td.product .name>a:hover {
     padding: 10px
 }
 .grid #category-products .item>article .product-info {
+    text-align:left;
     padding: 3px
 }
 .grid #category-products .item>article .product-info .name {
@@ -13377,6 +13378,7 @@ animation: fadeout 2s;
 .highlight{
     color: #86ac34;
     font-weight: 600;
+    padding:3px;
 }
 .happyclient{
     background: url(../img/homepage/happyclientbg.png) no-repeat;
@@ -13734,4 +13736,41 @@ figure.effect-marley:hover p {
 	opacity: 1;
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
+}
+
+.badge-hersteller{
+    position:absolute; 
+    bottom:0px; 
+    left:0px;
+    text-align:center;
+    color:#86AC34;
+    font-weight:bold;
+    font-size: 14px;
+}
+
+
+.badge-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 50px;
+    padding: 4px 10px 3px;
+    color: #fff;
+    background-color: #58585A;
+    font-size: 12px;
+    line-height: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    z-index: 10;
+}
+.badge-container:after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-right: 7px solid #000;
+    border-bottom: 6px solid transparent;
 }
