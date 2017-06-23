@@ -572,7 +572,23 @@
                                     <input {if !$show_pricing_fields}readonly{/if} data-price-type="sale-price-with-tax" data-rel-price="sale_price_without_tax_{$idx}" id="sale_price_with_tax_{$idx}" class="price_field automatic_price_field form-control text-right input-sm" type="text" name="{$name}" value="{$value}"  />
                                 </td>
                                 {/form_field}
-                            </tr>
+                                
+                                {form_field field='listen_price' value_key=$idx}
+			                  <div class="form-group">
+			                      <label for="{$label_attr.for}" class="control-label">{$label}: </label>
+			                      <div class="input-group">
+			                          <input {if !$show_pricing_fields}readonly{/if}  type="text" id="{$label_attr.for}" name="{$name}" class="price_field form-control" value="{$value}" title="{$value}" placeholder="{$label}">
+			                      </div>
+			                  </div>
+                          {/form_field}
+                            </tr>           
+
+	        
+	        
+   
+                       
+
+	        
 
                             {hook name="product.combinations-row" pse=$current_pse_id idx=$idx}
 

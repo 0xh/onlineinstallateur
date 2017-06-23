@@ -85,21 +85,43 @@ class CriteriaSearchHook extends BaseHook
             ->limit(1)
             ->findOne();
 
+            $categoryProductMaxPrice *= 1.2;
             
+            $categoryProductMinPrice = ProductPriceQuery::create()
+            ->useProductSaleElementsQuery()
+            ->useProductQuery()
+            ->useProductCategoryQuery()
+            ->filterByCategoryId($categories_array)
+            ->endUse()
+            ->endUse()
+            ->endUse()
+            ->select('price')
+            ->orderBy('price', Criteria::ASC)
+            ->limit(1)
+            ->findOne();
             
+            $categoryProductMinPrice *= 1.2;
             
             $params['max_price_filter'] = ceil($categoryProductMaxPrice/10)*10;
+            $params['min_price_filter'] = floor($categoryProductMinPrice/10)*10;
             
-            $log->info("criteriasearch max_price_filter ".$categoryProductMaxPrice);
+            $log->error("criteriasearch max_price_filter ".$categoryProductMaxPrice);
+            $log->error("criteriasearch main_price_filter ".$categoryProductMinPrice);
 
             if ( $params['max_price_filter']>0) {
+            	
+            	if($params['min_price_filter']<0)
+            		$params['min_price_filter'] = 0;
+            	
                 $params['value_price_filter'] = [];
 
-                $priceSlice = $params['max_price_filter']/4;
+                $priceSlice = ($params['max_price_filter'] - $params['min_price_filter'])/4;
 
-                for ($i = 0; $i <=  $params['max_price_filter']; $i = $i+$priceSlice) {
+                for ($i = $params['min_price_filter']; $i <=  $params['max_price_filter']; $i = $i+$priceSlice) {
                     $params['value_price_filter'][] = $i;
                 }
+                $params['value_price_filter'][] = $params['max_price_filter'];
+                
             }
         }
 

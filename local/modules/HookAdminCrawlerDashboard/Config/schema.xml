@@ -28,6 +28,8 @@
         <column name="link_platform_product_page" type="VARCHAR" size="255"/>
         <column name="link_hf_product" type="VARCHAR" size="255"/>
         <column name="link_first_product" type="VARCHAR" size="255"/>
+        <column name="platform_product_id" type="VARCHAR" size="255"/>
+        <column name="hf_product_stock" type="INTEGER"/>
         <behavior name="timestampable" />
         <behavior name="versionable">
       		<parameter name="log_created_at" value="true" />

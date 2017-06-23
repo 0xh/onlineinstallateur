@@ -9,7 +9,9 @@
         <loop name="MySuperLoop" class="HookAdminCrawlerDashboard\Loop\MySuperLoop" />
         -->
     </loops>
-
+    <loops>
+        <loop name="crawler_product" class="HookAdminCrawlerDashboard\Loop\CrawlerProductLoop" />
+    </loops>
     <forms>
         <!--
         <form name="MyFormName" class="HookAdminCrawlerDashboard\Form\MySuperForm" />
