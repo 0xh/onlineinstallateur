@@ -13472,8 +13472,7 @@ animation: fadeout 2s;
 }
 
 .highlight{
-    background:#86AC34;
-    color:#FFF;
+    color:#86AC34;
 }
 @media (min-width: 768px) {
     .kundenvideo iframe{
@@ -13756,7 +13755,7 @@ figure.effect-marley:hover p {
     min-width: 50px;
     padding: 4px 10px 3px;
     color: #fff;
-    background-color: #58585A;
+    //background-color: #58585A;
     font-size: 12px;
     line-height: 10px;
     text-align: center;

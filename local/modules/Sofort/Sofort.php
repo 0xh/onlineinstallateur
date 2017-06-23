@@ -158,7 +158,7 @@ $Sofortueberweisung->setNotificationUrl($receivedUrl, 'received');
 $Sofortueberweisung->setNotificationUrl($refundedUrl, 'refunded');
 $Sofortueberweisung->setNotificationUrl($untraceableUrl, 'untraceable');
 //$Sofortueberweisung->setCustomerprotection(true);
-
+//$Sofortueberweisung->setLanguageCode("DE");
 
 $Sofortueberweisung->sendRequest();
 
@@ -169,8 +169,8 @@ if($Sofortueberweisung->isError()) {
 			$this->getPaymentFailurePageUrl(
 					$order->getId(),
 					Translator::getInstance()->trans(
-							"Sorry, something did not worked with Sofort:<br>".$Sofortueberweisung->getError()."<br>. Please try again, or use another payment type",
-							[],
+							"Sorry, something did not worked with Sofort. %sofortError Please try again, or use another payment type.",
+							array("%sofortError" => $Sofortueberweisung->getError()),
 							self::DOMAIN
 							)
 					)
