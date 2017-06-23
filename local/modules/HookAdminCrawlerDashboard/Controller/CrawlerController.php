@@ -11,6 +11,8 @@ use Thelia\Model\CustomerQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Log\Tlog;
 use HookAdminCrawlerDashboard\Controller\GeizhalsCrawler;
+use HookAdminCrawlerDashboard\Controller\AmazonCrawler;
+use HookAdminCrawlerDashboard\Controller\IdealoCrawler;
 
 /**
  * Class CrawlerController
@@ -34,11 +36,20 @@ class CrawlerController extends BaseAdminController
 
     public function loadDataAjaxAction()
     {
-    	$crawler = new GeizhalsCrawler();
+    	//$crawler = new GeizhalsCrawler();
+    	//$crawler = new AmazonCrawler();
+    	$crawler = new IdealoCrawler();
+    	//$crawler = new WillhabenCrawler();
+    	
     	$crawler->init(true, true);
     	$crawler->init_crawler();
-    	
-    	$searchResponse = $crawler->searchByEANCode("4005176847981");
+ 
+    	//Geizhals
+    	//$searchResponse = $crawler->searchByEANCode("4005176847981");
+    	//Amazon
+    	//$searchResponse = $crawler->searchByEANCode("B003TGG2EA");
+    	//Idealo
+    	$searchResponse = $crawler->searchByEANCode("2317555");
     	
     	if($searchResponse){
     		// get first product
@@ -55,7 +66,9 @@ class CrawlerController extends BaseAdminController
     		
     		//get Hausfabrik offer Price
     		$hausfabrikOfferPrice = $crawler->getOfferPrice($hausfabrikOffer);
+    		
     	}
+    	
     	return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
     }   
     
