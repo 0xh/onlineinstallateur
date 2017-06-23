@@ -460,15 +460,36 @@
                 {/capture}
             {/strip}
 
+
+            {strip}
+                {capture "highlights"}
+                    {ifloop rel="feature_info"}
+                       
+                            {loop name="highlights_info" type="feature" product={$ID}}
+                          
+                               
+                                    <p>{$DESCRIPTION nofilter}</p> 
+                              
+                       
+                            {/loop}
+                       
+                    {/ifloop}
+
+                {/capture}
+            {/strip}
+
+
             {strip}
                 {capture "brand_info"}
                     {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <p><strong><a href="{$URL nofilter}">{$TITLE}</a></strong></p>
-
+                        <!--p><strong><a href="{$URL nofilter}">{$TITLE}</a></strong></p-->
+<div class="col-sm-3">
                         {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=218 height=146 resize_mode="borders"}
                             <p><a href="{$URL nofilter}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></a></p>
                         {/loop}
 
+ </div> 
+<div class="col-sm-9">
                         {if $CHAPO}
                             <div class="chapo">
                                 {$CHAPO}
@@ -484,6 +505,8 @@
                                 {$POSTSCRIPTUM}
                             </small>
                         {/if}
+</div>
+<div style="clear:both"></div>
                     {/loop}
                 {/capture}
             {/strip}
@@ -491,13 +514,13 @@
             {strip}
                 {capture "document"}
                     {ifloop rel="document"}
-                    <ul>
+                    
                     {loop name="document" type="document" product=$ID visible="yes"}
-                        <li>
-                            <a href="{$DOCUMENT_URL}" title="{$TITLE}" target="_blank">{$TITLE}</a>
-                        </li>
+                       
+                            <span class="fa fa-file-pdf-o"></span> &nbsp;<a href="{$DOCUMENT_URL}" title="{$TITLE}" target="_blank">{$TITLE}</a><br>
+                        
                     {/loop}
-                    </ul>
+                    
                     {/ifloop}
                 {/capture}
             {/strip}
@@ -514,7 +537,7 @@
                     
 
                     
-                    {if $smarty.capture.additional ne ""}<li role="presentation"><a id="tab2" href="#additional" data-toggle="tab" role="tab">{intl l="Additional Info"}</a></li>{/if}
+                    {if $smarty.capture.additional ne ""}<!--li role="presentation"><a id="tab2" href="#additional" data-toggle="tab" role="tab">{intl l="Additional Info"}</a></li-->{/if}
                     {if $smarty.capture.brand_info ne ""}<li role="presentation"><a id="tab3" href="#brand_info" data-toggle="tab" role="tab">{intl l="Brand information"}</a></li>{/if}
                     {if $smarty.capture.document ne ""}<li role="presentation"><a id="tab4" href="#document" data-toggle="tab" role="tab">{intl l="Documents"}</a></li>{/if}
                     {forhook rel="product.additional"}
@@ -524,7 +547,8 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active in" id="description" itemprop="description" role="tabpanel" aria-labelledby="tab1">
-                        <p>{$DESCRIPTION|default:'N/A' nofilter}</p>
+                        <p>{$DESCRIPTION|default:'' nofilter}</p>
+                         {$smarty.capture.highlights nofilter}
                     </div>
                     {if $smarty.capture.additional ne ""}
                         <div class="tab-pane" id="additional" role="tabpanel" aria-labelledby="tab2">
