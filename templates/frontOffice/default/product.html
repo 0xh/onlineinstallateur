@@ -177,14 +177,15 @@
     </tr>
      {/if}
     <tr>
-    <td>Lieferzeit:&nbsp; </td>
-    <td class="highlight">
+    
+    <td class="highlight" colspan="2">
        {hook name="product.details-bottom" product={$ID}}               
 				{if $service_category != #services_category_id#}
-                	{hook name="product.delivery-delay" product={$ID}}
+                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
                 {/if} 
     </td>  
-    </tr>              
+    </tr>   
+
 </table>
 
                     {if $POSTSCRIPTUM}<div class="short-description">
