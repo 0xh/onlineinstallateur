@@ -212,10 +212,14 @@
                                 </tr>
                                 <tr>
                                     <td>Sie sparen:</td>
-                                    <td><div>
-                                {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
-                                        ({if $LISTEN_PRICE!=0} 
-                                        {$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%{/if})</div></td>
+                                    <td>
+                                    	<div>
+                                			{$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
+                                        		({if $LISTEN_PRICE!=0} 
+                                        		{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%
+                                        		{/if})
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td style="height:50px" colspan="2"></td>
