@@ -2,8 +2,8 @@
 
 namespace HookAdminCrawlerDashboard\Model\Map;
 
-use \CrawlerProductBaseVersion;
-use \CrawlerProductBaseVersionQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -33,7 +33,7 @@ class CrawlerProductBaseVersionTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.CrawlerProductBaseVersionTableMap';
+    const CLASS_NAME = 'HookAdminCrawlerDashboard.Model.Map.CrawlerProductBaseVersionTableMap';
 
     /**
      * The default database name for this class
@@ -48,12 +48,12 @@ class CrawlerProductBaseVersionTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\CrawlerProductBaseVersion';
+    const OM_CLASS = '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBaseVersion';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'CrawlerProductBaseVersion';
+    const CLASS_DEFAULT = 'HookAdminCrawlerDashboard.Model.CrawlerProductBaseVersion';
 
     /**
      * The total number of columns
@@ -172,14 +172,14 @@ class CrawlerProductBaseVersionTableMap extends TableMap
         // attributes
         $this->setName('crawler_product_base_version');
         $this->setPhpName('CrawlerProductBaseVersion');
-        $this->setClassName('\\CrawlerProductBaseVersion');
-        $this->setPackage('');
+        $this->setClassName('\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBaseVersion');
+        $this->setPackage('HookAdminCrawlerDashboard.Model');
         $this->setUseIdGenerator(false);
         // columns
         $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'crawler_product_base', 'ID', true, null, null);
         $this->addColumn('PRODUCT_ID', 'ProductId', 'INTEGER', false, null, null);
-        $this->addColumn('ACTIVE', 'Active', 'TINYINT', true, null, null);
-        $this->addColumn('ACTION_REQUIRED', 'ActionRequired', 'TINYINT', true, null, null);
+        $this->addColumn('ACTIVE', 'Active', 'TINYINT', true, null, 1);
+        $this->addColumn('ACTION_REQUIRED', 'ActionRequired', 'TINYINT', true, null, 0);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addPrimaryKey('VERSION', 'Version', 'INTEGER', true, null, 0);
@@ -194,7 +194,7 @@ class CrawlerProductBaseVersionTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('CrawlerProductBase', '\\CrawlerProductBase', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('CrawlerProductBase', '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBase', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -205,7 +205,7 @@ class CrawlerProductBaseVersionTableMap extends TableMap
      * to the cache in order to ensure that the same objects are always returned by find*()
      * and findPk*() calls.
      *
-     * @param \CrawlerProductBaseVersion $obj A \CrawlerProductBaseVersion object.
+     * @param \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion $obj A \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion object.
      * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -226,12 +226,12 @@ class CrawlerProductBaseVersionTableMap extends TableMap
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param mixed $value A \CrawlerProductBaseVersion object or a primary key value.
+     * @param mixed $value A \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion object or a primary key value.
      */
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
-            if (is_object($value) && $value instanceof \CrawlerProductBaseVersion) {
+            if (is_object($value) && $value instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion) {
                 $key = serialize(array((string) $value->getId(), (string) $value->getVersion()));
 
             } elseif (is_array($value) && count($value) === 2) {
@@ -242,7 +242,7 @@ class CrawlerProductBaseVersionTableMap extends TableMap
 
                 return;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \CrawlerProductBaseVersion object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
                 throw $e;
             }
 
@@ -453,7 +453,7 @@ class CrawlerProductBaseVersionTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \CrawlerProductBaseVersion) { // it's a model object
+        } elseif ($values instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

@@ -1,14 +1,14 @@
 <?php
 
-namespace Base;
+namespace HookAdminCrawlerDashboard\Model\Base;
 
-use \CrawlerProductListing as ChildCrawlerProductListing;
-use \CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
-use \CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\CrawlerProductListingVersionTableMap;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListing as ChildCrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -26,7 +26,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\CrawlerProductListingVersionTableMap';
+    const TABLE_MAP = '\\HookAdminCrawlerDashboard\\Model\\Map\\CrawlerProductListingVersionTableMap';
 
 
     /**
@@ -118,6 +118,26 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
     protected $link_first_product;
 
     /**
+     * The value for the platform_product_id field.
+     * @var        string
+     */
+    protected $platform_product_id;
+
+    /**
+     * The value for the hf_product_stock field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $hf_product_stock;
+
+    /**
+     * The value for the hf_product_stock_order field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $hf_product_stock_order;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -178,12 +198,14 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
     {
         $this->hf_price = '0.000000';
         $this->first_price = '0.000000';
+        $this->hf_product_stock = 0;
+        $this->hf_product_stock_order = 0;
         $this->version = 0;
         $this->product_base_id_version = 0;
     }
 
     /**
-     * Initializes internal state of Base\CrawlerProductListingVersion object.
+     * Initializes internal state of HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingVersion object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -553,6 +575,39 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
     }
 
     /**
+     * Get the [platform_product_id] column value.
+     * 
+     * @return   string
+     */
+    public function getPlatformProductId()
+    {
+
+        return $this->platform_product_id;
+    }
+
+    /**
+     * Get the [hf_product_stock] column value.
+     * 
+     * @return   int
+     */
+    public function getHfProductStock()
+    {
+
+        return $this->hf_product_stock;
+    }
+
+    /**
+     * Get the [hf_product_stock_order] column value.
+     * 
+     * @return   int
+     */
+    public function getHfProductStockOrder()
+    {
+
+        return $this->hf_product_stock_order;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      * 
      *
@@ -649,7 +704,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -674,7 +729,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [product_base_id] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setProductBaseId($v)
     {
@@ -695,7 +750,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [hf_position] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setHfPosition($v)
     {
@@ -716,7 +771,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [hf_price] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setHfPrice($v)
     {
@@ -737,7 +792,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [first_position] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setFirstPosition($v)
     {
@@ -758,7 +813,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [first_price] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setFirstPrice($v)
     {
@@ -779,7 +834,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [platform] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setPlatform($v)
     {
@@ -800,7 +855,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [link_platform_product_page] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setLinkPlatformProductPage($v)
     {
@@ -821,7 +876,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [link_hf_product] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setLinkHfProduct($v)
     {
@@ -842,7 +897,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [link_first_product] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setLinkFirstProduct($v)
     {
@@ -860,11 +915,74 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
     } // setLinkFirstProduct()
 
     /**
+     * Set the value of [platform_product_id] column.
+     * 
+     * @param      string $v new value
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
+     */
+    public function setPlatformProductId($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->platform_product_id !== $v) {
+            $this->platform_product_id = $v;
+            $this->modifiedColumns[CrawlerProductListingVersionTableMap::PLATFORM_PRODUCT_ID] = true;
+        }
+
+
+        return $this;
+    } // setPlatformProductId()
+
+    /**
+     * Set the value of [hf_product_stock] column.
+     * 
+     * @param      int $v new value
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
+     */
+    public function setHfProductStock($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->hf_product_stock !== $v) {
+            $this->hf_product_stock = $v;
+            $this->modifiedColumns[CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK] = true;
+        }
+
+
+        return $this;
+    } // setHfProductStock()
+
+    /**
+     * Set the value of [hf_product_stock_order] column.
+     * 
+     * @param      int $v new value
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
+     */
+    public function setHfProductStockOrder($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->hf_product_stock_order !== $v) {
+            $this->hf_product_stock_order = $v;
+            $this->modifiedColumns[CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK_ORDER] = true;
+        }
+
+
+        return $this;
+    } // setHfProductStockOrder()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -885,7 +1003,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -905,7 +1023,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [version] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setVersion($v)
     {
@@ -927,7 +1045,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setVersionCreatedAt($v)
     {
@@ -947,7 +1065,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [version_created_by] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setVersionCreatedBy($v)
     {
@@ -968,7 +1086,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Set the value of [product_base_id_version] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      */
     public function setProductBaseIdVersion($v)
     {
@@ -1000,6 +1118,14 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
             }
 
             if ($this->first_price !== '0.000000') {
+                return false;
+            }
+
+            if ($this->hf_product_stock !== 0) {
+                return false;
+            }
+
+            if ($this->hf_product_stock_order !== 0) {
                 return false;
             }
 
@@ -1068,31 +1194,40 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('LinkFirstProduct', TableMap::TYPE_PHPNAME, $indexType)];
             $this->link_first_product = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('PlatformProductId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->platform_product_id = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('HfProductStock', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->hf_product_stock = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('HfProductStockOrder', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->hf_product_stock_order = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_created_by = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('ProductBaseIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 18 + $startcol : CrawlerProductListingVersionTableMap::translateFieldName('ProductBaseIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_base_id_version = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -1102,10 +1237,10 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 16; // 16 = CrawlerProductListingVersionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 19; // 19 = CrawlerProductListingVersionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \CrawlerProductListingVersion object", 0, $e);
+            throw new PropelException("Error populating \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion object", 0, $e);
         }
     }
 
@@ -1353,6 +1488,15 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::LINK_FIRST_PRODUCT)) {
             $modifiedColumns[':p' . $index++]  = 'LINK_FIRST_PRODUCT';
         }
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::PLATFORM_PRODUCT_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'PLATFORM_PRODUCT_ID';
+        }
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK)) {
+            $modifiedColumns[':p' . $index++]  = 'HF_PRODUCT_STOCK';
+        }
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK_ORDER)) {
+            $modifiedColumns[':p' . $index++]  = 'HF_PRODUCT_STOCK_ORDER';
+        }
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
@@ -1411,6 +1555,15 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
                         break;
                     case 'LINK_FIRST_PRODUCT':                        
                         $stmt->bindValue($identifier, $this->link_first_product, PDO::PARAM_STR);
+                        break;
+                    case 'PLATFORM_PRODUCT_ID':                        
+                        $stmt->bindValue($identifier, $this->platform_product_id, PDO::PARAM_STR);
+                        break;
+                    case 'HF_PRODUCT_STOCK':                        
+                        $stmt->bindValue($identifier, $this->hf_product_stock, PDO::PARAM_INT);
+                        break;
+                    case 'HF_PRODUCT_STOCK_ORDER':                        
+                        $stmt->bindValue($identifier, $this->hf_product_stock_order, PDO::PARAM_INT);
                         break;
                     case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -1516,21 +1669,30 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
                 return $this->getLinkFirstProduct();
                 break;
             case 10:
-                return $this->getCreatedAt();
+                return $this->getPlatformProductId();
                 break;
             case 11:
-                return $this->getUpdatedAt();
+                return $this->getHfProductStock();
                 break;
             case 12:
-                return $this->getVersion();
+                return $this->getHfProductStockOrder();
                 break;
             case 13:
-                return $this->getVersionCreatedAt();
+                return $this->getCreatedAt();
                 break;
             case 14:
-                return $this->getVersionCreatedBy();
+                return $this->getUpdatedAt();
                 break;
             case 15:
+                return $this->getVersion();
+                break;
+            case 16:
+                return $this->getVersionCreatedAt();
+                break;
+            case 17:
+                return $this->getVersionCreatedBy();
+                break;
+            case 18:
                 return $this->getProductBaseIdVersion();
                 break;
             default:
@@ -1572,12 +1734,15 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
             $keys[7] => $this->getLinkPlatformProductPage(),
             $keys[8] => $this->getLinkHfProduct(),
             $keys[9] => $this->getLinkFirstProduct(),
-            $keys[10] => $this->getCreatedAt(),
-            $keys[11] => $this->getUpdatedAt(),
-            $keys[12] => $this->getVersion(),
-            $keys[13] => $this->getVersionCreatedAt(),
-            $keys[14] => $this->getVersionCreatedBy(),
-            $keys[15] => $this->getProductBaseIdVersion(),
+            $keys[10] => $this->getPlatformProductId(),
+            $keys[11] => $this->getHfProductStock(),
+            $keys[12] => $this->getHfProductStockOrder(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
+            $keys[15] => $this->getVersion(),
+            $keys[16] => $this->getVersionCreatedAt(),
+            $keys[17] => $this->getVersionCreatedBy(),
+            $keys[18] => $this->getProductBaseIdVersion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1653,21 +1818,30 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
                 $this->setLinkFirstProduct($value);
                 break;
             case 10:
-                $this->setCreatedAt($value);
+                $this->setPlatformProductId($value);
                 break;
             case 11:
-                $this->setUpdatedAt($value);
+                $this->setHfProductStock($value);
                 break;
             case 12:
-                $this->setVersion($value);
+                $this->setHfProductStockOrder($value);
                 break;
             case 13:
-                $this->setVersionCreatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 14:
-                $this->setVersionCreatedBy($value);
+                $this->setUpdatedAt($value);
                 break;
             case 15:
+                $this->setVersion($value);
+                break;
+            case 16:
+                $this->setVersionCreatedAt($value);
+                break;
+            case 17:
+                $this->setVersionCreatedBy($value);
+                break;
+            case 18:
                 $this->setProductBaseIdVersion($value);
                 break;
         } // switch()
@@ -1704,12 +1878,15 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
         if (array_key_exists($keys[7], $arr)) $this->setLinkPlatformProductPage($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setLinkHfProduct($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setLinkFirstProduct($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setCreatedAt($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setUpdatedAt($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setVersion($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setVersionCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setVersionCreatedBy($arr[$keys[14]]);
-        if (array_key_exists($keys[15], $arr)) $this->setProductBaseIdVersion($arr[$keys[15]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPlatformProductId($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setHfProductStock($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setHfProductStockOrder($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setVersion($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setVersionCreatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setVersionCreatedBy($arr[$keys[17]]);
+        if (array_key_exists($keys[18], $arr)) $this->setProductBaseIdVersion($arr[$keys[18]]);
     }
 
     /**
@@ -1731,6 +1908,9 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::LINK_PLATFORM_PRODUCT_PAGE)) $criteria->add(CrawlerProductListingVersionTableMap::LINK_PLATFORM_PRODUCT_PAGE, $this->link_platform_product_page);
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::LINK_HF_PRODUCT)) $criteria->add(CrawlerProductListingVersionTableMap::LINK_HF_PRODUCT, $this->link_hf_product);
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::LINK_FIRST_PRODUCT)) $criteria->add(CrawlerProductListingVersionTableMap::LINK_FIRST_PRODUCT, $this->link_first_product);
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::PLATFORM_PRODUCT_ID)) $criteria->add(CrawlerProductListingVersionTableMap::PLATFORM_PRODUCT_ID, $this->platform_product_id);
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK)) $criteria->add(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK, $this->hf_product_stock);
+        if ($this->isColumnModified(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK_ORDER)) $criteria->add(CrawlerProductListingVersionTableMap::HF_PRODUCT_STOCK_ORDER, $this->hf_product_stock_order);
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::CREATED_AT)) $criteria->add(CrawlerProductListingVersionTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::UPDATED_AT)) $criteria->add(CrawlerProductListingVersionTableMap::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(CrawlerProductListingVersionTableMap::VERSION)) $criteria->add(CrawlerProductListingVersionTableMap::VERSION, $this->version);
@@ -1800,7 +1980,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \CrawlerProductListingVersion (or compatible) type.
+     * @param      object $copyObj An object of \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1817,6 +1997,9 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
         $copyObj->setLinkPlatformProductPage($this->getLinkPlatformProductPage());
         $copyObj->setLinkHfProduct($this->getLinkHfProduct());
         $copyObj->setLinkFirstProduct($this->getLinkFirstProduct());
+        $copyObj->setPlatformProductId($this->getPlatformProductId());
+        $copyObj->setHfProductStock($this->getHfProductStock());
+        $copyObj->setHfProductStockOrder($this->getHfProductStockOrder());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setVersion($this->getVersion());
@@ -1837,7 +2020,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \CrawlerProductListingVersion Clone of current object.
+     * @return                 \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1854,7 +2037,7 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
      * Declares an association between this object and a ChildCrawlerProductListing object.
      *
      * @param                  ChildCrawlerProductListing $v
-     * @return                 \CrawlerProductListingVersion The current object (for fluent API support)
+     * @return                 \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCrawlerProductListing(ChildCrawlerProductListing $v = null)
@@ -1916,6 +2099,9 @@ abstract class CrawlerProductListingVersion implements ActiveRecordInterface
         $this->link_platform_product_page = null;
         $this->link_hf_product = null;
         $this->link_first_product = null;
+        $this->platform_product_id = null;
+        $this->hf_product_stock = null;
+        $this->hf_product_stock_order = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->version = null;

@@ -2,16 +2,16 @@
 
 namespace HookAdminCrawlerDashboard\Model\Base;
 
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBase as ChildCrawlerProductBase;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseVersion as ChildCrawlerProductBaseVersion;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListing as ChildCrawlerProductListing;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
-use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBase as ChildCrawlerProductBase;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion as ChildCrawlerProductBaseVersion;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListing as ChildCrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
 use HookAdminCrawlerDashboard\Model\Map\CrawlerProductBaseTableMap;
 use HookAdminCrawlerDashboard\Model\Map\CrawlerProductBaseVersionTableMap;
 use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingVersionTableMap;
@@ -36,7 +36,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\CrawlerProductBaseTableMap';
+    const TABLE_MAP = '\\HookAdminCrawlerDashboard\\Model\\Map\\CrawlerProductBaseTableMap';
 
 
     /**
@@ -79,12 +79,14 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
 
     /**
      * The value for the active field.
+     * Note: this column has a database default value of: 1
      * @var        int
      */
     protected $active;
 
     /**
      * The value for the action_required field.
+     * Note: this column has a database default value of: 0
      * @var        int
      */
     protected $action_required;
@@ -167,11 +169,13 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
+        $this->active = 1;
+        $this->action_required = 0;
         $this->version = 0;
     }
 
     /**
-     * Initializes internal state of Base\CrawlerProductBase object.
+     * Initializes internal state of HookAdminCrawlerDashboard\Model\Base\CrawlerProductBase object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -540,7 +544,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -561,7 +565,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [product_id] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setProductId($v)
     {
@@ -586,7 +590,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [active] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setActive($v)
     {
@@ -607,7 +611,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [action_required] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setActionRequired($v)
     {
@@ -629,7 +633,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -650,7 +654,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -670,7 +674,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [version] column.
      * 
      * @param      int $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setVersion($v)
     {
@@ -691,7 +695,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Set the value of [version_created_by] column.
      * 
      * @param      string $v new value
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function setVersionCreatedBy($v)
     {
@@ -718,6 +722,14 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->active !== 1) {
+                return false;
+            }
+
+            if ($this->action_required !== 0) {
+                return false;
+            }
+
             if ($this->version !== 0) {
                 return false;
             }
@@ -789,7 +801,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
             return $startcol + 8; // 8 = CrawlerProductBaseTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \CrawlerProductBase object", 0, $e);
+            throw new PropelException("Error populating \HookAdminCrawlerDashboard\Model\CrawlerProductBase object", 0, $e);
         }
     }
 
@@ -1011,7 +1023,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
 
             if ($this->crawlerProductListingsScheduledForDeletion !== null) {
                 if (!$this->crawlerProductListingsScheduledForDeletion->isEmpty()) {
-                    \CrawlerProductListingQuery::create()
+                    \HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery::create()
                         ->filterByPrimaryKeys($this->crawlerProductListingsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
                     $this->crawlerProductListingsScheduledForDeletion = null;
@@ -1028,7 +1040,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
 
             if ($this->crawlerProductBaseVersionsScheduledForDeletion !== null) {
                 if (!$this->crawlerProductBaseVersionsScheduledForDeletion->isEmpty()) {
-                    \CrawlerProductBaseVersionQuery::create()
+                    \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery::create()
                         ->filterByPrimaryKeys($this->crawlerProductBaseVersionsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
                     $this->crawlerProductBaseVersionsScheduledForDeletion = null;
@@ -1432,7 +1444,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \CrawlerProductBase (or compatible) type.
+     * @param      object $copyObj An object of \HookAdminCrawlerDashboard\Model\CrawlerProductBase (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1481,7 +1493,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \CrawlerProductBase Clone of current object.
+     * @return                 \HookAdminCrawlerDashboard\Model\CrawlerProductBase Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1498,7 +1510,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * Declares an association between this object and a ChildProduct object.
      *
      * @param                  ChildProduct $v
-     * @return                 \CrawlerProductBase The current object (for fluent API support)
+     * @return                 \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      * @throws PropelException
      */
     public function setProduct(ChildProduct $v = null)
@@ -1604,7 +1616,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
             return;
         }
         $this->collCrawlerProductListings = new ObjectCollection();
-        $this->collCrawlerProductListings->setModel('\CrawlerProductListing');
+        $this->collCrawlerProductListings->setModel('\HookAdminCrawlerDashboard\Model\CrawlerProductListing');
     }
 
     /**
@@ -1738,7 +1750,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * through the ChildCrawlerProductListing foreign key attribute.
      *
      * @param    ChildCrawlerProductListing $l ChildCrawlerProductListing
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function addCrawlerProductListing(ChildCrawlerProductListing $l)
     {
@@ -1822,7 +1834,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
             return;
         }
         $this->collCrawlerProductBaseVersions = new ObjectCollection();
-        $this->collCrawlerProductBaseVersions->setModel('\CrawlerProductBaseVersion');
+        $this->collCrawlerProductBaseVersions->setModel('\HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion');
     }
 
     /**
@@ -1959,7 +1971,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * through the ChildCrawlerProductBaseVersion foreign key attribute.
      *
      * @param    ChildCrawlerProductBaseVersion $l ChildCrawlerProductBaseVersion
-     * @return   \CrawlerProductBase The current object (for fluent API support)
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBase The current object (for fluent API support)
      */
     public function addCrawlerProductBaseVersion(ChildCrawlerProductBaseVersion $l)
     {
@@ -2082,7 +2094,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
     /**
      * Enforce a new Version of this object upon next save.
      *
-     * @return \CrawlerProductBase
+     * @return \HookAdminCrawlerDashboard\Model\CrawlerProductBase
      */
     public function enforceVersioning()
     {
@@ -2406,7 +2418,7 @@ abstract class CrawlerProductBase implements ActiveRecordInterface
      * retrieve the last $number versions.
      *
      * @param Integer $number the number of record to return.
-     * @return PropelCollection|array \CrawlerProductBaseVersion[] List of \CrawlerProductBaseVersion objects
+     * @return PropelCollection|array \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion[] List of \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion objects
      */
     public function getLastVersions($number = 10, $criteria = null, $con = null)
     {

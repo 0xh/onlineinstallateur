@@ -1,12 +1,12 @@
 <?php
 
-namespace Base;
+namespace HookAdminCrawlerDashboard\Model\Base;
 
-use \CrawlerProductListing as ChildCrawlerProductListing;
-use \CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
 use \Exception;
 use \PDO;
-use Map\CrawlerProductListingTableMap;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListing as ChildCrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -31,6 +31,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCrawlerProductListingQuery orderByLinkPlatformProductPage($order = Criteria::ASC) Order by the link_platform_product_page column
  * @method     ChildCrawlerProductListingQuery orderByLinkHfProduct($order = Criteria::ASC) Order by the link_hf_product column
  * @method     ChildCrawlerProductListingQuery orderByLinkFirstProduct($order = Criteria::ASC) Order by the link_first_product column
+ * @method     ChildCrawlerProductListingQuery orderByPlatformProductId($order = Criteria::ASC) Order by the platform_product_id column
+ * @method     ChildCrawlerProductListingQuery orderByHfProductStock($order = Criteria::ASC) Order by the hf_product_stock column
+ * @method     ChildCrawlerProductListingQuery orderByHfProductStockOrder($order = Criteria::ASC) Order by the hf_product_stock_order column
  * @method     ChildCrawlerProductListingQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildCrawlerProductListingQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  * @method     ChildCrawlerProductListingQuery orderByVersion($order = Criteria::ASC) Order by the version column
@@ -47,6 +50,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCrawlerProductListingQuery groupByLinkPlatformProductPage() Group by the link_platform_product_page column
  * @method     ChildCrawlerProductListingQuery groupByLinkHfProduct() Group by the link_hf_product column
  * @method     ChildCrawlerProductListingQuery groupByLinkFirstProduct() Group by the link_first_product column
+ * @method     ChildCrawlerProductListingQuery groupByPlatformProductId() Group by the platform_product_id column
+ * @method     ChildCrawlerProductListingQuery groupByHfProductStock() Group by the hf_product_stock column
+ * @method     ChildCrawlerProductListingQuery groupByHfProductStockOrder() Group by the hf_product_stock_order column
  * @method     ChildCrawlerProductListingQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildCrawlerProductListingQuery groupByUpdatedAt() Group by the updated_at column
  * @method     ChildCrawlerProductListingQuery groupByVersion() Group by the version column
@@ -78,6 +84,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCrawlerProductListing findOneByLinkPlatformProductPage(string $link_platform_product_page) Return the first ChildCrawlerProductListing filtered by the link_platform_product_page column
  * @method     ChildCrawlerProductListing findOneByLinkHfProduct(string $link_hf_product) Return the first ChildCrawlerProductListing filtered by the link_hf_product column
  * @method     ChildCrawlerProductListing findOneByLinkFirstProduct(string $link_first_product) Return the first ChildCrawlerProductListing filtered by the link_first_product column
+ * @method     ChildCrawlerProductListing findOneByPlatformProductId(string $platform_product_id) Return the first ChildCrawlerProductListing filtered by the platform_product_id column
+ * @method     ChildCrawlerProductListing findOneByHfProductStock(int $hf_product_stock) Return the first ChildCrawlerProductListing filtered by the hf_product_stock column
+ * @method     ChildCrawlerProductListing findOneByHfProductStockOrder(int $hf_product_stock_order) Return the first ChildCrawlerProductListing filtered by the hf_product_stock_order column
  * @method     ChildCrawlerProductListing findOneByCreatedAt(string $created_at) Return the first ChildCrawlerProductListing filtered by the created_at column
  * @method     ChildCrawlerProductListing findOneByUpdatedAt(string $updated_at) Return the first ChildCrawlerProductListing filtered by the updated_at column
  * @method     ChildCrawlerProductListing findOneByVersion(int $version) Return the first ChildCrawlerProductListing filtered by the version column
@@ -94,6 +103,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByLinkPlatformProductPage(string $link_platform_product_page) Return ChildCrawlerProductListing objects filtered by the link_platform_product_page column
  * @method     array findByLinkHfProduct(string $link_hf_product) Return ChildCrawlerProductListing objects filtered by the link_hf_product column
  * @method     array findByLinkFirstProduct(string $link_first_product) Return ChildCrawlerProductListing objects filtered by the link_first_product column
+ * @method     array findByPlatformProductId(string $platform_product_id) Return ChildCrawlerProductListing objects filtered by the platform_product_id column
+ * @method     array findByHfProductStock(int $hf_product_stock) Return ChildCrawlerProductListing objects filtered by the hf_product_stock column
+ * @method     array findByHfProductStockOrder(int $hf_product_stock_order) Return ChildCrawlerProductListing objects filtered by the hf_product_stock_order column
  * @method     array findByCreatedAt(string $created_at) Return ChildCrawlerProductListing objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildCrawlerProductListing objects filtered by the updated_at column
  * @method     array findByVersion(int $version) Return ChildCrawlerProductListing objects filtered by the version column
@@ -112,13 +124,13 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
     static $isVersioningEnabled = true;
 
     /**
-     * Initializes internal state of \Base\CrawlerProductListingQuery object.
+     * Initializes internal state of \HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\CrawlerProductListing', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductListing', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -133,10 +145,10 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \CrawlerProductListingQuery) {
+        if ($criteria instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery) {
             return $criteria;
         }
-        $query = new \CrawlerProductListingQuery();
+        $query = new \HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -194,7 +206,7 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PRODUCT_BASE_ID, HF_POSITION, HF_PRICE, FIRST_POSITION, FIRST_PRICE, PLATFORM, LINK_PLATFORM_PRODUCT_PAGE, LINK_HF_PRODUCT, LINK_FIRST_PRODUCT, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY FROM crawler_product_listing WHERE ID = :p0';
+        $sql = 'SELECT ID, PRODUCT_BASE_ID, HF_POSITION, HF_PRICE, FIRST_POSITION, FIRST_PRICE, PLATFORM, LINK_PLATFORM_PRODUCT_PAGE, LINK_HF_PRODUCT, LINK_FIRST_PRODUCT, PLATFORM_PRODUCT_ID, HF_PRODUCT_STOCK, HF_PRODUCT_STOCK_ORDER, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY FROM crawler_product_listing WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -648,6 +660,117 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the platform_product_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPlatformProductId('fooValue');   // WHERE platform_product_id = 'fooValue'
+     * $query->filterByPlatformProductId('%fooValue%'); // WHERE platform_product_id LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $platformProductId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCrawlerProductListingQuery The current query, for fluid interface
+     */
+    public function filterByPlatformProductId($platformProductId = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($platformProductId)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $platformProductId)) {
+                $platformProductId = str_replace('*', '%', $platformProductId);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CrawlerProductListingTableMap::PLATFORM_PRODUCT_ID, $platformProductId, $comparison);
+    }
+
+    /**
+     * Filter the query on the hf_product_stock column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHfProductStock(1234); // WHERE hf_product_stock = 1234
+     * $query->filterByHfProductStock(array(12, 34)); // WHERE hf_product_stock IN (12, 34)
+     * $query->filterByHfProductStock(array('min' => 12)); // WHERE hf_product_stock > 12
+     * </code>
+     *
+     * @param     mixed $hfProductStock The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCrawlerProductListingQuery The current query, for fluid interface
+     */
+    public function filterByHfProductStock($hfProductStock = null, $comparison = null)
+    {
+        if (is_array($hfProductStock)) {
+            $useMinMax = false;
+            if (isset($hfProductStock['min'])) {
+                $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK, $hfProductStock['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($hfProductStock['max'])) {
+                $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK, $hfProductStock['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK, $hfProductStock, $comparison);
+    }
+
+    /**
+     * Filter the query on the hf_product_stock_order column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByHfProductStockOrder(1234); // WHERE hf_product_stock_order = 1234
+     * $query->filterByHfProductStockOrder(array(12, 34)); // WHERE hf_product_stock_order IN (12, 34)
+     * $query->filterByHfProductStockOrder(array('min' => 12)); // WHERE hf_product_stock_order > 12
+     * </code>
+     *
+     * @param     mixed $hfProductStockOrder The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCrawlerProductListingQuery The current query, for fluid interface
+     */
+    public function filterByHfProductStockOrder($hfProductStockOrder = null, $comparison = null)
+    {
+        if (is_array($hfProductStockOrder)) {
+            $useMinMax = false;
+            if (isset($hfProductStockOrder['min'])) {
+                $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER, $hfProductStockOrder['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($hfProductStockOrder['max'])) {
+                $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER, $hfProductStockOrder['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER, $hfProductStockOrder, $comparison);
+    }
+
+    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -847,16 +970,16 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \CrawlerProductBase object
+     * Filter the query by a related \HookAdminCrawlerDashboard\Model\CrawlerProductBase object
      *
-     * @param \CrawlerProductBase|ObjectCollection $crawlerProductBase The related object(s) to use as filter
+     * @param \HookAdminCrawlerDashboard\Model\CrawlerProductBase|ObjectCollection $crawlerProductBase The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildCrawlerProductListingQuery The current query, for fluid interface
      */
     public function filterByCrawlerProductBase($crawlerProductBase, $comparison = null)
     {
-        if ($crawlerProductBase instanceof \CrawlerProductBase) {
+        if ($crawlerProductBase instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBase) {
             return $this
                 ->addUsingAlias(CrawlerProductListingTableMap::PRODUCT_BASE_ID, $crawlerProductBase->getId(), $comparison);
         } elseif ($crawlerProductBase instanceof ObjectCollection) {
@@ -867,7 +990,7 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(CrawlerProductListingTableMap::PRODUCT_BASE_ID, $crawlerProductBase->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByCrawlerProductBase() only accepts arguments of type \CrawlerProductBase or Collection');
+            throw new PropelException('filterByCrawlerProductBase() only accepts arguments of type \HookAdminCrawlerDashboard\Model\CrawlerProductBase or Collection');
         }
     }
 
@@ -912,26 +1035,26 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \CrawlerProductBaseQuery A secondary query class using the current class as primary query
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery A secondary query class using the current class as primary query
      */
     public function useCrawlerProductBaseQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCrawlerProductBase($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductBase', '\CrawlerProductBaseQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductBase', '\HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery');
     }
 
     /**
-     * Filter the query by a related \CrawlerProductListingVersion object
+     * Filter the query by a related \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion object
      *
-     * @param \CrawlerProductListingVersion|ObjectCollection $crawlerProductListingVersion  the related object to use as filter
+     * @param \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion|ObjectCollection $crawlerProductListingVersion  the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildCrawlerProductListingQuery The current query, for fluid interface
      */
     public function filterByCrawlerProductListingVersion($crawlerProductListingVersion, $comparison = null)
     {
-        if ($crawlerProductListingVersion instanceof \CrawlerProductListingVersion) {
+        if ($crawlerProductListingVersion instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion) {
             return $this
                 ->addUsingAlias(CrawlerProductListingTableMap::ID, $crawlerProductListingVersion->getId(), $comparison);
         } elseif ($crawlerProductListingVersion instanceof ObjectCollection) {
@@ -940,7 +1063,7 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
                 ->filterByPrimaryKeys($crawlerProductListingVersion->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByCrawlerProductListingVersion() only accepts arguments of type \CrawlerProductListingVersion or Collection');
+            throw new PropelException('filterByCrawlerProductListingVersion() only accepts arguments of type \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersion or Collection');
         }
     }
 
@@ -985,13 +1108,13 @@ abstract class CrawlerProductListingQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \CrawlerProductListingVersionQuery A secondary query class using the current class as primary query
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductListingVersionQuery A secondary query class using the current class as primary query
      */
     public function useCrawlerProductListingVersionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinCrawlerProductListingVersion($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductListingVersion', '\CrawlerProductListingVersionQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductListingVersion', '\HookAdminCrawlerDashboard\Model\CrawlerProductListingVersionQuery');
     }
 
     /**

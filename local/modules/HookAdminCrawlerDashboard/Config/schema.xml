@@ -3,7 +3,7 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
 
-   <table name="crawler_product_base">
+   <table name="crawler_product_base" namespace="HookAdminCrawlerDashboard\Model">
         <column name="id" phpName="Id" autoIncrement="true" primaryKey="true" required="true" type="INTEGER" />
         <column name="product_id" type="INTEGER" />
         <column name="active" phpName="Active" type="TINYINT" required="true" defaultValue="1" />
@@ -17,7 +17,7 @@
         </foreign-key>
     </table>
 
-    <table name="crawler_product_listing">
+    <table name="crawler_product_listing" namespace="HookAdminCrawlerDashboard\Model">
         <column name="id" phpName="Id" autoIncrement="true" primaryKey="true" required="true" type="INTEGER" />
         <column name="product_base_id" type="INTEGER" />
         <column name="hf_position" type="INTEGER" />       
@@ -29,7 +29,8 @@
         <column name="link_hf_product" type="VARCHAR" size="255"/>
         <column name="link_first_product" type="VARCHAR" size="255"/>
         <column name="platform_product_id" type="VARCHAR" size="255"/>
-        <column name="hf_product_stock" type="INTEGER"/>
+        <column name="hf_product_stock" type="INTEGER" defaultValue="0"/>
+        <column name="hf_product_stock_order" type="INTEGER" defaultValue="0"/>
         <behavior name="timestampable" />
         <behavior name="versionable">
       		<parameter name="log_created_at" value="true" />

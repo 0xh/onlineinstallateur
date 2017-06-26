@@ -27,6 +27,8 @@ class Crawler
 	private $productPositionOffset;
 	private $productPriceStartMarker;
 	private $productPriceEndMarker;
+	private $productStockStartMarker;
+	private $productStockEndMarker;
 	private $hausfabrikOfferMarker;
 	private $sslCertificate = THELIA_CONF_DIR."key".DS."cacert.pem";
 	
@@ -45,32 +47,37 @@ class Crawler
 	);
 	
 	
-	public function setServiceLinks($baseUrl,$searchPath){
+	public function setServiceLinks($baseUrl, $searchPath){
 		$this->baseUrl = $baseUrl;
 		$this->searchPath = $searchPath;
 	}
 	
-	public function setProductResultMarker($start,$end){
+	public function setProductResultMarker($start, $end){
 		$this->productResultStartMarker = $start;
 		$this->productResultEndMarker = $end;
 	}
 	
-	public function setPriceResultMarker($start,$end){
+	public function setPriceResultMarker($start, $end){
 		$this->productPriceStartMarker = $start;
 		$this->productPriceEndMarker = $end;
 	}
 	
-	public function setPositionResultMarker($start, $end,$offset){
+	public function setPositionResultMarker($start, $end, $offset){
 		$this->productPositionStartMarker = $start;
 		$this->productPositionEndMarker = $end;
 		$this->productPositionOffset = $offset;
+	}
+	
+	public function setProductStockmarker($start, $end){
+		$this->productStockStartMarker = $start;
+		$this->productStockEndMarker = $end;
 	}
 	
 	public function setSSLCertificateFile($certificate){
 		$this->sslCertificate = $certificate;
 	}
 	
-	public function setHausfabrikOfferMarker($marker ){
+	public function setHausfabrikOfferMarker($marker){
 		$this->hausfabrikOfferMarker = $marker;
 	}
 	
@@ -104,9 +111,24 @@ class Crawler
 			$channel = curl_init($url);
 			$channel = $this->setChannelOptions($channel);
 			$this->setRequest(curl_exec($channel));
+			if($this->debug){
+				Tlog::getInstance()->error("crawlerurl ".$url);
+				Tlog::getInstance()->error("crawlerresponse ".$this->getRequest());
+			}	
 		}
-		
 		return $this->getRequest();
+	}
+	
+	public function findPlatformID($search_response){
+		
+	}
+	
+	public function getMainProduct($request){//shop product in the main page
+		
+	}
+	
+	public function getShopsForProduct($request){
+		
 	}
 	
 	public function getFirstProduct($request){
@@ -143,6 +165,13 @@ class Crawler
    public function getOfferPrice($productOffer){
    	$removeBeforePart = explode($this->productPriceStartMarker, $productOffer);
    	$removeAfterPart = explode($this->productPriceEndMarker, $removeBeforePart[1]);
+   	
+   	return $removeAfterPart[0];
+   }
+   
+   public function getOfferStock($productOffer){
+   	$removeBeforePart = explode($this->productStockStartMarker, $productOffer);
+   	$removeAfterPart = explode($this->productStockEndMarker, $removeBeforePart[1]);
    	
    	return $removeAfterPart[0];
    }

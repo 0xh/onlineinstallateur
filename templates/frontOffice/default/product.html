@@ -136,21 +136,24 @@
                     </h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
                     
-                    <ul>
+                   <div class="row">
                     {loop name="attributes" type="feature" product=$product_id}
                     {if $TITLE != "badge"}
                     {ifloop rel="attributes_info"}
-                    	<li>{$TITLE}:
-                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id} 
-                                	{$TITLE}
+                    	{assign var="feature_title" value=$TITLE}	
+                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
+                            	{if $TITLE != "highlight"}
+                            		<div class="col-sm-4">{$feature_title}:</div> 
+                                	<div class="col-sm-8">{$TITLE}</div>
+                                {/if}
                             	{/loop}
-                        </li>
                     {/ifloop}
                     {/if}
                 	{/loop}
-                    </ul>
+                	</div>
+                    
 <table class="price-table" style="font-size:12px; color:#7a7a7a">
-    <tr style="padding-top:7px;">
+    <tr style="padding-top:10px;">
         <td colspan="2" style="position:relative;padding-top:7px;">
         {loop name="badge_info" type="feature" product=$product_id}
                   
@@ -159,7 +162,7 @@
                 {ifloop rel="feature_value_info"} 
                             {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
                                
-                                <span class="badge badge-hersteller">{$TITLE}</span>
+                                <span class=" badge-hersteller" style="position:relative">{$TITLE}</span>
                               
                             {/loop}
                      {/ifloop}
@@ -268,7 +271,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="height:50px" colspan="2"></td>
+                                    <td style="height:20px" colspan="2"></td>
                                 </tr>
 
                                 <tr id="zwischensumme" style="display:none">
@@ -481,9 +484,11 @@
             {strip}
                 {capture "highlights"}
                     {ifloop rel="feature_info"}
-                            {loop name="highlights_info" type="feature" product={$ID}}
-                                    <p>{$DESCRIPTION nofilter}</p> 
+                    	{ifloop rel="feature_value_info"}
+                            {loop name="highlights_info" type="feature" product={$ID}}	
+                                    <p>{$DESCRIPTION nofilter}</p>
                             {/loop}
+                        {/ifloop}
                     {/ifloop}
                 {/capture}
             {/strip}

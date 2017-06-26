@@ -1,12 +1,12 @@
 <?php
 
-namespace Base;
+namespace HookAdminCrawlerDashboard\Model\Base;
 
-use \CrawlerProductBaseVersion as ChildCrawlerProductBaseVersion;
-use \CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
 use \Exception;
 use \PDO;
-use Map\CrawlerProductBaseVersionTableMap;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersion as ChildCrawlerProductBaseVersion;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductBaseVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -85,13 +85,13 @@ abstract class CrawlerProductBaseVersionQuery extends ModelCriteria
 {
     
     /**
-     * Initializes internal state of \Base\CrawlerProductBaseVersionQuery object.
+     * Initializes internal state of \HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseVersionQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\CrawlerProductBaseVersion', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBaseVersion', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -106,10 +106,10 @@ abstract class CrawlerProductBaseVersionQuery extends ModelCriteria
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \CrawlerProductBaseVersionQuery) {
+        if ($criteria instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery) {
             return $criteria;
         }
-        $query = new \CrawlerProductBaseVersionQuery();
+        $query = new \HookAdminCrawlerDashboard\Model\CrawlerProductBaseVersionQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -794,16 +794,16 @@ abstract class CrawlerProductBaseVersionQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \CrawlerProductBase object
+     * Filter the query by a related \HookAdminCrawlerDashboard\Model\CrawlerProductBase object
      *
-     * @param \CrawlerProductBase|ObjectCollection $crawlerProductBase The related object(s) to use as filter
+     * @param \HookAdminCrawlerDashboard\Model\CrawlerProductBase|ObjectCollection $crawlerProductBase The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildCrawlerProductBaseVersionQuery The current query, for fluid interface
      */
     public function filterByCrawlerProductBase($crawlerProductBase, $comparison = null)
     {
-        if ($crawlerProductBase instanceof \CrawlerProductBase) {
+        if ($crawlerProductBase instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBase) {
             return $this
                 ->addUsingAlias(CrawlerProductBaseVersionTableMap::ID, $crawlerProductBase->getId(), $comparison);
         } elseif ($crawlerProductBase instanceof ObjectCollection) {
@@ -814,7 +814,7 @@ abstract class CrawlerProductBaseVersionQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(CrawlerProductBaseVersionTableMap::ID, $crawlerProductBase->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByCrawlerProductBase() only accepts arguments of type \CrawlerProductBase or Collection');
+            throw new PropelException('filterByCrawlerProductBase() only accepts arguments of type \HookAdminCrawlerDashboard\Model\CrawlerProductBase or Collection');
         }
     }
 
@@ -859,13 +859,13 @@ abstract class CrawlerProductBaseVersionQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \CrawlerProductBaseQuery A secondary query class using the current class as primary query
+     * @return   \HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery A secondary query class using the current class as primary query
      */
     public function useCrawlerProductBaseQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinCrawlerProductBase($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductBase', '\CrawlerProductBaseQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'CrawlerProductBase', '\HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery');
     }
 
     /**

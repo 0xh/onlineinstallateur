@@ -33,7 +33,7 @@ class CrawlerProductBaseTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.CrawlerProductBaseTableMap';
+    const CLASS_NAME = 'HookAdminCrawlerDashboard.Model.Map.CrawlerProductBaseTableMap';
 
     /**
      * The default database name for this class
@@ -48,12 +48,12 @@ class CrawlerProductBaseTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\CrawlerProductBase';
+    const OM_CLASS = '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBase';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'CrawlerProductBase';
+    const CLASS_DEFAULT = 'HookAdminCrawlerDashboard.Model.CrawlerProductBase';
 
     /**
      * The total number of columns
@@ -157,14 +157,14 @@ class CrawlerProductBaseTableMap extends TableMap
         // attributes
         $this->setName('crawler_product_base');
         $this->setPhpName('CrawlerProductBase');
-        $this->setClassName('\\CrawlerProductBase');
-        $this->setPackage('');
+        $this->setClassName('\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBase');
+        $this->setPackage('HookAdminCrawlerDashboard.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('PRODUCT_ID', 'ProductId', 'INTEGER', 'product', 'ID', false, null, null);
-        $this->addColumn('ACTIVE', 'Active', 'TINYINT', true, null, null);
-        $this->addColumn('ACTION_REQUIRED', 'ActionRequired', 'TINYINT', true, null, null);
+        $this->addColumn('ACTIVE', 'Active', 'TINYINT', true, null, 1);
+        $this->addColumn('ACTION_REQUIRED', 'ActionRequired', 'TINYINT', true, null, 0);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
@@ -177,8 +177,8 @@ class CrawlerProductBaseTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', 'RESTRICT');
-        $this->addRelation('CrawlerProductListing', '\\CrawlerProductListing', RelationMap::ONE_TO_MANY, array('id' => 'product_base_id', ), 'CASCADE', 'RESTRICT', 'CrawlerProductListings');
-        $this->addRelation('CrawlerProductBaseVersion', '\\CrawlerProductBaseVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CrawlerProductBaseVersions');
+        $this->addRelation('CrawlerProductListing', '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductListing', RelationMap::ONE_TO_MANY, array('id' => 'product_base_id', ), 'CASCADE', 'RESTRICT', 'CrawlerProductListings');
+        $this->addRelation('CrawlerProductBaseVersion', '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBaseVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CrawlerProductBaseVersions');
     } // buildRelations()
 
     /**
@@ -406,7 +406,7 @@ class CrawlerProductBaseTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \CrawlerProductBase) { // it's a model object
+        } elseif ($values instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductBase) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

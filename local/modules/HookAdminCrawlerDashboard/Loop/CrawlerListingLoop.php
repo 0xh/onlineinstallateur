@@ -16,6 +16,7 @@ use HookKonfigurator\Model\Map\ProductHeizungTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use HookAdminCrawlerDashboard\Model\CrawlerProductListing;
 use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingTableMap;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery;
 
 /**
  *
@@ -26,7 +27,7 @@ use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingTableMap;
  * @package HookAdminCrawlerDashboard\Loop
  * @author Emanuel Plopu <emanuel.plopu@sepa.at>
  */
-class CrawlerProductLoop extends BaseI18nLoop implements PropelSearchLoopInterface{
+class CrawlerListingLoop extends BaseI18nLoop implements PropelSearchLoopInterface{
 	protected $timestampable = true;
 	protected $versionable = true;
 	
@@ -41,70 +42,44 @@ class CrawlerProductLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
 	
 	public function parseResults(LoopResult $loopResult) {
 		$log = Tlog::getInstance ();
-		
+		$log->err("listingresults ".$loopResult->getCount());
 		/** @var \HookAdminCrawlerDashboard\Model\CrawlerProductListing $listing */
-		foreach ( $loopResult->getResultDataCollection () as $product ) {
+		foreach ( $loopResult->getResultDataCollection () as $listing ) {
 			
-			$loopResultRow = new LoopResultRow ( $product );
+			$loopResultRow = new LoopResultRow ( $listing );
 			
-			
+			$log->err("listingresults ".$listing->getPlatform());
 			$loopResultRow
-			->set("PRODUCT_SALE_ELEMENT", $product->getVirtualColumn('pse_id'))
-			->set("PSE_COUNT", $product->getVirtualColumn('pse_count'))
-			->set("QUANTITY", $product->getVirtualColumn('quantity'))
-			->set("PRICE", $price)
-			->set("PRICE_TAX", $taxedPrice - $price)
-			->set("TAXED_PRICE", $taxedPrice)
-			->set("BEST_TAXED_PRICE",  $taxedPrice)
+			->set("ID", $listing->getId())
+			->set("PRODUCT_BASE_ID", $listing->getProductBaseId())
+			->set("HF_POSITION", $listing->getHfPosition())
+			->set("HF_PRICE", $listing->getHfPrice())
+			->set("HF_PRODUCT_STOCK", $listing->getHfProductStock())
+			->set("HF_PRODUCT_STOCK_ORDER", $listing->getHfProductStockOrder())
+			->set("LINK_HF_PRODUCT", $listing->getLinkHfProduct())
+			->set("FIRST_POSITION", $listing->getFirstPosition())
+			->set("FIRST_PRICE", $listing->getFirstPrice())
+			->set("PLATFORM", $listing->getPlatform())
+			->set("PLATFORM_PRODUCT_ID", $listing->getPlatformProductId())
+			->set("LINK_PLATFORM_PRODUCT_PAGE", $listing->getLinkPlatformProductPage())
+			->set("LINK_FIRST_PRODUCT", $listing->getLinkFirstProduct())
 			;
-			$this->addOutputFields ( $loopResultRow, $product );
+			//$this->addOutputFields ( $loopResultRow, $product );
 			
-			$loopResult->addRow ( $this->associateValues ( $loopResultRow, $product ) );
+			$loopResult->addRow ( $loopResultRow );
 		}
 		
 		return $loopResult;
 	}
 	
-	/**
-	 *
-	 * @param LoopResultRow $loopResultRow
-	 *        	the current result row
-	 * @param \HookAdminCrawlerDashboard\Model\CrawlerProductListing $listing
-	 * @return mixed
-	 */
-	private function associateValues($loopResultRow, $listing) {
-		
-		$loopResultRow
-		->set ( "ID", $listing->getId() )
-		->set ( "REF", $product->getRef () )
-		->set ( "LOCALE", "de_DE" )
-		->set ( "URL", $product->getUrl ( "de_DE" ) )
-		->set ( "POSITION", $product->getPosition () )
-		->set ( "VIRTUAL", $product->getVirtual () ? "1" : "0" )
-		->set ( "VISIBLE", $product->getVisible () ? "1" : "0" )
-		->set ( "TEMPLATE", $product->getTemplateId () )
-		->set ( "DEFAULT_CATEGORY", $default_category_id )
-		->set ( "TAX_RULE_ID", $product->getTaxRuleId () )
-		->set ( "BRAND_ID", $product->getBrandId () ?: 0 )
-		->set ( "TITLE", $product->getTitle () )// $product->getTitle())
-		->set ( "DESCRIPTION", $product->getDescription())
-		->set ( "POWER", $product->getVirtualColumn ( 'power' ) )
-		->set ( "GRADE", $product->getVirtualColumn ( 'grade' ))
-		->set ( "WARMWATER", $product->getVirtualColumn ( 'warm_water' )? "Yes" : "No")
-		->set ( "MONTAGE", 250)//$product->getVirtualColumn('montage_id'))
-		->set ( "MONTAGETEXT", "asdas")//$montage->__toString())
-		;
-		
-		return $loopResultRow;
-	}
-
-
 	public function buildModelCriteria() {
 
 			$log = Tlog::getInstance ();
 			
 			$product_base_id = $this->getProductBaseId();
-			$query = \CrawlerProductListingQuery::create();
+			$query = CrawlerProductListingQuery::create();
+			
+			$log->err("crawlerlisting ".$product_base_id);
 			
 			$query->where(CrawlerProductListingTableMap::PRODUCT_BASE_ID.' =?', $product_base_id, \PDO::PARAM_INT);
 			

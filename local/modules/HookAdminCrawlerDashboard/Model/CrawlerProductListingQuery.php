@@ -1,6 +1,8 @@
 <?php
 
-use Base\CrawlerProductListingQuery as BaseCrawlerProductListingQuery;
+namespace HookAdminCrawlerDashboard\Model;
+
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingQuery as BaseCrawlerProductListingQuery;
 
 
 /**

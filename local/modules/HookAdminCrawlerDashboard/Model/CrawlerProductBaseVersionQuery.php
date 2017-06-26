@@ -1,7 +1,8 @@
 <?php
+
 namespace HookAdminCrawlerDashboard\Model;
 
-use Base\CrawlerProductBaseVersionQuery as BaseCrawlerProductBaseVersionQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseVersionQuery as BaseCrawlerProductBaseVersionQuery;
 
 
 /**

@@ -37,21 +37,21 @@ class CrawlerController extends BaseAdminController
     public function loadDataAjaxAction()
     {
     	//$crawler = new GeizhalsCrawler();
-    	//$crawler = new AmazonCrawler();
-    	$crawler = new IdealoCrawler();
+    	$crawler = new AmazonCrawler();
+    	//$crawler = new IdealoCrawler();
     	//$crawler = new WillhabenCrawler();
     	
-    	$crawler->init(true, true);
+    	$crawler->init(true, false);
     	$crawler->init_crawler();
  
     	//Geizhals
     	//$searchResponse = $crawler->searchByEANCode("4005176847981");
     	//Amazon
-    	//$searchResponse = $crawler->searchByEANCode("B003TGG2EA");
+    	$searchResponse = $crawler->searchByEANCode("4005176882593");//4005176882593  B003TGG2EA
     	//Idealo
-    	$searchResponse = $crawler->searchByEANCode("2317555");
+    	//$searchResponse = $crawler->searchByEANCode("2317555");
     	
-    	if($searchResponse){
+    	if(!$searchResponse){
     		// get first product
     		$firstProduct = $crawler->getFirstProduct($searchResponse);
     		
@@ -69,7 +69,9 @@ class CrawlerController extends BaseAdminController
     		
     	}
     	
-    	return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
+    	return $this->jsonResponse(json_encode(array('result'=>$searchResponse)));
+    	
+    	//return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
     }   
     
 }

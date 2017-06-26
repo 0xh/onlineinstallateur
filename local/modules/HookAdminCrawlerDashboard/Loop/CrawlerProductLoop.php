@@ -56,7 +56,8 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		$query
 		->addJoinObject($crawlerProductBaseJoin,'CrawlerProductBase')
 		->withColumn ( '`cpb`.active', 'crawler_active' )
-		->withColumn ( '`cpb`.action_required', 'crawler_action_required');
+		->withColumn ( '`cpb`.action_required', 'crawler_action_required')
+		->withColumn ('`cpb`.id', 'product_base_id');
 				
 		if($active)
 			$query->where('cpb.active =?', $active, \PDO::PARAM_BOOL);
@@ -78,6 +79,7 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		
 		$activeArray = array();
 		$actionRequiredArray = array();
+		$productBaseIdArray = array();
 		
 		//save virtualcolumns to id based array
 		/** @var \Thelia\Model\Product $product */
@@ -86,17 +88,19 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 			$productId = $product->getId();
 			$activeArray[$productId] = $product->getVirtualColumn('crawler_active');
 			$actionRequiredArray[$productId] = $product->getVirtualColumn('crawler_action_required');
+			$productBaseIdArray[$productId] = $product->getVirtualColumn('product_base_id');
 		}
 		
 		//set result variables from saved array
 		/** @var \Thelia\Core\Template\Element\LoopResultRow $loopResultRow */
 		foreach ($results as $loopResultRow) {			
-			$productBaseId = $loopResultRow->get('ID');
+			$productId = $loopResultRow->get('ID');
 			//Tlog::getInstance()->error("gotsomeproducts ".$loopResultRow->get('ID')." b ".$activeArray[$productBaseId]);
 			$loopResultRow
-			->set("CRAWLER_ACTIVE",$activeArray[$productBaseId])
-			->set("CRAWLER_ID",$productBaseId)
-			->set("CRAWLER_ACTION_REQUIRED",$actionRequiredArray[$productBaseId]);
+			->set("CRAWLER_ACTIVE",$activeArray[$productId])
+			->set("PRODUCT_ID",$productId)
+			->set("CRAWLER_ID", $productBaseIdArray[$productId])
+			->set("CRAWLER_ACTION_REQUIRED",$actionRequiredArray[$productId]);
 		}
 		return $results;
 	}

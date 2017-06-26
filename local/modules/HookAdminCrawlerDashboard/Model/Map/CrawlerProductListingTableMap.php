@@ -2,8 +2,8 @@
 
 namespace HookAdminCrawlerDashboard\Model\Map;
 
-use \CrawlerProductListing;
-use \CrawlerProductListingQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -33,7 +33,7 @@ class CrawlerProductListingTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.CrawlerProductListingTableMap';
+    const CLASS_NAME = 'HookAdminCrawlerDashboard.Model.Map.CrawlerProductListingTableMap';
 
     /**
      * The default database name for this class
@@ -48,17 +48,17 @@ class CrawlerProductListingTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\CrawlerProductListing';
+    const OM_CLASS = '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductListing';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'CrawlerProductListing';
+    const CLASS_DEFAULT = 'HookAdminCrawlerDashboard.Model.CrawlerProductListing';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 18;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class CrawlerProductListingTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 18;
 
     /**
      * the column name for the ID field
@@ -121,6 +121,21 @@ class CrawlerProductListingTableMap extends TableMap
     const LINK_FIRST_PRODUCT = 'crawler_product_listing.LINK_FIRST_PRODUCT';
 
     /**
+     * the column name for the PLATFORM_PRODUCT_ID field
+     */
+    const PLATFORM_PRODUCT_ID = 'crawler_product_listing.PLATFORM_PRODUCT_ID';
+
+    /**
+     * the column name for the HF_PRODUCT_STOCK field
+     */
+    const HF_PRODUCT_STOCK = 'crawler_product_listing.HF_PRODUCT_STOCK';
+
+    /**
+     * the column name for the HF_PRODUCT_STOCK_ORDER field
+     */
+    const HF_PRODUCT_STOCK_ORDER = 'crawler_product_listing.HF_PRODUCT_STOCK_ORDER';
+
+    /**
      * the column name for the CREATED_AT field
      */
     const CREATED_AT = 'crawler_product_listing.CREATED_AT';
@@ -157,12 +172,12 @@ class CrawlerProductListingTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductBaseId', 'HfPosition', 'HfPrice', 'FirstPosition', 'FirstPrice', 'Platform', 'LinkPlatformProductPage', 'LinkHfProduct', 'LinkFirstProduct', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'productBaseId', 'hfPosition', 'hfPrice', 'firstPosition', 'firstPrice', 'platform', 'linkPlatformProductPage', 'linkHfProduct', 'linkFirstProduct', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
-        self::TYPE_COLNAME       => array(CrawlerProductListingTableMap::ID, CrawlerProductListingTableMap::PRODUCT_BASE_ID, CrawlerProductListingTableMap::HF_POSITION, CrawlerProductListingTableMap::HF_PRICE, CrawlerProductListingTableMap::FIRST_POSITION, CrawlerProductListingTableMap::FIRST_PRICE, CrawlerProductListingTableMap::PLATFORM, CrawlerProductListingTableMap::LINK_PLATFORM_PRODUCT_PAGE, CrawlerProductListingTableMap::LINK_HF_PRODUCT, CrawlerProductListingTableMap::LINK_FIRST_PRODUCT, CrawlerProductListingTableMap::CREATED_AT, CrawlerProductListingTableMap::UPDATED_AT, CrawlerProductListingTableMap::VERSION, CrawlerProductListingTableMap::VERSION_CREATED_AT, CrawlerProductListingTableMap::VERSION_CREATED_BY, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_BASE_ID', 'HF_POSITION', 'HF_PRICE', 'FIRST_POSITION', 'FIRST_PRICE', 'PLATFORM', 'LINK_PLATFORM_PRODUCT_PAGE', 'LINK_HF_PRODUCT', 'LINK_FIRST_PRODUCT', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
-        self::TYPE_FIELDNAME     => array('id', 'product_base_id', 'hf_position', 'hf_price', 'first_position', 'first_price', 'platform', 'link_platform_product_page', 'link_hf_product', 'link_first_product', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        self::TYPE_PHPNAME       => array('Id', 'ProductBaseId', 'HfPosition', 'HfPrice', 'FirstPosition', 'FirstPrice', 'Platform', 'LinkPlatformProductPage', 'LinkHfProduct', 'LinkFirstProduct', 'PlatformProductId', 'HfProductStock', 'HfProductStockOrder', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'productBaseId', 'hfPosition', 'hfPrice', 'firstPosition', 'firstPrice', 'platform', 'linkPlatformProductPage', 'linkHfProduct', 'linkFirstProduct', 'platformProductId', 'hfProductStock', 'hfProductStockOrder', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
+        self::TYPE_COLNAME       => array(CrawlerProductListingTableMap::ID, CrawlerProductListingTableMap::PRODUCT_BASE_ID, CrawlerProductListingTableMap::HF_POSITION, CrawlerProductListingTableMap::HF_PRICE, CrawlerProductListingTableMap::FIRST_POSITION, CrawlerProductListingTableMap::FIRST_PRICE, CrawlerProductListingTableMap::PLATFORM, CrawlerProductListingTableMap::LINK_PLATFORM_PRODUCT_PAGE, CrawlerProductListingTableMap::LINK_HF_PRODUCT, CrawlerProductListingTableMap::LINK_FIRST_PRODUCT, CrawlerProductListingTableMap::PLATFORM_PRODUCT_ID, CrawlerProductListingTableMap::HF_PRODUCT_STOCK, CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER, CrawlerProductListingTableMap::CREATED_AT, CrawlerProductListingTableMap::UPDATED_AT, CrawlerProductListingTableMap::VERSION, CrawlerProductListingTableMap::VERSION_CREATED_AT, CrawlerProductListingTableMap::VERSION_CREATED_BY, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_BASE_ID', 'HF_POSITION', 'HF_PRICE', 'FIRST_POSITION', 'FIRST_PRICE', 'PLATFORM', 'LINK_PLATFORM_PRODUCT_PAGE', 'LINK_HF_PRODUCT', 'LINK_FIRST_PRODUCT', 'PLATFORM_PRODUCT_ID', 'HF_PRODUCT_STOCK', 'HF_PRODUCT_STOCK_ORDER', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
+        self::TYPE_FIELDNAME     => array('id', 'product_base_id', 'hf_position', 'hf_price', 'first_position', 'first_price', 'platform', 'link_platform_product_page', 'link_hf_product', 'link_first_product', 'platform_product_id', 'hf_product_stock', 'hf_product_stock_order', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -172,12 +187,12 @@ class CrawlerProductListingTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductBaseId' => 1, 'HfPosition' => 2, 'HfPrice' => 3, 'FirstPosition' => 4, 'FirstPrice' => 5, 'Platform' => 6, 'LinkPlatformProductPage' => 7, 'LinkHfProduct' => 8, 'LinkFirstProduct' => 9, 'CreatedAt' => 10, 'UpdatedAt' => 11, 'Version' => 12, 'VersionCreatedAt' => 13, 'VersionCreatedBy' => 14, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productBaseId' => 1, 'hfPosition' => 2, 'hfPrice' => 3, 'firstPosition' => 4, 'firstPrice' => 5, 'platform' => 6, 'linkPlatformProductPage' => 7, 'linkHfProduct' => 8, 'linkFirstProduct' => 9, 'createdAt' => 10, 'updatedAt' => 11, 'version' => 12, 'versionCreatedAt' => 13, 'versionCreatedBy' => 14, ),
-        self::TYPE_COLNAME       => array(CrawlerProductListingTableMap::ID => 0, CrawlerProductListingTableMap::PRODUCT_BASE_ID => 1, CrawlerProductListingTableMap::HF_POSITION => 2, CrawlerProductListingTableMap::HF_PRICE => 3, CrawlerProductListingTableMap::FIRST_POSITION => 4, CrawlerProductListingTableMap::FIRST_PRICE => 5, CrawlerProductListingTableMap::PLATFORM => 6, CrawlerProductListingTableMap::LINK_PLATFORM_PRODUCT_PAGE => 7, CrawlerProductListingTableMap::LINK_HF_PRODUCT => 8, CrawlerProductListingTableMap::LINK_FIRST_PRODUCT => 9, CrawlerProductListingTableMap::CREATED_AT => 10, CrawlerProductListingTableMap::UPDATED_AT => 11, CrawlerProductListingTableMap::VERSION => 12, CrawlerProductListingTableMap::VERSION_CREATED_AT => 13, CrawlerProductListingTableMap::VERSION_CREATED_BY => 14, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_BASE_ID' => 1, 'HF_POSITION' => 2, 'HF_PRICE' => 3, 'FIRST_POSITION' => 4, 'FIRST_PRICE' => 5, 'PLATFORM' => 6, 'LINK_PLATFORM_PRODUCT_PAGE' => 7, 'LINK_HF_PRODUCT' => 8, 'LINK_FIRST_PRODUCT' => 9, 'CREATED_AT' => 10, 'UPDATED_AT' => 11, 'VERSION' => 12, 'VERSION_CREATED_AT' => 13, 'VERSION_CREATED_BY' => 14, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'product_base_id' => 1, 'hf_position' => 2, 'hf_price' => 3, 'first_position' => 4, 'first_price' => 5, 'platform' => 6, 'link_platform_product_page' => 7, 'link_hf_product' => 8, 'link_first_product' => 9, 'created_at' => 10, 'updated_at' => 11, 'version' => 12, 'version_created_at' => 13, 'version_created_by' => 14, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductBaseId' => 1, 'HfPosition' => 2, 'HfPrice' => 3, 'FirstPosition' => 4, 'FirstPrice' => 5, 'Platform' => 6, 'LinkPlatformProductPage' => 7, 'LinkHfProduct' => 8, 'LinkFirstProduct' => 9, 'PlatformProductId' => 10, 'HfProductStock' => 11, 'HfProductStockOrder' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, 'Version' => 15, 'VersionCreatedAt' => 16, 'VersionCreatedBy' => 17, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productBaseId' => 1, 'hfPosition' => 2, 'hfPrice' => 3, 'firstPosition' => 4, 'firstPrice' => 5, 'platform' => 6, 'linkPlatformProductPage' => 7, 'linkHfProduct' => 8, 'linkFirstProduct' => 9, 'platformProductId' => 10, 'hfProductStock' => 11, 'hfProductStockOrder' => 12, 'createdAt' => 13, 'updatedAt' => 14, 'version' => 15, 'versionCreatedAt' => 16, 'versionCreatedBy' => 17, ),
+        self::TYPE_COLNAME       => array(CrawlerProductListingTableMap::ID => 0, CrawlerProductListingTableMap::PRODUCT_BASE_ID => 1, CrawlerProductListingTableMap::HF_POSITION => 2, CrawlerProductListingTableMap::HF_PRICE => 3, CrawlerProductListingTableMap::FIRST_POSITION => 4, CrawlerProductListingTableMap::FIRST_PRICE => 5, CrawlerProductListingTableMap::PLATFORM => 6, CrawlerProductListingTableMap::LINK_PLATFORM_PRODUCT_PAGE => 7, CrawlerProductListingTableMap::LINK_HF_PRODUCT => 8, CrawlerProductListingTableMap::LINK_FIRST_PRODUCT => 9, CrawlerProductListingTableMap::PLATFORM_PRODUCT_ID => 10, CrawlerProductListingTableMap::HF_PRODUCT_STOCK => 11, CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER => 12, CrawlerProductListingTableMap::CREATED_AT => 13, CrawlerProductListingTableMap::UPDATED_AT => 14, CrawlerProductListingTableMap::VERSION => 15, CrawlerProductListingTableMap::VERSION_CREATED_AT => 16, CrawlerProductListingTableMap::VERSION_CREATED_BY => 17, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_BASE_ID' => 1, 'HF_POSITION' => 2, 'HF_PRICE' => 3, 'FIRST_POSITION' => 4, 'FIRST_PRICE' => 5, 'PLATFORM' => 6, 'LINK_PLATFORM_PRODUCT_PAGE' => 7, 'LINK_HF_PRODUCT' => 8, 'LINK_FIRST_PRODUCT' => 9, 'PLATFORM_PRODUCT_ID' => 10, 'HF_PRODUCT_STOCK' => 11, 'HF_PRODUCT_STOCK_ORDER' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, 'VERSION' => 15, 'VERSION_CREATED_AT' => 16, 'VERSION_CREATED_BY' => 17, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'product_base_id' => 1, 'hf_position' => 2, 'hf_price' => 3, 'first_position' => 4, 'first_price' => 5, 'platform' => 6, 'link_platform_product_page' => 7, 'link_hf_product' => 8, 'link_first_product' => 9, 'platform_product_id' => 10, 'hf_product_stock' => 11, 'hf_product_stock_order' => 12, 'created_at' => 13, 'updated_at' => 14, 'version' => 15, 'version_created_at' => 16, 'version_created_by' => 17, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
     );
 
     /**
@@ -192,8 +207,8 @@ class CrawlerProductListingTableMap extends TableMap
         // attributes
         $this->setName('crawler_product_listing');
         $this->setPhpName('CrawlerProductListing');
-        $this->setClassName('\\CrawlerProductListing');
-        $this->setPackage('');
+        $this->setClassName('\\HookAdminCrawlerDashboard\\Model\\CrawlerProductListing');
+        $this->setPackage('HookAdminCrawlerDashboard.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
@@ -206,6 +221,9 @@ class CrawlerProductListingTableMap extends TableMap
         $this->addColumn('LINK_PLATFORM_PRODUCT_PAGE', 'LinkPlatformProductPage', 'VARCHAR', false, 255, null);
         $this->addColumn('LINK_HF_PRODUCT', 'LinkHfProduct', 'VARCHAR', false, 255, null);
         $this->addColumn('LINK_FIRST_PRODUCT', 'LinkFirstProduct', 'VARCHAR', false, 255, null);
+        $this->addColumn('PLATFORM_PRODUCT_ID', 'PlatformProductId', 'VARCHAR', false, 255, null);
+        $this->addColumn('HF_PRODUCT_STOCK', 'HfProductStock', 'INTEGER', false, null, 0);
+        $this->addColumn('HF_PRODUCT_STOCK_ORDER', 'HfProductStockOrder', 'INTEGER', false, null, 0);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
@@ -218,8 +236,8 @@ class CrawlerProductListingTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('CrawlerProductBase', '\\CrawlerProductBase', RelationMap::MANY_TO_ONE, array('product_base_id' => 'id', ), 'CASCADE', 'RESTRICT');
-        $this->addRelation('CrawlerProductListingVersion', '\\CrawlerProductListingVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CrawlerProductListingVersions');
+        $this->addRelation('CrawlerProductBase', '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductBase', RelationMap::MANY_TO_ONE, array('product_base_id' => 'id', ), 'CASCADE', 'RESTRICT');
+        $this->addRelation('CrawlerProductListingVersion', '\\HookAdminCrawlerDashboard\\Model\\CrawlerProductListingVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CrawlerProductListingVersions');
     } // buildRelations()
 
     /**
@@ -393,6 +411,9 @@ class CrawlerProductListingTableMap extends TableMap
             $criteria->addSelectColumn(CrawlerProductListingTableMap::LINK_PLATFORM_PRODUCT_PAGE);
             $criteria->addSelectColumn(CrawlerProductListingTableMap::LINK_HF_PRODUCT);
             $criteria->addSelectColumn(CrawlerProductListingTableMap::LINK_FIRST_PRODUCT);
+            $criteria->addSelectColumn(CrawlerProductListingTableMap::PLATFORM_PRODUCT_ID);
+            $criteria->addSelectColumn(CrawlerProductListingTableMap::HF_PRODUCT_STOCK);
+            $criteria->addSelectColumn(CrawlerProductListingTableMap::HF_PRODUCT_STOCK_ORDER);
             $criteria->addSelectColumn(CrawlerProductListingTableMap::CREATED_AT);
             $criteria->addSelectColumn(CrawlerProductListingTableMap::UPDATED_AT);
             $criteria->addSelectColumn(CrawlerProductListingTableMap::VERSION);
@@ -409,6 +430,9 @@ class CrawlerProductListingTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.LINK_PLATFORM_PRODUCT_PAGE');
             $criteria->addSelectColumn($alias . '.LINK_HF_PRODUCT');
             $criteria->addSelectColumn($alias . '.LINK_FIRST_PRODUCT');
+            $criteria->addSelectColumn($alias . '.PLATFORM_PRODUCT_ID');
+            $criteria->addSelectColumn($alias . '.HF_PRODUCT_STOCK');
+            $criteria->addSelectColumn($alias . '.HF_PRODUCT_STOCK_ORDER');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
             $criteria->addSelectColumn($alias . '.VERSION');
@@ -460,7 +484,7 @@ class CrawlerProductListingTableMap extends TableMap
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \CrawlerProductListing) { // it's a model object
+        } elseif ($values instanceof \HookAdminCrawlerDashboard\Model\CrawlerProductListing) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks

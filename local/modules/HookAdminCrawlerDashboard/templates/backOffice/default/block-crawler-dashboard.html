@@ -36,9 +36,6 @@
     <div class="col-md-1">
     	Google
     	</div>
-    <div class="col-md-1">
-    	Willhaben
-    	</div>
     	
     <div class="crawlerdebug">
     </div>
@@ -58,12 +55,18 @@
 
                          <td class="object-title">
                              <a href="{url path='/admin/products/update' product_id=$ID page=$page}" title="{intl l='Edit this product'}">{$REF}</a>
-                             {if $VIRTUAL}<span class="glyphicon glyphicon-download text-muted" title="{intl l='Virtual product'}"></span>{/if}
                          </td>
 
-                         <td class="text-right"><a href="{url path='/admin/products/update' product_id=$ID page=$page current_tab='prices'}" title="{intl l='Edit Prices'}">{format_money number=$BEST_PRICE symbol=$currency_symbol}</a></td>
-                     </tr>  
-                     |{$CRAWLER_ACTIVE}|
+                         <td class="text-right">
+                         	<a href="{url path='/admin/products/update' product_id=$ID page=$page current_tab='prices'}" title="{intl l='Edit Prices On'} Hausfabrik">{format_money number=$BEST_PRICE symbol=$currency_symbol}</a>
+                         </td>
+                     
+                     {loop name="crawler_product_listing" type="crawler_listing" product_base_id=$CRAWLER_ID}
+                     <td class="product_listing">
+                     	<a href="{$LINK_HF_PRODUCT}" title="{intl l='Edit Prices On'} {$PLATFORM}">{$HF_POSITION}|{format_money number=$HF_PRICE symbol=$currency_symbol}</a>
+                     </td>
+                     {/loop}
+                     </tr>     
                 {/loop}
                 </tbody>
             </table>

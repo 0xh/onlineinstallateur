@@ -11,6 +11,7 @@
     </loops>
     <loops>
         <loop name="crawler_product" class="HookAdminCrawlerDashboard\Loop\CrawlerProductLoop" />
+        <loop name="crawler_listing" class="HookAdminCrawlerDashboard\Loop\CrawlerListingLoop" />
     </loops>
     <forms>
         <!--
