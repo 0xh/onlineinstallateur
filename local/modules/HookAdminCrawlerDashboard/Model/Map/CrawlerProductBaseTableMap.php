@@ -1,9 +1,9 @@
 <?php
 
-namespace Map;
+namespace HookAdminCrawlerDashboard\Model\Map;
 
-use \CrawlerProductBase;
-use \CrawlerProductBaseQuery;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBase;
+use HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;

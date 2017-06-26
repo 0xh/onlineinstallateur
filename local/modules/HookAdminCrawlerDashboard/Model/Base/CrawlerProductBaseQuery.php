@@ -1,12 +1,12 @@
 <?php
 
-namespace Base;
+namespace HookAdminCrawlerDashboard\Model\Base;
 
-use \CrawlerProductBase as ChildCrawlerProductBase;
-use \CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBase as ChildCrawlerProductBase;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
 use \Exception;
 use \PDO;
-use Map\CrawlerProductBaseTableMap;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductBaseTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;

@@ -17,7 +17,6 @@ class CrawlerDashboardHook extends BaseHook
 
 	public function blockCrawlerDashboardJs(HookRenderEvent $event)
     {
-    	Tlog::getInstance()->err("gotherecrawler");
         $event->add($this->render('block-crawler-dashboard-js.html'));
     }
 

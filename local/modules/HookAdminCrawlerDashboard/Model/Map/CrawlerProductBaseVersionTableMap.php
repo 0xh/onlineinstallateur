@@ -1,6 +1,6 @@
 <?php
 
-namespace Map;
+namespace HookAdminCrawlerDashboard\Model\Map;
 
 use \CrawlerProductBaseVersion;
 use \CrawlerProductBaseVersionQuery;

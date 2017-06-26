@@ -989,7 +989,6 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
             
             if ($has_ean === true) {
             	$search->where('`pse`.EAN_CODE' . Criteria::ISNOTNULL . " and " . '`pse`.EAN_CODE' . Criteria::NOT_EQUAL .'""');
-            	Tlog::getInstance()->error("-- has_ean simple ".$has_ean);
             }
 
             if (null != $min_stock) {

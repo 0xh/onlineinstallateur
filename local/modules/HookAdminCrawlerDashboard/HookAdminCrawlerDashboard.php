@@ -29,7 +29,7 @@ class HookAdminCrawlerDashboard extends BaseModule
 	public function postActivation(ConnectionInterface $con = null){
 		if (!self::getConfigValue('is_initialized', false)) {
 			$database = new Database($con);
-			$database->insertSql(null, [__DIR__ . "/Config/thelia.sql"]);
+			$database->insertSql(null, [__DIR__ .DS."Config".DS."thelia.sql"]);
 			self::setConfigValue('is_initialized', true);
 		}
 	}
@@ -38,7 +38,7 @@ class HookAdminCrawlerDashboard extends BaseModule
 	{
 		if($deleteModuleData){
 			$database = new Database($con);
-			$database->insertSql(null, array(__DIR__ . '/Config/sql/destroy.sql'));
+			$database->insertSql(null, array(__DIR__ .DS."Config".DS."sql".DS."drop_crawler_tables.sql"));
 		}
 			
 	}

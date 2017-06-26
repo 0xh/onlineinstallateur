@@ -110,7 +110,7 @@ class Crawler
 	}
 	
 	public function getFirstProduct($request){
-		Tlog::getInstance()->error(sprintf(self::TAG.' message "%s"',$this->productResultStartMarker));
+		//Tlog::getInstance()->error(sprintf(self::TAG.' message "%s"',$this->productResultStartMarker));
 
 		$removeBeforePart = explode($this->productResultStartMarker, $request);
 		

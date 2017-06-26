@@ -1,6 +1,7 @@
 <?php
+namespace HookAdminCrawlerDashboard\Model;
 
-use Base\CrawlerProductListing as BaseCrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListing as BaseCrawlerProductListing;
 
 class CrawlerProductListing extends BaseCrawlerProductListing
 {

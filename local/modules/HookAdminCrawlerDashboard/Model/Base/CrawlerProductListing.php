@@ -1,19 +1,19 @@
 <?php
 
-namespace Base;
+namespace HookAdminCrawlerDashboard\Model\Base;
 
-use \CrawlerProductBase as ChildCrawlerProductBase;
-use \CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
-use \CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
-use \CrawlerProductListing as ChildCrawlerProductListing;
-use \CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
-use \CrawlerProductListingVersion as ChildCrawlerProductListingVersion;
-use \CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBase as ChildCrawlerProductBase;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseQuery as ChildCrawlerProductBaseQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductBaseVersionQuery as ChildCrawlerProductBaseVersionQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListing as ChildCrawlerProductListing;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingQuery as ChildCrawlerProductListingQuery;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingVersion as ChildCrawlerProductListingVersion;
+use HookAdminCrawlerDashboard\Model\Base\CrawlerProductListingVersionQuery as ChildCrawlerProductListingVersionQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\CrawlerProductListingTableMap;
-use Map\CrawlerProductListingVersionTableMap;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingTableMap;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
