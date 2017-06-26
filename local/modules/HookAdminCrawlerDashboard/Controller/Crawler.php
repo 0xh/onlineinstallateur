@@ -14,11 +14,13 @@ class Crawler
 	const TAG = "crawler";
 	private $cookiefile;
 	private $request;
+	private $productRequest;
 	private $debug = false;
 	private $sampleData = false;
 	
 	private $baseUrl;
 	private $searchPath;
+	private $productPath;
 	private $notFoundMarker;
 	private $productResultStartMarker;
 	private $productResultEndMarker;
@@ -167,6 +169,29 @@ class Crawler
    	$removeAfterPart = explode($this->productPriceEndMarker, $removeBeforePart[1]);
    	
    	return $removeAfterPart[0];
+   }
+   
+   public function setProductLink($productPath){
+   	$this->productPath = $productPath;
+   }
+   
+   public function setProductRequest($request){
+   	$this->productRequest = $request;
+   }
+   
+   public function getProductRequest(){
+   	return $this->productRequest;
+   }
+   
+   public function getProductPage($code){
+   	if(!$this->sampleData){
+   		$url = $this->baseUrl.$this->productPath.$code;
+   		$channel = curl_init($url);
+   		$channel = $this->setChannelOptions($channel);
+   		$this->setProductRequest(curl_exec($channel));
+   	}
+   	
+   	return $this->getProductRequest();
    }
    
    public function getOfferStock($productOffer){

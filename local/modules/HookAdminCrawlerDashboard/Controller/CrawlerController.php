@@ -37,21 +37,25 @@ class CrawlerController extends BaseAdminController
     public function loadDataAjaxAction()
     {
     	//$crawler = new GeizhalsCrawler();
-    	$crawler = new AmazonCrawler();
+    	//$crawler = new AmazonCrawler();
     	//$crawler = new IdealoCrawler();
-    	//$crawler = new WillhabenCrawler();
+    	$crawler = new GoogleShoppingCrawler();
     	
-    	$crawler->init(true, false);
+    	$crawler->init(true, true);
     	$crawler->init_crawler();
  
     	//Geizhals
     	//$searchResponse = $crawler->searchByEANCode("4005176847981");
     	//Amazon
-    	$searchResponse = $crawler->searchByEANCode("4005176882593");//4005176882593  B003TGG2EA
+    	//$searchResponse = $crawler->searchByEANCode("4005176882593");//4005176882593  B003TGG2EA
+    	//$productResponse = $crawler->getProductPage("B00OTV6X3E".'?language=en_GB');
     	//Idealo
     	//$searchResponse = $crawler->searchByEANCode("2317555");
+    	//Google
+    	$searchResponse = $crawler->searchByEANCode("1393646630934339113"."?prds=scoring:p");
     	
-    	if(!$searchResponse){
+    
+    	if($searchResponse){
     		// get first product
     		$firstProduct = $crawler->getFirstProduct($searchResponse);
     		
@@ -67,11 +71,16 @@ class CrawlerController extends BaseAdminController
     		//get Hausfabrik offer Price
     		$hausfabrikOfferPrice = $crawler->getOfferPrice($hausfabrikOffer);
     		
-    	}
+    	} 
     	
-    	return $this->jsonResponse(json_encode(array('result'=>$searchResponse)));
+    	//Stock
+    	/* if($productResponse){ 
+    		
+    	 $productStock = $crawler->getOfferStock($productResponse);
+    	 return $this->jsonResponse(json_encode(array('result'=> "Stock ".$productStock)));
+    	}  */
     	
-    	//return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
+    	return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
     }   
     
 }

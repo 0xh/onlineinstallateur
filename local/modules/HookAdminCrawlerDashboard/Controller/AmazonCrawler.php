@@ -10,11 +10,13 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 	 * @see CrawlerInterface::init()
 	 */
 	public function init_crawler() { 
-		$this->setServiceLinks("https://www.amazon.de/", "gp/offer-listing/");
-		$this->setProductResultMarker('olpOffer" role', "<hr");
-		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', "</span>");
+		$this->setServiceLinks('https://www.amazon.de/', 'gp/offer-listing/');
+		$this->setProductResultMarker('olpOffer" role', '<hr');
+		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', '</span>');
 		$this->setPositionResultMarker('olp_atc_new_','"',0);
-		$this->setHausfabrikOfferMarker("Hausfabrik");
+		$this->setHausfabrikOfferMarker('Hausfabrik');
+		$this->setProductLink('dp/');
+		$this->setProductStockMarker('Only ',' left in stock.');
 		$this->setRequest('
 <!doctype html><html class="a-no-js" data-19ax5a9jf="dingo">
     <head>
@@ -5685,10 +5687,16 @@ a.localStorage;break a}catch(v){}d=void 0}var k="csm:adb",e=a.ue_adb,c=a.ue_err,
 
 </script>
 </body>
-</html>
-
-
-');
-		
+</html>');
+		 $this->setProductRequest('<div id="availability_feature_div" class="feature" data-feature-name="availability">
+<div id="availability" class="a-section a-spacing-none">
+    <span class="a-size-medium a-color-success">
+            Only 9 left in stock.
+    </span>
+</div>
+  <div class="a-section a-spacing-none">
+ </div>
+    </div>
+'); 
 	}
 }
