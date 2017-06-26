@@ -37,24 +37,42 @@ class CrawlerController extends BaseAdminController
     public function loadDataAjaxAction()
     {
     	//$crawler = new GeizhalsCrawler();
-    	//$crawler = new AmazonCrawler();
+    	$crawler = new AmazonCrawler();
     	//$crawler = new IdealoCrawler();
-    	$crawler = new GoogleShoppingCrawler();
+    	//$crawler = new GoogleShoppingCrawler();
     	
-    	$crawler->init(true, true);
+    	$crawler->init(true, false);
     	$crawler->init_crawler();
  
     	//Geizhals
     	//$searchResponse = $crawler->searchByEANCode("4005176847981");
     	//Amazon
-    	//$searchResponse = $crawler->searchByEANCode("4005176882593");//4005176882593  B003TGG2EA
+    	$searchResponse = $crawler->searchByEANCode("4005176314964");//4005176882593  B003TGG2EA
+    	//Tlog::getInstance()->error("searchresponseean ".$searchResponse);
+    	$platformProductId = $crawler->findPlatformID($searchResponse);
+    	//Tlog::getInstance()->error("searchresponseplatformid ".$platformProductId);
+    	$productPage = $crawler->getProductPage($platformProductId);
+    	
+    	$hfInProductPage = $crawler->isShopInProductPage($productPage);
+    	//Tlog::getInstance()->error("productpage ".$productPage);
+    	
+    	if($hfInProductPage){
+    		$hausfabrikOfferPosition = 1;
+    		$hausfabrikOfferStock = $crawler->getOfferStock($productPage);
+    		$hausfabrikOfferPrice = $crawler->getProductPagePrice($productPage);
+    		//getProductPageUrl
+    		return $this->jsonResponse(json_encode(array('result'=> " productPage stock ".$hausfabrikOfferStock." offerprice ".$hausfabrikOfferPrice)));
+    	}
+    	else
+    		$searchResponse = $crawler->getProductShops($platformProductId);
+    	
+    	//Tlog::getInstance()->error("searchresponseplatform ".$productPage);
     	//$productResponse = $crawler->getProductPage("B00OTV6X3E".'?language=en_GB');
     	//Idealo
     	//$searchResponse = $crawler->searchByEANCode("2317555");
     	//Google
-    	$searchResponse = $crawler->searchByEANCode("1393646630934339113"."?prds=scoring:p");
+    	//$searchResponse = $crawler->searchByEANCode("1393646630934339113"."?prds=scoring:p");
     	
-    
     	if($searchResponse){
     		// get first product
     		$firstProduct = $crawler->getFirstProduct($searchResponse);
@@ -69,8 +87,7 @@ class CrawlerController extends BaseAdminController
     		$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
     		
     		//get Hausfabrik offer Price
-    		$hausfabrikOfferPrice = $crawler->getOfferPrice($hausfabrikOffer);
-    		
+    		$hausfabrikOfferPrice = $crawler->getOfferPrice($hausfabrikOffer);	
     	} 
     	
     	//Stock
@@ -80,7 +97,7 @@ class CrawlerController extends BaseAdminController
     	 return $this->jsonResponse(json_encode(array('result'=> "Stock ".$productStock)));
     	}  */
     	
-    	return $this->jsonResponse(json_encode(array('result'=> " pos ".$hausfabrikOfferPosition." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
+    	return $this->jsonResponse(json_encode(array('result'=> " pos ".$platformProductId." price first ".$firstProductPrice." price HF ".$hausfabrikOfferPrice)));
     }   
     
 }
