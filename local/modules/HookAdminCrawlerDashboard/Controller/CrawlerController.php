@@ -41,7 +41,7 @@ class CrawlerController extends BaseAdminController
     	//$crawler = new IdealoCrawler();
     	$crawler = new GoogleShoppingCrawler();
     	
-    	$crawler->init(true, true);
+    	$crawler->init(true, false);
     	$crawler->init_crawler();
  
     	//Geizhals
@@ -60,7 +60,7 @@ class CrawlerController extends BaseAdminController
     		$firstProduct = $crawler->getFirstProduct($searchResponse);
     		
     		//get price of the first product displayed
-    		$firstProductPrice = $crawler->getOfferPrice($firstProduct);
+    		$firstProductPrice = $crawler->getOfferPrice(htmlspecialchars($firstProduct, ENT_QUOTES));
     		
     		//get Hausfabrik offer
     		$hausfabrikOffer = $crawler->getHausfabrikOffer($searchResponse);
@@ -69,7 +69,7 @@ class CrawlerController extends BaseAdminController
     		$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
     		
     		//get Hausfabrik offer Price
-    		$hausfabrikOfferPrice = $crawler->getOfferPrice($hausfabrikOffer);
+    		$hausfabrikOfferPrice= $crawler->getOfferPrice(htmlspecialchars($hausfabrikOffer, ENT_QUOTES));
     		
     	} 
     	

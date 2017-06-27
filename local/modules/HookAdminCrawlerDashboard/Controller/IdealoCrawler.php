@@ -12,8 +12,7 @@ class IdealoCrawler extends Crawler implements CrawlerInterface{
 	public function init_crawler() {
 		$this->setServiceLinks("https://www.idealo.at/", "preisvergleich/OffersOfProduct/");
 		$this->setProductResultMarker('li class="productOffers-listItem row', "productOffers-listItemOfferCtaHolder");
-		$this->setPriceResultMarker('€&nbsp;', "
-</a><br>");
+		$this->setPriceResultMarker('â‚¬Â&nbsp;', "&lt;/a&gt;&lt;br&gt;");
 		$this->setPositionResultMarker('&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;','&quot;',0);
 		$this->setHausfabrikOfferMarker("hausfabrik");
 		$this->setRequest('

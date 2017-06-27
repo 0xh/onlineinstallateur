@@ -12,9 +12,9 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 	public function init_crawler() { 
 		$this->setServiceLinks('https://www.amazon.de/', 'gp/offer-listing/');
 		$this->setProductResultMarker('olpOffer" role', '<hr');
-		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', '</span>');
-		$this->setPositionResultMarker('olp_atc_new_','"',0);
-		$this->setHausfabrikOfferMarker('Hausfabrik');
+		$this->setPriceResultMarker('olpOfferPrice a-text-bold&quot;&gt;                EUR ', '                &lt;/span&gt;');
+		$this->setPositionResultMarker('olp_atc_new_','/',0);
+		$this->setHausfabrikOfferMarker('insani24');
 		$this->setProductLink('dp/');
 		$this->setProductStockMarker('Only ',' left in stock.');
 		$this->setRequest('
