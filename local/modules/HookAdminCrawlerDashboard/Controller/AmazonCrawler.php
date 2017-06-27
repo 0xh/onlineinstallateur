@@ -11,7 +11,7 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 	 */
 	public function init_crawler() {
 		//base configuration
-		$this->setServiceLinks('https://www.amazon.de/', 's/ref=nb_sb_noss?__mk_de_DE=ÅMÅŽÕÑ&url=search-alias%3Daps&field-keywords=');
+		$this->setServiceLinks('https://www.amazon.de/', 's/ref=nb_sb_noss?__mk_de_DE=ÅMÅŽÕÑ&url=search-alias%3Daps&language=de_DE&field-keywords=');
 		$this->setProductPlatformIdMarker('id="result_0" data-asin="', '" class="s-result-item');
 		$this->setHausfabrikOfferMarker('Hausfabrik');//Hausfabrik
 		
@@ -26,10 +26,11 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold&quot;&gt;                EUR ', '                &lt;/span&gt;');
 		$this->setPositionResultMarker('olp_atc_new_','/',0);
-		$this->setHausfabrikOfferMarker('insani24');
+		$this->setHausfabrikOfferMarker('Amazon');
 		
 		$this->setProductLink('dp/');
 		$this->setProductShopsLink('gp/offer-listing/');
+		$this->setHausfabrikProductPageUrl('https://www.amazon.de/s/ref=nb_sb_noss?__mk_de_DE=ÅMÅŽÕÑ&url=me%3DA3M3A89MAL04LF&field-keywords=');
 		
 		$this->setRequest('
 <!doctype html><html class="a-no-js" data-19ax5a9jf="dingo">
