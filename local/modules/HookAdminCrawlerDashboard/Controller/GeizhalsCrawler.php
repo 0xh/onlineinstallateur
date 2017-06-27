@@ -12,7 +12,7 @@ class GeizhalsCrawler extends Crawler implements CrawlerInterface{
 	public function init_crawler() {
 		$this->setServiceLinks("https://geizhals.at/", "?fs=");
 		$this->setProductResultMarker("offer offer", "</div>");
-		$this->setPriceResultMarker('gh_price">&euro; ', "</span>");
+		$this->setPriceResultMarker('gh_price&quot;&gt;&amp;euro; ', "&lt;/span");
 		$this->setPositionResultMarker('id="offer__','">',1);
 		$this->setHausfabrikOfferMarker("Hausfabrik.at");
 		$this->setRequest('

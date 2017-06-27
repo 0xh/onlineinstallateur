@@ -24,6 +24,10 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', '</span>');
 		$this->setPositionResultMarker('olp_atc_new_','"',0);
 
+		$this->setPriceResultMarker('olpOfferPrice a-text-bold&quot;&gt;                EUR ', '                &lt;/span&gt;');
+		$this->setPositionResultMarker('olp_atc_new_','/',0);
+		$this->setHausfabrikOfferMarker('insani24');
+		
 		$this->setProductLink('dp/');
 		$this->setProductShopsLink('gp/offer-listing/');
 		
