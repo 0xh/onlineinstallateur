@@ -132,7 +132,7 @@ class Crawler
 	}
 	
 	public function getHausfabrikProductPageUrl(){
-		retunr $this->hausfabrikProductPath;
+		return $this->hausfabrikProductPath;
 	}
 	
 	public function init($debugMode, $sampleData, $platformName){
