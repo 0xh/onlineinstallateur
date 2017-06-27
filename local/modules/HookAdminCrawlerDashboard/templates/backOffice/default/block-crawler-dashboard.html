@@ -1,4 +1,8 @@
 {loop type="auth" name="can_view" role="ADMIN" resource="admin.order" access="VIEW"}
+
+{$page={$smarty.get.page|default:1}}
+{$product_order={$smarty.get.product_order|default:'id'}}
+
 <div class="general-block-decorator dashboard">
     <div class="title title-without-tabs clearfix">
       {intl l='Dashboard Crawler' d='hookadmincrawlerdashboard.bo.default'}
