@@ -24,10 +24,15 @@ class Crawler
 	private $debug = false;
 	private $sampleData = false;
 	
+	private $debugMessage = "";
+	private $platformName;
+	
 	private $baseUrl;
 	private $searchPath;
 	private $productPath;
 	private $productShopsPath;
+	private $hausfabrikProductPath;
+	
 	private $notFoundMarker;
 	private $productResultStartMarker;
 	private $productResultEndMarker;
@@ -122,9 +127,18 @@ class Crawler
 		$this->hausfabrikOfferMarker = $marker;
 	}
 	
-	public function init($debugMode, $sampleData){
+	public function setHausfabrikProductPageUrl($url){
+		$this->hausfabrikProductPath = $url;
+	}
+	
+	public function getHausfabrikProductPageUrl(){
+		retunr $this->hausfabrikProductPath;
+	}
+	
+	public function init($debugMode, $sampleData, $platformName){
 		$this->debug = $debugMode;
 		$this->sampleData = $sampleData;
+		$this->platformName = $platformName;
 	}
 	
 	private function setChannelOptions($channel){
@@ -154,14 +168,13 @@ class Crawler
 			$this->setRequest(curl_exec($channel));
 			if($this->debug){
 				Tlog::getInstance()->error("crawlerurl ".$url);
-				//Tlog::getInstance()->error("crawlerresponse ".$this->getRequest());
+				$this->debugMessage .="search_url ".$url;
 			}	
 		}
 		return $this->getRequest();
 	}
 	
 	public function findPlatformID($searchResponse){
-		//B004FVGOXW
 		$removeBeforePart = explode($this->productPlatformIdStartMarker, $searchResponse);
 		$removeAfterPart = explode($this->productPlatformIdEndMarker, $removeBeforePart[1]);
 		
@@ -223,10 +236,13 @@ class Crawler
    public function getProductPage($code){
    	if(!$this->sampleData){
    		$url = $this->getProductPageUrl($code);
-   		Tlog::getInstance()->error("productpageurl ".$url);
    		$channel = curl_init($url);
    		$channel = $this->setChannelOptions($channel);
    		$this->setProductRequest(curl_exec($channel));
+   		if($this->debug){
+   			Tlog::getInstance()->error("productpageurl ".$url);
+   			$this->debugMessage .="productpageurl ".$url;
+   		}
    	}
    	
    	return $this->getProductRequest();
@@ -235,10 +251,13 @@ class Crawler
    public function getProductShops($platformId){
    	if(!$this->sampleData){
    		$url = $this->getProductShopsUrl($platformId);
-   		Tlog::getInstance()->error("productshopspageurl ".$url);
    		$channel = curl_init($url);
    		$channel = $this->setChannelOptions($channel);
    		$this->setProductRequest(curl_exec($channel));
+   		if($this->debug){
+   			Tlog::getInstance()->error("productshopspageurl ".$url);
+   			$this->debugMessage .="productshopspageurl ".$url;
+   		}
    	}
    	
    	return $this->getProductRequest();
@@ -283,6 +302,10 @@ class Crawler
    	
    	return $removeAfterPart[0];
    }
+   
+   public function getDebugMessage(){
+   	return $this->debugMessage;
+   }
 
    public function saveProductBase($eanCode){
    	if($this->productSaleElemetQuery == null)
@@ -300,28 +323,31 @@ class Crawler
    	$product = $this->productSaleElemetQuery->findOneByEanCode($eanCode);
    	
    	if($product != null)
-   		$productId = $product->getId();
+   	{
+   		$productId = $product->getProductId();
+   		Tlog::getInstance()->error("for ".$eanCode." found product-id ".$productId);
+   	}
    	//else return error
    	
    	if($productId != null){
    		$crawlerProduct = $this->crawlerProductBaseQuery->findOneByProductId($productId);
+   		if($crawlerProduct)
+   			Tlog::getInstance()->error("for ".$productId." found crawlerProductBase ".$crawlerProduct->__toString());
    	}
    	
-   	if($crawlerProduct == null)
+   	if($crawlerProduct == null){
    		$crawlerProduct = new CrawlerProductBase();
-   
-   	if($productId != null){
-   		$crawlerProduct->setProductId($productId);
    		$crawlerProduct->setActive(1);
+   		$crawlerProduct->setProductId($productId);
    		$crawlerProduct->setActionRequired(0);
    		$crawlerProduct->save();
-   		return true;
+   		Tlog::getInstance()->error($crawlerProduct->__toString());
    	}
    	
-   	return false;
+   	return $crawlerProduct;
    }
    
-   public function saveProductListing($productBaseId, $hf_price, $hf_position, $first_price, $platform, $platform_product_id, $link_platform_product_page, $link_hf_product, $link_first_product){
+   public function saveProductListing($productBaseId, $hf_price, $hf_position, $first_price, $platform_product_id, $link_platform_product_page, $link_hf_product, $link_first_product){
    
    	if($this->crawlerProductListingQuery == null)
    		$this->crawlerProductListingQuery = CrawlerProductListingQuery::create();
@@ -345,13 +371,15 @@ class Crawler
    	$crawlerProductListing->setHfPosition($hf_position);
    	$crawlerProductListing->setFirstPosition($first_price);
    	$crawlerProductListing->setFirstPrice($first_price);
-   	$crawlerProductListing->setPlatform($platform);
+   	$crawlerProductListing->setPlatform($this->platformName);
    	$crawlerProductListing->setPlatformProductId($platform_product_id);
    	$crawlerProductListing->setLinkPlatformProductPage($link_platform_product_page);
    	$crawlerProductListing->setLinkHfProduct($link_hf_product);
    	$crawlerProductListing->setLinkFirstProduct($link_first_product);
    	$crawlerProductListing->save();
+   	
+   	return $crawlerProductListing;
    }
    
-   
+ 
 }
