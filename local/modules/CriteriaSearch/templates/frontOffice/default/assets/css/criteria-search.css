@@ -83,3 +83,8 @@ span.criteria-pagination{
 .product-filter{
 	background:#F3F5F8;
 }
+
+#category-products .toolbar-bottom,
+#category-products .list-unstyled {
+	display: inline-block;
+}
