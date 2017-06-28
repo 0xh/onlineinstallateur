@@ -210,16 +210,25 @@ class Crawler
 	}
 	
 	public function getOfferSellerId($request){
-		$removeBeforePart = explode($this->productSellerIdStartMarker, $request);
-		Tlog::getInstance()->error("asellerid ".$removeBeforePart[0]);
-		$removeAfterPart = explode($this->productSellerIdEndMarker, $removeBeforePart[1]);
+		return $this->scrapeText($request, $this->productSellerIdStartMarker, $this->productSellerIdEndMarker, "noSellerId");
+	}
+	
+	private function scrapeText($text,$start,$end,$notFound){
+		$removeBeforePart = explode($start, $text);
+		if(count($removeBeforePart) > 1)
+			$removeAfterPart = explode($end, $removeBeforePart[1]);
+		else return $notFound;
 		
 		return $removeAfterPart[0];
 	}
 	
 	public function getProductLinkForOffer($platformProductId, $offer){
-		$sellerId = $this->getHausfabrikSellerId();
+		$sellerId = $this->getOfferSellerId($offer);
 		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$sellerId;
+	}
+	
+	public function getHausfabrikProductLink($platformProductId){
+		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$this->hausfabrikSellerId;
 	}
 	
    public function getHausfabrikOffer($response){
@@ -238,16 +247,15 @@ class Crawler
    
    public function getOfferPosition($productOffer){
    	$removeBeforePart = explode($this->productPositionStartMarker, $productOffer);
-   	$removeAfterPart = explode($this->productPositionEndMarker, $removeBeforePart[1]);
+   	if(count($removeBeforePart) > 1)
+   		$removeAfterPart = explode($this->productPositionEndMarker, $removeBeforePart[1]);
+   	else return -1;
    	
    	return ($removeAfterPart[0]+$this->productPositionOffset);
    }
    
-   public function getOfferPrice($productOffer){
-   	$removeBeforePart = explode($this->productPriceStartMarker, $productOffer);
-   	$removeAfterPart = explode($this->productPriceEndMarker, $removeBeforePart[1]);
-   	
-   	return $removeAfterPart[0];
+   public function getOfferPrice($request){
+   	return $this->scrapeText($request, $this->productPriceStartMarker, $this->productPriceEndMarker, -1);
    }
    
    public function setProductPath($productPath){
@@ -310,14 +318,14 @@ class Crawler
    
    public function isShopInProductPage($productPage){
    	$removeBeforePart = explode($this->productPageShopStartMarker, $productPage);
-   	Tlog::getInstance()->error(" starterMarker ".$this->productPageShopStartMarker);
+   	//Tlog::getInstance()->error(" starterMarker ".$this->productPageShopStartMarker);
    	
    	if(count($removeBeforePart)>1){
    		
    		$removeAfterPart = explode($this->productPageShopEndMarker, $removeBeforePart[1]);
    		$removeAfterPart[0] = trim($removeAfterPart[0]);
    		
-   		Tlog::getInstance()->error(" shopinproduct ".$this->productPageShopStartMarker." ".$removeAfterPart[0]);
+   		//Tlog::getInstance()->error(" shopinproduct ".$this->productPageShopStartMarker." ".$removeAfterPart[0]);
    		
    		if(strpos($removeAfterPart[0],$this->hausfabrikOfferMarker) !== false)
    			return true;
@@ -337,7 +345,14 @@ class Crawler
    	$removeBeforePart = explode($this->productStockStartMarker, $productOffer);
    	$removeAfterPart = explode($this->productStockEndMarker, $removeBeforePart[1]);
    	
-   	return $removeAfterPart[0];
+   	return $this->removeHtml($removeAfterPart[0]);
+   }
+   
+   public function removeHtml($text){
+   	$removeBeforePart = explode('">', $text);
+   	$removeAfterPart = explode("</", $removeBeforePart[1]);
+   	
+   	return trim($removeAfterPart[0]);
    }
    
    public function getDebugMessage(){
@@ -362,14 +377,15 @@ class Crawler
    	if($product != null)
    	{
    		$productId = $product->getProductId();
-   		Tlog::getInstance()->error("for ".$eanCode." found product-id ".$productId);
+   		if($this->debug)
+   			Tlog::getInstance()->error("for ".$eanCode." found product-id ".$productId);
    	}
    	//else return error
    	
    	if($productId != null){
    		$crawlerProduct = $this->crawlerProductBaseQuery->findOneByProductId($productId);
-   		if($crawlerProduct)
-   			Tlog::getInstance()->error("for ".$productId." found crawlerProductBase ".$crawlerProduct->__toString());
+   		//if($crawlerProduct)
+   		//	Tlog::getInstance()->error("for ".$productId." found crawlerProductBase ".$crawlerProduct->__toString());
    	}
    	
    	if($crawlerProduct == null){
@@ -378,13 +394,13 @@ class Crawler
    		$crawlerProduct->setProductId($productId);
    		$crawlerProduct->setActionRequired(0);
    		$crawlerProduct->save();
-   		Tlog::getInstance()->error($crawlerProduct->__toString());
+   		//Tlog::getInstance()->error($crawlerProduct->__toString());
    	}
    	
    	return $crawlerProduct;
    }
    
-   public function saveProductListing($productBaseId, $hf_price, $hf_position, $first_price, $platform_product_id, $link_platform_product_page, $link_hf_product, $link_first_product){
+   public function saveProductListing($productBaseId, $hf_price, $hf_position, $hf_stock, $first_price, $platform_product_id, $link_platform_product_page, $link_hf_product, $link_first_product){
    
    	if($this->crawlerProductListingQuery == null)
    		$this->crawlerProductListingQuery = CrawlerProductListingQuery::create();
@@ -398,7 +414,7 @@ class Crawler
    	->where ( array ('product_base_id','platform' ), Criteria::LOGICAL_AND )
     ;
    	
-   	$crawlerProductListing = $this->crawlerProductListingQuery->find();
+   	$crawlerProductListing = $this->crawlerProductListingQuery->findOne();
    	
    	if($crawlerProductListing == null)
    		$crawlerProductListing = new CrawlerProductListing();
@@ -406,7 +422,8 @@ class Crawler
    	$crawlerProductListing->setProductBaseId($productBaseId);
    	$crawlerProductListing->setHfPrice($hf_price);
    	$crawlerProductListing->setHfPosition($hf_position);
-   	$crawlerProductListing->setFirstPosition($first_price);
+   	$crawlerProductListing->setHfProductStock($hf_stock);
+   	$crawlerProductListing->setFirstPosition(1);
    	$crawlerProductListing->setFirstPrice($first_price);
    	$crawlerProductListing->setPlatform($this->platformName);
    	$crawlerProductListing->setPlatformProductId($platform_product_id);

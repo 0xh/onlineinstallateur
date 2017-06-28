@@ -23,13 +23,12 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 		$this->setProductStockMarker('<div id="availability" class="a-section a-spacing-none">','</span>');
 		$this->setProductSellerIdMarker(';seller=', '">');
 		
-		$this->setProductResultMarker('olpOffer" role', '<hr');
+		$this->setProductResultMarker('<div class="a-row a-spacing-mini olpOffer" role="row">', '<hr class="a-spacing-mini a-divider-normal">');
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', '</span>');
 		$this->setPositionResultMarker('olp_atc_new_','"',0);
 
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold&quot;&gt;                EUR ', '                &lt;/span&gt;');
 		$this->setPositionResultMarker('olp_atc_new_','/',0);
-		$this->setHausfabrikOfferMarker('Hausfabrik');
 		
 		$this->setProductPath('dp/');
 		$this->setSellerPath('/m?=');

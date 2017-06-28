@@ -13,6 +13,12 @@ use Thelia\Log\Tlog;
 use HookAdminCrawlerDashboard\Controller\GeizhalsCrawler;
 use HookAdminCrawlerDashboard\Controller\AmazonCrawler;
 use HookAdminCrawlerDashboard\Controller\IdealoCrawler;
+use Thelia\Model\ProductSaleElementsQuery;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Thelia\Model\Map\BrandTableMap;
+use Propel\Runtime\ActiveQuery\Join;
+use Thelia\Model\Map\ProductTableMap;
 
 /**
  * Class CrawlerController
@@ -35,18 +41,10 @@ class CrawlerController extends BaseAdminController
 
     
     private function crawlAmazonProduct($ean_code){
-    	$productBaseId;
-    	$hf_price;
-    	$hf_position;
-    	$first_price;
-    	$platform_product_id;
-    	$link_platform_product_page;
-    	$link_hf_product;
-    	$link_first_product;
-
+    	
     	$crawler = new AmazonCrawler();
     	
-    	$crawler->init(true, false);
+    	$crawler->init(false, false);
     	$crawler->init_crawler();
     	
     	//STEP.1 Search for product
@@ -61,14 +59,16 @@ class CrawlerController extends BaseAdminController
     	//STEP.4 Is hausfabrik on the main product page? for yes parse the page; for no get product shops page
     	$hfInProductPage = $crawler->isShopInProductPage($productPage);
     	
-    	$firstProductPrice = "";
+    	$firstProductPrice = 0;
     	$firstProductLink = "";
     	$hausfabrikProductLink = "";
+    	$hausfabrikOfferStock = 0;
     	
     	if($hfInProductPage){
     		$hausfabrikOfferPosition = 1;
     		$hausfabrikOfferStock = $crawler->getOfferStock($productPage);
     		$hausfabrikOfferPrice = $crawler->getProductPagePrice($productPage);
+    		$hausfabrikProductLink = $crawler->getHausfabrikProductLink($platformProductId);
     	}
     	else
     	{
@@ -94,8 +94,10 @@ class CrawlerController extends BaseAdminController
     		
     	}
     	
+    	//STEP.5 get CRAWLER_PRODUCT_BASE object from db
     	$crawlerProduct = $crawler->getProductBase($ean_code);
     	
+    	//STEP.6 save CRAWLER_PRODUCT_LISTING object to db
     	if($crawlerProduct != null){	
     		$productBaseId = $crawlerProduct->getId();
     		
@@ -103,20 +105,54 @@ class CrawlerController extends BaseAdminController
     		
     		//TODO link first product : find seller id from page => A3M3A89MAL04LF for hausfabrik and with
     		// the asin => B016ZPONB0 https://www.amazon.de/dp/B016ZPONB0/?m=A3M3A89MAL04LF
-    	//	$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $firstProductPrice,
-    	//			$platformProductId, $linkPlatformProductPage, $linkHausfabrikProduct, $firstProductLink);	
+    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $hausfabrikOfferStock, $firstProductPrice,
+    				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);	
     	}
     	
+    	Tlog::getInstance()->error($ean_code.",".$productBaseId
+    			.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
+    			.",".$hausfabrikOfferStock.",".$firstProductPrice
+    			.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink);
+    	return $ean_code.",".$productBaseId
+    	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
+    	.",".$hausfabrikOfferStock.",".$firstProductPrice
+    	.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink;
+    	/*
     	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
-    			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
-    			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
+    			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition
+    			."</br> hf stock ".$hausfabrikOfferStock."</br> first price ".$firstProductPrice
+    			."</br> platform id ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
+    */
     }
 
     public function loadDataAjaxAction()
     {
     	
-    	return $this->crawlAmazonProduct("4005176314964");
+    	Tlog::getInstance()->error("stuffstuff ");
     	
+    	$brandJoin = new Join(ProductTableMap::BRAND_ID, BrandTableMap::ID, Criteria::LEFT_JOIN);
+    	$productJoin = new Join(ProductTableMap::ID, ProductTableMap::ID, Criteria::LEFT_JOIN);
+    	
+    	$pseQuery = ProductSaleElementsQuery::create();
+    	$pseQuery
+    		->useProductQuery()
+    		->filterByBrandId(93)
+    		->filterByVisible(1)
+    		->endUse()
+    		;
+    	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
+    	
+    //	->limit(3)
+    	->find();
+    	
+    	$final = "\n";
+    	/** @var \Thelia\Model\ProductSaleElements $pseResult */
+    	foreach( $pseResults as $pseResult){
+    	set_time_limit(0);
+    	$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
+    	sleep(rand(1,5));
+    	}
+    	Tlog::getInstance()->error($final);
     	//$crawler = new GeizhalsCrawler();
     	$crawler = new AmazonCrawler();
     	//$crawler = new IdealoCrawler();

@@ -1,35 +1,21 @@
-{javascripts file='assets/js/jqplot/jquery.jqplot.min.js'}
-  <script src="{$asset_url}"></script>
-{/javascripts}
-{javascripts file='assets/js/jqplot/plugins/jqplot.highlighter.min.js'}
-  <script type="text/javascript" src="{$asset_url}"></script>
-{/javascripts}
-{javascripts file='assets/js/jqplot/plugins/jqplot.barRenderer.min.js'}
-  <script type="text/javascript" src="{$asset_url}"></script>
-{/javascripts}
-{javascripts file='assets/js/jqplot/plugins/jqplot.pieRenderer.min.js'}
-  <script type="text/javascript" src="{$asset_url}"></script>
-{/javascripts}
-{javascripts file='assets/js/moment-with-locales.min.js'}
-  <script src="{$asset_url}"></script>
-{/javascripts}
-{javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
-  <script src="{$asset_url}"></script>
-{/javascripts}
-
 <script>
+{literal}
+$(document).ready(function(){
+		$('.crawler-start').on('click',crawlProducts());
+		Alert("a");
+});
 jQuery(function($) {
   {$langcode = {lang attr="code"}|substr:0:2}
 
   var url = "{url path='/admin/crawler/data'}";
 
-  {literal}
+  
 
   // Get initial data Json
-  retrieveJQPlotJson();
+  //crawlProducts();
   
   
-  function retrieveJQPlotJson() {
+  function crawlProducts() {
 	  
     // JS month range is [0..11], the url requires a PHP month range [1..12]
     $.getJSON(url)
@@ -52,6 +38,7 @@ jQuery(function($) {
     $('.crawlerdebug').html(data.result);
 
   }
-  {/literal}
+ 
 });
+{/literal}
 </script>
