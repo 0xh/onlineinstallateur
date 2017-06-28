@@ -30,6 +30,7 @@ class Crawler
 	private $baseUrl;
 	private $searchPath;
 	private $productPath;
+	private $sellerPath;
 	private $productShopsPath;
 	private $hausfabrikProductPath;
 	
@@ -41,10 +42,14 @@ class Crawler
 	private $productPositionOffset;
 	private $productPriceStartMarker;
 	private $productPriceEndMarker;
+	private $productSellerIdStartMarker;
+	private $productSellerIdEndMarker;
 
 	private $productPlatformIdStartMarker;
 	private $productPlatformIdEndMarker;
+	
 	private $hausfabrikOfferMarker;
+	private $hausfabrikSellerId;
 	
 	private $productPageShopStartMarker;
 	private $productPageShopEndMarker;
@@ -119,6 +124,10 @@ class Crawler
 		$this->productPlatformIdEndMarker = $end;
 	}
 	
+	public function setProductSellerIdMarker($start, $end){
+		$this->productSellerIdStartMarker = $start;
+		$this->productSellerIdEndMarker = $end;
+	}
 	public function setSSLCertificateFile($certificate){
 		$this->sslCertificate = $certificate;
 	}
@@ -127,17 +136,28 @@ class Crawler
 		$this->hausfabrikOfferMarker = $marker;
 	}
 	
+	public function setHausfabrikSellerId($sellerId){
+		$this->hausfabrikSellerId = $sellerId;
+	}
+	
+	public function getHausfabrikSellerId(){
+		return $this->hausfabrikSellerId;
+	}
+	
 	public function setHausfabrikProductPageUrl($url){
 		$this->hausfabrikProductPath = $url;
 	}
 	
 	public function getHausfabrikProductPageUrl(){
-		retunr $this->hausfabrikProductPath;
+		return $this->hausfabrikProductPath;
 	}
 	
-	public function init($debugMode, $sampleData, $platformName){
+	public function init($debugMode, $sampleData){
 		$this->debug = $debugMode;
 		$this->sampleData = $sampleData;
+	}
+	
+	public function setPlatformName($platformName){
 		$this->platformName = $platformName;
 	}
 	
@@ -189,6 +209,19 @@ class Crawler
 		return $removeAfterPart[0];
 	}
 	
+	public function getOfferSellerId($request){
+		$removeBeforePart = explode($this->productSellerIdStartMarker, $request);
+		Tlog::getInstance()->error("asellerid ".$removeBeforePart[0]);
+		$removeAfterPart = explode($this->productSellerIdEndMarker, $removeBeforePart[1]);
+		
+		return $removeAfterPart[0];
+	}
+	
+	public function getProductLinkForOffer($platformProductId, $offer){
+		$sellerId = $this->getHausfabrikSellerId();
+		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$sellerId;
+	}
+	
    public function getHausfabrikOffer($response){
    	
    	//count number of offers
@@ -217,12 +250,16 @@ class Crawler
    	return $removeAfterPart[0];
    }
    
-   public function setProductLink($productPath){
+   public function setProductPath($productPath){
    	$this->productPath = $productPath;
    }
    
    public function setProductShopsLink($productShopsPath){
    	$this->productShopsPath = $productShopsPath;
+   }
+   
+   public function setSellerPath($sellerPath){
+   	$this->sellerPath = $sellerPath;
    }
    
    public function setProductRequest($request){
@@ -307,7 +344,7 @@ class Crawler
    	return $this->debugMessage;
    }
 
-   public function saveProductBase($eanCode){
+   public function getProductBase($eanCode){
    	if($this->productSaleElemetQuery == null)
    		$this->productSaleElemetQuery = ProductSaleElementsQuery::create();
    	else
@@ -357,7 +394,7 @@ class Crawler
    	//exists already?
    	$this->crawlerProductListingQuery
    	->condition ( 'product_base_id', 'product_base_id = ?', $productBaseId, \PDO::PARAM_INT )
-   	->condition ( 'platform', 'platform = ?', $platform, \PDO::PARAM_STR )
+   	->condition ( 'platform', 'platform = ?', $this->platformName, \PDO::PARAM_STR )
    	->where ( array ('product_base_id','platform' ), Criteria::LOGICAL_AND )
     ;
    	

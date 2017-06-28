@@ -46,12 +46,8 @@ class CrawlerController extends BaseAdminController
 
     	$crawler = new AmazonCrawler();
     	
-    	$crawler->init(true, false,"Amazon");
+    	$crawler->init(true, false);
     	$crawler->init_crawler();
-    	
-    	
-    	$crawlerProduct = $crawler->saveProductBase($ean_code);
-    	Tlog::getInstance()->error("saveproductbase ".$crawlerProduct->__toString());
     	
     	//STEP.1 Search for product
     	$searchResponse = $crawler->searchByEANCode($ean_code);
@@ -64,6 +60,10 @@ class CrawlerController extends BaseAdminController
     	
     	//STEP.4 Is hausfabrik on the main product page? for yes parse the page; for no get product shops page
     	$hfInProductPage = $crawler->isShopInProductPage($productPage);
+    	
+    	$firstProductPrice = "";
+    	$firstProductLink = "";
+    	$hausfabrikProductLink = "";
     	
     	if($hfInProductPage){
     		$hausfabrikOfferPosition = 1;
@@ -81,28 +81,41 @@ class CrawlerController extends BaseAdminController
     			
     		//get Hausfabrik offer
     		$hausfabrikOffer = $crawler->getHausfabrikOffer($searchResponse);
-    			
+	
     		//get Hausfabrik offer Position
     		$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
+    		
+    		$hausfabrikProductLink = $crawler->getProductLinkForOffer($platformProductId, $hausfabrikOffer);
     			
     		//get Hausfabrik offer Price
     		$hausfabrikOfferPrice= $crawler->getOfferPrice(htmlspecialchars($hausfabrikOffer, ENT_QUOTES));
+    		
+    		$firstProductLink = $crawler->getProductLinkForOffer($platformProductId, $firstProduct);
+    		
     	}
     	
-    	$crawlerProduct = $crawler->saveProductBase($ean_code);
-    	$productBaseId = $crawlerProduct->getId();
+    	$crawlerProduct = $crawler->getProductBase($ean_code);
     	
-    	
-    	
+    	if($crawlerProduct != null){	
+    		$productBaseId = $crawlerProduct->getId();
     		
+    		$linkPlatformProductPage = $crawler->getProductPageUrl($platformProductId);
+    		
+    		//TODO link first product : find seller id from page => A3M3A89MAL04LF for hausfabrik and with
+    		// the asin => B016ZPONB0 https://www.amazon.de/dp/B016ZPONB0/?m=A3M3A89MAL04LF
+    	//	$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $firstProductPrice,
+    	//			$platformProductId, $linkPlatformProductPage, $linkHausfabrikProduct, $firstProductLink);	
+    	}
     	
-    
+    	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
+    			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
+    			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
     }
 
     public function loadDataAjaxAction()
     {
     	
-    	$this->crawlAmazonProduct("123");
+    	return $this->crawlAmazonProduct("4005176314964");
     	
     	//$crawler = new GeizhalsCrawler();
     	$crawler = new AmazonCrawler();

@@ -11,14 +11,17 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 	 */
 	public function init_crawler() {
 		//base configuration
+		$this->setPlatformName("Amazon");
 		$this->setServiceLinks('https://www.amazon.de/', 's/ref=nb_sb_noss?__mk_de_DE=ÅMÅŽÕÑ&url=search-alias%3Daps&language=de_DE&field-keywords=');
 		$this->setProductPlatformIdMarker('id="result_0" data-asin="', '" class="s-result-item');
 		$this->setHausfabrikOfferMarker('Hausfabrik');//Hausfabrik
+		$this->setHausfabrikSellerId('A3M3A89MAL04LF');
 		
 		//productPage
 		$this->setProductPageShopMarker('<div id="merchant-info" class="a-section a-spacing-mini">', '.');
 		$this->setProductPagePriceMarker('a-color-price">EUR ', '</span>');
 		$this->setProductStockMarker('<div id="availability" class="a-section a-spacing-none">','</span>');
+		$this->setProductSellerIdMarker(';seller=', '">');
 		
 		$this->setProductResultMarker('olpOffer" role', '<hr');
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold">                EUR ', '</span>');
@@ -26,9 +29,10 @@ class AmazonCrawler extends Crawler implements CrawlerInterface{
 
 		$this->setPriceResultMarker('olpOfferPrice a-text-bold&quot;&gt;                EUR ', '                &lt;/span&gt;');
 		$this->setPositionResultMarker('olp_atc_new_','/',0);
-		$this->setHausfabrikOfferMarker('Amazon');
+		$this->setHausfabrikOfferMarker('Hausfabrik');
 		
-		$this->setProductLink('dp/');
+		$this->setProductPath('dp/');
+		$this->setSellerPath('/m?=');
 		$this->setProductShopsLink('gp/offer-listing/');
 		$this->setHausfabrikProductPageUrl('https://www.amazon.de/s/ref=nb_sb_noss?__mk_de_DE=ÅMÅŽÕÑ&url=me%3DA3M3A89MAL04LF&field-keywords=');
 		
