@@ -44,6 +44,8 @@ class Crawler
 	private $productPriceEndMarker;
 	private $productSellerIdStartMarker;
 	private $productSellerIdEndMarker;
+	private $productExternalLinkStartMarker;
+	private $productExternalLinkEndMarker;
 
 	private $productPlatformIdStartMarker;
 	private $productPlatformIdEndMarker;
@@ -128,6 +130,12 @@ class Crawler
 		$this->productSellerIdStartMarker = $start;
 		$this->productSellerIdEndMarker = $end;
 	}
+	
+	public function setProductExternalLinkMarker($start, $end){
+		$this->productExternalLinkStartMarker = $start;
+		$this->productExternalLinkEndMarker = $end;
+	}
+	
 	public function setSSLCertificateFile($certificate){
 		$this->sslCertificate = $certificate;
 	}
@@ -220,6 +228,13 @@ class Crawler
 	public function getProductLinkForOffer($platformProductId, $offer){
 		$sellerId = $this->getHausfabrikSellerId();
 		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$sellerId;
+	}
+	
+	public function getExternalProductLinkForOffer($offer){
+		$removeBeforePart = explode($this->productExternalLinkStartMarker, $offer);
+		$removeAfterPart = explode($this->productExternalLinkEndMarker, $removeBeforePart[1]);
+		
+		return rtrim($this->baseUrl,"/").$removeAfterPart[0];
 	}
 	
    public function getHausfabrikOffer($response){
