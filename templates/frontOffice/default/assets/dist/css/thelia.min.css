@@ -1123,7 +1123,7 @@ a {
 }
 a:focus,
 a:hover {
-    color: #7a7a7a;
+    color: #000;
    
 }
 a:focus {
@@ -13379,6 +13379,7 @@ animation: fadeout 2s;
     color: #86ac34;
     font-weight: 600;
     padding:3px;
+   
 }
 .happyclient{
     background: url(../img/homepage/happyclientbg.png) no-repeat;
@@ -13744,7 +13745,8 @@ figure.effect-marley:hover p {
     text-align:center;
     color:#86AC34;
     font-weight:bold;
-    font-size: 14px;
+    font-size: 15px;
+    font-family:quicksand;
 }
 
 
@@ -13755,7 +13757,7 @@ figure.effect-marley:hover p {
     min-width: 50px;
     padding: 4px 10px 3px;
     color: #fff;
-    //background-color: #58585A;
+    background-color: #58585A;
     font-size: 12px;
     line-height: 10px;
     text-align: center;
