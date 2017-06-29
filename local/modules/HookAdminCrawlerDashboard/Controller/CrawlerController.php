@@ -144,6 +144,7 @@ class CrawlerController extends BaseAdminController
     	$firstProductPrice = "";
     	$firstProductLink = "";
     	$linkHausfabrikProduct= "";
+    	$hausfabrikOfferStock = -1;
     	
     	// get first product
     	$firstProduct = $crawler->getFirstProduct($productPage);
@@ -158,13 +159,13 @@ class CrawlerController extends BaseAdminController
     	$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
     		
     	//get Hausfabrik external link
-    	$linkHausfabrikProduct= $crawler->getExternalProductLinkForOffer($hausfabrikOffer);
+    	//$linkHausfabrikProduct= $crawler->getExternalProductLinkForOffer($hausfabrikOffer);
     		
     	//get Hausfabrik offer Price
     	$hausfabrikOfferPrice= $crawler->getOfferPrice(htmlspecialchars($hausfabrikOffer, ENT_QUOTES));
     		
     	//get first product external link
-    	$firstProductLink = $crawler->getExternalProductLinkForOffer($firstProduct);
+    	//$firstProductLink = $crawler->getExternalProductLinkForOffer($firstProduct);
     	
     	$crawlerProduct = $crawler->getProductBase($ean_code);
     	
@@ -172,13 +173,18 @@ class CrawlerController extends BaseAdminController
     		$productBaseId = $crawlerProduct->getId();
     		
     		$linkPlatformProductPage = $crawler->getProductPageUrl($platformProductId);
-    		
-    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $firstProductPrice, $platformProductId, $linkPlatformProductPage, $linkHausfabrikProduct, $firstProductLink);
+
+    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $hausfabrikOfferStock, $firstProductPrice, $platformProductId, $linkPlatformProductPage, $linkHausfabrikProduct, $firstProductLink);
     	}
+    	
+    	return $ean_code.",".$productBaseId
+    	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
+    	.",".$hausfabrikOfferStock.",".$firstProductPrice
+    	.",".$platformProductId.",".$linkPlatformProductPage.",".$linkPlatformProductPage.",".$firstProductLink;
     	
     	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
     			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
-    			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
+    			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$linkHausfabrikProduct."</br> first ".$firstProductLink)));
     }
 
     public function loadDataAjaxAction()
