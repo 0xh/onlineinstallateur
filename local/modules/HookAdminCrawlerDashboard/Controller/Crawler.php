@@ -188,6 +188,26 @@ class Crawler
 		return $this->request;
 	}
 	
+	public function setProductPath($productPath){
+		$this->productPath = $productPath;
+	}
+	
+	public function setProductShopsLink($productShopsPath){
+		$this->productShopsPath = $productShopsPath;
+	}
+	
+	public function setSellerPath($sellerPath){
+		$this->sellerPath = $sellerPath;
+	}
+	
+	public function setProductRequest($request){
+		$this->productRequest = $request;
+	}
+	
+	public function getProductRequest(){
+		return $this->productRequest;
+	}
+	
 	public function searchByEANCode($ean_code){
 		if(!$this->sampleData){
 			$url = $this->baseUrl.$this->searchPath.$ean_code;
@@ -202,32 +222,25 @@ class Crawler
 		return $this->getRequest();
 	}
 	
-	public function findPlatformID($searchResponse){
-		$removeBeforePart = explode($this->productPlatformIdStartMarker, $searchResponse);
-		$removeAfterPart = explode($this->productPlatformIdEndMarker, $removeBeforePart[1]);
-		
-		return $removeAfterPart[0];
-	}
-
-	
-	public function getFirstProduct($request){
-		$removeBeforePart = explode($this->productResultStartMarker, $request);
-		$removeAfterPart = explode($this->productResultEndMarker, $removeBeforePart[1]);
-
-		return $removeAfterPart[0];
-	}
-	
-	public function getOfferSellerId($request){
-		return $this->scrapeText($request, $this->productSellerIdStartMarker, $this->productSellerIdEndMarker, "noSellerId");
-	}
-	
 	private function scrapeText($text,$start,$end,$notFound){
 		$removeBeforePart = explode($start, $text);
 		if(count($removeBeforePart) > 1)
 			$removeAfterPart = explode($end, $removeBeforePart[1]);
-		else return $notFound;
-		
-		return $removeAfterPart[0];
+			else return $notFound;
+			
+			return $removeAfterPart[0];
+	}
+	
+	public function findPlatformID($request){		
+		return $this->scrapeText($request, $this->productPlatformIdStartMarker, $this->productPlatformIdEndMarker, null);
+	}
+	
+	public function getFirstProduct($request){
+		return $this->scrapeText($request, $this->productResultStartMarker, $this->productResultEndMarker, null);
+	}
+	
+	public function getOfferSellerId($request){
+		return $this->scrapeText($request, $this->productSellerIdStartMarker, $this->productSellerIdEndMarker, "noSellerId");
 	}
 	
 	public function getProductLinkForOffer($platformProductId, $offer){
@@ -235,7 +248,6 @@ class Crawler
 		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$sellerId;
 	}
 	
-
 	public function getHausfabrikProductLink($platformProductId){
 		return $this->baseUrl.$this->productPath.$platformProductId.$this->sellerPath.$this->hausfabrikSellerId;
 	}
@@ -271,27 +283,8 @@ class Crawler
    }
    
    public function getOfferPrice($request){
-   	return $this->scrapeText($request, $this->productPriceStartMarker, $this->productPriceEndMarker, -1);
-   }
-   
-   public function setProductPath($productPath){
-   	$this->productPath = $productPath;
-   }
-   
-   public function setProductShopsLink($productShopsPath){
-   	$this->productShopsPath = $productShopsPath;
-   }
-   
-   public function setSellerPath($sellerPath){
-   	$this->sellerPath = $sellerPath;
-   }
-   
-   public function setProductRequest($request){
-   	$this->productRequest = $request;
-   }
-   
-   public function getProductRequest(){
-   	return $this->productRequest;
+   	$offerPrice = $this->scrapeText($request, $this->productPriceStartMarker, $this->productPriceEndMarker, -1);
+   	 return $this->formatNumber($offerPrice);
    }
    
    public function getProductPage($code){
@@ -350,14 +343,16 @@ class Crawler
    }
    
    public function getProductPagePrice($productPage){
-   	$removeBeforePart = explode($this->productPagePriceStartMarker, $productPage);
-   	$removeAfterPart = explode($this->productPagePriceEndMarker, $removeBeforePart[1]);
-   	
-   	return $removeAfterPart[0];
+   	$pagePrice = $this->scrapeText($productPage, $this->productPagePriceStartMarker, $this->productPagePriceEndMarker, -1);
+   	return $this->formatNumber($pagePrice);
+   }
+   
+   public function formatNumber($number){
+   	return number_format(str_replace(",",".",$number),2);
    }
    
    
-   public function getOfferStock($productOffer){
+   public function getOfferStock($request){
    	$removeBeforePart = explode($this->productStockStartMarker, $productOffer);
    	$removeAfterPart = explode($this->productStockEndMarker, $removeBeforePart[1]);
    	
