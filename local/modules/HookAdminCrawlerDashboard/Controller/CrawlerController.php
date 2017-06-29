@@ -242,9 +242,14 @@ class CrawlerController extends BaseAdminController
     				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);
     	}
     	
+    	return $ean_code.",".$productBaseId
+    	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
+    	.",".$hausfabrikOfferStock.",".$firstProductPrice
+    	.",".$platformProductId.",".$linkPlatformProductPage.",".$linkPlatformProductPage.",".$firstProductLink;
+    	
     	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
     			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
-    			."</br> platform product id ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
+    			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$linkHausfabrikProduct."</br> first ".$firstProductLink)));
     }
 
     public function loadDataAjaxAction()
@@ -283,7 +288,7 @@ class CrawlerController extends BaseAdminController
     	
     	
     	//return $this->jsonResponse(json_encode(array('result'=> $this->crawlGoogleShoppingProduct("4005176843204"))));
-    	return $this->jsonResponse(json_encode(array('result'=> $this->crawlGeizhalsProduct("4005176847981"))));
+    	return $this->jsonResponse(json_encode(array('result'=> $this->crawlGeizhalsProduct("4005176843204"))));
     }   
     
 }
