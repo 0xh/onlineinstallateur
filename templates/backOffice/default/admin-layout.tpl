@@ -156,31 +156,22 @@
 
         <footer class="footer">
             <div class="text-center">
-                <p class="text-center">&copy; Thelia <time datetime="{'Y-m-d'|date}">{'Y'|date}</time>
-                - <a href="http://www.openstudio.fr/" target="_blank">{intl l='Published by OpenStudio'}</a>
-                - <a href="http://thelia.net/forum" target="_blank">{intl l='Thelia support forum'}</a>
-                - <a href="http://thelia.net/modules" target="_blank">{intl l='Thelia contributions'}</a>
+                <p class="text-center">&copy; SEPA ENGINEERING GMBH <time datetime="{'Y-m-d'|date}">{'Y'|date}</time>
+                - <a href="http://www.sepa.at/" target="_blank">{intl l='Published by Sepa Engineering'}</a>
+
                 </p>
 
                 {hook name="main.in-footer" location="in_footer" }
 
             </div>
             <ul id="follow-us" class="list-unstyled list-inline">
+               
                 <li>
-                    <a href="https://twitter.com/theliaecommerce" target="_blank">
-                        <span class="icon-twitter"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://www.facebook.com/theliaecommerce" target="_blank">
+                    <a href="https://www.facebook.com/Hausfabrik-565012093623908" target="_blank">
                         <span class="icon-facebook"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="https://github.com/thelia/thelia" target="_blank">
-                        <span class="icon-github"></span>
-                    </a>
-                </li>
+
             </ul>
         </footer>
 

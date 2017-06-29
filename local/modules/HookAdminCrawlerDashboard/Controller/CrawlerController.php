@@ -196,7 +196,7 @@ class CrawlerController extends BaseAdminController
     	
     	$crawler = new GeizhalsCrawler();
     	
-    	$crawler->init(true, false);
+    	$crawler->init(1, false);
     	$crawler->init_crawler();
     	
     	//STEP.1 Search for product
@@ -324,7 +324,7 @@ class CrawlerController extends BaseAdminController
 
     public function loadDataAjaxAction()
     {
-    	/*
+    	
     	$pseQuery = ProductSaleElementsQuery::create();
     	$pseQuery
     		->useProductQuery()
@@ -334,19 +334,20 @@ class CrawlerController extends BaseAdminController
     		;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    	//->limit(3)
+    	->limit(10)
     	->find();
     	Tlog::getInstance()->error("starting crawl-job for ");
     	$final = "\n";
     	/** @var \Thelia\Model\ProductSaleElements $pseResult */
-    	/*foreach( $pseResults as $pseResult){
+    	foreach( $pseResults as $pseResult){
     	set_time_limit(0);
     	//$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
-    	$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
-    	
+    	//$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
+    	//$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
     	//sleep(rand(1,5));
     	}
-    	Tlog::getInstance()->error($final);*/
+    	Tlog::getInstance()->error($final);
 
     	//return $this->crawlAmazonProduct("4005176314964");
     	//return $this->crawlGoogleShoppingProduct("4005176809996");

@@ -87,18 +87,17 @@
 
 {hook name="main.before-footer" location="before_footer" }
 
-<footer class="footer">
-    <div class="container">
-        <p class="text-center">&copy; Thelia <time datetime="{'Y-m-d'|date}">{'Y'|date}</time>
-            - <a href="http://www.openstudio.fr/" target="_blank">{intl l='Published by OpenStudio'}</a>
-            - <a href="http://thelia.net/forum" target="_blank">{intl l='Thelia support forum'}</a>
-            - <a href="http://thelia.net/modules" target="_blank">{intl l='Thelia contributions'}</a>
-        </p>
+        <footer class="footer">
+            <div class="text-center">
+                <p class="text-center">&copy; SEPA ENGINEERING GMBH <time datetime="{'Y-m-d'|date}">{'Y'|date}</time>
+                - <a href="http://www.sepa.at/" target="_blank">{intl l='Published by Sepa Engineering'}</a>
 
-        {hook name="main.in-footer" location="in_footer" }
+                </p>
 
-    </div>
-</footer>
+                {hook name="main.in-footer" location="in_footer" }
+
+            </div>
+        </footer>
 
 {hook name="main.after-footer" location="after_footer" }
 

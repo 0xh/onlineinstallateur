@@ -10,7 +10,9 @@ class IdealoCrawler extends Crawler implements CrawlerInterface{
 	 * @see CrawlerInterface::init()
 	 */
 	public function init_crawler() {
+		
 		//base configuration
+		$this->setPlatformName("Idealo");
 		$this->setServiceLinks("https://www.idealo.at/", "preisvergleich/MainSearchProductCategory.html?q=");
 		$this->setProductPlatformIdMarker('"product_ids":[', '],"product_names');
 		$this->setHausfabrikOfferMarker("hausfabrik");
@@ -19,7 +21,7 @@ class IdealoCrawler extends Crawler implements CrawlerInterface{
 		$this->setProductPath('preisvergleich/OffersOfProduct/');
 		$this->setProductExternalLinkMarker('button--leadout expand" href="','" data-after');
 		$this->setProductResultMarker('li class="productOffers-listItem row', "productOffers-listItemOfferCtaHolder");
-		$this->setPriceResultMarker('â‚¬Â&nbsp;', "&lt;/a&gt;&lt;br&gt;");
+		$this->setPriceResultMarker('â‚¬ï¿½&nbsp;', "&lt;/a&gt;&lt;br&gt;");
 		$this->setPositionResultMarker('&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;','&quot;',0);
 		
 		$this->setRequest('
@@ -40,7 +42,7 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
 <div class="pageHeader-top">
 <div class="pageHeader-logo">
 <a class="pageHeader-logoLink" href="/">
-<img src="//cdn.idealo.com/ipc/95351d/rwd/img/logo-idealo.svg" width="125" height="38" alt="idealo - Österreichs großer Preisvergleich">
+<img src="//cdn.idealo.com/ipc/95351d/rwd/img/logo-idealo.svg" width="125" height="38" alt="idealo - ï¿½sterreichs groï¿½er Preisvergleich">
 </a>
 </div>
 </div>
@@ -104,7 +106,7 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
 <span class="breadcrumb-leaf" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 <span class="breadcrumb-leafSeparator icon icon-arrow-right-thin"></span>
 <a class="breadcrumb-link breadcrumb-link--leaf" itemscope="" itemtype="http://schema.org/Thing" itemprop="item" data-type="product_subcategory" rel="" href="/preisvergleich/SubProductCategory/12953.html">
-<span class="breadcrumb-linkText" itemprop="name">Sanitär &amp; Armaturen</span>
+<span class="breadcrumb-linkText" itemprop="name">Sanitï¿½r &amp; Armaturen</span>
 </a>
 <meta itemprop="position" content="2">
 </span>
@@ -154,7 +156,7 @@ j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src=
 </div></div></div><div class="rsThumbsArrow rsThumbsArrowLeft rsThumbsArrowDisabled"><div class="rsThumbsArrowIcn"></div></div><div class="rsThumbsArrow rsThumbsArrowRight rsThumbsArrowDisabled"><div class="rsThumbsArrowIcn"></div></div></div><div class="rsSlideCount">1/2</div></div>
 <span class="rsBackBtn-overlay-close rsBackBtn-overlay-close--topLeft rsBackBtn">
 <span class="rsBackBtn-overlay-closeInner icon-arrow-left-thin">
-Zurück
+Zurï¿½ck
 </span>
 </span>
 <div class="leadoutbox hide">
@@ -162,8 +164,8 @@ Zurück
 Grohe Grohtherm 3000 C Thermostat (19468000)
 </div>
 <div class="leadoutbox-price">
-<div class="leadoutbox-priceLabel">Günstigster Preis</div>
-<a target="_blank" data-wt-click="{&quot;id&quot;: &quot;leadout&quot;, &quot;params&quot; : [&quot;&quot;,&quot;&quot;,&quot;gallery.leadoutbox.price&quot;]}" data-checkout="false" href="/preisvergleich/Relocate/7733253093.html?categoryId=18928&amp;price=189.95&amp;productid=2317555&amp;sid=23026&amp;type=offer&amp;pos=-2" class="leadoutbox-priceAmount" rel="nofollow">€&nbsp;189,95
+<div class="leadoutbox-priceLabel">Gï¿½nstigster Preis</div>
+<a target="_blank" data-wt-click="{&quot;id&quot;: &quot;leadout&quot;, &quot;params&quot; : [&quot;&quot;,&quot;&quot;,&quot;gallery.leadoutbox.price&quot;]}" data-checkout="false" href="/preisvergleich/Relocate/7733253093.html?categoryId=18928&amp;price=189.95&amp;productid=2317555&amp;sid=23026&amp;type=offer&amp;pos=-2" class="leadoutbox-priceAmount" rel="nofollow">ï¿½&nbsp;189,95
 </a>
 <span>zzgl. Versand</span>
 <div class="leadoutbox-priceBase"></div>
@@ -176,23 +178,23 @@ Grohe Grohtherm 3000 C Thermostat (19468000)
 <div data-wt-click="{&quot;id&quot;: &quot;gallery.close.show_offers&quot;}" class="button button--transparent expand leadoutbox-moreOffersLink">Weitere Angebote anzeigen</div>
 </div>
 <div class="show-for-xlarge-up">
-<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in „Mein idealo“ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
+<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in ï¿½Mein idealoï¿½ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
 <span class="addToWishListButton oopStage-actionFavouritesIcon icon-bookmark"></span>
 </div>
 </div>
 <div class="favouritesWrapper">
-<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in „Mein idealo“ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
+<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in ï¿½Mein idealoï¿½ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
 <span class="addToWishListButton oopStage-actionFavouritesIcon icon-bookmark"></span>
 </div>
 </div>
 </div>
 <div class="oopStage-sidebar small-3 large-2 large-push-6 hide-for-xlarge-up columns text-center">
 <div class="oopStage-action">
-<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in „Mein idealo“ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
+<div class="oopStage-actionFavourites tooltip" data-tooltip="Produkt merken" data-wishlist-button="{&quot;markedOnWishList&quot;:false,&quot;action&quot;:&quot;/preisvergleich/merkzettel/P/2317555/&quot;,&quot;labelIsOnWishList&quot;:&quot;Gemerkt&quot;,&quot;labelIsNotOnWishList&quot;:&quot;Merken&quot;,&quot;hoverLabelForActiveWishlistButton&quot;:&quot;Produkt in ï¿½Mein idealoï¿½ gemerkt&quot;,&quot;hoverLabelForInactiveWishlistButton&quot;:&quot;Produkt merken&quot;}">
 <span class="addToWishListButton oopStage-actionFavouritesIcon icon-bookmark"></span>
 </div>
 <div class="oopStage-actionPricechart show-for-large-down" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück &quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck &quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentLoad&quot; : &quot;/pricechart/2317555&quot;,
 &quot;contentPaddingBottom&quot; : &quot;50px&quot;,
@@ -208,7 +210,7 @@ Preisentwicklung
 </span>
 </div>
 <div class="oopStage-actionPricewatcher button--pricewatcher" data-overlay="{
-&quot;closeCaption&quot;: &quot;zurück&quot;,
+&quot;closeCaption&quot;: &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/mvc/RwdAddWatchedProduct/2317555&quot;,
 &quot;contentLoadBy&quot;: &quot;ajax&quot;,
 &quot;forceOpen&quot;: &quot;true&quot;,
@@ -231,14 +233,14 @@ Grohe Grohtherm 3000 C Thermostat (19468000)
 <div class="oopStage-metaInfo row table" data-oop-stage="">
 <a data-scrolling-anchor="" href="#offerList" data-wt-click="{&quot;id&quot;:&quot;oop.productstage.pricerange&quot;}" class="oopStage-priceRange table-row">
 <span class="table-cell oopStage-priceRangeOffers">18 Angebote:</span>
-<span class="table-cell oopStage-priceRangePrice">€&nbsp;189,95 – €&nbsp;262,83</span>
+<span class="table-cell oopStage-priceRangePrice">ï¿½&nbsp;189,95 ï¿½ ï¿½&nbsp;262,83</span>
 </a>
 <div class="table-row">
 <a class="oopStage-metaInfoItemAction table-cell oopStage-metaInfoItemActionLabel oopStage-metaInfoItemRatingLabel" data-scrolling-anchor="" href="#Meinungen">
 0 Produktmeinungen:
 </a>
 <a class="oopStage-metaInfoItemAction oopStage-metaInfoItemActionLabel oopStage-metaInfoItemActionWriteReview table-cell" href="#" data-overlay="{
-"closeCaption": "Zurück",
+"closeCaption": "Zurï¿½ck",
 "contentLoad": "/mvc/RwdProductOpinion/product/2317555",
 "contentLoadBy": "ajax",
 "contentPaddingLeft": "1rem",
@@ -269,7 +271,7 @@ Wandmontage
 </span>
 <span class="oopStage-productInfoTopItemWrapperDatasheetLink">
 <div class="oopStage-productInfoBottomDatasheet" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;.datasheet&quot;,
 &quot;contentLoadBy&quot; : &quot;selector&quot;,
 &quot;titleCaption&quot; : &quot;Datenblatt&quot;,
@@ -288,7 +290,7 @@ Produktdatenblatt
 &quot;truncatedWrapperClass&quot; : &quot;oopStage-productInfoTopItemWrapper&quot;
 }">
 <div class="oopStage-productInfoBottomDatasheet" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;.datasheet&quot;,
 &quot;contentLoadBy&quot; : &quot;selector&quot;,
 &quot;titleCaption&quot; : &quot;Datenblatt&quot;,
@@ -310,7 +312,7 @@ mehr anzeigen
 </a>
 <span class="hidden-for-large-up">
 <div class="oopStage-productInfoBottomDatasheet" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;.datasheet&quot;,
 &quot;contentLoadBy&quot; : &quot;selector&quot;,
 &quot;titleCaption&quot; : &quot;Datenblatt&quot;,
@@ -327,7 +329,7 @@ Produktdatenblatt
 </div>
 <div class="oopStage-productInfoButtons hide show-for-xlarge-up small-12 collapse-both columns">
 <div class="oopStage-actionPricechart show-for-large-down" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück &quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck &quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentLoad&quot; : &quot;/pricechart/2317555&quot;,
 &quot;contentPaddingBottom&quot; : &quot;50px&quot;,
@@ -353,7 +355,7 @@ Preisentwicklung
 3M
 </li>
 <li>
-<a data-overlay="{ &quot;triggerOnOpenParams&quot; : 2, &quot;closeCaption&quot; : &quot;zurück &quot;,
+<a data-overlay="{ &quot;triggerOnOpenParams&quot; : 2, &quot;closeCaption&quot; : &quot;zurï¿½ck &quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentLoad&quot; : &quot;/pricechart/2317555&quot;,
 &quot;contentPaddingBottom&quot; : &quot;50px&quot;,
@@ -365,7 +367,7 @@ Preisentwicklung
 </a>
 </li>
 <li>
-<a data-overlay="{ &quot;triggerOnOpenParams&quot; : 3, &quot;closeCaption&quot; : &quot;zurück &quot;,
+<a data-overlay="{ &quot;triggerOnOpenParams&quot; : 3, &quot;closeCaption&quot; : &quot;zurï¿½ck &quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentLoad&quot; : &quot;/pricechart/2317555&quot;,
 &quot;contentPaddingBottom&quot; : &quot;50px&quot;,
@@ -379,7 +381,7 @@ Preisentwicklung
 </ul>
 </div>
 <div class="newPriceChart-smallWrapper">
-<a data-overlay="{&quot;closeCaption&quot; : &quot;zurück &quot;,
+<a data-overlay="{&quot;closeCaption&quot; : &quot;zurï¿½ck &quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentLoad&quot; : &quot;/pricechart/2317555&quot;,
 &quot;contentPaddingBottom&quot; : &quot;50px&quot;,
@@ -388,10 +390,10 @@ Preisentwicklung
 &quot;triggerOnOpen&quot; : &quot;pricechart-open&quot;,
 &quot;webtrekkPrefix&quot; : &quot;pricechart&quot;}" class="newPriceChart--smallCanvasLink"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
 <canvas class="newPriceChart--smallCanvas" id="ipc-stage-price-chart" width="362" height="243" style="display: block; height: 195px; width: 290px;"></canvas>
-<div id="chartjs-tooltip" class="center" style="left: 198px; text-align: right; opacity: 1; top: 0px; padding: 3px 5px;"><p>€ 189,95</p><span class="chartjs-tooltip-key" style="background:rgba(0, 0, 0, 0.01)"></span>heute</div></a>
+<div id="chartjs-tooltip" class="center" style="left: 198px; text-align: right; opacity: 1; top: 0px; padding: 3px 5px;"><p>ï¿½ 189,95</p><span class="chartjs-tooltip-key" style="background:rgba(0, 0, 0, 0.01)"></span>heute</div></a>
 </div>
 <div class="oopStage-actionPricewatcher button--pricewatcher" data-overlay="{
-&quot;closeCaption&quot;: &quot;zurück&quot;,
+&quot;closeCaption&quot;: &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/mvc/RwdAddWatchedProduct/2317555&quot;,
 &quot;contentLoadBy&quot;: &quot;ajax&quot;,
 &quot;forceOpen&quot;: &quot;true&quot;,
@@ -430,7 +432,7 @@ Top 3 Produkte
 <ol class="oopMarginal-wrapperList ordered">
 <li class="oopMarginal-wrapperListItem">
 <a class="oopMarginal-wrapperListItemLink" href="/preisvergleich/OffersOfProduct/2378530_-zenta-wannenfuell-und-brausearmatur-kludi.html" rel="">
-Kludi Zenta Wannenfüll- und Brausearmatur
+Kludi Zenta Wannenfï¿½ll- und Brausearmatur
 </a>
 </li>
 <li class="oopMarginal-wrapperListItem">
@@ -486,7 +488,7 @@ Zurzeit beliebt auf idealo
 </div>
 </div>
 <div class="productOffers columns xxlarge-9" id="offerList">
-<div class="productOffers-header row row-24" data-translations="{&quot;price_comparison&quot;:&quot;Preisvergleich&quot;,&quot;load_offers&quot;:&quot;Weitere Angebote anzeigen&quot;,&quot;load_offers_state&quot;:&quot;lädt ...&quot;,&quot;sort_total_price&quot;:&quot;Inkl. Versandkosten&quot;,&quot;filter_available&quot;:&quot;Nur sofort lieferbar&quot;,&quot;filter_free_return&quot;:&quot;Nur ohne Rücksendekosten&quot;,&quot;offers&quot;:&quot;Angebote&quot;,&quot;no_offers&quot;:&quot;Es wurden leider keine Angebote gefunden&quot;,&quot;used_offers&quot;:&quot;Gebrauchte Angebote&quot;}" data-used-offers-requested="false" data-offerlist="">
+<div class="productOffers-header row row-24" data-translations="{&quot;price_comparison&quot;:&quot;Preisvergleich&quot;,&quot;load_offers&quot;:&quot;Weitere Angebote anzeigen&quot;,&quot;load_offers_state&quot;:&quot;lï¿½dt ...&quot;,&quot;sort_total_price&quot;:&quot;Inkl. Versandkosten&quot;,&quot;filter_available&quot;:&quot;Nur sofort lieferbar&quot;,&quot;filter_free_return&quot;:&quot;Nur ohne Rï¿½cksendekosten&quot;,&quot;offers&quot;:&quot;Angebote&quot;,&quot;no_offers&quot;:&quot;Es wurden leider keine Angebote gefunden&quot;,&quot;used_offers&quot;:&quot;Gebrauchte Angebote&quot;}" data-used-offers-requested="false" data-offerlist="">
 <div class="columns small-6 large-4 xlarge-6 productOffers-headerContainer">
 <h2 class="productOffers-headerTitle">Preisvergleich</h2>
 </div>
@@ -507,10 +509,10 @@ Zurzeit beliebt auf idealo
 </fieldset>
 </div>
 <div class="productOffers-sort-wrapper collapse-both show-for-xxlarge-up">
-<label class="productOffers-sortText" for="product-offers-filter-freereturn">Nur ohne Rücksendekosten</label>
+<label class="productOffers-sortText" for="product-offers-filter-freereturn">Nur ohne Rï¿½cksendekosten</label>
 <fieldset class="switch tiny round">
 <input id="product-offers-filter-freereturn" type="checkbox" data-rel="freereturn" style="transition-duration: 0s;">
-<label class="productOffers-sortLabel" for="product-offers-filter-freereturn" aria-label="Nur ohne Rücksendekosten"></label>
+<label class="productOffers-sortLabel" for="product-offers-filter-freereturn" aria-label="Nur ohne Rï¿½cksendekosten"></label>
 </fieldset>
 </div>
 </form>
@@ -537,20 +539,20 @@ Zurzeit beliebt auf idealo
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;1&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/7733253093.html?categoryId=18928&amp;pos=1&amp;price=189.95&amp;productid=2317555&amp;sid=23026&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe 19468000 THM-Wan­nen­batt. Grohtherm 3000 C
+Grohe 19468000 THM-Wanï¿½nenï¿½batt. Grohtherm 3000 C
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;1&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/7733253093.html?categoryId=18928&amp;pos=1&amp;price=189.95&amp;productid=2317555&amp;sid=23026&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;189,95
+ï¿½&nbsp;189,95
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;199,95 inkl. Versand">
-€&nbsp;199,95 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;199,95 inkl. Versand">
+ï¿½&nbsp;199,95 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -565,8 +567,8 @@ Vorkasse
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;224,95 inkl. Versand">
-€&nbsp;224,95 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;224,95 inkl. Versand">
+ï¿½&nbsp;224,95 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Nachnahme">
@@ -580,7 +582,7 @@ Nachnahme
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;1&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7733253093/index/0&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -593,12 +595,12 @@ Nachnahme
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_7733253093&quot;
 }">
-Versandkosten: ab €&nbsp;10,00
+Versandkosten: ab ï¿½&nbsp;10,00
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7733253093/index/0&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -614,7 +616,7 @@ Versandkosten: ab €&nbsp;10,00
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--medium icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;1&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7733253093/index/0&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -633,7 +635,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7733253093/index/0&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -655,7 +657,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">4 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">4 Werkï¿½taï¿½ge</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">DHL</span>
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">GLS</span>
@@ -700,7 +702,7 @@ width="80" height="30"&gt;
 <ul class="productOffers-listItemOfferCta">
 <li>
 <a class="productOffers-listItemOfferCtaLeadout button button--leadout expand" href="/preisvergleich/Relocate/7733253093.html?categoryId=18928&amp;pos=1&amp;price=189.95&amp;productid=2317555&amp;sid=23026&amp;type=offer" data-after="Zum Shop" data-shop-name="ssd-armaturenshop.de" rel="nofollow" target="_blank">
-<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 C Thermostat (19468000) kaufen: günstige Wannenarmaturen bei ssd-armaturenshop.de">
+<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 C Thermostat (19468000) kaufen: gï¿½nstige Wannenarmaturen bei ssd-armaturenshop.de">
 </a>
 </li>
 </ul>
@@ -712,20 +714,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;2&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/6568182724.html?categoryId=18928&amp;pos=2&amp;price=191.86&amp;productid=2317555&amp;sid=243191&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, 2 Ver­brau­cher, runde Rosette, Farbe: Chrom
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat, 2 Verï¿½brauï¿½cher, runde Rosette, Farbe: Chrom
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;2&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/6568182724.html?categoryId=18928&amp;pos=2&amp;price=191.86&amp;productid=2317555&amp;sid=243191&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;191,86
+ï¿½&nbsp;191,86
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;218,42 inkl. Versand">
-€&nbsp;218,42 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;218,42 inkl. Versand">
+ï¿½&nbsp;218,42 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -753,7 +755,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;2&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/6568182724/index/1&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -766,12 +768,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_6568182724&quot;
 }">
-Versandkosten: ab €&nbsp;26,56
+Versandkosten: ab ï¿½&nbsp;26,56
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/6568182724/index/1&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -787,7 +789,7 @@ Versandkosten: ab €&nbsp;26,56
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--long icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;2&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/6568182724/index/1&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -806,7 +808,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/6568182724/index/1&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -885,20 +887,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;3&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/8087883224.html?categoryId=18928&amp;pos=3&amp;price=196.40&amp;productid=2317555&amp;sid=309362&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Thermostat mit in­te­grier­ter 2-Wege- Um­stel­lung, chrom 19468000
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Thermostat mit inï¿½teï¿½grierï¿½ter 2-Wege- Umï¿½stelï¿½lung, chrom 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;3&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/8087883224.html?categoryId=18928&amp;pos=3&amp;price=196.40&amp;productid=2317555&amp;sid=309362&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;196,40
+ï¿½&nbsp;196,40
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;196,40 inkl. Versand">
-€&nbsp;196,40 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;196,40 inkl. Versand">
+ï¿½&nbsp;196,40 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -936,10 +938,10 @@ Vorkasse
 </span>
 </a>
 </span>
-<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortüberweisung">
+<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortï¿½berweisung">
 <a rel="nofollow" target="_blank" href="/preisvergleich/Relocate/8087883224.html?categoryId=18928&amp;pos=3&amp;price=196.40&amp;productid=2317555&amp;sid=309362&amp;type=offer" data-wt-click="{&quot;id&quot;: &quot;leadout.oop.paymenticon&quot;}">
 <span>
-<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortüberweisung" title="Sofortüberweisung">
+<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortï¿½berweisung" title="Sofortï¿½berweisung">
 </span>
 </a>
 </span>
@@ -947,7 +949,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;3&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/8087883224/index/2&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -960,12 +962,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_8087883224&quot;
 }">
-Versandkosten: ab €&nbsp;0,00
+Versandkosten: ab ï¿½&nbsp;0,00
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/8087883224/index/2&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -981,7 +983,7 @@ Versandkosten: ab €&nbsp;0,00
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;3&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/8087883224/index/2&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1000,7 +1002,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/8087883224/index/2&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1022,9 +1024,9 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werk­ta­gen</p>
+<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werkï¿½taï¿½gen</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
-<span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">Österreichische Post</span>
+<span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">ï¿½sterreichische Post</span>
 </div>
 </div>
 </div>
@@ -1078,20 +1080,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;4&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/9501069376.html?categoryId=18928&amp;pos=4&amp;price=198.40&amp;productid=2317555&amp;sid=312899&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Thermostat mit in­te­grier­ter 2-We­ge-Um­stel­lung
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Thermostat mit inï¿½teï¿½grierï¿½ter 2-Weï¿½ge-Umï¿½stelï¿½lung
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;4&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/9501069376.html?categoryId=18928&amp;pos=4&amp;price=198.40&amp;productid=2317555&amp;sid=312899&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;198,40
+ï¿½&nbsp;198,40
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;198,40 inkl. Versand">
-€&nbsp;198,40 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;198,40 inkl. Versand">
+ï¿½&nbsp;198,40 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -1133,7 +1135,7 @@ Nachnahme
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;4&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9501069376/index/3&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1146,12 +1148,12 @@ Nachnahme
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_9501069376&quot;
 }">
-Versandkosten: ab €&nbsp;0,00
+Versandkosten: ab ï¿½&nbsp;0,00
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9501069376/index/3&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1167,7 +1169,7 @@ Versandkosten: ab €&nbsp;0,00
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;4&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9501069376/index/3&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1186,7 +1188,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9501069376/index/3&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1208,7 +1210,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">2-3 Ar­beits­ta­gen</p>
+<p class="productOffers-listItemOfferDeliveryStatus">2-3 Arï¿½beitsï¿½taï¿½gen</p>
 </div>
 </div>
 </div>
@@ -1234,7 +1236,7 @@ Shop-Meinung schreiben
 <ul class="productOffers-listItemOfferCta">
 <li>
 <a class="productOffers-listItemOfferCtaLeadout button button--leadout expand" href="/preisvergleich/Relocate/9501069376.html?categoryId=18928&amp;pos=4&amp;price=198.40&amp;productid=2317555&amp;sid=312899&amp;type=offer" data-after="Zum Shop" data-shop-name="hausfabrik.at" rel="nofollow" target="_blank">
-<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Cosmopolitan 19468 kaufen: günstige Wannenarmaturen bei hausfabrik.at">
+<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Cosmopolitan 19468 kaufen: gï¿½nstige Wannenarmaturen bei hausfabrik.at">
 </a>
 </li>
 </ul>
@@ -1246,20 +1248,20 @@ Shop-Meinung schreiben
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/519094132.html?categoryId=18928&amp;pos=5&amp;price=205.93&amp;productid=2317555&amp;sid=276684&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat-Wan­nen­bat­te­rie Fertigset chrom 19468000
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat-Wanï¿½nenï¿½batï¿½teï¿½rie Fertigset chrom 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/519094132.html?categoryId=18928&amp;pos=5&amp;price=205.93&amp;productid=2317555&amp;sid=276684&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;205,93
+ï¿½&nbsp;205,93
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;226,16 inkl. Versand">
-€&nbsp;226,16 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;226,16 inkl. Versand">
+ï¿½&nbsp;226,16 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -1281,8 +1283,8 @@ Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat-Wan­nen­bat­te­rie Fertigset 
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;221,73 inkl. Versand">
-€&nbsp;221,73 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;221,73 inkl. Versand">
+ï¿½&nbsp;221,73 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -1296,7 +1298,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/519094132/index/4&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1309,12 +1311,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_519094132&quot;
 }">
-Versandkosten: ab €&nbsp;15,80
+Versandkosten: ab ï¿½&nbsp;15,80
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/519094132/index/4&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1330,7 +1332,7 @@ Versandkosten: ab €&nbsp;15,80
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/519094132/index/4&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1349,7 +1351,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/519094132/index/4&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1371,7 +1373,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">Sofort ver­sand­fer­tig</p>
+<p class="productOffers-listItemOfferDeliveryStatus">Sofort verï¿½sandï¿½ferï¿½tig</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">DHL</span>
 </div>
@@ -1382,8 +1384,8 @@ Details
 </div>
 <div class="small-6 large-3 xlarge-3 columns xlarge-text-left large-text-center small-text-right productOffers-listItemOfferShopBlock va-middle-xlarge-up" data-offerlist-column="shop">
 <div class="productOffers-listItemOfferLogo">
-<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="emero.de - Shop aus Düsseldorf" href="/preisvergleich/Relocate/519094132.html?categoryId=18928&amp;pos=5&amp;price=205.93&amp;productid=2317555&amp;sid=276684&amp;type=offer" rel="nofollow" target="_blank">
-<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop.gif" alt="emero.de - Shop aus Düsseldorf" width="80" height="30" style="display: inline-block;">
+<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="emero.de - Shop aus Dï¿½sseldorf" href="/preisvergleich/Relocate/519094132.html?categoryId=18928&amp;pos=5&amp;price=205.93&amp;productid=2317555&amp;sid=276684&amp;type=offer" rel="nofollow" target="_blank">
+<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;5&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop.gif" alt="emero.de - Shop aus Dï¿½sseldorf" width="80" height="30" style="display: inline-block;">
 <noscript>
 &lt;img class="productOffers-listItemOfferLogoShop noborder"
 src="//cdn.idealo.com/folder/Shop/276/6/276684/s2_shop.gif"
@@ -1427,20 +1429,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;6&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/7641085868.html?categoryId=18928&amp;pos=6&amp;price=206.56&amp;productid=2317555&amp;sid=279747&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Braus­ether­mo­stat 19468000 Cos­mo­po­li­tan, Unterputz Ther­mo­stat, chrom
+Grohe Grohtherm 3000 Brausï¿½etherï¿½moï¿½stat 19468000 Cosï¿½moï¿½poï¿½liï¿½tan, Unterputz Therï¿½moï¿½stat, chrom
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;6&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/7641085868.html?categoryId=18928&amp;pos=6&amp;price=206.56&amp;productid=2317555&amp;sid=279747&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;206,56
+ï¿½&nbsp;206,56
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;222,85 inkl. Versand">
-€&nbsp;222,85 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;222,85 inkl. Versand">
+ï¿½&nbsp;222,85 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -1462,8 +1464,8 @@ Lastschrift
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;223,95 inkl. Versand">
-€&nbsp;223,95 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;223,95 inkl. Versand">
+ï¿½&nbsp;223,95 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -1485,8 +1487,8 @@ Lastschrift
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;219,56 inkl. Versand">
-€&nbsp;219,56 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;219,56 inkl. Versand">
+ï¿½&nbsp;219,56 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -1501,14 +1503,14 @@ Vorkasse
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;221,76 inkl. Versand">
-€&nbsp;221,76 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;221,76 inkl. Versand">
+ï¿½&nbsp;221,76 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
-<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortüberweisung">
+<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortï¿½berweisung">
 <a rel="nofollow" target="_blank" href="/preisvergleich/Relocate/7641085868.html?categoryId=18928&amp;pos=6&amp;price=206.56&amp;productid=2317555&amp;sid=279747&amp;type=offer" data-wt-click="{&quot;id&quot;: &quot;leadout.oop.paymenticon&quot;}">
 <span>
-<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortüberweisung" title="Sofortüberweisung">
+<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortï¿½berweisung" title="Sofortï¿½berweisung">
 </span>
 </a>
 </span>
@@ -1516,7 +1518,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;6&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7641085868/index/5&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1529,12 +1531,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_7641085868&quot;
 }">
-Versandkosten: ab €&nbsp;13,00
+Versandkosten: ab ï¿½&nbsp;13,00
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7641085868/index/5&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1550,7 +1552,7 @@ Versandkosten: ab €&nbsp;13,00
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;6&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7641085868/index/5&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1569,7 +1571,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7641085868/index/5&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1591,7 +1593,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werkï¿½taï¿½ge</p>
 </div>
 </div>
 </div>
@@ -1644,20 +1646,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/4771931268.html?categoryId=18928&amp;pos=7&amp;price=208.22&amp;productid=2317555&amp;sid=26395&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat-Wan­nen­bat­te­rie Grohtherm 3000 ohne Grund­kör­per chrom 19468000
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat-Wanï¿½nenï¿½batï¿½teï¿½rie Grohtherm 3000 ohne Grundï¿½kï¿½rï¿½per chrom 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/4771931268.html?categoryId=18928&amp;pos=7&amp;price=208.22&amp;productid=2317555&amp;sid=26395&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;208,22
+ï¿½&nbsp;208,22
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;223,21 inkl. Versand">
-€&nbsp;223,21 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;223,21 inkl. Versand">
+ï¿½&nbsp;223,21 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -1685,7 +1687,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4771931268/index/6&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1698,12 +1700,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_4771931268&quot;
 }">
-Versandkosten: ab €&nbsp;14,99
+Versandkosten: ab ï¿½&nbsp;14,99
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4771931268/index/6&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1719,7 +1721,7 @@ Versandkosten: ab €&nbsp;14,99
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4771931268/index/6&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1738,7 +1740,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4771931268/index/6&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1760,7 +1762,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">Sofort ver­sand­fer­tig</p>
+<p class="productOffers-listItemOfferDeliveryStatus">Sofort verï¿½sandï¿½ferï¿½tig</p>
 </div>
 </div>
 </div>
@@ -1768,8 +1770,8 @@ Details
 </div>
 <div class="small-6 large-3 xlarge-3 columns xlarge-text-left large-text-center small-text-right productOffers-listItemOfferShopBlock va-middle-xlarge-up" data-offerlist-column="shop">
 <div class="productOffers-listItemOfferLogo">
-<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="megabad.com - Shop aus Köln" href="/preisvergleich/Relocate/4771931268.html?categoryId=18928&amp;pos=7&amp;price=208.22&amp;productid=2317555&amp;sid=26395&amp;type=offer" rel="nofollow" target="_blank">
-<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop.gif" alt="megabad.com - Shop aus Köln" width="80" height="30" style="display: inline-block;">
+<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="megabad.com - Shop aus Kï¿½ln" href="/preisvergleich/Relocate/4771931268.html?categoryId=18928&amp;pos=7&amp;price=208.22&amp;productid=2317555&amp;sid=26395&amp;type=offer" rel="nofollow" target="_blank">
+<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;7&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop.gif" alt="megabad.com - Shop aus Kï¿½ln" width="80" height="30" style="display: inline-block;">
 <noscript>
 &lt;img class="productOffers-listItemOfferLogoShop noborder"
 src="//cdn.idealo.com/folder/Shop/26/3/26395/s2_shop.gif"
@@ -1801,7 +1803,7 @@ width="80" height="30"&gt;
 <ul class="productOffers-listItemOfferCta">
 <li>
 <a class="productOffers-listItemOfferCtaLeadout button button--leadout expand" href="/preisvergleich/Relocate/4771931268.html?categoryId=18928&amp;pos=7&amp;price=208.22&amp;productid=2317555&amp;sid=26395&amp;type=offer" data-after="Zum Shop" data-shop-name="megabad.com" rel="nofollow" target="_blank">
-<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe 19468000 kaufen: günstige Wannenarmaturen bei megabad.com">
+<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe 19468000 kaufen: gï¿½nstige Wannenarmaturen bei megabad.com">
 </a>
 </li>
 </ul>
@@ -1813,20 +1815,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/7685121923.html?categoryId=18928&amp;pos=8&amp;price=209.38&amp;productid=2317555&amp;sid=303954&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Braus­ether­mo­stat 19468000 Cos­mo­po­li­tan, Unterputz Ther­mo­stat, chrom
+Grohe Grohtherm 3000 Brausï¿½etherï¿½moï¿½stat 19468000 Cosï¿½moï¿½poï¿½liï¿½tan, Unterputz Therï¿½moï¿½stat, chrom
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/7685121923.html?categoryId=18928&amp;pos=8&amp;price=209.38&amp;productid=2317555&amp;sid=303954&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;209,38
+ï¿½&nbsp;209,38
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;225,72 inkl. Versand">
-€&nbsp;225,72 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;225,72 inkl. Versand">
+ï¿½&nbsp;225,72 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -1841,8 +1843,8 @@ Grohe Grohtherm 3000 Braus­ether­mo­stat 19468000 Cos­mo­po­li­tan, Unterputz Th
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;226,83 inkl. Versand">
-€&nbsp;226,83 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;226,83 inkl. Versand">
+ï¿½&nbsp;226,83 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -1864,8 +1866,8 @@ Grohe Grohtherm 3000 Braus­ether­mo­stat 19468000 Cos­mo­po­li­tan, Unterputz Th
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;222,38 inkl. Versand">
-€&nbsp;222,38 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;222,38 inkl. Versand">
+ï¿½&nbsp;222,38 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -1880,14 +1882,14 @@ Vorkasse
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;224,60 inkl. Versand">
-€&nbsp;224,60 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;224,60 inkl. Versand">
+ï¿½&nbsp;224,60 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
-<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortüberweisung">
+<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortï¿½berweisung">
 <a rel="nofollow" target="_blank" href="/preisvergleich/Relocate/7685121923.html?categoryId=18928&amp;pos=8&amp;price=209.38&amp;productid=2317555&amp;sid=303954&amp;type=offer" data-wt-click="{&quot;id&quot;: &quot;leadout.oop.paymenticon&quot;}">
 <span>
-<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortüberweisung" title="Sofortüberweisung">
+<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortï¿½berweisung" title="Sofortï¿½berweisung">
 </span>
 </a>
 </span>
@@ -1895,7 +1897,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7685121923/index/7&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1908,12 +1910,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_7685121923&quot;
 }">
-Versandkosten: ab €&nbsp;13,00
+Versandkosten: ab ï¿½&nbsp;13,00
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7685121923/index/7&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1929,7 +1931,7 @@ Versandkosten: ab €&nbsp;13,00
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7685121923/index/7&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1948,7 +1950,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7685121923/index/7&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -1970,7 +1972,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">1-3 Werkï¿½taï¿½ge</p>
 </div>
 </div>
 </div>
@@ -1978,8 +1980,8 @@ Details
 </div>
 <div class="small-6 large-3 xlarge-3 columns xlarge-text-left large-text-center small-text-right productOffers-listItemOfferShopBlock va-middle-xlarge-up" data-offerlist-column="shop">
 <div class="productOffers-listItemOfferLogo">
-<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="obadis.com - Shop aus Hückelhoven" href="/preisvergleich/Relocate/7685121923.html?categoryId=18928&amp;pos=8&amp;price=209.38&amp;productid=2317555&amp;sid=303954&amp;type=offer" rel="nofollow" target="_blank">
-<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop.gif" alt="obadis.com - Shop aus Hückelhoven" width="80" height="30" style="display: inline-block;">
+<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="obadis.com - Shop aus Hï¿½ckelhoven" href="/preisvergleich/Relocate/7685121923.html?categoryId=18928&amp;pos=8&amp;price=209.38&amp;productid=2317555&amp;sid=303954&amp;type=offer" rel="nofollow" target="_blank">
+<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;8&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop.gif" alt="obadis.com - Shop aus Hï¿½ckelhoven" width="80" height="30" style="display: inline-block;">
 <noscript>
 &lt;img class="productOffers-listItemOfferLogoShop noborder"
 src="//cdn.idealo.com/folder/Shop/303/9/303954/s2_shop.gif"
@@ -2023,16 +2025,16 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/7316941702.html?categoryId=18928&amp;pos=9&amp;price=210.13&amp;productid=2317555&amp;sid=4640&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-GROHE Grohtherm 3000 Cos­mo­po­li­tan Armatur mit 2-We­ge-Um­stel­lung (Wanne oder Dusche mit mehr als 1 Brause) für GROHE Rapido T Un­ter­putz-Ther­mo­stat 19468000
+GROHE Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Armatur mit 2-Weï¿½ge-Umï¿½stelï¿½lung (Wanne oder Dusche mit mehr als 1 Brause) fï¿½r GROHE Rapido T Unï¿½terï¿½putz-Therï¿½moï¿½stat 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/7316941702.html?categoryId=18928&amp;pos=9&amp;price=210.13&amp;productid=2317555&amp;sid=4640&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;210,13
+ï¿½&nbsp;210,13
 </a><br>
 <span class="productOffers-listItemOfferShipping show-for-large-up" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7316941702/index/8&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2050,7 +2052,7 @@ Versand- &amp; Zahlungsinformationen
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7316941702/index/8&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2066,7 +2068,7 @@ Versand- &amp; Zahlungsinformationen
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--long icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7316941702/index/8&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2085,7 +2087,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7316941702/index/8&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2107,7 +2109,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">Ge­wöhn­lich ver­sand­fer­tig in 1 bis 2 Mo­na­ten.</p>
+<p class="productOffers-listItemOfferDeliveryStatus">Geï¿½wï¿½hnï¿½lich verï¿½sandï¿½ferï¿½tig in 1 bis 2 Moï¿½naï¿½ten.</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">DHL</span>
 </div>
@@ -2118,8 +2120,8 @@ Details
 </div>
 <div class="small-6 large-3 xlarge-3 columns xlarge-text-left large-text-center small-text-right productOffers-listItemOfferShopBlock va-middle-xlarge-up" data-offerlist-column="shop">
 <div class="productOffers-listItemOfferLogo">
-<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="Amazon - Shop aus München" href="/preisvergleich/Relocate/7316941702.html?categoryId=18928&amp;pos=9&amp;price=210.13&amp;productid=2317555&amp;sid=4640&amp;type=offer" rel="nofollow" target="_blank">
-<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop.gif" alt="Amazon - Shop aus München" width="80" height="30" style="display: inline-block;">
+<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="Amazon - Shop aus Mï¿½nchen" href="/preisvergleich/Relocate/7316941702.html?categoryId=18928&amp;pos=9&amp;price=210.13&amp;productid=2317555&amp;sid=4640&amp;type=offer" rel="nofollow" target="_blank">
+<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;9&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop.gif" alt="Amazon - Shop aus Mï¿½nchen" width="80" height="30" style="display: inline-block;">
 <noscript>
 &lt;img class="productOffers-listItemOfferLogoShop noborder"
 src="//cdn.idealo.com/folder/Shop/4/6/4640/s2_shop.gif"
@@ -2163,20 +2165,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;10&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/9202484042.html?categoryId=18928&amp;pos=10&amp;price=217.30&amp;productid=2317555&amp;sid=10281&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, chrom, mit in­te­grier­ter 2-We­ge-Um­stel­lung (19468000)
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat, chrom, mit inï¿½teï¿½grierï¿½ter 2-Weï¿½ge-Umï¿½stelï¿½lung (19468000)
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;10&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/9202484042.html?categoryId=18928&amp;pos=10&amp;price=217.30&amp;productid=2317555&amp;sid=10281&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;217,30
+ï¿½&nbsp;217,30
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;233,96 inkl. Versand">
-€&nbsp;233,96 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;233,96 inkl. Versand">
+ï¿½&nbsp;233,96 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -2191,8 +2193,8 @@ Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, chrom, mit in­te­grier­ter 2
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;233,24 inkl. Versand">
-€&nbsp;233,24 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;233,24 inkl. Versand">
+ï¿½&nbsp;233,24 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -2214,8 +2216,8 @@ Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, chrom, mit in­te­grier­ter 2
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;230,25 inkl. Versand">
-€&nbsp;230,25 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;230,25 inkl. Versand">
+ï¿½&nbsp;230,25 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -2229,7 +2231,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;10&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202484042/index/9&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2242,12 +2244,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_9202484042&quot;
 }">
-Versandkosten: ab €&nbsp;12,95
+Versandkosten: ab ï¿½&nbsp;12,95
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202484042/index/9&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2263,7 +2265,7 @@ Versandkosten: ab €&nbsp;12,95
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;10&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202484042/index/9&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2282,7 +2284,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202484042/index/9&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2304,7 +2306,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">so­fort, ist auf Lager. Lie­fer­zeit: 1-2 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">soï¿½fort, ist auf Lager. Lieï¿½ferï¿½zeit: 1-2 Werkï¿½taï¿½ge</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">UPS</span>
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">Spedition</span>
@@ -2349,7 +2351,7 @@ width="80" height="30"&gt;
 <ul class="productOffers-listItemOfferCta">
 <li>
 <a class="productOffers-listItemOfferCtaLeadout button button--leadout expand" href="/preisvergleich/Relocate/9202484042.html?categoryId=18928&amp;pos=10&amp;price=217.30&amp;productid=2317555&amp;sid=10281&amp;type=offer" data-after="Zum Shop" data-shop-name="elektroshopwagner.de" rel="nofollow" target="_blank">
-<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Wannenbatterie kaufen: günstige Wannenarmaturen bei elektroshopwagner.de">
+<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Wannenbatterie kaufen: gï¿½nstige Wannenarmaturen bei elektroshopwagner.de">
 </a>
 </li>
 </ul>
@@ -2361,20 +2363,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;11&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/4914452745.html?categoryId=18928&amp;pos=11&amp;price=219.00&amp;productid=2317555&amp;sid=287080&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Ther­mo­statar­ma­tur Grohe Grohtherm 3000 C mit in­te­grier­ter 2-We­ge-Um­stel­lung für Wanne oder Dusche mit mehr als einer Brause 19468000 chrom
+Therï¿½moï¿½statarï¿½maï¿½tur Grohe Grohtherm 3000 C mit inï¿½teï¿½grierï¿½ter 2-Weï¿½ge-Umï¿½stelï¿½lung fï¿½r Wanne oder Dusche mit mehr als einer Brause 19468000 chrom
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;11&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/4914452745.html?categoryId=18928&amp;pos=11&amp;price=219.00&amp;productid=2317555&amp;sid=287080&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;219,00
+ï¿½&nbsp;219,00
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;223,95 inkl. Versand">
-€&nbsp;223,95 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;223,95 inkl. Versand">
+ï¿½&nbsp;223,95 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -2405,10 +2407,10 @@ Vorkasse
 </span>
 </a>
 </span>
-<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortüberweisung">
+<span class="productOffers-listItemOfferShippingDetailsRightItem" title="Sofortï¿½berweisung">
 <a rel="nofollow" target="_blank" href="/preisvergleich/Relocate/4914452745.html?categoryId=18928&amp;pos=11&amp;price=219.00&amp;productid=2317555&amp;sid=287080&amp;type=offer" data-wt-click="{&quot;id&quot;: &quot;leadout.oop.paymenticon&quot;}">
 <span>
-<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortüberweisung" title="Sofortüberweisung">
+<img width="45" height="13" class="offerImage" src="//cdn.idealo.com/ipc/95351d/rwd/img/payment-icons/2x/sofort.png" alt="Sofortï¿½berweisung" title="Sofortï¿½berweisung">
 </span>
 </a>
 </span>
@@ -2416,7 +2418,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;11&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4914452745/index/10&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2429,12 +2431,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_4914452745&quot;
 }">
-Versandkosten: ab €&nbsp;4,95
+Versandkosten: ab ï¿½&nbsp;4,95
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4914452745/index/10&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2450,7 +2452,7 @@ Versandkosten: ab €&nbsp;4,95
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--medium icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;11&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4914452745/index/10&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2469,7 +2471,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/4914452745/index/10&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2491,7 +2493,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">ca. 5 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">ca. 5 Werkï¿½taï¿½ge</p>
 </div>
 </div>
 </div>
@@ -2544,16 +2546,16 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;12&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/1827033891.html?categoryId=18928&amp;pos=12&amp;price=219.83&amp;productid=2317555&amp;sid=24268&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 C - Thermostat mit in­te­grier­ter 2-We­ge-Um­stel­lung chrom
+Grohe Grohtherm 3000 C - Thermostat mit inï¿½teï¿½grierï¿½ter 2-Weï¿½ge-Umï¿½stelï¿½lung chrom
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;12&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/1827033891.html?categoryId=18928&amp;pos=12&amp;price=219.83&amp;productid=2317555&amp;sid=24268&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;219,83
+ï¿½&nbsp;219,83
 </a><br>
 <span class="productOffers-listItemOfferShipping show-for-large-up" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;12&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/1827033891/index/11&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2571,7 +2573,7 @@ Versand- &amp; Zahlungsinformationen
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/1827033891/index/11&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2587,7 +2589,7 @@ Versand- &amp; Zahlungsinformationen
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;12&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/1827033891/index/11&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2606,7 +2608,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/1827033891/index/11&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2684,20 +2686,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;13&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/9202674019.html?categoryId=18928&amp;pos=13&amp;price=224.39&amp;productid=2317555&amp;sid=34245&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, chrom, mit in­te­grier­ter 2-We­ge-Um­stel­lung (19468000)
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat, chrom, mit inï¿½teï¿½grierï¿½ter 2-Weï¿½ge-Umï¿½stelï¿½lung (19468000)
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;13&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/9202674019.html?categoryId=18928&amp;pos=13&amp;price=224.39&amp;productid=2317555&amp;sid=34245&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;224,39
+ï¿½&nbsp;224,39
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;243,99 inkl. Versand">
-€&nbsp;243,99 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;243,99 inkl. Versand">
+ï¿½&nbsp;243,99 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -2719,8 +2721,8 @@ Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat, chrom, mit in­te­grier­ter 2
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;237,34 inkl. Versand">
-€&nbsp;237,34 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;237,34 inkl. Versand">
+ï¿½&nbsp;237,34 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -2735,8 +2737,8 @@ Vorkasse
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;241,29 inkl. Versand">
-€&nbsp;241,29 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;241,29 inkl. Versand">
+ï¿½&nbsp;241,29 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Nachnahme">
@@ -2750,7 +2752,7 @@ Nachnahme
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;13&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202674019/index/12&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2763,12 +2765,12 @@ Nachnahme
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_9202674019&quot;
 }">
-Versandkosten: ab €&nbsp;12,95
+Versandkosten: ab ï¿½&nbsp;12,95
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202674019/index/12&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2784,7 +2786,7 @@ Versandkosten: ab €&nbsp;12,95
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;13&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202674019/index/12&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2803,7 +2805,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/9202674019/index/12&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2825,7 +2827,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">so­fort, ist auf Lager. Lie­fer­zeit: 2-3 Werk­ta­ge</p>
+<p class="productOffers-listItemOfferDeliveryStatus">soï¿½fort, ist auf Lager. Lieï¿½ferï¿½zeit: 2-3 Werkï¿½taï¿½ge</p>
 </div>
 </div>
 </div>
@@ -2866,7 +2868,7 @@ width="80" height="30"&gt;
 <ul class="productOffers-listItemOfferCta">
 <li>
 <a class="productOffers-listItemOfferCtaLeadout button button--leadout expand" href="/preisvergleich/Relocate/9202674019.html?categoryId=18928&amp;pos=13&amp;price=224.39&amp;productid=2317555&amp;sid=34245&amp;type=offer" data-after="Zum Shop" data-shop-name="amailo.at" rel="nofollow" target="_blank">
-<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Cosmopolitan Wannenbatterie kaufen: günstige Wannenarmaturen bei amailo.at">
+<img class="btn-cta-shop" src="//cdn.idealo.com/ipc/95351d/pics/buttons/btn_placeholder.gif" alt="Grohe Grohtherm 3000 Cosmopolitan Wannenbatterie kaufen: gï¿½nstige Wannenarmaturen bei amailo.at">
 </a>
 </li>
 </ul>
@@ -2878,20 +2880,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;14&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/410395250.html?categoryId=18928&amp;pos=14&amp;price=225.17&amp;productid=2317555&amp;sid=26754&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat-Wan­nen­bat­te­rie Fertigset chrom 19468000
+Grohe Grohtherm 3000 Cosï¿½moï¿½poï¿½liï¿½tan Therï¿½moï¿½stat-Wanï¿½nenï¿½batï¿½teï¿½rie Fertigset chrom 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;14&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/410395250.html?categoryId=18928&amp;pos=14&amp;price=225.17&amp;productid=2317555&amp;sid=26754&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;225,17
+ï¿½&nbsp;225,17
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;248,95 inkl. Versand">
-€&nbsp;248,95 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;248,95 inkl. Versand">
+ï¿½&nbsp;248,95 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Visa">
@@ -2913,8 +2915,8 @@ Grohe Grohtherm 3000 Cos­mo­po­li­tan Ther­mo­stat-Wan­nen­bat­te­rie Fertigset 
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;244,07 inkl. Versand">
-€&nbsp;244,07 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;244,07 inkl. Versand">
+ï¿½&nbsp;244,07 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -2928,7 +2930,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;14&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/410395250/index/13&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2941,12 +2943,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_410395250&quot;
 }">
-Versandkosten: ab €&nbsp;18,90
+Versandkosten: ab ï¿½&nbsp;18,90
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/410395250/index/13&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2962,7 +2964,7 @@ Versandkosten: ab €&nbsp;18,90
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;14&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/410395250/index/13&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -2981,7 +2983,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/410395250/index/13&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3061,20 +3063,20 @@ width="80" height="30"&gt;
 <div class="small-12 xlarge-6 columns productOffers-listItemTitleWrapper" data-offerlist-column="title">
 <a class="productOffers-listItemTitle" data-wt-click="{&quot;id&quot;: &quot;offer.title&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;]}" href="/preisvergleich/Relocate/7429944516.html?categoryId=18928&amp;pos=15&amp;price=229.90&amp;productid=2317555&amp;sid=303152&amp;type=offer" target="_blank" rel="nofollow">
 <span class="productOffers-listItemTitleInner">
-GROHE Grohtherm 3000 C Thermostat 2-We­ge-Um­stel­lung Fer­tig­mon­ta­ge­set Unterputz chrom 19468000
+GROHE Grohtherm 3000 C Thermostat 2-Weï¿½ge-Umï¿½stelï¿½lung Ferï¿½tigï¿½monï¿½taï¿½geï¿½set Unterputz chrom 19468000
 </span>
 </a>
 </div>
 <div class="productOffers-listItemOffer small-6 large-4 xlarge-7 columns" data-offerlist-column="price">
 <a class="productOffers-listItemOfferPrice" data-wt-click="{&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" href="/preisvergleich/Relocate/7429944516.html?categoryId=18928&amp;pos=15&amp;price=229.90&amp;productid=2317555&amp;sid=303152&amp;type=offer" rel="nofollow" target="_blank">
-€&nbsp;229,90
+ï¿½&nbsp;229,90
 </a><br>
 <div class="productOffers-listItemOfferShippingDetails hide-for-large-down">
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;249,17 inkl. Versand">
-€&nbsp;249,17 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;249,17 inkl. Versand">
+ï¿½&nbsp;249,17 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="PayPal">
@@ -3089,8 +3091,8 @@ GROHE Grohtherm 3000 C Thermostat 2-We­ge-Um­stel­lung Fer­tig­mon­ta­ge­set Unt
 <div class="table-row">
 <div class="table-cell productOffers-listItemOfferShippingDetailsLeftBefore">
 </div>
-<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="€&nbsp;244,80 inkl. Versand">
-€&nbsp;244,80 inkl. Versand
+<div class="table-cell productOffers-listItemOfferShippingDetailsLeft" title="ï¿½&nbsp;244,80 inkl. Versand">
+ï¿½&nbsp;244,80 inkl. Versand
 </div>
 <div class="table-cell productOffers-listItemOfferShippingDetailsRight">
 <span class="productOffers-listItemOfferShippingDetailsRightItem" title="Vorkasse">
@@ -3104,7 +3106,7 @@ Vorkasse
 </div>
 </div>
 <span class="productOffers-listItemOfferShipping show-for-large-only" data-wt-click="{&quot;id&quot;: &quot;offer.shippingcosts&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7429944516/index/14&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3117,12 +3119,12 @@ Vorkasse
 &quot;triggerOnOpen&quot; : &quot;offer-open&quot;,
 &quot;triggerOpenEvent&quot; : &quot;offer_7429944516&quot;
 }">
-Versandkosten: ab €&nbsp;14,90
+Versandkosten: ab ï¿½&nbsp;14,90
 </span>
 <div class="productOffers-listItemOfferDetailsMobile table hide-for-large-up">
 <div class="table-row">
 <div class="productOffers-listItemOfferDetails table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7429944516/index/14&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3138,7 +3140,7 @@ Versandkosten: ab €&nbsp;14,90
 Details
 </div>
 <div class="productOffers-listItemOfferDelivery delivery delivery--short icon-delivery table-cell" data-wt-click="{&quot;id&quot;: &quot;offer.delivery&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7429944516/index/14&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3157,7 +3159,7 @@ Details
 </div>
 <div class="hide-for-medium-down large-2 xlarge-4 columns productOffers-listItemOfferDeliveryBlock va-middle-xlarge-up" data-offerlist-column="delivery">
 <div class="table-cell" data-overlay="{
-&quot;closeCaption&quot; : &quot;zurück&quot;,
+&quot;closeCaption&quot; : &quot;zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/overlay/product/2317555/offer/7429944516/index/14&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3179,7 +3181,7 @@ Details
 </span>
 </div>
 <div class="table-cell">
-<p class="productOffers-listItemOfferDeliveryStatus">La­ger­wa­re, 1-2 Tage</p>
+<p class="productOffers-listItemOfferDeliveryStatus">Laï¿½gerï¿½waï¿½re, 1-2 Tage</p>
 <div class="productOffers-listItemOfferDeliveryProviderWrapper">
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">DHL</span>
 <span class="productOffers-listItemOfferGreyBadge productOffers-listItemOfferDeliveryProvider">Spedition</span>
@@ -3191,8 +3193,8 @@ Details
 </div>
 <div class="small-6 large-3 xlarge-3 columns xlarge-text-left large-text-center small-text-right productOffers-listItemOfferShopBlock va-middle-xlarge-up" data-offerlist-column="shop">
 <div class="productOffers-listItemOfferLogo">
-<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="sanundo.de - Shop aus Reichstädt" href="/preisvergleich/Relocate/7429944516.html?categoryId=18928&amp;pos=15&amp;price=229.90&amp;productid=2317555&amp;sid=303152&amp;type=offer" rel="nofollow" target="_blank">
-<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop.gif" alt="sanundo.de - Shop aus Reichstädt" width="80" height="30" style="display: inline-block;">
+<a class="productOffers-listItemOfferLogoLink" data-checkout="false" data-shop-name="sanundo.de - Shop aus Reichstï¿½dt" href="/preisvergleich/Relocate/7429944516.html?categoryId=18928&amp;pos=15&amp;price=229.90&amp;productid=2317555&amp;sid=303152&amp;type=offer" rel="nofollow" target="_blank">
+<img class="productOffers-listItemOfferLogoShop hide" data-wt-click="{&quot;id&quot;: &quot;offer.shoplogo&quot;, &quot;params&quot; : [&quot;&quot;, &quot;15&quot;, &quot;&quot;, &quot;&quot;, &quot;new&quot;]}" src="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop_160x60.png" data-shop-logo="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop_160x60.png" data-shop-logo-fallback="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop.gif" alt="sanundo.de - Shop aus Reichstï¿½dt" width="80" height="30" style="display: inline-block;">
 <noscript>
 &lt;img class="productOffers-listItemOfferLogoShop noborder"
 src="//cdn.idealo.com/folder/Shop/303/1/303152/s2_shop.gif"
@@ -3249,7 +3251,7 @@ width="80" height="30"&gt;
 </div>
 <div class="row">
 <div class="small-12 column reportError-link hide text-right" data-overlay="{
-&quot;closeCaption&quot; : &quot;Zurück&quot;,
+&quot;closeCaption&quot; : &quot;Zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/mvc/RwdReportError/product/2317555&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3271,7 +3273,7 @@ Fehler melden
 <div class="row">
 <div class="small-12 columns">
 <h2 class="stage-title">
-Das könnte Dich auch interessieren
+Das kï¿½nnte Dich auch interessieren
 </h2>
 </div>
 <div class="slider small-12 columns">
@@ -3319,18 +3321,18 @@ Axor Uno Einhebel-Wannenmischer Aufputz (Chrom, 38400)
 <div class="carousel-slide swiper-slide" style="width: 242px; margin-right: 10px;">
 <a class="carousel-slideLink" href="/preisvergleich/OffersOfProduct/2693163_-supernova-einhandbatterie-fuer-up-36015730-dornbracht.html" rel="">
 <div class="carousel-slideImageWrapper">
-<img class="carousel-slideImage" src="//cdn.idealo.com/images/product-get/2693163/s2/produktbild_mittel/dornbracht-supernova-einhandbatterie-fuer-up-36015730.jpg" data-src="//cdn.idealo.com/images/product-get/2693163/s2/produktbild_mittel/dornbracht-supernova-einhandbatterie-fuer-up-36015730.jpg" alt="Dornbracht Supernova Einhandbatterie für UP (36015730)" width="120" height="100">
+<img class="carousel-slideImage" src="//cdn.idealo.com/images/product-get/2693163/s2/produktbild_mittel/dornbracht-supernova-einhandbatterie-fuer-up-36015730.jpg" data-src="//cdn.idealo.com/images/product-get/2693163/s2/produktbild_mittel/dornbracht-supernova-einhandbatterie-fuer-up-36015730.jpg" alt="Dornbracht Supernova Einhandbatterie fï¿½r UP (36015730)" width="120" height="100">
 <noscript>
 &lt;img
 class="carousel-slideImage"
 src="//cdn.idealo.com/images/product-get/2693163/s2/produktbild_mittel/dornbracht-supernova-einhandbatterie-fuer-up-36015730.jpg"
-alt="Dornbracht Supernova Einhandbatterie für UP (36015730)"
+alt="Dornbracht Supernova Einhandbatterie fï¿½r UP (36015730)"
 width="120"
 height="100"&gt;
 </noscript>
 </div>
 <span class="carousel-slideTitle">
-Dornbracht Supernova Einhandbatterie für UP (36015730)
+Dornbracht Supernova Einhandbatterie fï¿½r UP (36015730)
 </span>
 </a>
 </div>
@@ -3571,18 +3573,18 @@ Hansgrohe Metris Einhebel-Wannenmischer UP (31454000)
 <div class="carousel-slide swiper-slide" style="width: 242px; margin-right: 10px;">
 <a class="carousel-slideLink" href="/preisvergleich/OffersOfProduct/1731833_-focus-e-chrom-31945000-hansgrohe.html" rel="">
 <div class="carousel-slideImageWrapper">
-<img class="carousel-slideImage carousel-slideImageFallback" src="//cdn.idealo.com/ipc/95351d/rwd/img/ajax-loader-grey.gif" data-src="//cdn.idealo.com/folder/Product/1731/8/1731833/s2_produktbild_mittel/hansgrohe-focus-e-chrom-31945000.png" alt="Hansgrohe Focus E² (Chrom, 31945000)" width="120" height="100">
+<img class="carousel-slideImage carousel-slideImageFallback" src="//cdn.idealo.com/ipc/95351d/rwd/img/ajax-loader-grey.gif" data-src="//cdn.idealo.com/folder/Product/1731/8/1731833/s2_produktbild_mittel/hansgrohe-focus-e-chrom-31945000.png" alt="Hansgrohe Focus Eï¿½ (Chrom, 31945000)" width="120" height="100">
 <noscript>
 &lt;img
 class="carousel-slideImage"
 src="//cdn.idealo.com/folder/Product/1731/8/1731833/s2_produktbild_mittel/hansgrohe-focus-e-chrom-31945000.png"
-alt="Hansgrohe Focus E² (Chrom, 31945000)"
+alt="Hansgrohe Focus Eï¿½ (Chrom, 31945000)"
 width="120"
 height="100"&gt;
 </noscript>
 </div>
 <span class="carousel-slideTitle">
-Hansgrohe Focus E² (Chrom, 31945000)
+Hansgrohe Focus Eï¿½ (Chrom, 31945000)
 </span>
 </a>
 </div>
@@ -3635,11 +3637,11 @@ Grohe Grohtherm
 </span>
 </li>
 <li class="datasheet-listItem datasheet-listItem--group row">
-Oberfläche &amp; Design
+Oberflï¿½che &amp; Design
 </li>
 <li class="datasheet-listItem datasheet-listItem--properties row">
 <span class="datasheet-listItemKey small-6 columns">
-Oberflächendekor
+Oberflï¿½chendekor
 </span>
 <span class="datasheet-listItemValue small-6 columns">
 Chrom
@@ -3686,7 +3688,7 @@ Weitere Eigenschaften
 Info
 </span>
 <span class="datasheet-listItemValue small-6 columns">
-Aquadimmer mit Mehrfachfunktion: Absperrung und Mengenregulierung / Umstellung für 2 Abgänge / Wandrosette mit verdeckter Rosetten- und Schaftabdichtung / Fertigmontageset für Unterputz-Einbaukörper (35 500 000)
+Aquadimmer mit Mehrfachfunktion: Absperrung und Mengenregulierung / Umstellung fï¿½r 2 Abgï¿½nge / Wandrosette mit verdeckter Rosetten- und Schaftabdichtung / Fertigmontageset fï¿½r Unterputz-Einbaukï¿½rper (35 500 000)
 </span>
 </li>
 </ul>
@@ -3700,7 +3702,7 @@ Kundenmeinungen auf idealo
 Verfasse die erste Meinung.<br>
 </p>
 <button class="writeReview button-ghost button-ghost--blue" data-overlay="{
-&quot;closeCaption&quot; : &quot;Zurück&quot;,
+&quot;closeCaption&quot; : &quot;Zurï¿½ck&quot;,
 &quot;contentLoad&quot; : &quot;/mvc/RwdProductOpinion/product/2317555&quot;,
 &quot;contentLoadBy&quot; : &quot;ajax&quot;,
 &quot;contentPaddingLeft&quot; : &quot;1rem&quot;,
@@ -3741,7 +3743,7 @@ Produktmeinung auf idealo verfassen
 <div class="row">
 <div class="column small-12">
 <p class="mb-12">Zurzeit kann der idealo Merkzettel leider nur 24 Produkte aufnehmen.<br>
-Bitte lösche Produkte von Deinem Merkzettel, um neue Produkte hinzufügen zu können.</p>
+Bitte lï¿½sche Produkte von Deinem Merkzettel, um neue Produkte hinzufï¿½gen zu kï¿½nnen.</p>
 </div>
 </div>
 <div class="row dialogButtons">
@@ -3749,7 +3751,7 @@ Bitte lösche Produkte von Deinem Merkzettel, um neue Produkte hinzufügen zu könn
 <a id="backToWishListNoSso" href="/merkzettel" class="button expand" data-wt-click="{&quot;id&quot;: &quot;favourites.full-layer.gotowishlist&quot;}">Zum Merkzettel</a>
 </div>
 <div class="column small-12 large-6">
-<a id="closeDialogButtonNoSso" class="button expand cancel" data-wt-click="{&quot;id&quot;: &quot;favourites.full-layer.cancel&quot;}" onclick="$(document).trigger("closeOverlay")">Schließen</a>
+<a id="closeDialogButtonNoSso" class="button expand cancel" data-wt-click="{&quot;id&quot;: &quot;favourites.full-layer.cancel&quot;}" onclick="$(document).trigger("closeOverlay")">Schlieï¿½en</a>
 </div>
 </div>
 </div>
@@ -3774,8 +3776,8 @@ Bitte lösche Produkte von Deinem Merkzettel, um neue Produkte hinzufügen zu könn
 </div>
 <div class="column small-12 large-8">
 <div class="wishlistOverlay-headline">Es ist ein Problem aufgetreten.</div>
-<p class="wishlistOverlay-message">Wir arbeiten an einer Lösung.<br>
-Versuche es bitte später noch einmal.</p>
+<p class="wishlistOverlay-message">Wir arbeiten an einer Lï¿½sung.<br>
+Versuche es bitte spï¿½ter noch einmal.</p>
 </div>
 </div>
 </div>
@@ -3807,7 +3809,7 @@ Impressum / AGB
 </div>
 <p class="pageFooter-disclaimer small-12 columns">
 <a class="pageFooter-disclaimerLink pageFooter-link" data-wt="footer.disclaimer" href="/preisvergleich/hinweis.html" target="_blank">
-* Alle Preisangaben in Euro inkl. MwSt, ggf. zzgl. Versand. Zwischenzeitliche Änderung der Preise, Rangfolge, Lieferzeit und -kosten möglich.
+* Alle Preisangaben in Euro inkl. MwSt, ggf. zzgl. Versand. Zwischenzeitliche ï¿½nderung der Preise, Rangfolge, Lieferzeit und -kosten mï¿½glich.
 </a>
 </p>
 </div>
@@ -3852,7 +3854,7 @@ Garten
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/SubProductCategory/12977.html" rel="">
-Heizen &amp; Lüften
+Heizen &amp; Lï¿½ften
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3867,7 +3869,7 @@ Sicherheitstechnik
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/SubProductCategory/12953.html" rel="">
-Sanitär &amp; Armaturen
+Sanitï¿½r &amp; Armaturen
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3887,12 +3889,12 @@ Baubedarf
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/SubProductCategory/9176.html" rel="">
-Gartenmöbel
+Gartenmï¿½bel
 </a>
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/7773.html" rel="">
-Rasenmäher
+Rasenmï¿½her
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3912,12 +3914,12 @@ Schleifmaschinen
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/3748.html" rel="">
-Motorsägen
+Motorsï¿½gen
 </a>
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/11572.html" rel="">
-Spülen
+Spï¿½len
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3932,12 +3934,12 @@ Erneuerbare Energien
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/11932.html" rel="">
-Küchenarmaturen
+Kï¿½chenarmaturen
 </a>
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/11294.html" rel="">
-Kamine &amp; Öfen
+Kamine &amp; ï¿½fen
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3957,7 +3959,7 @@ Vertikutierer
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/12875.html" rel="">
-Überwachungskameras
+ï¿½berwachungskameras
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3972,12 +3974,12 @@ Smarthome-Zentralen
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/19144.html" rel="">
-Kettensägen
+Kettensï¿½gen
 </a>
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/13752.html" rel="">
-Messgeräte
+Messgerï¿½te
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -3992,7 +3994,7 @@ Rauchmelder
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/21737.html" rel="">
-Gartenstühle
+Gartenstï¿½hle
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -4002,7 +4004,7 @@ Gartenlampen
 </li>
 <li class="categoryNavigation-listItem">
 <a class="categoryNavigation-listItemLink" href="/preisvergleich/ProductCategory/13472.html" rel="">
-Gartenhäuser
+Gartenhï¿½user
 </a>
 </li>
 <li class="categoryNavigation-listItem">
@@ -4057,8 +4059,8 @@ $.publish("track.error.debug", new Error("Webtrekk is blocked"));
 <img class="hide" src="/preisvergleich/sp.html?ts=1498204095901" width="1" height="1" alt="">
 
 
-<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","//connect.facebook.net/en_US/fbevents.js");fbq("init","1766534123558093");fbq("track","PageView");</script><script type="text/javascript" id="">!function(b,c,d,a){b.twq||(a=b.twq=function(){a.exe?a.exe.apply(a,arguments):a.queue.push(arguments)},a.version="1",a.queue=[],t=c.createElement(d),t.async=!0,t.src="//static.ads-twitter.com/uwt.js",s=c.getElementsByTagName(d)[0],s.parentNode.insertBefore(t,s))}(window,document,"script");twq("init","undefined");twq("track","PageView");</script><script type="text/javascript" id="">twq("track","ViewContent",{content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm85"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">hj("trigger","z_product_category_id_"+google_tag_manager["GTM-PDXTT2"].macro("gtm89")[0]);</script><script type="text/javascript" id="">var isUserLoggedIn=google_tag_manager["GTM-PDXTT2"].macro("gtm91")?"z_user_logged_in_true":"z_user_logged_in_false";hj("trigger",isUserLoggedIn);</script><script type="text/javascript" id="">google_tag_manager["GTM-PDXTT2"].macro("gtm93").forEach(function(a){hj("trigger","z_optimizely_variant_"+a)});</script><script type="text/javascript" id="">google_tag_manager["GTM-PDXTT2"].macro("gtm95").forEach(function(a){hj("tagRecording",["z_optimizely_variant_"+a])});</script><script type="text/javascript" id="">hj("tagRecording",["z_product_category_id_"+google_tag_manager["GTM-PDXTT2"].macro("gtm97")[0]]);</script><script type="text/javascript" id="">(function(){var a=google_tag_manager["GTM-PDXTT2"].macro("gtm99")?"z_user_logged_in_true":"z_user_logged_in_false";hj("tagRecording",[a])})();</script><script type="text/javascript" id="">"undefined"!==typeof hj&&(hj("tagRecording",["page_oop"]),hj("trigger","page_oop"));</script><iframe name="_hjRemoteVarsFrame" title="_hjRemoteVarsFrame" id="_hjRemoteVarsFrame" src="https://vars.hotjar.com/rcj-99d43ead6bdf30da8ed5ffcb4f17100c.html" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"></iframe><script type="text/javascript" id="">fbq("track","ViewContent",{content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm169"),content_name:google_tag_manager["GTM-PDXTT2"].macro("gtm170"),content_type:"product"});</script><div id="ads"></div><script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;events=%5B%5B%22pageview%22%2Cnull%5D%5D&amp;tw_sale_amount=0&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;tw_product_id=2317555&amp;events=%5B%5B%22viewcontent%22%2C%7B%22content_category%22%3A%22Heimwerken%20%26%20Garten%20%3E%20Sanit%C3%A4r%20%26%20Armaturen%20%3E%20Badarmaturen%20%3E%20Wannenarmaturen%22%2C%22content_ids%22%3A%5B%222317555%22%5D%2C%22content_name%22%3A%22Grohe%20Grohtherm%203000%20C%20Thermostat%20(19468000)%22%2C%22content_type%22%3A%22product%22%7D%5D%5D&amp;tw_sale_amount=0&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><div id="criteo-tags-div" style="display: none;"><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=65234798192&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe><script async="true" type="text/javascript" src="https://sslwidget.criteo.com/event?a=30744&amp;v=4.1.0&amp;p0=e%3Dce%26m%3D%255B%255D&amp;p1=e%3Dexd%26site_type%3Dd&amp;p2=e%3Dvc%26id%3D1953786785%26p%3D%255Bi%25253D2317555%252526pr%25253D1%252526q%25253D1%255D&amp;p3=e%3Ddis&amp;adce=1"></script><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=43187321217&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe><script async="true" type="text/javascript" src="https://sslwidget.criteo.com/event?a=30744&amp;v=4.1.0&amp;p0=e%3Dce%26m%3D%255B%255D&amp;p1=e%3Dexd%26site_type%3Dd&amp;p2=e%3Dvc%26id%3D1447932847%26p%3D%255Bi%25253D2317555%252526pr%25253D1%252526q%25253D1%255D&amp;p3=e%3Ddis&amp;adce=1"></script><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=82627385050&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe></div><script type="text/javascript" id="">(function(){var c=google_tag_manager[google_tag_manager["GTM-PDXTT2"].macro("gtm227")];try{var b=window.performance.timing,a=b.domComplete-b.navigationStart,b="",b=1E3>a?"0-1 seconds":2E3>a?"1-2 seconds":3E3>a?"2-3 seconds":4E3>a?"3-4 seconds":5E3>a?"4-5 seconds":6E3>a?"5-6 seconds":1E4>a?"6-10 seconds":"10+ seconds";c.dataLayer.set("pageLoadBucket",b);c.dataLayer.set("pageLoadTime",a/1E3);c.onHtmlSuccess(228)}catch(d){console.log(d),c.onHtmlFailure(228)}})();</script><iframe id="google_osd_static_frame_7408670158112" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe><script type="text/javascript" id="">fbq("track","Purchase",{content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm349"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product",value:google_tag_manager["GTM-PDXTT2"].macro("gtm353"),currency:"EUR"});</script><script type="text/javascript" id="">twq("track","Purchase",{value:"525",currency:"EUR",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm358"),content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">(function(optimizely){var eventName="offer.price.leadout".indexOf("leadout")!==-1?"oop_leadout_universal":"oop_checkout_start_universal";optimizely.push(["trackEvent",eventName])})(window.optimizely||[]);</script>
-<script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;tw_sale_amount=525&amp;tw_product_id=2317555&amp;events=%5B%5B%22purchase%22%2C%7B%22value%22%3A%22525%22%2C%22currency%22%3A%22EUR%22%2C%22content_ids%22%3A%5B%222317555%22%5D%2C%22content_category%22%3A%22Heimwerken%20%26%20Garten%20%3E%20Sanit%C3%A4r%20%26%20Armaturen%20%3E%20Badarmaturen%20%3E%20Wannenarmaturen%22%2C%22content_name%22%3A%22Grohe%20Grohtherm%203000%20C%20Thermostat%20(19468000)%22%2C%22content_type%22%3A%22product%22%7D%5D%5D&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><script type="text/javascript" id="">fbq("track","Purchase",{content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm472"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product",value:google_tag_manager["GTM-PDXTT2"].macro("gtm476"),currency:"EUR"});</script><script type="text/javascript" id="">twq("track","Purchase",{value:"600",currency:"EUR",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm481"),content_category:"Heimwerken \x26 Garten \x3e Sanitär \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">(function(optimizely){var eventName="offer.title.leadout".indexOf("leadout")!==-1?"oop_leadout_universal":"oop_checkout_start_universal";optimizely.push(["trackEvent",eventName])})(window.optimizely||[]);</script>
+<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","//connect.facebook.net/en_US/fbevents.js");fbq("init","1766534123558093");fbq("track","PageView");</script><script type="text/javascript" id="">!function(b,c,d,a){b.twq||(a=b.twq=function(){a.exe?a.exe.apply(a,arguments):a.queue.push(arguments)},a.version="1",a.queue=[],t=c.createElement(d),t.async=!0,t.src="//static.ads-twitter.com/uwt.js",s=c.getElementsByTagName(d)[0],s.parentNode.insertBefore(t,s))}(window,document,"script");twq("init","undefined");twq("track","PageView");</script><script type="text/javascript" id="">twq("track","ViewContent",{content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm85"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">hj("trigger","z_product_category_id_"+google_tag_manager["GTM-PDXTT2"].macro("gtm89")[0]);</script><script type="text/javascript" id="">var isUserLoggedIn=google_tag_manager["GTM-PDXTT2"].macro("gtm91")?"z_user_logged_in_true":"z_user_logged_in_false";hj("trigger",isUserLoggedIn);</script><script type="text/javascript" id="">google_tag_manager["GTM-PDXTT2"].macro("gtm93").forEach(function(a){hj("trigger","z_optimizely_variant_"+a)});</script><script type="text/javascript" id="">google_tag_manager["GTM-PDXTT2"].macro("gtm95").forEach(function(a){hj("tagRecording",["z_optimizely_variant_"+a])});</script><script type="text/javascript" id="">hj("tagRecording",["z_product_category_id_"+google_tag_manager["GTM-PDXTT2"].macro("gtm97")[0]]);</script><script type="text/javascript" id="">(function(){var a=google_tag_manager["GTM-PDXTT2"].macro("gtm99")?"z_user_logged_in_true":"z_user_logged_in_false";hj("tagRecording",[a])})();</script><script type="text/javascript" id="">"undefined"!==typeof hj&&(hj("tagRecording",["page_oop"]),hj("trigger","page_oop"));</script><iframe name="_hjRemoteVarsFrame" title="_hjRemoteVarsFrame" id="_hjRemoteVarsFrame" src="https://vars.hotjar.com/rcj-99d43ead6bdf30da8ed5ffcb4f17100c.html" style="display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;"></iframe><script type="text/javascript" id="">fbq("track","ViewContent",{content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm169"),content_name:google_tag_manager["GTM-PDXTT2"].macro("gtm170"),content_type:"product"});</script><div id="ads"></div><script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;events=%5B%5B%22pageview%22%2Cnull%5D%5D&amp;tw_sale_amount=0&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;tw_product_id=2317555&amp;events=%5B%5B%22viewcontent%22%2C%7B%22content_category%22%3A%22Heimwerken%20%26%20Garten%20%3E%20Sanit%C3%A4r%20%26%20Armaturen%20%3E%20Badarmaturen%20%3E%20Wannenarmaturen%22%2C%22content_ids%22%3A%5B%222317555%22%5D%2C%22content_name%22%3A%22Grohe%20Grohtherm%203000%20C%20Thermostat%20(19468000)%22%2C%22content_type%22%3A%22product%22%7D%5D%5D&amp;tw_sale_amount=0&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><div id="criteo-tags-div" style="display: none;"><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=65234798192&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe><script async="true" type="text/javascript" src="https://sslwidget.criteo.com/event?a=30744&amp;v=4.1.0&amp;p0=e%3Dce%26m%3D%255B%255D&amp;p1=e%3Dexd%26site_type%3Dd&amp;p2=e%3Dvc%26id%3D1953786785%26p%3D%255Bi%25253D2317555%252526pr%25253D1%252526q%25253D1%255D&amp;p3=e%3Ddis&amp;adce=1"></script><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=43187321217&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe><script async="true" type="text/javascript" src="https://sslwidget.criteo.com/event?a=30744&amp;v=4.1.0&amp;p0=e%3Dce%26m%3D%255B%255D&amp;p1=e%3Dexd%26site_type%3Dd&amp;p2=e%3Dvc%26id%3D1447932847%26p%3D%255Bi%25253D2317555%252526pr%25253D1%252526q%25253D1%255D&amp;p3=e%3Ddis&amp;adce=1"></script><iframe height="0" width="0" src="//dis.eu.criteo.com/dis/dis.aspx?p=30744&amp;cb=82627385050&amp;ref=https%3A%2F%2Fwww.idealo.at%2Fpreisvergleich%2FOffersOfProduct%2F2317555_-grohtherm-3000-c-thermostat-19468000-grohe.html&amp;sc_r=1536x864&amp;sc_d=24" style="display: none;"></iframe></div><script type="text/javascript" id="">(function(){var c=google_tag_manager[google_tag_manager["GTM-PDXTT2"].macro("gtm227")];try{var b=window.performance.timing,a=b.domComplete-b.navigationStart,b="",b=1E3>a?"0-1 seconds":2E3>a?"1-2 seconds":3E3>a?"2-3 seconds":4E3>a?"3-4 seconds":5E3>a?"4-5 seconds":6E3>a?"5-6 seconds":1E4>a?"6-10 seconds":"10+ seconds";c.dataLayer.set("pageLoadBucket",b);c.dataLayer.set("pageLoadTime",a/1E3);c.onHtmlSuccess(228)}catch(d){console.log(d),c.onHtmlFailure(228)}})();</script><iframe id="google_osd_static_frame_7408670158112" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe><script type="text/javascript" id="">fbq("track","Purchase",{content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm349"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product",value:google_tag_manager["GTM-PDXTT2"].macro("gtm353"),currency:"EUR"});</script><script type="text/javascript" id="">twq("track","Purchase",{value:"525",currency:"EUR",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm358"),content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">(function(optimizely){var eventName="offer.price.leadout".indexOf("leadout")!==-1?"oop_leadout_universal":"oop_checkout_start_universal";optimizely.push(["trackEvent",eventName])})(window.optimizely||[]);</script>
+<script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;tw_sale_amount=525&amp;tw_product_id=2317555&amp;events=%5B%5B%22purchase%22%2C%7B%22value%22%3A%22525%22%2C%22currency%22%3A%22EUR%22%2C%22content_ids%22%3A%5B%222317555%22%5D%2C%22content_category%22%3A%22Heimwerken%20%26%20Garten%20%3E%20Sanit%C3%A4r%20%26%20Armaturen%20%3E%20Badarmaturen%20%3E%20Wannenarmaturen%22%2C%22content_name%22%3A%22Grohe%20Grohtherm%203000%20C%20Thermostat%20(19468000)%22%2C%22content_type%22%3A%22product%22%7D%5D%5D&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script><script type="text/javascript" id="">fbq("track","Purchase",{content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm472"),content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product",value:google_tag_manager["GTM-PDXTT2"].macro("gtm476"),currency:"EUR"});</script><script type="text/javascript" id="">twq("track","Purchase",{value:"600",currency:"EUR",content_ids:google_tag_manager["GTM-PDXTT2"].macro("gtm481"),content_category:"Heimwerken \x26 Garten \x3e Sanitï¿½r \x26 Armaturen \x3e Badarmaturen \x3e Wannenarmaturen",content_name:"Grohe Grohtherm 3000 C Thermostat (19468000)",content_type:"product"});</script><script type="text/javascript" id="">(function(optimizely){var eventName="offer.title.leadout".indexOf("leadout")!==-1?"oop_leadout_universal":"oop_checkout_start_universal";optimizely.push(["trackEvent",eventName])})(window.optimizely||[]);</script>
 <script src="https://analytics.twitter.com/i/adsct?p_id=Twitter&amp;p_user_id=0&amp;txn_id=undefined&amp;tw_sale_amount=600&amp;tw_product_id=2317555&amp;events=%5B%5B%22purchase%22%2C%7B%22value%22%3A%22600%22%2C%22currency%22%3A%22EUR%22%2C%22content_ids%22%3A%5B%222317555%22%5D%2C%22content_category%22%3A%22Heimwerken%20%26%20Garten%20%3E%20Sanit%C3%A4r%20%26%20Armaturen%20%3E%20Badarmaturen%20%3E%20Wannenarmaturen%22%2C%22content_name%22%3A%22Grohe%20Grohtherm%203000%20C%20Thermostat%20(19468000)%22%2C%22content_type%22%3A%22product%22%7D%5D%5D&amp;tw_order_quantity=0&amp;tw_iframe_status=0&amp;tpx_cb=twttr.conversion.loadPixels" type="text/javascript"></script></body>
 ');
 	}

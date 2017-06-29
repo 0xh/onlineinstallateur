@@ -10,6 +10,8 @@ class GeizhalsCrawler extends Crawler implements CrawlerInterface{
 	 * @see CrawlerInterface::init()
 	 */
 	public function init_crawler() {
+		
+		$this->setPlatformName("Geizhals");
 		$this->setServiceLinks("https://geizhals.at/", "?fs=");
 		$this->setProductPlatformIdMarker('rel="canonical" href="https://geizhals.at/', '" />');
 		$this->setProductResultMarker("offer offer", "</div>");
