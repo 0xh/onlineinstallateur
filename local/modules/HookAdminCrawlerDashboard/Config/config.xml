@@ -45,8 +45,12 @@
         </hook>
         
         <hook id="hookadmincrawlerdashboard.hook.crawler_dashboard" class="HookAdminCrawlerDashboard\Hook\CrawlerDashboardHook">
-            <tag name="hook.event_listener" event="home.top" type="back"  method="blockCrawlerDashboard"/>
-            <tag name="hook.event_listener" event="home.js" type="back" method="blockCrawlerDashboardJs" />
+            <tag name="hook.event_listener" event="module.configuration" type="back"  method="blockCrawlerDashboard"/>
+            <tag name="hook.event_listener" event="module.config-js" type="back" method="blockCrawlerDashboardJs" />
+        </hook>
+        
+        <hook id="hookadmincrawlerdashboard.hook.back" class="HookAdminCrawlerDashboard\Hook\BackHook">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
         </hook>
     </hooks>
 

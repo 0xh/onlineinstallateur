@@ -1,31 +1,28 @@
 <script>
-{literal}
-$(document).ready(function(){
-		$('.crawler-start').on('click',crawlProducts());
-		Alert("a");
-});
 jQuery(function($) {
   {$langcode = {lang attr="code"}|substr:0:2}
 
   var url = "{url path='/admin/crawler/data'}";
 
-  
+  {literal}
 
   // Get initial data Json
   //crawlProducts();
-  
-  
-  function crawlProducts() {
-	  
-    // JS month range is [0..11], the url requires a PHP month range [1..12]
-    $.getJSON(url)
-        .done(function (data) {
-          jsonSuccessLoad(data);
 
-        })
-        .fail(jsonFailLoad);
-  }
+  {/literal}
+});
+$( '.crawler-start' ).click(function() {
+	
+	//alert("disabled in prod");
+	
+    $.getJSON("{url path='/admin/crawler/data'}")
+    .done(function (data) {
+      jsonSuccessLoad(data);
 
+    })
+    .fail(jsonFailLoad);
+	
+	});
 
   function jsonFailLoad(data) {
     $('#jqplot').html('<div class="alert alert-danger">An error occurred while reading from JSON file</div>');
@@ -38,7 +35,4 @@ jQuery(function($) {
     $('.crawlerdebug').html(data.result);
 
   }
- 
-});
-{/literal}
 </script>

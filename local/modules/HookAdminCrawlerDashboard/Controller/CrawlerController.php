@@ -117,23 +117,15 @@ class CrawlerController extends BaseAdminController
     	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     	.",".$hausfabrikOfferStock.",".$firstProductPrice
     	.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink;
-    	/*
+    	
     	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
     			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition
     			."</br> hf stock ".$hausfabrikOfferStock."</br> first price ".$firstProductPrice
     			."</br> platform id ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
-    */
+    
     }
     
     private function crawlGoogleShoppingProduct($ean_code){
-    	$productBaseId;
-    	$hf_price;
-    	$hf_position;
-    	$first_price;
-    	$platform_product_id;
-    	$link_platform_product_page;
-    	$link_hf_product;
-    	$link_first_product;
     	
     	$crawler = new GoogleShoppingCrawler();
     	
@@ -201,15 +193,17 @@ class CrawlerController extends BaseAdminController
     		;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    //	->limit(3)
+    	//->limit(3)
     	->find();
-    	
+    	Tlog::getInstance()->error("starting crawl-job for ");
     	$final = "\n";
     	/** @var \Thelia\Model\ProductSaleElements $pseResult */
     	foreach( $pseResults as $pseResult){
     	set_time_limit(0);
-    	$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
-    	sleep(rand(1,5));
+    	//$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
+    	
+    	//sleep(rand(1,5));
     	}
     	Tlog::getInstance()->error($final);
 
