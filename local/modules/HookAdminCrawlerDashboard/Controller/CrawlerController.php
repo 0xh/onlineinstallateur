@@ -143,7 +143,7 @@ class CrawlerController extends BaseAdminController
     	
     	$firstProductPrice = "";
     	$firstProductLink = "";
-    	$linkHausfabrikProduct= "";
+    	$hausfabrikProductLink= "";
     	
     	// get first product
     	$firstProduct = $crawler->getFirstProduct($productPage);
@@ -158,7 +158,7 @@ class CrawlerController extends BaseAdminController
     	$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
     		
     	//get Hausfabrik external link
-    	$linkHausfabrikProduct= $crawler->getExternalProductLinkForOffer($hausfabrikOffer);
+    	$hausfabrikProductLink= $crawler->getExternalProductLinkForOffer($hausfabrikOffer);
     		
     	//get Hausfabrik offer Price
     	$hausfabrikOfferPrice= $crawler->getOfferPrice(htmlspecialchars($hausfabrikOffer, ENT_QUOTES));
@@ -173,12 +173,67 @@ class CrawlerController extends BaseAdminController
     		
     		$linkPlatformProductPage = $crawler->getProductPageUrl($platformProductId);
     		
-    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, $firstProductPrice, $platformProductId, $linkPlatformProductPage, $linkHausfabrikProduct, $firstProductLink);
+    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, '-1', $firstProductPrice,
+    				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);
     	}
     	
     	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
     			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
     			."</br> first position ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
+    }
+    
+    private function crawlGeizhalsProduct($ean_code){
+    	
+    	$crawler = new GeizhalsCrawler();
+    	
+    	$crawler->init(true, false);
+    	$crawler->init_crawler();
+    	
+    	//STEP.1 Search for product
+    	$searchResponse = $crawler->searchByEANCode($ean_code);
+    	
+    	//STEP.2 Find platform id
+    	$platformProductId = $crawler->findPlatformID($searchResponse);
+    	
+    	$firstProductPrice = "";
+    	$firstProductLink = "";
+    	$hausfabrikProductLink = "";
+    	
+    	// get first product
+    	$firstProduct = $crawler->getFirstProduct($searchResponse);
+    	
+    	//get price of the first product displayed
+    	$firstProductPrice = $crawler->getOfferPrice(htmlspecialchars($firstProduct, ENT_QUOTES));
+    	
+    	//get Hausfabrik offer
+    	$hausfabrikOffer = $crawler->getHausfabrikOffer($searchResponse);
+    	
+    	//get Hausfabrik offer Position
+    	$hausfabrikOfferPosition = $crawler->getOfferPosition($hausfabrikOffer);
+    	
+    	//get Hausfabrik external link
+    	$hausfabrikProductLink = $crawler->getExternalProductLinkForOffer($hausfabrikOffer);
+    	
+    	//get Hausfabrik offer Price
+    	$hausfabrikOfferPrice= $crawler->getOfferPrice(htmlspecialchars($hausfabrikOffer, ENT_QUOTES));
+    	
+    	//get first product external link
+    	$firstProductLink = $crawler->getExternalProductLinkForOffer($firstProduct);
+    	
+    	$crawlerProduct = $crawler->getProductBase($ean_code);
+    	
+    	if($crawlerProduct != null){
+    		$productBaseId = $crawlerProduct->getId();
+    		
+    		$linkPlatformProductPage = $crawler->getProductPageUrl($platformProductId);
+    		
+    		$crawler->saveProductListing($productBaseId, $hausfabrikOfferPrice, $hausfabrikOfferPosition, '-1', $firstProductPrice,
+    				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);
+    	}
+    	
+    	return $this->jsonResponse(json_encode(array('result'=> "</br> product ".$ean_code."</br> baseId ".$productBaseId
+    			."</br> hf price ".$hausfabrikOfferPrice."</br> hf position ".$hausfabrikOfferPosition."</br> first price ".$firstProductPrice
+    			."</br> platform product id ".$platformProductId."</br> productpage ".$linkPlatformProductPage."</br> hausfabrik ".$hausfabrikProductLink."</br> first ".$firstProductLink)));
     }
 
     public function loadDataAjaxAction()
@@ -216,7 +271,8 @@ class CrawlerController extends BaseAdminController
     	//$crawler = new GoogleShoppingCrawler();
     	
     	
-    	return $this->jsonResponse(json_encode(array('result'=> $this->crawlGoogleShoppingProduct("4005176843204"))));
+    	//return $this->jsonResponse(json_encode(array('result'=> $this->crawlGoogleShoppingProduct("4005176843204"))));
+    	return $this->jsonResponse(json_encode(array('result'=> $this->crawlGeizhalsProduct("4005176847981"))));
     }   
     
 }
