@@ -10,11 +10,18 @@ class IdealoCrawler extends Crawler implements CrawlerInterface{
 	 * @see CrawlerInterface::init()
 	 */
 	public function init_crawler() {
-		$this->setServiceLinks("https://www.idealo.at/", "preisvergleich/OffersOfProduct/");
+		//base configuration
+		$this->setServiceLinks("https://www.idealo.at/", "preisvergleich/MainSearchProductCategory.html?q=");
+		$this->setProductPlatformIdMarker('"product_ids":[', '],"product_names');
+		$this->setHausfabrikOfferMarker("hausfabrik");
+		
+		//productPage
+		$this->setProductPath('preisvergleich/OffersOfProduct/');
+		$this->setProductExternalLinkMarker('button--leadout expand" href="','" data-after');
 		$this->setProductResultMarker('li class="productOffers-listItem row', "productOffers-listItemOfferCtaHolder");
 		$this->setPriceResultMarker('â‚¬Â&nbsp;', "&lt;/a&gt;&lt;br&gt;");
 		$this->setPositionResultMarker('&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;','&quot;',0);
-		$this->setHausfabrikOfferMarker("hausfabrik");
+		
 		$this->setRequest('
 <body id="offersofproduct" data-app-context="">
 <noscript>
