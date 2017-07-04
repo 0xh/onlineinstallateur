@@ -34,6 +34,7 @@
 	        		<td>ID</td>
 	        		<td>Bild</td>
 	        		<td>Produkt</td>
+	        		<td>EK</td>
 	        		<td></td>
 	        		<td><img src="{image file='assets/img/logos/hausfabrik.png'}" alt="HAUSFABRIK" class="platform-logos" /></td>
 	        		<td><img src="{image file='assets/img/logos/amazon.png'}" alt="AMAZON" class="platform-logos" /></td>
@@ -58,7 +59,24 @@
                              <a href="{url path='/admin/products/update' product_id=$ID page=$page}" title="{intl l='Edit this product'}">{$REF}</a>
                          </td>
 
+<td>
+                     <table class="crawler-product table-responsive">
+                     <tr>
+                     <td>GC {$EK_PREIS_GC}</td>
+                     </tr>
+                    
+                     <tr>
+                     <td>SHT {$EK_PREIS_SHT}</td>
+                      
+                     
+                     </tr>
+                     <tr>
+                     <td>ÖAG {$EK_PREIS_OAG}</td>
+                      
+                     </tr>
 
+                     </table>
+</td>
                          <td>
                      <table class="crawler-product table-responsive">
                      <tr>
@@ -118,10 +136,10 @@
                      <table class="crawler-product">
                      
                      <tr {if $HF_POSITION == -1}class="status-bad"{/if}>
-                     	<td>
+                     	<td {if $HF_POSITION > -1}class="p{$HF_POSITION}"{/if}>
                      		<a href="{$LINK_HF_PRODUCT}" title="{intl l='Edit Prices On'} {$PLATFORM}"  target="_blank">
                      		{if $HF_POSITION == -1}
-                     			Not On Shop
+                     			Not on shop
                      		{else}
                      			{$HF_POSITION}
                      		{/if}
@@ -130,22 +148,34 @@
                      </tr>
 
 
-                    
+                  
                      <tr>
                    
                       <td >	
-                     	<a href="{$LINK_FIRST_PRODUCT}" title="{intl l='Edit Prices On'} {$PLATFORM}"  target="_blank">{format_money number=$FIRST_PRICE symbol=$currency_symbol}</a>
+                     	<a href="{$LINK_FIRST_PRODUCT}" title="{intl l='Edit Prices On'} {$PLATFORM}"  target="_blank">
+                     	{if $FIRST_PRICE == -1}
+                     		Not Available
+                     	{else}
+                     		{format_money number=$FIRST_PRICE symbol=$currency_symbol}
+                     	{/if}
+                     	</a>
                      </td>
                      
                      </tr>
                      <tr class="lagerstand o{$HF_PRODUCT_STOCK}">
                   
-                      <td>
-                     	<a href="{$LINK_PLATFORM_PRODUCT_PAGE}" title="{$PLATFORM} {intl l='Product page'}"  target="_blank">{$HF_PRODUCT_STOCK}</a>
+                      <td {if $HF_PRODUCT_STOCK > -1}class="p{$HF_PRODUCT_STOCK}"{/if}>
+                     	<a href="{$LINK_PLATFORM_PRODUCT_PAGE}" title="{$PLATFORM} {intl l='Product page'}"  target="_blank">
+                     	{if $HF_PRODUCT_STOCK == -1}
+                     		Not Available
+                     	{else}
+                     		{$HF_PRODUCT_STOCK}
+                     	{/if}
+                     	</a>
                     
                      </td>
                      </tr>
-
+                     
                      </table>
                      </td>
                     

@@ -9535,7 +9535,12 @@ footer {
 }
 .crawler-product{
 	width:100%;
-	text-align:center
+	text-align:center;
+	padding-top:10px;
+}
+.crawler-product tr td{
+
+	padding:7px;
 }
 .status-bad a{
 
@@ -9551,15 +9556,18 @@ footer {
 .o0  { background:rgba(66,133,244,0.25);color:#db4437!important;}
 .o0  a {color:#db4437;}
 
-.o1  { background:rgba(66,133,244,0.35);}
-.o2  { background:rgba(66,133,244,0.4);}
-.o3  { background:rgba(66,133,244,0.45);}
-.o4  { background:rgba(66,133,244,0.5);}
-.o5  { background:rgba(66,133,244,0.55);}
-.o6  { background:rgba(66,133,244,0.65);}
-.o7  { background:rgba(66,133,244,0.75);}
-.o8  { background:rgba(66,133,244,0.8);}
-.o9  { background:rgba(66,133,244,0.9);}
-.o10  { background:rgba(66,133,244,0.95);}
-.o20  { background:rgba(66,133,244,0.1);}
+.o1,.o2  { background:rgba(66,133,244,0.25);}
+.o3,.o4  { background:rgba(66,133,244,0.5);}
+.o5,.o6,.o7  { background:rgba(66,133,244,0.75);}
+.o8,.o9  { background:rgba(66,133,244,0.87);}
+.o10,.o20  { background:rgba(66,133,244,1);}
+.o20  a,.o10  a,.o9  a ,.o8  a,.o7  a,.o6  a,.o5  a {color:#fff;}
 
+.p10,.p11,.p12,.p13,.p14,.p15,.p16,.p9  { background:rgba(66,133,244,0.25);}
+.p10  a {color:#db4437;}
+
+.p8,.p7,.p6  { background:rgba(66,133,244,0.5);}
+.p5, .p4  { background:rgba(66,133,244,0.75);}
+.p3  { background:rgba(66,133,244,0.87);}
+.p2,.p1  { background:rgba(66,133,244,1);}
+.p5  a,.p4  a ,.p3  a,.p2  a,.p1  a {color:#fff;}
