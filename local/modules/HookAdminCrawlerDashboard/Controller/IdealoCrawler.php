@@ -20,11 +20,16 @@ class IdealoCrawler extends Crawler implements CrawlerInterface{
 		//productPage
 		$this->setProductPath('preisvergleich/OffersOfProduct/');
 		$this->setProductExternalLinkMarker('button--leadout expand" href="','" data-after');
-		$this->setProductResultMarker('li class="productOffers-listItem row', "productOffers-listItemOfferCtaHolder");
-		$this->setPriceResultMarker('€�&nbsp;', "&lt;/a&gt;&lt;br&gt;");
+		$this->setProductResultMarker('li class="productOffers-listItem row', "productOffers-listItemOfferLink");
+		//$this->setPriceResultMarker('€�&nbsp;', "&lt;/a&gt;&lt;br&gt;");
+		$this->setPriceResultMarker('price=', '&amp');
 		$this->setPositionResultMarker('&quot;id&quot;: &quot;offer.price&quot;, &quot;params&quot; : [&quot;&quot;, &quot;','&quot;',0);
 		
 		$this->setRequest('
+<script id="tagManagerDataLayer">
+var utag_data = [{"site_tld":"at","page_type":"MAIN_SEARCH_PRODUCT_CATEGORY","site_currency":"EUR","page_levels":["Suche"],"self_product_category_id":100,"product_ids":[991820],"product_names":["Grohe Costa UP-Ventil Oberbau (19808)"],"product_category_ids":[18931]}];
+</script>
+
 <body id="offersofproduct" data-app-context="">
 <noscript>
 &lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-PDXTT2" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;
