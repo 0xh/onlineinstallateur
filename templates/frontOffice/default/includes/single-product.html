@@ -1,4 +1,4 @@
-<li class="item {$colClass|default:"col-md-3"}">
+<li class="item {$colClass|default:" col-xs-12 col-sm-6 col-md-4 col-lg-3"}">
     {if $PSE_COUNT > 1}
         {assign var="hasSubmit" value = false}
     {else}
@@ -95,13 +95,13 @@
                     {/if}
                 {else}
                     
-                <span class=" col-xs-6">
+                <div class=" col-xs-6">
                     <span itemprop="price" class="listen-price">{if $LISTEN_PRICE!=0} Statt {format_money number=$LISTEN_PRICE}{/if} </span>
-                </span>
+                </div>
                     
-                <span class="regular-price col-xs-6">
+                <div class="regular-price col-xs-6">
                     <span itemprop="price"  class="{if $LISTEN_PRICE!=0}verkaufs-price{else}verkaufs-price-black{/if}">{format_money number=$BEST_TAXED_PRICE}</span>
-                </span>
+                </div>
                 {/if}
                 <span class="regular-price col-xs-12">
                 <small>Alle Preise inkl. 20% MwSt.</small>
