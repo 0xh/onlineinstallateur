@@ -7,8 +7,8 @@
 
         <div class="products-content">
             <ul class="products-grid list-unstyled row">
-                {loop name="product_promo" type="bestseller_product" limit="4" category="$category" depth=10}
-                    {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="436" height="292"}
+                {loop name="product_promo" type="bestseller_product" limit="6" category="$category" depth=10}
+                    {include file="includes/single-product.html" colClass="col-xs-12 col-sm-6 col-md-4 col-lg-2" product_id=$ID hasBtn=false hasDescription=false width="436" height="292"}
                 {/loop}
             </ul>
         </div>
