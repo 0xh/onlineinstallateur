@@ -31,6 +31,12 @@
         <hook id="hookhomepage.hook.front" class="HookHomepage\Hook\HomepageContentHook" scope="request">
             <tag name="hook.event_listener" event="home.body" />
         </hook>
+         <hook id="hookhomepage.bestseller.hook.front">
+            <tag name="hook.event_listener" event="home.body" templates="render:home-body.html" />
+        </hook>
+        
+    
+  
     </hooks>
    
 
