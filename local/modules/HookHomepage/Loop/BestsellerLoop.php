@@ -11,6 +11,7 @@ use Propel\Runtime\ActiveQuery\Join;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Map\OrderProductTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
+use Thelia\Model\Map\OrderTableMap;
 
 class BestsellerLoop extends Product implements PropelSearchLoopInterface{
 	
@@ -19,12 +20,6 @@ class BestsellerLoop extends Product implements PropelSearchLoopInterface{
 	 * @see \Thelia\Core\Template\Element\PropelSearchLoopInterface::buildModelCriteria()
 	 */
 	public function buildModelCriteria() {
-		
-		//$query = OrderProductQuery::create()
-		//->cou
-
-//		select only visible products that where sold - order status id - from order_product grouped by product_ref desc
-//      product 
 
 		/** @var \Thelia\Model\ProductQuery $query */
 		$query = parent::buildModelCriteria();
@@ -33,12 +28,18 @@ class BestsellerLoop extends Product implements PropelSearchLoopInterface{
 		$productOrderJoin->addExplicitCondition(ProductTableMap::TABLE_NAME,'REF',null, OrderProductTableMap::TABLE_NAME,'PRODUCT_REF','po');
 		$productOrderJoin->setJoinType(Criteria::LEFT_JOIN);
 		
-		$query->addJoinObject($productOrderJoin,'ProductInOrder')
+		$orderProductOrderJoin = new Join();
+		$orderProductOrderJoin->addExplicitCondition('po','ORDER_ID',null, OrderTableMap::TABLE_NAME,'ID','opo');
+		$orderProductOrderJoin->setJoinType(Criteria::LEFT_JOIN);
+
+		$query
+		->addJoinObject($productOrderJoin,'ProductInOrder')
 		->withColumn('SUM(`po`.quantity)','TOTAL_PRODUCT')
-->clearOrderByColumns()
-		//->groupBy('REF')
+		->addJoinObject($orderProductOrderJoin,'OrderStatus')
+		->withColumn('`opo`.status_id','STATUS')
+		
+		->clearOrderByColumns()
 		->orderBy('TOTAL_PRODUCT',Criteria::DESC)
-		//->where('SUM(`po`.quantity)', Criteria::ISNOTNULL)
 		;
 		
 		return $query;
