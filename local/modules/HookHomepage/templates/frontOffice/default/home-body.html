@@ -24,13 +24,13 @@
 {ifloop rel="product_promo"}
     <section id="products-offer" class="grid">
         <div class="products-heading">
-            <h2 class="title">{intl l="Top Seller" d="hookhomepage.default"} </h2><a href="{url path="/view_all" type="offers"}" class="btn-all">{intl l=" Alle Top Seller" d="hookhomepage.default"}</a>
+            <h2 class="title">{intl l="Top Seller" d="hookhomepage.default"} </h2><a href="{url path="/view_all" type="topseller"}" class="btn-all">{intl l=" Alle Top Seller" d="hookhomepage.default"}</a>
          <div class="short-description" itemprop="description">{$CHAPO}</div>
         </div>
 
         <div class="products-content">
             <ul class="products-grid list-unstyled row">
-                {loop name="product_promo" type="product" limit="4" promo="yes" order="updated_reverse"}
+                {loop name="product_promo" type="bestseller_product" limit="4"}
                     {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="436" height="292"}
                 {/loop}
             </ul>
