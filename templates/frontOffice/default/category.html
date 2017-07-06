@@ -159,7 +159,10 @@
 <div class="clearfix"></div>
         {loop name="subcategories" type="category" id=$category_id }
 							{assign var="subcategorie_title" value=$TITLE}
-       
+       {/loop}
+    </div>
+    {hook name="category.bottom" category="$category_id" categorytitle="{$subcategorie_title}"}
+	
 <div style="color:#999; margin:10px">
     <small>{$subcategorie_title}&nbsp; im Hausfabrik Online-Shop versandkostenfrei bestellen.
 Unser Online-Shop bietet eine große Auswahl an Produkten von führenden Markenherstellern wie Grohe, Laufen, Vaillant, Austria Email und vielen mehr an. Neben mehr als 2500 Produkten können Sie auch eine Vielzahl an Service-Leistungen bei der Hausfabrik bestellen. 
@@ -181,17 +184,8 @@ Gemeinsam setzen wir Ihr Projekt und Ihre individuellen Wünsche um, mit einer g
 
 Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung und Klima. Den Text für jede Unterkategorie anzupassen ist meiner Meinung nach ein Schritt für die Zukunft. Im Moment reicht das aus. 
 </small>
-</div>
-        {/loop}
+</div>	
 
-    </div>
-    {hook name="category.bottom" category="$category_id"}
-	
-	
-	
-	{loop name="bestseller" type="bestseller_product" limit="10"}
-	{$TITLE} {$REF}
-	{/loop}
 	
 	    <script>
 
