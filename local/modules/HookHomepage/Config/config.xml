@@ -34,7 +34,9 @@
          <hook id="hookhomepage.bestseller.hook.front">
             <tag name="hook.event_listener" event="home.body" templates="render:home-body.html" />
         </hook>
-        
+        <hook id="hookhomepage.bestsellercategory.hook.front">
+            <tag name="hook.event_listener" event="category.bottom" templates="render:home-body.html" />
+        </hook>
     
   
     </hooks>

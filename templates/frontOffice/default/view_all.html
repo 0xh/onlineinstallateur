@@ -18,11 +18,17 @@
     {$product_page={$smarty.get.page|default:1}}
     {$product_order={$smarty.get.order|default:'new'}}
     {$product_type={$smarty.get.type|default:'new'}}
+    {$category={$smarty.get.category}}
+        {if $category}
+         {loop name="subcategories" type="category" id=$category }
+							{assign var="categorytitle" value=$TITLE}
+        {/loop}
+        {/if}
 
     <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
 
-        <h1 id="main-label" class="page-header" style="font-size:36px">{if $product_type == "new"}{intl l="Latest products"}{elseif $product_type == "offers"}{intl l="Product Offers"}{elseif $product_type == "topseller"}{intl l="Top Seller"}{/if}</h1>
-        {assign var="amount" value={count type="product" promo="{$product_type == "offers"}" new="{$product_type == "new"}"}}
+        <h1 id="main-label" class="page-header" style="font-size:36px">{if $product_type == "new"}{intl l="Latest products"}{elseif $product_type == "offers"}{intl l="Product Offers"}{elseif $product_type == "topseller"}{intl l="Top Seller"}{if $categorytitle} - {$categorytitle} {/if}{/if}</h1>
+        {assign var="amount" value={count type="bestseller_product" promo="{$product_type == "offers"}" new="{$product_type == "new"}" category="{$category}"}}
 
         {hook name="viewall.top"}
 
@@ -31,9 +37,23 @@
             <div class="products-content">
                 {ifloop rel="product_list"}
                     <ul class="list-unstyled row">
-                        {loop type="{if $product_type == "topseller"}bestseller_product{else}product{/if}" promo={$product_type == "offers"} new={$product_type == "new"} name="product_list" limit=$limit page=$product_page {if $product_type == "topseller"}{else}order=$product_order{/if}}
-                            {include file="includes/single-product.html" colClass="col-sm-4" product_id=$ID hasBtn=true hasDescription=true width="700" height="320"}
-                        {/loop}
+                        
+                        {if $product_type == "topseller"}
+                            {assign var="loop_type" value="bestseller_product"}
+                        {else}
+                            {assign var="loop_type" value="product"}
+                        {/if}
+
+                        {if $product_type != "topseller"}
+                            {loop type="{$loop_type}" promo={$product_type == "offers"} new={$product_type == "new"} name="product_list" limit=$limit page=$product_page order=$product_order}
+                                {include file="includes/single-product.html" colClass="col-sm-4" product_id=$ID hasBtn=true hasDescription=true width="700" height="320"}
+                            {/loop}
+                        {else}
+                             {loop type="{$loop_type}" promo={$product_type == "offers"}  category={$category} new={$product_type == "new"} name="product_list" limit=$limit page=$product_page}
+                                {include file="includes/single-product.html" colClass="col-sm-4" product_id=$ID hasBtn=true hasDescription=true width="700" height="320"}
+                            {/loop}
+                        {/if}
+
                     </ul>
                 {/ifloop}
                 {elseloop  rel="product_list"}
