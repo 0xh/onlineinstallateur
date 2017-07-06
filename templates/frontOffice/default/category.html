@@ -161,6 +161,12 @@
     </div>
     {hook name="category.bottom" category="$category_id"}
 	
+	
+	
+	{loop name="bestseller" type="bestseller_product" limit="10"}
+	{$TITLE} {$REF}
+	{/loop}
+	
 	    <script>
 
     function showSubcategoryServices(id) {
