@@ -43,7 +43,7 @@
         {loop name="product.details" type="product" id=$product_id limit="1" with_prev_next_info="1" with_prev_next_visible="1"}
         {assign var="service_category" value={category attr="parent"}}
         
-        <article id="product" class="col-main row" role="main" itemscope itemtype="http://schema.org/Product">
+        <article id="product" class="col-main" role="main" itemscope itemtype="http://schema.org/Product">
             
             {$pse_count=$PSE_COUNT}
 
@@ -136,7 +136,7 @@
                     </h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
                     
-                   <div class="row">
+                   <div>
                    {assign var="attributes_limit" value=6}
                     {loop name="attributes" type="feature" product=$product_id}
                     	{if $TITLE != "badge"}
@@ -144,8 +144,10 @@
                     			{assign var="feature_title" value=$TITLE}	
                             	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
                             		{if $TITLE != "highlight"}
+                                    <div class="row-fluid">
                             		<div class="col-sm-4">{$feature_title}:</div> 
                                 	<div class="col-sm-8">{$TITLE}</div>
+                                    </div>  
                                 	{/if}
                             	{/loop}
                     		{/ifloop}

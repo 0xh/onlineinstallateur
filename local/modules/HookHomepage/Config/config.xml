@@ -5,9 +5,7 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <loops>
-        <!-- sample definition
-        <loop name="MySuperLoop" class="HookHomepage\Loop\MySuperLoop" />
-        -->
+        <loop name="bestseller_product" class="HookHomepage\Loop\BestsellerLoop" />
     </loops>
 
     <forms>
@@ -33,6 +31,14 @@
         <hook id="hookhomepage.hook.front" class="HookHomepage\Hook\HomepageContentHook" scope="request">
             <tag name="hook.event_listener" event="home.body" />
         </hook>
+         <hook id="hookhomepage.bestseller.hook.front">
+            <tag name="hook.event_listener" event="home.body" templates="render:home-body.html" />
+        </hook>
+        <hook id="hookhomepage.bestsellercategory.hook.front">
+            <tag name="hook.event_listener" event="category.bottom" templates="render:home-body.html" />
+        </hook>
+    
+  
     </hooks>
    
 
