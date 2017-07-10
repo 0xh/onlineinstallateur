@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia" namespace="MultipleFullfilmentCenters\Model">
+    <table name="fulfilment_center">
+        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
+        <column name="name" type="VARCHAR" required="true"/>
+        <column name="address" type="VARCHAR" />
+        <column name="gps_lat" type="DECIMAL" size="18" scale="14" />
+        <column name="gps_long" type="DECIMAL" size="18" scale="14" />
+        <column name="stock_limit" type="INTEGER" />
+    </table>
+    <table name="fulfilment_center_products">
+        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
+        <column name="fulfilment_center_id" type="INTEGER" />
+        <column name="product_id" type="INTEGER" />
+        <column name="product_stock" type="INTEGER" />
+        <column name="incoming_stock" type="INTEGER" />
+        <column name="outgoing_stock" type="INTEGER" />		
+        <foreign-key foreignTable="fulfilment_center" name="fk_fulfilment_center_id" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference foreign="id" local="fulfilment_center_id" />
+        </foreign-key>
+        <foreign-key foreignTable="product" name="fk_product_id" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference foreign="id" local="product_id" />
+        </foreign-key>
+    </table>
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>
+
