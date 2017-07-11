@@ -29,6 +29,7 @@ use Thelia\Action\Image;
 use Thelia\Core\Event\Image\ImageEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\ProductQuery;
+use Thelia\Core\Template\Loop\ProductSaleElements;
 
 /**
  * Class GeizhalsProductExport
@@ -52,7 +53,8 @@ class GeizhalsProductExport extends AbstractExport
     		'product_priceLISTEN_PRICE' => 'Streichpreis',
     		ProductSaleElementsTableMap::PROMO => 'Promo',
     		'product_imageFILE' => 'Produkt_BILD',
-    		'category_i18nTITLE' => 'Produktgruppe'
+    		'category_i18nTITLE' => 'Produktgruppe',
+    		ProductSaleElementsTableMap::QUANTITY => 'Verfügbarkeit'
     ];
     
     /**
@@ -90,7 +92,11 @@ class GeizhalsProductExport extends AbstractExport
     		$this->url_site = ConfigQuery::read('url_site');
     	$processedData['Deeplink'] = $this->url_site . "/" . $processedData['Deeplink'];
     	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
-    	$processedData['Verfügbarkeit'] = "2-3 Arbeitstagen";
+    	
+    	if($processedData['Verfügbarkeit']>100)
+    		$processedData['Verfügbarkeit'] = "Lagernd ";
+    	else	
+    		$processedData['Verfügbarkeit'] = "2-3 Arbeitstagen";
     	$processedData['Versand AT'] = "0";
     	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
     	
@@ -143,7 +149,7 @@ class GeizhalsProductExport extends AbstractExport
     	$categoryJoin = new Join(ProductCategoryTableMap::CATEGORY_ID, CategoryI18nTableMap::ID, Criteria::LEFT_JOIN);
     	$imageJoin = new Join(ProductTableMap::ID, ProductImageTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
     	
-    	
+    	/** @var ProductSaleElementsQuery $query */
     	$query = ProductSaleElementsQuery::create()
     	->addSelfSelectColumns()
     	->useProductPriceQuery()
@@ -208,9 +214,6 @@ class GeizhalsProductExport extends AbstractExport
     						\PDO::PARAM_INT
     						)
     				->withColumn(ProductImageTableMap::FILE)
-
-    				//->addJoinCondition('product_image_join,')
-    				
     				->addJoinObject($brandJoin, 'brand_join')
     				->addJoinCondition(
     					'brand_join',

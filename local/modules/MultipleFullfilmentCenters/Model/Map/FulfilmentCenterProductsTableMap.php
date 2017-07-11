@@ -165,7 +165,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('FulfilmentCenter', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenter', RelationMap::MANY_TO_ONE, array('fulfilment_center_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Product', '\\MultipleFullfilmentCenters\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**

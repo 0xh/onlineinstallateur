@@ -4,7 +4,7 @@
     <parameter name="Engine" value="InnoDB"/>
     <parameter name="Charset" value="utf8"/>
   </vendor>
-  <table name="category" namespace="Thelia\Model">
+  <table name="category" namespace="\\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="parent" required="true" type="INTEGER" />
     <column name="visible" required="true" type="TINYINT" />
@@ -33,7 +33,7 @@
     </behavior>
     <behavior name="timestampable" />
   </table>
-  <table name="product" namespace="Thelia\Model">
+  <table name="product" namespace="\\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="tax_rule_id" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
@@ -79,7 +79,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table isCrossRef="true" name="product_category" namespace="Thelia\Model">
+  <table isCrossRef="true" name="product_category" namespace="\\Thelia\Model">
     <column name="product_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="category_id" primaryKey="true" type="INTEGER" />
     <column name="default_category" type="BOOLEAN" />
@@ -101,7 +101,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="country" namespace="Thelia\Model">
+  <table name="country" namespace="\\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="visible" required="true" type="TINYINT" />
     <column name="isocode" required="true" size="4" type="VARCHAR" />
@@ -124,7 +124,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="tax" namespace="Thelia\Model">
+  <table name="tax" namespace="\\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="type" required="true" size="255" type="VARCHAR" />
     <column name="serialized_requirements" required="true" type="LONGVARCHAR" />
@@ -135,7 +135,7 @@
       <parameter name="i18n_columns" value="title, description" />
     </behavior>
   </table>
-  <table name="tax_rule" namespace="Thelia\Model">
+  <table name="tax_rule" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="title" size="255" type="VARCHAR" />
     <column name="description" type="CLOB" />
@@ -145,7 +145,7 @@
       <parameter name="i18n_columns" value="title, description" />
     </behavior>
   </table>
-  <table name="tax_rule_country" namespace="Thelia\Model">
+  <table name="tax_rule_country" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="tax_rule_id" required="true" type="INTEGER" />
     <column name="country_id" required="true" type="INTEGER" />
@@ -183,7 +183,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="feature" namespace="Thelia\Model">
+  <table name="feature" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="visible" type="INTEGER" />
     <column name="title" size="255" type="VARCHAR" />
@@ -196,7 +196,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="feature_av" namespace="Thelia\Model">
+  <table name="feature_av" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="feature_id" required="true" type="INTEGER" />
     <column name="position" required="true" type="INTEGER" />
@@ -215,7 +215,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="feature_product" namespace="Thelia\Model">
+  <table name="feature_product" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="feature_id" required="true" type="INTEGER" />
@@ -247,7 +247,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="feature_template" namespace="Thelia\Model">
+  <table isCrossRef="true" name="feature_template" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="feature_id" required="true" type="INTEGER" />
     <column name="template_id" required="true" type="INTEGER" />
@@ -270,7 +270,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="attribute" namespace="Thelia\Model">
+  <table name="attribute" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="title" size="255" type="VARCHAR" />
     <column name="description" type="CLOB" />
@@ -282,7 +282,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="attribute_av" namespace="Thelia\Model">
+  <table name="attribute_av" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="attribute_id" required="true" type="INTEGER" />
     <column name="position" required="true" type="INTEGER" />
@@ -301,7 +301,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="attribute_combination" namespace="Thelia\Model">
+  <table name="attribute_combination" namespace="\Thelia\Model">
     <column name="attribute_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="attribute_av_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_sale_elements_id" primaryKey="true" required="true" type="INTEGER" />
@@ -326,7 +326,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="product_sale_elements" namespace="Thelia\Model">
+  <table name="product_sale_elements" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
@@ -352,7 +352,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="attribute_template" namespace="Thelia\Model">
+  <table isCrossRef="true" name="attribute_template" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="attribute_id" required="true" type="INTEGER" />
     <column name="template_id" required="true" type="INTEGER" />
@@ -371,7 +371,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="config" namespace="Thelia\Model">
+  <table name="config" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="name" required="true" size="255" type="VARCHAR" />
     <column name="value" required="true" type="LONGVARCHAR" />
@@ -389,7 +389,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="customer" namespace="Thelia\Model">
+  <table name="customer" namespace="\Thelia\Model">
     <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true" />
 
     <column name="title_id" type="INTEGER" required="true" />
@@ -438,7 +438,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="address" namespace="Thelia\Model">
+  <table name="address" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="label" size="255" type="VARCHAR" />
     <column name="customer_id" required="true" type="INTEGER" />
@@ -482,7 +482,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="customer_title" namespace="Thelia\Model">
+  <table name="customer_title" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="by_default" required="true" type="INTEGER" />
     <column name="position" required="true" size="45" type="VARCHAR" />
@@ -493,7 +493,7 @@
       <parameter name="i18n_columns" value="short, long" />
     </behavior>
   </table>
-  <table name="lang" namespace="Thelia\Model">
+  <table name="lang" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="title" size="100" type="VARCHAR" />
     <column name="code" size="10" type="VARCHAR" />
@@ -514,7 +514,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="folder" namespace="Thelia\Model">
+  <table name="folder" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="parent" required="true" type="INTEGER" />
     <column name="visible" type="TINYINT" />
@@ -535,7 +535,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="content" namespace="Thelia\Model">
+  <table name="content" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="visible" type="TINYINT" />
     <column name="position" type="INTEGER" />
@@ -555,7 +555,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="product_image" namespace="Thelia\Model">
+  <table name="product_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -580,7 +580,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="product_document" namespace="Thelia\Model">
+  <table name="product_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -601,7 +601,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="order" namespace="Thelia\Model">
+  <table name="order" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="ref" size="45" type="VARCHAR" />
     <column name="customer_id" required="true" type="INTEGER" />
@@ -682,7 +682,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="currency" namespace="Thelia\Model">
+  <table name="currency" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="name" size="45" type="VARCHAR" />
     <column name="code" size="45" type="VARCHAR" />
@@ -703,7 +703,7 @@
       <parameter name="i18n_columns" value="name" />
     </behavior>
   </table>
-  <table name="order_address" namespace="Thelia\Model">
+  <table name="order_address" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="customer_title_id" type="INTEGER" />
     <column name="company" size="255" type="VARCHAR" />
@@ -738,7 +738,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="order_product" namespace="Thelia\Model">
+  <table name="order_product" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="order_id" required="true" type="INTEGER" />
     <column name="product_ref" required="true" size="255" type="VARCHAR" />
@@ -768,7 +768,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="order_status" namespace="Thelia\Model">
+  <table name="order_status" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="45" type="VARCHAR" />
     <column name="title" size="255" type="VARCHAR" />
@@ -783,7 +783,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="order_product_attribute_combination" namespace="Thelia\Model">
+  <table name="order_product_attribute_combination" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="order_product_id" required="true" type="INTEGER" />
     <column name="attribute_title" required="true" size="255" type="VARCHAR" />
@@ -802,7 +802,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="module" namespace="Thelia\Model">
+  <table name="module" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="55" type="VARCHAR" />
     <column defaultValue="" name="version" required="true" size="25" type="VARCHAR" />
@@ -826,7 +826,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table isCrossRef="true" name="accessory" namespace="Thelia\Model">
+  <table isCrossRef="true" name="accessory" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="accessory" required="true" type="INTEGER" />
@@ -845,13 +845,13 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="area" namespace="Thelia\Model">
+  <table name="area" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="name" required="true" size="100" type="VARCHAR" />
     <column name="postage" type="FLOAT" />
     <behavior name="timestampable" />
   </table>
-  <table name="area_delivery_module" namespace="Thelia\Model">
+  <table name="area_delivery_module" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="area_id" required="true" type="INTEGER" />
     <column name="delivery_module_id" required="true" type="INTEGER" />
@@ -873,7 +873,7 @@
     </unique>
     <behavior name="timestampable" />
   </table>
-  <table name="profile" namespace="Thelia\Model">
+  <table name="profile" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="30" type="VARCHAR" />
     <column name="title" size="255" type="VARCHAR" />
@@ -888,7 +888,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="resource" namespace="Thelia\Model">
+  <table name="resource" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="255" type="VARCHAR" />
     <column name="title" size="255" type="VARCHAR" />
@@ -903,7 +903,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="admin" namespace="Thelia\Model">
+  <table name="admin" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="profile_id" type="INTEGER" />
     <column name="firstname" required="true" size="100" type="VARCHAR" />
@@ -931,7 +931,7 @@
     </unique>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="profile_resource" namespace="Thelia\Model">
+  <table isCrossRef="true" name="profile_resource" namespace="\Thelia\Model">
     <column name="profile_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="resource_id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="access" required="true" type="INTEGER" />
@@ -949,7 +949,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="profile_module" namespace="Thelia\Model">
+  <table name="profile_module" namespace="\Thelia\Model">
     <column name="profile_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="access" type="TINYINT" />
@@ -967,7 +967,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="message" namespace="Thelia\Model">
+  <table name="message" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="name" required="true" size="255" type="VARCHAR" />
     <column name="secured" type="TINYINT" />
@@ -991,7 +991,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="coupon" namespace="Thelia\Model">
+  <table name="coupon" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="45" type="VARCHAR" />
     <column name="type" required="true" size="255" type="VARCHAR" />
@@ -1048,7 +1048,7 @@
       <parameter name="log_created_by" value="true" />
     </behavior>
   </table>
-  <table name="admin_log" namespace="Thelia\Model">
+  <table name="admin_log" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="admin_login" size="255" type="VARCHAR" />
     <column name="admin_firstname" size="255" type="VARCHAR" />
@@ -1060,7 +1060,7 @@
     <column name="request" type="CLOB" />
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="content_folder" namespace="Thelia\Model">
+  <table isCrossRef="true" name="content_folder" namespace="\Thelia\Model">
     <column name="content_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="folder_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="default_folder" type="BOOLEAN" />
@@ -1082,7 +1082,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="cart" namespace="Thelia\Model">
+  <table name="cart" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="token" size="255" type="VARCHAR" />
     <column name="customer_id" type="INTEGER" />
@@ -1119,7 +1119,7 @@
     </unique>
     <behavior name="timestampable" />
   </table>
-  <table name="cart_item" namespace="Thelia\Model">
+  <table name="cart_item" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="cart_id" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
@@ -1149,7 +1149,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="product_price" namespace="Thelia\Model">
+  <table name="product_price" namespace="\Thelia\Model">
     <column name="product_sale_elements_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="currency_id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0.000000" name="price" required="true" scale="6" size="16" type="DECIMAL" />
@@ -1169,7 +1169,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="category_image" namespace="Thelia\Model">
+  <table name="category_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="category_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1194,7 +1194,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="folder_image" namespace="Thelia\Model">
+  <table name="folder_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="folder_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1219,7 +1219,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="content_image" namespace="Thelia\Model">
+  <table name="content_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="content_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1244,7 +1244,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="category_document" namespace="Thelia\Model">
+  <table name="category_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="category_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1265,7 +1265,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="content_document" namespace="Thelia\Model">
+  <table name="content_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="content_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1286,7 +1286,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="folder_document" namespace="Thelia\Model">
+  <table name="folder_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="folder_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1307,7 +1307,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="product_associated_content" namespace="Thelia\Model">
+  <table name="product_associated_content" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
     <column name="content_id" required="true" type="INTEGER" />
@@ -1326,7 +1326,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="category_associated_content" namespace="Thelia\Model">
+  <table name="category_associated_content" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="category_id" required="true" type="INTEGER" />
     <column name="content_id" required="true" type="INTEGER" />
@@ -1345,7 +1345,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="rewriting_url" namespace="Thelia\Model">
+  <table name="rewriting_url" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="url" required="true" size="255" sqlType="VARBINARY(255)" type="VARCHAR" />
     <column name="view" size="255" type="VARCHAR" />
@@ -1369,7 +1369,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="rewriting_argument" namespace="Thelia\Model">
+  <table name="rewriting_argument" namespace="\Thelia\Model">
     <column name="rewriting_url_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="parameter" primaryKey="true" required="true" size="255" type="VARCHAR" />
     <column name="value" primaryKey="true" required="true" size="255" type="VARCHAR" />
@@ -1381,7 +1381,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="template" namespace="Thelia\Model">
+  <table name="template" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="name" size="255" type="VARCHAR" />
     <behavior name="i18n">
@@ -1389,7 +1389,7 @@
     </behavior>
     <behavior name="timestampable" />
   </table>
-  <table name="module_image" namespace="Thelia\Model">
+  <table name="module_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1414,7 +1414,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="order_product_tax" namespace="Thelia\Model">
+  <table name="order_product_tax" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="order_product_id" required="true" type="INTEGER" />
     <column name="title" required="true" size="255" type="VARCHAR" />
@@ -1429,7 +1429,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="newsletter" namespace="Thelia\Model">
+  <table name="newsletter" namespace="\Thelia\Model">
     <column name="id" type="INTEGER" required="true" primaryKey="true" autoIncrement="true" />
 
     <column name="email" type="VARCHAR" size="255" required="true" />
@@ -1448,7 +1448,7 @@
 
     <behavior name="timestampable" />
   </table>
-  <table name="order_coupon" namespace="Thelia\Model">
+  <table name="order_coupon" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="order_id" required="true" type="INTEGER" />
     <column name="code" required="true" size="45" type="VARCHAR" />
@@ -1472,7 +1472,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="coupon_country" namespace="Thelia\Model">
+  <table isCrossRef="true" name="coupon_country" namespace="\Thelia\Model">
     <column name="coupon_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="country_id" primaryKey="true" required="true" type="INTEGER" />
     <foreign-key foreignTable="country" name="fk_coupon_country_country_id" onDelete="CASCADE">
@@ -1485,7 +1485,7 @@
       <index-column name="country_id" />
     </index>
   </table>
-  <table isCrossRef="true" name="coupon_module" namespace="Thelia\Model">
+  <table isCrossRef="true" name="coupon_module" namespace="\Thelia\Model">
     <column name="coupon_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" primaryKey="true" required="true" type="INTEGER" />
     <foreign-key foreignTable="coupon" name="fk_coupon_module_coupon_id" onDelete="CASCADE">
@@ -1498,7 +1498,7 @@
       <index-column name="module_id" />
     </index>
   </table>
-  <table isCrossRef="true" name="order_coupon_country" namespace="Thelia\Model">
+  <table isCrossRef="true" name="order_coupon_country" namespace="\Thelia\Model">
     <column name="coupon_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="country_id" primaryKey="true" required="true" type="INTEGER" />
     <foreign-key foreignTable="country" name="fk_order_coupon_country_country_id" onDelete="CASCADE">
@@ -1511,7 +1511,7 @@
       <index-column name="country_id" />
     </index>
   </table>
-  <table isCrossRef="true" name="order_coupon_module" namespace="Thelia\Model">
+  <table isCrossRef="true" name="order_coupon_module" namespace="\Thelia\Model">
     <column name="coupon_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" primaryKey="true" required="true" type="INTEGER" />
     <foreign-key foreignTable="order_coupon" name="fk_coupon_module_coupon_id0" onDelete="CASCADE">
@@ -1524,7 +1524,7 @@
       <index-column name="module_id" />
     </index>
   </table>
-  <table isCrossRef="true" name="coupon_customer_count" namespace="Thelia\Model">
+  <table isCrossRef="true" name="coupon_customer_count" namespace="\Thelia\Model">
     <column name="coupon_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="customer_id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="count" required="true" type="INTEGER" />
@@ -1541,7 +1541,7 @@
       <index-column name="coupon_id" />
     </index>
   </table>
-  <table name="brand" namespace="Thelia\Model">
+  <table name="brand" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="NULL" name="visible" type="TINYINT" />
     <column defaultValue="NULL" name="title" size="255" type="VARCHAR" />
@@ -1564,7 +1564,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum, meta_title, meta_description, meta_keywords" />
     </behavior>
   </table>
-  <table name="brand_document" namespace="Thelia\Model">
+  <table name="brand_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="brand_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1585,7 +1585,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="brand_image" namespace="Thelia\Model">
+  <table name="brand_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="brand_id" required="true" type="INTEGER" />
     <column name="file" required="true" size="255" type="VARCHAR" />
@@ -1606,7 +1606,7 @@
       <parameter name="i18n_columns" value="title, description, chapo, postscriptum" />
     </behavior>
   </table>
-  <table name="form_firewall" namespace="Thelia\Model">
+  <table name="form_firewall" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="form_name" required="true" size="255" type="VARCHAR" />
     <column name="ip_address" required="true" size="15" type="VARCHAR" />
@@ -1619,7 +1619,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="sale" namespace="Thelia\Model">
+  <table name="sale" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="NULL" name="title" size="255" type="VARCHAR" />
     <column defaultValue="NULL" name="sale_label" size="255" type="VARCHAR" />
@@ -1644,7 +1644,7 @@
     </behavior>
     <behavior name="timestampable" />
   </table>
-  <table name="sale_offset_currency" namespace="Thelia\Model">
+  <table name="sale_offset_currency" namespace="\Thelia\Model">
     <column name="sale_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="currency_id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="price_offset_value" type="FLOAT" />
@@ -1658,7 +1658,7 @@
       <index-column name="currency_id" />
     </index>
   </table>
-  <table name="sale_product" namespace="Thelia\Model">
+  <table name="sale_product" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="sale_id" required="true" type="INTEGER" />
     <column name="product_id" required="true" type="INTEGER" />
@@ -1683,7 +1683,7 @@
       <index-column name="product_id" />
     </index>
   </table>
-  <table name="export_category" namespace="Thelia\Model">
+  <table name="export_category" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
     <column name="title" required="true" size="255" type="VARCHAR" />
@@ -1696,7 +1696,7 @@
     </behavior>
     <behavior name="timestampable" />
   </table>
-  <table name="export" namespace="Thelia\Model">
+  <table name="export" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
     <column name="title" required="true" size="255" type="VARCHAR" />
@@ -1718,7 +1718,7 @@
       <parameter name="i18n_columns" value="title,description" />
     </behavior>
   </table>
-  <table name="import_category" namespace="Thelia\Model">
+  <table name="import_category" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
     <column name="title" required="true" size="255" type="VARCHAR" />
@@ -1731,7 +1731,7 @@
       <parameter name="i18n_columns" value="title" />
     </behavior>
   </table>
-  <table name="import" namespace="Thelia\Model">
+  <table name="import" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="ref" required="true" size="255" type="VARCHAR" />
     <column name="title" required="true" size="255" type="VARCHAR" />
@@ -1753,7 +1753,7 @@
       <parameter name="i18n_columns" value="title,description" />
     </behavior>
   </table>
-  <table isCrossRef="true" name="product_sale_elements_product_image" namespace="Thelia\Model">
+  <table isCrossRef="true" name="product_sale_elements_product_image" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_sale_elements_id" required="true" type="INTEGER" />
     <column name="product_image_id" required="true" type="INTEGER" />
@@ -1770,7 +1770,7 @@
       <index-column name="product_sale_elements_id" />
     </index>
   </table>
-  <table isCrossRef="true" name="product_sale_elements_product_document" namespace="Thelia\Model">
+  <table isCrossRef="true" name="product_sale_elements_product_document" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="product_sale_elements_id" required="true" type="INTEGER" />
     <column name="product_document_id" required="true" type="INTEGER" />
@@ -1787,7 +1787,7 @@
       <index-column name="product_sale_elements_id" />
     </index>
   </table>
-  <table name="hook" namespace="Thelia\Model">
+  <table name="hook" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="code" required="true" size="255" type="VARCHAR" />
     <column name="type" type="TINYINT" />
@@ -1811,7 +1811,7 @@
       <parameter name="i18n_columns" value="title,description,chapo" />
     </behavior>
   </table>
-  <table name="module_hook" namespace="Thelia\Model">
+  <table name="module_hook" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" required="true" type="INTEGER" />
     <column name="hook_id" required="true" type="INTEGER" />
@@ -1838,7 +1838,7 @@
       <index-column name="hook_id" />
     </index>
   </table>
-  <table name="meta_data" namespace="Thelia\Model">
+  <table name="meta_data" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="meta_key" required="true" size="100" type="VARCHAR" />
     <column name="element_key" required="true" size="100" type="VARCHAR" />
@@ -1852,7 +1852,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="module_config" namespace="Thelia\Model">
+  <table name="module_config" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="module_id" required="true" type="INTEGER" />
     <column name="name" required="true" size="255" type="VARCHAR" />
@@ -1869,7 +1869,7 @@
     </behavior>
     <behavior name="timestampable" />
   </table>
-  <table name="api" namespace="Thelia\Model">
+  <table name="api" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="label" size="255" type="VARCHAR" />
     <column name="api_key" size="100" type="VARCHAR" />
@@ -1882,7 +1882,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="country_area" namespace="Thelia\Model">
+  <table isCrossRef="true" name="country_area" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column name="country_id" required="true" type="INTEGER" />
     <column name="state_id" type="INTEGER" />
@@ -1904,7 +1904,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table isCrossRef="true" name="ignored_module_hook" namespace="Thelia\Model">
+  <table isCrossRef="true" name="ignored_module_hook" namespace="\Thelia\Model">
     <column name="module_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="hook_id" primaryKey="true" required="true" type="INTEGER" />
     <column name="method" size="255" type="VARCHAR" />
@@ -1923,7 +1923,7 @@
     </index>
     <behavior name="timestampable" />
   </table>
-  <table name="state" namespace="Thelia\Model">
+  <table name="state" namespace="\Thelia\Model">
     <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
     <column defaultValue="0" name="visible" required="true" type="TINYINT" />
     <column name="isocode" size="4" type="VARCHAR" />

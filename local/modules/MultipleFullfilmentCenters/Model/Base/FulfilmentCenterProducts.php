@@ -7,8 +7,6 @@ use \PDO;
 use MultipleFullfilmentCenters\Model\FulfilmentCenter as ChildFulfilmentCenter;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery as ChildFulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery as ChildFulfilmentCenterQuery;
-use MultipleFullfilmentCenters\Model\Product as ChildProduct;
-use MultipleFullfilmentCenters\Model\ProductQuery as ChildProductQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -20,6 +18,8 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Thelia\Model\Product as ChildProduct;
+use Thelia\Model\ProductQuery;
 
 abstract class FulfilmentCenterProducts implements ActiveRecordInterface 
 {
@@ -1324,7 +1324,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
     public function getProduct(ConnectionInterface $con = null)
     {
         if ($this->aProduct === null && ($this->product_id !== null)) {
-            $this->aProduct = ChildProductQuery::create()->findPk($this->product_id, $con);
+            $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

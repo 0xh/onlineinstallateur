@@ -10,6 +10,9 @@ use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
@@ -35,6 +38,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFulfilmentCenterQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildFulfilmentCenterQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildFulfilmentCenterQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildFulfilmentCenterQuery leftJoinFulfilmentCenterProducts($relationAlias = null) Adds a LEFT JOIN clause to the query using the FulfilmentCenterProducts relation
+ * @method     ChildFulfilmentCenterQuery rightJoinFulfilmentCenterProducts($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FulfilmentCenterProducts relation
+ * @method     ChildFulfilmentCenterQuery innerJoinFulfilmentCenterProducts($relationAlias = null) Adds a INNER JOIN clause to the query using the FulfilmentCenterProducts relation
  *
  * @method     ChildFulfilmentCenter findOne(ConnectionInterface $con = null) Return the first ChildFulfilmentCenter matching the query
  * @method     ChildFulfilmentCenter findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFulfilmentCenter matching the query, or a new ChildFulfilmentCenter object populated from the query conditions when no match is found
@@ -449,6 +456,79 @@ abstract class FulfilmentCenterQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FulfilmentCenterTableMap::STOCK_LIMIT, $stockLimit, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts object
+     *
+     * @param \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts|ObjectCollection $fulfilmentCenterProducts  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function filterByFulfilmentCenterProducts($fulfilmentCenterProducts, $comparison = null)
+    {
+        if ($fulfilmentCenterProducts instanceof \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts) {
+            return $this
+                ->addUsingAlias(FulfilmentCenterTableMap::ID, $fulfilmentCenterProducts->getFulfilmentCenterId(), $comparison);
+        } elseif ($fulfilmentCenterProducts instanceof ObjectCollection) {
+            return $this
+                ->useFulfilmentCenterProductsQuery()
+                ->filterByPrimaryKeys($fulfilmentCenterProducts->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFulfilmentCenterProducts() only accepts arguments of type \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FulfilmentCenterProducts relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function joinFulfilmentCenterProducts($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FulfilmentCenterProducts');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FulfilmentCenterProducts');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FulfilmentCenterProducts relation FulfilmentCenterProducts object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery A secondary query class using the current class as primary query
+     */
+    public function useFulfilmentCenterProductsQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFulfilmentCenterProducts($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FulfilmentCenterProducts', '\MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery');
     }
 
     /**

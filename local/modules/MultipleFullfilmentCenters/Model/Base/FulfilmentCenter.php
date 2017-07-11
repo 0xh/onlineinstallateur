@@ -4,6 +4,9 @@ namespace MultipleFullfilmentCenters\Model\Base;
 
 use \Exception;
 use \PDO;
+use MultipleFullfilmentCenters\Model\FulfilmentCenter as ChildFulfilmentCenter;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts as ChildFulfilmentCenterProducts;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery as ChildFulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery as ChildFulfilmentCenterQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
 use Propel\Runtime\Propel;
@@ -11,6 +14,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
@@ -88,12 +92,24 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     protected $stock_limit;
 
     /**
+     * @var        ObjectCollection|ChildFulfilmentCenterProducts[] Collection to store aggregation of ChildFulfilmentCenterProducts objects.
+     */
+    protected $collFulfilmentCenterProductss;
+    protected $collFulfilmentCenterProductssPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $fulfilmentCenterProductssScheduledForDeletion = null;
 
     /**
      * Initializes internal state of MultipleFullfilmentCenters\Model\Base\FulfilmentCenter object.
@@ -668,6 +684,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->collFulfilmentCenterProductss = null;
+
         } // if (deep)
     }
 
@@ -788,6 +806,23 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->fulfilmentCenterProductssScheduledForDeletion !== null) {
+                if (!$this->fulfilmentCenterProductssScheduledForDeletion->isEmpty()) {
+                    \MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery::create()
+                        ->filterByPrimaryKeys($this->fulfilmentCenterProductssScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->fulfilmentCenterProductssScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collFulfilmentCenterProductss !== null) {
+            foreach ($this->collFulfilmentCenterProductss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -960,10 +995,11 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['FulfilmentCenter'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -983,6 +1019,11 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
         
+        if ($includeForeignObjects) {
+            if (null !== $this->collFulfilmentCenterProductss) {
+                $result['FulfilmentCenterProductss'] = $this->collFulfilmentCenterProductss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1149,6 +1190,20 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         $copyObj->setGpsLat($this->getGpsLat());
         $copyObj->setGpsLong($this->getGpsLong());
         $copyObj->setStockLimit($this->getStockLimit());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getFulfilmentCenterProductss() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFulfilmentCenterProducts($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1175,6 +1230,265 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('FulfilmentCenterProducts' == $relationName) {
+            return $this->initFulfilmentCenterProductss();
+        }
+    }
+
+    /**
+     * Clears out the collFulfilmentCenterProductss collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFulfilmentCenterProductss()
+     */
+    public function clearFulfilmentCenterProductss()
+    {
+        $this->collFulfilmentCenterProductss = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFulfilmentCenterProductss collection loaded partially.
+     */
+    public function resetPartialFulfilmentCenterProductss($v = true)
+    {
+        $this->collFulfilmentCenterProductssPartial = $v;
+    }
+
+    /**
+     * Initializes the collFulfilmentCenterProductss collection.
+     *
+     * By default this just sets the collFulfilmentCenterProductss collection to an empty array (like clearcollFulfilmentCenterProductss());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFulfilmentCenterProductss($overrideExisting = true)
+    {
+        if (null !== $this->collFulfilmentCenterProductss && !$overrideExisting) {
+            return;
+        }
+        $this->collFulfilmentCenterProductss = new ObjectCollection();
+        $this->collFulfilmentCenterProductss->setModel('\MultipleFullfilmentCenters\Model\FulfilmentCenterProducts');
+    }
+
+    /**
+     * Gets an array of ChildFulfilmentCenterProducts objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildFulfilmentCenter is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildFulfilmentCenterProducts[] List of ChildFulfilmentCenterProducts objects
+     * @throws PropelException
+     */
+    public function getFulfilmentCenterProductss($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFulfilmentCenterProductssPartial && !$this->isNew();
+        if (null === $this->collFulfilmentCenterProductss || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFulfilmentCenterProductss) {
+                // return empty collection
+                $this->initFulfilmentCenterProductss();
+            } else {
+                $collFulfilmentCenterProductss = ChildFulfilmentCenterProductsQuery::create(null, $criteria)
+                    ->filterByFulfilmentCenter($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFulfilmentCenterProductssPartial && count($collFulfilmentCenterProductss)) {
+                        $this->initFulfilmentCenterProductss(false);
+
+                        foreach ($collFulfilmentCenterProductss as $obj) {
+                            if (false == $this->collFulfilmentCenterProductss->contains($obj)) {
+                                $this->collFulfilmentCenterProductss->append($obj);
+                            }
+                        }
+
+                        $this->collFulfilmentCenterProductssPartial = true;
+                    }
+
+                    reset($collFulfilmentCenterProductss);
+
+                    return $collFulfilmentCenterProductss;
+                }
+
+                if ($partial && $this->collFulfilmentCenterProductss) {
+                    foreach ($this->collFulfilmentCenterProductss as $obj) {
+                        if ($obj->isNew()) {
+                            $collFulfilmentCenterProductss[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFulfilmentCenterProductss = $collFulfilmentCenterProductss;
+                $this->collFulfilmentCenterProductssPartial = false;
+            }
+        }
+
+        return $this->collFulfilmentCenterProductss;
+    }
+
+    /**
+     * Sets a collection of FulfilmentCenterProducts objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $fulfilmentCenterProductss A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildFulfilmentCenter The current object (for fluent API support)
+     */
+    public function setFulfilmentCenterProductss(Collection $fulfilmentCenterProductss, ConnectionInterface $con = null)
+    {
+        $fulfilmentCenterProductssToDelete = $this->getFulfilmentCenterProductss(new Criteria(), $con)->diff($fulfilmentCenterProductss);
+
+        
+        $this->fulfilmentCenterProductssScheduledForDeletion = $fulfilmentCenterProductssToDelete;
+
+        foreach ($fulfilmentCenterProductssToDelete as $fulfilmentCenterProductsRemoved) {
+            $fulfilmentCenterProductsRemoved->setFulfilmentCenter(null);
+        }
+
+        $this->collFulfilmentCenterProductss = null;
+        foreach ($fulfilmentCenterProductss as $fulfilmentCenterProducts) {
+            $this->addFulfilmentCenterProducts($fulfilmentCenterProducts);
+        }
+
+        $this->collFulfilmentCenterProductss = $fulfilmentCenterProductss;
+        $this->collFulfilmentCenterProductssPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related FulfilmentCenterProducts objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related FulfilmentCenterProducts objects.
+     * @throws PropelException
+     */
+    public function countFulfilmentCenterProductss(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFulfilmentCenterProductssPartial && !$this->isNew();
+        if (null === $this->collFulfilmentCenterProductss || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFulfilmentCenterProductss) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFulfilmentCenterProductss());
+            }
+
+            $query = ChildFulfilmentCenterProductsQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFulfilmentCenter($this)
+                ->count($con);
+        }
+
+        return count($this->collFulfilmentCenterProductss);
+    }
+
+    /**
+     * Method called to associate a ChildFulfilmentCenterProducts object to this object
+     * through the ChildFulfilmentCenterProducts foreign key attribute.
+     *
+     * @param    ChildFulfilmentCenterProducts $l ChildFulfilmentCenterProducts
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenter The current object (for fluent API support)
+     */
+    public function addFulfilmentCenterProducts(ChildFulfilmentCenterProducts $l)
+    {
+        if ($this->collFulfilmentCenterProductss === null) {
+            $this->initFulfilmentCenterProductss();
+            $this->collFulfilmentCenterProductssPartial = true;
+        }
+
+        if (!in_array($l, $this->collFulfilmentCenterProductss->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFulfilmentCenterProducts($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param FulfilmentCenterProducts $fulfilmentCenterProducts The fulfilmentCenterProducts object to add.
+     */
+    protected function doAddFulfilmentCenterProducts($fulfilmentCenterProducts)
+    {
+        $this->collFulfilmentCenterProductss[]= $fulfilmentCenterProducts;
+        $fulfilmentCenterProducts->setFulfilmentCenter($this);
+    }
+
+    /**
+     * @param  FulfilmentCenterProducts $fulfilmentCenterProducts The fulfilmentCenterProducts object to remove.
+     * @return ChildFulfilmentCenter The current object (for fluent API support)
+     */
+    public function removeFulfilmentCenterProducts($fulfilmentCenterProducts)
+    {
+        if ($this->getFulfilmentCenterProductss()->contains($fulfilmentCenterProducts)) {
+            $this->collFulfilmentCenterProductss->remove($this->collFulfilmentCenterProductss->search($fulfilmentCenterProducts));
+            if (null === $this->fulfilmentCenterProductssScheduledForDeletion) {
+                $this->fulfilmentCenterProductssScheduledForDeletion = clone $this->collFulfilmentCenterProductss;
+                $this->fulfilmentCenterProductssScheduledForDeletion->clear();
+            }
+            $this->fulfilmentCenterProductssScheduledForDeletion[]= $fulfilmentCenterProducts;
+            $fulfilmentCenterProducts->setFulfilmentCenter(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FulfilmentCenter is new, it will return
+     * an empty collection; or if this FulfilmentCenter has previously
+     * been saved, it will retrieve related FulfilmentCenterProductss from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FulfilmentCenter.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildFulfilmentCenterProducts[] List of ChildFulfilmentCenterProducts objects
+     */
+    public function getFulfilmentCenterProductssJoinProduct($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildFulfilmentCenterProductsQuery::create(null, $criteria);
+        $query->joinWith('Product', $joinBehavior);
+
+        return $this->getFulfilmentCenterProductss($query, $con);
     }
 
     /**
@@ -1207,8 +1521,14 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collFulfilmentCenterProductss) {
+                foreach ($this->collFulfilmentCenterProductss as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collFulfilmentCenterProductss = null;
     }
 
     /**
