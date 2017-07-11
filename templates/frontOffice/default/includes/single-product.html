@@ -79,7 +79,7 @@
                 {if $IS_PROMO }
 
                     {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
-                    <span class="special-price col-xs-6">
+                    <span class="special-price col-xs-6" >
                     	<meta itemprop="price" content="{$BEST_TAXED_PRICE}">
                     	<span class="price-label">{intl l="Special Price:" d="fo.default"} </span><span class="price">
                         {if $combination_count > 1}
@@ -95,7 +95,7 @@
                     {/if}
                 {else}
                     
-                <div class=" col-xs-6">
+                <div class=" col-xs-6" style="padding-right: 0">
                     <span itemprop="price" class="listen-price">{if $LISTEN_PRICE!=0} Statt {format_money number=$LISTEN_PRICE}{/if} </span>
                 </div>
                     
