@@ -1,22 +1,12 @@
 <?php
-
-
 namespace MultipleFullfilmentCenters\Handler;
 
-
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
-
 use Thelia\Model\Product;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\ProductSaleElements;
-use DeliveryDelay\DeliveryDelay;
-use Propel\Runtime\ActiveQuery\Criteria;
-use MultipleFullfilmentCenters\Model\FulfilmentCenter;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
-use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
 
 class LocationStockHandler
 {
@@ -27,23 +17,24 @@ class LocationStockHandler
 	 public function getStockLocationsForProduct($productId)
 	 {  
 		$stock = FulfilmentCenterProductsQuery::create()
-			->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, Criteria::INNER_JOIN)
-			//->useFulfilmentCenterQuery()
+		->addSelfSelectColumns()
+			//->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, Criteria::INNER_JOIN)
+			->useFulfilmentCenterQuery()
 				//->addAsColumn("CenterName", FulfilmentCenterTableMap::NAME)
 				//->withColumn('`fulfilment_center`.NAME','CenterName')
 				->withColumn(FulfilmentCenterTableMap::NAME,'CenterName')
-			//->endUse()
+			->endUse()
 			->filterByProductId($productId)
 			->find();
-		
+
 		foreach ($stock as $i => $value) {
-			$stockProduct[$i]["id"] = $stock[$i]->getId();
-			$stockProduct[$i]["fulfilmentCenterId"] = $stock[$i]->getFulfilmentCenterId();
-			$stockProduct[$i]["productId"] = $stock[$i]->getProductId();
-			$stockProduct[$i]["productStock"] = $stock[$i]->getProductStock();
-			$stockProduct[$i]["incomingStock"] = $stock[$i]->getIncomingStock();
-			$stockProduct[$i]["outgoingStock"] = $stock[$i]->getOutgoingStock();
-			$stockProduct[$i]["fulfilmentCenterName"] = $stock[$i]->getVirtualColumn('CenterName');
+			$stockProduct[$i]["id"] = $value->getId();
+			$stockProduct[$i]["fulfilmentCenterId"] = $value->getFulfilmentCenterId();
+			$stockProduct[$i]["productId"] = $value->getProductId();
+			$stockProduct[$i]["productStock"] = $value->getProductStock();
+			$stockProduct[$i]["incomingStock"] = $value->getIncomingStock();
+			$stockProduct[$i]["outgoingStock"] = $value->getOutgoingStock();
+			$stockProduct[$i]["fulfilmentCenterName"] = $value->getVirtualColumn('CenterName');
 		}
 		return $stockProduct;
 	}
