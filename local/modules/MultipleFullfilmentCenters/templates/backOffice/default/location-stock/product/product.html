@@ -1,138 +1,123 @@
 <link rel="stylesheet" href="{stylesheet file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css'}">
 
-{form type="locationstock.form" name="locationstock.form"}
-    <form class="js_deliverydelay_product_config" action="{url path='/admin/module/deliverydelay/product/'}{$product_id}" method="post">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">{intl l="Location stock configuration" d='deliverydelay.bo.default'}</h4>
-                <!-- {include
-                file      = "includes/inner-form-toolbar.html"
-                hide_flags = true
-                hide_save_and_close_button = true
-                } -->
-            </div>
-            <div class="panel-body js_deliverydelay_panel_body">
-
-                {form_hidden_fields form=$form}
-
-                {form_field form=$form field='success_url'}
-                    <input type="hidden" name="{$name}" value="{url path={navigate to="current"}}" />
-                {/form_field}
-				
-				{form_field form=$form field="location_stock"}
-                 	<label for="{$label_attr.for}">
-                   		{$label} :
-                   	</label>
+ <div class="panel panel-default">
+     <div class="panel-heading">
+         <h4 class="panel-title">{intl l="Product stock per center" d='deliverydelay.bo.default'}</h4>
+         <!-- {include
+         file      = "includes/inner-form-toolbar.html"
+         hide_flags = true
+         hide_save_and_close_button = true
+         } -->
+         </div>
+         <div class="panel-body">
+			{form type="locationstock.form" name="locationstock.form"}
+				 <form action="{url path='/admin/module/multiplefulfilmentcenters/productstock/add'}" method="post">
+		             {form_hidden_fields form=$form}
+		
+		             {form_field form=$form field='success_url'}
+		                 <input type="hidden" name="{$name}" value="{url path={navigate to='current'}}" />
+		             {/form_field}
+		
+					{form_field form=$form field="product_id"}
+			        	<input type="hidden" name="{$name}" value="{$value}">
+			        {/form_field}
+			                       
+					{form_field form=$form field="location_stock"}
+	              	  <label for="{$label_attr.for}">
+	                		{$label} :
+	                  </label>
+	                    
+		              <select class='form-control' name="{$name}">
+		              	<option>{intl l="No fulfilment center selected"}</option>
+		              	{loop type="fulfilment_center" name="{$name}"}
+		                   <option value="{$ID}">{$NAME}</option>
+		                {/loop}
+		              </select>
+						<span class="help-block">
+		                        {intl l="Please select a location and then add the product stock" d=''}
+		                </span>
+		            {/form_field}
+		            
+		            {form_field form=$form field="product_stock"}
+		            	<label for="{$label_attr.for}">
+		                	{$label} :
+		                </label>
+		                <input type="text" name="{$name}" id="{$label_attr.for}" value="{$value}"  class="form-control"/>
+		            {/form_field}
+		           
+		          	<br>
+		            <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add stock for location'}" data-toggle="modal">
+		            	{intl l="Add stock"}</span>
+		            </button>
+	          </form>
+		{/form}
+        <br>    
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>{intl l="Center name"}</th>
+                <th>{intl l="Product stock"}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center"}
+                    <tr>
+                        <td>{$ID}</td>
+                            {form name="locationstock.form"}
+                                <form action="{url path='/admin/module/multiplefulfilmentcenters/productstock/update'}" method="post">
+                                	{form_hidden_fields form=$form}
+                                    
+                                   {form_field form=$form field='success_url'}
+			                       	<input type="hidden" name="{$name}" value="{url path={navigate to='current'}}" />
+			                       {/form_field}
+			                     
+			                       {form_field form=$form field="id"}
+			                  					<input type="hidden" name="{$name}" value="{$ID}">
+			                       {/form_field}
+			     
+			                       {form_field form=$form field="location_stock"}
+			                       	<td>
+			                            {$CENTERNAME}
+			                       	</td>
+			                       {/form_field}
+			                         
+			                       {form_field form=$form field="product_stock"}
+			                           <td>
+			                             <input type="text" name="{$name}" value="{$PRODUCTSTOCK}">
+			                         	</td>
+			                       {/form_field}
+                      
+	                      			<td>
+	                      				<button type="submit"  class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Update"}">{intl l="Update"} <span class="glyphicon glyphicon-ok"></span></button>
+	                     			</td>
+                                </form>
+                            {/form}
                        
-	                <select class='form-control' name="{$name}">
-	                	<option>{intl l="No fulfilment center selected"}</option>
-	                    {loop type="fulfilment_center" name="{$name}"}
-	                         <option value="{$ID}">{$NAME}</option>
-	                    {/loop}
-	                </select>
-	                <span class="help-block">
-                            {intl l="Please select a location and then add the product stock" d=''}
-                    </span>
-                {/form_field}
-                
-                {form_field form=$form field="product_stock"}
-                	<label for="{$label_attr.for}">
-                    	{$label} :
-                    </label>
-                    <input type="text" name="{$name}" id="{$label_attr.for}" value="{$value}"  class="form-control"/>
-                {/form_field}
-               
-              	<br>
-                <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add stock for location'}" data-toggle="modal">
-                	{intl l="Add stock"}</span>
-                </button>
-                
-                
-<table><tbody>
-   {loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center"}
-                                <tr>
-                                    <td>{$ID}</td>
-         <td>{$CENTERID}</td>
-        <td>{$PRODUCTID}</td> 
-            <td>{$PRODUCTSTOCK}</td> 
-                                </tr>
-                            {/loop}             </tbody>
-                    </table>     
-                    
-                    
-                       <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>{intl l="Center id"}</th>
-                            <th>{intl l="Product stock"}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center"}
-                                <tr>
-                                    <td>{$ID}</td>
-                                        {form name="locationstock.form"}
-                                            <form action="{url path="/admin/module/multiplefulfilmentcenters/locations/update"}" method="post" id="update-exclude-date">
-                                                {form_hidden_fields form=$form}
-                                                
-                                                {form_field form=$form field='success_url'}
-					                                <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
-					                            {/form_field}
-					                            
-					                            {form_field form=$form field="id"}
-                                                    <input type="hidden" name="{$name}" value="{$ID}">
-                                                {/form_field}
-                            
-                                                {form_field form=$form field="location_stock"}
-                                                  <td>
-                                                   {$CENTERNAME}
-                                                 </td>
-                                                {/form_field}
-                                                
-                                                {form_field form=$form field="product_stock"}
-                                                  <td>
-                                                    <input type="text" name="{$name}" value="{$PRODUCTSTOCK}">
-                                                </td>
-                                                {/form_field}
-                                                
-                                                <td>
-                                                
-					                                <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Update"}">{intl l="Update"} <span class="glyphicon glyphicon-ok"></span></button>
-					                            </td>
-                                            </form>
-                                        {/form}
-                                   
-                                    <td>
-                                        {form name="locationstock.form"}
-                                            <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/delete'}" method="post">
-                                                {form_hidden_fields form=$form}
+                         <td>
+                             {form name="locationstock.form"}
+                                 <form action="{url path='/admin/module/multiplefulfilmentcenters/productstock/delete'}" method="post">
+                                     {form_hidden_fields form=$form}
 
-                                                {form_field form=$form field='success_url'}
-                                                    <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
-                                                {/form_field}
+                                     {form_field form=$form field='success_url'}
+                                         <input type="hidden" name="{$name}" value="{url path={navigate to='current'}}" />
+                                     {/form_field}
 
-                                                {form_field form=$form field="id"}
-                                                    <input type="hidden" name="{$name}" value="{$ID}"/>
-                                                {/form_field}
+                                      {form_field form=$form field="id"}
+                                         <input type="hidden" name="{$name}" value="{$ID}"/>
+                                     {/form_field}
 
-                                                <button type="submit" class="btn btn-danger action-btn" title="{intl l='Delete fulfilment center'}" data-toggle="modal">
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                </button>
-                                            </form>
-                                        {/form}
-                                    </td>
-                                </tr>
-                            {/loop}
-                        </tbody>
-                    </table>
-                    
-            </div>
-        </div>
-    </form>
-    
-   
-	
-     
-{/form}
-            
+                                     <button type="submit" class="btn btn-danger action-btn" title="{intl l='Delete fulfilment center'}" data-toggle="modal">
+                                         <span class="glyphicon glyphicon-trash"></span>
+                                     </button>
+                                 </form>
+                             {/form}
+                         </td>
+                    </tr>
+                {/loop}
+            </tbody>
+        </table>
+                
+    </div>
+</div>
+  

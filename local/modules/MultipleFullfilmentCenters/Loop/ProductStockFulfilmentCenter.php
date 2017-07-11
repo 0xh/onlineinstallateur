@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MultipleFullfilmentCenters\Loop;
 
 use MultipleFullfilmentCenters\Handler\LocationStockHandler;
@@ -14,12 +13,8 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenter as FulfilmentCenterModel;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
 
-
-
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
-
 use Thelia\Core\Template\Loop\Argument\Argument;
-
 
 class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopInterface
 {

@@ -19,7 +19,6 @@ class LocationStockForm extends BaseForm
         $productId = $request->get("product_id");
         
         $fulfilmentCenters = FulfilmentCenterQuery::create()->find();
-      //  Tlog::getInstance()->error("locationstock ".$productData->__toString());  
 
         $this->formBuilder
 	        ->add("id", "text", array(
@@ -27,14 +26,18 @@ class LocationStockForm extends BaseForm
 	        		'label_attr'=>array("for"=>"id")
 	        ))
             ->add("location_stock", "text", array(
-            	'data'=>$productId,
+            	//'data'=>$productId,
                 'label'=>Translator::getInstance()->trans("Fulfiment center", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"location_stock")
             ))
             ->add("product_stock", "text", array(
-            	//'data'=>$fulfilmentCenters,
                 'label'=>Translator::getInstance()->trans("Product stock", array(), DeliveryDelay::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"product_stock")
+            ))
+            ->add("product_id", "text", array(
+            	'data'=>$productId,
+            	'label'=>Translator::getInstance()->trans("Product id", array(), DeliveryDelay::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"product_id")
             ))
         ;
     }

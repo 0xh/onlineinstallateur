@@ -5,40 +5,36 @@ namespace MultipleFullfilmentCenters\Handler;
 
 
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
-use MultipleFullfilmentCenters\Model\ProductDelay;
-use MultipleFullfilmentCenters\Model\ProductDelayQuery;
-use MultipleFullfilmentCenters\Model\UndeliverableDateQuery;
 
-use MultipleFullfilmentCenters\Model\FulfilmentCenter;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
- 
-use Thelia\Log\Tlog;
 use Thelia\Model\Product;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\ProductSaleElements;
 use DeliveryDelay\DeliveryDelay;
+use Propel\Runtime\ActiveQuery\Criteria;
+use MultipleFullfilmentCenters\Model\FulfilmentCenter;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
+use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
 
 class LocationStockHandler
 {
-	protected static $logger;
 	/**
 	 * @param $productId
 	 * @return array
 	 */
 	 public function getStockLocationsForProduct($productId)
-	 {
-	 	
+	 {  
 		$stock = FulfilmentCenterProductsQuery::create()
-		//->useFulfilmentCenterQuery()
-			//->addAsColumn("CenterName", FulfilmentCenterTableMap::NAME)
-			//->withColumn('`fulfilment_center`.NAME','CenterName')
-			//->withColumn(FulfilmentCenterTableMap::TABLE_NAME."name",'CenterName')
-		//->endUse()
-		->filterByProductId($productId)
-		->find();
+			->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, Criteria::INNER_JOIN)
+			//->useFulfilmentCenterQuery()
+				//->addAsColumn("CenterName", FulfilmentCenterTableMap::NAME)
+				//->withColumn('`fulfilment_center`.NAME','CenterName')
+				->withColumn(FulfilmentCenterTableMap::NAME,'CenterName')
+			//->endUse()
+			->filterByProductId($productId)
+			->find();
 		
 		foreach ($stock as $i => $value) {
 			$stockProduct[$i]["id"] = $stock[$i]->getId();
@@ -47,7 +43,7 @@ class LocationStockHandler
 			$stockProduct[$i]["productStock"] = $stock[$i]->getProductStock();
 			$stockProduct[$i]["incomingStock"] = $stock[$i]->getIncomingStock();
 			$stockProduct[$i]["outgoingStock"] = $stock[$i]->getOutgoingStock();
-		//	$stockProduct[$i]["fulfilmentCenterName"] = $stock[$i]->getVirtualColumn('CenterName');
+			$stockProduct[$i]["fulfilmentCenterName"] = $stock[$i]->getVirtualColumn('CenterName');
 		}
 		return $stockProduct;
 	}
