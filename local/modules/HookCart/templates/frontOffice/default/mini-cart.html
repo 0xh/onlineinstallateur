@@ -56,7 +56,15 @@
                         </td>
                         <td class="total">
                             <div class="total-price">
-                                <span class="price">{format_money number=$total_price}</span>
+                            {assign "discount" {order attr="discount"}}
+                            {if  $discount != "0"}
+                                <span class="old-price">
+                                	<span class="price">
+                                		{format_money number=$total_price}
+                                	</span>
+                                </span>
+                              {/if}
+                                <span class="price">{format_money number=$total_price-{order attr="discount"}}</span>
                             </div>
                         </td>
                     </tr>
