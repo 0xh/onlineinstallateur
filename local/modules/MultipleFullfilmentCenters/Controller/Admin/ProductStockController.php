@@ -38,10 +38,25 @@ class ProductStockController extends MultipleFullfilmentCentersController
 			->setProductId($data["product_id"])
 			->save();
 			
-			$productFinalStock =  ProductSaleElementsQuery::create()->findOneByProductId($data["product_id"]);
+/* 			$productFinalStock =  ProductSaleElementsQuery::create()->findOneByProductId($data["product_id"]);
 			$productFinalStock
 			->setQuantity($productFinalStock->getQuantity() + $data["product_stock"])
-			->save();
+			->save(); */
+			
+			$entireProductStock = FulfilmentCenterProductsQuery::create()
+			->findByProductId($data["product_id"]);
+			
+			$total = 0;
+			foreach ($entireProductStock as $i => $value) {
+				$total += $value->getProductStock();
+			}
+			
+			$productFinalStock =  ProductSaleElementsQuery::create()
+			->findOneByProductId($data["product_id"]);
+			
+			$productFinalStock
+			->setQuantity($total)
+			->save(); 
 			
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
