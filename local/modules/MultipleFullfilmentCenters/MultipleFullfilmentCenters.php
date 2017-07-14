@@ -46,11 +46,11 @@ class MultipleFullfilmentCenters extends BaseModule
                 "code" => "product.multiplefullfilmentcenters",
                 "title" => array(
                     "fr_FR" => "Hook Produit DeliveryDelay",
-                    "en_US" => "DeliveryDelay Product Hook",
+                    "en_US" => "Multiple Fulfilment Center",
                 ),
                 "description" => array(
                     "fr_FR" => "Hook pour délais de livraison d'un produit",
-                    "en_US" => "Hook for product delivery delay",
+                    "en_US" => "Hook for multiple fulfilment center",
                 ),
                 "active" => true
             )

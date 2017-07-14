@@ -8,15 +8,6 @@
         <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\MultipleFullfilmentCentersController::viewAction</default>
     </route>
 
-    <route id="deliverydelay.config" path="/admin/module/deliverydelay/config">
-        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ConfigurationController::setGlobalConfig</default>
-    </route>
-
-    <route id="deliverydelay.product" path="/admin/module/deliverydelay/product/{product_id}">
-        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ConfigurationController::setProductConfig</default>
-        <requirement key="product_id">\d+</requirement>
-    </route>
-   
     <route id="multiplefulfilmentcenters.productstock.add" path="/admin/module/multiplefulfilmentcenters/productstock/add">
         <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ProductStockController::addProductStock</default>
     </route>

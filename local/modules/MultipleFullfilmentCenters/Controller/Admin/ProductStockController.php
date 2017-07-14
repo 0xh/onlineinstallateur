@@ -10,6 +10,11 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Model\ProductSaleElements;
+use Thelia\Model\ProductSaleElementsQuery;
+use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
+
+
 use DeliveryDelay\DeliveryDelay;
 
 class ProductStockController extends MultipleFullfilmentCentersController
@@ -33,6 +38,11 @@ class ProductStockController extends MultipleFullfilmentCentersController
 			->setProductId($data["product_id"])
 			->save();
 			
+			$productFinalStock =  ProductSaleElementsQuery::create()->findOneByProductId($data["product_id"]);
+			$productFinalStock
+			->setQuantity($productFinalStock->getQuantity() + $data["product_stock"])
+			->save();
+			
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
@@ -47,6 +57,7 @@ class ProductStockController extends MultipleFullfilmentCentersController
 	
 	public function updateProductStock()
 	{
+		
 		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('MultipleFullfilmentCenters'), AccessManager::UPDATE)) {
 			return $response;
 		}
@@ -56,16 +67,31 @@ class ProductStockController extends MultipleFullfilmentCentersController
 		try {
 			$data = $this->validateForm($form)->getData();
 			
-			$productStock = FulfilmentCenterProductsQuery::create()
-			->findOneById($data["id"]);
+			$centerProductStock = FulfilmentCenterProductsQuery::create()
+				->findOneById($data["id"]);
 			
-			if (null === $productStock) {
+			if (null === $centerProductStock) {
 				throw new \Exception($this->getTranslator()->trans("Location stock id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
 			}
 			
-			$productStock
-			->setProductStock($data["product_stock"])
-			->save();
+			$centerProductStock
+				->setProductStock($data["product_stock"])
+				->save();
+			
+			$entireProductStock = FulfilmentCenterProductsQuery::create()
+				->findByProductId($data["product_id"]);
+			
+			$total = 0;
+			foreach ($entireProductStock as $i => $value) {
+				$total += $value->getProductStock();
+			}
+			
+			$productFinalStock =  ProductSaleElementsQuery::create()
+				->findOneByProductId($data["product_id"]);
+			
+			$productFinalStock
+				->setQuantity($total)
+				->save(); 
 			
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
@@ -98,6 +124,11 @@ class ProductStockController extends MultipleFullfilmentCentersController
 			}
 			
 			$productStock->delete();
+			
+			$productFinalStock =  ProductSaleElementsQuery::create()->findOneByProductId($data["product_id"]);
+			$productFinalStock
+			->setQuantity($productFinalStock->getQuantity() - $data["product_stock"])
+			->save();
 			
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {

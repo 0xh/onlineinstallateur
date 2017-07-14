@@ -15,10 +15,4 @@ class LocationStockEditHook extends BaseHook
         ));
     }
 
-    public function onProductStockJs(HookRenderEvent $event)
-    {
-        $event->add($this->render(
-            'location-stock/product/product-edit-js.html'
-        ));
-    }
 }
