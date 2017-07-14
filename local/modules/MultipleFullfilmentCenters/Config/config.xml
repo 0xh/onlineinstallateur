@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <loops>
-       <!--  <loop name="delivery_delay_product" class="DeliveryDelay\Loop\DeliveryDelayProduct" /> -->
         <loop name="fulfilment_center" class="MultipleFullfilmentCenters\Loop\FulfilmentCenter" />
         <loop name="product_stock_fulfilment_center" class="MultipleFullfilmentCenters\Loop\ProductStockFulfilmentCenter" />
     </loops>
@@ -19,8 +18,8 @@
         <hook id="multiplefullfilmentcenters.edit.product" class="MultipleFullfilmentCenters\Hook\Admin\LocationStockEditHook" scope="request">
             <tag name="hook.event_listener" event="product.tab-content" type="back" method="onProductStock" />
         </hook>
-    <!--     <hook id="multiplefullfilmentcenters.product" class="MultipleFullfilmentCenters\Hook\Front\LocationStockHook" scope="request">
-            <tag name="hook.event_listener" event="product.delivery-delay" type="front" method="onProductDeliveryDelay" />
+
+<!--         <hook id="multiplefullfilmentcenters.product" class="MultipleFullfilmentCenters\Hook\Front\LocationStockHook" scope="request">
             <tag name="hook.event_listener" event="product.details-bottom" type="front" method="onProductDetailsBottom" />
         </hook> -->
     </hooks>

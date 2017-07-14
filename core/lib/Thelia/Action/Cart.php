@@ -82,8 +82,7 @@ class Cart extends BaseAction implements EventSubscriberInterface
     {
     	/*
     	$log = Tlog::getInstance ();
-    	
-    	
+
     	$log->debug(" |||before");
     	foreach($this->getSession()->all() as $sessionItem){
     		if(is_object($sessionItem)){
@@ -98,7 +97,6 @@ class Cart extends BaseAction implements EventSubscriberInterface
     				else $log->debug ( "--sessionitem string ".$sessionItem);
     	}
     	*/
-    	
         $cart = $event->getCart();
         $newness = $event->getNewness();
         $append = $event->getAppend();

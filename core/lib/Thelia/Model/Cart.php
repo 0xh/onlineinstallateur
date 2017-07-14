@@ -55,7 +55,12 @@ class Cart extends BaseCart
                 $discount = $customer->getDiscount();
             }
         }
-
+        
+        if ($discount == 0)
+        	$cart->setDiscount($this->getDiscount());
+        else
+        	$cart->setDiscount($discount);
+        
         $cart->save();
         foreach ($cartItems as $cartItem) {
             $product = $cartItem->getProduct();

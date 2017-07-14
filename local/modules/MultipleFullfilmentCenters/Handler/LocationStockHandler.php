@@ -45,6 +45,7 @@ class LocationStockHandler
      */
     public function getDelayForProduct($productId)
     {
+    	/*
         $delay = ProductDelayQuery::create()
             ->filterByProductId($productId)
             ->findOneOrCreate();
@@ -80,7 +81,7 @@ class LocationStockHandler
         $delivery["deliveryMin"] = $this->computeDeliveryDate($startDate, $delayMin);
         $delivery["deliveryMax"] = $this->computeDeliveryDate($startDate, $delayMax);
 
-        return $delivery;
+        return $delivery;*/
     }
 
     public function computeDeliveryDate($startDate, $delay) {

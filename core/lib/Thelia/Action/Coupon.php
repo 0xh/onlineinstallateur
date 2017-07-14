@@ -188,9 +188,7 @@ class Coupon extends BaseAction implements EventSubscriberInterface
                 ;
             }
         }
-        $log = Tlog::getInstance();
-        $log->error("coupondiscount ".$coupon->getEffects());
-
+        
         $event->setIsValid($isValid);
         $event->setDiscount($totalDiscount);
     }
