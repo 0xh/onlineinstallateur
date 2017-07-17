@@ -196,8 +196,8 @@ class ExportController extends BaseAdminController
             }
 
             $rangeDate = null;
-            if ($validatedForm->get('range_date_start')->getData()
-                && $validatedForm->get('range_date_end')->getData()
+            if ($validatedForm->get('range_date_start')->getData()['year']
+            		&& $validatedForm->get('range_date_end')->getData()['year']
             ) {
                 $rangeDate = [
                     'start' => $validatedForm->get('range_date_start')->getData(),

@@ -1,9 +1,5 @@
 {extends file="admin-layout.tpl"}
 
-{block name="after-bootstrap-css"}
-    <link rel="stylesheet" href="{stylesheet file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css'}">
-{/block}
-
 {block name="no-return-functions"}
     {$admin_current_location = 'modules'}
 {/block}
@@ -14,7 +10,7 @@
 {block name="check-access"}view{/block}
 
 {block name="main-content"}
-    {default_translation_domain domain='deliverydelay.bo.default'}
+    {default_translation_domain domain='multiplefullfilmentcenters.bo.default'}
 
     {if $form_error_message}
         <div class="alert alert-danger">{$form_error_message}</div>
@@ -174,16 +170,7 @@
     </div>
 {/block}
 {block name="javascript-initialization"}
-    {javascripts file='assets/js/moment-with-locales.min.js'}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
-    {javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
-    {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
-        <script src='{$asset_url}'></script>
-    {/javascripts}
-    {include file="location-stock/configuration-js.html"}
+
 {/block}
 
 {block name="javascript-last-call"}

@@ -3,15 +3,11 @@
 namespace MultipleFullfilmentCenters\Loop;
 
 use MultipleFullfilmentCenters\Handler\LocationStockHandler;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
-use MultipleFullfilmentCenters\Model\FulfilmentCenter as FulfilmentCenterModel;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
 
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
@@ -33,8 +29,7 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 		$handler = new LocationStockHandler();
 		$stockLocation = $handler->getStockLocationsForProduct($productId);
 		return $stockLocation;
-	}
-	
+	}	
 	
 	/**
 	 * @param LoopResult $loopResult
@@ -43,7 +38,6 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 	 */
 	public function parseResults(LoopResult $loopResult)
 	{
-		/** @var FulfilmentCenterProductsModel $stockProductFulfilmentCenter */
 		foreach ($loopResult->getResultDataCollection() as $stockProductFulfilmentCenter) {
 			$row = new LoopResultRow();
 			$row

@@ -29,6 +29,7 @@ use Thelia\Action\Image;
 use Thelia\Core\Event\Image\ImageEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\ProductQuery;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 
 /**
  * Class IdealoProductExport
@@ -89,7 +90,20 @@ class IdealoProductExport extends AbstractExport
     		$this->url_site = ConfigQuery::read('url_site');
     	$processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
     	$processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
-    	$processedData['Lieferzeit'] = "2-3 Arbeitstagen";
+    	
+    	// set delivery time
+    	$allCentersProduct = FulfilmentCenterProductsQuery::create()
+	    	->addSelfSelectColumns()
+	    	->filterByProductId($data['product_sale_elements.PRODUCT_ID'])
+	    	->where('`fulfilment_center_products`.PRODUCT_STOCK ',Criteria::ISNOTNULL)
+	    	->findOne();
+    	
+    	if($allCentersProduct) {
+    		$processedData['Lieferzeit'] = "Sofort versandfertig";
+    	}
+    	else
+    		$processedData['Lieferzeit'] = "2-3 Arbeitstagen"; 
+    	
     	$processedData['Nachnahme/Barzahkung/Kreditkarte/Paypal'] = "0";
     	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
     	$processedData['Spezialpreis'] = number_format((float)($processedData['Spezialpreis']*1.2), 2, '.', '');

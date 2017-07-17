@@ -8,7 +8,6 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenter;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
-use DeliveryDelay\DeliveryDelay;
 
 class LocationStockController extends MultipleFullfilmentCentersController
 {
@@ -36,7 +35,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on new location : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                $this->getTranslator()->trans("Error on new location : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );
@@ -60,7 +59,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
                 ->findOneById($data["id"]);
 
             if (null === $locationStock) {
-                throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
+                throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), MultipleFullfilmentCenters::DOMAIN_NAME);
             }
 
             $locationStock
@@ -74,7 +73,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error updating location : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                $this->getTranslator()->trans("Error updating location : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );
@@ -98,7 +97,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
                 ->findOneById($data["id"]);
 
             if (null === $locationStock) {
-                throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), DeliveryDelay::DOMAIN_NAME);
+                throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), MultipleFullfilmentCenters::DOMAIN_NAME);
             }
 
             $locationStock->delete();
@@ -106,7 +105,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on location deletion : %message", ["message"=>$e->getMessage()], DeliveryDelay::DOMAIN_NAME),
+                $this->getTranslator()->trans("Error on location deletion : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
                 $e->getMessage(),
                 $form
             );

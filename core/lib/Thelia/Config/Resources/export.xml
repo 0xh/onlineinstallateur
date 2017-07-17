@@ -201,6 +201,42 @@
                 </description>
             </export_descriptive>
         </export>
+        
+        <export id="thelia.export.stock.geizhals" class="Thelia\ImportExport\Export\Type\GeizhalsProductStockExport" category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Geizhals Product Stock And Locations Export</title>
+                <description>
+                <![CDATA[
+                    Export the product stock and locations in the required Geizhals CSV format:
+                    <ul>
+                    	<li> Artikelnummer,Versandlager1,Versandlager2,Versandlager3,Versandlager4</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Geizhals Product Stock And Locations Export</title>
+                <description>
+                <![CDATA[
+                     Export the product stock and locations in the required Geizhals CSV format:
+                    <ul>
+                    	<li> Artikelnummer,Versandlager1,Versandlager2,Versandlager3,Versandlager4</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Geizhals Product Stock And Locations Export</title>
+                <description>
+                <![CDATA[
+                      Export the product stock and locations in the required Geizhals CSV format:
+                    <ul>
+                    	<li> Artikelnummer,Versandlager1,Versandlager2,Versandlager3,Versandlager4</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+        </export>
 
         <export id="thelia.export.content" class="Thelia\ImportExport\Export\Type\ContentExport" category_id="thelia.export.content">
             <export_descriptive locale="en_US">
