@@ -65,12 +65,15 @@
 
             {hook name="category.content-top" category="$category_id"}
 
-            {if #category_display_detail# && $category_id}
+            {*if #category_display_detail# && $category_id*}
+            
             <section class="category-description">
                 {loop name="category.description" type="category" id={$category_id} limit="1" }
-                    <h1 id="main-label" class="page-header">{category attr="title"}</h1>
+                {if $PARENT!=0 && $category_id}
+                    <!--h1 id="main-label" class="page-header">{category attr="title"}</h1-->
                     {loop name="category.image" type="image" source="category" source_id={$ID} resize_mode="borders"}
-                    <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
+                    <p><a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                
                     {/loop}
                     {if $DESCRIPTION}
                     <!--div class="description">
@@ -82,10 +85,28 @@
                         {$POSTSCRIPTUM}
                     </small>
                     {/if}
+                {/if}
+                  {if $PARENT==0 && $category_id}
+                   
+                    {loop name="category.image" type="image" source="category" source_id={$ID} resize_mode="borders" limit=1 }
+                    <p><a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                
+                    {/loop}
+                    {if $DESCRIPTION}
+                    <!--div class="description">
+                        {$DESCRIPTION nofilter}
+                    </div-->
+                    {/if}
+                    {if $POSTSCRIPTUM}
+                    <small class="postscriptum">
+                        {$POSTSCRIPTUM}
+                    </small>
+                    {/if}
+                {/if}
                 {/loop}
             </section>
             <hr/>
-            {/if}
+            {*/if*}
 
             {if #category_display_subcategories#}
             {ifloop rel="subcategories"}
