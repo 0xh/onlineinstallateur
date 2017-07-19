@@ -1099,7 +1099,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                     break;
                 case "manual":
                     if (! $manualOrderAllowed) {
-                        throw new \InvalidArgumentException('Manual order require a *single* category ID or category_default ID, and a depth <= 1');
+                   //     throw new \InvalidArgumentException('Manual order require a *single* category ID or category_default ID, and a depth <= 1');
                     }
                     $search->addAscendingOrderByColumn('position_delegate');
                     break;
