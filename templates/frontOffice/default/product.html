@@ -198,13 +198,14 @@
     </tr>
      {/if}
     <tr>
-    
-    <td class="highlight" colspan="2">
-       {hook name="product.details-bottom" product={$ID}}               
-				{if $service_category != #services_category_id#}
-                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
-                {/if} 
-    </td>  
+	{if !$QUANTITY}
+	    <td class="highlight" colspan="2">
+	       {hook name="product.details-bottom" product={$ID}}               
+					{if $service_category != #services_category_id#}
+	                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
+	                {/if} 
+	    </td> 
+	{/if} 
     </tr>   
 
 </table>
@@ -226,11 +227,15 @@
 
                 <div class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <div class="availability">
-                        <span class="availibity-label sr-only">{intl l="Availability"}: </span>
-                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
-                            <span class="in">{intl l='In Stock'}</span>
-                            <span class="out">{intl l='Out of Stock'}</span>
-                        </span>
+	                        <span class="availibity-label sr-only">{intl l="Availability"}: </span>
+	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
+	                        	{if $QUANTITY}
+                    				<span>{intl l='Can be picked up immediately'}</span>
+                    			{else}
+                    				<span class="in">{intl l='In Stock'}</span>
+	                            	<span class="out">{intl l='Out of Stock'}</span>
+                    			{/if}
+	                        </span>
                     </div>
 
                     <div class="price-container">

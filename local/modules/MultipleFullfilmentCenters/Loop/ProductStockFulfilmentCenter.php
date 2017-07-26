@@ -17,17 +17,28 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 	protected function getArgDefinitions()
 	{
 		return new ArgumentCollection(
-				Argument::createIntTypeArgument("product_id")
+				Argument::createIntTypeArgument("id"),
+				Argument::createIntTypeArgument("quantity")
 				);
 	}
 	
 	public function buildArray()
 	{
-		//$productId = $this->getProductId();
-		$productId = $_GET['product_id'];
+	 	if($_GET['product_id']) {
+			$productId = $_GET['product_id'];
+		}
+		else {
+			$productId = $this->getId();
+		} 
+		
+		if($this->getQuantity()) 
+			$quantityCart = $this->getQuantity();
+		else 
+			// set quantity cart to 1, so LocationStockHandler->getStockLocationsForProduct should retrieve only the locations with stock available
+			$quantityCart = '1';
 		
 		$handler = new LocationStockHandler();
-		$stockLocation = $handler->getStockLocationsForProduct($productId);
+		$stockLocation = $handler->getStockLocationsForProduct($productId, $quantityCart);
 		return $stockLocation;
 	}	
 	

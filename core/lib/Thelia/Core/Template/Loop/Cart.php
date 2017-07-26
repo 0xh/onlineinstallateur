@@ -24,6 +24,7 @@ use Thelia\Model\Cart as CartModel;
 use Thelia\Type;
 use Thelia\Model\CategoryQuery;
 use Thelia\Log\Tlog;
+
 /**
  *
  * Cart Loop
@@ -121,7 +122,9 @@ class Cart extends BaseLoop implements ArraySearchLoopInterface
                 ->set("TOTAL_PROMO_TAXED_PRICE", round($cartItem->getTotalTaxedPromoPrice($taxCountry),2));
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_ID", $productSaleElement->getId());
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_REF", $productSaleElement->getRef());
-            
+            $loopResultRow->set("STOCK_QUANTITY", $productSaleElement->getQuantity());
+            $loopResultRow->set("CART_ID", $cartItem->getCartId());
+			
             //service appointment
             // get a query object or somewhere lower
             //category id

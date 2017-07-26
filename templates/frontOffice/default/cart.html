@@ -103,10 +103,14 @@
                                			{/loop}
                                		{else}
                                         <dt>
-                               			Lieferzeit :
+                               				{intl l='Delivery time :'}
                                         </dt>
                                          <dd>
-                                    {hook name="product.delivery-delay" product={$PRODUCT_ID}}
+                                         	{if $STOCK_QUANTITY}
+                                         		{intl l='Can be picked up immediately'}
+                                         	{else}
+                                    			{hook name="product.delivery-delay" product={$PRODUCT_ID}}
+                                    		{/if}
                                         </dd>
                                     {/if}
                                         

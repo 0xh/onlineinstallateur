@@ -60,7 +60,11 @@
                             	{/if}
                             {/loop}
                          {else}
-                         <p><small><strong>Lieferung: </strong>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</small></p>
+                         	{if $STOCK_QUANTITY}
+                         		<p><strong>{intl l='Can be picked up immediately'}</strong></p>
+                         	{else}
+                         		<p><small><strong>Lieferung: </strong>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</small></p>
+                         	{/if}
                          {/if}
                 	{/if}
         		{/loop}

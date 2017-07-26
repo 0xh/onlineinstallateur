@@ -32,4 +32,7 @@
         <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\LocationStockController::deleteLocationStock</default>
     </route>
 
+    <route id="multiplefulfilmentcenters.cart.fulfilmentcenter" path="/cart/fulfilmentcenter">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Front\CartProductStockLocationController::addProductLocation</default>
+    </route>
 </routes>

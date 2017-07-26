@@ -50,6 +50,8 @@ use Thelia\Module\PaymentModuleInterface;
 use Thelia\Tools\I18n;
 use Thelia\Log\Tlog;
 use Thelia\Model\OrderQuery;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 
 
 
@@ -260,17 +262,42 @@ class Order extends BaseAction implements EventSubscriberInterface
         );
 
         $placedOrder->save($con);
-
+        
         /* fulfill order_products and decrease stock */
 
         foreach ($cartItems as $cartItem) {
+        	
             $product = $cartItem->getProduct();
-
+            $pse = $cartItem->getProductSaleElements();
+            
+            // fulfill order_local_pickup with orderId for products that can be picked up from fulfilment centers
+            $cartProductLocation = OrderLocalPickupQuery::create()
+            	->filterByProductId($product->getId())
+            	->filterByCartId($cart->getId())
+	            ->findOne();
+	          
+	        if($cartProductLocation) {
+				$cartProductLocation->setOrderId($placedOrder->getId())
+					->save($con);
+				
+				// decrease stock for the specific fulfilment center
+				$productLocation = FulfilmentCenterProductsQuery::create()
+					->filterByProductId($product->getId())
+					->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
+					->findOne();
+				
+				if($productLocation) {
+					$newStockLocation = $productLocation->getProductStock() - $cartItem->getQuantity();
+					$productLocation->setProductStock($newStockLocation)
+						->save($con);
+				}
+            }
+            
             /* get translation */
             /** @var ProductI18n $productI18n */
             $productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());
 
-            $pse = $cartItem->getProductSaleElements();
+            
 
             // get the virtual document path
             $virtualDocumentEvent = new VirtualProductOrderHandleEvent($placedOrder, $pse->getId());
@@ -292,7 +319,7 @@ class Order extends BaseAction implements EventSubscriberInterface
                     && $useStock) {
                 throw new TheliaProcessException("Not enough stock", TheliaProcessException::CART_ITEM_NOT_ENOUGH_STOCK, $cartItem);
             }
-
+            
             if ($useStock && $manageStock) {
                 /* decrease stock for non virtual product */
                 $allowNegativeStock = intval(ConfigQuery::read('allow_negative_stock', 0));
@@ -472,7 +499,7 @@ class Order extends BaseAction implements EventSubscriberInterface
         /* but memorize placed order */
         $event->setOrder(new ModelOrder());
         $event->setPlacedOrder($placedOrder);
-
+       
         /* call pay method */
         $payEvent = new OrderPaymentEvent($placedOrder);
 
