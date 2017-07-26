@@ -438,19 +438,19 @@
 
 jQuery(function($) {
 	$( ".location-product-stock" ).change(function() {
-		 // alert( $( ".location-product-stock" ).val() );
-		  
+		 
+		  $parent =  $( this ).parents('.product');
 		  $.ajax({
 		        url: '/index_dev.php/cart/fulfilmentcenter',
 		        type: 'POST',
 		        data: {
-		            locationId:  $(".location-product-stock").val(),
-		            cartId:  $(".cart-id").val(),
-		            quantity: $(".quantity").val(),
-		            productId: $(".product-id").val() 
+		            locationId:  $( this ).val(),
+		            cartId:  $parent.children(".cart-id").val(),
+		            quantity: $parent.children(".quantity").val(),
+		            productId: $parent.children( ".product-id" ).val() 
 		        }
 		    }).done(function(data){
-		          //  alert(data);
+		            //alert(data);
 		    });
 	});
 	
