@@ -548,7 +548,7 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
      */
     public function filterByOrder($order, $comparison = null)
     {
-        if ($order instanceof \MultipleFullfilmentCenters\Model\Order) {
+        if ($order instanceof \Propel\Model\Order) {
             return $this
                 ->addUsingAlias(OrderLocalPickupTableMap::ORDER_ID, $order->getId(), $comparison);
         } elseif ($order instanceof ObjectCollection) {

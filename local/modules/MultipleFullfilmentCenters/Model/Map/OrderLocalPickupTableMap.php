@@ -159,8 +159,8 @@ class OrderLocalPickupTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('FulfilmentCenter', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenter', RelationMap::MANY_TO_ONE, array('fulfilment_center_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Order', '\\MultipleFullfilmentCenters\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Product', '\\MultipleFullfilmentCenters\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**

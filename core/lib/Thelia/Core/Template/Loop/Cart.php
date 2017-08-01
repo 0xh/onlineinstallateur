@@ -24,6 +24,7 @@ use Thelia\Model\Cart as CartModel;
 use Thelia\Type;
 use Thelia\Model\CategoryQuery;
 use Thelia\Log\Tlog;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 
 /**
  *
@@ -122,9 +123,21 @@ class Cart extends BaseLoop implements ArraySearchLoopInterface
                 ->set("TOTAL_PROMO_TAXED_PRICE", round($cartItem->getTotalTaxedPromoPrice($taxCountry),2));
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_ID", $productSaleElement->getId());
             $loopResultRow->set("PRODUCT_SALE_ELEMENTS_REF", $productSaleElement->getRef());
-            $loopResultRow->set("STOCK_QUANTITY", $productSaleElement->getQuantity());
-            $loopResultRow->set("CART_ID", $cartItem->getCartId());
-			
+            $loopResultRow->set("ID", $cartItem->getCartId());
+            $loopResultRow->set("DELIVERY_MODULE_ID", $this->getCurrentRequest()->getSession()->getOrder()->getDeliveryModuleId());
+            
+            // get chosen fulfilment center id
+            if($this->getCurrentRequest()->getSession()->getOrder()->getDeliveryModuleId() == '49') {
+	            $cartProductLocation = OrderLocalPickupQuery::create()
+		            ->filterByProductId($product->getId())
+		            ->filterByCartId($cartItem->getCartId())
+		            ->findOne();
+	            
+		        if($cartProductLocation) { 
+		        	$loopResultRow->set("FULFILMENT_CENTER_ID", $cartProductLocation->getFulfilmentCenterId());
+		        }
+            }
+            
             //service appointment
             // get a query object or somewhere lower
             //category id
@@ -141,7 +154,7 @@ class Cart extends BaseLoop implements ArraySearchLoopInterface
             $this->addOutputFields($loopResultRow, $cartItem);
             $loopResult->addRow($loopResultRow);
         }
-        
+     
         return $loopResult;
     }
 

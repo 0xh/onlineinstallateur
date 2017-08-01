@@ -125,28 +125,13 @@
                            			{loop type="bookingsservice" name="calendar_appointment" cart_item_id="$ITEM_ID"}
                            				Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
                            			{/loop}
-                           		{else}
-                           			{ifloop rel="product_stock_fulfilment_center"} 
-                           				{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$PRODUCT_ID quantity=$QUANTITY}
-                                		{/loop}
-                                	{/ifloop} 
-                                	{elseloop rel="product_stock_fulfilment_center"}
-                                		<p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
-                                	{/elseloop}
+                           		{else if $DELIVERY_MODULE_ID == '49'}
+                           			{hook name="product.fulfilment-center" cart={$ID} product={$PRODUCT_ID} quantity={$QUANTITY} center={$FULFILMENT_CENTER_ID}}
+                                {else}
+                                	<p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
                                 {/if} 
                             </div>
                            
-                            {ifloop rel="product_stock_fulfilment_center"} 
-	                            <select class='form-control location-product-stock' name="location_stock">
-	                            	<option>{intl l="Please choose a fulfilment center"}</option>
-					           		{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$PRODUCT_ID quantity=$QUANTITY}
-					                	<option value="{$CENTERID}">{$CENTERNAME}</option>
-					                {/loop}
-								</select>
-								<input type="hidden" name="cartId" class="cart-id" value="{$CART_ID}" />
-								<input type="hidden" name="productId" class="product-id" value="{$PRODUCT_ID}" />
-								<input type="hidden" name="quantity" class="quantity" value="{$QUANTITY}" />
-							{/ifloop} 
                         </td>
                         <td class="unitprice">
                             <div class="secondary-price">
@@ -439,9 +424,9 @@
 jQuery(function($) {
 	$( ".location-product-stock" ).change(function() {
 		 
-		  $parent =  $( this ).parents('.product');
+		  $parent =  $( this ).parents('.product-options');
 		  $.ajax({
-		        url: '/index_dev.php/cart/fulfilmentcenter',
+		        url: '/cart/fulfilmentcenter',
 		        type: 'POST',
 		        data: {
 		            locationId:  $( this ).val(),

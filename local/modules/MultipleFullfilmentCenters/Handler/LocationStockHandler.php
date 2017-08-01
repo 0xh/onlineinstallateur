@@ -4,12 +4,14 @@ namespace MultipleFullfilmentCenters\Handler;
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
-use Propel\Runtime\ActiveQuery\Criteria;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
+use Thelia\Model\ProductI18nQuery;
+
 
 class LocationStockHandler
 {
 	/**
-	 * @param $productId
+	 * @param $productId, $quantityCart
 	 * @return array
 	 */
 	public function getStockLocationsForProduct($productId, $quantityCart)
@@ -35,4 +37,31 @@ class LocationStockHandler
 		return $stockProduct;
 	}
 
+	/**
+	 * @param $orderId, $locale 
+	 * @return array
+	 */
+	public function getPickUpAddress($orderId, $locale)
+	{
+		$pickUpAddress = OrderLocalPickupQuery::create()
+			->addSelfSelectColumns()
+			->useFulfilmentCenterQuery()
+			->withColumn(FulfilmentCenterTableMap::ADDRESS,'CenterAddress')
+			->endUse()
+			->filterByOrderId($orderId)
+			->find();
+	
+		foreach ($pickUpAddress as $i => $value) {
+			$productTitle = ProductI18nQuery::create()
+							->select('title')
+							->filterById($value->getProductId())
+							->filterByLocale($locale)
+							->findOne();
+			
+			$pickUpProductAddress[$i]["productTitle"] = $productTitle;
+			$pickUpProductAddress[$i]["fulfilmentCenterAddress"] = $value->getVirtualColumn('CenterAddress');
+		}
+		
+		return $pickUpProductAddress;
+	}
 }

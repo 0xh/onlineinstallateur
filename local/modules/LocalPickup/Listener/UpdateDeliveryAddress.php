@@ -52,6 +52,8 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
             if ($address !== null) {
                 $config = new ConfigQuery();
                 $address1 = $config->read("pickupaddress");
+                $address2 = $config->read("store_address2");
+                $address3 = $config->read("store_address3");
                 $zipcode = $config->read("store_zipcode");
                 $city = $config->read("store_city");
                 $country = $config->read("store_country");

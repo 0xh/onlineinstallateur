@@ -60,7 +60,7 @@
                             	{/if}
                             {/loop}
                          {else}
-                         	{if $STOCK_QUANTITY}
+                         	{if $STOCK}
                          		<p><strong>{intl l='Can be picked up immediately'}</strong></p>
                          	{else}
                          		<p><small><strong>Lieferung: </strong>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</small></p>

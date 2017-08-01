@@ -270,29 +270,6 @@ class Order extends BaseAction implements EventSubscriberInterface
             $product = $cartItem->getProduct();
             $pse = $cartItem->getProductSaleElements();
             
-            // fulfill order_local_pickup with orderId for products that can be picked up from fulfilment centers
-            $cartProductLocation = OrderLocalPickupQuery::create()
-            	->filterByProductId($product->getId())
-            	->filterByCartId($cart->getId())
-	            ->findOne();
-	          
-	        if($cartProductLocation) {
-				$cartProductLocation->setOrderId($placedOrder->getId())
-					->save($con);
-				
-				// decrease stock for the specific fulfilment center
-				$productLocation = FulfilmentCenterProductsQuery::create()
-					->filterByProductId($product->getId())
-					->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
-					->findOne();
-				
-				if($productLocation) {
-					$newStockLocation = $productLocation->getProductStock() - $cartItem->getQuantity();
-					$productLocation->setProductStock($newStockLocation)
-						->save($con);
-				}
-            }
-            
             /* get translation */
             /** @var ProductI18n $productI18n */
             $productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());

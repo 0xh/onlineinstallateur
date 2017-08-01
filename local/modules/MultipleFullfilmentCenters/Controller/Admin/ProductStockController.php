@@ -57,7 +57,7 @@ class ProductStockController extends MultipleFullfilmentCentersController
 				->setQuantity($total)
 				->save(); 
 			
-			return $this->generateSuccessRedirect($form);
+			return $this->redirectToEditionTemplate($data["product_id"]);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
 					$this->getTranslator()->trans("Error on new product location stock : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
@@ -107,7 +107,7 @@ class ProductStockController extends MultipleFullfilmentCentersController
 				->setQuantity($total)
 				->save(); 
 			
-			return $this->generateSuccessRedirect($form);
+			return $this->redirectToEditionTemplate($data["product_id"]);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
 					$this->getTranslator()->trans("Error updating location stock: %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
@@ -154,7 +154,7 @@ class ProductStockController extends MultipleFullfilmentCentersController
 			->setQuantity($total)
 			->save(); 
 			
-			return $this->generateSuccessRedirect($form);
+			return $this->redirectToEditionTemplate($data["product_id"]);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
 					$this->getTranslator()->trans("Error on location deletion : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
@@ -164,5 +164,19 @@ class ProductStockController extends MultipleFullfilmentCentersController
 			
 			return self::viewAction();
 		}
+	}
+	
+	protected function redirectToEditionTemplate($product_id)
+	{
+		return $this->generateRedirectFromRoute("admin.products.update", $this->getEditionArguments($product_id));
+	}
+	
+	protected function getEditionArguments($product_id)
+	{	
+		return array(
+				'product_id'            => $product_id,
+				'current_tab'           => $this->getRequest()->get('current_tab', 'modules'),
+				'page'                  => $this->getRequest()->get('page', 1)
+		);
 	}
 }

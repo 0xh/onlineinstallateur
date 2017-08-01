@@ -43,7 +43,7 @@ class MultipleFullfilmentCenters extends BaseModule
         return array(
             array(
                 "type" => TemplateDefinition::FRONT_OFFICE,
-                "code" => "product.multiplefullfilmentcenters",
+                "code" => "product.fulfilment-center",
                 "title" => array(
                     "fr_FR" => "Hook Produit DeliveryDelay",
                     "en_US" => "Multiple Fulfilment Center",

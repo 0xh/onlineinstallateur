@@ -63,9 +63,13 @@
 
                         {block name='additional-payment-info'}{/block}
                         {if $deliverymodule=="LocalPickup"}
-                        {intl l="The pickup address is:"} <strong>{config key="pickupaddress"}</strong>
+	                        <!--<p>{intl l="The pickup address is:"}</p> <strong>{config key="pickupaddress"}</strong> -->
+	                        
+	                        {ifhook rel="product.fulfilment-center-address"}
+			               		{hook name="product.fulfilment-center-address" orderid=$placed_order_id}	
+				            {/ifhook}		
                         {else}
-                        {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
+                        	{hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
                         {/if}
                     </div>
                     <div id="customCheckoutDiv" style="width: 500px;margin:auto"></div>
