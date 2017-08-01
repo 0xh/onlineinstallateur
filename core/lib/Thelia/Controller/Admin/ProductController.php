@@ -81,6 +81,7 @@ use Thelia\Model\TaxRuleQuery;
 use Thelia\TaxEngine\Calculator;
 use Thelia\Type\BooleanOrBothType;
 use Thelia\Log\Tlog;
+use Thelia\Model\FeatureProduct;
 
 /**
  * Manages products
