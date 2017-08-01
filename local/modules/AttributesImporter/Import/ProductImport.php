@@ -179,13 +179,7 @@ class ProductImport extends AbstractImport{
 								$f18q = new FeatureAvI18nQuery();
 								$find_one = $f18q->findOneByTitle($value);
 								Tlog::getInstance()->info("H1 Getav".$find_one->getId()." ".$value."".$feature_id);
-								//---Set Template
-								//$featurequery = new FeatureQuery();
-								//$getTemplate = $featurequery->findOneById($feature_id);
-								//$feature_template_query = TemplateQuery::create();
-								//$found = $feature_template_query->findOneById($template);
-								//$getTemplate ->addTemplate($found);
-								//---Set Template
+								
 								$update_product_feature = new FeatureProductUpdateEvent($product_id, $feature_id,$find_one->getId() ,false); //Product ID<<<<<<<<<<<<<
 								$update_product_feature->setLocale("de_DE");
 								$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $update_product_feature);
