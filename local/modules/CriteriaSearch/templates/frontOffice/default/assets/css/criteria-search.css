@@ -3,7 +3,7 @@
 }
 
 .slider-selection.tick-slider-selection, .slider-tick.in-selection{
-    background-image: linear-gradient(to bottom, #eeeeee 0, #eeeeee 100%);
+    background-image: linear-gradient(to bottom, #fcfcfc 0, #fcfcfc 100%);
 }
 
 span.criteria-pagination{
@@ -79,6 +79,9 @@ span.criteria-pagination{
 .multiselect .multiselect-selected-text{
 	display:inline-block;
 	min-width:145px;
+    color:#666;
+    font-size:12px;
+    text-transform: none;
 }
 .product-filter{
 	background:#F3F5F8;
