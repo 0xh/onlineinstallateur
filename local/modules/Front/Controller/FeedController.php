@@ -105,7 +105,7 @@ class FeedController extends BaseFrontController {
         }
 
         $flush = $request->query->get("flush", "");
-		Tlog::getInstance()->error("format".$request->query->get("format", "csv"));
+		Tlog::getInstance()->debug("format".$request->query->get("format", "csv"));
         // check if feed already in cache
         $cacheContent = false;
 
@@ -138,8 +138,11 @@ class FeedController extends BaseFrontController {
         		set_time_limit(0);//give the script some breathing room - this only gives an extra max_execution_time (world4you php configuration)
         		/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
         		$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
+        		/** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
         		$serializer = $serializerManager->get("thelia.csv");//
-        
+        		if($platform == "preisroboterde")
+        		$serializer->setDelimiter("|");
+        		
         	$lang = (new LangQuery)->findPk($lang);
         	$exportEvent = $exportHandler->export(
         						$export,$serializer,null, $lang,false,false, null);

@@ -74,7 +74,7 @@ class CriteriaSearchHandler
         $params['promo'] = $request->get('promo');
         $params['limit'] = $request->get('limit') ? $request->get('limit') : 20;
         $params['page'] = $request->get('page') ? $request->get('page') : 1;
-        $params['order'] = $request->get('order') ? $request->get('order') : 'alpha';
+        $params['order'] = $request->get('order') ? $request->get('order') : 'manual';
     }
 
     protected function formatCriteriaAvailabilityForLoop($criteriaArray)

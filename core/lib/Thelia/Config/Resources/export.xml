@@ -160,6 +160,90 @@
             </export_descriptive>
         </export>
 
+        <export id="thelia.export.catalog.preisroboterde" class="Thelia\ImportExport\Export\Type\PreisRoboterProductExport" category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>PreisRoboter Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required PreisRoboter CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>PreisRoboter Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required PreisRoboter CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>PreisRoboter Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required PreisRoboter CSV format:
+                    <ul>
+                    	<li>Artikelnummer,EAN,Herstellerartikelnummern</li>
+                    	<li>Marke/Anbieter,Produktname</li>
+    					<li>Preis,Spezialpreis,Streichpreis,Promo</li>
+    					<li>Produkt_URL,Produkt_BILD,Produktgruppe</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+        </export>
+
+        <export id="thelia.export.catalog.billiger" class="Thelia\ImportExport\Export\Type\BilligerProductExport" category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Billiger Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Billiger CSV format:
+                    <ul>
+                    	<li>aid/sku,name,price,link_shop_cat,brand</li>
+                    	<li>mpn(r),EAN,image,desc</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Billiger Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Billiger CSV format:
+                    <ul>
+                    	<li>aid/sku,name,price,link_shop_cat,brand</li>
+                    	<li>mpn(r),EAN,image,desc</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Billiger Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Billiger CSV format:
+                    <ul>
+                    	<li>aid/sku,name,price,link_shop_cat,brand</li>
+                    	<li>mpn(r),EAN,image,desc</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+        </export>
+        
         <export id="thelia.export.catalog.geizhals" class="Thelia\ImportExport\Export\Type\GeizhalsProductExport" category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Geizhals Product Catalog Export</title>

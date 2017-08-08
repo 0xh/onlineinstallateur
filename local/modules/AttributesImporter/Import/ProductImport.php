@@ -35,13 +35,17 @@ use Thelia\Action\ProductSaleElement;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\FeatureI18n;
 use Thelia\Core\Event\ProductSaleElement\ProductSaleElementEvent;
+use Thelia\Model\TemplateQuery;
+use Thelia\Model\TemplateI18nQuery;
+use Thelia\Model\FeatureTemplateQuery;
 
 class ProductImport extends AbstractImport{
 	protected $mandatoryColumns = [
 			'materialnummer',
 			'EAN',
 			'Brand',
-			'farbe',
+			'Template',
+			'Farbe',
 			'size basin',//Waschbeckengröße
 			'number of shower sprays',
 			'number of holes',
@@ -66,8 +70,9 @@ class ProductImport extends AbstractImport{
 		$artikelnr = $data['materialnummer'];
 		$EAN_code = $data['EAN'];
 		$brand = $data['Brand'];
+		$template = $data['Template'];
 		//--------------------END VARIABLEN ---------------
-		$product_features = array_slice($data,3,count($data)-1);
+		$product_features = array_slice($data,4,count($data)-1);
 
 		/** @var EventDispatcherInterface $eventDispatcher */
 		$eventDispatcher = $this->getContainer()->get('event_dispatcher');
@@ -98,19 +103,22 @@ class ProductImport extends AbstractImport{
 			foreach ($product_features as $key => $value)
 			{
 				
-				if ($value!=""){//Wenn das Feld leer ist muss kein Feature zum Product geadded werden
+				if ($value!=null){//Wenn das Feld leer ist muss kein Feature zum Product geadded werden
 					$feature_i18n_query= FeatureI18nQuery::create();
 					$get_feature = $feature_i18n_query->findOneByTitle($key);
 					if($get_feature==null){//Feature gibt es noch nicht -> Createn --------------------------------------
-						
+						//---Set Template
+						$feature_template_query = TemplateQuery::create();
+						$found = $feature_template_query->findOneById($template);
 						$new_feature = new Feature();
 						$new_feature->setLocale("de_DE");
 						$new_feature->setTitle($key);
+						$new_feature->addTemplate($found);
 						$new_feature->save();
-						
+						//---Set Template
+						Tlog::getInstance()->info("SAAVED K:".$key." V:".$value);
 						$feature_update_event = new FeatureProductUpdateEvent($product_id, $new_feature->getId(), $value,true); //PRoduct ID <<<<<<<<<<<<<<<<<<
 						$feature_update_event
-							//->setFeatureValue($value)
 							->setLocale("de_DE");
 						$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $feature_update_event);
 					}
@@ -124,11 +132,19 @@ class ProductImport extends AbstractImport{
 						
 						if (count($is_free_text)<=1)//IST FREETEXT
 						{
+							//---Set Template
+							$featurequery = new FeatureQuery();
+							$get = $featurequery->findOneById($feature_id);
+							$feature_template_query = TemplateQuery::create();
+							$found = $feature_template_query->findOneById($template);
+							$get ->addTemplate($found);
+							//---Set Template
 							$feature_update_event_free_text = new FeatureProductUpdateEvent($product_id, $feature_id, $value,true);
 							$feature_update_event_free_text
 								->setLocale("de_DE");
 							//->setFeatureValue($value);
 							$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE,$feature_update_event_free_text);
+							Tlog::getInstance()->info("SAAVED K:".$key." V:".$value);
 						}
 						if(count($is_free_text)>1){//IST KEIN FREETEXT
 							// GIBT ES DEN FEATURE WERT (feature_av)?
@@ -147,21 +163,10 @@ class ProductImport extends AbstractImport{
 									->filterByLocale("de_DE",\Propel\Runtime\ActiveQuery\Criteria::EQUAL) //filtern nach Sprache (eigentlich egal da selbe id aber mehr ergebnisse als gewünscht)
 								->endUse()
 							-> find();
-							if ($ergebnis != "  " || $ergebnis != null) //Feature AV gibt es
-							{
-								$feature_av_id = 1;
-								/** @var Feature $featureav */
-								foreach($ergebnis as $featureav){
-									Tlog::getInstance()->info("F1_FOREACH");
-									$feature_av_id = $featureav->getId();
-									break;
-								}
-								$update_product_feature = new FeatureProductUpdateEvent($product_id, $feature_id, $feature_av_id,false); //Product ID<<<<<<<<<<<<<
-								$update_product_feature->setLocale("de_DE");
-								$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $update_product_feature);
-							}
 							
-							if ($ergebnis == "  " || $ergebnis == null)//feature av gibt es NICHT
+							Tlog::getInstance()->info("H1 Getav".$ergebnis);
+
+							if ($ergebnis == "{  }")//feature av gibt es NICHT
 							{
 								$av_create_event = new FeatureAvCreateEvent();
 								$av_create_event
@@ -170,7 +175,39 @@ class ProductImport extends AbstractImport{
 									->setTitle($value)
 								;
 								$eventDispatcher->dispatch(TheliaEvents::FEATURE_AV_CREATE, $av_create_event);
+								
+								$f18q = new FeatureAvI18nQuery();
+								$find_one = $f18q->findOneByTitle($value);
+								Tlog::getInstance()->info("H1 Getav".$find_one->getId()." ".$value."".$feature_id);
+								
+								$update_product_feature = new FeatureProductUpdateEvent($product_id, $feature_id,$find_one->getId() ,false); //Product ID<<<<<<<<<<<<<
+								$update_product_feature->setLocale("de_DE");
+								$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $update_product_feature);
 							}
+							else //Feature AV gibt es
+							{
+								Tlog::getInstance()->info("H1 Ergebnis: ".$ergebnis);
+								$feature_av_id=1;
+								/** @var Feature $featureav */
+								foreach($ergebnis as $featureav){
+									$feature_av_id = $featureav->getId();
+									
+									Tlog::getInstance()->info("H1 id".$feature_av_id);
+									break;
+								}
+								//---Set Template
+								$featurequery = new FeatureQuery();
+								$get = $featurequery->findOneById($feature_id);
+								$feature_template_query = TemplateQuery::create();
+								$found = $feature_template_query->findOneById($template);
+								$get ->addTemplate($found);
+								//---Set Template
+								Tlog::getInstance()->info("H1 KEINFREE K:".$key. " V:". $value." Fid:".$feature_id."AVid:".$feature_av_id);
+								$update_product_feature = new FeatureProductUpdateEvent($product_id, $feature_id, $feature_av_id,false); //Product ID<<<<<<<<<<<<<
+								$update_product_feature->setLocale("de_DE");
+								$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $update_product_feature);
+							}
+							
 							
 						}
 					}

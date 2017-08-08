@@ -6250,6 +6250,16 @@ button.close {
     color: #000;
     text-align: right;
 }
+.category-caption {
+    position: absolute;
+    //left: 15%;
+    left: 20px;
+    top: 20px;
+    z-index: 10;
+   // padding-bottom: 20px;
+    color: #000;
+    text-align: right;
+}
 @media screen and (min-width: 768px) {
     .carousel-control .glyphicon-chevron-left,
     .carousel-control .glyphicon-chevron-right,
@@ -6274,18 +6284,24 @@ button.close {
         padding-bottom: 30px;
         top:10%;
     }
+    .category-caption {
+        //left: 30%;
+        left: 5%;
+        padding-bottom: 30px;
+        top:2%;
+    }
     .carousel-indicators {
         bottom: 20px
     }
-     .carousel-caption h1{
+     .carousel-caption h1,.category-caption h1{
        font-size: 50px!important;
        
     }
-    .carousel-caption h2{
+    .carousel-caption h2,  .category-caption h2{
        font-size: 25px!important;
        
     }
-    .carousel-caption h3{
+    .carousel-caption h3, .category-caption h3{
        font-size: 20px!important;
        
     }
@@ -6295,19 +6311,20 @@ button.close {
     .ebay{
         display:none
     }
-    .carousel-caption {
+    .carousel-caption, .category-caption{
        
-        top:2%;
+        top:20px;
+        left:20px;
     }
-    .carousel-caption h1{
+    .carousel-caption h1, .category-caption h1{
        font-size: 20px!important;
        
     }
-    .carousel-caption h2{
+    .carousel-caption h2, .category-caption h2{
        font-size: 14px!important;
        
     }
-    .carousel-caption h3{
+    .carousel-caption h3, .category-caption h3{
        font-size: 12px!important;
        
     }
@@ -10215,10 +10232,10 @@ td.product .name>a:hover {
 }
 .grid #category-products .item>article .product-info {
     text-align:left;
-    //padding: 3px
+    padding-left: 0px
 }
 .grid #category-products .item>article .product-info .name {
-    margin: 4px;
+    margin: 0px;
     height: 50px;
     overflow: hidden
 }
@@ -10560,8 +10577,7 @@ td.product .name>a:hover {
     display: none
 }
 .toolbar .amount {
-    color: #86AC34;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 400
 }
 .toolbar .view-mode>.view-mode-btn a {
@@ -13743,8 +13759,8 @@ figure.effect-marley:hover p {
 
 .badge-hersteller{
     position:absolute; 
-    bottom:0px; 
-    left:0px;
+    bottom:7px; 
+    left:5px;
     text-align:center;
     color:#86AC34;
     font-weight:bold;
@@ -13756,7 +13772,7 @@ figure.effect-marley:hover p {
 .badge-container {
     position: absolute;
     top: 3px;
-    left: 0;
+    left: -5px;
     min-width: 50px;
     padding: 4px 10px 3px;
     color: #fff;

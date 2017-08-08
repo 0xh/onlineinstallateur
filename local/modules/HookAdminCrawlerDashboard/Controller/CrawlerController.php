@@ -335,17 +335,17 @@ class CrawlerController extends BaseAdminController
     		;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    	->limit(10)
+    	->limit(30)
     	->find();
     	Tlog::getInstance()->error("starting crawl-job for ");
     	$final = "\n";
     	/** @var \Thelia\Model\ProductSaleElements $pseResult */
     	foreach( $pseResults as $pseResult){
     	set_time_limit(0);
-    	//$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
-    	//$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
     	//$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
-    	$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
+    	//$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
     	//sleep(rand(100,500));
     	}
     	Tlog::getInstance()->error($final);
@@ -357,7 +357,6 @@ class CrawlerController extends BaseAdminController
     	//$crawler = new AmazonCrawler();
     	//$crawler = new IdealoCrawler();
     	//$crawler = new GoogleShoppingCrawler();
-    	
     	
     	//return $this->jsonResponse(json_encode(array('result'=> $this->crawlGoogleShoppingProduct("4005176886294"))));
     	//return $this->jsonResponse(json_encode(array('result'=> $this->crawlGeizhalsProduct("4005176843204"))));

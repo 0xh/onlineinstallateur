@@ -270,7 +270,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                         <a href="/ap-brause-thermostat-grohtherm-2000-neu-o.-brausegarnitur-m.-rv-verchromt.html"><img src="{image file='assets/dist/img/blackfriday/brausengarnitur.png'}"  alt="AP-Brause-Thermostat Grohtherm 2000 NEU o. Brausegarnitur mit Halterungsbügel"> </a>
                     </div>
                 </div-->
-                <div class="header row">
+                <div class="header">
 
                     
                     {hook name="main.navbar-primary"}
@@ -288,7 +288,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
                 {hook name="main.content-top"}
                 {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
-                <div id="content" class="row">{block name="main-content"}{/block}</div>
+                <div id="content" class="row container">{block name="main-content"}{/block}</div>
                 {hook name="main.content-bottom"}
                 
             </div><!-- /.container -->

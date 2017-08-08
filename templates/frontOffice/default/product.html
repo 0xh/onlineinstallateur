@@ -138,7 +138,7 @@
                     
                    <div>
                    {assign var="attributes_limit" value=6}
-                    {loop name="attributes" type="feature" product=$product_id}
+                    {loop name="attributes" type="feature" product=$product_id limit="8"}
                     	{if $TITLE != "badge"}
                     		{ifloop rel="attributes_info"}
                     			{assign var="feature_title" value=$TITLE}	
@@ -147,6 +147,7 @@
                                     <div class="row-fluid">
                             		<div class="col-sm-4">{$feature_title}:</div> 
                                 	<div class="col-sm-8">{$TITLE}</div>
+                                    <div class="clearfix"></div>
                                     </div>  
                                 	{/if}
                             	{/loop}
