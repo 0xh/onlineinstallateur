@@ -140,11 +140,11 @@
 </style>
 {/literal}
 
-<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" style="position:relative; padding:20px;">
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="30mm" style="position:relative; padding:20px;">
     
     <page_header>
 		{hook name="invoice.header" order=$order_id}
-      
+        
     </page_header>
  
     <page_footer style="padding:20px">
@@ -218,7 +218,7 @@
                <h1>{intl l="INVOICE"}</h1>
            </td>
                 <td style="text-align:right">
-          <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br>
+            <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br>
             Marke der Nwing-network GmbH<br>
             Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
             Tel: 0800 / 022573 <br>
@@ -243,8 +243,8 @@
            
         </tr>
     </table>
-
-    <table>
+    
+        <table>
     <col style="width: 70%;padding: 3mm; padding-top:10mm" />
     <col style="width: 30%; padding: 3mm;" />
     <tr>
@@ -271,6 +271,8 @@
                 {/hookblock}
             </table>
         </td>
+
+
     </tr>
 </table>
 
