@@ -14,5 +14,31 @@ class LocationStockEditHook extends BaseHook
             'location-stock/product/product.html'
         ));
     }
-
+    
+    public function orderLocationAddress(HookRenderEvent $event)
+    {
+    	$product["orderId"] = $event->getArgument('orderid');
+    	$event->add($this->render(
+    			'location-stock/product-location-address.html',
+    			$product
+    			));
+    } 
+    
+    public function orderLocationAddressPdf(HookRenderEvent $event)
+    {
+    	$product["orderId"] = $event->getArgument('orderid');
+    	$event->add($this->render(
+    			'product-location-address.html',
+    			$product
+    			));
+    } 
+    
+    public function orderLocationAddressEmail(HookRenderEvent $event)
+    {
+    	$product["orderId"] = $event->getArgument('orderid');
+    	$event->add($this->render(
+    			'product-location-address.html',
+    			$product
+    			));
+    } 
 }

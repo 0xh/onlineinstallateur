@@ -1,0 +1,15 @@
+{ifloop rel="fulfilment_center_pick_up_address"}
+	 <p style="font-size: 10px;">{intl l="The pickup address is:"}</p>
+	 	<table>
+	    {loop type="fulfilment_center_pick_up_address" name="fulfilment_center_pick_up_address" orderid={$orderId}}
+        <tr>
+            <td style="font-size: 10px;">
+                {$PRODUCT_TITLE} : 
+            </td>
+            <td style="font-size: 10px;">
+               {$CENTER_ADDRESS}
+            </td>
+        </tr>
+		{/loop}
+		</table>
+{/ifloop}	

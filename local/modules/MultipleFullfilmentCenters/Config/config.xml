@@ -18,6 +18,9 @@
 	<hooks>
         <hook id="multiplefullfilmentcenters.edit.product" class="MultipleFullfilmentCenters\Hook\Admin\LocationStockEditHook" scope="request">
             <tag name="hook.event_listener" event="product.tab-content" type="back" method="onProductStock" />
+            <tag name="hook.event_listener" event="product.order-fulfilment-center-address" type="back" method="orderLocationAddress" />
+            <tag name="hook.event_listener" event="product.order-pdf-fulfilment-center-address" type="pdf" method="orderLocationAddressPdf" />
+            <tag name="hook.event_listener" event="product.order-email-fulfilment-center-address" type="email" method="orderLocationAddressEmail" />
         </hook>
 
         <hook id="multiplefullfilmentcenters.product" class="MultipleFullfilmentCenters\Hook\Front\LocationStockHook" scope="request">

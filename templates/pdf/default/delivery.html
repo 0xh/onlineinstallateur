@@ -312,9 +312,15 @@
         <tr>
             <td  class="table-3-module" style="border-left:solid 3px #86AC34; padding-top: 2mm">
                 <h3>{intl l="Delivery module"}</h3>
-                <p>
-                    <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
-                </p>
+               	
+				{ifhook rel="product.order-pdf-fulfilment-center-address"}
+               		{hook name="product.order-pdf-fulfilment-center-address" orderid=$order_id}	
+	            {/ifhook}
+				{elsehook rel="product.order-pdf-fulfilment-center-address"}
+                   	<p>	
+                   		<span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>  
+                   	</p>
+                {/elsehook}
 
                 {hook name="delivery.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
             </td>

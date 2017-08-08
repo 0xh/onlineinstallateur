@@ -19,6 +19,7 @@ return [
     'Ref' => 'REF',
     'Tax' => '20% Mehrwertsteuer',
     'Taxed total' => 'Gesamtsumme',
+	'The pickup address is:' => 'Die Abholadresse ist:',
     'Total' => 'Gesamtsumme',
     'Total with tax' => 'Gesamtpreis inkl. Steuern',
     'Total without tax' => 'Gesamtpreis exkl. Steuern',

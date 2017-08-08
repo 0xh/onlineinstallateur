@@ -328,22 +328,24 @@
                                                 </form>
                                             </div>
                                         </div>
-
-                                        {loop name="delivery-module" type="module" id=$DELIVERY_MODULE}
-
-                                        <dl class="dl-horizontal">
-                                            <dt>{intl l="Name"}</dt>
-                                            <dd>{$CODE} - {$TITLE}</dd>
-                                        </dl>
-                                        <dl class="dl-horizontal">
-                                            <dt>{intl l="Description"}</dt>
-                                            <dd>{$DESCRIPTION nofilter}</dd>
-                                        </dl>
-
-                                        {hook name="order-edit.delivery-module-bottom" order_id=$order_id module_id=$DELIVERY_MODULE}
-
-                                        {/loop}
-
+										{ifhook rel="product.order-fulfilment-center-address"}
+						               		{hook name="product.order-fulfilment-center-address" orderid=$order_id}	
+							            {/ifhook}
+							            {elsehook rel="product.order-fulfilment-center-address"}	
+	                                        {loop name="delivery-module" type="module" id=$DELIVERY_MODULE}
+			                                        <dl class="dl-horizontal">
+			                                            <dt>{intl l="Name"}</dt>
+			                                            <dd>{$CODE} - {$TITLE}</dd>
+			                                        </dl>
+			                                        <dl class="dl-horizontal">
+			                                            <dt>{intl l="Description"}</dt>
+			                                            <dd>{$DESCRIPTION nofilter}</dd>
+			                                        </dl>
+			
+			                                        {hook name="order-edit.delivery-module-bottom" order_id=$order_id module_id=$DELIVERY_MODULE}
+	                                        {/loop}
+										{/elsehook}
+										
                                         {if $smarty.get.update_status_error_message}
                                             <div class='alert alert-danger'>
                                                 {$smarty.get.update_status_error_message}

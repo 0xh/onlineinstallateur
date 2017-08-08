@@ -56,7 +56,14 @@
             {intl l="Order Number:"} {$REF}<br />
             {intl l="Paid With:"} {loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}<br />
             {intl l="Purchase Date:"} {format_date date=$CREATE_DATE output="datetime"}<br />
-            {intl l="Delivery method:"} {loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}<br />
+            {intl l="Delivery method:"}
+            	{ifhook rel="product.order-email-fulfilment-center-address"}
+               		{hook name="product.order-email-fulfilment-center-address" orderid=$order_id}	
+	            {/ifhook}
+	            {elsehook rel="product.order-email-fulfilment-center-address"}
+            		{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}<br />
+            	{/elsehook}
+            
         </p>
 
         {hook name="email-html.order-notification.before-products" order=$order_id}

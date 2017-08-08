@@ -32,6 +32,7 @@ return [
     'Our contact us at:' => 'Unsere Kontaktdetails',
     'Our mailing address is:' => 'Unsere Mailingadresse ist',
     'Paid With:' => 'Bezahlt mit :',
+	'Pickup from' => 'Abholung von',
     'Price in' => 'Preis in',
     'Purchase Date:' => 'Bestellungsdatum :',
     'Quantity : %qty' => 'Menge : %qty',
