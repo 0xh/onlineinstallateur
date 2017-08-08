@@ -396,12 +396,6 @@ class CalendarController extends BaseFrontController
     
     	return $arr;
     }
-
-
-    protected function redirectToConfigurationPage()
-    {
-        return RedirectResponse::create(URL::getInstance()->absoluteUrl('/admin/module/Carousel'));
-    }
     
     
 }

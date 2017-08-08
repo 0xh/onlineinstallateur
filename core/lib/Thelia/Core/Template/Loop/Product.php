@@ -113,6 +113,8 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
             Argument::createBooleanOrBothTypeArgument('visible', 1),
             Argument::createIntTypeArgument('currency'),
             Argument::createAnyTypeArgument('title'),
+        	Argument::createAnyTypeArgument('description'),
+        	Argument::createAnyTypeArgument('ean_code'),
         	Argument::createBooleanTypeArgument('has_ean'),
             new Argument(
                 'order',
@@ -176,9 +178,11 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     public function getSearchIn()
     {
         return [
+        		"ean_code",
             "ref",
             "title",
-        	"description"
+        	"description",
+        	
         ];
     }
 
@@ -191,10 +195,13 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     public function doSearch(&$search, $searchTerm, $searchIn, $searchCriteria)
     {
         $search->_and();
+       
+        Tlog::getInstance()->error("doing search in ".implode(" ",$searchIn));
         foreach ($searchIn as $index => $searchInElement) {
             if ($index > 0) {
                 $search->_or();
             }
+            
             switch ($searchInElement) {
                 case "ref":
                     $search->filterByRef($searchTerm, $searchCriteria);
@@ -219,6 +226,12 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                         \PDO::PARAM_STR
                     );
                     break;
+                 case "ean_code":
+                	$search->useProductSaleElementsQuery()
+                				->filterByEanCode($searchTerm, $searchCriteria)
+                		   ->endUse();
+                		   Tlog::getInstance()->error("doing search ean ");
+                	break;
             }
         }
     }
