@@ -89,9 +89,9 @@
                   {if $PARENT==0 && $category_id}
                    
                     {loop name="category.image" type="image" source="category" source_id={$ID} resize_mode="borders" limit=1 }
-                    <p><a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
-                <a href="{$URL|default:'#'}">
-                    <div class="carousel-caption">
+                    <p><a href="{$CHAPO|default:'#'}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                <a href="{$CHAPO|default:'#'}">
+                    <div class="category-caption" >
                         <div class="banner-title">{if $DESCRIPTION}{$DESCRIPTION nofilter}{/if}</div>
                         {if $TITLE!=""}
                         	<button class="btn btn-1 btn-1-a btn-1-responsive">{$TITLE nofilter}</button>
@@ -112,7 +112,7 @@
                 {/if}
                 {/loop}
             </section>
-            <hr/>
+           
             {*/if*}
 
             {if #category_display_subcategories#}
