@@ -11,6 +11,20 @@ jQuery(function($) {
 
   {/literal}
 });
+
+$( '.filter' ).change(function() {
+  	pos = '&position=' + $('.position_sorting').val();
+	
+  	if($('.filter_platform').val() &&  $('.filter_brand').val())
+  		window.location.href = '?platform=' + $('.filter_platform').val() + '&brand='+ $('.filter_brand').val() + pos;
+  	else {
+	  	if($('.filter_brand').val())
+	  		window.location.href = '?brand=' + $('.filter_brand').val();
+	  	if($('.filter_platform').val()) 
+	  		window.location.href = '?platform=' + $('.filter_platform').val() + pos;
+  	}
+});
+
 $( '.crawler-start' ).click(function() {
 	
 	//alert("disabled in prod");

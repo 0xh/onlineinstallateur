@@ -16,6 +16,7 @@ use Thelia\Model\Map\ProductTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Log\Tlog;
 use HookAdminCrawlerDashboard\Model\Map\CrawlerProductBaseTableMap;
+use HookAdminCrawlerDashboard\Model\Map\CrawlerProductListingTableMap;
 
 /**
  * Class CrawlerProductloop
@@ -33,7 +34,9 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		return parent::getArgDefinitions()->addArguments(
 				[
 					Argument::createBooleanTypeArgument('active'),
-					Argument::createBooleanTypeArgument('action_required')
+					Argument::createBooleanTypeArgument('action_required'),
+					Argument::createAnyTypeArgument('platform'),
+					Argument::createAnyTypeArgument('position')
 				]
 				);
 	}
@@ -49,6 +52,8 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		$active = $this->getActive();
 		//flag that signals if a product requires some action from the backoffice user/should be presented in the dashboard
 		$action_required = $this->getActionRequired();
+		$platform = $this->getPlatform();
+		$position = $this->getPosition();
 		
 		$crawlerProductBaseJoin = new Join();
 		$crawlerProductBaseJoin->addExplicitCondition(ProductTableMap::TABLE_NAME, 'ID', null, CrawlerProductBaseTableMap::TABLE_NAME, 'PRODUCT_ID','cpb');
@@ -58,7 +63,15 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		->withColumn ( '`cpb`.active', 'crawler_active' )
 		->withColumn ( '`cpb`.action_required', 'crawler_action_required')
 		->withColumn ('`cpb`.id', 'product_base_id');
-				
+		
+		if($platform) {
+			$query->addJoin('`cpb`.id', CrawlerProductListingTableMap::PRODUCT_BASE_ID, Criteria::JOIN)
+				->withColumn('crawler_product_listing.hf_position', 'hf_position' )
+				->where('crawler_product_listing.platform =?', $platform, \PDO::PARAM_BOOL);
+			$query->clearOrderByColumns();
+			$query->orderBy('hf_position',$position);
+		}
+		
 		if($active)
 			$query->where('cpb.active =?', $active, \PDO::PARAM_BOOL);
 

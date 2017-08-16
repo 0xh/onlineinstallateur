@@ -2,6 +2,10 @@
 
 {$page={$smarty.get.page|default:1}}
 {$product_order={$smarty.get.product_order|default:'id'}}
+{$brand_filter={$smarty.get.brand|default:''}}
+{$platform_filter={$smarty.get.platform|default:''}}
+{$position_sorting={$smarty.get.position|default:''}}
+{$search_term={$smarty.get.search_term|default:''}}
 
 <div class="general-block-decorator dashboard">
     <div class="title title-without-tabs clearfix">
@@ -9,6 +13,55 @@
       </div>
    <input type="button" class="crawler-start btn btn-primary btn-lg" value="Crawl Grohe Products"> 
    <br>  <br>  
+	<section class="clearfix">
+		<div class="sidebar-search col-md-4">
+			<h5  id="search-label">{intl l="Search" d="criteriasearch.fo.default"}</h5>
+	        <form action="{url path='/admin/module/HookAdminCrawlerDashboard'}">                                        
+	            <div class="input-group">
+	                <input type="text" class="form-control" id="search_term" name="search_term" placeholder="{intl l='Search'}" value="{trim($smarty.get.search_term)}">
+	                <span class="input-group-btn">
+	                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+	                </span>
+	            </div>
+	        </form>
+	    </div>
+	</section>
+    <br>
+	<section class="clearfix">
+		{ifloop rel="brand-filter"}
+			<div class="block block-nav col-md-2 text-left" role="navigation" aria-labelledby="search-label">
+			    <h5  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h5>
+			    <select class="filter filter_brand">
+			    	<option value="">{intl l="All brands"}</option>
+			  		{loop type="search_brand" name="brand-filter"}
+			      		<option value="{$ID}" {if $brand_filter|strstr:"$ID"}selected{/if}>{$TITLE}</option>
+			        {/loop}
+			    </select>
+			</div>
+		{/ifloop}
+		
+		<div class="block block-nav col-md-2 text-left" role="navigation" aria-labelledby="search-label">
+		    <h5  id="search-label">{intl l="Platform" d="criteriasearch.fo.default"}</h5>
+		    <select class="filter filter_platform">
+		    	<option value="">{intl l="All platforms"}</option>
+		    	<option value="Google" {if $platform_filter|strstr:"Google"}selected{/if}>GOOGLE SHOPPING</option>
+		    	<option value="Geizhals" {if $platform_filter|strstr:"Geizhals"}selected{/if}>GEIZHALS</option>
+		    	<option value="Idealo" {if $platform_filter|strstr:"Idealo"}selected{/if}>IDEALO</option>
+		    	<option value="Amazon" {if $platform_filter|strstr:"Amazon"}selected{/if}>AMAZON</option>
+		    </select>
+		</div>
+		
+		<div class="block block-nav col-md-2 text-left" role="navigation" aria-labelledby="search-label">
+		    <h5  id="search-label">{intl l="Sorting" d="criteriasearch.fo.default"}</h5>
+		    <select class="filter position_sorting">
+		    	<option value="asc" {if $position_sorting|strstr:"asc"}selected{/if}>{intl l="Asc"}</option>
+		    	<option value="desc" {if $position_sorting|strstr:"desc"}selected{/if}>{intl l="Desc"}</option>
+		 
+		    </select>
+		</div>
+	</section>
+	<br>  <br> 
+
   <ul class="nav nav-tabs nav-justified">
     <li class="active"><a href="#statjour" data-toggle="tab">{intl l="Product Position"  d='hookadminhome.bo.default'} (25)</a></li>
     <li><a href="#statmois" data-toggle="tab">{intl l="Price Low"  d='hookadminhome.bo.default'} (10)</a></li>
@@ -29,21 +82,32 @@
     </div>
         <div class="table-responsive">
         	<table class="table table-condensed">
-        		<tbody> 
-        		<tr class="platform-logos">
-	        		<td>ID</td>
-	        		<td>Bild</td>
-	        		<td>Produkt</td>
-	        		<td>EK</td>
-	        		<td></td>
-	        		<td><img src="{image file='assets/img/logos/hausfabrik.png'}" alt="HAUSFABRIK" class="platform-logos" /></td>
-	        		<td><img src="{image file='assets/img/logos/amazon.png'}" alt="AMAZON" class="platform-logos" /></td>
-	        		<td><img src="{image file='assets/img/logos/google.png'}" alt="GOOGLE SHOPPING" class="platform-logos" /></td>
-	        		<td><img src="{image file='assets/img/logos/geizhals.png'}"  alt="GEIZHALS" class="platform-logos" /></td>
-	        		<td><img src="{image file='assets/img/logos/idealo.png'}" alt="IDEALO" class="platform-logos"  /></td>
-        		
-        		</tr>   
-            	{loop name="product_position_list" type="crawler_product" active="1" visible="*" brand="93" has_ean="1" order=$product_order page=$page backend_context="on" limit={config key="number_default_results_per_page.category_list" default=10} return_url=false}
+        	
+        		<thead> 
+	        		<tr class="platform-logos">
+		        		<td> {admin_sortable_header
+	                          current_order=$product_order
+	                          order='id'
+	                          reverse_order='id_reverse'
+	                          path={url path='admin/module/HookAdminCrawlerDashboard' product_order=$product_order}
+	                          request_parameter_name='product_order'
+	                          label="{intl l='ID'}"
+	                          }
+	                    </td>
+		        		<td>Bild</td>
+		        		<td>Produkt</td>
+		        		<td>EK</td>
+		        		<td></td>
+		        		<td><img src="{image file='assets/img/logos/hausfabrik.png'}" alt="HAUSFABRIK" class="platform-logos" /></td>
+		        		<td><img src="{image file='assets/img/logos/google.png'}" alt="GOOGLE SHOPPING" class="platform-logos" /></td>
+		        		<td><img src="{image file='assets/img/logos/geizhals.png'}"  alt="GEIZHALS" class="platform-logos" /></td>
+		        		<td><img src="{image file='assets/img/logos/idealo.png'}" alt="IDEALO" class="platform-logos"  /></td>
+		        		<td><img src="{image file='assets/img/logos/amazon.png'}" alt="AMAZON" class="platform-logos" /></td>
+	        		
+	        		</tr> 
+        		</thead> 
+				<tbody>  
+            	{loop name="product_position_list" type="crawler_product" position=$position_sorting search_mode="sentence" search_term=$search_term search_in="ean_code,ref" platform=$platform_filter active="1" visible="*" brand=$brand_filter has_ean="1" order=$product_order page=$page backend_context="on" limit={config key="number_default_results_per_page.category_list" default=10} return_url=false}
                      <tr>
                          <td>{$ID}</td>
                         
@@ -183,6 +247,7 @@
                      </tr>     
                 {/loop}
                 </tbody>
+                
             </table>
          </div>
          <tfoot>
@@ -192,7 +257,7 @@
                      file = "includes/pagination.html"
                      loop_ref       = "product_position_list"
                      max_page_count = 10
-                     page_url       = {url path="/admin/module/HookAdminCrawlerDashboard" product_order=$product_order}
+                     page_url       = {url path="/admin/module/HookAdminCrawlerDashboard" product_order=$product_order brand=$brand_filter platform=$platform_filter}
                      }
                  </td>
              </tr>
@@ -219,3 +284,6 @@
   </div>
  </div>
 {/loop}
+
+
+
