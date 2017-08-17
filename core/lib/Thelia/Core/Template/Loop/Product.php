@@ -178,11 +178,11 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     public function getSearchIn()
     {
         return [
-        		"ean_code",
+        	"ean_code",
             "ref",
             "title",
         	"description",
-        	
+        	"id"
         ];
     }
 
@@ -195,7 +195,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     public function doSearch(&$search, $searchTerm, $searchIn, $searchCriteria)
     {
         $search->_and();
-       
+     
         Tlog::getInstance()->error("doing search in ".implode(" ",$searchIn));
         foreach ($searchIn as $index => $searchInElement) {
             if ($index > 0) {
@@ -232,6 +232,9 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                 		   ->endUse();
                 		   Tlog::getInstance()->error("doing search ean ");
                 	break;
+                 case "id":
+                 	$search->filterById($searchTerm, $searchCriteria);
+                 	break;
             }
         }
     }
