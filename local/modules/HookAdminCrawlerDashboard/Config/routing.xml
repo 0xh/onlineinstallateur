@@ -5,7 +5,11 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="admin.crawler.data" path="/admin/crawler/data">
-        <default key="_controller">HookAdminCrawlerDashboard\Controller\CrawlerController::loadDataAjaxAction</default>
+        <default key="_controller">HookAdminCrawlerDashboard\Controller\Back\BackController::loadDataAjaxAction</default>
+    </route>
+
+	<route id="front.crawler.cron" path="/crawler/cron">
+        <default key="_controller">HookAdminCrawlerDashboard\Controller\Front\FrontController::runCronJob</default>
     </route>
 
     <!--
