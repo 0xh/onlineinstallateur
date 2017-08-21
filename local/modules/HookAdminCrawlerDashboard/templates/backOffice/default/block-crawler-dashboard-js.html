@@ -14,15 +14,22 @@ jQuery(function($) {
 
 $( '.filter' ).change(function() {
   	pos = '&position=' + $('.position_sorting').val();
+  	
+	platform = $('.filter_platform').val();
+	brand = $('.filter_brand').val();
 	
-  	if($('.filter_platform').val() &&  $('.filter_brand').val())
-  		window.location.href = '?platform=' + $('.filter_platform').val() + '&brand='+ $('.filter_brand').val() + pos;
-  	else {
-	  	if($('.filter_brand').val())
-	  		window.location.href = '?brand=' + $('.filter_brand').val();
-	  	if($('.filter_platform').val()) 
-	  		window.location.href = '?platform=' + $('.filter_platform').val() + pos;
+  	if(platform &&  brand)
+  		window.location.href = '?platform=' + platform + '&brand='+ brand + pos;
+   	else if(brand || platform) {
+	  	if(brand)
+	  		window.location.href = '?brand=' + brand;
+	  	if(platform) 
+	  		window.location.href = '?platform=' + platform + pos;
   	}
+  	else {
+  		window.location.href = 'HookAdminCrawlerDashboard';
+  	}
+  	
 });
 
 $( '.crawler-start' ).click(function() {
