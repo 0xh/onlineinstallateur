@@ -227,17 +227,14 @@
                  {/loop}
 
                 <div class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <div class="availability">
-	                        <span class="availibity-label sr-only">{intl l="Availability"}: </span>
+                <div class="availability">
+<span class="availibity-label sr-only">{intl l="Availability"}: </span>
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 	                        	{if $QUANTITY}
                     				<span>{intl l='Can be picked up immediately'}</span>
-                    			{else}
-                    				<span class="in">{intl l='In Stock'}</span>
-	                            	<span class="out">{intl l='Out of Stock'}</span>
                     			{/if}
 	                        </span>
-                    </div>
+</div>
 
                     <div class="price-container">
                         {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}

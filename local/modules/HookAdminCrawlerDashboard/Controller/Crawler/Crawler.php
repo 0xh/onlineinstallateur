@@ -1,6 +1,6 @@
 <?php
 
-namespace HookAdminCrawlerDashboard\Controller;
+namespace HookAdminCrawlerDashboard\Controller\Crawler;
 
 use Thelia\Log\Tlog;
 use Thelia\Model\ProductSaleElementsQuery;
@@ -84,6 +84,13 @@ class Crawler
 	
 	/** @var \HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery $crawlerProductListingQuery */
 	private $crawlerProductListingQuery;
+	
+	/* @var Tlog $log */
+	private $logger;
+	
+	public function setLogger($logger){
+		$this->logger = $logger;
+	}
 	
 	public function setServiceLinks($baseUrl, $searchPath){
 		$this->baseUrl = $baseUrl;
@@ -213,9 +220,13 @@ class Crawler
 			$url = $this->baseUrl.$this->searchPath.$ean_code;
 			$channel = curl_init($url);
 			$channel = $this->setChannelOptions($channel);
-			$this->setRequest(curl_exec($channel));
+			$tempRequest = curl_exec($channel);
+			if($tempRequest === false)
+				$this->logger->error("curlError ".$this->platformName." ".curl_error($channel));
+			else
+				$this->setRequest($tempRequest);
 			if($this->debug){
-				Tlog::getInstance()->error("crawlerurl ".$url);
+				$this->logger->error("crawlerurl ".$url);
 				$this->debugMessage .="search_url ".$url;
 			}	
 		}
@@ -231,7 +242,10 @@ class Crawler
 			return $removeAfterPart[0];
 	}
 	
-	public function findPlatformID($request){		
+	public function findPlatformID($request){
+		if (strpos($request, '0</span> <span class="a-color-base a-text-bold">Ergebnisse</span> gefunden') !== false)
+			return null;
+		
 		return $this->scrapeText($request, $this->productPlatformIdStartMarker, $this->productPlatformIdEndMarker, null);
 	}
 	
@@ -254,8 +268,9 @@ class Crawler
 	
 	public function getExternalProductLinkForOffer($offer){
 		$removeBeforePart = explode($this->productExternalLinkStartMarker, $offer);
+		if(count($removeBeforePart) > 1)
 		$removeAfterPart = explode($this->productExternalLinkEndMarker, $removeBeforePart[1]);
-		
+		else return -1;
 		return rtrim($this->baseUrl,"/").$removeAfterPart[0];
 	}
 	
@@ -294,7 +309,7 @@ class Crawler
    		$channel = $this->setChannelOptions($channel);
    		$this->setProductRequest(curl_exec($channel));
    		if($this->debug){
-   			Tlog::getInstance()->error("productpageurl ".$url);
+   			$this->logger->error("productpageurl ".$url);
    			$this->debugMessage .="productpageurl ".$url;
    		}
    	}
@@ -309,7 +324,7 @@ class Crawler
    		$channel = $this->setChannelOptions($channel);
    		$this->setProductRequest(curl_exec($channel));
    		if($this->debug){
-   			Tlog::getInstance()->error("productshopspageurl ".$url);
+   			$this->logger->error("productshopspageurl ".$url);
    			$this->debugMessage .="productshopspageurl ".$url;
    		}
    	}
@@ -327,14 +342,14 @@ class Crawler
    
    public function isShopInProductPage($productPage){
    	$removeBeforePart = explode($this->productPageShopStartMarker, $productPage);
-   	//Tlog::getInstance()->error(" starterMarker ".$this->productPageShopStartMarker);
+   	//$this->logger->error(" starterMarker ".$this->productPageShopStartMarker);
    	
    	if(count($removeBeforePart)>1){
    		
    		$removeAfterPart = explode($this->productPageShopEndMarker, $removeBeforePart[1]);
    		$removeAfterPart[0] = trim($removeAfterPart[0]);
    		
-   		//Tlog::getInstance()->error(" shopinproduct ".$this->productPageShopStartMarker." ".$removeAfterPart[0]);
+   		//$this->logger->error(" shopinproduct ".$this->productPageShopStartMarker." ".$removeAfterPart[0]);
    		
    		if(strpos($removeAfterPart[0],$this->hausfabrikOfferMarker) !== false)
    			return true;
@@ -389,14 +404,14 @@ class Crawler
    	{
    		$productId = $product->getProductId();
    		if($this->debug)
-   			Tlog::getInstance()->error("for ".$eanCode." found product-id ".$productId);
+   			$this->logger->error("for ".$eanCode." found product-id ".$productId);
    	}
    	//else return error
    	
    	if($productId != null){
    		$crawlerProduct = $this->crawlerProductBaseQuery->findOneByProductId($productId);
    		//if($crawlerProduct)
-   		//	Tlog::getInstance()->error("for ".$productId." found crawlerProductBase ".$crawlerProduct->__toString());
+   		//	$this->logger->error("for ".$productId." found crawlerProductBase ".$crawlerProduct->__toString());
    	}
    	
    	if($crawlerProduct == null){
@@ -405,7 +420,7 @@ class Crawler
    		$crawlerProduct->setProductId($productId);
    		$crawlerProduct->setActionRequired(0);
    		$crawlerProduct->save();
-   		//Tlog::getInstance()->error($crawlerProduct->__toString());
+   		//$this->logger->error($crawlerProduct->__toString());
    	}
    	
    	return $crawlerProduct;

@@ -10,9 +10,9 @@ use Thelia\Model\ConfigQuery;
 use Thelia\Model\CustomerQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Log\Tlog;
-use HookAdminCrawlerDashboard\Controller\GeizhalsCrawler;
-use HookAdminCrawlerDashboard\Controller\AmazonCrawler;
-use HookAdminCrawlerDashboard\Controller\IdealoCrawler;
+use HookAdminCrawlerDashboard\Controller\Crawler\GeizhalsCrawler;
+use HookAdminCrawlerDashboard\Controller\Crawler\AmazonCrawler;
+use HookAdminCrawlerDashboard\Controller\Crawler\IdealoCrawler;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\Map\ProductSaleElementsTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -25,7 +25,7 @@ use Thelia\Model\Map\ProductTableMap;
  * @package HookAdminCrawlerDashboard\Controller
  * @author Emanuel Plopu <emanuel.plopu@sepa.at>
  */
-class CrawlerController extends BaseAdminController
+class BackController extends BaseAdminController
 {
     /**
      * Folder name for stats cache
@@ -39,19 +39,24 @@ class CrawlerController extends BaseAdminController
     
     const RESOURCE_CODE = "admin.crawler";
 
+    /* @var Tlog $log */
+    protected static $logger;
     
     private function crawlAmazonProduct($ean_code){
     	
     	$crawler = new AmazonCrawler();
     	
+    	$crawler->setLogger($this->getLogger());
     	$crawler->init(false, false);
     	$crawler->init_crawler();
     	
     	//STEP.1 Search for product
     	$searchResponse = $crawler->searchByEANCode($ean_code);
-    	
+    	//$this->getLogger()->error("amazon ".$searchResponse);
     	//STEP.2 Find platform id
     	$platformProductId = $crawler->findPlatformID($searchResponse);
+    	if($platformProductId == null)
+    		return "not found"; 
     	
     	//STEP.3 Get product page
     	$productPage = $crawler->getProductPage($platformProductId);
@@ -109,10 +114,11 @@ class CrawlerController extends BaseAdminController
     				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);	
     	}
     	
-    	Tlog::getInstance()->error($ean_code.",".$productBaseId
+    	$this->getLogger()->error($ean_code.",".$productBaseId
     			.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     			.",".$hausfabrikOfferStock.",".$firstProductPrice
     			.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink);
+    	//return $linkPlatformProductPage;
     	return $ean_code.",".$productBaseId
     	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     	.",".$hausfabrikOfferStock.",".$firstProductPrice
@@ -129,12 +135,13 @@ class CrawlerController extends BaseAdminController
     	
     	$crawler = new GoogleShoppingCrawler();
     	
-    	$crawler->init(true, false);
+    	$crawler->setLogger($this->getLogger());
+    	$crawler->init(false, false);
     	$crawler->init_crawler();
     	
     	//STEP.1 Search for product
     	$searchResponse = $crawler->searchByEANCode($ean_code);
-    	
+    	//$this->getLogger()->error("google ".$searchResponse);
     	//STEP.2 Find platform id
     	$platformProductId = $crawler->findPlatformID($searchResponse).'?prds=scoring:p';
     	
@@ -197,7 +204,8 @@ class CrawlerController extends BaseAdminController
     	
     	$crawler = new GeizhalsCrawler();
     	
-    	$crawler->init(1, false);
+    	$crawler->setLogger($this->getLogger());
+    	$crawler->init(false, false);
     	$crawler->init_crawler();
     	
     	//STEP.1 Search for product
@@ -257,6 +265,7 @@ class CrawlerController extends BaseAdminController
     	
     	$crawler = new IdealoCrawler();
     	
+    	$crawler->setLogger($this->getLogger());
     	$crawler->init(true, false);
     	$crawler->init_crawler();
     	
@@ -307,7 +316,7 @@ class CrawlerController extends BaseAdminController
     				$platformProductId, $linkPlatformProductPage, $hausfabrikProductLink, $firstProductLink);
     	}
     	
-    	Tlog::getInstance()->error($ean_code.",".$productBaseId
+    	$this->getLogger()->error($ean_code.",".$productBaseId
     			.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     			.",".$hausfabrikOfferStock.",".$firstProductPrice
     			.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink);
@@ -323,6 +332,33 @@ class CrawlerController extends BaseAdminController
     	
     }
 
+    public function runCronJob(){
+    	$pseQuery = ProductSaleElementsQuery::create();
+    	$pseQuery
+    	->useProductQuery()
+    	->filterByBrandId(93)
+    	->filterByVisible(1)
+    	->endUse()
+    	;
+    	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
+    	
+    	->limit(5)
+    	->find();
+    	$this->getLogger()->error("starting crawl-job for amazon");
+    	
+    	$final = "";
+    	foreach( $pseResults as $pseResult){
+    		set_time_limit(0);
+    		$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
+    		//$final= "||| ".$pseResult." ".$this->crawlAmazonProduct(str_replace (" ", "+", $pseResult));
+    		//Tlog::getInstance()->error($final);
+    		$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
+    		//$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
+    		//$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
+    		//usleep(250000)sleep(rand(100,500));
+    	}
+    	$this->getLogger()->error($final);
+    }
     public function loadDataAjaxAction()
     {
     	
@@ -335,20 +371,25 @@ class CrawlerController extends BaseAdminController
     		;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    	->limit(30)
+    	->limit(5)
     	->find();
-    	Tlog::getInstance()->error("starting crawl-job for ");
+    	$this->getLogger()->error("starting crawl-job for ");
     	$final = "\n";
+    	
+    	
+    	$final = "";
     	/** @var \Thelia\Model\ProductSaleElements $pseResult */
     	foreach( $pseResults as $pseResult){
     	set_time_limit(0);
     	$final.= $this->crawlAmazonProduct($pseResult->getEanCode())."\n";
+    	//$final= "||| ".$pseResult." ".$this->crawlAmazonProduct(str_replace (" ", "+", $pseResult));
+    	//Tlog::getInstance()->error($final);
     	$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
-    	//$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
     	//$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
-    	//sleep(rand(100,500));
+    	//usleep(250000)sleep(rand(100,500));
     	}
-    	Tlog::getInstance()->error($final);
+    	//Tlog::getInstance()->error($final);
 
     	//return $this->crawlAmazonProduct("4005176314964");
     	//return $this->crawlGoogleShoppingProduct("4005176809996");
@@ -363,4 +404,18 @@ class CrawlerController extends BaseAdminController
     	return $this->jsonResponse(json_encode(array('result'=> $this->crawlIdealoProduct("4005176306907"))));
     }   
     
+    public function getLogger()
+    {
+    	if (self::$logger == null) {
+    		self::$logger = Tlog::getNewInstance();
+    		
+    		$logFilePath = THELIA_LOG_DIR . DS . "log-crawler.txt";
+    		
+    		self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+    		self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+    		self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+    		self::$logger->setLevel(Tlog::ERROR);
+    	}
+    	return self::$logger;
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace HookAdminCrawlerDashboard\Controller;
+namespace HookAdminCrawlerDashboard\Controller\Crawler;
 
 interface CrawlerInterface{
 

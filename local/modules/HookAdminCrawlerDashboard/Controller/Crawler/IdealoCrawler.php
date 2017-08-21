@@ -1,7 +1,7 @@
 <?php
 
-namespace HookAdminCrawlerDashboard\Controller;
-use HookAdminCrawlerDashboard\Controller\Crawler;
+namespace HookAdminCrawlerDashboard\Controller\Crawler;
+use HookAdminCrawlerDashboard\Controller\Crawler\Crawler;
 
 class IdealoCrawler extends Crawler implements CrawlerInterface{
 	

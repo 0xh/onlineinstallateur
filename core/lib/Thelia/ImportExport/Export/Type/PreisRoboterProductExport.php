@@ -47,18 +47,18 @@ class PreisRoboterProductExport extends AbstractExport
     		'product_pricePRICE' => 'Preis',
     		'product_imageFILE' => 'Bildlink',
     		'rewriting_urlURL' => 'Deeplink',
-    		'productID' => 'Verfügbarkeit',
-    		'productID' => 'Versandkosten',
+    		ProductSaleElementsTableMap::PROMO=> 'Verfügbarkeit',
+    		ProductPriceTableMap::VERGLEICH_EK=> 'Versandkosten',
     		'brand_i18nTITLE' => 'Hersteller',
     		ProductSaleElementsTableMap::EAN_CODE => 'EAN',
     		'product_priceLISTEN_PRICE' => 'Grundpreis',
     		'category_i18nTITLE' => 'Kategorie',
-    		'productREF' => 'Hersteller-Artikelnummer',
-    		'productID' => 'PZN',
-    		'productID' => 'Produktfarbe',
-    		'productID' => 'Größe',
-    		'productID' => 'UVP',
-    		'productID' => 'VE',
+    		'productREF' => 'Hersteller.Art.Nr.',
+    		ProductPriceTableMap::EK_PREIS_OAG=> 'PZN',
+    		ProductPriceTableMap::EK_PREIS_GC=> 'Produktfarbe',
+    		ProductPriceTableMap::EK_PREIS_ODORFER=> 'Größe',
+    		ProductPriceTableMap::EK_PREIS_HOLTER=> 'UVP',
+    		ProductPriceTableMap::PREIS_REUTER=> 'VE',
     				
     ];
     
@@ -122,7 +122,7 @@ class PreisRoboterProductExport extends AbstractExport
     		$processedData['Verfügbarkeit'] = "2-3 Arbeitstagen"; 
     	$processedData['Versandkosten'] = "7.90";
     	$processedData['Preis'] = number_format((float)($processedData['Preis']*1.2), 2, '.', '');
-    	
+    	$processedData['Grundpreis'] = "";
     	$processedData['PZN'] = "";
     	$processedData['Produktfarbe'] = "";
     	$processedData['Größe'] = "";
@@ -182,6 +182,12 @@ class PreisRoboterProductExport extends AbstractExport
     	->withColumn(ProductPriceTableMap::PRICE)
     	->withColumn(ProductPriceTableMap::PROMO_PRICE)
     	->withColumn(ProductPriceTableMap::LISTEN_PRICE)
+    	->withColumn(ProductPriceTableMap::VERGLEICH_EK)
+    	->withColumn(ProductPriceTableMap::EK_PREIS_OAG)
+    	->withColumn(ProductPriceTableMap::EK_PREIS_GC)
+    	->withColumn(ProductPriceTableMap::EK_PREIS_ODORFER)
+    	->withColumn(ProductPriceTableMap::EK_PREIS_HOLTER)
+    	->withColumn(ProductPriceTableMap::PREIS_REUTER)
     	->endUse()
     	->useProductQuery()
     		->useProductCategoryQuery()
