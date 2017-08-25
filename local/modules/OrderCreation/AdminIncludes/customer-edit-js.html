@@ -8,6 +8,30 @@
         },'html');
     });
 
+    
+ 	// List the selected products
+ 	var nr_products = 0;
+    $('#search_product_list').change(function(ev) {  
+		$.get("{url path='/admin/module/OrderCreation/list'}/"+$('#search_product_list').val()+"/"+nr_products, function(data){
+			nr_products += 1;
+		    $('#selected_product_list').append(data);
+		},'html');
+	});
+    
+    // Search a product by id, ref, ean code
+    $('#search_button').click(function(ev) {  
+		$.get("{url path='/admin/module/OrderCreation/search'}/"+$('.search_term').val(), function(data){
+		    $('#search_product_list').empty();
+		    $('#search_product_list').append(data);
+		    $('#search_product_list').show();
+		},'html');
+	});
+    
+    // Delete a product from list
+    $('#selected_product_list').on('click', '.item-ajax-delete', function(clickEvent){
+        $('#'+$(this).data('target')).remove();
+    });
+    
     $('#body-order-cart').on('change', '.category-list', function(clickEvent){
         var target_id = $(this).data('target');
         var target_destination_id = $(this).data('destination');

@@ -175,7 +175,8 @@ class OrderCreationListener implements EventSubscriberInterface
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_PAYMENT_MODULE, $orderEvent);
-       	$event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $orderEvent);
+        // 	The line below was commented to avoid saving the order twice
+       //	$event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $orderEvent);
 Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
         //DO NOT FORGET THAT THE DISCOUNT ORDER HAS TO BE PLACED IN CART
         if ($this->request->getSession()->getSessionCart($event->getDispatcher()) != null) {

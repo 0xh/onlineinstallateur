@@ -44,12 +44,35 @@
 
             </tbody>
             <tfoot>
-            <tr>
+           <!--  <tr>
                 <td colspan="2">
                     <a id="add-cart-item" class="btn btn-default btn-primary action-btn" title="{intl l='Add product' d='ordercreation'}" href="#" data-toggle="modal">
                         <span>{intl l="Add product" d="ordercreation"}</span>
                     </a>
                 </td>
+            </tr> -->
+            <tr>
+            	<td colspan="2"> 
+              		<label for="search{$position}" class="control-label">{intl l="Search" d="ordercreation"}</label>
+                    <section class="clearfix">
+	                                                         
+			            <div class="input-group">
+			                <input type="text" class="search_term form-control" name="search_term" placeholder="{intl l='Search'}">
+			                <span class="btn btn-default" id="search_button">
+			                	<span class="glyphicon glyphicon-search"></span>
+			                </span>
+			            </div>
+				     
+						<div class="sidebar-search">
+							<select id="search_product_list" class="form-control"> 
+							</select>
+					    </div>
+					  
+					    <div id="selected_product_list" class="col-md-12">
+					    </div>
+					    
+					</section>
+				</td>
             </tr>
             <tr>
                 <td>

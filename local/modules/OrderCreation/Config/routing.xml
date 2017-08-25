@@ -12,6 +12,14 @@
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::addItemAction</default>
         <requirement key="position">\d+</requirement>
     </route>
+    
+    <route id="admin.order.creation.search-loop" path="/admin/module/OrderCreation/search/{searchTerm}" methods="get">
+        <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::searchLoop</default>
+    </route>
+    
+    <route id="admin.order.creation.list" path="/admin/module/OrderCreation/list/{productSaleElementId}/{position}" methods="get">
+        <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::listProducts</default>
+    </route>
 
     <route id="admin.order.creation.list-products" path="/admin/module/OrderCreation/{productId}/list-products/{categoryId}.{_format}" methods="GET">
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::getAvailableProductAction</default>

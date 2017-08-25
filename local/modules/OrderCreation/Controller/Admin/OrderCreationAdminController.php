@@ -39,6 +39,24 @@ class OrderCreationAdminController extends BaseAdminController
             array("position" => $position)
         );
     }
+    
+    public function searchLoop($searchTerm)
+    { 
+    	return $this->render(
+    			"ajax/search-loop",
+    			array("search_term" => $searchTerm)
+    			); 
+    }
+    
+    public function listProducts($productSaleElementId,$position)
+    {
+    	return $this->render(
+    			"ajax/list-products",
+    			array("product_sale_element_id" => $productSaleElementId,
+    				"position" => $position
+    				)
+    			);
+    }
 
     public function createOrderAction()
     {
@@ -57,7 +75,7 @@ class OrderCreationAdminController extends BaseAdminController
             $formValidate = $this->validateForm($form);
 
             $event = new OrderCreationEvent();
-
+            
             $event
                 ->setContainer($this->getContainer())
                 ->setCustomerId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_CUSTOMER_ID)->getData())
@@ -68,7 +86,7 @@ class OrderCreationAdminController extends BaseAdminController
                 ->setProductSaleElementIds($formValidate->get(OrderCreationCreateForm::FIELD_NAME_PRODUCT_SALE_ELEMENT_ID)->getData())
                 ->setQuantities($formValidate->get(OrderCreationCreateForm::FIELD_NAME_QUANTITY)->getData())
             ;
-
+       
             $this->dispatch(OrderCreationListener::ADMIN_ORDER_CREATE, $event);
 
             if (null != $event->getResponse()) {
