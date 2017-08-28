@@ -3,7 +3,7 @@
 		{intl l="Select a product from the list"}
 	</option>
 	
-	{loop type="product" name="product-search" visible="*" search_mode="sentence" search_term=$search_term search_in="ref,id,ean_code" min_stock="1" return_url=false}
+	{loop type="product" name="product-search" visible="*" search_mode="sentence" search_term=$search_term search_in="ref,id,ean_code"  return_url=false}
 		<option value="{$PRODUCT_SALE_ELEMENT}">
 			{$TITLE} ({$QUANTITY})
 		</option>
