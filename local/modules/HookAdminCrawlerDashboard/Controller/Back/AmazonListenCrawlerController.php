@@ -115,7 +115,8 @@ class CrawlerController extends BaseAdminController
     			.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     			.",".$hausfabrikOfferStock.",".$firstProductPrice
     			.",".$platformProductId.",".$linkPlatformProductPage.",".$hausfabrikProductLink.",".$firstProductLink);*/
-    	return $linkPlatformProductPage;
+    	
+    	return $linkPlatformProductPage.",".$firstProductPrice;
     	return $ean_code.",".$productBaseId
     	.",".$hausfabrikOfferPrice.",".$hausfabrikOfferPosition
     	.",".$hausfabrikOfferStock.",".$firstProductPrice
@@ -328,18 +329,6 @@ class CrawlerController extends BaseAdminController
 
     public function loadDataAjaxAction()
     {
-    	
-    	$pseQuery = ProductSaleElementsQuery::create();
-    	$pseQuery
-    		->useProductQuery()
-    		->filterByBrandId(93)
-    		->filterByVisible(1)
-    		->endUse()
-    		;
-    	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
-    	
-    	->limit(30)
-    	->find();
     	Tlog::getInstance()->error("starting crawl-job for ");
     	$final = "\n";
     	
