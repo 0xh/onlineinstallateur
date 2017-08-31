@@ -196,7 +196,6 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     {
         $search->_and();
      
-        Tlog::getInstance()->error("doing search in ".implode(" ",$searchIn));
         foreach ($searchIn as $index => $searchInElement) {
             if ($index > 0) {
                 $search->_or();
@@ -230,7 +229,6 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                 	$search->useProductSaleElementsQuery()
                 				->filterByEanCode($searchTerm, $searchCriteria)
                 		   ->endUse();
-                		   Tlog::getInstance()->error("doing search ean ");
                 	break;
                  case "id":
                  	$search->filterById($searchTerm, $searchCriteria);
