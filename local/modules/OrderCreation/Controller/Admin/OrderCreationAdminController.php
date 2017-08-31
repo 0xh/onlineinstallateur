@@ -73,9 +73,8 @@ class OrderCreationAdminController extends BaseAdminController
         try {
 
             $formValidate = $this->validateForm($form);
-
             $event = new OrderCreationEvent();
-            
+         
             $event
                 ->setContainer($this->getContainer())
                 ->setCustomerId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_CUSTOMER_ID)->getData())
@@ -83,6 +82,7 @@ class OrderCreationAdminController extends BaseAdminController
                 ->setDeliveryModuleId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_DELIVERY_MODULE_ID)->getData())
                 ->setInvoiceAddressId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_INVOICE_ADDRESS_ID)->getData())
                 ->setPaymentModuleId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_PAYMENT_MODULE_ID)->getData())
+                ->setOrderStatusId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_ORDER_STATUS_ID)->getData())
                 ->setProductSaleElementIds($formValidate->get(OrderCreationCreateForm::FIELD_NAME_PRODUCT_SALE_ELEMENT_ID)->getData())
                 ->setQuantities($formValidate->get(OrderCreationCreateForm::FIELD_NAME_QUANTITY)->getData())
             ;

@@ -99,7 +99,8 @@ class OrderCreationListener implements EventSubscriberInterface
             ->setCurrencyId($currency->getId())
             ->setCurrencyRate($currency->getRate())
       //      ->setStatusId(OrderStatusQuery::getOfferStatus()->getId())
-            ->setStatusId(OrderStatusQuery::getPaidStatus()->getId())
+           // ->setStatusId(OrderStatusQuery::getPaidStatus()->getId())
+        	->setStatusId($event->getOrderStatusId())
             ->setLangId($lang->getDefaultLanguage()->getId())
             ->setChoosenDeliveryAddress($deliveryAddress)
             ->setChoosenInvoiceAddress($invoiceAddress)
@@ -158,8 +159,9 @@ class OrderCreationListener implements EventSubscriberInterface
         $orderEvent = new OrderEvent($order);
         $orderEvent->setDeliveryAddress($deliveryAddress->getId());
         $orderEvent->setInvoiceAddress($invoiceAddress->getId());
-        $orderEvent->setStatus(OrderStatusQuery::getNotPaidStatus()->getId());
-
+       // $orderEvent->setStatus(OrderStatusQuery::getNotPaidStatus()->getId());
+        $orderEvent->setStatus($event->getOrderStatusId());
+       
         $moduleInstance = $deliveryModule->getModuleInstance($event->getContainer());
         $postage = OrderPostage::loadFromPostage(
             $moduleInstance->getPostage($deliveryAddress->getCountry())

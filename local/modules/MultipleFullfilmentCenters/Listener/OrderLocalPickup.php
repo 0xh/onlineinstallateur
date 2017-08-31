@@ -9,6 +9,7 @@ use Thelia\Core\Event\TheliaEvents;
 use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use Thelia\Model\ProductSaleElementsQuery;
+use Thelia\Model\OrderStatusQuery;
 
 /**
  */
@@ -34,29 +35,47 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 			if($cartProductLocation) {
 				$cartProductLocation->setOrderId($order->getId())
 					->save();
-				
-				// decrease stock for the specific fulfilment center
-				$productLocation = FulfilmentCenterProductsQuery::create()
-					->filterByProductId($productId)
-					->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
-					->findOne();
-				
-				if($productLocation) {
-					$newStockLocation = $productLocation->getProductStock() - $orderProduct->getQuantity();
-					$productLocation->setProductStock($newStockLocation)
-						->save();
-					
-					$productFinalStock =  ProductSaleElementsQuery::create()
-						->findOneByProductId($productId);
-					
-					$finalStock = $productFinalStock->getQuantity() - $orderProduct->getQuantity();
-					$productFinalStock->setQuantity($finalStock)
-						->save();
-				}
 			} 
 		}
 	}
 	
+	// decrease stock for the specific fulfilment center
+	public function updateQuantity(OrderEvent $event) 
+	{     
+		$paidStatus = OrderStatusQuery::getPaidStatus()->getId();
+		$newStatus = $event->getStatus();
+		$order = $event->getOrder();
+		$orderProductList = $order->getOrderProducts();
+		
+		if ($paidStatus == $newStatus) { 
+			foreach ($orderProductList as $orderProduct) {
+				
+				$productId = ProductSaleElementsQuery::create()
+						->select('product_id')
+						->findOneById($orderProduct->getProductSaleElementsId());
+				
+				$cartProductLocation = OrderLocalPickupQuery::create()
+					->filterByProductId($productId)
+					->filterByCartId($order->getCartId())
+					->findOne();
+				
+				if($cartProductLocation) {
+					
+					 $productLocation = FulfilmentCenterProductsQuery::create()
+						 ->filterByProductId($productId)
+						 ->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
+						 ->findOne();
+					 
+					 if($productLocation) {
+						 $newStockLocation = $productLocation->getProductStock() - $orderProduct->getQuantity();
+						 
+						 $productLocation->setProductStock($newStockLocation)
+						 	->save();
+					 } 
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Returns an array of event names this subscriber wants to listen to.
@@ -81,7 +100,8 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array(
-				TheliaEvents::ORDER_PAY =>array("createOrderWithFulfilmentCenter", 128)
+				TheliaEvents::ORDER_PAY =>array("createOrderWithFulfilmentCenter", 128),
+				TheliaEvents::ORDER_UPDATE_STATUS=>array("updateQuantity", 128)
 		);
 	}
 }

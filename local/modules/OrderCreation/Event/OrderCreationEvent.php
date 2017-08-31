@@ -31,6 +31,9 @@ class OrderCreationEvent extends ActionEvent
 
     /** @var  int $paymentModuleId */
     protected $paymentModuleId;
+    
+    /** @var  int $orderStatusId */
+    protected $orderStatusId;
 
     /** @var  array $productSaleElementIds */
     protected $productSaleElementIds;
@@ -269,5 +272,25 @@ class OrderCreationEvent extends ActionEvent
     public function getResponse()
     {
         return $this->response;
+    }
+    
+    /**
+     * @param int $orderStatusId
+     *
+     * @return OrderCreationEvent
+     */
+    public function setOrderStatusId($orderStatusId)
+    {
+    	$this->orderStatusId = $orderStatusId;
+    	
+    	return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getOrderStatusId()
+    {
+    	return $this->orderStatusId;
     }
 }

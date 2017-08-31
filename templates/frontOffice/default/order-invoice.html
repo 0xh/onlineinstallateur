@@ -408,9 +408,9 @@
                 {/form_field}
 
 
-      
+      			<div id="location_error_msg"></div>
                 <a href="{url path="/order/delivery"}" role="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> {intl l="Back"}</a>
-                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-chevron-right"></i> {intl l="Kaufen"}</button>
+                <button type="submit" id="submit-order" class="btn btn-primary pull-right"><i class="fa fa-chevron-right"></i> {intl l="Kaufen"}</button>
             </form>
             {/form}
             {hook name="order-invoice.bottom"}
@@ -423,7 +423,7 @@
 
 jQuery(function($) {
 	$( ".location-product-stock" ).change(function() {
-		 
+		  $( "#location_error_msg" ).empty();
 		  $parent =  $( this ).parents('.product-options');
 		  $.ajax({
 		        url: '/cart/fulfilmentcenter',
@@ -437,6 +437,20 @@ jQuery(function($) {
 		    }).done(function(data){
 		            //alert(data);
 		    });
+	});
+	
+	$( "#submit-order" ).click(function(ev) {
+		// get locations for all products in the cart
+		var locations = $(".location-product-stock");
+		
+		if(locations) {
+			for(var i = 0; i < locations.length; i++){
+			    if(!$(locations[i]).val()) {
+					 $("#location_error_msg").empty().append('<p class="alert bg-danger">{intl l="Please select a pickup location for your products."}</p>');
+					 ev.preventDefault();
+				 }
+			}
+		}
 	});
 	
     $('#cart-address').each(function(){

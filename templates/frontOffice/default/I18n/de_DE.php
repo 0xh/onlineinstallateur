@@ -157,6 +157,7 @@ return [
 	'Please choose a fulfilment center' => 'Bitte wählen Sie ein Erfüllungszentrum',
     'Please enter your email address below.' => 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
     'Please try again to order' => 'Versuchen Sie es erneut',
+	'Please select a pickup location for your products.' => 'Bitte wählen Sie einen Abholort für Ihre Produkte.',
     'Position' => 'Position',
     'Postage' => 'Versand',
     'Previous' => 'Zurück',

@@ -23,6 +23,7 @@ class OrderCreationCreateForm extends BaseForm
     const FIELD_NAME_INVOICE_ADDRESS_ID = 'invoice_address_id';
     const FIELD_NAME_DELIVERY_MODULE_ID = 'delivery-module';
     const FIELD_NAME_PAYMENT_MODULE_ID = 'payment_module_id';
+    const FIELD_NAME_ORDER_STATUS_ID = 'order_status_id';
     const FIELD_NAME_PRODUCT_SALE_ELEMENT_ID = 'product_sale_element_id';
     const FIELD_NAME_QUANTITY = 'quantity';
 
@@ -115,6 +116,19 @@ class OrderCreationCreateForm extends BaseForm
                     ]
                 ]
             )
+            ->add(
+            		self::FIELD_NAME_ORDER_STATUS_ID,
+            		'integer',
+            		[	
+            				'constraints' => [
+            					new NotBlank()
+            				],
+            				'label' => Translator::getInstance()->trans("Order status", [], OrderCreation::MESSAGE_DOMAIN),
+            				'label_attr' => [
+            						'for' => self::FIELD_NAME_ORDER_STATUS_ID. '_form'
+            				]
+            		]
+            		)
             ->add(
                 self::FIELD_NAME_PRODUCT_SALE_ELEMENT_ID,
                 'collection',
