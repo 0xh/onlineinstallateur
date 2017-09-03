@@ -10,6 +10,8 @@ use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\OrderStatusQuery;
+use Thelia\Core\Event\Cart\CartEvent;
+use Thelia\Model\CartItemQuery;
 
 /**
  */
@@ -77,6 +79,45 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		}
 	}
 	
+	public function getItemLocalPickup($event)
+	{
+		$cart = $event->getCart();
+		
+		$productId = CartItemQuery::create()
+			->select('product_id')
+			->filterByCartId($cart->getId())
+			->filterById($event->getCartItemId())
+			->findOne();
+		
+		$productLocalPickup = OrderLocalPickupQuery::create()
+			->filterByProductId($productId)
+			->filterByCartId($cart->getId())
+			->findOne();
+		
+		return $productLocalPickup;
+	}
+	
+	// update product quantity in OrderLocalPickup tabel
+	public function updateQuantityOrderLocalPickup(CartEvent $event)
+	{ 
+		$productLocalPickup = $this->getItemLocalPickup($event);
+		
+		if($productLocalPickup)
+			$productLocalPickup
+				->setQuantity($event->getQuantity())
+				->save();
+		
+	}
+	
+	// delete product from OrderLocalPickup tabel if it's deleted from cart
+	public function deleteItemOrderLocalPickup(CartEvent $event)
+	{
+		$productLocalPickup = $this->getItemLocalPickup($event);
+		
+		if($productLocalPickup)
+			$productLocalPickup->delete();
+	}
+	
 	/**
 	 * Returns an array of event names this subscriber wants to listen to.
 	 *
@@ -101,7 +142,9 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 	{
 		return array(
 				TheliaEvents::ORDER_PAY =>array("createOrderWithFulfilmentCenter", 128),
-				TheliaEvents::ORDER_UPDATE_STATUS=>array("updateQuantity", 128)
+				TheliaEvents::ORDER_UPDATE_STATUS=>array("updateQuantity", 128),
+				TheliaEvents::CART_UPDATEITEM => array("updateQuantityOrderLocalPickup", 128),
+				TheliaEvents::CART_DELETEITEM => array("deleteItemOrderLocalPickup", 256)
 		);
 	}
 }
