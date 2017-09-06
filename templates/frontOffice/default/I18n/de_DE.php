@@ -155,6 +155,7 @@ return [
     'Placeholder phone' => 'Telefonnummer',
     'Placeholder zipcode' => 'Postleitzahl',
 	'Please choose a fulfilment center' => 'Bitte wählen Sie ein Erfüllungszentrum',
+	'Please choose a payment method' => 'Bitte wählen Sie Ihre Zahlungsmethode',
     'Please enter your email address below.' => 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
     'Please try again to order' => 'Versuchen Sie es erneut',
 	'Please select a pickup location for your products.' => 'Bitte wählen Sie einen Abholort für Ihre Produkte.',

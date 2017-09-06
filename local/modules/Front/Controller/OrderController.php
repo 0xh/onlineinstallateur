@@ -539,8 +539,12 @@ class OrderController extends BaseFrontController
                 $session->getOrder()->setChoosenDeliveryAddress($addressId);
             }
         }
-
+      
         $deliveryAddressId = $session->getOrder()->getChoosenDeliveryAddress();
+        if($session->getOrder()->getModuleRelatedByDeliveryModuleId())
+        	$deliveryModuleId = $session->getOrder()->getModuleRelatedByDeliveryModuleId()->getId();
+        else 
+        	$deliveryModuleId = 0;
         $address = AddressQuery::create()->findPk($deliveryAddressId);
         $log->error("backofficeorder address2  ".$deliveryAddressId." ".$address);
         $countryId = $address->getCountryId();
@@ -549,7 +553,8 @@ class OrderController extends BaseFrontController
         $args = array(
             'country' => $countryId,
             'state' => $stateId,
-            'address' => $deliveryAddressId//$session->getOrder()->getChoosenDeliveryAddress()
+            'address' => $deliveryAddressId,//$session->getOrder()->getChoosenDeliveryAddress()
+        	'deliveryModuleId' => $deliveryModuleId
         );
         $log->error("backofficeorder render list for  ".$countryId." ".$stateId." ".$deliveryAddressId);
         return $this->render('ajax/order-delivery-module-list', $args);

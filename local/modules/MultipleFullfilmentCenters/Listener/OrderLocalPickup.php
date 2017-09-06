@@ -25,20 +25,33 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		$order = $event->getPlacedOrder();
 		$orderProductList = $order->getOrderProducts();
 		
-		// fulfill order_local_pickup with orderId - for products that can be picked up from fulfilment centers
 		/** @var OrderProduct  $orderProduct */
 		foreach ($orderProductList as $orderProduct) {
 			$productId = $orderProduct->getVirtualColumn('product_id');
-			$cartProductLocation = OrderLocalPickupQuery::create()
-				->filterByProductId($productId)
-				->filterByCartId($order->getCartId())
-				->findOne();
 			
-			if($cartProductLocation) {
-				$cartProductLocation->setOrderId($order->getId())
-					->save();
-			} 
+			if($order->getDeliveryModuleId() == 49) {
+				// fulfill order_local_pickup with orderId - for products that can be picked up from fulfilment centers
+				$cartProductLocation = OrderLocalPickupQuery::create()
+					->filterByProductId($productId)
+					->filterByCartId($order->getCartId())
+					->findOne();
+				
+				if($cartProductLocation) {
+					$cartProductLocation->setOrderId($order->getId())
+						->save();
+				} 
+			}
+			else { 
+				// delete item from order_local_pickup table, if the user changed the delivery method from LocalPickup to Delivery
+				$cartProductLocation = OrderLocalPickupQuery::create()
+					->filterByProductId($productId)
+					->filterByCartId($order->getCartId())
+					->findOne();
+				
+				$cartProductLocation->delete(); 
+			}
 		}
+		
 	}
 	
 	// decrease stock for the specific fulfilment center

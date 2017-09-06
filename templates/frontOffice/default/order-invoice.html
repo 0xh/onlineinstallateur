@@ -409,6 +409,7 @@
 
 
       			<div id="location_error_msg"></div>
+      			<div id="payment_error_msg"></div>
                 <a href="{url path="/order/delivery"}" role="button" class="btn btn-default"><i class="fa fa-chevron-left"></i> {intl l="Back"}</a>
                 <button type="submit" id="submit-order" class="btn btn-primary pull-right"><i class="fa fa-chevron-right"></i> {intl l="Kaufen"}</button>
             </form>
@@ -439,6 +440,10 @@ jQuery(function($) {
 		    });
 	});
 	
+	$( "#payment-method input" ).click(function(ev) {
+		 $( "#payment_error_msg" ).empty();
+	});
+	
 	$( "#submit-order" ).click(function(ev) {
 		// get locations for all products in the cart
 		var locations = $(".location-product-stock");
@@ -451,6 +456,16 @@ jQuery(function($) {
 				 }
 			}
 		}
+		
+		// verify if is checked a payment method	
+		var isPaymentChecked =  $( "#payment-method" ).find('input:checked').length;
+		
+	    if(!isPaymentChecked) {
+			 $("#payment_error_msg").empty().append('<p class="alert bg-danger">{intl l="Please choose a payment method"}</p>');
+			 ev.preventDefault();
+		 } 
+				
+		
 	});
 	
     $('#cart-address').each(function(){
