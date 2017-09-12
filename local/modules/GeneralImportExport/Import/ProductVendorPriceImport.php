@@ -10,7 +10,7 @@
 /*      file that was distributed with this source code.                             */
 /*************************************************************************************/
 
-namespace Thelia\ImportExport\Import\Type;
+namespace GeneralImportExport\Import;
 
 use Thelia\Core\Translation\Translator;
 use Thelia\ImportExport\Import\AbstractImport;
@@ -24,7 +24,7 @@ use Thelia\Model\ProductSaleElementsQuery;
  * Class ProductPricesHausfabrikImport
  * @author Emanuel Plopu <emanuel.plopu@sepa.at>
  */
-class ProductPricesHausfabrikImport extends AbstractImport
+class ProductVendorPriceImport extends AbstractImport
 {
     protected $mandatoryColumns = [
     		'Ref'

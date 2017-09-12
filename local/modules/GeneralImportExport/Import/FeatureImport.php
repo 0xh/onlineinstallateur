@@ -1,13 +1,11 @@
 <?php
-namespace AttributesImporter\Import;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+namespace GeneralImportExport\Import;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\ImportExport\Import\AbstractImport;
-use Thelia\Model\FeatureQuery;
-use Thelia\Model\Feature;
-use Thelia\Core\Event\Feature\FeatureUpdateEvent;
-use Thelia\Log\Tlog;
 use Thelia\Core\Event\Feature\FeatureCreateEvent;
+use Thelia\Core\Event\Feature\FeatureUpdateEvent;
+use Thelia\ImportExport\Import\AbstractImport;
+use Thelia\Model\Feature;
+use Thelia\Model\FeatureQuery;
 
 class FeatureImport extends AbstractImport{
 	protected $mandatoryColumns = [

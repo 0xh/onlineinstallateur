@@ -1,22 +1,10 @@
 <?php
-namespace AttributesImporter\Import;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+namespace GeneralImportExport\Import;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\Core\Event\UpdateSeoEvent;
-use Thelia\ImportExport\Import\AbstractImport;
-use Thelia\Model\ProductQuery;
-use Thelia\Core\Translation\Translator;
-use Thelia\Core\Event\FeatureProduct\FeatureProductEvent;
 use Thelia\Core\Event\FeatureProduct\FeatureProductUpdateEvent;
-use Thelia\Model\FeatureQuery;
-use Thelia\Model\Feature;
-use Thelia\Model\FeatureProduct;
-use Thelia\Core\Event\Feature\FeatureUpdateEvent;
+use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
-use Thelia\Model\FeatureProductQuery;
-use Thelia\Model\Product;
-use Thelia\Core\Event\Product\ProductUpdateEvent;
-use Thelia\Core\Event\Feature\FeatureAvUpdateEvent;
+use Thelia\Model\ProductQuery;
 
 class ProductFeature extends AbstractImport{
 	protected $mandatoryColumns = [

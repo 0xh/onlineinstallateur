@@ -10,7 +10,7 @@
 /*      file that was distributed with this source code.                             */
 /*************************************************************************************/
 
-namespace Thelia\ImportExport\Import\Type;
+namespace GeneralImportExport\Import;
 
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Model\Currency;
@@ -29,7 +29,7 @@ use Thelia\Model\ProductImage;
  * Class ProductPricesImport
  * @author Benjamin Perche <bperche@openstudio.fr>
  */
-class GenericProductImporter extends AbstractImport
+class GenericProductImport extends AbstractImport
 {
     protected $mandatoryColumns = [
         'Ref'

@@ -1,43 +1,19 @@
 <?php
-namespace AttributesImporter\Import;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+namespace GeneralImportExport\Import;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\Core\Event\UpdateSeoEvent;
-use Thelia\ImportExport\Import\AbstractImport;
-use Thelia\Model\ProductQuery;
-use Thelia\Core\Translation\Translator;
-use Thelia\Core\Event\FeatureProduct\FeatureProductEvent;
-use Thelia\Core\Event\FeatureProduct\FeatureProductUpdateEvent;
-use Thelia\Model\FeatureQuery;
-use Thelia\Model\Feature;
-use Thelia\Model\FeatureProduct;
-use Thelia\Core\Event\Feature\FeatureUpdateEvent;
-use Thelia\Log\Tlog;
-use Thelia\Model\FeatureProductQuery;
-use Thelia\Model\Product;
-use Thelia\Core\Event\Product\ProductUpdateEvent;
-use Thelia\Core\Event\Feature\FeatureAvUpdateEvent;
-use Thelia\Core\Event\Product\ProductCreateEvent;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Count;
-use Thelia\Model\FeatureI18nQuery;
-use Thelia\Core\Event\Feature\FeatureCreateEvent;
-use Thelia\Model\FeatureAvQuery;
-use Thelia\Model\FeatureAvI18nQuery;
-use Thelia\Model\FeatureAvI18n;
-use Doctrine\Common\Collections\Criteria;
-use Thelia\Model\Map\FeatureAvTableMap;
 use Thelia\Core\Event\Feature\FeatureAvCreateEvent;
-use Assetic\Exception\Exception;
-use Thelia\Model\Map\FeatureProductTableMap;
-use Thelia\Action\FeatureAv;
-use Thelia\Action\ProductSaleElement;
+use Thelia\Core\Event\FeatureProduct\FeatureProductUpdateEvent;
+use Thelia\ImportExport\Import\AbstractImport;
+use Thelia\Log\Tlog;
+use Thelia\Model\Feature;
+use Thelia\Model\FeatureAvI18nQuery;
+use Thelia\Model\FeatureAvQuery;
+use Thelia\Model\FeatureI18nQuery;
+use Thelia\Model\FeatureProductQuery;
+use Thelia\Model\FeatureQuery;
 use Thelia\Model\ProductSaleElementsQuery;
-use Thelia\Model\FeatureI18n;
-use Thelia\Core\Event\ProductSaleElement\ProductSaleElementEvent;
 use Thelia\Model\TemplateQuery;
-use Thelia\Model\TemplateI18nQuery;
-use Thelia\Model\FeatureTemplateQuery;
+use Thelia\Model\Map\FeatureProductTableMap;
 
 class ProductImport extends AbstractImport{
 	protected $mandatoryColumns = [
