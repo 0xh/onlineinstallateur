@@ -55,7 +55,7 @@
                 <td colspan="2">
 	                {form_field form=$form field='order_status_id'}
 	                    <label for="{$label_attr.for}" class="control-label">{$label} : </label>
-	                    <select class="js-update-order-status" name="{$name}">
+	                    <select class="js-update-order-status form-control" name="{$name}">
 		                    {loop type="order-status" name="all-status"}
 		                        {assign "orderStatusCode" "order_$CODE"}
 		                        {if #$orderStatusCode# == ''}
@@ -71,6 +71,7 @@
 	            	 {/form_field}
                 </td>
             </tr>
+            {hook name="offer.creation.employee-notice"}
             <tr>
             	<td colspan="2"> 
               		<label for="search{$position}" class="control-label">{intl l="Search" d="ordercreation"}</label>

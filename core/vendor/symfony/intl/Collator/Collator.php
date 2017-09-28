@@ -79,7 +79,7 @@ class Collator
     public function __construct($locale)
     {
         if ('en' !== $locale && null !== $locale) {
-            throw new MethodArgumentValueNotImplementedException(__METHOD__, 'locale', $locale, 'Only the locale "en" is supported');
+          //  throw new MethodArgumentValueNotImplementedException(__METHOD__, 'locale', $locale, 'Only the locale "en" is supported');
         }
     }
 

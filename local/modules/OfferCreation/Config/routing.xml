@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="admin.offer.update.view" path="/admin/offer/update/{offer_id}">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::editOffer</default>
+        <requirement key="offer_id">\d+</requirement>
+    </route>
+    
+    <route id="admin.offer.update.status" path="/admin/offer/update/{offer_id}/status">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateStatus</default>
+    </route>
+
+</routes>

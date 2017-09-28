@@ -20,11 +20,10 @@ class LocationStockForm extends BaseForm
 
         $this->formBuilder
 	        ->add("id", "text", array(
-	        		'label'=>Translator::getInstance()->trans("Id", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
-	        		'label_attr'=>array("for"=>"id")
+	        	'label'=>Translator::getInstance()->trans("Id", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+	        	'label_attr'=>array("for"=>"id")
 	        ))
             ->add("location_stock", "text", array(
-            	//'data'=>$productId,
                 'label'=>Translator::getInstance()->trans("Fulfiment center", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
                 'label_attr'=>array("for"=>"location_stock")
             ))
@@ -36,8 +35,7 @@ class LocationStockForm extends BaseForm
             	'data'=>$productId,
             	'label'=>Translator::getInstance()->trans("Product id", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
             	'label_attr'=>array("for"=>"product_id")
-            ))
-        ;
+            ));
     }
     
     public function getName()

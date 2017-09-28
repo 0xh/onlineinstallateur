@@ -48,12 +48,13 @@ class OrderCreationAdminController extends BaseAdminController
     			); 
     }
     
-    public function listProducts($productSaleElementId,$position)
+    public function listProducts($productSaleElementId,$position,$orderStatus)
     {
     	return $this->render(
     			"ajax/list-products",
     			array("product_sale_element_id" => $productSaleElementId,
-    				"position" => $position
+    				"position" => $position,
+    				"order_status" => $orderStatus
     				)
     			);
     }
@@ -64,17 +65,14 @@ class OrderCreationAdminController extends BaseAdminController
         if (null !== $response) {
             return $response;
         }
-
-        $con = Propel::getConnection(OrderTableMap::DATABASE_NAME);
-        $con->beginTransaction();
-
+		
         $form = new OrderCreationCreateForm($this->getRequest());
 
         try {
 
             $formValidate = $this->validateForm($form);
             $event = new OrderCreationEvent();
-         
+        
             $event
                 ->setContainer($this->getContainer())
                 ->setCustomerId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_CUSTOMER_ID)->getData())
@@ -87,10 +85,18 @@ class OrderCreationAdminController extends BaseAdminController
                 ->setQuantities($formValidate->get(OrderCreationCreateForm::FIELD_NAME_QUANTITY)->getData())
             ;
        
+            if($formValidate->get(OrderCreationCreateForm::FIELD_NAME_ORDER_STATUS_ID)->getData()== 9){
+            	$event->setPrices($formValidate->get(OrderCreationCreateForm::FIELD_NAME_PRICE)->getData());
+            	
+            	$this->getRequest()->getSession()->set(
+            			"employee_note",
+            			$formValidate->get(OrderCreationCreateForm::FIELD_NAME_EMPLOYEE_NOTE)->getData()
+            			);
+            }
+            
             $this->dispatch(OrderCreationListener::ADMIN_ORDER_CREATE, $event);
 
             if (null != $event->getResponse()) {
-                $con->commit();
                 return $event->getResponse();
             }
 
@@ -100,7 +106,6 @@ class OrderCreationAdminController extends BaseAdminController
                 $this->getParserContext()->addForm($customerForm);
             }
 
-            $con->commit();
             return RedirectResponse::create(
                 URL::getInstance()->absoluteUrl(
                     '/admin/customer/update?customer_id='.$formValidate->get('customer_id')->getData()
@@ -108,7 +113,6 @@ class OrderCreationAdminController extends BaseAdminController
             );
 
         } catch (\Exception $e) {
-            $con->rollBack();
             $form->setErrorMessage($e->getMessage());
 
             $this->getParserContext()

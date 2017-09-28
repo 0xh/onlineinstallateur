@@ -17,7 +17,7 @@
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::searchLoop</default>
     </route>
     
-    <route id="admin.order.creation.list" path="/admin/module/OrderCreation/list/{productSaleElementId}/{position}" methods="get">
+    <route id="admin.order.creation.list" path="/admin/module/OrderCreation/list/{productSaleElementId}/{position}/{orderStatus}" methods="get">
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::listProducts</default>
     </route>
 

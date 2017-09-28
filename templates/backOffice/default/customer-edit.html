@@ -498,6 +498,18 @@
         <script src="{$asset_url}"></script>
     {/javascripts}
     <script>
+    
+		$( ".js-update-order-status" ).change(function() {
+			 if($( ".js-update-order-status" ).val() == 9) {
+				 $(".offer_employee_note").show();
+				 $(".product_price").show(); 
+			 }
+			 else {
+				 $(".offer_employee_note").hide();
+				 $(".product_price").hide();
+			 }
+		});
+	
         $(function() {
 
                 $("a.customer-address-delete").click(function(e){
