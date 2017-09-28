@@ -8,4 +8,8 @@
          <default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::viewAction</default> 
      </route> 
     
+  	<route id="amazonintegration.configure" path="/admin/module/AmazonIntegration/configure" methods="post">
+		<default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::configure</default>
+	</route>
+	
 </routes>

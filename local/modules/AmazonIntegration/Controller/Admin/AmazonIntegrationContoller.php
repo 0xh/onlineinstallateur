@@ -2,6 +2,8 @@
 namespace AmazonIntegration\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Model\ModuleConfigQuery;
+use AmazonIntegration\AmazonIntegration;
 use function Composer\Autoload\includeFile;
 
 class AmazonIntegrationContoller extends BaseAdminController
@@ -9,13 +11,14 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function viewAction()
     {
-        echo "<pre>";
-        include 'API\src\MarketplaceWebServiceOrders\Samples\ListOrderItemsSample.php';
         
-        // include 'API\src\MarketplaceWebServiceOrders\Samples\GetOrderSample.php';
-        // include 'API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
-        die('GATA');
+        include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
         
-        return $this->render("AmazonIntegrationTemplate");
+//         echo "***********************************";
+//         echo "<pre>";
+//         var_dump($orders);
+//         die('GATA');
+        
+        return $this->render("AmazonIntegrationTemplate", array("orders" => $orders));
     }
 }

@@ -1,5 +1,11 @@
 {extends file="admin-layout.tpl"} {block name="main-content"}
 
 
+<ul>
+	{foreach from=$orders item=order}
+		<li>{$order->ShippingAddress->Name}</li> 
+	{/foreach}
+</ul>
+
 
 {/block}

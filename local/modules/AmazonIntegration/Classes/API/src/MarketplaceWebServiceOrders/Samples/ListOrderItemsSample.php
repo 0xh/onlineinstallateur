@@ -18,12 +18,12 @@
  */
 
 /**
- * List Orders Sample
+ * List Order Items Sample
  */
 
 require_once('.config.inc.php');
 include dirname(__FILE__).'\..\Client.php';
-include dirname(__FILE__).'\..\Model\ListOrdersRequest.php';
+include dirname(__FILE__).'\..\Model\ListOrderItemsRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
@@ -73,40 +73,40 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out
- * sample for List Orders Action
+ * sample for List Order Items Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrders
- $request = new MarketplaceWebServiceOrders_Model_ListOrdersRequest();
+ // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrderItems
+ $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
  $request->setSellerId(MERCHANT_ID);
- $request->setMarketplaceId(MARKETPLACE_ID);
+ $request->setAmazonOrderId("304-4009648-2537909");
  // object or array of parameters
- invokeListOrders($service, $request);
+ invokeListOrderItems($service, $request);
 
 /**
-  * Get List Orders Action Sample
+  * Get List Order Items Action Sample
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param MarketplaceWebServiceOrders_Interface $service instance of MarketplaceWebServiceOrders_Interface
-  * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrders or array of parameters
+  * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrderItems or array of parameters
   */
 
-  function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $request)
+  function invokeListOrderItems(MarketplaceWebServiceOrders_Interface $service, $request)
   {
       try {
-        $response = $service->ListOrders($request);
+        $response = $service->ListOrderItems($request);
 
         echo ("Service Response\n");
         echo ("=============================================================================\n");
 
-//         var_dump($re);
-//         die;
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         echo $dom->saveXML();
         echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        
+        return 'dsadas';
 
      } catch (MarketplaceWebServiceOrders_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");

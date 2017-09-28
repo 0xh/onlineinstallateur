@@ -6,5 +6,13 @@
 		<hook id="hookadmincrawlerdashboard.hook.back1" class="AmazonIntegration\Hook\BackHook">
 			<tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
 		</hook>
+        <hook id="amazonintegration.configuration.hook" class="AmazonIntegration\Hook\HookManager" scope="request">
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
+        </hook>
 	</hooks>
+	
+    <forms>
+        <form name="amazonintegration.form.configure" class="AmazonIntegration\Form\ConfigurationForm" />
+    </forms>
+    
 </config>

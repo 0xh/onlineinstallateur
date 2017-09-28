@@ -18,12 +18,14 @@
  */
 
 /**
- * List Order Items Sample
+ * List Orders Sample
  */
+
+use Symfony\Component\DependencyInjection\SimpleXMLElement;
 
 require_once('.config.inc.php');
 include dirname(__FILE__).'\..\Client.php';
-include dirname(__FILE__).'\..\Model\ListOrderItemsRequest.php';
+include dirname(__FILE__).'\..\Model\ListOrdersRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
@@ -59,6 +61,8 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
         APPLICATION_VERSION,
         $config);
 
+ $orders = array();
+ 
 /************************************************************************
  * Uncomment to try out Mock Service that simulates MarketplaceWebServiceOrders
  * responses without calling MarketplaceWebServiceOrders service.
@@ -73,39 +77,67 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 
 /************************************************************************
  * Setup request parameters and uncomment invoke to try out
- * sample for List Order Items Action
+ * sample for List Orders Action
  ***********************************************************************/
- // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrderItems
- $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
+ 
+ $fieldsArr =  array (
+     'SellerId' => array('FieldValue', 'FieldType'),
+     'MWSAuthToken' => array('FieldValue', 'FieldType'),
+     'CreatedAfter' => array('FieldValue' => "2012-04-01", 'FieldType'),
+     'CreatedBefore' => array('FieldValue', 'FieldType'),
+     'LastUpdatedAfter' => array('FieldValue', 'FieldType'),
+     'LastUpdatedBefore' => array('FieldValue', 'FieldType'),
+     'OrderStatus' => array('FieldValue', 'FieldType', 'ListMemberName' => 'Status'),
+     'MarketplaceId' => array('FieldValue', 'FieldType', 'ListMemberName' => 'Id'),
+     'FulfillmentChannel' => array('FieldValue', 'FieldType', 'ListMemberName' => 'Channel'),
+     'PaymentMethod' => array('FieldValue', 'FieldType', 'ListMemberName' => 'Method'),
+     'BuyerEmail' => array('FieldValue', 'FieldType'),
+     'SellerOrderId' => array('FieldValue', 'FieldType'),
+     'MaxResultsPerPage' => array('FieldValue', 'FieldType' => 'int'),
+     'TFMShipmentStatus' => array('FieldValue', 'FieldType', 'ListMemberName' => 'Status'),
+ );
+ // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrders
+ $request = new MarketplaceWebServiceOrders_Model_ListOrdersRequest();
  $request->setSellerId(MERCHANT_ID);
- $request->setAmazonOrderId("304-4009648-2537909");
+ $request->setMarketplaceId(MARKETPLACE_ID);
  // object or array of parameters
- invokeListOrderItems($service, $request);
+ $orders = invokeListOrders($service, $request);
 
 /**
-  * Get List Order Items Action Sample
+  * Get List Orders Action Sample
   * Gets competitive pricing and related information for a product identified by
   * the MarketplaceId and ASIN.
   *
   * @param MarketplaceWebServiceOrders_Interface $service instance of MarketplaceWebServiceOrders_Interface
-  * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrderItems or array of parameters
+  * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrders or array of parameters
   */
 
-  function invokeListOrderItems(MarketplaceWebServiceOrders_Interface $service, $request)
+  function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $request)
   {
       try {
-        $response = $service->ListOrderItems($request);
+        $response = $service->ListOrders($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
+        $orders = array();
+        
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        
+        $xml = $dom->saveXML();
+        $orderdata = new SimpleXMLElement($xml);
+        $array=json_encode($orderdata, TRUE);
+        $result = json_decode($array);
+        if ($result) {
+            (float)$total=0;
+            foreach ($result->ListOrdersResult->Orders->Order as $order) {
+                array_push($orders, $order);
+            }
+        } else {
+            echo 'error decoding json';
+        }
 
+        return $orders;
      } catch (MarketplaceWebServiceOrders_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
         echo("Response Status Code: " . $ex->getStatusCode() . "\n");
