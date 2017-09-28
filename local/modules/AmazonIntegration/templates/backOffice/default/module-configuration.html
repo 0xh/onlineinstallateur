@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="col-md-12 general-block-decorator">
+		<div class="row">
+			<div class="col-md-12 title title-without-tabs">{intl
+				d='sofort.bo.default' l="Amazon Integration Configuration"}</div>
+		</div>
+
+		<div class="form-container">
+			<div class="row">
+				<div class="col-md-12">
+					{form name="amazonintegration.form.configure"}
+					<form action="{url path="
+						admin/module/AmazonIntegration/configure"}" method="post">
+
+						{form_hidden_fields form=$form} {include file =
+						"includes/inner-form-toolbar.html" hide_flags = true page_url =
+						"{url path='/admin/module/AmazonIntegration'}" close_url = "{url
+						path='/admin/modules'}" } {if $form_error}
+						<div class="row">
+							<div class="col-md-12">
+								<div class="alert alert-danger">{$form_error_message}</div>
+							</div>
+						</div>
+						{/if}
+
+						<div class="row">
+							<div class="col-md-4">
+								<p class="title title-without-tabs">{intl
+									d='amazonintegration.bo.default' l="Amazon parameters"}</p>
+
+								{render_form_field form=$form field="AWS_ACCESS_KEY_ID" value=$AWS_ACCESS_KEY_ID}
+								{render_form_field form=$form field="AWS_SECRET_ACCESS_KEY" value=$AWS_SECRET_ACCESS_KEY}
+								{render_form_field form=$form field="APPLICATION_NAME" value=$APPLICATION_NAME}
+								{render_form_field form=$form field="APPLICATION_VERSION" value=$APPLICATION_VERSION} 
+								{render_form_field form=$form field="MERCHANT_ID" value=$MERCHANT_ID} 
+								{render_form_field form=$form field="MARKETPLACE_ID" value=$MARKETPLACE_ID}
+							</div>
+							<div class="col-md-4"></div>
+						</div>
+					</form>
+					{/form}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
