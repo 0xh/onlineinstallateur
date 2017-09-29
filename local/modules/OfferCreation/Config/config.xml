@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <loops>
-        <loop name="offer_amount" class="OfferCreation\Loop\OfferAmount" />
         <loop name="offer" class="OfferCreation\Loop\OfferDetail" />
         <loop name="offer_product" class="OfferCreation\Loop\OfferProducts" />
     </loops>

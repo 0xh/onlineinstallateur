@@ -102,9 +102,16 @@
                                         {/if}
                                     {/loop}
                                     
-                                    {loop type="offer_amount" name="offer_amount" id=$ID}
-                                        {assign "offerAmount" $OFFER_AMOUNT}
-                                    {/loop}
+                                    {assign var="totalPrice" value="0"}
+									{loop type="offer_product" name="offer_product" offer=$ID}
+	                                    {if $WAS_IN_PROMO == 1}
+	                                        {assign "realTotalPrice" $TOTAL_TAXED_PROMO_PRICE}
+	                                    {else}
+	                                        {assign "realTotalPrice" $TOTAL_TAXED_PRICE}
+	                                    {/if}
+	                                    
+	                                    {$totalPrice = $totalPrice + $realTotalPrice}
+                                     {/loop}             
 
                                     <tr>
                                         <td><a href="{url path="/admin/offer/update/%id" id=$ID}">{$ID}</a></td>
@@ -112,7 +119,7 @@
                                        	<td>{format_date timestamp=$CREATE_OFFER}</td> 
                                        	<td>{$orderInvoiceCompany}</td>
                                        	<td><a href="{url path='/admin/customer/update' customer_id=$CUSTOMER}">{$orderInvoiceFirstName|ucwords} {$orderInvoiceLastName|upper}</a></td>
-                                       	<td class="text-right">{format_money number=$offerAmount currency_id=$CURRENCY}</td> 
+                                       	<td class="text-right">{format_money number=$totalPrice currency_id=$CURRENCY}</td> 
                                         <td class="text-center"><span class="label {$defaultLabel} label-{$orderStatusLabel}">{$orderStatus}</span></td>
                                   
 
