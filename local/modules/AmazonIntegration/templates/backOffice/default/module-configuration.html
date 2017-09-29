@@ -41,6 +41,25 @@
 					{/form}
 				</div>
 			</div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {intl d='amazonintegration.bo.default' l="Amazon responses history"}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div id="log-container" style="font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: scroll">
+                        {$trace_content nofilter}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="{url path='/admin/module/amazonintegration/log'}" class="btn btn-sm btn-primary">
+                        <span class="glyphicon glyphicon-download-alt"></span>
+                        {intl d='amazonintegration.bo.default' l="Download full log"}
+                    </a>
+                </div>
+            </div>
 		</div>
 	</div>
 </div>

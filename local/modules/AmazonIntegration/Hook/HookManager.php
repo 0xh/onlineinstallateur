@@ -31,6 +31,7 @@ use AmazonIntegration\AmazonIntegration;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Model\ModuleConfigQuery;
+use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
 
 class HookManager extends BaseHook
 {
@@ -38,7 +39,7 @@ class HookManager extends BaseHook
 
     public function onModuleConfigure(HookRenderEvent $event)
     {
-    	$logFilePath = THELIA_LOG_DIR . DS . "log-amazonintegration-payment.txt";
+    	$logFilePath = THELIA_LOG_DIR . DS . "log-amazon-integration.txt";
     	
     	$traces = @file_get_contents($logFilePath);
     	

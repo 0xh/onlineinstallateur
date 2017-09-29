@@ -27,6 +27,7 @@ namespace AmazonIntegration\Controller\Admin;
 use AmazonIntegration\AmazonIntegration;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Thelia;
+use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Form\Exception\FormValidationException;
@@ -35,12 +36,26 @@ use Thelia\Tools\Version\Version;
 
 /**
  * Class ConfigureAmazonIntegration
- * 
+ *
  * @package AmazonIntegration\Controller
  * @author Thelia <info@thelia.net>
  */
 class ConfigurationController extends BaseAdminController
 {
+
+    public function downloadLog()
+    {
+        if (null !== $response = $this->checkAuth(AdminResources::MODULE, 'atos', AccessManager::UPDATE)) {
+            return $response;
+        }
+        
+        $logFilePath = THELIA_LOG_DIR . DS . "log-amazon-integration.txt";
+        
+        return Response::create(@file_get_contents($logFilePath), 200, array(
+            'Content-type' => "text/plain",
+            'Content-Disposition' => sprintf('Attachment;filename=log-amazon-integration.txt')
+        ));
+    }
 
     /*
      * Checks AmazonIntegration.configure || AmazonIntegration.configure.sandbox form and save config into json file
@@ -86,16 +101,14 @@ class ConfigurationController extends BaseAdminController
         
         $this->setupFormErrorContext($this->getTranslator()
             ->trans("Amazon Integration configuration", [], AmazonIntegration::DOMAIN_NAME), $error_msg, $configurationForm, $ex);
-
+        
         // Before 2.2, the errored form is not stored in session
         if (Version::test(Thelia::THELIA_VERSION, '2.2', false, "<")) {
-            return $this->render('module-configure', [ 'module_code' => 'Sofort' ]);
+            return $this->render('module-configure', [
+                'module_code' => 'AmazonIntegration'
+            ]);
         } else {
             return $this->generateRedirect(URL::getInstance()->absoluteUrl('/admin/module/AmazonIntegration'));
         }
-        
-        return $this->render('module-configure', [
-            'module_code' => 'AmazonIntegration'
-        ]);
     }
 }

@@ -12,4 +12,8 @@
 		<default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::configure</default>
 	</route>
 	
+    <route id="sofort.download.log" path="/admin/module/amazonintegration/log">
+        <default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::downloadLog</default>
+    </route>
+	
 </routes>
