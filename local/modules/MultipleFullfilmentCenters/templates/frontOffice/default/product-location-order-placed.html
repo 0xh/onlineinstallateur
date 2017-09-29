@@ -1,11 +1,13 @@
-{ifloop rel="fulfilment_center_pick_up_address"}
-	 <p>{intl l="The pickup address is:"}</p>
-	 
-	    {loop type="fulfilment_center_pick_up_address" name="fulfilment_center_pick_up_address" orderid={$orderId}}
-	    <dl class="row">
-			<dt class="col-sm-6 col-md-5 text-right">{$PRODUCT_TITLE} : </dt>
-	        <dd class="col-sm-6 col-md-7">{$CENTER_ADDRESS}</dd>
-	    </dl>
-		{/loop}
-		
-{/ifloop}	
+{if $orderId}
+	{ifloop rel="fulfilment_center_pick_up_address"}
+		 <p>{intl l="The pickup address is:"}</p>
+		 
+		    {loop type="fulfilment_center_pick_up_address" name="fulfilment_center_pick_up_address" orderid={$orderId}}
+		    <dl class="row">
+				<dt class="col-sm-6 col-md-5 text-right">{$PRODUCT_TITLE} : </dt>
+		        <dd class="col-sm-6 col-md-7">{$CENTER_ADDRESS}</dd>
+		    </dl>
+			{/loop}
+			
+	{/ifloop}
+{/if}	

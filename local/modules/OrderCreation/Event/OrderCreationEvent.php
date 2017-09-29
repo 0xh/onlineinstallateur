@@ -46,6 +46,9 @@ class OrderCreationEvent extends ActionEvent
 
     /** @var  \Thelia\Model\Order $customerId */
     protected $placedOrder;
+    
+    /** @var  array $prices */
+    protected $prices;
 
     protected $response;
 
@@ -293,4 +296,25 @@ class OrderCreationEvent extends ActionEvent
     {
     	return $this->orderStatusId;
     }
+    
+    /**
+     * @param array $prices
+     *
+     * @return OrderCreationEvent
+     */
+    public function setPrices($prices)
+    {
+    	$this->prices= $prices;
+    	
+    	return $this;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getPrices()
+    {
+    	return $this->prices;
+    }
+    
 }

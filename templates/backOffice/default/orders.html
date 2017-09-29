@@ -13,6 +13,7 @@
     {assign order_page {$smarty.get.page|default:1}}
     {assign view_status {$smarty.get.status}}
     {assign status_filter {$smarty.get.status|assertType:'IntListType'}}
+    {assign orders_order {$smarty.get.orders_order|default:'id-reverse'}}
 <div class="orders">
 
     <div id="wrapper" class="container">
@@ -21,8 +22,12 @@
             <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
             <li><a href="#">{intl l="Orders"}</a></li>
         </ul>
-
+        
+{if $view_status == 9} 
+	{hook name="offer.listing.offers"}
+{else}
         {hook name="orders.top" location="orders_top" }
+
 
         <div class="row">
             <div class="col-md-12">
@@ -188,7 +193,7 @@
         </div>
 
         {hook name="orders.bottom" location="orders_bottom" }
-
+{/if}
     </div>
 </div>
 

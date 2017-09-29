@@ -3,13 +3,8 @@
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ---------------------------------------------------------------------
--- fulfilment_center
--- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `fulfilment_center`;
-
-CREATE TABLE `fulfilment_center`
+CREATE TABLE IF NOT EXISTS `fulfilment_center`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
@@ -20,13 +15,8 @@ CREATE TABLE `fulfilment_center`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- fulfilment_center_products
--- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `fulfilment_center_products`;
-
-CREATE TABLE `fulfilment_center_products`
+CREATE TABLE IF NOT EXISTS `fulfilment_center_products`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fulfilment_center_id` INTEGER,
@@ -49,13 +39,8 @@ CREATE TABLE `fulfilment_center_products`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
--- ---------------------------------------------------------------------
--- order_local_pickup
--- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `order_local_pickup`;
-
-CREATE TABLE `order_local_pickup`
+CREATE TABLE IF NOT EXISTS `order_local_pickup`
 (
     `order_id` INTEGER,
     `cart_id` INTEGER NOT NULL,

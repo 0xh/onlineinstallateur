@@ -73,9 +73,11 @@ class OrderCreationListener implements EventSubscriberInterface
     }
 
     public function adminOrderCreate(OrderCreationEvent $event)
-    {
+    { 
         $pseIds = $event->getProductSaleElementIds();
         $quantities = $event->getQuantities();
+        if($event->getPrices())
+        	$prices = $event->getPrices();
 
         /** @var \Thelia\Model\Address $deliveryAddress */
         $deliveryAddress = AddressQuery::create()->findPk($event->getDeliveryAddressId());
@@ -113,7 +115,7 @@ class OrderCreationListener implements EventSubscriberInterface
             ->setCurrency($currency->getDefaultCurrency())
             ->save()
         ;
-
+           
         foreach ($pseIds as $key => $pseId) {
 
             /** @var \Thelia\Model\ProductSaleElements $productSaleElements */
@@ -124,18 +126,22 @@ class OrderCreationListener implements EventSubscriberInterface
                         ->filterByProductSaleElementsId($productSaleElements->getId())
                         ->filterByCurrencyId($currency->getDefaultCurrency()->getId())
                         ->findOne()) {
-
+                        	
                     $cartItem = new CartItem();
                     $cartItem
                         ->setCart($cart)
                         ->setProduct($productSaleElements->getProduct())
                         ->setProductSaleElements($productSaleElements)
                         ->setQuantity($quantities[$key])
-                        ->setPrice($productPrice->getPrice())
                         ->setPromoPrice($productPrice->getPromoPrice())
                         ->setPromo($productSaleElements->getPromo())
                         ->setPriceEndOfLife(time() + 60*60*24*30);
 
+                    if(isset($prices))
+                    	$cartItem->setPrice($prices[$key]);
+                    else	
+                    	$cartItem->setPrice($productPrice->getPrice());
+                    
                     $event->setCartItem($cartItem);
 
                     $event->getDispatcher()->dispatch(self::ADMIN_ORDER_BEFORE_ADD_CART, $event);
@@ -197,7 +203,6 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
         );
 
         $this->request->getSession()->set("thelia.cart_id", $cart->getId());
-
 
         $event->getDispatcher()->dispatch(TheliaEvents::ORDER_CREATE_MANUAL, $orderManualEvent);
 

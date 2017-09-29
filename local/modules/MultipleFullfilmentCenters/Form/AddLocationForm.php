@@ -25,18 +25,17 @@ class AddLocationForm extends BaseForm
                 'label_attr'=>array("for"=>"address")
             ))
             ->add("gps_lat", "text", array(
-            		'label'=>Translator::getInstance()->trans("Lat", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
-            		'label_attr'=>array("for"=>"gps_lat")
+            	'label'=>Translator::getInstance()->trans("Lat", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"gps_lat")
             ))
             ->add("gps_long", "text", array(
-            		'label'=>Translator::getInstance()->trans("Long", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
-            		'label_attr'=>array("for"=>"gps_long")
+            	'label'=>Translator::getInstance()->trans("Long", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"gps_long")
             ))
             ->add("stock_limit", "text", array(
-            		'label'=>Translator::getInstance()->trans("Stock", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
-            		'label_attr'=>array("for"=>"stock_limit")
-            ))
-        ;
+            	'label'=>Translator::getInstance()->trans("Stock", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"stock_limit")
+            ));
     }
     
     public function getName()

@@ -26,6 +26,8 @@ class OrderCreationCreateForm extends BaseForm
     const FIELD_NAME_ORDER_STATUS_ID = 'order_status_id';
     const FIELD_NAME_PRODUCT_SALE_ELEMENT_ID = 'product_sale_element_id';
     const FIELD_NAME_QUANTITY = 'quantity';
+    const FIELD_NAME_PRICE = 'price';
+    const FIELD_NAME_EMPLOYEE_NOTE = 'employee_note';
 
     /**
      *
@@ -163,6 +165,30 @@ class OrderCreationCreateForm extends BaseForm
                     ]
                 ]
             )
+            ->add(
+            		self::FIELD_NAME_PRICE,
+            		'collection',
+            		[
+            				'type'         => 'number',
+            				'label' => Translator::getInstance()->trans("Product price", [], OrderCreation::MESSAGE_DOMAIN),
+            				'label_attr' => [
+            						'for' => self::FIELD_NAME_PRICE . '_form'
+            				],
+            				'allow_add'    => true,
+            				'allow_delete' => true
+            		]
+            		)
+            		->add(
+            				self::FIELD_NAME_EMPLOYEE_NOTE,
+            				'text',
+            				[
+            						
+            						'label' => Translator::getInstance()->trans("Employee note", [], OrderCreation::MESSAGE_DOMAIN),
+            						'label_attr' => [
+            								'for' => self::FIELD_NAME_EMPLOYEE_NOTE. '_form'
+            						]
+            				]
+            				)
         ;
     }
 

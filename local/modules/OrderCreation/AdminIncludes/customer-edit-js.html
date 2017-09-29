@@ -12,7 +12,8 @@
  	// List the selected products
  	var nr_products = 0;
     $('#search_product_list').change(function(ev) {  
-		$.get("{url path='/admin/module/OrderCreation/list'}/"+$('#search_product_list').val()+"/"+nr_products, function(data){
+    	var order_status = $( ".js-update-order-status" ).val();
+		$.get("{url path='/admin/module/OrderCreation/list'}/"+$('#search_product_list').val()+"/"+nr_products+"/"+order_status, function(data){
 			nr_products += 1;
 		    $('#selected_product_list').append(data);
 		},'html');

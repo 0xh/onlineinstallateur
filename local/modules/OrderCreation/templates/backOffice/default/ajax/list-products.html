@@ -1,26 +1,28 @@
 {form name="admin.order.creation.create.form"}
 <div class="row" id="row-{$position}">
-	<div class="col-md-9">
-		{form_field form=$form field='product_sale_element_id' value_key=$position}
-		    <input readonly type="text"  class="form-control hide" name="{$name}" value="{$product_sale_element_id}">
-		    {loop name="pse" type="product_sale_elements" id=$product_sale_element_id}
-				{loop type="product" id=$PRODUCT_ID name="product_list" visible="*"}
-					{$TITLE}
-				{/loop}
-			{/loop}
-		{/form_field}
-	</div>
-	
-	<div class="col-md-2">
-		{form_field form=$form field='quantity' value_key=$position}
-		    <input type="text" class="" name="{$name}" value="1">
-		{/form_field}
-	</div>
-	
-	<div class="col-md-1">
-        <a class="btn btn-default btn-xs item-ajax-delete" data-toggle="modal" data-target="row-{$position}" title="{intl l='Remove' d='ordercreation'}" href="#">
-            <i class="glyphicon glyphicon-trash"></i>
-        </a>
-	</div>
+	{loop name="pse" type="product_sale_elements" id=$product_sale_element_id}
+		{loop type="product" id=$PRODUCT_ID name="product_list" visible="*"}
+			<div class="col-md-7">
+				{form_field form=$form field='product_sale_element_id' value_key=$position}
+				    <input readonly type="text"  class="form-control hide" name="{$name}" value="{$product_sale_element_id}">
+				  	{$TITLE}	
+				{/form_field}
+			</div>
+			
+			<div class="col-md-2">
+				{form_field form=$form field='quantity' value_key=$position}
+				    <input type="text" class="" name="{$name}" value="1">
+				{/form_field}
+			</div>
+			
+			{if $order_status == 9} {hook name="offer.creation.product-price" price=$PRICE} {/if}
+		
+			<div class="col-md-1">
+		        <a class="btn btn-default btn-xs item-ajax-delete" data-toggle="modal" data-target="row-{$position}" title="{intl l='Remove' d='ordercreation'}" href="#">
+		            <i class="glyphicon glyphicon-trash"></i>
+		        </a>
+			</div>
+		{/loop}
+	{/loop}
 </div>
 {/form}
