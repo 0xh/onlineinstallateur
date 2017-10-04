@@ -79,7 +79,8 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_GetOrder
  $request = new MarketplaceWebServiceOrders_Model_GetOrderRequest();
  $request->setSellerId(MERCHANT_ID);
- $request->setAmazonOrderId("304-4009648-2537909");
+//  $request->setAmazonOrderId("304-4009648-2537909");
+ $request->setAmazonOrderId("306-4274407-3817966");
 //  $request->setMarketplaceId(MARKETPLACE_ID);
  // object or array of parameters
  invokeGetOrder($service, $request);
@@ -105,6 +106,20 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
+        
+        
+        $xml = $dom->saveXML();
+        $orderdata = new SimpleXMLElement($xml);
+        $array = json_encode($orderdata, TRUE);
+        $result = json_decode($array);
+        if ($result) {
+            var_dump($result);
+            die;
+        } else {
+            echo ('error decoding json');
+        }
+        
+        
         echo $dom->saveXML();
         echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
 

@@ -22,6 +22,8 @@
  */
 
 require_once('.config.inc.php');
+include dirname(__FILE__) . '\..\Client.php';
+include dirname(__FILE__) . '\..\Model\ListOrderItemsByNextTokenRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
@@ -34,7 +36,7 @@ require_once('.config.inc.php');
 // North America:
 //$serviceUrl = "https://mws.amazonservices.com/Orders/2013-09-01";
 // Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
+$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 // Japan
 //$serviceUrl = "https://mws.amazonservices.jp/Orders/2013-09-01";
 // China
@@ -76,6 +78,7 @@ require_once('.config.inc.php');
  // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrderItemsByNextToken
  $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsByNextTokenRequest();
  $request->setSellerId(MERCHANT_ID);
+ 
  // object or array of parameters
  invokeListOrderItemsByNextToken($service, $request);
 

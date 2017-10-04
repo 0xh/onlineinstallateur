@@ -147,6 +147,7 @@ $fieldsArr = array(
 $request = new MarketplaceWebServiceOrders_Model_ListOrdersRequest();
 $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
+// $request->isSetMaxResultsPerPage()
 // object or array of parameters
 $orders = invokeListOrders($service, $request);
 
@@ -177,7 +178,6 @@ function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $reque
         $array = json_encode($orderdata, TRUE);
         $result = json_decode($array);
         if ($result) {
-            (float) $total = 0;
             foreach ($result->ListOrdersResult->Orders->Order as $order) {
                 array_push($orders, $order);
             }
