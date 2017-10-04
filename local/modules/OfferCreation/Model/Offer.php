@@ -89,11 +89,11 @@ class Offer extends BaseOffer
 		
 		public function preSave(ConnectionInterface $con = null)
 		{
-		/* 	if ($this->isPaid(false) && null === $this->getInvoiceDate()) {
+		 	if (null === $this->getInvoiceDate()) {
 				$this
 				->setInvoiceDate(time());
 			}
-			 */
+			 
 			return parent::preSave($con);
 		}
 		

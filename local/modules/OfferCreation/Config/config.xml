@@ -9,16 +9,6 @@
         <loop name="offer_product" class="OfferCreation\Loop\OfferProducts" />
     </loops>
 
- <!--    <forms>
-        <form name="admin.offer.creation.create.form" class="OfferCreation\Form\OfferCreationCreateForm" />
-    </forms> -->
-
-    <commands>
-        <!--
-        <command class="OfferCreation\Command\MySuperCommand" />
-        -->
-    </commands>
-
     <services>
 		<service id="customer.offer" class="OfferCreation\Listener\OfferCreationListener">
 			<argument type="service" id="request"/>
@@ -27,6 +17,10 @@
 	</services>
 
     <hooks>
+      	<hook id="offer.creation.hook.css">
+            <tag name="hook.event_listener" event="main.head-css"  type="back" templates="css:assets/css/offer.css" />
+        </hook>
+        
 		<hook id="offer.creation" class="OfferCreation\Hook\Admin\OfferHook" scope="request">
         	<tag name="hook.event_listener" event="offer.creation.employee-notice" type="back" method="employeeNotice" />
         	<tag name="hook.event_listener" event="offer.creation.product-price" type="back" method="customProductPrice" />
@@ -35,17 +29,5 @@
         	<tag name="hook.event_listener" event="offer.listing.offers" type="back" method="listOffers" />
         </hook> 
 	 </hooks>
-
-
-    <!--
-    <exports>
-
-    </exports>
-    -->
-
-    <!--
-    <imports>
-
-    </imports>
-    -->
+	 
 </config>

@@ -12,7 +12,6 @@ use OrderCreation\EventListeners\OrderCreationListener;
 use OrderCreation\Form\OrderCreationCreateForm;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\Join;
-use Propel\Runtime\Propel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
@@ -22,7 +21,6 @@ use Thelia\Model\AddressQuery;
 use Thelia\Model\Base\CustomerQuery;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\Customer;
-use Thelia\Model\Map\OrderTableMap;
 use Thelia\Model\Map\ProductCategoryTableMap;
 use Thelia\Model\Map\ProductI18nTableMap;
 use Thelia\Model\Map\ProductSaleElementsTableMap;
@@ -72,7 +70,7 @@ class OrderCreationAdminController extends BaseAdminController
 
             $formValidate = $this->validateForm($form);
             $event = new OrderCreationEvent();
-        
+          
             $event
                 ->setContainer($this->getContainer())
                 ->setCustomerId($formValidate->get(OrderCreationCreateForm::FIELD_NAME_CUSTOMER_ID)->getData())
@@ -258,4 +256,79 @@ class OrderCreationAdminController extends BaseAdminController
 
         return null;
     }
+    
+    public function createOrderActionAmazon()
+    {
+    	$response = $this->checkAuth(array(AdminResources::MODULE), array('OrderCreation'), AccessManager::CREATE);
+    	if (null !== $response) {
+    		return $response;
+    	}
+    	
+    	$form = new OrderCreationCreateForm($this->getRequest());
+    	
+    	try {
+    		
+    	//	$formValidate = $this->validateForm($form);
+    		$event = new OrderCreationEvent();
+    		$v[] = '2828';
+    		
+    		$event
+    		->setContainer($this->getContainer())
+    		->setCustomerId('6')
+    		->setDeliveryAddressId('9')
+    		->setDeliveryModuleId('2')
+    		->setInvoiceAddressId('9')
+    		->setPaymentModuleId('21')
+    		->setOrderStatusId('1')
+    		->setProductSaleElementIds($v)
+    		->setQuantities('1')
+    		;
+    	
+    		$this->getRequest()->getSession()->set(
+    				"marketplace",
+    				'DE'
+    				);
+    		
+    		$this->dispatch(OrderCreationListener::ADMIN_ORDER_CREATE, $event);
+    		
+    		if (null != $event->getResponse()) {
+    			return $event->getResponse();
+    		}
+    		
+    		//Don't forget to fill the Customer form
+    		if (null != $customer = CustomerQuery::create()->findPk('6')) {
+    			$customerForm = $this->hydrateCustomerForm($customer);
+    			$this->getParserContext()->addForm($customerForm);
+    		}
+    		
+    		return RedirectResponse::create(
+    				URL::getInstance()->absoluteUrl(
+    						'/admin/customer/update?customer_id=6'
+    						)
+    				);
+    		
+    	} catch (\Exception $e) {
+    		$form->setErrorMessage($e->getMessage());
+    		
+    		$this->getParserContext()
+    		->addForm($form)
+    		->setGeneralError($e->getMessage())
+    		;
+    		
+    		//Don't forget to fill the Customer form
+    		if (null != $customer = CustomerQuery::create()
+    				->findPk($this->getRequest()->request->get('admin_order_create')['customer_id'])) {
+    					
+    					$customerForm = $this->hydrateCustomerForm($customer);
+    					$this->getParserContext()->addForm($customerForm);
+    					
+    				}
+    				
+    				return $this->render('customer-edit', array(
+    						'customer_id' => $this->getRequest()->request->get('admin_order_create')['customer_id'],
+    						"order_creation_error" => $e->getMessage()
+    				));
+    	}
+    }
+    
 }
