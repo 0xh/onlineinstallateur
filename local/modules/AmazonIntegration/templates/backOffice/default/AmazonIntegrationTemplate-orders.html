@@ -1,0 +1,47 @@
+
+<div class="tab-pane fade active in" id="amazon-orders">
+
+	<div class="container">
+		<h2>Dashboard Orders</h2>
+		<p>Orders from amazon:</p>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>AmazonOrderId</th>
+					<th>PurchaseDate</th>
+					<th>LastUpdateDate</th>
+					<th>OrderStatus</th>
+					<th>SalesChannel</th>
+					<th>OrderTotal</th>
+					<th>MarketplaceId</th>
+					<th>BuyerEmail</th>
+					<th>BuyerName</th>
+					<th>EarliestShipDate</th>
+					<th>LatestShipDate</th>
+					<th>EarliestDeliveryDate</th>
+					<th>LatestDeliveryDate</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach from=$orders item=order}
+				<tr>
+					<td>{$order->AmazonOrderId}</td>
+					<td>{$order->PurchaseDate}</td>
+					<td>{$order->LastUpdateDate}</td>
+					<td>{$order->OrderStatus}</td>
+					<td>{$order->SalesChannel}</td>
+					<td>{$order->OrderTotal->Amount}
+						{$order->OrderTotal->CurrencyCode}</td>
+					<td>{$order->MarketplaceId}</td>
+					<td>{$order->BuyerEmail}</td>
+					<td>{$order->BuyerName}</td>
+					<td>{$order->EarliestShipDate}</td>
+					<td>{$order->LatestShipDate}</td>
+					<td>{$order->EarliestDeliveryDate}</td>
+					<td>{$order->LatestDeliveryDate}</td>
+				</tr>
+				{/foreach}
+			</tbody>
+		</table>
+	</div>
+</div>

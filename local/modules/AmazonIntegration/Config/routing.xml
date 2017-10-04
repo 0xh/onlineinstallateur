@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<routes xmlns="http://symfony.com/schema/routing"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+<routes xmlns="http://symfony.com/schema/routing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-     <route id="test.amazon" path="/admin/module/amazonintegration">
-         <default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::viewAction</default> 
-     </route> 
-    
-  	<route id="amazonintegration.configure" path="/admin/module/AmazonIntegration/configure" methods="post">
-		<default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::configure</default>
+	<route id="test.amazon" path="/admin/module/amazonintegration">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::viewAction
+		</default>
 	</route>
-	
-    <route id="sofort.download.log" path="/admin/module/amazonintegration/log">
-        <default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::downloadLog</default>
-    </route>
-	
+
+	<route id="amazon-service-orders" path="/admin/module/amazonintegration/service-orders">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::serviceAction
+		</default>
+	</route>
+
+
+	<route id="amazonintegration.configure" path="/admin/module/AmazonIntegration/configure"
+		methods="post">
+		<default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::configure
+		</default>
+	</route>
+
+	<route id="sofort.download.log" path="/admin/module/amazonintegration/log">
+		<default key="_controller">AmazonIntegration\Controller\Admin\ConfigurationController::downloadLog
+		</default>
+	</route>
+
 </routes>

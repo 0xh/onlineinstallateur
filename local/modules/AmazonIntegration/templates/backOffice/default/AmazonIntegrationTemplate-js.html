@@ -1,0 +1,36 @@
+<script>
+
+// alert("asas");
+window.onload = function() {
+	$( '#amazon-service-orders-btn' ).click(function() {
+		
+	     $.getJSON("{url path='/admin/module/amazonintegration/service-orders'}")
+	     .done(function (data) {
+	       jsonSuccessLoad(data);
+
+	     })
+	     .fail(jsonFailLoad);
+		
+	 	});
+
+	  function jsonFailLoad(data) {
+	     $('#jqplot').html('<div class="alert alert-danger">An error occurred while reading from JSON file</div>');
+	  }
+
+	  function jsonSuccessLoad(data) {
+
+		  $('#resp-status-service').text(data.Status);
+		  $('#resp-timestamp-service').text(data.Timestamp);
+		  $('#resp-messages-service').text(data.Messages);
+	 	//  var response = JSON.parse(data);
+	     console.log(data);
+	// //     $('.crawlerdebug').html(data.result);
+
+	  }
+}
+
+
+
+
+
+</script>

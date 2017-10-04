@@ -22,6 +22,8 @@
  */
 
 require_once('.config.inc.php');
+include dirname(__FILE__).'\..\Client.php';
+include dirname(__FILE__).'\..\Model\GetServiceStatusRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
@@ -34,7 +36,7 @@ require_once('.config.inc.php');
 // North America:
 //$serviceUrl = "https://mws.amazonservices.com/Orders/2013-09-01";
 // Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
+$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 // Japan
 //$serviceUrl = "https://mws.amazonservices.jp/Orders/2013-09-01";
 // China
@@ -77,7 +79,7 @@ require_once('.config.inc.php');
  $request = new MarketplaceWebServiceOrders_Model_GetServiceStatusRequest();
  $request->setSellerId(MERCHANT_ID);
  // object or array of parameters
- invokeGetServiceStatus($service, $request);
+ $orders = invokeGetServiceStatus($service, $request);
 
 /**
   * Get Get Service Status Action Sample
@@ -93,15 +95,32 @@ require_once('.config.inc.php');
       try {
         $response = $service->GetServiceStatus($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
+        $orders = array();
+        
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        
+        $xml = $dom->saveXML();
+        $orderdata = new SimpleXMLElement($xml);
+        $array = json_encode($orderdata, TRUE);
+        $result = json_decode($array);
+        if ($result) {
+            foreach ($result as $order) {
+                
+                $orders['Status'] = $order->Status;
+                $orders['Timestamp'] = $order->Timestamp;
+                $orders['Messages'] = $order->Messages;
+                break;
+            }
+        } else {
+            $orders['Status'] = "";
+            $orders['Timestamp'] = "";
+            $orders['Messages'] = 'Error decoding json';
+        }
+        
+        return $orders;
 
      } catch (MarketplaceWebServiceOrders_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");

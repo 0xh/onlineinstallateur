@@ -1,11 +1,29 @@
-{extends file="admin-layout.tpl"} {block name="main-content"}
+{extends file="admin-layout.tpl"} {block name="main-content"} {render
+action='AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::blockJs'}
 
+<div class="general-block-decorator dashboard">
+	<div class="title title-without-tabs clearfix">{intl l='Dashboard
+		Amazon' d='amazonintegration.bo.default'}</div>
 
-<ul>
-	{foreach from=$orders item=order}
-		<li>{$order->ShippingAddress->Name}</li> 
-	{/foreach}
-</ul>
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a href="#amazon-orders" data-toggle="tab">{intl
+				l="Orders" d='amazonintegrationhome.bo.default'} </a></li>
+		<li><a href="#amazon-products" data-toggle="tab">{intl
+				l="Products" d='amazonintegrationhome.bo.default'}</a></li>
+		<li><a href="#amazon-feeds" data-toggle="tab">{intl l="Feeds"
+				d='amazonintegrationhome.bo.default'} </a></li>
+		<li><a href="#amazon-service" data-toggle="tab">{intl
+				l="Service" d='amazonintegrationhome.bo.default'} </a></li>
+	</ul>
 
+	<div class="tab-content">
 
+		{include file='AmazonIntegrationTemplate-orders.html'}
+		{include file='AmazonIntegrationTemplate-products.html'}
+		{include file='AmazonIntegrationTemplate-feeds.html'}
+		{include file='AmazonIntegrationTemplate-service.html'}
+
+	</div>
+
+</div>
 {/block}
