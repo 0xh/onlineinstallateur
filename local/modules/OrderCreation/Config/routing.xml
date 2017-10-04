@@ -30,4 +30,8 @@
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::updateCountryInRequest</default>
     </route>
 
+	<!--CREATE ORDER FROM AMAZON  --> 
+	<route id="admin.order.creation.amazon" path="/admin/createAmazon" methods="get">
+        <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::createOrderActionAmazon</default>
+    </route>
 </routes>

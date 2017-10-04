@@ -1,0 +1,304 @@
+{* Set the default translation domain, that will be used by {intl} when the 'd' parameter is not set *}
+{default_translation_domain domain='pdf.default'}
+{literal}
+<style>
+    h1, h2, h3, h4 {
+        color:#666;
+        margin: .5em 0;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    h4 {
+        color:#58585a;
+        font-size: 12px;
+    }
+
+    p, td {
+        color:#58585a;
+        font-size: 9px;
+    }
+
+    p {
+        margin: .5em 0;
+    }
+
+    span {
+        font-size: 9px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr {
+        width: 100%;
+    }
+
+    td {
+        vertical-align: top;
+    }
+    .table-info{
+        float:left;
+        width:50%;
+    }
+    .logo{
+        float:left;
+        width:50%;
+    }
+    .table-info h3 {
+        font-size: 15px;
+        color: #58585a;
+        margin-top: 0;
+        margin-bottom: 15px;
+        
+    }
+
+    .table-info h3 span {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .table-1 td {
+        background: #f1f3f4;
+        border:solid 1px #bcbdc0;
+    }
+
+    .table-2 td {
+        border:solid 1px #bcbdc0;
+    }
+
+
+    .table-3-1, .table-3-2 {
+        border: solid 1px #bcbdc0;
+    }
+    .table-3-1 p {
+        font-size: 10px;
+    }
+    .table-3-2 p {
+        font-size: 9px;
+        color: #747475;
+    }
+
+    .table-3-module h3 {
+        margin-top: 1.5em;
+    }
+
+    .table-3-module span {
+        font-size: 11px;
+    }
+    
+    .align-left {
+        text-align: left;
+    }
+    .align-center {
+        text-align: center;
+    }
+    .align-right{
+        text-align: right;
+    }
+    .clear {
+        padding: 0.5%;
+        border-bottom:solid 1px #dddddd;
+    }
+
+    .clear-none {
+        padding: 0.5%;
+    }
+    .table-bottom{
+        position:absolute;
+        bottom:50px;
+        left:20px
+    }
+	
+	{hook name="invoice.css"}
+</style>
+{/literal}
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm">
+    <page_header>
+       
+    </page_header>
+
+     <page_footer style="padding:20px">
+		
+     
+        <hr style="border:solid  #86AC34 1px;">
+        <table style="font-size:11px; padding:10px">
+            <tr>
+    <td style="width:25%">
+        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
+        {config key="nwing"}<br/>
+        {config key="store_address1"}<br/>
+        {config key="store_zipcode"}, {config key="store_city"}<br />
+        {if {config key="store_country"}}
+            {loop type="country" name="store_country" id={config key="store_country"}}
+                {$TITLE}
+            {/loop}
+        {/if} 
+    </td>
+                
+    <td style="width:25%">
+        Tel.{config key="store_phone"}<br>
+        {config key="store_email"}<br/>
+        {config key="url_site"}<br />
+    </td>
+
+    <td style="width:25%">
+        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
+        IBAN: {config key="iban"}<br>
+        BIC: {config key="bic"}<br />
+        UID-Nr: {config key="uid-nr"}<br />
+        FN: {config key="fn"}<br />
+    </td>
+    <td style="width:25%">
+          Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
+    </td>
+                
+    </tr>
+    
+</table>
+
+    </page_footer>
+
+{loop name="offer" type="offer" id=$offer_id customer="*"}
+
+    <table class="table-address">
+        <col style="width: 60%; padding: 3mm;padding-left:10mm" />
+        <col style="width: 40%; padding: 3mm;" />
+
+        <tr>
+           <td>
+               <h1>{intl l="DELIVERY"}</h1>
+           </td>
+                <td style="text-align:right">
+            <!-- <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br> -->
+            Marke der Nwing-network GmbH<br>
+            Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
+            Tel: 0800 / 022573 <br>
+            Email: office@hausfabrik.at
+        </td>
+        </tr>
+        <tr>
+            <td style="border-left: solid 1mm #86ac34;">
+                <h3>{intl l="Delivery address"}</h3>
+				{ifhook rel="invoice.delivery-address"}
+                    {* delivery module can customize the delivery address *}
+                    {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$offer_id}
+                {/ifhook}
+                {elsehook rel="invoice.delivery-address"}                
+				    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
+               	{/elsehook}
+            </td>
+            <td style="border-left: solid 1mm #86ac34;">
+                <h3>{intl l="Offer address"}</h3>
+                {format_address order_address=$INVOICE_ADDRESS locale=$locale}
+            </td>
+        </tr>
+    </table>
+    
+
+    
+    <table>
+    <col style="width: 70%;padding: 3mm; padding-top:10mm" />
+    <col style="width: 30%; padding: 3mm;" />
+    <tr>
+        <td>
+   
+            <table class="table-info">
+                <col style="width: 100%; padding: 0mm;" />
+               
+                <tr>
+                    <td><h3>{intl l="Offer date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
+                </tr>
+                <tr>
+                    <td><h3>{intl l="Offer REF"} : <span>{$REF}</span></h3></td>
+                </tr>
+                <tr>
+                    <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
+                </tr>
+                {hookblock name="invoice.information" order=$offer_id fields="title,value"}
+                {forhook rel="invoice.information"}
+                <tr>
+                    <td><h3>{$title} : <span>{$value}</span></h3></td>
+                </tr>
+                {/forhook}
+                {/hookblock}
+            </table>
+        </td>
+
+
+    </tr>
+</table>
+
+    <table style="padding-top: 5mm;">
+        <col style="width: 23%; padding: 3mm;" />
+        <col style="width: 65%; padding: 3mm;" />
+        <col style="width: 12%; padding: 3mm;" />
+        <tr>
+            <td style="border:solid 1px #dddddd;background:#f1f3f4;" >
+                <h3 style="color:#58585a;">{intl l="Ref"}</h3>
+            </td>
+            <td style="border:solid 1px #dddddd;background:#f1f3f4;">
+                <h3 style="color:#58585a;">{intl l="product"}</h3>
+            </td>
+            <td style="border:solid 1px #dddddd;background-color:#86AC34;">
+                <h3 style="color:white; text-align:center;">{intl l="Quantity"}</h3>
+            </td>
+        </tr>
+        {loop type="offer_product" name="offer_product" offer=$ID}
+        <tr>
+            <td style="border:solid 1px #dddddd;">
+                <p>{$REF}</p>
+            </td>
+            <td style="border:solid 1px #dddddd;">
+                <p>{$TITLE}</p>
+                    {ifloop rel="combinations"}
+                    {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
+                        {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
+                    {/loop}
+                    {/ifloop}
+            </td>
+            <td style="border:solid 1px #dddddd; text-align:center;">
+                <p>{$QUANTITY}</p>
+            </td>
+        </tr>
+        {/loop}
+    </table>
+
+    <table style="padding-top: 5mm;">
+        <col style="width: 40%; padding: 3mm;" />
+        <tr>
+            <td  class="table-3-module" style="border-left:solid 3px #86AC34; padding-top: 2mm">
+                <h3>{intl l="Delivery module"}</h3>
+               	
+				{ifhook rel="product.order-pdf-fulfilment-center-address"}
+               		{hook name="product.order-pdf-fulfilment-center-address" orderid=$order_id}	
+	            {/ifhook}
+				{elsehook rel="product.order-pdf-fulfilment-center-address"}
+                   	<p>	
+                   		<span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>  
+                   	</p>
+                {/elsehook}
+
+                {hook name="delivery.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
+            </td>
+        </tr>
+        <tr>
+            <td class="clear-none"></td>
+        </tr>
+    </table>
+
+
+{/loop}
+</page>

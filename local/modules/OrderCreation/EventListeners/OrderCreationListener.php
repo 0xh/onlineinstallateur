@@ -27,9 +27,9 @@ use Thelia\Model\Lang;
 use Thelia\Model\ModuleQuery;
 use Thelia\Model\Order;
 use Thelia\Model\OrderPostage;
-use Thelia\Model\OrderStatusQuery;
 use Thelia\Model\ProductPriceQuery;
 use Thelia\Log\Tlog;
+use Thelia\Model\OrderQuery;
 
 class OrderCreationListener implements EventSubscriberInterface
 {
@@ -68,7 +68,8 @@ class OrderCreationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            self::ADMIN_ORDER_CREATE => array('adminOrderCreate', 128)
+            self::ADMIN_ORDER_CREATE => array('adminOrderCreate', 128)/* ,
+        	TheliaEvents::ORDER_AFTER_CREATE => array("updateRef", 128) */
         );
     }
 
@@ -78,7 +79,7 @@ class OrderCreationListener implements EventSubscriberInterface
         $quantities = $event->getQuantities();
         if($event->getPrices())
         	$prices = $event->getPrices();
-
+        
         /** @var \Thelia\Model\Address $deliveryAddress */
         $deliveryAddress = AddressQuery::create()->findPk($event->getDeliveryAddressId());
         /** @var \Thelia\Model\Address $invoiceAddress */
@@ -100,8 +101,6 @@ class OrderCreationListener implements EventSubscriberInterface
             ->setCustomerId($customer->getId())
             ->setCurrencyId($currency->getId())
             ->setCurrencyRate($currency->getRate())
-      //      ->setStatusId(OrderStatusQuery::getOfferStatus()->getId())
-           // ->setStatusId(OrderStatusQuery::getPaidStatus()->getId())
         	->setStatusId($event->getOrderStatusId())
             ->setLangId($lang->getDefaultLanguage()->getId())
             ->setChoosenDeliveryAddress($deliveryAddress)
@@ -165,7 +164,6 @@ class OrderCreationListener implements EventSubscriberInterface
         $orderEvent = new OrderEvent($order);
         $orderEvent->setDeliveryAddress($deliveryAddress->getId());
         $orderEvent->setInvoiceAddress($invoiceAddress->getId());
-       // $orderEvent->setStatus(OrderStatusQuery::getNotPaidStatus()->getId());
         $orderEvent->setStatus($event->getOrderStatusId());
        
         $moduleInstance = $deliveryModule->getModuleInstance($event->getContainer());
@@ -238,5 +236,54 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
         } else {
             $this->request->getSession()->clearCustomerUser();
         }
+    }
+    
+    public function updateRef(OrderEvent $event) 
+    {
+    	if($this->request->getSession()->get('marketplace')) {
+    		
+    		$lastOrder = OrderQuery::create()
+	    		->select('ref')
+	    		->filterByRef('DE%')
+	    		->orderByRef('desc')
+	    		->findOne();
+    		
+    		if($lastOrder){
+	    		preg_match_all('!\d+!', $lastOrder, $matches);
+	    		$refId = intval($matches[0][0]) + 1;
+    		}
+    		else {
+    			$refId = '1';
+    		}
+    		
+    		$prefix = 'DE%s';
+    		
+    		$this->request->getSession()->remove('marketplace');
+    	}
+    	else{
+    		$lastOrder = OrderQuery::create()
+	    		->select('ref')
+	    		->filterByRef('ORD%')
+	    		->orderByRef('desc')
+	    		->find();
+    		
+    		preg_match_all('!\d+!', $lastOrder[1], $matches);
+    		
+    		$refId = intval($matches[0][0]) + 1;
+    		$prefix = 'ORD%s';
+    	}
+    	
+    	$order = OrderQuery::create()
+    		->filterById($event->getOrder()->getId())
+    		->findOne();
+    	
+    	$order->setRef($this->generateRef($refId, $prefix))
+    		->save();
+    		
+    }
+    
+    public function generateRef($id, $prefix)
+    {
+    	return sprintf($prefix, str_pad($id, 12, 0, STR_PAD_LEFT));
     }
 }

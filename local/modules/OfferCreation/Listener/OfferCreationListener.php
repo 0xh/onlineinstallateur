@@ -27,15 +27,11 @@ use Thelia\Exception\TheliaProcessException;
 use OfferCreation\Model\OfferProduct;
 use OfferCreation\Model\OfferProductTax;
 use Thelia\Tools\URL;
-/* 
-use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
-use  MultipleFullfilmentCenters\Model\Map\OrderLocalPickupTableMap; */
 
 /**
  */
 class OfferCreationListener extends BaseAction implements EventSubscriberInterface
 {
-	
 	protected $request;
 	
 	public function __construct(Request $request)
@@ -64,8 +60,6 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 				$event->getUseOrderDefinedAddresses()	
 			);
 			
-			/* exit(RedirectResponse::create(
-					URL::getInstance()->absoluteUrl('/admin/customer/update?customer_id='.$event->getCustomer()->getId())));  */
 			$url = '/admin/customer/update?customer_id='.$event->getCustomer()->getId();
 			
 			exit(header("Location: ".$url));
@@ -113,7 +107,7 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 				$placedOffer->resetModified(OfferTableMap::CREATED_AT);
 				$placedOffer->resetModified(OfferTableMap::UPDATED_AT);
 				$placedOffer->resetModified(OfferTableMap::VERSION_CREATED_AT);
-				
+	
 				/* fulfill offer */
 				$placedOffer->setCustomerId($customer->getId());
 				$placedOffer->setEmployeeId($this->request->getSession()->getAdminUser()->getId());
@@ -123,6 +117,9 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 				$placedOffer->setPaymentModuleId($sessionOrder->getPaymentModuleId());
 				$placedOffer->setDeliveryModuleId($sessionOrder->getDeliveryModuleId());
 				$placedOffer->setNoteEmployee($this->request->getSession()->get('employee_note'));
+				$placedOffer->setPostage($sessionOrder->getPostage());
+				$placedOffer->setPostageTax($sessionOrder->getPostageTax());
+				$placedOffer->setPostageTaxRuleTitle($sessionOrder->getPostageTaxRuleTitle());
 				
 				if ($useOrderDefinedAddresses) {
 					$taxCountry =
@@ -189,7 +186,7 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 				
 				$cartItems = $cart->getCartItems();
 				
-				/* fulfill order_products and decrease stock */
+				/* fulfill offer_products*/
 				
 				foreach ($cartItems as $cartItem) {
 					
@@ -274,10 +271,10 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 				}
 				
 				$con->commit();
-				
-			//	die('---');
+	
 				return $placedOffer;
 	}
+	
 	
 	/**
 	 * Returns an array of event names this subscriber wants to listen to.
@@ -302,7 +299,7 @@ class OfferCreationListener extends BaseAction implements EventSubscriberInterfa
 	public static function getSubscribedEvents()
 	{
 		return array(
-				TheliaEvents::ORDER_CREATE_MANUAL=>array("createManualOffer", 256)
+				TheliaEvents::ORDER_CREATE_MANUAL => array("createManualOffer", 256)
 		);
 	}
 }
