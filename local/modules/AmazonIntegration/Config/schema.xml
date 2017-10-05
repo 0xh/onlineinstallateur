@@ -15,5 +15,76 @@
 	    </vendor>
     </table>
 
+   <table name="amazon_orders" idMethod="native" phpName="AmazonOrders">
+    <column name="id" phpName="Id" type="VARCHAR" size="45" primaryKey="true" required="true"/>
+    <column name="seller_order_id" phpName="SellerOrderId" type="VARCHAR" size="45"/>
+    <column name="purchase_date" phpName="PurchaseDate" type="TIMESTAMP"/>
+    <column name="last_update_date" phpName="LastUpdateDate" type="TIMESTAMP"/>
+    <column name="order_status" phpName="OrderStatus" type="VARCHAR" size="45"/>
+    <column name="fulfillment_channel" phpName="FulfillmentChannel" type="VARCHAR" size="45"/>
+    <column name="sales_channel" phpName="SalesChannel" type="VARCHAR" size="45"/>
+    <column name="order_channel" phpName="OrderChannel" type="VARCHAR" size="45"/>
+    <column name="ship_service_level" phpName="ShipServiceLevel" type="VARCHAR" size="45"/>
+    <column name="order_total_currency_code" phpName="OrderTotalCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="order_total_amount" phpName="OrderTotalAmount" type="DECIMAL" size="16" scale="2" required="true" defaultValue="0.00"/>
+    <column name="number_of_items_shipped" phpName="NumberOfItemsShipped" type="FLOAT"/>
+    <column name="number_of_items_unshipped" phpName="NumberOfItemsUnshipped" type="FLOAT"/>
+    <column name="payment_execution_detail_currency_code" phpName="PaymentExecutionDetailCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="payment_execution_detail_total_amount" phpName="PaymentExecutionDetailTotalAmount" type="DECIMAL" size="16" scale="2" required="true" defaultValue="0.00"/>
+    <column name="payment_execution_detail_payment_method" phpName="PaymentExecutionDetailPaymentMethod" type="VARCHAR" size="45"/>
+    <column name="payment_method" phpName="PaymentMethod" type="VARCHAR" size="45"/>
+    <column name="payment_method_detail" phpName="PaymentMethodDetail" type="VARCHAR" size="45"/>
+    <column name="marketplace_id" phpName="MarketplaceId" type="VARCHAR" size="45"/>
+    <column name="buyer_county" phpName="BuyerCounty" type="VARCHAR" size="45"/>
+    <column name="buyer_tax_info_company" phpName="BuyerTaxInfoCompany" type="VARCHAR" size="45"/>
+    <column name="buyer_tax_info_taxing_region" phpName="BuyerTaxInfoTaxingRegion" type="VARCHAR" size="45"/>
+    <column name="buyer_tax_info_tax_name" phpName="BuyerTaxInfoTaxName" type="VARCHAR" size="45"/>
+    <column name="buyer_tax_info_tax_value" phpName="BuyerTaxInfoTaxValue" type="VARCHAR" size="45"/>
+    <column name="shipment_service_level_category" phpName="ShipmentServiceLevelCategory" type="VARCHAR" size="45"/>
+    <column name="shipped_by_amazon_tfm" phpName="ShippedByAmazonTfm" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="tfm_shipment_status" phpName="TfmShipmentStatus" type="VARCHAR" size="45"/>
+    <column name="cba_displayable_shipping_label" phpName="CbaDisplayableShippingLabel" type="VARCHAR" size="45"/>
+    <column name="order_type" phpName="OrderType" type="VARCHAR" size="45"/>
+    <column name="earliest_ship_date" phpName="EarliestShipDate" type="TIMESTAMP"/>
+    <column name="latest_ship_date" phpName="LatestShipDate" type="TIMESTAMP"/>
+    <column name="earliest_delivery_date" phpName="EarliestDeliveryDate" type="TIMESTAMP"/>
+    <column name="latest_delivery_date" phpName="LatestDeliveryDate" type="TIMESTAMP"/>
+    <column name="is_business_order" phpName="IsBusinessOrder" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="purchase_order_number" phpName="PurchaseOrderNumber" type="VARCHAR" size="45"/>
+    <column name="is_prime" phpName="IsPrime" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="is_premium_order" phpName="IsPremiumOrder" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="replaced_order_id" phpName="ReplacedOrderId" type="VARCHAR" size="45"/>
+    <column name="is_replacement_order" phpName="IsReplacementOrder" type="TINYINT" required="true" defaultValue="0"/>
+    <column name="order_address_id" phpName="OrderAddressId" type="INTEGER"/>
+    <column name="customer_id" phpName="CustomerId" type="INTEGER"/>
+    <column name="order_id" phpName="OrderId" type="INTEGER"/>
+  
+    <foreign-key foreignTable="customer" name="fk_customer_id" onDelete="CASCADE">
+      <reference local="customer_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="order_address" name="fk_order_address_id" onDelete="CASCADE">
+      <reference local="order_address_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="order" name="fk_order_id" onDelete="CASCADE">
+      <reference local="order_id" foreign="id"/>
+    </foreign-key>
+    <index name="fk_order_address_id">
+      <index-column name="order_address_id"/>
+    </index>
+    <index name="fk_customer_id">
+      <index-column name="customer_id"/>
+    </index>
+    <index name="fk_order_id">
+      <index-column name="order_id"/>
+    </index>
+   <behavior name="timestampable" />
+	<behavior name="versionable">
+		<parameter name="log_created_at" value="true" />
+		<parameter name="log_created_by" value="true" />
+	</behavior>  
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

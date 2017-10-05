@@ -25,4 +25,8 @@
 		</default>
 	</route>
 
+	<route id="amazon.orders.save" path="/admin/module/amazonintegration/save-amazon-orders">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAmazonOrders
+		</default>
+	</route>
 </routes>
