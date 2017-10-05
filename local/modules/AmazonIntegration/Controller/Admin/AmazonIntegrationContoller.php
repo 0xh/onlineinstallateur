@@ -77,6 +77,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     public function saveAmazonOrders()
     {  
     	include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
+    	//include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersByNextTokenSample.php';
     	
 	    $con = Propel::getConnection(
 	    		AmazonOrdersTableMap::DATABASE_NAME
@@ -114,8 +115,11 @@ class AmazonIntegrationContoller extends BaseAdminController
     						if(isset($name[1])) {
     							if(isset($name[2]))
     								$lastName = $name[1].' '.$name[2];
-    								else
-    									$lastName = $name[1];
+    							else
+    								$lastName = $name[1];
+    						}
+    						else {
+    							$lastName = '';
     						}
     					}
     					else if($buyerEmail == 'amazoncanceled@hausfabrik.at'){
@@ -176,6 +180,9 @@ class AmazonIntegrationContoller extends BaseAdminController
 			    						$lastName = $name[1].' '.$name[2];
 			    						else
 			    							$lastName = $name[1];
+			    				}
+			    				else {
+			    					$lastName = '';
 			    				}
 			    			}
 			    			else if($order->OrderStatus == 'Canceled'){
