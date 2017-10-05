@@ -7,9 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- product_amazon
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `product_amazon`;
-
-CREATE TABLE `product_amazon`
+CREATE TABLE IF NOT EXISTS `product_amazon`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `product_id` INTEGER,
