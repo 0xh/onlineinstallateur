@@ -5,16 +5,14 @@ namespace AmazonIntegration\Model\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
+use AmazonIntegration\Model\AmazonOrderProduct as ChildAmazonOrderProduct;
+use AmazonIntegration\Model\AmazonOrderProductQuery as ChildAmazonOrderProductQuery;
+use AmazonIntegration\Model\AmazonOrderProductVersionQuery as ChildAmazonOrderProductVersionQuery;
 use AmazonIntegration\Model\AmazonOrders as ChildAmazonOrders;
 use AmazonIntegration\Model\AmazonOrdersQuery as ChildAmazonOrdersQuery;
 use AmazonIntegration\Model\AmazonOrdersVersion as ChildAmazonOrdersVersion;
 use AmazonIntegration\Model\AmazonOrdersVersionQuery as ChildAmazonOrdersVersionQuery;
-use AmazonIntegration\Model\Customer as ChildCustomer;
-use AmazonIntegration\Model\CustomerQuery as ChildCustomerQuery;
-use AmazonIntegration\Model\Order as ChildOrder;
-use AmazonIntegration\Model\OrderAddress as ChildOrderAddress;
-use AmazonIntegration\Model\OrderAddressQuery as ChildOrderAddressQuery;
-use AmazonIntegration\Model\OrderQuery as ChildOrderQuery;
+use AmazonIntegration\Model\Map\AmazonOrderProductVersionTableMap;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
 use AmazonIntegration\Model\Map\AmazonOrdersVersionTableMap;
 use Propel\Runtime\Propel;
@@ -29,6 +27,14 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
+use Thelia\Model\Customer as ChildCustomer;
+use Thelia\Model\Order as ChildOrder;
+use Thelia\Model\OrderAddress as ChildOrderAddress;
+use Thelia\Model\CustomerQuery;
+use Thelia\Model\CustomerVersionQuery;
+use Thelia\Model\OrderAddressQuery;
+use Thelia\Model\OrderQuery;
+use Thelia\Model\OrderVersionQuery;
 
 abstract class AmazonOrders implements ActiveRecordInterface 
 {
@@ -370,6 +376,12 @@ abstract class AmazonOrders implements ActiveRecordInterface
     protected $aOrder;
 
     /**
+     * @var        ObjectCollection|ChildAmazonOrderProduct[] Collection to store aggregation of ChildAmazonOrderProduct objects.
+     */
+    protected $collAmazonOrderProducts;
+    protected $collAmazonOrderProductsPartial;
+
+    /**
      * @var        ObjectCollection|ChildAmazonOrdersVersion[] Collection to store aggregation of ChildAmazonOrdersVersion objects.
      */
     protected $collAmazonOrdersVersions;
@@ -391,6 +403,12 @@ abstract class AmazonOrders implements ActiveRecordInterface
      */
     protected $enforceVersion = false;
             
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $amazonOrderProductsScheduledForDeletion = null;
+
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
@@ -2589,6 +2607,8 @@ abstract class AmazonOrders implements ActiveRecordInterface
             $this->aCustomer = null;
             $this->aOrderAddress = null;
             $this->aOrder = null;
+            $this->collAmazonOrderProducts = null;
+
             $this->collAmazonOrdersVersions = null;
 
         } // if (deep)
@@ -2760,6 +2780,23 @@ abstract class AmazonOrders implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->amazonOrderProductsScheduledForDeletion !== null) {
+                if (!$this->amazonOrderProductsScheduledForDeletion->isEmpty()) {
+                    \AmazonIntegration\Model\AmazonOrderProductQuery::create()
+                        ->filterByPrimaryKeys($this->amazonOrderProductsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->amazonOrderProductsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collAmazonOrderProducts !== null) {
+            foreach ($this->collAmazonOrderProducts as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->amazonOrdersVersionsScheduledForDeletion !== null) {
@@ -3382,6 +3419,9 @@ abstract class AmazonOrders implements ActiveRecordInterface
             if (null !== $this->aOrder) {
                 $result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collAmazonOrderProducts) {
+                $result['AmazonOrderProducts'] = $this->collAmazonOrderProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collAmazonOrdersVersions) {
                 $result['AmazonOrdersVersions'] = $this->collAmazonOrdersVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -3805,6 +3845,12 @@ abstract class AmazonOrders implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
+            foreach ($this->getAmazonOrderProducts() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addAmazonOrderProduct($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getAmazonOrdersVersions() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addAmazonOrdersVersion($relObj->copy($deepCopy));
@@ -3878,7 +3924,7 @@ abstract class AmazonOrders implements ActiveRecordInterface
     public function getCustomer(ConnectionInterface $con = null)
     {
         if ($this->aCustomer === null && ($this->customer_id !== null)) {
-            $this->aCustomer = ChildCustomerQuery::create()->findPk($this->customer_id, $con);
+            $this->aCustomer = CustomerQuery::create()->findPk($this->customer_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -3929,7 +3975,7 @@ abstract class AmazonOrders implements ActiveRecordInterface
     public function getOrderAddress(ConnectionInterface $con = null)
     {
         if ($this->aOrderAddress === null && ($this->order_address_id !== null)) {
-            $this->aOrderAddress = ChildOrderAddressQuery::create()->findPk($this->order_address_id, $con);
+            $this->aOrderAddress = OrderAddressQuery::create()->findPk($this->order_address_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -3980,7 +4026,7 @@ abstract class AmazonOrders implements ActiveRecordInterface
     public function getOrder(ConnectionInterface $con = null)
     {
         if ($this->aOrder === null && ($this->order_id !== null)) {
-            $this->aOrder = ChildOrderQuery::create()->findPk($this->order_id, $con);
+            $this->aOrder = OrderQuery::create()->findPk($this->order_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -4004,9 +4050,255 @@ abstract class AmazonOrders implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('AmazonOrderProduct' == $relationName) {
+            return $this->initAmazonOrderProducts();
+        }
         if ('AmazonOrdersVersion' == $relationName) {
             return $this->initAmazonOrdersVersions();
         }
+    }
+
+    /**
+     * Clears out the collAmazonOrderProducts collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addAmazonOrderProducts()
+     */
+    public function clearAmazonOrderProducts()
+    {
+        $this->collAmazonOrderProducts = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collAmazonOrderProducts collection loaded partially.
+     */
+    public function resetPartialAmazonOrderProducts($v = true)
+    {
+        $this->collAmazonOrderProductsPartial = $v;
+    }
+
+    /**
+     * Initializes the collAmazonOrderProducts collection.
+     *
+     * By default this just sets the collAmazonOrderProducts collection to an empty array (like clearcollAmazonOrderProducts());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initAmazonOrderProducts($overrideExisting = true)
+    {
+        if (null !== $this->collAmazonOrderProducts && !$overrideExisting) {
+            return;
+        }
+        $this->collAmazonOrderProducts = new ObjectCollection();
+        $this->collAmazonOrderProducts->setModel('\AmazonIntegration\Model\AmazonOrderProduct');
+    }
+
+    /**
+     * Gets an array of ChildAmazonOrderProduct objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildAmazonOrders is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildAmazonOrderProduct[] List of ChildAmazonOrderProduct objects
+     * @throws PropelException
+     */
+    public function getAmazonOrderProducts($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collAmazonOrderProductsPartial && !$this->isNew();
+        if (null === $this->collAmazonOrderProducts || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAmazonOrderProducts) {
+                // return empty collection
+                $this->initAmazonOrderProducts();
+            } else {
+                $collAmazonOrderProducts = ChildAmazonOrderProductQuery::create(null, $criteria)
+                    ->filterByAmazonOrders($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collAmazonOrderProductsPartial && count($collAmazonOrderProducts)) {
+                        $this->initAmazonOrderProducts(false);
+
+                        foreach ($collAmazonOrderProducts as $obj) {
+                            if (false == $this->collAmazonOrderProducts->contains($obj)) {
+                                $this->collAmazonOrderProducts->append($obj);
+                            }
+                        }
+
+                        $this->collAmazonOrderProductsPartial = true;
+                    }
+
+                    reset($collAmazonOrderProducts);
+
+                    return $collAmazonOrderProducts;
+                }
+
+                if ($partial && $this->collAmazonOrderProducts) {
+                    foreach ($this->collAmazonOrderProducts as $obj) {
+                        if ($obj->isNew()) {
+                            $collAmazonOrderProducts[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collAmazonOrderProducts = $collAmazonOrderProducts;
+                $this->collAmazonOrderProductsPartial = false;
+            }
+        }
+
+        return $this->collAmazonOrderProducts;
+    }
+
+    /**
+     * Sets a collection of AmazonOrderProduct objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $amazonOrderProducts A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildAmazonOrders The current object (for fluent API support)
+     */
+    public function setAmazonOrderProducts(Collection $amazonOrderProducts, ConnectionInterface $con = null)
+    {
+        $amazonOrderProductsToDelete = $this->getAmazonOrderProducts(new Criteria(), $con)->diff($amazonOrderProducts);
+
+        
+        $this->amazonOrderProductsScheduledForDeletion = $amazonOrderProductsToDelete;
+
+        foreach ($amazonOrderProductsToDelete as $amazonOrderProductRemoved) {
+            $amazonOrderProductRemoved->setAmazonOrders(null);
+        }
+
+        $this->collAmazonOrderProducts = null;
+        foreach ($amazonOrderProducts as $amazonOrderProduct) {
+            $this->addAmazonOrderProduct($amazonOrderProduct);
+        }
+
+        $this->collAmazonOrderProducts = $amazonOrderProducts;
+        $this->collAmazonOrderProductsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related AmazonOrderProduct objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related AmazonOrderProduct objects.
+     * @throws PropelException
+     */
+    public function countAmazonOrderProducts(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collAmazonOrderProductsPartial && !$this->isNew();
+        if (null === $this->collAmazonOrderProducts || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAmazonOrderProducts) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getAmazonOrderProducts());
+            }
+
+            $query = ChildAmazonOrderProductQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByAmazonOrders($this)
+                ->count($con);
+        }
+
+        return count($this->collAmazonOrderProducts);
+    }
+
+    /**
+     * Method called to associate a ChildAmazonOrderProduct object to this object
+     * through the ChildAmazonOrderProduct foreign key attribute.
+     *
+     * @param    ChildAmazonOrderProduct $l ChildAmazonOrderProduct
+     * @return   \AmazonIntegration\Model\AmazonOrders The current object (for fluent API support)
+     */
+    public function addAmazonOrderProduct(ChildAmazonOrderProduct $l)
+    {
+        if ($this->collAmazonOrderProducts === null) {
+            $this->initAmazonOrderProducts();
+            $this->collAmazonOrderProductsPartial = true;
+        }
+
+        if (!in_array($l, $this->collAmazonOrderProducts->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddAmazonOrderProduct($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param AmazonOrderProduct $amazonOrderProduct The amazonOrderProduct object to add.
+     */
+    protected function doAddAmazonOrderProduct($amazonOrderProduct)
+    {
+        $this->collAmazonOrderProducts[]= $amazonOrderProduct;
+        $amazonOrderProduct->setAmazonOrders($this);
+    }
+
+    /**
+     * @param  AmazonOrderProduct $amazonOrderProduct The amazonOrderProduct object to remove.
+     * @return ChildAmazonOrders The current object (for fluent API support)
+     */
+    public function removeAmazonOrderProduct($amazonOrderProduct)
+    {
+        if ($this->getAmazonOrderProducts()->contains($amazonOrderProduct)) {
+            $this->collAmazonOrderProducts->remove($this->collAmazonOrderProducts->search($amazonOrderProduct));
+            if (null === $this->amazonOrderProductsScheduledForDeletion) {
+                $this->amazonOrderProductsScheduledForDeletion = clone $this->collAmazonOrderProducts;
+                $this->amazonOrderProductsScheduledForDeletion->clear();
+            }
+            $this->amazonOrderProductsScheduledForDeletion[]= $amazonOrderProduct;
+            $amazonOrderProduct->setAmazonOrders(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this AmazonOrders is new, it will return
+     * an empty collection; or if this AmazonOrders has previously
+     * been saved, it will retrieve related AmazonOrderProducts from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in AmazonOrders.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildAmazonOrderProduct[] List of ChildAmazonOrderProduct objects
+     */
+    public function getAmazonOrderProductsJoinOrderProduct($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildAmazonOrderProductQuery::create(null, $criteria);
+        $query->joinWith('OrderProduct', $joinBehavior);
+
+        return $this->getAmazonOrderProducts($query, $con);
     }
 
     /**
@@ -4302,6 +4594,11 @@ abstract class AmazonOrders implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collAmazonOrderProducts) {
+                foreach ($this->collAmazonOrderProducts as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collAmazonOrdersVersions) {
                 foreach ($this->collAmazonOrdersVersions as $o) {
                     $o->clearAllReferences($deep);
@@ -4309,6 +4606,7 @@ abstract class AmazonOrders implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collAmazonOrderProducts = null;
         $this->collAmazonOrdersVersions = null;
         $this->aCustomer = null;
         $this->aOrderAddress = null;
@@ -4371,6 +4669,25 @@ abstract class AmazonOrders implements ActiveRecordInterface
         if (ChildAmazonOrdersQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
             return true;
         }
+        if (null !== ($object = $this->getCustomer($con)) && $object->isVersioningNecessary($con)) {
+            return true;
+        }
+    
+        if (null !== ($object = $this->getOrder($con)) && $object->isVersioningNecessary($con)) {
+            return true;
+        }
+    
+        // to avoid infinite loops, emulate in save
+        $this->alreadyInSave = true;
+        foreach ($this->getAmazonOrderProducts(null, $con) as $relatedObject) {
+            if ($relatedObject->isVersioningNecessary($con)) {
+                $this->alreadyInSave = false;
+    
+                return true;
+            }
+        }
+        $this->alreadyInSave = false;
+    
     
         return false;
     }
@@ -4435,6 +4752,16 @@ abstract class AmazonOrders implements ActiveRecordInterface
         $version->setVersionCreatedAt($this->getVersionCreatedAt());
         $version->setVersionCreatedBy($this->getVersionCreatedBy());
         $version->setAmazonOrders($this);
+        if (($related = $this->getCustomer($con)) && $related->getVersion()) {
+            $version->setCustomerIdVersion($related->getVersion());
+        }
+        if (($related = $this->getOrder($con)) && $related->getVersion()) {
+            $version->setOrderIdVersion($related->getVersion());
+        }
+        if ($relateds = $this->getAmazonOrderProducts($con)->toKeyValue('Id', 'Version')) {
+            $version->setAmazonOrderProductIds(array_keys($relateds));
+            $version->setAmazonOrderProductVersions(array_values($relateds));
+        }
         $version->save($con);
     
         return $version;
@@ -4518,6 +4845,56 @@ abstract class AmazonOrders implements ActiveRecordInterface
         $this->setVersion($version->getVersion());
         $this->setVersionCreatedAt($version->getVersionCreatedAt());
         $this->setVersionCreatedBy($version->getVersionCreatedBy());
+        if ($fkValue = $version->getCustomerId()) {
+            if (isset($loadedObjects['ChildCustomer']) && isset($loadedObjects['ChildCustomer'][$fkValue]) && isset($loadedObjects['ChildCustomer'][$fkValue][$version->getCustomerIdVersion()])) {
+                $related = $loadedObjects['ChildCustomer'][$fkValue][$version->getCustomerIdVersion()];
+            } else {
+                $related = new ChildCustomer();
+                $relatedVersion = CustomerVersionQuery::create()
+                    ->filterById($fkValue)
+                    ->filterByVersion($version->getCustomerIdVersion())
+                    ->findOne($con);
+                $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
+                $related->setNew(false);
+            }
+            $this->setCustomer($related);
+        }
+        if ($fkValue = $version->getOrderId()) {
+            if (isset($loadedObjects['ChildOrder']) && isset($loadedObjects['ChildOrder'][$fkValue]) && isset($loadedObjects['ChildOrder'][$fkValue][$version->getOrderIdVersion()])) {
+                $related = $loadedObjects['ChildOrder'][$fkValue][$version->getOrderIdVersion()];
+            } else {
+                $related = new ChildOrder();
+                $relatedVersion = OrderVersionQuery::create()
+                    ->filterById($fkValue)
+                    ->filterByVersion($version->getOrderIdVersion())
+                    ->findOne($con);
+                $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
+                $related->setNew(false);
+            }
+            $this->setOrder($related);
+        }
+        if ($fkValues = $version->getAmazonOrderProductIds()) {
+            $this->clearAmazonOrderProducts();
+            $fkVersions = $version->getAmazonOrderProductVersions();
+            $query = ChildAmazonOrderProductVersionQuery::create();
+            foreach ($fkValues as $key => $value) {
+                $c1 = $query->getNewCriterion(AmazonOrderProductVersionTableMap::ID, $value);
+                $c2 = $query->getNewCriterion(AmazonOrderProductVersionTableMap::VERSION, $fkVersions[$key]);
+                $c1->addAnd($c2);
+                $query->addOr($c1);
+            }
+            foreach ($query->find($con) as $relatedVersion) {
+                if (isset($loadedObjects['ChildAmazonOrderProduct']) && isset($loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()]) && isset($loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()][$relatedVersion->getVersion()])) {
+                    $related = $loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()][$relatedVersion->getVersion()];
+                } else {
+                    $related = new ChildAmazonOrderProduct();
+                    $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
+                    $related->setNew(false);
+                }
+                $this->addAmazonOrderProduct($related);
+                $this->collAmazonOrderProductsPartial = false;
+            }
+        }
     
         return $this;
     }

@@ -15,7 +15,7 @@
 	    </vendor>
     </table>
 
-   <table name="amazon_orders" idMethod="native" phpName="AmazonOrders">
+   <table name="amazon_orders" namespace="AmazonIntegration\Model">
     <column name="id" phpName="Id" type="VARCHAR" size="45" primaryKey="true" required="true"/>
     <column name="seller_order_id" phpName="SellerOrderId" type="VARCHAR" size="45"/>
     <column name="purchase_date" phpName="PurchaseDate" type="TIMESTAMP"/>
@@ -86,5 +86,75 @@
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
   </table>
+  
+   <table name="amazon_order_product" namespace="AmazonIntegration\Model">
+    <column name="order_item_id" phpName="OrderItemId" type="VARCHAR" size="45" primaryKey="true" required="true"/>
+    <column name="amazon_order_id" phpName="AmazonOrderId" type="VARCHAR" size="45"/>
+    <column name="asin" phpName="Asin" type="VARCHAR" size="45"/>
+    <column name="seller_sku" phpName="SellerSku" type="VARCHAR" size="45"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="45"/>
+    <column name="quantity_ordered" phpName="QuantityOrdered" type="FLOAT"/>
+    <column name="quantity_shipped" phpName="QuantityShipped" type="FLOAT"/>
+    <column name="points_granted_number" phpName="PointsGrantedNumber" type="FLOAT"/>
+    <column name="points_granted_currency_code" phpName="PointsGrantedCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="points_granted_amount" phpName="PointsGrantedAmount"  type="VARCHAR" size="45"/>
+    <column name="item_price_currency_code" phpName="ItemPriceCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="item_price_amount" phpName="ItemPriceAmount"  type="VARCHAR" size="45"/>
+    <column name="shipping_price_currency_code" phpName="ShippingPriceCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="shipping_price_amount" phpName="ShippingPriceAmount" type="VARCHAR" size="45"/>
+    <column name="gift_wrap_price_currency_code" phpName="GiftWrapPriceCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="gift_wrap_price_amount" phpName="GiftWrapPriceAmount" type="VARCHAR" size="45"/>
+    <column name="item_tax_currency_code" phpName="ItemTaxCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="item_tax_amount" phpName="ItemTaxAmount" type="VARCHAR" size="45"/>   
+    <column name="shipping_tax_currency_code" phpName="ShippingTaxCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="shipping_tax_amount" phpName="ShippingTaxAmount" type="VARCHAR" size="45"/>  
+    <column name="gift_wrap_tax_currency_code" phpName="GiftWrapTaxCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="gift_wrap_tax_amount" phpName="GiftWrapTaxAmount" type="VARCHAR" size="45"/>
+    <column name="shipping_discount_currency_code" phpName="ShippingDiscountCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="shipping_discount_amount" phpName="ShippingDiscountAmount" type="VARCHAR" size="45"/>   
+    <column name="promotion_discount_currency_code" phpName="PromotionDiscountCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="promotion_discount_amount" phpName="PromotionDiscountAmount" type="VARCHAR" size="45"/>
+    <column name="promotion_id" phpName="PromotionId" type="VARCHAR" size="45"/>
+    <column name="cod_fee_currency_code" phpName="CodFeeCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="cod_fee_amount" phpName="CodFeeAmount"  type="VARCHAR" size="45"/>
+    <column name="cod_fee_discount_currency_code" phpName="CodFeeDiscountCurrencyCode" type="VARCHAR" size="45"/>
+    <column name="cod_fee_discount_amount" phpName="CodFeeDiscountAmount"  type="VARCHAR" size="45"/>
+    <column name="gift_message_text" phpName="GiftMessageText" type="VARCHAR" size="45"/>
+    <column name="gift_wrap_level" phpName="GiftWrapLevel" type="VARCHAR" size="45"/>
+    <column name="invoice_requirement" phpName="InvoiceRequirement" type="VARCHAR" size="45"/>
+    <column name="buyer_selected_invoice_category" phpName="BuyerSelectedInvoiceCategory" type="VARCHAR" size="45"/>
+    <column name="invoice_title" phpName="InvoiceTitle" type="VARCHAR" size="45"/>
+    <column name="invoice_information" phpName="InvoiceInformation" type="VARCHAR" size="45"/>
+    <column name="condition_note" phpName="ConditionNote" type="VARCHAR" size="45"/>
+    <column name="condition_id" phpName="ConditionId" type="VARCHAR" size="45"/>
+    <column name="condition_subtype_id" phpName="ConditionSubtypeId" type="VARCHAR" size="45"/>
+    <column name="schedule_delivery_start_date" phpName="ScheduledDeliveryStartDate" type="VARCHAR" size="45"/>
+    <column name="schedule_delivery_end_date" phpName="ScheduledDeliveryEndDate" type="VARCHAR" size="45"/>
+    <column name="price_designation" phpName="PriceDesignation" type="VARCHAR" size="45"/>
+    <column name="buyer_customized_url" phpName="BuyerCustomizedURL" type="VARCHAR" size="45"/>
+    <column name="order_product_id" phpName="OrderProductId" type="INTEGER"/>
+  
+    <foreign-key foreignTable="order_product" name="fk_order_product_id" onDelete="CASCADE">
+      <reference local="order_product_id" foreign="id"/>
+    </foreign-key>
+     <foreign-key foreignTable="amazon_orders" name="fk_amazon_order_id" onDelete="CASCADE">
+      <reference local="amazon_order_id" foreign="id"/>
+    </foreign-key>
+    <index name="fk_order_product_id">
+      <index-column name="order_product_id"/>
+    </index>
+    <index name="fk_amazon_order_id">
+      <index-column name="amazon_order_id"/>
+    </index>
+   <behavior name="timestampable" />
+	<behavior name="versionable">
+		<parameter name="log_created_at" value="true" />
+		<parameter name="log_created_by" value="true" />
+	</behavior>  
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

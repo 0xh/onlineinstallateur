@@ -346,6 +346,46 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
     protected $version_created_by;
 
     /**
+     * The value for the customer_id_version field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $customer_id_version;
+
+    /**
+     * The value for the order_id_version field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $order_id_version;
+
+    /**
+     * The value for the amazon_order_product_ids field.
+     * @var        array
+     */
+    protected $amazon_order_product_ids;
+
+    /**
+     * The unserialized $amazon_order_product_ids value - i.e. the persisted object.
+     * This is necessary to avoid repeated calls to unserialize() at runtime.
+     * @var object
+     */
+    protected $amazon_order_product_ids_unserialized;
+
+    /**
+     * The value for the amazon_order_product_versions field.
+     * @var        array
+     */
+    protected $amazon_order_product_versions;
+
+    /**
+     * The unserialized $amazon_order_product_versions value - i.e. the persisted object.
+     * This is necessary to avoid repeated calls to unserialize() at runtime.
+     * @var object
+     */
+    protected $amazon_order_product_versions_unserialized;
+
+    /**
      * @var        AmazonOrders
      */
     protected $aAmazonOrders;
@@ -374,6 +414,8 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         $this->is_premium_order = 0;
         $this->is_replacement_order = 0;
         $this->version = 0;
+        $this->customer_id_version = 0;
+        $this->order_id_version = 0;
     }
 
     /**
@@ -1233,6 +1275,86 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
 
         return $this->version_created_by;
     }
+
+    /**
+     * Get the [customer_id_version] column value.
+     * 
+     * @return   int
+     */
+    public function getCustomerIdVersion()
+    {
+
+        return $this->customer_id_version;
+    }
+
+    /**
+     * Get the [order_id_version] column value.
+     * 
+     * @return   int
+     */
+    public function getOrderIdVersion()
+    {
+
+        return $this->order_id_version;
+    }
+
+    /**
+     * Get the [amazon_order_product_ids] column value.
+     * 
+     * @return   array
+     */
+    public function getAmazonOrderProductIds()
+    {
+        if (null === $this->amazon_order_product_ids_unserialized) {
+            $this->amazon_order_product_ids_unserialized = array();
+        }
+        if (!$this->amazon_order_product_ids_unserialized && null !== $this->amazon_order_product_ids) {
+            $amazon_order_product_ids_unserialized = substr($this->amazon_order_product_ids, 2, -2);
+            $this->amazon_order_product_ids_unserialized = $amazon_order_product_ids_unserialized ? explode(' | ', $amazon_order_product_ids_unserialized) : array();
+        }
+
+        return $this->amazon_order_product_ids_unserialized;
+    }
+
+    /**
+     * Test the presence of a value in the [amazon_order_product_ids] array column value.
+     * @param      mixed $value
+     * 
+     * @return boolean
+     */
+    public function hasAmazonOrderProductId($value)
+    {
+        return in_array($value, $this->getAmazonOrderProductIds());
+    } // hasAmazonOrderProductId()
+
+    /**
+     * Get the [amazon_order_product_versions] column value.
+     * 
+     * @return   array
+     */
+    public function getAmazonOrderProductVersions()
+    {
+        if (null === $this->amazon_order_product_versions_unserialized) {
+            $this->amazon_order_product_versions_unserialized = array();
+        }
+        if (!$this->amazon_order_product_versions_unserialized && null !== $this->amazon_order_product_versions) {
+            $amazon_order_product_versions_unserialized = substr($this->amazon_order_product_versions, 2, -2);
+            $this->amazon_order_product_versions_unserialized = $amazon_order_product_versions_unserialized ? explode(' | ', $amazon_order_product_versions_unserialized) : array();
+        }
+
+        return $this->amazon_order_product_versions_unserialized;
+    }
+
+    /**
+     * Test the presence of a value in the [amazon_order_product_versions] array column value.
+     * @param      mixed $value
+     * 
+     * @return boolean
+     */
+    public function hasAmazonOrderProductVersion($value)
+    {
+        return in_array($value, $this->getAmazonOrderProductVersions());
+    } // hasAmazonOrderProductVersion()
 
     /**
      * Set the value of [id] column.
@@ -2226,6 +2348,152 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
     } // setVersionCreatedBy()
 
     /**
+     * Set the value of [customer_id_version] column.
+     * 
+     * @param      int $v new value
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function setCustomerIdVersion($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->customer_id_version !== $v) {
+            $this->customer_id_version = $v;
+            $this->modifiedColumns[AmazonOrdersVersionTableMap::CUSTOMER_ID_VERSION] = true;
+        }
+
+
+        return $this;
+    } // setCustomerIdVersion()
+
+    /**
+     * Set the value of [order_id_version] column.
+     * 
+     * @param      int $v new value
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function setOrderIdVersion($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->order_id_version !== $v) {
+            $this->order_id_version = $v;
+            $this->modifiedColumns[AmazonOrdersVersionTableMap::ORDER_ID_VERSION] = true;
+        }
+
+
+        return $this;
+    } // setOrderIdVersion()
+
+    /**
+     * Set the value of [amazon_order_product_ids] column.
+     * 
+     * @param      array $v new value
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function setAmazonOrderProductIds($v)
+    {
+        if ($this->amazon_order_product_ids_unserialized !== $v) {
+            $this->amazon_order_product_ids_unserialized = $v;
+            $this->amazon_order_product_ids = '| ' . implode(' | ', $v) . ' |';
+            $this->modifiedColumns[AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS] = true;
+        }
+
+
+        return $this;
+    } // setAmazonOrderProductIds()
+
+    /**
+     * Adds a value to the [amazon_order_product_ids] array column value.
+     * @param      mixed $value
+     * 
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function addAmazonOrderProductId($value)
+    {
+        $currentArray = $this->getAmazonOrderProductIds();
+        $currentArray []= $value;
+        $this->setAmazonOrderProductIds($currentArray);
+
+        return $this;
+    } // addAmazonOrderProductId()
+
+    /**
+     * Removes a value from the [amazon_order_product_ids] array column value.
+     * @param      mixed $value
+     * 
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function removeAmazonOrderProductId($value)
+    {
+        $targetArray = array();
+        foreach ($this->getAmazonOrderProductIds() as $element) {
+            if ($element != $value) {
+                $targetArray []= $element;
+            }
+        }
+        $this->setAmazonOrderProductIds($targetArray);
+
+        return $this;
+    } // removeAmazonOrderProductId()
+
+    /**
+     * Set the value of [amazon_order_product_versions] column.
+     * 
+     * @param      array $v new value
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function setAmazonOrderProductVersions($v)
+    {
+        if ($this->amazon_order_product_versions_unserialized !== $v) {
+            $this->amazon_order_product_versions_unserialized = $v;
+            $this->amazon_order_product_versions = '| ' . implode(' | ', $v) . ' |';
+            $this->modifiedColumns[AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS] = true;
+        }
+
+
+        return $this;
+    } // setAmazonOrderProductVersions()
+
+    /**
+     * Adds a value to the [amazon_order_product_versions] array column value.
+     * @param      mixed $value
+     * 
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function addAmazonOrderProductVersion($value)
+    {
+        $currentArray = $this->getAmazonOrderProductVersions();
+        $currentArray []= $value;
+        $this->setAmazonOrderProductVersions($currentArray);
+
+        return $this;
+    } // addAmazonOrderProductVersion()
+
+    /**
+     * Removes a value from the [amazon_order_product_versions] array column value.
+     * @param      mixed $value
+     * 
+     * @return   \AmazonIntegration\Model\AmazonOrdersVersion The current object (for fluent API support)
+     */
+    public function removeAmazonOrderProductVersion($value)
+    {
+        $targetArray = array();
+        foreach ($this->getAmazonOrderProductVersions() as $element) {
+            if ($element != $value) {
+                $targetArray []= $element;
+            }
+        }
+        $this->setAmazonOrderProductVersions($targetArray);
+
+        return $this;
+    } // removeAmazonOrderProductVersion()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -2264,6 +2532,14 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
             }
 
             if ($this->version !== 0) {
+                return false;
+            }
+
+            if ($this->customer_id_version !== 0) {
+                return false;
+            }
+
+            if ($this->order_id_version !== 0) {
                 return false;
             }
 
@@ -2461,6 +2737,20 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 46 + $startcol : AmazonOrdersVersionTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_created_by = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 47 + $startcol : AmazonOrdersVersionTableMap::translateFieldName('CustomerIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->customer_id_version = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 48 + $startcol : AmazonOrdersVersionTableMap::translateFieldName('OrderIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->order_id_version = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 49 + $startcol : AmazonOrdersVersionTableMap::translateFieldName('AmazonOrderProductIds', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->amazon_order_product_ids = $col;
+            $this->amazon_order_product_ids_unserialized = null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 50 + $startcol : AmazonOrdersVersionTableMap::translateFieldName('AmazonOrderProductVersions', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->amazon_order_product_versions = $col;
+            $this->amazon_order_product_versions_unserialized = null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2469,7 +2759,7 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 47; // 47 = AmazonOrdersVersionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 51; // 51 = AmazonOrdersVersionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \AmazonIntegration\Model\AmazonOrdersVersion object", 0, $e);
@@ -2831,6 +3121,18 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonOrdersVersionTableMap::VERSION_CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_BY';
         }
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::CUSTOMER_ID_VERSION)) {
+            $modifiedColumns[':p' . $index++]  = 'CUSTOMER_ID_VERSION';
+        }
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::ORDER_ID_VERSION)) {
+            $modifiedColumns[':p' . $index++]  = 'ORDER_ID_VERSION';
+        }
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS)) {
+            $modifiedColumns[':p' . $index++]  = 'AMAZON_ORDER_PRODUCT_IDS';
+        }
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS)) {
+            $modifiedColumns[':p' . $index++]  = 'AMAZON_ORDER_PRODUCT_VERSIONS';
+        }
 
         $sql = sprintf(
             'INSERT INTO amazon_orders_version (%s) VALUES (%s)',
@@ -2982,6 +3284,18 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
                         break;
                     case 'VERSION_CREATED_BY':                        
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
+                        break;
+                    case 'CUSTOMER_ID_VERSION':                        
+                        $stmt->bindValue($identifier, $this->customer_id_version, PDO::PARAM_INT);
+                        break;
+                    case 'ORDER_ID_VERSION':                        
+                        $stmt->bindValue($identifier, $this->order_id_version, PDO::PARAM_INT);
+                        break;
+                    case 'AMAZON_ORDER_PRODUCT_IDS':                        
+                        $stmt->bindValue($identifier, $this->amazon_order_product_ids, PDO::PARAM_STR);
+                        break;
+                    case 'AMAZON_ORDER_PRODUCT_VERSIONS':                        
+                        $stmt->bindValue($identifier, $this->amazon_order_product_versions, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -3179,6 +3493,18 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
             case 46:
                 return $this->getVersionCreatedBy();
                 break;
+            case 47:
+                return $this->getCustomerIdVersion();
+                break;
+            case 48:
+                return $this->getOrderIdVersion();
+                break;
+            case 49:
+                return $this->getAmazonOrderProductIds();
+                break;
+            case 50:
+                return $this->getAmazonOrderProductVersions();
+                break;
             default:
                 return null;
                 break;
@@ -3255,6 +3581,10 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
             $keys[44] => $this->getVersion(),
             $keys[45] => $this->getVersionCreatedAt(),
             $keys[46] => $this->getVersionCreatedBy(),
+            $keys[47] => $this->getCustomerIdVersion(),
+            $keys[48] => $this->getOrderIdVersion(),
+            $keys[49] => $this->getAmazonOrderProductIds(),
+            $keys[50] => $this->getAmazonOrderProductVersions(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3440,6 +3770,26 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
             case 46:
                 $this->setVersionCreatedBy($value);
                 break;
+            case 47:
+                $this->setCustomerIdVersion($value);
+                break;
+            case 48:
+                $this->setOrderIdVersion($value);
+                break;
+            case 49:
+                if (!is_array($value)) {
+                    $v = trim(substr($value, 2, -2));
+                    $value = $v ? explode(' | ', $v) : array();
+                }
+                $this->setAmazonOrderProductIds($value);
+                break;
+            case 50:
+                if (!is_array($value)) {
+                    $v = trim(substr($value, 2, -2));
+                    $value = $v ? explode(' | ', $v) : array();
+                }
+                $this->setAmazonOrderProductVersions($value);
+                break;
         } // switch()
     }
 
@@ -3511,6 +3861,10 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         if (array_key_exists($keys[44], $arr)) $this->setVersion($arr[$keys[44]]);
         if (array_key_exists($keys[45], $arr)) $this->setVersionCreatedAt($arr[$keys[45]]);
         if (array_key_exists($keys[46], $arr)) $this->setVersionCreatedBy($arr[$keys[46]]);
+        if (array_key_exists($keys[47], $arr)) $this->setCustomerIdVersion($arr[$keys[47]]);
+        if (array_key_exists($keys[48], $arr)) $this->setOrderIdVersion($arr[$keys[48]]);
+        if (array_key_exists($keys[49], $arr)) $this->setAmazonOrderProductIds($arr[$keys[49]]);
+        if (array_key_exists($keys[50], $arr)) $this->setAmazonOrderProductVersions($arr[$keys[50]]);
     }
 
     /**
@@ -3569,6 +3923,10 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonOrdersVersionTableMap::VERSION)) $criteria->add(AmazonOrdersVersionTableMap::VERSION, $this->version);
         if ($this->isColumnModified(AmazonOrdersVersionTableMap::VERSION_CREATED_AT)) $criteria->add(AmazonOrdersVersionTableMap::VERSION_CREATED_AT, $this->version_created_at);
         if ($this->isColumnModified(AmazonOrdersVersionTableMap::VERSION_CREATED_BY)) $criteria->add(AmazonOrdersVersionTableMap::VERSION_CREATED_BY, $this->version_created_by);
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::CUSTOMER_ID_VERSION)) $criteria->add(AmazonOrdersVersionTableMap::CUSTOMER_ID_VERSION, $this->customer_id_version);
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::ORDER_ID_VERSION)) $criteria->add(AmazonOrdersVersionTableMap::ORDER_ID_VERSION, $this->order_id_version);
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS)) $criteria->add(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS, $this->amazon_order_product_ids);
+        if ($this->isColumnModified(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS)) $criteria->add(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS, $this->amazon_order_product_versions);
 
         return $criteria;
     }
@@ -3686,6 +4044,10 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         $copyObj->setVersion($this->getVersion());
         $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
         $copyObj->setVersionCreatedBy($this->getVersionCreatedBy());
+        $copyObj->setCustomerIdVersion($this->getCustomerIdVersion());
+        $copyObj->setOrderIdVersion($this->getOrderIdVersion());
+        $copyObj->setAmazonOrderProductIds($this->getAmazonOrderProductIds());
+        $copyObj->setAmazonOrderProductVersions($this->getAmazonOrderProductVersions());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -3816,6 +4178,12 @@ abstract class AmazonOrdersVersion implements ActiveRecordInterface
         $this->version = null;
         $this->version_created_at = null;
         $this->version_created_by = null;
+        $this->customer_id_version = null;
+        $this->order_id_version = null;
+        $this->amazon_order_product_ids = null;
+        $this->amazon_order_product_ids_unserialized = null;
+        $this->amazon_order_product_versions = null;
+        $this->amazon_order_product_versions_unserialized = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

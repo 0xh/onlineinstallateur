@@ -23,19 +23,12 @@ class AmazonIntegration extends BaseModule
     /** @var string */
     const DOMAIN_NAME = 'amazonintegration';
 
-    public function preActivation(ConnectionInterface $con = null)
+    public function postActivation(ConnectionInterface $con = null)
     {
         $database = new Database($con);
         $database->insertSql(null, [
             __DIR__ . "/Config/thelia.sql"
         ]);
         return true;
-    }
-    
-    public function postActivation(ConnectionInterface $con = null)
-    {
-    	$database = new Database($con);
-    	$database->insertSql(null, [__DIR__ . "/Config/insert_tables.sql"]);
-    	return true;
     }
 }

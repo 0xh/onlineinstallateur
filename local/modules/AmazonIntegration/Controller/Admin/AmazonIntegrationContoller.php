@@ -13,6 +13,20 @@ use Thelia\Model\CustomerQuery;
 use Thelia\Model\CountryQuery;
 use Thelia\Model\OrderAddressQuery;
 use Thelia\Model\ProductSaleElementsQuery;
+use AmazonIntegration\Model\AmazonOrderProduct;
+use OrderCreation\Event\OrderCreationEvent;
+use OrderCreation\EventListeners\OrderCreationListener;
+use Thelia\Model\Order;
+use Thelia\Model\CurrencyQuery;
+use Thelia\Model\LangQuery;
+use OfferCreation\Model\OfferProductQuery;
+use Thelia\Model\OrderProduct;
+use AmazonIntegration\Model\ProductAmazonQuery;
+use Thelia\Action\ProductSaleElement;
+use Thelia\Model\ProductSaleElements;
+use Thelia\Model\ProductQuery;
+use Thelia\Tools\I18n;
+use Thelia\Core\Event\Product\VirtualProductOrderHandleEvent;
 
 
 class AmazonIntegrationContoller extends BaseAdminController
@@ -287,5 +301,241 @@ class AmazonIntegrationContoller extends BaseAdminController
    	 	
    	 	
     	die(' customer, order address and amazon Order');
+    }
+    
+    public function saveAmazonOrderProduct() 
+    {
+    	$con = Propel::getConnection(
+    			AmazonOrdersTableMap::DATABASE_NAME
+    			);
+    	$con->beginTransaction();
+    	$amazonOrderId = '028-0170403-0853967';
+    	$orderProductId = '42';
+    	
+    	if($orderProducts) {
+    		foreach($orderProducts as $i => $orderProduct) {
+    			
+    			// Insert products from amazon to amazon_orders_product table
+    			$amazonOrderProduct = new AmazonOrderProduct();
+    			$amazonOrderProduct
+    			->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
+	    			->setAmazonOrderId($amazonOrderId)
+	    			->setAsin( isset($orderProduct->ASIN) ? $orderProduct->ASIN : '')
+	    			->setSellerSku( isset($orderProduct->SellerSKU) ? $orderProduct->SellerSKU : '')
+	    			->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
+	    			->setTitle( isset($orderProduct->Title) ? $orderProduct->Title : '')
+	    			->setQuantityOrdered( isset($orderProduct->QuantityOrdered) ? $orderProduct->QuantityOrdered : '')
+	    			->setQuantityShipped( isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
+	    			->setPointsGrantedNumber( isset($orderProduct->PointsGranted->PointsNumber) ? $orderProduct->PointsGranted->PointsNumber : '')
+	    			->setPointsGrantedCurrencyCode( isset($orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode) ? $orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode : '')
+	    			->setPointsGrantedAmount( isset($orderProduct->PointsGranted->PointsMonetaryValue->Amount) ? $orderProduct->PointsGranted->PointsMonetaryValue->Amount : '')
+	    			->setItemPriceCurrencyCode( isset($orderProduct->ItemPrice->CurrencyCode) ? $orderProduct->ItemPrice->CurrencyCode : '')
+	    			->setItemPriceAmount( isset($orderProduct->ItemPrice->Amount) ? $orderProduct->ItemPrice->Amount : '')
+	    			->setShippingPriceCurrencyCode( isset($orderProduct->ShippingPrice->CurrencyCode) ? $orderProduct->ShippingPrice->CurrencyCode : '')
+	    			->setShippingPriceAmount( isset($orderProduct->ShippingPrice->Amount) ? $orderProduct->ShippingPrice->Amount : '')
+	    			->setGiftWrapPriceCurrencyCode( isset($orderProduct->GiftWrapPrice->CurrencyCode) ? $orderProduct->GiftWrapPrice->CurrencyCode : '')
+	    			->setGiftWrapPriceAmount( isset($orderProduct->GiftWrapPrice->Amount) ? $orderProduct->GiftWrapPrice->Amount : '')
+	    			->setItemTaxCurrencyCode( isset($orderProduct->ItemTax->CurrencyCode) ? $orderProduct->ItemTax->CurrencyCode : '')
+	    			->setItemTaxAmount( isset($orderProduct->ItemTax->Amount) ? $orderProduct->ItemTax->Amount : '')
+	    			->setShippingTaxCurrencyCode( isset($orderProduct->ShippingTax->CurrencyCode) ? $orderProduct->ShippingTax->CurrencyCode : '')
+	    			->setShippingTaxAmount( isset($orderProduct->ShippingTax->Amount) ? $orderProduct->ShippingTax->Amount : '')
+	    			->setGiftWrapTaxCurrencyCode( isset($orderProduct->GiftWrapTax->CurrencyCode) ? $orderProduct->GiftWrapTax->CurrencyCode : '')
+	    			->setGiftWrapTaxAmount( isset($orderProduct->GiftWrapTax->Amount) ? $orderProduct->GiftWrapTax->Amount : '')
+	    			->setShippingDiscountCurrencyCode( isset($orderProduct->ShippingDiscount->CurrencyCode) ? $orderProduct->ShippingDiscount->CurrencyCode : '')
+	    			->setShippingDiscountAmount( isset($orderProduct->ShippingDiscount->Amount) ? $orderProduct->ShippingDiscount->Amount : '')
+	    			->setPromotionDiscountCurrencyCode( isset($orderProduct->PromotionDiscount->CurrencyCode) ? $orderProduct->PromotionDiscount->CurrencyCode : '')
+	    			->setPromotionDiscountAmount( isset($orderProduct->PromotionDiscount->Amount) ? $orderProduct->PromotionDiscount->Amount : '')
+	    			->setPromotionId( isset($orderProduct->PromotionIds->PromotionId) ? $orderProduct->PromotionIds->PromotionId : '')
+	    			->setCodFeeCurrencyCode( isset($orderProduct->CODFee->CurrencyCode) ? $orderProduct->CODFee->CurrencyCode : '')
+	    			->setCodFeeAmount( isset($orderProduct->CODFee->Amount) ? $orderProduct->CODFee->Amount : '')
+	    			->setCodFeeDiscountCurrencyCode( isset($orderProduct->CODFeeDiscount->CurrencyCode) ? $orderProduct->CODFeeDiscount->CurrencyCode : '')
+	    			->setCodFeeDiscountAmount( isset($orderProduct->CODFeeDiscount->Amount) ? $orderProduct->CODFeeDiscount->Amount : '')
+	    			->setGiftMessageText( isset($orderProduct->GiftMessageText) ? $orderProduct->GiftMessageText : '')
+	    			->setGiftWrapLevel( isset($orderProduct->GiftWrapLevel) ? $$orderProduct->GiftWrapLevel : '')
+	    			->setInvoiceRequirement( isset($orderProduct->InvoiceData->InvoiceRequirement) ?  $orderProduct->InvoiceData->InvoiceRequirement : '')
+	    			->setBuyerSelectedInvoiceCategory( isset($orderProduct->InvoiceData->BuyerSelectedInvoiceCategory) ? $orderProduct->InvoiceData->BuyerSelectedInvoiceCategory : '')
+	    			->setInvoiceTitle( isset($orderProduct->InvoiceData->InvoiceTitle) ? $orderProduct->InvoiceData->InvoiceTitle : '')
+	    			->setInvoiceInformation( isset($orderProduct->InvoiceData->InvoiceInformation) ? $orderProduct->InvoiceData->InvoiceInformation : '')
+	    			->setConditionNote( isset($orderProduct->ConditionNote) ? $orderProduct->ConditionNote: '')
+	    			->setConditionId( isset($orderProduct->ConditionId) ? $orderProduct->ConditionId : '')
+	    			->setConditionSubtypeId( isset($orderProduct->ConditionSubtypeId) ? $orderProduct->ConditionSubtypeId : '')
+	    			->setScheduledDeliveryStartDate( isset($orderProduct->ScheduledDeliveryStartDate) ? $orderProduct->ScheduledDeliveryStartDate : '')
+	    			->setScheduledDeliveryEndDate( isset($orderProduct->ScheduledDeliveryEndDate) ? $orderProduct->ScheduledDeliveryEndDate : '')
+	    			->setPriceDesignation( isset($orderProduct->PriceDesignation) ? $orderProduct->PriceDesignation : '')
+	    			->setBuyerCustomizedURL( isset($orderProduct->BuyerCustomizedInfo->CustomizedURL) ? $orderProduct->BuyerCustomizedInfo->CustomizedURL : '')
+	    			->setOrderProductId($orderProductId)
+	    			->setAmazonOrderId($amazonOrderId)
+	    			;
+    			
+	    			$amazonOrderProduct->save($con);  
+    			
+    		}
+    		
+    		$con->commit();
+    	}
+    }
+    
+    public function createOrderFromAmazon()
+    {
+    	$message = null;
+    	
+    	$con = Propel::getConnection(
+    			OrderProductTableMap::DATABASE_NAME
+    			);
+    	
+    	$con->beginTransaction();
+    	
+    	switch ($order->OrderStatus) {
+    		case 'Canceled':
+    			$statusId = '5';
+    			break;
+    		case 'Pending':
+    			$statusId = '1';
+    			break;
+    		case 'Unshipped':
+    			$statusId = '3';
+    			break;
+    		case 'Shipped':
+    			$statusId = '4';
+    			break;
+    		default:
+    			$statusId = '1';
+    			break;
+    	}
+    	
+    	$salesChannelId = explode(".", $order->SalesChannel);
+    	
+    	$lang = LangQuery::create()
+    		->filterByCode($salesChannelId[1])
+    		->findOne();
+    	if($lang)
+    		$langId = $lang->getId();
+    	else
+    		$langId = '1';
+    	
+    	$currency = CurrencyQuery::create()
+    		->filterByCode($order->OrderTotal->CurrencyCode)
+    		->findOne();
+    	
+    	if($currency) {
+    		$currencyId = $currency->getId();
+    		$currencyRate = $currency->getRate();
+    	}
+    	else{
+    		$currencyId = '1';
+    		$currencyRate = '1';
+    	}
+    	
+    
+    	
+    	try {
+    		
+    		$newOrder = new Order();
+    		$newOrder
+    		->setCustomerId($customerId)
+    		->setCurrencyId($currencyId)
+    		->setCurrencyRate($currencyRate)
+    		->setStatusId($statusId)
+    		->setLangId($langId)
+    	//	->setChoosenDeliveryAddress($offer->getChoosenDeliveryAddress())
+    		//->setChoosenInvoiceAddress($offer->getChoosenInvoiceAddress())
+    		->setPaymentModuleId('41')
+    		->setDeliveryOrderAddressId($orderAddressId)
+    		->setInvoiceOrderAddressId($orderAddressId)
+    		->setDeliveryModuleId('2')
+    		//->setDiscount($offer->getDiscount())
+    		//->setCartId($offer->getCartId())
+    		->setPostage('')
+    		->setPostageTax('')
+    		//->setPostageTaxRuleTitle($offer->getPostageTaxRuleTitle())
+    		->setInvoiceDate($order->PurchaseDate)
+    		->setDispatcher($this->getDispatcher())
+    		;
+    		
+    		$newOrder->save($con);
+    		
+    	
+    				
+    		// ORDER PRODUCT
+    		$productId = ProductAmazonQuery::create()
+    			->select('product_id')
+    			->filterByASIN($order->ASIN)
+    			->findOne();
+    		
+    		$productSaleElement = ProductSaleElements::create()
+    			->filterByProductId($productId)
+    			->findOne();
+    		
+    		$product = ProductQuery::create()
+    			->filterById($productId)
+    			->findOne();
+    		
+    			/* get translation */
+    			/** @var ProductI18n $productI18n */
+    			$productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());
+    			
+    			// get the virtual document path
+    			$virtualDocumentEvent = new VirtualProductOrderHandleEvent($newOrder, $productSaleElement->getId());
+    			// essentially used for virtual product. modules that handles virtual product can
+    			// allow the use of stock even for virtual products
+    			$useStock = true;
+    			$virtual = 0;
+    			
+    			/* get tax */
+    			/** @var TaxRuleI18n $taxRuleI18n */
+    			$taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
+    			
+    			// if the product is virtual, dispatch an event to collect information
+    			if ($product->getVirtual() === 1) {
+    				//$dispatcher->dispatch(TheliaEvents::VIRTUAL_PRODUCT_ORDER_HANDLE, $virtualDocumentEvent);
+    				$useStock = $virtualDocumentEvent->isUseStock();
+    				$virtual = $virtualDocumentEvent->isVirtual() ? 1 : 0;
+    			}
+    			
+    			
+    				$newOrderProduct = new OrderProduct();
+    				$newOrderProduct
+    				->setOrderId($newOrder->getId())
+    				->setProductRef($product->getRef())
+    				->setProductSaleElementsRef($productSaleElement->getRef())
+    				->setProductSaleElementsId($productSaleElement->getId())
+    				->setTitle($productI18n->getTitle())
+    				->setChapo($productI18n->getChapo())
+    				->setDescription($productI18n->getDescription())
+    				->setPostscriptum($productI18n->getPostscriptum())
+    				->setVirtual($virtual)
+    				->setVirtualDocument($virtualDocumentEvent->getPath())
+    				->setQuantity($orderProduct->QuantityShipped)
+    				->setPrice($orderProduct->ItemPrice->Amount)
+    				//->setPromoPrice($offerProduct->getPromoPrice())
+    				->setWasNew('')
+    				->setWasInPromo('')
+    				->setWeight($productSaleElement->getWeight())
+    				->setTaxRuleTitle($taxRuleI18n->getTitle())
+    				->setTaxRuleDescription($taxRuleI18n->getDescription())
+    				->setEanCode($productSaleElement->getEanCode())
+    				->save($con);
+    				
+    				
+    					
+    			/* 	$taxDetailOrder = new OrderProductTax();
+    					
+    					$taxDetailOrder->setOrderProductId($orderProduct->getId())
+    					->setTitle($offerProductTax->getTitle())
+    					->setDescription($offerProductTax->getDescription())
+    					->setAmount($offerProductTax->getAmount())
+    					->setPromoAmount($offerProductTax->getPromoAmount())
+    					->save($con);
+    				 */
+    		
+    	} catch (\Exception $e) {
+    		$message = $e->getMessage();
+    	}
+    	
+    	
+    	
+    	$con->commit();
+    
+    	
     }
 }

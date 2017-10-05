@@ -410,9 +410,10 @@ class AmazonOrdersTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Customer', '\\AmazonIntegration\\Model\\Customer', RelationMap::MANY_TO_ONE, array('customer_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('OrderAddress', '\\AmazonIntegration\\Model\\OrderAddress', RelationMap::MANY_TO_ONE, array('order_address_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Order', '\\AmazonIntegration\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Customer', '\\Thelia\\Model\\Customer', RelationMap::MANY_TO_ONE, array('customer_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('OrderAddress', '\\Thelia\\Model\\OrderAddress', RelationMap::MANY_TO_ONE, array('order_address_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('AmazonOrderProduct', '\\AmazonIntegration\\Model\\AmazonOrderProduct', RelationMap::ONE_TO_MANY, array('id' => 'amazon_order_id', ), 'CASCADE', null, 'AmazonOrderProducts');
         $this->addRelation('AmazonOrdersVersion', '\\AmazonIntegration\\Model\\AmazonOrdersVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'AmazonOrdersVersions');
     } // buildRelations()
 
@@ -436,6 +437,7 @@ class AmazonOrdersTableMap extends TableMap
     {
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
+                AmazonOrderProductTableMap::clearInstancePool();
                 AmazonOrdersVersionTableMap::clearInstancePool();
             }
 

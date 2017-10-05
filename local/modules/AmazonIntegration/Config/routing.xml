@@ -34,4 +34,9 @@
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAsinFromAmazon
 		</default>
 	</route>
+	
+	<route id="amazon.order.product.save" path="/admin/module/amazonintegration/save-amazon-order-product">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAmazonOrderProduct
+		</default>
+	</route>
 </routes>

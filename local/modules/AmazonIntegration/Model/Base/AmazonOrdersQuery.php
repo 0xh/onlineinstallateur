@@ -15,6 +15,9 @@ use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
+use Thelia\Model\Customer;
+use Thelia\Model\Order;
+use Thelia\Model\OrderAddress;
 
 /**
  * Base class that represents a query for the 'amazon_orders' table.
@@ -132,6 +135,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonOrdersQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
  * @method     ChildAmazonOrdersQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
  * @method     ChildAmazonOrdersQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
+ *
+ * @method     ChildAmazonOrdersQuery leftJoinAmazonOrderProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the AmazonOrderProduct relation
+ * @method     ChildAmazonOrdersQuery rightJoinAmazonOrderProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AmazonOrderProduct relation
+ * @method     ChildAmazonOrdersQuery innerJoinAmazonOrderProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the AmazonOrderProduct relation
  *
  * @method     ChildAmazonOrdersQuery leftJoinAmazonOrdersVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the AmazonOrdersVersion relation
  * @method     ChildAmazonOrdersQuery rightJoinAmazonOrdersVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AmazonOrdersVersion relation
@@ -2071,16 +2078,16 @@ abstract class AmazonOrdersQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \AmazonIntegration\Model\Customer object
+     * Filter the query by a related \Thelia\Model\Customer object
      *
-     * @param \AmazonIntegration\Model\Customer|ObjectCollection $customer The related object(s) to use as filter
+     * @param \Thelia\Model\Customer|ObjectCollection $customer The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAmazonOrdersQuery The current query, for fluid interface
      */
     public function filterByCustomer($customer, $comparison = null)
     {
-        if ($customer instanceof \AmazonIntegration\Model\Customer) {
+        if ($customer instanceof \Thelia\Model\Customer) {
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::CUSTOMER_ID, $customer->getId(), $comparison);
         } elseif ($customer instanceof ObjectCollection) {
@@ -2091,7 +2098,7 @@ abstract class AmazonOrdersQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::CUSTOMER_ID, $customer->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByCustomer() only accepts arguments of type \AmazonIntegration\Model\Customer or Collection');
+            throw new PropelException('filterByCustomer() only accepts arguments of type \Thelia\Model\Customer or Collection');
         }
     }
 
@@ -2136,26 +2143,26 @@ abstract class AmazonOrdersQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \AmazonIntegration\Model\CustomerQuery A secondary query class using the current class as primary query
+     * @return   \Thelia\Model\CustomerQuery A secondary query class using the current class as primary query
      */
     public function useCustomerQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCustomer($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Customer', '\AmazonIntegration\Model\CustomerQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Customer', '\Thelia\Model\CustomerQuery');
     }
 
     /**
-     * Filter the query by a related \AmazonIntegration\Model\OrderAddress object
+     * Filter the query by a related \Thelia\Model\OrderAddress object
      *
-     * @param \AmazonIntegration\Model\OrderAddress|ObjectCollection $orderAddress The related object(s) to use as filter
+     * @param \Thelia\Model\OrderAddress|ObjectCollection $orderAddress The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAmazonOrdersQuery The current query, for fluid interface
      */
     public function filterByOrderAddress($orderAddress, $comparison = null)
     {
-        if ($orderAddress instanceof \AmazonIntegration\Model\OrderAddress) {
+        if ($orderAddress instanceof \Thelia\Model\OrderAddress) {
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::ORDER_ADDRESS_ID, $orderAddress->getId(), $comparison);
         } elseif ($orderAddress instanceof ObjectCollection) {
@@ -2166,7 +2173,7 @@ abstract class AmazonOrdersQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::ORDER_ADDRESS_ID, $orderAddress->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByOrderAddress() only accepts arguments of type \AmazonIntegration\Model\OrderAddress or Collection');
+            throw new PropelException('filterByOrderAddress() only accepts arguments of type \Thelia\Model\OrderAddress or Collection');
         }
     }
 
@@ -2211,26 +2218,26 @@ abstract class AmazonOrdersQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \AmazonIntegration\Model\OrderAddressQuery A secondary query class using the current class as primary query
+     * @return   \Thelia\Model\OrderAddressQuery A secondary query class using the current class as primary query
      */
     public function useOrderAddressQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinOrderAddress($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'OrderAddress', '\AmazonIntegration\Model\OrderAddressQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'OrderAddress', '\Thelia\Model\OrderAddressQuery');
     }
 
     /**
-     * Filter the query by a related \AmazonIntegration\Model\Order object
+     * Filter the query by a related \Thelia\Model\Order object
      *
-     * @param \AmazonIntegration\Model\Order|ObjectCollection $order The related object(s) to use as filter
+     * @param \Thelia\Model\Order|ObjectCollection $order The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAmazonOrdersQuery The current query, for fluid interface
      */
     public function filterByOrder($order, $comparison = null)
     {
-        if ($order instanceof \AmazonIntegration\Model\Order) {
+        if ($order instanceof \Thelia\Model\Order) {
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::ORDER_ID, $order->getId(), $comparison);
         } elseif ($order instanceof ObjectCollection) {
@@ -2241,7 +2248,7 @@ abstract class AmazonOrdersQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(AmazonOrdersTableMap::ORDER_ID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByOrder() only accepts arguments of type \AmazonIntegration\Model\Order or Collection');
+            throw new PropelException('filterByOrder() only accepts arguments of type \Thelia\Model\Order or Collection');
         }
     }
 
@@ -2286,13 +2293,86 @@ abstract class AmazonOrdersQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \AmazonIntegration\Model\OrderQuery A secondary query class using the current class as primary query
+     * @return   \Thelia\Model\OrderQuery A secondary query class using the current class as primary query
      */
     public function useOrderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinOrder($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Order', '\AmazonIntegration\Model\OrderQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Order', '\Thelia\Model\OrderQuery');
+    }
+
+    /**
+     * Filter the query by a related \AmazonIntegration\Model\AmazonOrderProduct object
+     *
+     * @param \AmazonIntegration\Model\AmazonOrderProduct|ObjectCollection $amazonOrderProduct  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildAmazonOrdersQuery The current query, for fluid interface
+     */
+    public function filterByAmazonOrderProduct($amazonOrderProduct, $comparison = null)
+    {
+        if ($amazonOrderProduct instanceof \AmazonIntegration\Model\AmazonOrderProduct) {
+            return $this
+                ->addUsingAlias(AmazonOrdersTableMap::ID, $amazonOrderProduct->getAmazonOrderId(), $comparison);
+        } elseif ($amazonOrderProduct instanceof ObjectCollection) {
+            return $this
+                ->useAmazonOrderProductQuery()
+                ->filterByPrimaryKeys($amazonOrderProduct->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByAmazonOrderProduct() only accepts arguments of type \AmazonIntegration\Model\AmazonOrderProduct or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the AmazonOrderProduct relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildAmazonOrdersQuery The current query, for fluid interface
+     */
+    public function joinAmazonOrderProduct($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('AmazonOrderProduct');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'AmazonOrderProduct');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the AmazonOrderProduct relation AmazonOrderProduct object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \AmazonIntegration\Model\AmazonOrderProductQuery A secondary query class using the current class as primary query
+     */
+    public function useAmazonOrderProductQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinAmazonOrderProduct($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'AmazonOrderProduct', '\AmazonIntegration\Model\AmazonOrderProductQuery');
     }
 
     /**
