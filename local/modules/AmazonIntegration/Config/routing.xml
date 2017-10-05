@@ -30,7 +30,7 @@
 		</default>
 	</route>
 	
-	<route id="amazon.orders.save" path="/admin/module/amazonintegration/save-asin-from-amazon">
+	<route id="amazon.asin.save" path="/admin/module/amazonintegration/save-asin-from-amazon">
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAsinFromAmazon
 		</default>
 	</route>
