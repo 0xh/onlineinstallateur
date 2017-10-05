@@ -1,23 +1,23 @@
 <?php
 namespace AmazonIntegration\Controller\Admin;
 
-use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Model\ModuleConfigQuery;
-use AmazonIntegration\AmazonIntegration;
-use function Composer\Autoload\includeFile;
 use AmazonIntegration\Model\AmazonOrders;
-use Propel\Runtime\Propel;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
+use function Composer\Autoload\includeFile;
+use Propel\Runtime\Propel;
+use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Model\Customer;
 use Thelia\Model\OrderAddress;
 use AmazonIntegration\Model\AmazonOrdersQuery;
 use Thelia\Model\CustomerQuery;
 use Thelia\Model\CountryQuery;
 use Thelia\Model\OrderAddressQuery;
+use Thelia\Model\ProductSaleElementsQuery;
+
 
 class AmazonIntegrationContoller extends BaseAdminController
 {
-    
+
     public function blockJs()
     {
         return $this->render("AmazonIntegrationTemplate-js");
@@ -26,23 +26,52 @@ class AmazonIntegrationContoller extends BaseAdminController
     public function viewAction()
     {
 //         echo "<pre>";
-//         include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
+        // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
         
-        include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
-     
-//         var_dump($orders);
-//         die;
+//         include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
         
-//         $orders = array();
-        return $this->render("AmazonIntegrationTemplate", array("orders" => $orders));
+        // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersByNextTokenSample.php';
+        
+        
+//         die("GATA");
+        
+//         include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrderItemsSample.php';
+
+        $orders = array();
+        
+        return $this->render("AmazonIntegrationTemplate", array(
+            "orders" => $orders
+        ));
     }
     
+    public function saveAsinFromAmazon()
+    {
+        $productSaleElements = new ProductSaleElementsQuery();
+        $eanArray = array();
+
+        $prods = $productSaleElements->findByEanCode("*");
+        foreach ($prods as $value) {
+            if ($value->getEanCode()) {
+                array_push($eanArray, array("eanCode" => $value->getEanCode(), "productId" => $value->getProductId(), "ref" => $value->getRef()));
+            }
+        }
+        
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 3000);
+        
+        include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetMatchingProductForIdSample.php';
+        
+        ini_set('max_execution_time', $max_time);
+        
+        die("Finish insert ASIN from Amazon.");        
+    }
+
     public function serviceAction()
     {
-        include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
-     
+        include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
+        
         echo json_encode($orders);
-        die;
+        die();
     }
     
     public function saveAmazonOrders()

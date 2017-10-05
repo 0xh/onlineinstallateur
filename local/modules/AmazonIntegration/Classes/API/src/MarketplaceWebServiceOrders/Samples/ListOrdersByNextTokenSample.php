@@ -21,7 +21,11 @@
  * List Orders By Next Token Sample
  */
 
+use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
+
 require_once('.config.inc.php');
+include dirname(__FILE__) . '\..\Client.php';
+include dirname(__FILE__) . '\..\Model\ListOrdersByNextTokenRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
@@ -34,7 +38,7 @@ require_once('.config.inc.php');
 // North America:
 //$serviceUrl = "https://mws.amazonservices.com/Orders/2013-09-01";
 // Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
+$serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 // Japan
 //$serviceUrl = "https://mws.amazonservices.jp/Orders/2013-09-01";
 // China
@@ -76,8 +80,14 @@ require_once('.config.inc.php');
  // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrdersByNextToken
  $request = new MarketplaceWebServiceOrders_Model_ListOrdersByNextTokenRequest();
  $request->setSellerId(MERCHANT_ID);
+//  $request->setNextToken("/l+pA75cfV6aJqJYLDm0ZIfVkJJPpovR18oKa2+PBxRUojdU4H46trQzazHyYVyLqBXdLk4iogwM3B3rhUPcuX1wcXGLzn5vxVZ4AgdP/syEwuIPTDe/8SJ0wMvlylZkWQWPqGlbsnM84qdTrqNK40s1amFNc1bQS5QbMbY+t9sS3mf+XbXSubuZIF9n45mtnrZ4AbBdBTeicp5jJPQPcgCy5/GuGI4OLzyB960RsbIZEWUDFvtT53Vzlg78c7g+ELekEBnBWT4TgKH522jP77CXSaG7w7Y24yq9C9KTUX2SDfXXbSzuO0g0xZzuQGAEgh51o+El5IeY9TB3jldv+e+1pNQfgqQUo+qCql/dzWx6kFU5B6HcYN24Matyqu9PCusdgVu5bcIiuP7D5BszEv+hPpAGwSABrToAsYN83sHgkdZPXhcRcONZv5RLJLoN79BUoD2mtfY=");
+
+ if (isset($_SESSION['nxtToken']))
+     $request->setNextToken($_SESSION['nxtToken']);
+ else 
+     $request->setNextToken("/l+pA75cfV6aJqJYLDm0ZIfVkJJPpovR18oKa2+PBxRUojdU4H46trQzazHyYVyLqBXdLk4iogwM3B3rhUPcuX1wcXGLzn5vxVZ4AgdP/syEwuIPTDe/8SJ0wMvlylZkWQWPqGlbsnM84qdTrqNK40s1amFNc1bQS5QbMbY+t9sS3mf+XbXSubuZIF9n45mtnrZ4AbBdBTeicp5jJPQPcgCy5/GuGI4OLzyB960RsbIZEWUDFvtT53Vzlg78c7g+ELekEBnBWT4TgKH522jP77CXSaG7w7Y24yq9C9KTUX2SDfXXbSzuO0g0xZzuQGAEgh51o+El5IeY9TB3jldv+e+1pNQfgqQUo+qCql/dzWx6kFU5B6HcYN24Matyqu9PCusdgVu5bcIiuP7D5BszEv+hPpAGwSABrToAsYN83sHgkdZPXhcRcONZv5RLJLoN79BUoD2mtfY=");
  // object or array of parameters
- invokeListOrdersByNextToken($service, $request);
+ $orders = invokeListOrdersByNextToken($service, $request);
 
 /**
   * Get List Orders By Next Token Action Sample
@@ -93,24 +103,32 @@ require_once('.config.inc.php');
       try {
         $response = $service->ListOrdersByNextToken($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
+        $orders = array();
+        
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
+        
+        $xml = $dom->saveXML();
+        $orderdata = new SimpleXMLElement($xml);
+        $array = json_encode($orderdata, TRUE);
+        $result = json_decode($array);
+        if ($result) {
+            
+            $_SESSION['nxtToken'] = $result->ListOrdersByNextTokenResult->NextToken;
+            
+            foreach ($result->ListOrdersByNextTokenResult->Orders->Order as $order) {
+                array_push($orders, $order);
+            }
+        } else {
+            AmazonIntegrationResponse::logError('error decoding json');
+        }
+        
+        return $orders;
 
      } catch (MarketplaceWebServiceOrders_Exception $ex) {
-        echo("Caught Exception: " . $ex->getMessage() . "\n");
-        echo("Response Status Code: " . $ex->getStatusCode() . "\n");
-        echo("Error Code: " . $ex->getErrorCode() . "\n");
-        echo("Error Type: " . $ex->getErrorType() . "\n");
-        echo("Request ID: " . $ex->getRequestId() . "\n");
-        echo("XML: " . $ex->getXML() . "\n");
-        echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
+         AmazonIntegrationResponse::logError($ex->getMessage());
      }
  }
 
