@@ -14,6 +14,16 @@
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
     </table>
+    
+    <table name="amazon_orders_products" namespace="AmazonIntegration\Model">
+    	<column name="amazon_order_id" phpName="AmazonOrderId" type="VARCHAR" size="45" primaryKey="true" required="true"/>
+	    <column name="product_id" phpName="ProductId" type="INTEGER"/>
+	    <column name="ean_code" phpName="EanCode" type="VARCHAR" size="255"/>
+	    <column name="ASIN" phpName="ASIN"  type="VARCHAR" size="255"/>
+	    <vendor type="mysql">
+	      <parameter name="Engine" value="InnoDB"/>
+	    </vendor>
+    </table>
 
    <table name="amazon_orders" idMethod="native" phpName="AmazonOrders">
     <column name="id" phpName="Id" type="VARCHAR" size="45" primaryKey="true" required="true"/>

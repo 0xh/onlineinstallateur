@@ -81,11 +81,12 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  $request = new MarketplaceWebServiceOrders_Model_ListOrdersByNextTokenRequest();
  $request->setSellerId(MERCHANT_ID);
 //  $request->setNextToken("/l+pA75cfV6aJqJYLDm0ZIfVkJJPpovR18oKa2+PBxRUojdU4H46trQzazHyYVyLqBXdLk4iogwM3B3rhUPcuX1wcXGLzn5vxVZ4AgdP/syEwuIPTDe/8SJ0wMvlylZkWQWPqGlbsnM84qdTrqNK40s1amFNc1bQS5QbMbY+t9sS3mf+XbXSubuZIF9n45mtnrZ4AbBdBTeicp5jJPQPcgCy5/GuGI4OLzyB960RsbIZEWUDFvtT53Vzlg78c7g+ELekEBnBWT4TgKH522jP77CXSaG7w7Y24yq9C9KTUX2SDfXXbSzuO0g0xZzuQGAEgh51o+El5IeY9TB3jldv+e+1pNQfgqQUo+qCql/dzWx6kFU5B6HcYN24Matyqu9PCusdgVu5bcIiuP7D5BszEv+hPpAGwSABrToAsYN83sHgkdZPXhcRcONZv5RLJLoN79BUoD2mtfY=");
-
+//  unset($_SESSION['nxtToken']);
+//  die;
  if (isset($_SESSION['nxtToken']))
      $request->setNextToken($_SESSION['nxtToken']);
- else 
-     $request->setNextToken("/l+pA75cfV6aJqJYLDm0ZIfVkJJPpovR18oKa2+PBxRUojdU4H46trQzazHyYVyLqBXdLk4iogwM3B3rhUPcuX1wcXGLzn5vxVZ4AgdP/syEwuIPTDe/8SJ0wMvlylZkWQWPqGlbsnM84qdTrqNK40s1amFNc1bQS5QbMbY+t9sS3mf+XbXSubuZIF9n45mtnrZ4AbBdBTeicp5jJPQPcgCy5/GuGI4OLzyB960RsbIZEWUDFvtT53Vzlg78c7g+ELekEBnBWT4TgKH522jP77CXSaG7w7Y24yq9C9KTUX2SDfXXbSzuO0g0xZzuQGAEgh51o+El5IeY9TB3jldv+e+1pNQfgqQUo+qCql/dzWx6kFU5B6HcYN24Matyqu9PCusdgVu5bcIiuP7D5BszEv+hPpAGwSABrToAsYN83sHgkdZPXhcRcONZv5RLJLoN79BUoD2mtfY=");
+//  else 
+//      $request->setNextToken("4Z54IaLSjduaJqJYLDm0ZIfVkJJPpovR18oKa2+PBxRUojdU4H46trQzazHyYVyLqBXdLk4iogwM3B3rhUPcuRNBg48+z8Z+aBFeWShf6th+nQJ3KJWXeCJ0wMvlylZkWQWPqGlbsnM84qdTrqNK40s1amFNc1bQS5QbMbY+t9sS3mf+XbXSubuZIF9n45mtnrZ4AbBdBTeicp5jJPQPcgCy5/GuGI4OLzyB960RsbIZEWUDFvtT53Vzlg78c7g+ELekEBnBWT4TgKH522jP77CXSaG7w7Y24yq9C9KTUX2SDfXXbSzuO0g0xZzuQGAEgh51o+El5IeY9TB3jldv+XOsHgYVxIK5drRTwlGz5tlrsSQdM8O72daJbwct8GrHUxNT5+bVVxYRBy1ElOKAAfg4icHW3eYl8CuEwqeAINCRChgHvaazJw2mWwnAD6IK5P/4rnSGRb0=");
  // object or array of parameters
  $orders = invokeListOrdersByNextToken($service, $request);
 
@@ -116,7 +117,13 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
         $result = json_decode($array);
         if ($result) {
             
-            $_SESSION['nxtToken'] = $result->ListOrdersByNextTokenResult->NextToken;
+            if (isset($result->ListOrdersByNextTokenResult->NextToken))
+                $_SESSION['nxtToken'] = $result->ListOrdersByNextTokenResult->NextToken;
+            else 
+            {
+                $_SESSION['finishedToGetOrders'] = true; // "Finish to get orders.";
+                unset($_SESSION['nxtToken']);
+            }
             
             foreach ($result->ListOrdersByNextTokenResult->Orders->Order as $order) {
                 array_push($orders, $order);

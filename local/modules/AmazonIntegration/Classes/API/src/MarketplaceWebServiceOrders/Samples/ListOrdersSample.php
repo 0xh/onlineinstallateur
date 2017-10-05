@@ -178,6 +178,9 @@ function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $reque
         $array = json_encode($orderdata, TRUE);
         $result = json_decode($array);
         if ($result) {
+            
+            $_SESSION['nxtToken'] = $result->ListOrdersResult->NextToken;
+            
             foreach ($result->ListOrdersResult->Orders->Order as $order) {
                 array_push($orders, $order);
             }

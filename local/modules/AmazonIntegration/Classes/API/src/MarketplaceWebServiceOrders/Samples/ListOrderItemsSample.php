@@ -1,4 +1,9 @@
 <?php
+use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
+use AmazonIntegration\Model\AmazonOrdersProducts;
+use AmazonIntegration\Model\AmazonOrdersProductsQuery;
+use AmazonIntegration\Model\ProductAmazonQuery;
+
 /*******************************************************************************
  * Copyright 2009-2017 Amazon Services. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -78,10 +83,32 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrderItems
  $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
  $request->setSellerId(MERCHANT_ID);
-//  $request->setAmazonOrderId("304-4009648-2537909");
- $request->setAmazonOrderId("306-4274407-3817966");
+
+//  $request->setAmazonOrderId("302-8891523-9856327");
  // object or array of parameters
- invokeListOrderItems($service, $request);
+ 
+ foreach ($amazonOrdersArray as $amazonOrderId) {
+     
+     $request->setAmazonOrderId($amazonOrderId);
+//      $request->setAmazonOrderId("305-4424625-0181155");
+     $productsOrderItem = invokeListOrderItems($service, $request);
+
+     foreach ($productsOrderItem as $prd)
+     {
+         if (isset($prd->ASIN)){
+             addProductsForOrdersAmazon($prd->ASIN, $amazonOrderId);
+         }
+         else {
+             foreach ($prd as $pr){
+                 if (isset($pr->ASIN))
+                    addProductsForOrdersAmazon($pr->ASIN, $amazonOrderId);
+             }
+         }
+     }
+     sleep(2);
+ }
+ 
+
 
 /**
   * Get List Order Items Action Sample
@@ -97,9 +124,6 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
       try {
         $response = $service->ListOrderItems($request);
 
-        echo ("Service Response\n");
-        echo ("=============================================================================\n");
-
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
@@ -110,17 +134,14 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
         $array = json_encode($orderdata, TRUE);
         $result = json_decode($array);
         if ($result) {
-            var_dump($result);
-            die;
+            return $result->ListOrderItemsResult->OrderItems;
+//             var_dump($result);
+//             die;
         } else {
             echo ('error decoding json');
         }
         
-        
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
-        
-        return 'dsadas';
+        return array();
 
      } catch (MarketplaceWebServiceOrders_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
@@ -131,5 +152,55 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
         echo("XML: " . $ex->getXML() . "\n");
         echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
+ }
+
+ function addProductsForOrdersAmazon($ASIN, $amazonOrderId)
+ {
+     $ifExist = false;
+     $eanCode = "";
+     $productId = "";
+          
+     $amazonOrdersProductsQuery = new AmazonOrdersProductsQuery();
+     $result = $amazonOrdersProductsQuery->findByAmazonOrderId($amazonOrderId);
+     
+     foreach ($result as $res)
+     {
+         if ($res->getProductId())
+         {
+             $ifExist = true;             
+             break;
+         }
+     }
+     
+     if (!$ifExist)
+     {
+         $productAmazon = new ProductAmazonQuery();
+         $prods = $productAmazon->findByASIN($ASIN);
+         
+         $ifExistAsin = false;
+         foreach ($prods as $res)
+         {
+             if ($res->getASIN())
+             {
+                 $ifExistAsin = true;
+                 $eanCode = $res->getEanCode();
+                 $productId = $res->getProductId();
+                 break;
+             }
+         }
+         
+         if ($ifExistAsin){
+             $amazonOrdersProducts = new AmazonOrdersProducts();
+             $amazonOrdersProducts->setAmazonOrderId($amazonOrderId);
+             $amazonOrdersProducts->setASIN($ASIN);
+             $amazonOrdersProducts->setEanCode($eanCode);
+             $amazonOrdersProducts->setProductId($productId);
+             $amazonOrdersProducts->save();
+         }
+         else 
+             AmazonIntegrationResponse::logError('ASIN = '. $ASIN . ' not exist in Thelia.');
+         
+     }
+     
  }
 
