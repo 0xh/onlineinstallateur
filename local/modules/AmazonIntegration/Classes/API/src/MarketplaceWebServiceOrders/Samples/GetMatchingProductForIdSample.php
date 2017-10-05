@@ -91,13 +91,6 @@ $asinList = new MarketplaceWebServiceProducts_Model_IdListType();
 // $asinList->setId(array("5700392859471"));
 
 $request->setIdList($asinList);
-// die;
-// $asinList = new MarketplaceWebServiceProducts_Model_IdListType();
-// // foreach ($skus as $sku) {
-// $asinList->withId("WIL4132761");
-// // }
-// $request->withIdList($asinList);
-// invokeGetMatchingProductForId($service, $request, 10);
 
 // object or array of parameters
 foreach ($eanArray as $value) {
@@ -138,28 +131,18 @@ function invokeGetMatchingProductForId(MarketplaceWebServiceProducts_Interface $
         if ($result) {
             if (isset($result->GetMatchingProductForIdResult->Products)) {
                 foreach ($result->GetMatchingProductForIdResult->Products->Product as $prd) {
-//                     var_dump($prd);
-//                     die;
                     if (isset($prd->Identifiers))
-                        addProdAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], $prd->Identifiers->MarketplaceASIN->ASIN);
+                        addAsinFromAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], $prd->Identifiers->MarketplaceASIN->ASIN);
                     else
                         if (isset($prd->MarketplaceASIN))
-                            addProdAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], $prd->MarketplaceASIN->ASIN);
-//                         else
-//                             addProdAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], "");
+                            addAsinFromAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], $prd->MarketplaceASIN->ASIN);
                 }
-//                 die;
-                // var_dump($result->GetMatchingProductForIdResult->Products);
-                // die();
-                // $asinCode = $result->GetMatchingProductForIdResult->Products;
             } else
-                addProdAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], "");
+                addAsinFromAmazon($valueProd['eanCode'], $valueProd['productId'], $valueProd['ref'], "");
         } else {
             echo ('error decoding json');
         }
         
-        // echo "gata";
-        // echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
     } catch (MarketplaceWebServiceProducts_Exception $ex) {
         echo ("Caught Exception: " . $ex->getMessage() . "\n");
         echo ("Response Status Code: " . $ex->getStatusCode() . "\n");
@@ -171,7 +154,7 @@ function invokeGetMatchingProductForId(MarketplaceWebServiceProducts_Interface $
     }
 }
 
-function addProdAmazon($eanCode, $productId, $ref, $asinCode)
+function addAsinFromAmazon($eanCode, $productId, $ref, $asinCode)
 {
     $prodAmazon = new ProductAmazon();
     $prodAmazon->setEanCode($eanCode);

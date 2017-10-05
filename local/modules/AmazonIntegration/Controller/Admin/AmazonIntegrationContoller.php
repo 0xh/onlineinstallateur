@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Model\Customer;
 use Thelia\Model\OrderAddress;
+use Thelia\Model\ProductSaleElementsQuery;
 
 class AmazonIntegrationContoller extends BaseAdminController
 {
@@ -22,31 +23,42 @@ class AmazonIntegrationContoller extends BaseAdminController
 //         echo "<pre>";
         // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
         
-        include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
+//         include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
         
         // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersByNextTokenSample.php';
         
-//         $productSaleElements = new ProductSaleElementsQuery();
-//         $eanArray = array();
-        
-//         $prods = $productSaleElements->findByEanCode("*");
-//         foreach ($prods as $value) {           
-//             if ($value->getEanCode()) {                
-//                 array_push($eanArray, array("eanCode" => $value->getEanCode(), "productId" => $value->getProductId(), "ref" => $value->getRef()));
-//             }
-//         }
-        
-//         ini_set('max_execution_time', 3000);
-        
-//         include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetMatchingProductForIdSample.php';
         
 //         die("GATA");
         
 //         include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrderItemsSample.php';
 
+        $orders = array();
+        
         return $this->render("AmazonIntegrationTemplate", array(
             "orders" => $orders
         ));
+    }
+    
+    public function saveAsinFromAmazon()
+    {
+        $productSaleElements = new ProductSaleElementsQuery();
+        $eanArray = array();
+
+        $prods = $productSaleElements->findByEanCode("*");
+        foreach ($prods as $value) {
+            if ($value->getEanCode()) {
+                array_push($eanArray, array("eanCode" => $value->getEanCode(), "productId" => $value->getProductId(), "ref" => $value->getRef()));
+            }
+        }
+        
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 3000);
+        
+        include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetMatchingProductForIdSample.php';
+        
+        ini_set('max_execution_time', $max_time);
+        
+        die("Finish insert ASIN from Amazon.");        
     }
 
     public function serviceAction()
