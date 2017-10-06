@@ -87,16 +87,15 @@ class BMDOrderExport extends AbstractExport
         	case "AUK":$processedData['konto']="203099";break;
         }
         
-		$processedData['gkto'] = "400";
+		$processedData['gkto'] = "4000";
 		$processedData['extbelegnr'] = "";
 		
 		$betrag = $processedData['betrag'];
-		$processedData['steuer'] = ($betrag/1.2)*0.2;
-		$processedData['betrag'] = $betrag - $processedData['steuer'];
-		
-		
+		$processedData['steuer'] = -($betrag/1.2)*0.2;
+		$processedData['betrag'] = $betrag + $processedData['steuer'];
+
 		$processedData['mwst'] = "20";
-		$processedData['bucod'] = "3";
+		$processedData['bucod'] = "1";
 		$processedData['zziel'] = "";
 		$processedData['skontopz'] = "";
 		$processedData['skontotage'] = "";
@@ -118,6 +117,7 @@ class BMDOrderExport extends AbstractExport
     						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
+    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false)
     				) {
     					$this->next();
     					$getNext = true;
