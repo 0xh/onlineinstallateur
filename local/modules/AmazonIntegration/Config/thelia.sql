@@ -7,6 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- product_amazon
 -- ---------------------------------------------------------------------
 
+
 CREATE TABLE IF NOT EXISTS `product_amazon`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -23,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
 
 
 
-CREATE TABLE  IF NOT EXISTS `amazon_orders_products`
+CREATE TABLE IF NOT EXISTS `amazon_orders_products`
 (
     `amazon_order_id` VARCHAR(45) NOT NULL,
     `product_id` INTEGER,
@@ -35,6 +36,7 @@ CREATE TABLE  IF NOT EXISTS `amazon_orders_products`
 -- ---------------------------------------------------------------------
 -- amazon_orders
 -- ---------------------------------------------------------------------
+
 
 
 CREATE TABLE IF NOT EXISTS `amazon_orders`
@@ -110,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `amazon_orders`
 
 
 
-CREATE TABLE IF NOT EXISTS `amazon_order_product`
+CREATE TABLE IF NOT EXISTS  `amazon_order_product`
 (
     `order_item_id` VARCHAR(45) NOT NULL,
     `amazon_order_id` VARCHAR(45),
@@ -163,13 +165,13 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
     `version_created_at` DATETIME,
     `version_created_by` VARCHAR(100),
     PRIMARY KEY (`order_item_id`),
-    INDEX `fk_order_product_id` (`order_product_id`),
-    INDEX `fk_amazon_order_id` (`amazon_order_id`),
-    CONSTRAINT `fk_order_product_id`
+    INDEX `fk_a_order_product_id` (`order_product_id`),
+    INDEX `fk_a_amazon_order_id` (`amazon_order_id`),
+    CONSTRAINT `fk_a_order_product_id`
         FOREIGN KEY (`order_product_id`)
         REFERENCES `order_product` (`id`)
         ON DELETE CASCADE,
-    CONSTRAINT `fk_amazon_order_id`
+    CONSTRAINT `fk_a_amazon_order_id`
         FOREIGN KEY (`amazon_order_id`)
         REFERENCES `amazon_orders` (`id`)
         ON DELETE CASCADE
@@ -178,7 +180,6 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
 -- ---------------------------------------------------------------------
 -- amazon_orders_version
 -- ---------------------------------------------------------------------
-
 
 
 CREATE TABLE IF NOT EXISTS `amazon_orders_version`
@@ -243,6 +244,8 @@ CREATE TABLE IF NOT EXISTS `amazon_orders_version`
 
 -- ---------------------------------------------------------------------
 -- amazon_order_product_version
+-- ---------------------------------------------------------------------
+
 
 
 CREATE TABLE IF NOT EXISTS `amazon_order_product_version`

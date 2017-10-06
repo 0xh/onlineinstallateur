@@ -144,16 +144,16 @@
     <column name="buyer_customized_url" phpName="BuyerCustomizedURL" type="VARCHAR" size="45"/>
     <column name="order_product_id" phpName="OrderProductId" type="INTEGER"/>
   
-    <foreign-key foreignTable="order_product" name="fk_order_product_id" onDelete="CASCADE">
+    <foreign-key foreignTable="order_product" name="fk_a_order_product_id" onDelete="CASCADE">
       <reference local="order_product_id" foreign="id"/>
     </foreign-key>
-     <foreign-key foreignTable="amazon_orders" name="fk_amazon_order_id" onDelete="CASCADE">
+     <foreign-key foreignTable="amazon_orders" name="fk_a_amazon_order_id" onDelete="CASCADE">
       <reference local="amazon_order_id" foreign="id"/>
     </foreign-key>
-    <index name="fk_order_product_id">
+    <index name="fk_a_order_product_id">
       <index-column name="order_product_id"/>
     </index>
-    <index name="fk_amazon_order_id">
+    <index name="fk_a_amazon_order_id">
       <index-column name="amazon_order_id"/>
     </index>
    <behavior name="timestampable" />
