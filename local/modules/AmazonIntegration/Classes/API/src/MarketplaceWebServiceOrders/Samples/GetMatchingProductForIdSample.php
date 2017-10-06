@@ -23,9 +23,9 @@
 use AmazonIntegration\Model\ProductAmazon;
 
 require_once ('.config.inc.php');
-include dirname(__FILE__) . '\..\Products\MarketplaceWebServiceProducts\Client.php';
-include dirname(__FILE__) . '\..\Products\MarketplaceWebServiceProducts\Model\GetMatchingProductForIdRequest.php';
-include dirname(__FILE__) . '\..\Products\MarketplaceWebServiceProducts\Model\IdListType.php';
+include dirname(__FILE__) . '/../Products/MarketplaceWebServiceProducts/Client.php';
+include dirname(__FILE__) . '/../Products/MarketplaceWebServiceProducts/Model/GetMatchingProductForIdRequest.php';
+include dirname(__FILE__) . '/../Products/MarketplaceWebServiceProducts/Model/IdListType.php';
 
 /**
  * **********************************************************************

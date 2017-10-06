@@ -115,7 +115,7 @@ class AmazonIntegrationContoller extends BaseAdminController
         $max_time = ini_get("max_execution_time");
         ini_set('max_execution_time', 3000);
         
-        include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetMatchingProductForIdSample.php';
+        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
         
         ini_set('max_execution_time', $max_time);
         
@@ -124,7 +124,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function serviceAction()
     {
-        include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
+        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetServiceStatusSample.php';
         
         echo json_encode($orders);
         die();
@@ -137,9 +137,9 @@ class AmazonIntegrationContoller extends BaseAdminController
         $_SESSION['finishedToGetOrders'] = false;
         
         if (! isset($_SESSION['nxtToken'])) {
-            include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
+            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
           } else
-            include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersByNextTokenSample.php';
+            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
          
         $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
         $con->beginTransaction();
@@ -400,7 +400,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                     $max_time = ini_get("max_execution_time");
                     ini_set('max_execution_time', 6000);
                     
-                    include __DIR__ . '\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrderItemsSample.php'; 
+                    include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php'; 
                     ini_set('max_execution_time', $max_time);
                     
                     $orderProduct = $productsOrderItem->OrderItem;
