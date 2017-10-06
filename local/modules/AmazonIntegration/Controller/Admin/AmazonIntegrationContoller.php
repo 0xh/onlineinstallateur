@@ -408,6 +408,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                     ini_set('max_execution_time', 6000);
                     $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
                     ini_set('max_execution_time', $max_time);
+                    sleep(2); 
                     
                     $totalPostage = 0;
                     
@@ -747,6 +748,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->setRef($orderProduct->SellerSKU)
     		->setVisible(0)
     		->setVirtual(0)
+    		->setTaxRuleId(1)
     		->setVersionCreatedBy('amazon_integration')
     		->save($con);
     	
@@ -757,10 +759,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setQuantity(0)
 	    	->save($con);
 	    
+	    if(!isset($orderProduct->ItemPrice->Amount))
+	    	print_r($orderProduct->SellerSKU.'<br>');
+	    
 	    $productPrice = new ProductPrice();
 	    $productPrice
 	    	->setProductSaleElementsId($pse->getId())
-	    	->setPrice($orderProduct->ItemPrice->Amount)
+	    	->setPrice(isset($orderProduct->ItemPrice->Amount) ? isset($orderProduct->ItemPrice->Amount) : '')
 	    	->setFromDefaultCurrency(0)
 	    	->setCurrencyId(1)
 	    	->save($con);
@@ -769,7 +774,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	$productI18n
     		->setId($newProduct->getId())
 	    	->setLocale($lang->getLocale())
-	    	->setTitle($orderProduct->Title)
+	    	->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
 	    	->save($con);
     	
 	    return $newProduct->getId();
