@@ -30,6 +30,8 @@ use Thelia\Model\OrderPostage;
 use Thelia\Model\ProductPriceQuery;
 use Thelia\Log\Tlog;
 use Thelia\Model\OrderQuery;
+use Thelia\Model\Map\OrderTableMap;
+use Propel\Runtime\Propel;
 
 class OrderCreationListener implements EventSubscriberInterface
 {
@@ -240,25 +242,38 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
     
     public function updateRef(OrderEvent $event) 
     { 
+    	$order = OrderQuery::create()
+	    	->filterById($event->getOrder()->getId())
+	    	->findOne();
+    	
+   // 	$con = Propel::getConnection(OrderTableMap::DATABASE_NAME);
+    //	$con->beginTransaction();
+	
     	if($this->request->getSession()->get('marketplace')) {
     		
+    		$prefix = 'A'.$this->request->getSession()->get('marketplace').'2017';
     		$lastOrder = OrderQuery::create()
 	    		->select('ref')
-	    		->filterByRef($this->request->getSession()->get('marketplace').'%')
+	    		->filterByRef($prefix.'%')
+	    		->orderById('desc')
 	    		->orderByRef('desc')
 	    		->findOne();
     		
     		if($lastOrder){
-	    		preg_match_all('!\d+!', $lastOrder, $matches);
-	    		$refId = intval($matches[0][0]) + 1;
+    			$lastId = explode($prefix, $lastOrder);
+    			$refId = $lastId[1] + 1;
     		}
     		else {
     			$refId = '1';
     		}
     		
-    		$prefix = $this->request->getSession()->get('marketplace').'%s';
+    		$ref = $prefix.$refId;
     		
     		$this->request->getSession()->remove('marketplace');
+    		
+    		$order->setRef($ref)
+    			->setDisableVersioning(true)
+    			->save(); 
     	}
     	else{
     		$lastOrder = OrderQuery::create()
@@ -271,14 +286,11 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
     		
     		$refId = intval($matches[0][0]) + 1;
     		$prefix = 'ORD%s';
+    		
+    		$order->setRef($this->generateRef($refId, $prefix))
+    			->setDisableVersioning(true)
+    			->save();
     	}
-    	
-    	$order = OrderQuery::create()
-    		->filterById($event->getOrder()->getId())
-    		->findOne();
-    	
-    	$order->setRef($this->generateRef($refId, $prefix))
-    		->save();
     		
     }
     
