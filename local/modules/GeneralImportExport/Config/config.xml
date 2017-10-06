@@ -428,5 +428,26 @@
 				</description>
 			</export_descriptive>
 		</export>
+		<export id="thelia.export.bmd_order" class="GeneralImportExport\Export\BMDOrderExport"
+			category_id="thelia.export.orders">
+			<export_descriptive locale="en_US">
+				<title>BMD orders</title>
+				<description>
+					Export your BMD orders
+				</description>
+			</export_descriptive>
+			<export_descriptive locale="fr_FR">
+				<title>Commandes BMD</title>
+				<description>
+					Exporter vos BMD commandes
+				</description>
+			</export_descriptive>
+			<export_descriptive locale="de_DE">
+				<title>BMD orders</title>
+				<description>
+					Export your BMD orders
+				</description>
+			</export_descriptive>
+		</export>
 	</exports>
 </config>

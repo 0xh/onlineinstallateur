@@ -20,22 +20,7 @@ class ProductImport extends AbstractImport{
 			'materialnummer',
 			'EAN',
 			'Brand',
-			'Template',
-			'Farbe',
-			'size basin',//Waschbeckengröße
-			'number of shower sprays',
-			'number of holes',
-			'size cartridge',//Größe Kartusche
-			'flow rate limitation at 3 bar',//Durchflussmenge limitiert auf 3 Bar
-			'material',
-			'shower hose length',//Länge Duschschlauch
-			'temperature limiter', //Temperaturlimit
-			'outside diameter shower',//Dusche Außendurchmesser
-			'projection',//Auslauf
-			'battery typ dangerous goods', //Batterie art, Gefahrengüter
-			'material of handle',//
-			'kind of spout',//Art des Wasserstrahls
-			'waste- and overflow technic'//
+			'Template'
 	];
 	public function importData(array $data)
 	{
@@ -92,7 +77,7 @@ class ProductImport extends AbstractImport{
 						$new_feature->addTemplate($found);
 						$new_feature->save();
 						//---Set Template
-						Tlog::getInstance()->info("SAAVED K:".$key." V:".$value);
+						Tlog::getInstance()->info("SAVED K:".$key." V:".$value);
 						$feature_update_event = new FeatureProductUpdateEvent($product_id, $new_feature->getId(), $value,true); //PRoduct ID <<<<<<<<<<<<<<<<<<
 						$feature_update_event
 							->setLocale("de_DE");
