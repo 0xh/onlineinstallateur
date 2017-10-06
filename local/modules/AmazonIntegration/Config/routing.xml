@@ -9,10 +9,14 @@
 	</route>
 
 	<route id="amazon-service-orders" path="/admin/module/amazonintegration/service-orders">
-		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::serviceAction
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::getServiceForOrdersAction
 		</default>
 	</route>
 
+	<route id="amazon-service-products" path="/admin/module/amazonintegration/service-products">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::getServiceForProductsAction
+		</default>
+	</route>
 
 	<route id="amazonintegration.configure" path="/admin/module/AmazonIntegration/configure"
 		methods="post">

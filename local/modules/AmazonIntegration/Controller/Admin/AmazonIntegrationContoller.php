@@ -142,11 +142,19 @@ class AmazonIntegrationContoller extends BaseAdminController
         die("Finish insert ASIN from Amazon.");
     }
 
-    public function serviceAction()
+    public function getServiceForOrdersAction()
     {
         include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetServiceStatusSample.php';
         
         echo json_encode($orders);
+        die();
+    }
+
+    public function getServiceForProductsAction()
+    {
+        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetServiceStatusSample.php';
+        
+        echo json_encode($productService);
         die();
     }
 
