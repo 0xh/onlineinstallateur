@@ -18,11 +18,12 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
-
 -- amazon_orders_products
 -- ---------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `amazon_orders_products`
+
+
+CREATE TABLE  IF NOT EXISTS `amazon_orders_products`
 (
     `amazon_order_id` VARCHAR(45) NOT NULL,
     `product_id` INTEGER,
@@ -32,9 +33,9 @@ CREATE TABLE IF NOT EXISTS `amazon_orders_products`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
-
 -- amazon_orders
 -- ---------------------------------------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS `amazon_orders`
 (
@@ -104,11 +105,12 @@ CREATE TABLE IF NOT EXISTS `amazon_orders`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
-
 -- amazon_order_product
 -- ---------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS  `amazon_order_product`
+
+
+CREATE TABLE IF NOT EXISTS `amazon_order_product`
 (
     `order_item_id` VARCHAR(45) NOT NULL,
     `amazon_order_id` VARCHAR(45),
@@ -177,6 +179,8 @@ CREATE TABLE IF NOT EXISTS  `amazon_order_product`
 -- amazon_orders_version
 -- ---------------------------------------------------------------------
 
+
+
 CREATE TABLE IF NOT EXISTS `amazon_orders_version`
 (
     `id` VARCHAR(45) NOT NULL,
@@ -239,9 +243,9 @@ CREATE TABLE IF NOT EXISTS `amazon_orders_version`
 
 -- ---------------------------------------------------------------------
 -- amazon_order_product_version
--- ---------------------------------------------------------------------
 
-CREATE TABLE  IF NOT EXISTS `amazon_order_product_version`
+
+CREATE TABLE IF NOT EXISTS `amazon_order_product_version`
 (
     `order_item_id` VARCHAR(45) NOT NULL,
     `amazon_order_id` VARCHAR(45),
@@ -300,7 +304,6 @@ CREATE TABLE  IF NOT EXISTS `amazon_order_product_version`
         REFERENCES `amazon_order_product` (`order_item_id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

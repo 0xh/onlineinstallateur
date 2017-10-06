@@ -68,8 +68,8 @@ class OrderCreationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            self::ADMIN_ORDER_CREATE => array('adminOrderCreate', 128)/* ,
-        	TheliaEvents::ORDER_AFTER_CREATE => array("updateRef", 128) */
+            self::ADMIN_ORDER_CREATE => array('adminOrderCreate', 128) ,
+        	TheliaEvents::ORDER_AFTER_CREATE => array("updateRef", 128)  
         );
     }
 
@@ -239,12 +239,12 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
     }
     
     public function updateRef(OrderEvent $event) 
-    {
+    { 
     	if($this->request->getSession()->get('marketplace')) {
     		
     		$lastOrder = OrderQuery::create()
 	    		->select('ref')
-	    		->filterByRef('DE%')
+	    		->filterByRef($this->request->getSession()->get('marketplace').'%')
 	    		->orderByRef('desc')
 	    		->findOne();
     		
@@ -256,7 +256,7 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
     			$refId = '1';
     		}
     		
-    		$prefix = 'DE%s';
+    		$prefix = $this->request->getSession()->get('marketplace').'%s';
     		
     		$this->request->getSession()->remove('marketplace');
     	}
