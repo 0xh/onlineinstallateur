@@ -9,36 +9,21 @@
 				<tr>
 					<th>AmazonOrderId</th>
 					<th>PurchaseDate</th>
-					<th>LastUpdateDate</th>
 					<th>OrderStatus</th>
 					<th>SalesChannel</th>
 					<th>OrderTotal</th>
 					<th>MarketplaceId</th>
-					<th>BuyerEmail</th>
-					<th>BuyerName</th>
-					<th>EarliestShipDate</th>
-					<th>LatestShipDate</th>
-					<th>EarliestDeliveryDate</th>
-					<th>LatestDeliveryDate</th>
 				</tr>
 			</thead>
 			<tbody>
 				{foreach from=$orders item=order}
 				<tr>
-					<td>{$order->AmazonOrderId}</td>
-					<td>{$order->PurchaseDate}</td>
-					<td>{$order->LastUpdateDate}</td>
-					<td>{$order->OrderStatus}</td>
-					<td>{$order->SalesChannel}</td>
-					<td>{$order->OrderTotal->Amount}
-						{$order->OrderTotal->CurrencyCode}</td>
-					<td>{$order->MarketplaceId}</td>
-					<td>{$order->BuyerEmail}</td>
-					<td>{$order->BuyerName}</td>
-					<td>{$order->EarliestShipDate}</td>
-					<td>{$order->LatestShipDate}</td>
-					<td>{$order->EarliestDeliveryDate}</td>
-					<td>{$order->LatestDeliveryDate}</td>
+					<td>{$order.AmazonOrderId}</td>
+					<td>{$order.PurchaseDate}</td>
+					<td><span>{$order.OrderStatus}</span></td>
+					<td>{$order.SalesChannel}</td>
+					<td>{$order.OrderTotal}</td>
+					<td>{$order.MarketplaceId}</td>
 				</tr>
 				{/foreach}
 			</tbody>

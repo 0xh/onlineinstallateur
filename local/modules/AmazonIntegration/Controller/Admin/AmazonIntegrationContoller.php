@@ -44,12 +44,28 @@ class AmazonIntegrationContoller extends BaseAdminController
     public function viewAction()
     {
         // echo "<pre>";
-        // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\GetServiceStatusSample.php';
+        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetServiceStatusSample.php';
         
-        // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersSample.php';
+        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
         
-        // include __DIR__.'\..\..\Classes\API\src\MarketplaceWebServiceOrders\Samples\ListOrdersByNextTokenSample.php';
+        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
         $orders = array();
+        
+        $amazonOrdersQuery = new AmazonOrdersQuery();
+        $ords = $amazonOrdersQuery->findById("*");
+        
+        foreach ($ords as $ord) {
+            
+            array_push($orders, array(
+                'AmazonOrderId' => $ord->getId(),
+                'PurchaseDate' => $ord->getPurchaseDate()->format('Y-m-d H:i:s'),
+                'OrderStatus' => $ord->getOrderStatus(),
+                'OrderTotal' => $ord->getOrderTotalAmount() . " " . $ord->getOrderTotalCurrencyCode(),
+                'MarketplaceId' => $ord->getMarketplaceId(),
+                'SalesChannel' => $ord->getSalesChannel(),
+            ));
+            
+        }
         
         return $this->render("AmazonIntegrationTemplate", array(
             "orders" => $orders
