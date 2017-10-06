@@ -25,10 +25,10 @@ class GeneralImportExport extends BaseModule
 
     public function preActivation(ConnectionInterface $con = null)
     {
-        $database = new Database($con);
-        $database->insertSql(null, [
-            __DIR__ . "/Config/thelia.sql"
-        ]);
+     //   $database = new Database($con);
+    //    $database->insertSql(null, [
+    //        __DIR__ . "/Config/thelia.sql"
+    //    ]);
         return true;
     }
 }
