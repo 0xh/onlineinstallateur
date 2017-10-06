@@ -1,6 +1,5 @@
 <script>
 
-// alert("asas");
 window.onload = function() {
 	$( '#amazon-service-orders-btn' ).click(function() {
 		
@@ -18,19 +17,28 @@ window.onload = function() {
 	  }
 
 	  function jsonSuccessLoad(data) {
-
 		  $('#resp-status-service').text(data.Status);
 		  $('#resp-timestamp-service').text(data.Timestamp);
 		  $('#resp-messages-service').text(data.Messages);
-	 	//  var response = JSON.parse(data);
-	     console.log(data);
-	// //     $('.crawlerdebug').html(data.result);
-
 	  }
+	  
+	$( '#amazon-service-products-btn' ).click(function() {
+		
+	     $.getJSON("{url path='/admin/module/amazonintegration/service-products'}")
+	     .done(function (data) {
+	       jsonSuccessLoad(data);
+
+	     })
+	     .fail(jsonFailLoad);
+		
+	 	});
+
+	$( '#amazon-service-feeds-btn' ).click(function() {
+		
+		  $('#resp-status-service').text("Is not implement yet. ;) ");
+		  $('#resp-timestamp-service').text("");
+		  $('#resp-messages-service').text("");
+	 	});
 }
-
-
-
-
 
 </script>
