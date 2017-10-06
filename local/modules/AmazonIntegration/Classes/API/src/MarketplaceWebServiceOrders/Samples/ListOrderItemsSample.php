@@ -27,8 +27,8 @@ use AmazonIntegration\Model\ProductAmazonQuery;
  */
 
 require_once('.config.inc.php');
-include_once dirname(__FILE__).'\..\Client.php';
-include_once  dirname(__FILE__).'\..\Model\ListOrderItemsRequest.php';
+include_once dirname(__FILE__).'/../Client.php';
+include_once  dirname(__FILE__).'/../Model/ListOrderItemsRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders

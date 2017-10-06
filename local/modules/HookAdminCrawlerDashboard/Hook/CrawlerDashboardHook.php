@@ -22,15 +22,6 @@ class CrawlerDashboardHook extends BaseHook
 
     public function blockCrawlerDashboard(HookRenderEvent $event)
     {
-  /* 	Tlog::getInstance()->err("gotherecrawler");
-        $content = trim($this->render("block-crawler-dashboard.html"));
-        if (!empty($content)) {
-            $event->add([
-                "id" => "block-crawler-dashboard",
-                "title" => $this->trans("Sales statistics", [], HookAdminCrawlerDashboard::DOMAIN_NAME),
-                "content" => $content
-            ]);
-        }*/
         $event->add($this->render('block-crawler-dashboard.html'));
     }
 

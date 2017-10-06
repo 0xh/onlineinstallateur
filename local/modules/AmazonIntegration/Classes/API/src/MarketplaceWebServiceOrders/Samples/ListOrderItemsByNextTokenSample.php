@@ -22,8 +22,8 @@
  */
 
 require_once('.config.inc.php');
-include dirname(__FILE__) . '\..\Client.php';
-include dirname(__FILE__) . '\..\Model\ListOrderItemsByNextTokenRequest.php';
+include dirname(__FILE__) . '/../Client.php';
+include dirname(__FILE__) . '/../Model/ListOrderItemsByNextTokenRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders

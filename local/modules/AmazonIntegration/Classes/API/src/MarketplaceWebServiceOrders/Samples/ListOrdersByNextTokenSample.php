@@ -24,8 +24,8 @@
 use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
 
 require_once('.config.inc.php');
-include_once dirname(__FILE__) . '\..\Client.php';
-include_once dirname(__FILE__) . '\..\Model\ListOrdersByNextTokenRequest.php';
+include_once dirname(__FILE__) . '/../Client.php';
+include_once dirname(__FILE__) . '/../Model/ListOrdersByNextTokenRequest.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceOrders
