@@ -82,8 +82,7 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  ***********************************************************************/
  // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrderItems
 
- $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
- $request->setSellerId(MERCHANT_ID);
+
  // $request->setAmazonOrderId('305-4424625-0181155');
 
  /**
@@ -95,8 +94,12 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
   * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrderItems or array of parameters
   */
  
- function invokeListOrderItems(MarketplaceWebServiceOrders_Interface $service, $request)
+ function invokeListOrderItems(MarketplaceWebServiceOrders_Interface $service, $amazonOrderId)
  {
+ 	$request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
+ 	$request->setSellerId(MERCHANT_ID);
+ 	$request->setAmazonOrderId($amazonOrderId);
+ 	
  	try {
  		$response = $service->ListOrderItems($request);
  		

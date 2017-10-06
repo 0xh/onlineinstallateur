@@ -24,8 +24,8 @@ use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
 use Symfony\Component\DependencyInjection\SimpleXMLElement;
 
 require_once ('.config.inc.php');
-include dirname(__FILE__) . '\..\Client.php';
-include dirname(__FILE__) . '\..\Model\ListOrdersRequest.php';
+include_once dirname(__FILE__) . '\..\Client.php';
+include_once dirname(__FILE__) . '\..\Model\ListOrdersRequest.php';
 
 /**
  * **********************************************************************
