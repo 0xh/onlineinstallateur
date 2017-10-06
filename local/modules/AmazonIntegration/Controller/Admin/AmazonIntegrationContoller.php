@@ -161,13 +161,14 @@ class AmazonIntegrationContoller extends BaseAdminController
           } else
             include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
         
+        $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
+        $con->beginTransaction();
        
- 
-        if ($orders) { 
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 6000);
+            
+        if ($orders) {
             foreach ($orders as $i => $order) {
-            	
-            	$con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
-            	$con->beginTransaction();
             	
                 /*
                  * Verify (by email) if customer exists in customer thelia table
@@ -351,23 +352,18 @@ class AmazonIntegrationContoller extends BaseAdminController
                     		->setCurrencyRate($currencyRate)
                     		->setStatusId($statusId)
                     		->setLangId($langId)
-                    		//	->setChoosenDeliveryAddress($offer->getChoosenDeliveryAddress())
-                    		//->setChoosenInvoiceAddress($offer->getChoosenInvoiceAddress())
                     		->setPaymentModuleId('41')
                     		->setDeliveryOrderAddressId($orderAddressId)
                     		->setInvoiceOrderAddressId($orderAddressId)
                     		->setDeliveryModuleId('2')
-                    			//->setDiscount($offer->getDiscount())
-                    			//->setCartId($offer->getCartId())
                     		->setPostage('')
                     		->setPostageTax('')
-                    			//->setPostageTaxRuleTitle($offer->getPostageTaxRuleTitle())
                     		->setInvoiceDate($order->PurchaseDate)
                     		->setDispatcher($this->getDispatcher())
                     		;
                     			
                     	$newOrder->save($con);
-             //  print($newOrder); die();
+           
                     $orderId = $newOrder->getId();
                     
                     // Insert order from amazon to amazon_orders table
@@ -419,15 +415,16 @@ class AmazonIntegrationContoller extends BaseAdminController
                    
                     // get products for each order from amazon
                     $amazonOrderId = $order->AmazonOrderId;
-             
+                   // $amazonOrderId = '305-3292380-9658727';
                     $max_time = ini_get("max_execution_time");
                     ini_set('max_execution_time', 6000);
                     $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
                     ini_set('max_execution_time', $max_time);
                     sleep(2); 
-                    
+                  
+                   
                     $totalPostage = 0;
-                    
+            
                     if(isset($productsOrderItem->OrderItem)) {
 	                    $orderProduct = $productsOrderItem->OrderItem;
 	                    if(is_array($orderProduct)){ 
@@ -474,25 +471,11 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		/** @var ProductI18n $productI18n */
 	                    		$productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());
 	                    		
-	                    		// get the virtual document path
-	                    		//  $virtualDocumentEvent = new VirtualProductOrderHandleEvent($newOrder, $productSaleElement->getId());
-	                    		// essentially used for virtual product. modules that handles virtual product can
-	                    		// allow the use of stock even for virtual products
-	                    		//  $useStock = true;
-	                    		//  $virtual = 0;
-	                    		
 	                    		/* get tax */
 	                    		/** @var TaxRuleI18n $taxRuleI18n */
 	                    		$taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
 	                    		
-	                    		// if the product is virtual, dispatch an event to collect information
-	                    		/*  if ($product->getVirtual() === 1) {
-	                    		 //$dispatcher->dispatch(TheliaEvents::VIRTUAL_PRODUCT_ORDER_HANDLE, $virtualDocumentEvent);
-	                    		 $useStock = $virtualDocumentEvent->isUseStock();
-	                    		 $virtual = $virtualDocumentEvent->isVirtual() ? 1 : 0;
-	                    		 } */
-	                    		
-	                    		//print_r($newOrder->getId());
+	                 
 	                    		$newOrderProduct = new OrderProduct();
 	                    		$newOrderProduct
 	                    		->setOrderId($newOrder->getId())
@@ -516,17 +499,6 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		->setEanCode($productSaleElement->getEanCode())
 	                    		->save($con);
 	                    		
-	                    		
-	                    		
-	                    		/* 	$taxDetailOrder = new OrderProductTax();
-	                    		
-	                    		$taxDetailOrder->setOrderProductId($orderProduct->getId())
-	                    		->setTitle($offerProductTax->getTitle())
-	                    		->setDescription($offerProductTax->getDescription())
-	                    		->setAmount($offerProductTax->getAmount())
-	                    		->setPromoAmount($offerProductTax->getPromoAmount())
-	                    		->save($con);
-	                    		*/
 	                    		
 	                    		// Insert products from amazon to amazon_orders_product table
 	                    		$orderProductId = $newOrderProduct->getId();
@@ -589,7 +561,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    
 	                    //only one product 
 	                    else {                  
-	                    
+	                    	
 	                    	if(isset($orderProduct->ShippingPrice->Amount))
 	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
 	                    	
@@ -597,8 +569,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		->select('product_id')
 	                    		->filterByASIN($orderProduct->ASIN)
 	                    		->findOne();
-		                    
-	                    	if(!$productId){
+	                    	
+	                    	if(!$productId){ 
 	                    		if(isset($orderProduct->SellerSKU)) {
 	                    			$productId = ProductQuery::create()
 		                    			->select('id')
@@ -606,21 +578,23 @@ class AmazonIntegrationContoller extends BaseAdminController
 		                    			->findOne();
 		                    		
 	                    		}	
+	                    		
                     			if(!$productId)
                     				$productId = $this->saveProducts($orderProduct, $lang, $con);
-                    			
+                    				
                     			$productUpdateAsin = ProductAmazonQuery::create()
                     				->filterByProductId($productId)
                     				->findOne();
+                    				
                     			if($productUpdateAsin)
 	                    			$productUpdateAsin->setASIN($orderProduct->ASIN)
 	                    				->save($con);
 	                    	}
-	                    	
+	                    
 		                    $productSaleElement = ProductSaleElementsQuery::create()
 			                    ->filterByProductId($productId)
 			                    ->findOne();
-		                    
+		                  
 		                    $product = ProductQuery::create()
 			                    ->filterById($productId)
 			                    ->findOne();
@@ -629,24 +603,11 @@ class AmazonIntegrationContoller extends BaseAdminController
 		                    /** @var ProductI18n $productI18n */
 		                    $productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());
 		                    
-		                    // get the virtual document path
-		                  //  $virtualDocumentEvent = new VirtualProductOrderHandleEvent($newOrder, $productSaleElement->getId());
-		                    // essentially used for virtual product. modules that handles virtual product can
-		                    // allow the use of stock even for virtual products
-		                  //  $useStock = true;
-		                  //  $virtual = 0;
-		                    
 		                    /* get tax */
 		                    /** @var TaxRuleI18n $taxRuleI18n */
 		                    $taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
 		                    
-		                    // if the product is virtual, dispatch an event to collect information
-		                   /*  if ($product->getVirtual() === 1) {
-		                    	//$dispatcher->dispatch(TheliaEvents::VIRTUAL_PRODUCT_ORDER_HANDLE, $virtualDocumentEvent);
-		                    	$useStock = $virtualDocumentEvent->isUseStock();
-		                    	$virtual = $virtualDocumentEvent->isVirtual() ? 1 : 0;
-		                    } */
-		                    
+		                 
 		                   // print_r($newOrder->getId());
 		                    $newOrderProduct = new OrderProduct();
 		                    $newOrderProduct
@@ -670,22 +631,10 @@ class AmazonIntegrationContoller extends BaseAdminController
 			                    ->setTaxRuleDescription($taxRuleI18n->getDescription())
 			                    ->setEanCode($productSaleElement->getEanCode())
 			                    ->save($con);
-		                    
-		                    
-		                    
-		                    /* 	$taxDetailOrder = new OrderProductTax();
-		                    
-		                    $taxDetailOrder->setOrderProductId($orderProduct->getId())
-		                    ->setTitle($offerProductTax->getTitle())
-		                    ->setDescription($offerProductTax->getDescription())
-		                    ->setAmount($offerProductTax->getAmount())
-		                    ->setPromoAmount($offerProductTax->getPromoAmount())
-		                    ->save($con);
-		                    */
-			                    
+			                  
 		                    // Insert products from amazon to amazon_orders_product table
 			                $orderProductId = $newOrderProduct->getId();
-			                    
+			               
 		                    $amazonOrderProduct = new AmazonOrderProduct();
 		                    $amazonOrderProduct
 			                    ->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
@@ -742,15 +691,18 @@ class AmazonIntegrationContoller extends BaseAdminController
                     }
                     $newOrder->setPostage($totalPostage)
                     	->save($con);
-                    
+                 
                 }// end order creation
-                
-                $con->commit(); 
+               
+            
             }//end foreach
+            
+            $con->commit(); 
           //  die();
          
         }
         
+        ini_set('max_execution_time', $max_time);
         if ($_SESSION['finishedToGetOrders'])
             die("Finished to get orders.");
          
