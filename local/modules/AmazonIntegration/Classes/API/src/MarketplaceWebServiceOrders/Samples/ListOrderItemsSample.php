@@ -84,9 +84,8 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
 
  $request = new MarketplaceWebServiceOrders_Model_ListOrderItemsRequest();
  $request->setSellerId(MERCHANT_ID);
+ // $request->setAmazonOrderId('305-4424625-0181155');
 
-
- $request->setAmazonOrderId($amazonOrderId);
  /**
   * Get List Order Items Action Sample
   * Gets competitive pricing and related information for a product identified by
@@ -95,7 +94,7 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
   * @param MarketplaceWebServiceOrders_Interface $service instance of MarketplaceWebServiceOrders_Interface
   * @param mixed $request MarketplaceWebServiceOrders_Model_ListOrderItems or array of parameters
   */
- if(!function_exists('invokeListOrderItems')) { 
+ 
  function invokeListOrderItems(MarketplaceWebServiceOrders_Interface $service, $request)
  {
  	try {
@@ -110,16 +109,12 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  	
  		$orderdata = new SimpleXMLElement($xml);
  		
- 		//print_r($orderdata);
  		$array = json_encode($orderdata, TRUE);
  		$result = json_decode($array);
  		
  		if ($result) {
  			$orderProducts = $result->ListOrderItemsResult->OrderItems;
- 			//print_r($orderProducts);
  			return $orderProducts;
- 			//var_dump($orderProducts->ASIN);
- 			// die;
  		} else {
  			echo ('error decoding json');
  		}
@@ -136,10 +131,8 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  		echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
  	}
  }
- }
  
  
- if(!function_exists('addProductsForOrdersAmazon')) { 
  function addProductsForOrdersAmazon($ASIN, $amazonOrderId)
  {
  	$ifExist = false;
@@ -190,7 +183,6 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  	
  }
  
-}
 //  $request->setAmazonOrderId("302-8891523-9856327");
  // object or array of parameters
  			
@@ -198,9 +190,9 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
      
     
 //      $request->setAmazonOrderId("305-4424625-0181155");
-     $productsOrderItem = invokeListOrderItems($service, $request);
+    
 
-     foreach ($productsOrderItem as $prd)
+  /*    foreach ($productsOrderItem as $prd)
      {
          if (isset($prd->ASIN)){
              addProductsForOrdersAmazon($prd->ASIN, $amazonOrderId);
@@ -212,6 +204,6 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
              }
          }
      }
-     sleep(2);
+     sleep(2); */
  //}
  
