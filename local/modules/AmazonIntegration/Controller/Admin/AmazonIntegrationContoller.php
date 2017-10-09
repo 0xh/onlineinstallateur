@@ -1,38 +1,31 @@
 <?php
 namespace AmazonIntegration\Controller\Admin;
 
+use AmazonIntegration\Model\AmazonOrderProduct;
 use AmazonIntegration\Model\AmazonOrders;
+use AmazonIntegration\Model\AmazonOrdersQuery;
+use AmazonIntegration\Model\ProductAmazonQuery;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
 use function Composer\Autoload\includeFile;
 use Propel\Runtime\Propel;
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Model\Customer;
-use Thelia\Model\OrderAddress;
-use AmazonIntegration\Model\AmazonOrdersQuery;
-use Thelia\Model\CustomerQuery;
-use Thelia\Model\CountryQuery;
-use Thelia\Model\OrderAddressQuery;
-use Thelia\Model\ProductSaleElementsQuery;
-use AmazonIntegration\Model\AmazonOrderProduct;
-use OrderCreation\Event\OrderCreationEvent;
-use OrderCreation\EventListeners\OrderCreationListener;
-use Thelia\Model\Order;
-use Thelia\Model\CurrencyQuery;
-use Thelia\Model\LangQuery;
-use OfferCreation\Model\OfferProductQuery;
-use Thelia\Model\OrderProduct;
-use AmazonIntegration\Model\ProductAmazonQuery;
-use Thelia\Action\ProductSaleElement;
-use Thelia\Model\ProductSaleElements;
-use Thelia\Model\ProductQuery;
-use Thelia\Tools\I18n;
-use Thelia\Core\Event\Product\VirtualProductOrderHandleEvent;
-use AmazonIntegration\Model\AmazonOrdersProductsQuery;
-use Thelia\Model\Product;
-use Thelia\Model\ProductPrice;
-use Thelia\Model\ProductI18n;
-use AmazonIntegration\Model\ProductAmazon;
 use Thelia\Log\Tlog;
+use Thelia\Model\CountryQuery;
+use Thelia\Model\CurrencyQuery;
+use Thelia\Model\Customer;
+use Thelia\Model\CustomerQuery;
+use Thelia\Model\LangQuery;
+use Thelia\Model\Order;
+use Thelia\Model\OrderAddress;
+use Thelia\Model\OrderAddressQuery;
+use Thelia\Model\OrderProduct;
+use Thelia\Model\Product;
+use Thelia\Model\ProductI18n;
+use Thelia\Model\ProductPrice;
+use Thelia\Model\ProductQuery;
+use Thelia\Model\ProductSaleElements;
+use Thelia\Model\ProductSaleElementsQuery;
+use Thelia\Tools\I18n;
 
 class AmazonIntegrationContoller extends BaseAdminController
 {
@@ -74,50 +67,6 @@ class AmazonIntegrationContoller extends BaseAdminController
         return $this->render("AmazonIntegrationTemplate", array(
             "orders" => $orders
         ));
-    }
-
-    public function addProductsForOrdersByAmazon()
-    {
-        $amazonOrdersQuery = new AmazonOrdersQuery();
-        $prods = $amazonOrdersQuery->findById("*");
-        
-        $amazonOrdersArray = array();
-        
-        foreach ($prods as $value) {
-            array_push($amazonOrdersArray, $value->getId());
-             $amazonOrderId = '305-4424625-0181155';
-          //  $amazonOrderId = $value->getId();
-        }
-        // $amazonOrdersArray2 = array();
-        // foreach ($amazonOrdersArray as $key => $value)
-        // {
-        // echo $key." - ".$value."\n";
-        // if ($key > 645)
-        // array_push($amazonOrdersArray2, $value);
-        // }
-        // $amazonOrdersArray = $amazonOrdersArray2;
-        
-        // echo "<pre>";
-        // var_dump($amazonOrdersArray);
-        
-        // die;
-        
-        $max_time = ini_get("max_execution_time");
-        ini_set('max_execution_time', 6000);
-        
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
-       
-        ini_set('max_execution_time', $max_time);
-     //   print_r($amazonOrderId);
-      /*   print_r($productsOrderItem->OrderItem);
-  
-        if(is_array($productsOrderItem->OrderItem)){
-        	foreach($productsOrderItem->OrderItem as $orderItem) {
-        		print_r($orderItem);
-        	}
-        }
-        	 */
-        die("Finish insert Products foreach Orders by Amazon.");
     }
 
     public function saveAsinFromAmazon()
