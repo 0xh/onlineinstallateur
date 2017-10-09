@@ -179,7 +179,11 @@ class AmazonIntegrationContoller extends BaseAdminController
         
        
         $max_time = ini_get("max_execution_time");
+<<<<<<< HEAD
         ini_set('max_execution_time', 20000);
+=======
+        ini_set('max_execution_time', 15000);
+>>>>>>> d0bc147756e1796c7c1836d39bdabadd24183a52
             
         if ($orders) {
             foreach ($orders as $i => $order) {
@@ -432,11 +436,18 @@ class AmazonIntegrationContoller extends BaseAdminController
                     // get products for each order from amazon
                     $amazonOrderId = $order->AmazonOrderId;
                    // $amazonOrderId = '305-3292380-9658727';
+<<<<<<< HEAD
 
                     $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
                     sleep(4); 
                   
+=======
+                   
+                    $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
+                   
+                    sleep(4); 
+>>>>>>> d0bc147756e1796c7c1836d39bdabadd24183a52
                    
                     $totalPostage = 0;
             
