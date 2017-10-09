@@ -36,7 +36,7 @@ class BMDOrderExport extends AbstractExport
     		OrderTableMap::POSTAGE => 'steuer',
     		'order_TOTAL_TTC' => 'mwst',
     		OrderTableMap::INVOICE_DATE=> 'buchdat',
-    		OrderTableMap::INVOICE_DATE=> 'belegdat',
+    		OrderTableMap::DELIVERY_MODULE_ID=> 'belegdat',
     		'delivery_module_TITLE' => 'bucod',
     		'customer_Lastname' => 'text',
     		'payment_module_TITLE' => 'zziel',
@@ -95,6 +95,7 @@ class BMDOrderExport extends AbstractExport
 		$processedData['betrag'] = $betrag + $processedData['steuer'];
 
 		$processedData['mwst'] = "20";
+		$processedData['belegdat'] = $processedData['buchdat'];
 		$processedData['bucod'] = "1";
 		$processedData['zziel'] = "";
 		$processedData['skontopz'] = "";
@@ -117,7 +118,7 @@ class BMDOrderExport extends AbstractExport
     						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
-    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false)
+    				&& (strpos($order[OrderTableMap::REF],"ORD") !== false)
     				) {
     					$this->next();
     					$getNext = true;

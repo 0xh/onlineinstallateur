@@ -1,5 +1,5 @@
 <?php
-namespace AmazonIntegration\Controller\Admin;
+namespace AmazonIntegration\Controller\Front;
 
 use AmazonIntegration\Model\AmazonOrders;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
@@ -33,8 +33,9 @@ use Thelia\Model\ProductPrice;
 use Thelia\Model\ProductI18n;
 use AmazonIntegration\Model\ProductAmazon;
 use Thelia\Log\Tlog;
+use Thelia\Controller\Front\BaseFrontController;
 
-class AmazonIntegrationContoller extends BaseAdminController
+class AmazonFrontIntegrationContoller extends BaseFrontController
 {
 
 	/* @var Tlog $log */
@@ -184,20 +185,22 @@ class AmazonIntegrationContoller extends BaseAdminController
         if ($orders) {
             foreach ($orders as $i => $order) {
             	$con->beginTransaction();
-            	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
             	
-                /*
-                 * Verify (by email) if customer exists in customer thelia table
-                 * if exists -> get the customer Id
-                 * if not -> create a new customer
-                 *
-                 * amazonCanceled customer - default customer user for all canceled orders from amazon
-                 */
+            	
+                
+                 //Verify (by email) if customer exists in customer thelia table
+                 // if exists -> get the customer Id
+                 // if not -> create a new customer
+                 //amazonCanceled customer - default customer user for all canceled orders from amazon
+                 
                 if (isset($order->BuyerEmail)) {
                     $buyerEmail = $order->BuyerEmail;
                 } else {
                     $buyerEmail = 'amazoncanceled@hausfabrik.at';
                 }
+                
+                $this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId'.
+                		" canceled ".(isset($order->BuyerEmail) ? " no " : " yes "));
                 
                 $checkCustomerId = CustomerQuery::create()->select('id')
                     ->filterByEmail($buyerEmail)
@@ -234,20 +237,23 @@ class AmazonIntegrationContoller extends BaseAdminController
                     $customer->save($con);
                     
                     $customerId = $customer->getId();
+                    
+                    $this->getLogger()->error(" create customer ".$customerId." : ".isset($order->BuyerName) ? $order->BuyerName : " canceled ");
                 }
                 
-                /*
-                 * Check if amazon order exists in amazon_orders table
-                 * if doesn't exist
-                 * -> insert shipping address
-                 * -> insert order
-                 */
+                
+                //  Check if amazon order exists in amazon_orders table
+                //  if doesn't exist
+                //  -> insert shipping address
+                //  -> insert order
+                 
                 
                 $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
                 
                 if ($checkAmazonOrder) {
                     if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus) {
                         $checkAmazonOrder->setOrderStatus($order->OrderStatus)->save($con);
+                        $this->getLogger()->error(" update status ".$order->OrderStatus);
                     }
                 } else {
                     // check if exist canceled destination order address - unique for all canceled orders
@@ -326,15 +332,23 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    }
 	                    
 	                    $salesChannelId = explode(".", $order->SalesChannel);
+	                    $marketplaceCode = $salesChannelId[count($salesChannelId)-1];//co.uk
+	                    
 	                    
 	                    $lang = LangQuery::create()
-	                    ->filterByCode($salesChannelId[1])
+	                    ->filterByCode($marketplaceCode)
 	                    ->findOne();
 	                    
 	                    if($lang)
 	                    	$langId = $lang->getId();
                     	else
-                    		$langId = '1';
+                    	{
+                    		$lang = LangQuery::create()
+                    		->filterByCode("en")
+                    		->findOne();
+                    		$langId = $lang->getId();
+                    	}
+                    		
                     		
                     	if(isset($order->OrderTotal->CurrencyCode))	{
 	                    	$currency = CurrencyQuery::create()
@@ -355,12 +369,13 @@ class AmazonIntegrationContoller extends BaseAdminController
                     		$currencyRate = '1';
                     	}
                     	
-                    	$marketplace = strtoupper($salesChannelId[1]);
+                    	$marketplace = strtoupper($marketplaceCode);
                     	$this->getRequest()->getSession()->set(
                     			"marketplace",
                     			$marketplace
                     			);
                     	
+                    	/** @var \Thelia\Model\Order $newOrder*/
                     	$newOrder = new Order();
                     	$newOrder
                     		->setCustomerId($customerId)
@@ -379,10 +394,12 @@ class AmazonIntegrationContoller extends BaseAdminController
                     		;
                     			
                     	$newOrder->save($con);
+                    	$this->getLogger()->error(" order ".$newOrder->__toString());
            
                     $orderId = $newOrder->getId();
                     
                     // Insert order from amazon to amazon_orders table
+                    /** @var \AmazonOrders $amazonOrder*/
                     $amazonOrder = new AmazonOrders();
                     $amazonOrder->setId(isset($order->AmazonOrderId) ? $order->AmazonOrderId : '')
                         ->setSellerOrderId(isset($order->SellerOrderId) ? $order->SellerOrderId : '')
@@ -428,6 +445,8 @@ class AmazonIntegrationContoller extends BaseAdminController
                         ->setOrderId($orderId);
                     
                     $amazonOrder->save($con);
+                    
+                  //  $this->getLogger()->error(" amazonOrder ".$amazonOrder->__toString());
                    
                     // get products for each order from amazon
                     $amazonOrderId = $order->AmazonOrderId;
@@ -435,7 +454,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 
                     $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
-                    sleep(4); 
+                    sleep(2); 
                   
                    
                     $totalPostage = 0;
@@ -518,13 +537,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		// Insert products from amazon to amazon_orders_product table
 	                    		$orderProductId = $newOrderProduct->getId();
 	                    		
+	                    		/** @var \AmazonOrderProduct $amazonOrderProduct*/
 	                    		$amazonOrderProduct = new AmazonOrderProduct();
 	                    		$amazonOrderProduct
 	                    		->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
 	                    		->setAmazonOrderId($amazonOrderId)
 	                    		->setAsin( isset($orderProduct->ASIN) ? $orderProduct->ASIN : '')
 	                    		->setSellerSku( isset($orderProduct->SellerSKU) ? $orderProduct->SellerSKU : '')
-	                    		->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
 	                    		->setTitle( isset($orderProduct->Title) ? $orderProduct->Title : '')
 	                    		->setQuantityOrdered( isset($orderProduct->QuantityOrdered) ? $orderProduct->QuantityOrdered : '')
 	                    		->setQuantityShipped( isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
@@ -570,6 +589,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		;
 	                    		
 	                    		$amazonOrderProduct->save($con);
+	                    		
+	                    		$this->getLogger()->error(" amazonOrderProduct ".(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: ''));
 	                    		
 	                    	}
 	                    }// if more products in an order
@@ -624,6 +645,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 		                    
 		                 
 		                   // print_r($newOrder->getId());
+		                    /** @var \OrderProduct $newOrderProduct*/
 		                    $newOrderProduct = new OrderProduct();
 		                    $newOrderProduct
 			                    ->setOrderId($newOrder->getId())
@@ -646,10 +668,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 			                    ->setTaxRuleDescription($taxRuleI18n->getDescription())
 			                    ->setEanCode($productSaleElement->getEanCode())
 			                    ->save($con);
+		                    
+			                    $this->getLogger()->error(" orderProduct ".$product->getRef());
 			                  
 		                    // Insert products from amazon to amazon_orders_product table
 			                $orderProductId = $newOrderProduct->getId();
 			               
+			                /** @var \AmazonOrderProduct $amazonOrderProduct*/
 		                    $amazonOrderProduct = new AmazonOrderProduct();
 		                    $amazonOrderProduct
 			                    ->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
@@ -702,6 +727,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 			                    ;
 		                    
 		                    $amazonOrderProduct->save($con);
+		                    
+		                    $this->getLogger()->error(" amazonOrderProduct ".isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '');
 	                    }
                     }
                     $newOrder->setPostage($totalPostage)
@@ -709,7 +736,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                  
                 }// end order creation
                
-                $con->commit();
+                $con->commit(); 
             }//end foreach
             
             
