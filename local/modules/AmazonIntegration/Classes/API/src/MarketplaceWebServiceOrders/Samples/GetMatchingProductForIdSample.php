@@ -20,6 +20,7 @@
 /**
  * Get Matching Product For Id Sample
  */
+
 use AmazonIntegration\Model\ProductAmazon;
 
 require_once ('.config.inc.php');

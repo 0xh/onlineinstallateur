@@ -1,5 +1,5 @@
 <?php
-namespace AmazonIntegration\Controller\Admin;
+namespace AmazonIntegration\Controller\Front;
 
 use AmazonIntegration\Model\AmazonOrderProduct;
 use AmazonIntegration\Model\AmazonOrders;
@@ -8,7 +8,7 @@ use AmazonIntegration\Model\ProductAmazonQuery;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
 use function Composer\Autoload\includeFile;
 use Propel\Runtime\Propel;
-use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Log\Tlog;
 use Thelia\Model\CountryQuery;
 use Thelia\Model\CurrencyQuery;
@@ -21,16 +21,13 @@ use Thelia\Model\OrderAddressQuery;
 use Thelia\Model\OrderProduct;
 use Thelia\Model\Product;
 use Thelia\Model\ProductI18n;
-use AmazonIntegration\Model\ProductAmazon;
-use Thelia\Model\ProductCategory;
-use Thelia\Model\CategoryI18nQuery;
 use Thelia\Model\ProductPrice;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\ProductSaleElements;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Tools\I18n;
 
-class AmazonIntegrationContoller extends BaseAdminController
+class AmazonFrontIntegrationContoller extends BaseFrontController
 {
 
 	/* @var Tlog $log */
@@ -70,52 +67,6 @@ class AmazonIntegrationContoller extends BaseAdminController
         return $this->render("AmazonIntegrationTemplate", array(
             "orders" => $orders
         ));
-    }
-
-    public function addProductsForOrdersByAmazon()
-    {
-        $amazonOrdersQuery = new AmazonOrdersQuery();
-        $prods = $amazonOrdersQuery->findById("*");
-        
-        $amazonOrdersArray = array();
-        
-        foreach ($prods as $value) {
-            array_push($amazonOrdersArray, $value->getId());
-            // $amazonOrderId = '305-4424625-0181155';
-          //  $amazonOrderId = $value->getId();
-          $amazonOrderId = '407-9880541-9385912';
-        }
-        // $amazonOrdersArray2 = array();
-        // foreach ($amazonOrdersArray as $key => $value)
-        // {
-        // echo $key." - ".$value."\n";
-        // if ($key > 645)
-        // array_push($amazonOrdersArray2, $value);
-        // }
-        // $amazonOrdersArray = $amazonOrdersArray2;
-        
-        // echo "<pre>";
-        // var_dump($amazonOrdersArray);
-        
-        // die;
-        
-        $max_time = ini_get("max_execution_time");
-        ini_set('max_execution_time', 6000);
-        
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
-        $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
-        sleep(4); 
-        ini_set('max_execution_time', $max_time);
-     //   print_r($amazonOrderId);
-         print_r($productsOrderItem); 
-  
-        if(is_array($productsOrderItem->OrderItem)){
-        	foreach($productsOrderItem->OrderItem as $orderItem) {
-        		print_r($orderItem);
-        	}
-        }
-        	 
-        die("Finish insert Products foreach Orders by Amazon.");
     }
 
     public function saveAsinFromAmazon()
@@ -171,31 +122,33 @@ class AmazonIntegrationContoller extends BaseAdminController
         if (! isset($_SESSION['nxtToken'])) {
             include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
           } else
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
+            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
         
         $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
         
        
         $max_time = ini_get("max_execution_time");
-        ini_set('max_execution_time', 15000);
+        ini_set('max_execution_time', 20000);
             
         if ($orders) {
             foreach ($orders as $i => $order) {
             	$con->beginTransaction();
-            	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
             	
-                /*
-                 * Verify (by email) if customer exists in customer thelia table
-                 * if exists -> get the customer Id
-                 * if not -> create a new customer
-                 *
-                 * amazonCanceled customer - default customer user for all canceled orders from amazon
-                 */
+            	
+                
+                 //Verify (by email) if customer exists in customer thelia table
+                 // if exists -> get the customer Id
+                 // if not -> create a new customer
+                 //amazonCanceled customer - default customer user for all canceled orders from amazon
+                 
                 if (isset($order->BuyerEmail)) {
                     $buyerEmail = $order->BuyerEmail;
                 } else {
                     $buyerEmail = 'amazoncanceled@hausfabrik.at';
                 }
+                
+                $this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId'.
+                		" canceled ".(isset($order->BuyerEmail) ? " no " : " yes "));
                 
                 $checkCustomerId = CustomerQuery::create()->select('id')
                     ->filterByEmail($buyerEmail)
@@ -232,22 +185,25 @@ class AmazonIntegrationContoller extends BaseAdminController
                     $customer->save($con);
                     
                     $customerId = $customer->getId();
+                    
+                    $this->getLogger()->error(" create customer ".$customerId." : ".isset($order->BuyerName) ? $order->BuyerName : " canceled ");
                 }
                 
-                /*
-                 * Check if amazon order exists in amazon_orders table
-                 * if doesn't exist
-                 * -> insert shipping address
-                 * -> insert order
-                 */
+                
+                //  Check if amazon order exists in amazon_orders table
+                //  if doesn't exist
+                //  -> insert shipping address
+                //  -> insert order
+                 
                 
                 $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
                 
-                if ($checkAmazonOrder) {  
+                if ($checkAmazonOrder) {
                     if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus) {
                         $checkAmazonOrder->setOrderStatus($order->OrderStatus)->save($con);
+                        $this->getLogger()->error(" update status ".$order->OrderStatus);
                     }
-                } else { 
+                } else {
                     // check if exist canceled destination order address - unique for all canceled orders
                     $checkOrderAddress = OrderAddressQuery::create()->select('id')
                         ->filterByAddress1('canceled destination')
@@ -324,15 +280,23 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    }
 	                    
 	                    $salesChannelId = explode(".", $order->SalesChannel);
+	                    $marketplaceCode = $salesChannelId[count($salesChannelId)-1];//co.uk
+	                    
 	                    
 	                    $lang = LangQuery::create()
-	                    ->filterByCode($salesChannelId[1])
+	                    ->filterByCode($marketplaceCode)
 	                    ->findOne();
 	                    
 	                    if($lang)
 	                    	$langId = $lang->getId();
                     	else
-                    		$langId = '1';
+                    	{
+                    		$lang = LangQuery::create()
+                    		->filterByCode("en")
+                    		->findOne();
+                    		$langId = $lang->getId();
+                    	}
+                    		
                     		
                     	if(isset($order->OrderTotal->CurrencyCode))	{
 	                    	$currency = CurrencyQuery::create()
@@ -353,12 +317,13 @@ class AmazonIntegrationContoller extends BaseAdminController
                     		$currencyRate = '1';
                     	}
                     	
-                    	$marketplace = strtoupper($salesChannelId[1]);
+                    	$marketplace = strtoupper($marketplaceCode);
                     	$this->getRequest()->getSession()->set(
                     			"marketplace",
                     			$marketplace
                     			);
                     	
+                    	/** @var \Thelia\Model\Order $newOrder*/
                     	$newOrder = new Order();
                     	$newOrder
                     		->setCustomerId($customerId)
@@ -377,10 +342,12 @@ class AmazonIntegrationContoller extends BaseAdminController
                     		;
                     			
                     	$newOrder->save($con);
+                    	$this->getLogger()->error(" order ".$newOrder->__toString());
            
                     $orderId = $newOrder->getId();
                     
                     // Insert order from amazon to amazon_orders table
+                    /** @var \AmazonOrders $amazonOrder*/
                     $amazonOrder = new AmazonOrders();
                     $amazonOrder->setId(isset($order->AmazonOrderId) ? $order->AmazonOrderId : '')
                         ->setSellerOrderId(isset($order->SellerOrderId) ? $order->SellerOrderId : '')
@@ -426,14 +393,17 @@ class AmazonIntegrationContoller extends BaseAdminController
                         ->setOrderId($orderId);
                     
                     $amazonOrder->save($con);
+                    
+                  //  $this->getLogger()->error(" amazonOrder ".$amazonOrder->__toString());
                    
                     // get products for each order from amazon
                     $amazonOrderId = $order->AmazonOrderId;
                    // $amazonOrderId = '305-3292380-9658727';
-                   
+
                     $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
-                   
-                    sleep(4); 
+
+                    sleep(2); 
+                  
                    
                     $totalPostage = 0;
             
@@ -442,7 +412,6 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    if(is_array($orderProduct)){ 
 	                    	$orderProducts = $orderProduct;
 	                    	foreach($orderProducts as $orderProduct){
-	                    		
 	                    		
 	                    		if(isset($orderProduct->ShippingPrice->Amount))
 	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
@@ -472,7 +441,6 @@ class AmazonIntegrationContoller extends BaseAdminController
 		                    			$productUpdateAsin->setASIN($orderProduct->ASIN)
 		                    				->save($con);
 	                    		}
-	                    	
 	                    		$productSaleElement = ProductSaleElementsQuery::create()
 	                    		->filterByProductId($productId)
 	                    		->findOne();
@@ -489,12 +457,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		/** @var TaxRuleI18n $taxRuleI18n */
 	                    		$taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
 	                    		
-	                    		if(isset($orderProduct->ItemPrice->Amount)) {
-	                    			$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
-	                    		}
-	                    		else {
-	                    			$unitPrice = 1;
-	                    		}
+	                 
 	                    		$newOrderProduct = new OrderProduct();
 	                    		$newOrderProduct
 	                    		->setOrderId($newOrder->getId())
@@ -508,8 +471,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		->setVirtual('')
 	                    		->setVirtualDocument('')
 	                    		->setQuantity( isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
-	                    		->setPrice($unitPrice)
-	                    		->setPromoPrice($unitPrice)
+	                    		->setPrice( isset($orderProduct->ItemPrice->Amount) ? $orderProduct->ItemPrice->Amount : '')
+	                    		->setPromoPrice( isset($orderProduct->ItemPrice->Amount) ? $orderProduct->ItemPrice->Amount : '')
 	                    		->setWasNew('')
 	                    		->setWasInPromo('')
 	                    		->setWeight($productSaleElement->getWeight())
@@ -522,13 +485,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		// Insert products from amazon to amazon_orders_product table
 	                    		$orderProductId = $newOrderProduct->getId();
 	                    		
+	                    		/** @var \AmazonOrderProduct $amazonOrderProduct*/
 	                    		$amazonOrderProduct = new AmazonOrderProduct();
 	                    		$amazonOrderProduct
 	                    		->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
 	                    		->setAmazonOrderId($amazonOrderId)
 	                    		->setAsin( isset($orderProduct->ASIN) ? $orderProduct->ASIN : '')
 	                    		->setSellerSku( isset($orderProduct->SellerSKU) ? $orderProduct->SellerSKU : '')
-	                    		->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
 	                    		->setTitle( isset($orderProduct->Title) ? $orderProduct->Title : '')
 	                    		->setQuantityOrdered( isset($orderProduct->QuantityOrdered) ? $orderProduct->QuantityOrdered : '')
 	                    		->setQuantityShipped( isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
@@ -574,6 +537,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	                    		;
 	                    		
 	                    		$amazonOrderProduct->save($con);
+	                    		
+	                    		$this->getLogger()->error(" amazonOrderProduct ".(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: ''));
 	                    		
 	                    	}
 	                    }// if more products in an order
@@ -627,7 +592,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 		                    $taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
 		                    
 		                 
-		                
+		                   // print_r($newOrder->getId());
+		                    /** @var \OrderProduct $newOrderProduct*/
 		                    $newOrderProduct = new OrderProduct();
 		                    $newOrderProduct
 			                    ->setOrderId($newOrder->getId())
@@ -650,10 +616,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 			                    ->setTaxRuleDescription($taxRuleI18n->getDescription())
 			                    ->setEanCode($productSaleElement->getEanCode())
 			                    ->save($con);
+		                    
+			                    $this->getLogger()->error(" orderProduct ".$product->getRef());
 			                  
 		                    // Insert products from amazon to amazon_orders_product table
 			                $orderProductId = $newOrderProduct->getId();
 			               
+			                /** @var \AmazonOrderProduct $amazonOrderProduct*/
 		                    $amazonOrderProduct = new AmazonOrderProduct();
 		                    $amazonOrderProduct
 			                    ->setOrderItemId( isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '')
@@ -706,17 +675,21 @@ class AmazonIntegrationContoller extends BaseAdminController
 			                    ;
 		                    
 		                    $amazonOrderProduct->save($con);
+		                    
+		                    $this->getLogger()->error(" amazonOrderProduct ".isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId: '');
 	                    }
                     }
                     $newOrder->setPostage($totalPostage)
                     	->save($con);
                  
                 }// end order creation
-             
+               
+                $con->commit(); 
             }//end foreach
-
-            $con->commit(); 
-
+            
+            
+          //  die();
+         
         }
         
         ini_set('max_execution_time', $max_time);
@@ -742,19 +715,15 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setProductId($newProduct->getId())
 	    	->setRef($orderProduct->SellerSKU)
 	    	->setQuantity(0)
-	    	->setIsDefault(1)
 	    	->save($con);
 	    
-	    if(isset($orderProduct->ItemPrice->Amount)) {
-	    	$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
-	    }
-	    else 
-	    	$unitPrice = 1;
-	 
+	    if(!isset($orderProduct->ItemPrice->Amount))
+	    	print_r($orderProduct->SellerSKU.'<br>');
+	    
 	    $productPrice = new ProductPrice();
 	    $productPrice
 	    	->setProductSaleElementsId($pse->getId())
-	    	->setPrice($unitPrice)
+	    	->setPrice(isset($orderProduct->ItemPrice->Amount) ? isset($orderProduct->ItemPrice->Amount) : '')
 	    	->setFromDefaultCurrency(0)
 	    	->setCurrencyId(1)
 	    	->save($con);
@@ -766,43 +735,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
 	    	->save($con);
     	
-	    // insert in product_category 
-	    $categoryId = CategoryI18nQuery::create()
-	    	->select('id')
-	    	->filterByTitle('From Amazon')
-	    	->findOne();
-	    	
-	    $productCategory = new ProductCategory();
-	    $productCategory
-	    	->setProductId($newProduct->getId())
-	    	->setCategoryId(isset($categoryId) ? $categoryId : 1)
-	    	->setDefaultCategory(1)
-	    	->setPosition(1)
-	    	->save($con);
-	    	
 	    return $newProduct->getId();
-	    
-	   
-    }
-    
-    public function createCustomer() {
-    	
-    }
-    
-    public function createOrderAddress() {
-    	
-    }
-    
-    public function createOrder() {
-    	
-    }
-    
-    public function createAmazonOrders() {
-    	
-    }
-    
-    public function insertOrderProduct() {
-    	
     }
     
     public function getLogger()

@@ -1,8 +1,5 @@
 <?php
-use AmazonIntegration\Controller\Admin\AmazonIntegrationResponse;
-use AmazonIntegration\Model\AmazonOrdersProducts;
-use AmazonIntegration\Model\AmazonOrdersProductsQuery;
-use AmazonIntegration\Model\ProductAmazonQuery;
+use Symfony\Component\DependencyInjection\SimpleXMLElement;
 
 /*******************************************************************************
  * Copyright 2009-2017 Amazon Services. All Rights Reserved.
@@ -134,79 +131,4 @@ $serviceUrl = "https://mws-eu.amazonservices.com/Orders/2013-09-01";
  		echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
  	}
  }
- 
- 
- function addProductsForOrdersAmazon($ASIN, $amazonOrderId)
- {
- 	$ifExist = false;
- 	$eanCode = "";
- 	$productId = "";
- 	
- 	$amazonOrdersProductsQuery = new AmazonOrdersProductsQuery();
- 	$result = $amazonOrdersProductsQuery->findByAmazonOrderId($amazonOrderId);
- 	
- 	foreach ($result as $res)
- 	{
- 		if ($res->getProductId())
- 		{
- 			$ifExist = true;
- 			break;
- 		}
- 	}
- 	
- 	if (!$ifExist)
- 	{
- 		$productAmazon = new ProductAmazonQuery();
- 		$prods = $productAmazon->findByASIN($ASIN);
- 		
- 		$ifExistAsin = false;
- 		foreach ($prods as $res)
- 		{
- 			if ($res->getASIN())
- 			{
- 				$ifExistAsin = true;
- 				$eanCode = $res->getEanCode();
- 				$productId = $res->getProductId();
- 				break;
- 			}
- 		}
- 		
- 		if ($ifExistAsin){
- 			$amazonOrdersProducts = new AmazonOrdersProducts();
- 			$amazonOrdersProducts->setAmazonOrderId($amazonOrderId);
- 			$amazonOrdersProducts->setASIN($ASIN);
- 			$amazonOrdersProducts->setEanCode($eanCode);
- 			$amazonOrdersProducts->setProductId($productId);
- 			$amazonOrdersProducts->save();
- 		}
- 		else
- 			AmazonIntegrationResponse::logError('ASIN = '. $ASIN . ' not exist in Thelia.');
- 			
- 	}
- 	
- }
- 
-//  $request->setAmazonOrderId("302-8891523-9856327");
- // object or array of parameters
- 			
- //foreach ($amazonOrdersArray as $amazonOrderId) {
-     
-    
-//      $request->setAmazonOrderId("305-4424625-0181155");
-    
-
-  /*    foreach ($productsOrderItem as $prd)
-     {
-         if (isset($prd->ASIN)){
-             addProductsForOrdersAmazon($prd->ASIN, $amazonOrderId);
-         }
-         else {
-             foreach ($prd as $pr){
-                 if (isset($pr->ASIN))
-                    addProductsForOrdersAmazon($pr->ASIN, $amazonOrderId);
-             }
-         }
-     }
-     sleep(2); */
- //}
  
