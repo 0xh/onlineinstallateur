@@ -328,8 +328,9 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setIsDefault(1)
 	    	->save($con);
 	    
-	    if(isset($orderProduct->ItemPrice->Amount)) {
-	    	$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
+	    if(isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
+	    	if($orderProduct->QuantityOrdered > 0)
+	    		$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
 	    }
 	    else 
 	    	$unitPrice = 1;
@@ -657,8 +658,9 @@ class AmazonIntegrationContoller extends BaseAdminController
     	/** @var TaxRuleI18n $taxRuleI18n */
     	$taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
     		
-    	if(isset($orderProduct->ItemPrice->Amount)) {
-    		$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
+    	if(isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
+    		if($orderProduct->QuantityOrdered > 0)
+    			$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
     	}
     	else {
     		$unitPrice = 1;
