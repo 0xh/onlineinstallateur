@@ -13,6 +13,7 @@
 	
     <forms>
         <form name="amazonintegration.form.configure" class="AmazonIntegration\Form\ConfigurationForm" />
+        <form name="amazonintegration.rankings.form" class="AmazonIntegration\Form\GetRankingsForm" />
     </forms>
     
 </config>

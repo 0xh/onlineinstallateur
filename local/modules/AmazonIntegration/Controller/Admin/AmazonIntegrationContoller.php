@@ -33,6 +33,8 @@ use Thelia\Model\AddressQuery;
 use Thelia\Model\Address;
 use Thelia\Model\OrderProductTax;
 use Thelia\Model\OrderQuery;
+use AmazonIntegration\Form\GetRankingsForm;
+use AmazonIntegration\AmazonIntegration;
 
 class AmazonIntegrationContoller extends BaseAdminController
 {
@@ -137,15 +139,56 @@ class AmazonIntegrationContoller extends BaseAdminController
                 ));
             }
         }
+        $idType = 'EAN';
+        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
+        
         
         $max_time = ini_get("max_execution_time");
         ini_set('max_execution_time', 3000);
         
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
+        // object or array of parameters
+        foreach ($eanArray as $value) {
+        	
+        	$idList->setId(array(
+        			$value['eanCode']
+        	));
+        	
+        	$request->setIdList($idList);
+        	
+        	$result = invokeGetMatchingProductForId($service, $request);
+        	
+        	if ($result) {
+        		if (isset($result->GetMatchingProductForIdResult->Products)) {
+        			foreach ($result->GetMatchingProductForIdResult->Products->Product as $prd) {
+        				if (isset($prd->Identifiers))
+        					$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->Identifiers->MarketplaceASIN->ASIN);
+        					else
+        						if (isset($prd->MarketplaceASIN))
+        							$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->MarketplaceASIN->ASIN);
+        			}
+        		} else
+        			$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], "");
+        	} else {
+        		echo ('error decoding json');
+        	}
+        	
+        	sleep(0.7);
+        }
         
         ini_set('max_execution_time', $max_time);
         
         die("Finish insert ASIN from Amazon.");
+    }
+    
+    public function addAsinFromAmazon($eanCode, $productId, $ref, $asinCode)
+    {
+    	$prodAmazon = new ProductAmazon();
+    	$prodAmazon->setEanCode($eanCode);
+    	$prodAmazon->setProductId($productId);
+    	$prodAmazon->setRef($ref);
+    	$prodAmazon->setASIN($asinCode);
+    	$prodAmazon->save();
+    	$prodAmazon->clear();
     }
 
     public function getServiceForOrdersAction()
@@ -771,6 +814,95 @@ class AmazonIntegrationContoller extends BaseAdminController
     		self::$logger->setLevel(Tlog::ERROR);
     	}
     	return self::$logger;
+    }
+    
+    public function saveRankingProducts() 
+    {
+    	$form = $this->createForm("amazonintegration.rankings.form");
+    	
+    	try {
+    		$data = $this->validateForm($form)->getData();    
+    		$reference =  $data['reference'];
+    		
+    		$refArray =  explode(' ', $reference);
+	    	
+	    	// GRO33552002 GRO29800000
+	    	$idType = 'SellerSKU';
+	    	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
+	    	    	
+	    	$max_time = ini_get("max_execution_time");
+	    	ini_set('max_execution_time', 3000);
+	    	
+	    	// object or array of parameters
+	    	foreach ($refArray as $ref) {
+	    		
+	    		$idList->setId(array($ref));
+	    		
+	    		$request->setIdList($idList);
+	    		
+	    		$result = invokeGetMatchingProductForId($service, $request);
+	    		
+	    		if ($result) {
+	    			print_r($result);
+	    			if (isset($result->GetMatchingProductForIdResult->Products)) {
+	    				foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
+	    					
+	    					$pse = ProductSaleElementsQuery::create()
+			    						->filterByRef($ref)
+			    						->findOne();
+	    					
+	    					if($pse) {
+	    						$eanCode = $pse->getEanCode();
+	    						$productId = $pse->getProductId();
+	    					}
+	    					else {
+	    						$eanCode = '';
+	    						$productId = '';
+	    					}
+	    					
+	    					if (isset($prd->Identifiers) && isset($prd->SalesRankings->SalesRank)) {
+	    						$prodAmazon = new ProductAmazon();
+	    						$prodAmazon->setEanCode($eanCode)
+		    						->setProductId($productId)
+		    						->setRef($ref)
+		    						->setASIN($prd->Identifiers->MarketplaceASIN->ASIN)
+		    						->setRanking($prd->SalesRankings->SalesRank[0]->Rank)
+		    						->save();
+	    					}
+	    					else
+	    						if (isset($prd->MarketplaceASIN) && isset($prd->SalesRankings->SalesRank)) {
+	    							$prodAmazon = new ProductAmazon();
+	    							$prodAmazon->setEanCode($eanCode)
+		    							->setProductId($productId)
+		    							->setRef($ref)
+		    							->setRanking($prd->SalesRankings->SalesRank[0]->Rank)
+		    							->setASIN($prd->MarketplaceASIN->ASIN)
+		    							->save();
+		    						
+	    						}
+	    				}
+	    			} /* else
+	    				$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], ""); */
+	    		} else {
+	    			echo ('error decoding json');
+	    		}
+	    		
+	    		sleep(0.7);
+	    	}
+	    	
+	    	ini_set('max_execution_time', $max_time);
+	    	
+	    	die("Finish insert ranking from Amazon.");
+    	
+    	} catch (\Exception $e) {
+    		$this->setupFormErrorContext(
+    				$this->getTranslator()->trans("Error on insert ref : %message", ["message"=>$e->getMessage()], AmazonIntegration::DOMAIN_NAME),
+    				$e->getMessage(),
+    				$form
+    				);
+    		
+    		return self::viewAction();
+    	}
     }
     
 }

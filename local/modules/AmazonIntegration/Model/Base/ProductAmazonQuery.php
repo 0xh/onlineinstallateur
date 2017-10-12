@@ -23,12 +23,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazonQuery orderByRef($order = Criteria::ASC) Order by the ref column
  * @method     ChildProductAmazonQuery orderByEanCode($order = Criteria::ASC) Order by the ean_code column
  * @method     ChildProductAmazonQuery orderByASIN($order = Criteria::ASC) Order by the ASIN column
+ * @method     ChildProductAmazonQuery orderByRanking($order = Criteria::ASC) Order by the ranking column
+ * @method     ChildProductAmazonQuery orderByAmazonCategoryId($order = Criteria::ASC) Order by the amazon_category_id column
  *
  * @method     ChildProductAmazonQuery groupById() Group by the id column
  * @method     ChildProductAmazonQuery groupByProductId() Group by the product_id column
  * @method     ChildProductAmazonQuery groupByRef() Group by the ref column
  * @method     ChildProductAmazonQuery groupByEanCode() Group by the ean_code column
  * @method     ChildProductAmazonQuery groupByASIN() Group by the ASIN column
+ * @method     ChildProductAmazonQuery groupByRanking() Group by the ranking column
+ * @method     ChildProductAmazonQuery groupByAmazonCategoryId() Group by the amazon_category_id column
  *
  * @method     ChildProductAmazonQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildProductAmazonQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -42,12 +46,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazon findOneByRef(string $ref) Return the first ChildProductAmazon filtered by the ref column
  * @method     ChildProductAmazon findOneByEanCode(string $ean_code) Return the first ChildProductAmazon filtered by the ean_code column
  * @method     ChildProductAmazon findOneByASIN(string $ASIN) Return the first ChildProductAmazon filtered by the ASIN column
+ * @method     ChildProductAmazon findOneByRanking(int $ranking) Return the first ChildProductAmazon filtered by the ranking column
+ * @method     ChildProductAmazon findOneByAmazonCategoryId(int $amazon_category_id) Return the first ChildProductAmazon filtered by the amazon_category_id column
  *
  * @method     array findById(int $id) Return ChildProductAmazon objects filtered by the id column
  * @method     array findByProductId(int $product_id) Return ChildProductAmazon objects filtered by the product_id column
  * @method     array findByRef(string $ref) Return ChildProductAmazon objects filtered by the ref column
  * @method     array findByEanCode(string $ean_code) Return ChildProductAmazon objects filtered by the ean_code column
  * @method     array findByASIN(string $ASIN) Return ChildProductAmazon objects filtered by the ASIN column
+ * @method     array findByRanking(int $ranking) Return ChildProductAmazon objects filtered by the ranking column
+ * @method     array findByAmazonCategoryId(int $amazon_category_id) Return ChildProductAmazon objects filtered by the amazon_category_id column
  *
  */
 abstract class ProductAmazonQuery extends ModelCriteria
@@ -136,7 +144,7 @@ abstract class ProductAmazonQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN FROM product_amazon WHERE ID = :p0';
+        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN, RANKING, AMAZON_CATEGORY_ID FROM product_amazon WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -392,6 +400,88 @@ abstract class ProductAmazonQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductAmazonTableMap::ASIN, $aSIN, $comparison);
+    }
+
+    /**
+     * Filter the query on the ranking column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRanking(1234); // WHERE ranking = 1234
+     * $query->filterByRanking(array(12, 34)); // WHERE ranking IN (12, 34)
+     * $query->filterByRanking(array('min' => 12)); // WHERE ranking > 12
+     * </code>
+     *
+     * @param     mixed $ranking The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductAmazonQuery The current query, for fluid interface
+     */
+    public function filterByRanking($ranking = null, $comparison = null)
+    {
+        if (is_array($ranking)) {
+            $useMinMax = false;
+            if (isset($ranking['min'])) {
+                $this->addUsingAlias(ProductAmazonTableMap::RANKING, $ranking['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($ranking['max'])) {
+                $this->addUsingAlias(ProductAmazonTableMap::RANKING, $ranking['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductAmazonTableMap::RANKING, $ranking, $comparison);
+    }
+
+    /**
+     * Filter the query on the amazon_category_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAmazonCategoryId(1234); // WHERE amazon_category_id = 1234
+     * $query->filterByAmazonCategoryId(array(12, 34)); // WHERE amazon_category_id IN (12, 34)
+     * $query->filterByAmazonCategoryId(array('min' => 12)); // WHERE amazon_category_id > 12
+     * </code>
+     *
+     * @param     mixed $amazonCategoryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductAmazonQuery The current query, for fluid interface
+     */
+    public function filterByAmazonCategoryId($amazonCategoryId = null, $comparison = null)
+    {
+        if (is_array($amazonCategoryId)) {
+            $useMinMax = false;
+            if (isset($amazonCategoryId['min'])) {
+                $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($amazonCategoryId['max'])) {
+                $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId, $comparison);
     }
 
     /**

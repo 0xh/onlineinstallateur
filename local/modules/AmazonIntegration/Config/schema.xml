@@ -10,6 +10,8 @@
 	    <column name="ref" phpName="Ref" type="VARCHAR" size="255"/>
 	    <column name="ean_code" phpName="EanCode" type="VARCHAR" size="255"/>
 	    <column name="ASIN" phpName="ASIN"  type="VARCHAR" size="255"/>
+	    <column name="ranking" phpName="Ranking"  type="INTEGER" size="255"/>
+	    <column name="amazon_category_id" phpName="AmazonCategoryId" type="INTEGER" size="255"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>

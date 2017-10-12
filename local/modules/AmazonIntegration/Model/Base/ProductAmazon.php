@@ -82,6 +82,18 @@ abstract class ProductAmazon implements ActiveRecordInterface
     protected $asin;
 
     /**
+     * The value for the ranking field.
+     * @var        int
+     */
+    protected $ranking;
+
+    /**
+     * The value for the amazon_category_id field.
+     * @var        int
+     */
+    protected $amazon_category_id;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -403,6 +415,28 @@ abstract class ProductAmazon implements ActiveRecordInterface
     }
 
     /**
+     * Get the [ranking] column value.
+     * 
+     * @return   int
+     */
+    public function getRanking()
+    {
+
+        return $this->ranking;
+    }
+
+    /**
+     * Get the [amazon_category_id] column value.
+     * 
+     * @return   int
+     */
+    public function getAmazonCategoryId()
+    {
+
+        return $this->amazon_category_id;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -508,6 +542,48 @@ abstract class ProductAmazon implements ActiveRecordInterface
     } // setASIN()
 
     /**
+     * Set the value of [ranking] column.
+     * 
+     * @param      int $v new value
+     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     */
+    public function setRanking($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->ranking !== $v) {
+            $this->ranking = $v;
+            $this->modifiedColumns[ProductAmazonTableMap::RANKING] = true;
+        }
+
+
+        return $this;
+    } // setRanking()
+
+    /**
+     * Set the value of [amazon_category_id] column.
+     * 
+     * @param      int $v new value
+     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     */
+    public function setAmazonCategoryId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->amazon_category_id !== $v) {
+            $this->amazon_category_id = $v;
+            $this->modifiedColumns[ProductAmazonTableMap::AMAZON_CATEGORY_ID] = true;
+        }
+
+
+        return $this;
+    } // setAmazonCategoryId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -558,6 +634,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductAmazonTableMap::translateFieldName('ASIN', TableMap::TYPE_PHPNAME, $indexType)];
             $this->asin = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductAmazonTableMap::translateFieldName('Ranking', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->ranking = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductAmazonTableMap::translateFieldName('AmazonCategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->amazon_category_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -566,7 +648,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = ProductAmazonTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = ProductAmazonTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \AmazonIntegration\Model\ProductAmazon object", 0, $e);
@@ -790,6 +872,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if ($this->isColumnModified(ProductAmazonTableMap::ASIN)) {
             $modifiedColumns[':p' . $index++]  = 'ASIN';
         }
+        if ($this->isColumnModified(ProductAmazonTableMap::RANKING)) {
+            $modifiedColumns[':p' . $index++]  = 'RANKING';
+        }
+        if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'AMAZON_CATEGORY_ID';
+        }
 
         $sql = sprintf(
             'INSERT INTO product_amazon (%s) VALUES (%s)',
@@ -815,6 +903,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
                         break;
                     case 'ASIN':                        
                         $stmt->bindValue($identifier, $this->asin, PDO::PARAM_STR);
+                        break;
+                    case 'RANKING':                        
+                        $stmt->bindValue($identifier, $this->ranking, PDO::PARAM_INT);
+                        break;
+                    case 'AMAZON_CATEGORY_ID':                        
+                        $stmt->bindValue($identifier, $this->amazon_category_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -893,6 +987,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
             case 4:
                 return $this->getASIN();
                 break;
+            case 5:
+                return $this->getRanking();
+                break;
+            case 6:
+                return $this->getAmazonCategoryId();
+                break;
             default:
                 return null;
                 break;
@@ -926,6 +1026,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
             $keys[2] => $this->getRef(),
             $keys[3] => $this->getEanCode(),
             $keys[4] => $this->getASIN(),
+            $keys[5] => $this->getRanking(),
+            $keys[6] => $this->getAmazonCategoryId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -980,6 +1082,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
             case 4:
                 $this->setASIN($value);
                 break;
+            case 5:
+                $this->setRanking($value);
+                break;
+            case 6:
+                $this->setAmazonCategoryId($value);
+                break;
         } // switch()
     }
 
@@ -1009,6 +1117,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if (array_key_exists($keys[2], $arr)) $this->setRef($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setEanCode($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setASIN($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setRanking($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setAmazonCategoryId($arr[$keys[6]]);
     }
 
     /**
@@ -1025,6 +1135,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if ($this->isColumnModified(ProductAmazonTableMap::REF)) $criteria->add(ProductAmazonTableMap::REF, $this->ref);
         if ($this->isColumnModified(ProductAmazonTableMap::EAN_CODE)) $criteria->add(ProductAmazonTableMap::EAN_CODE, $this->ean_code);
         if ($this->isColumnModified(ProductAmazonTableMap::ASIN)) $criteria->add(ProductAmazonTableMap::ASIN, $this->asin);
+        if ($this->isColumnModified(ProductAmazonTableMap::RANKING)) $criteria->add(ProductAmazonTableMap::RANKING, $this->ranking);
+        if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) $criteria->add(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $this->amazon_category_id);
 
         return $criteria;
     }
@@ -1092,6 +1204,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         $copyObj->setRef($this->getRef());
         $copyObj->setEanCode($this->getEanCode());
         $copyObj->setASIN($this->getASIN());
+        $copyObj->setRanking($this->getRanking());
+        $copyObj->setAmazonCategoryId($this->getAmazonCategoryId());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1130,6 +1244,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         $this->ref = null;
         $this->ean_code = null;
         $this->asin = null;
+        $this->ranking = null;
+        $this->amazon_category_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

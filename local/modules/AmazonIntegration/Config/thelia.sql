@@ -7,6 +7,8 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- product_amazon
 -- ---------------------------------------------------------------------
 
+
+
 CREATE TABLE IF NOT EXISTS `product_amazon`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -14,12 +16,15 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
     `ref` VARCHAR(255),
     `ean_code` VARCHAR(255),
     `ASIN` VARCHAR(255),
+    `ranking` INTEGER(255),
+    `amazon_category_id` INTEGER(255),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
 -- amazon_orders
 -- ---------------------------------------------------------------------
+
 
 CREATE TABLE IF NOT EXISTS `amazon_orders`
 (
@@ -92,6 +97,8 @@ CREATE TABLE IF NOT EXISTS `amazon_orders`
 -- amazon_order_product
 -- ---------------------------------------------------------------------
 
+
+
 CREATE TABLE IF NOT EXISTS `amazon_order_product`
 (
     `order_item_id` VARCHAR(45) NOT NULL,
@@ -161,6 +168,8 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
 -- amazon_orders_version
 -- ---------------------------------------------------------------------
 
+
+
 CREATE TABLE IF NOT EXISTS `amazon_orders_version`
 (
     `id` VARCHAR(45) NOT NULL,
@@ -224,6 +233,8 @@ CREATE TABLE IF NOT EXISTS `amazon_orders_version`
 -- ---------------------------------------------------------------------
 -- amazon_order_product_version
 -- ---------------------------------------------------------------------
+
+
 
 CREATE TABLE IF NOT EXISTS `amazon_order_product_version`
 (

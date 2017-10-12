@@ -58,7 +58,7 @@ class ProductAmazonTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class ProductAmazonTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
@@ -96,6 +96,16 @@ class ProductAmazonTableMap extends TableMap
     const ASIN = 'product_amazon.ASIN';
 
     /**
+     * the column name for the RANKING field
+     */
+    const RANKING = 'product_amazon.RANKING';
+
+    /**
+     * the column name for the AMAZON_CATEGORY_ID field
+     */
+    const AMAZON_CATEGORY_ID = 'product_amazon.AMAZON_CATEGORY_ID';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -107,12 +117,12 @@ class ProductAmazonTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Ref', 'EanCode', 'ASIN', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'productId', 'ref', 'eanCode', 'aSIN', ),
-        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID, ProductAmazonTableMap::PRODUCT_ID, ProductAmazonTableMap::REF, ProductAmazonTableMap::EAN_CODE, ProductAmazonTableMap::ASIN, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_ID', 'REF', 'EAN_CODE', 'ASIN', ),
-        self::TYPE_FIELDNAME     => array('id', 'product_id', 'ref', 'ean_code', 'ASIN', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Ref', 'EanCode', 'ASIN', 'Ranking', 'AmazonCategoryId', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'productId', 'ref', 'eanCode', 'aSIN', 'ranking', 'amazonCategoryId', ),
+        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID, ProductAmazonTableMap::PRODUCT_ID, ProductAmazonTableMap::REF, ProductAmazonTableMap::EAN_CODE, ProductAmazonTableMap::ASIN, ProductAmazonTableMap::RANKING, ProductAmazonTableMap::AMAZON_CATEGORY_ID, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_ID', 'REF', 'EAN_CODE', 'ASIN', 'RANKING', 'AMAZON_CATEGORY_ID', ),
+        self::TYPE_FIELDNAME     => array('id', 'product_id', 'ref', 'ean_code', 'ASIN', 'ranking', 'amazon_category_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -122,12 +132,12 @@ class ProductAmazonTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Ref' => 2, 'EanCode' => 3, 'ASIN' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productId' => 1, 'ref' => 2, 'eanCode' => 3, 'aSIN' => 4, ),
-        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID => 0, ProductAmazonTableMap::PRODUCT_ID => 1, ProductAmazonTableMap::REF => 2, ProductAmazonTableMap::EAN_CODE => 3, ProductAmazonTableMap::ASIN => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_ID' => 1, 'REF' => 2, 'EAN_CODE' => 3, 'ASIN' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'ref' => 2, 'ean_code' => 3, 'ASIN' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Ref' => 2, 'EanCode' => 3, 'ASIN' => 4, 'Ranking' => 5, 'AmazonCategoryId' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productId' => 1, 'ref' => 2, 'eanCode' => 3, 'aSIN' => 4, 'ranking' => 5, 'amazonCategoryId' => 6, ),
+        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID => 0, ProductAmazonTableMap::PRODUCT_ID => 1, ProductAmazonTableMap::REF => 2, ProductAmazonTableMap::EAN_CODE => 3, ProductAmazonTableMap::ASIN => 4, ProductAmazonTableMap::RANKING => 5, ProductAmazonTableMap::AMAZON_CATEGORY_ID => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_ID' => 1, 'REF' => 2, 'EAN_CODE' => 3, 'ASIN' => 4, 'RANKING' => 5, 'AMAZON_CATEGORY_ID' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'ref' => 2, 'ean_code' => 3, 'ASIN' => 4, 'ranking' => 5, 'amazon_category_id' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -151,6 +161,8 @@ class ProductAmazonTableMap extends TableMap
         $this->addColumn('REF', 'Ref', 'VARCHAR', false, 255, null);
         $this->addColumn('EAN_CODE', 'EanCode', 'VARCHAR', false, 255, null);
         $this->addColumn('ASIN', 'ASIN', 'VARCHAR', false, 255, null);
+        $this->addColumn('RANKING', 'Ranking', 'INTEGER', false, 255, null);
+        $this->addColumn('AMAZON_CATEGORY_ID', 'AmazonCategoryId', 'INTEGER', false, 255, null);
     } // initialize()
 
     /**
@@ -303,12 +315,16 @@ class ProductAmazonTableMap extends TableMap
             $criteria->addSelectColumn(ProductAmazonTableMap::REF);
             $criteria->addSelectColumn(ProductAmazonTableMap::EAN_CODE);
             $criteria->addSelectColumn(ProductAmazonTableMap::ASIN);
+            $criteria->addSelectColumn(ProductAmazonTableMap::RANKING);
+            $criteria->addSelectColumn(ProductAmazonTableMap::AMAZON_CATEGORY_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.PRODUCT_ID');
             $criteria->addSelectColumn($alias . '.REF');
             $criteria->addSelectColumn($alias . '.EAN_CODE');
             $criteria->addSelectColumn($alias . '.ASIN');
+            $criteria->addSelectColumn($alias . '.RANKING');
+            $criteria->addSelectColumn($alias . '.AMAZON_CATEGORY_ID');
         }
     }
 

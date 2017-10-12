@@ -2,7 +2,33 @@
 <div class="tab-pane fade" id="amazon-feeds">
 	<div class="table-responsive">
 		<table class="table table-striped">
-			<tbody>feeds
+			<tbody>
+				
+				{form name="amazonintegration.rankings.form"}
+					<form action="{url path='/admin/module/amazonintegration/save-ranking'}" method="post">
+						
+						{form_hidden_fields form=$form}
+
+                         {if $form_error}
+                         	<div class="alert alert-danger">{$form_error_message}</div>
+                         {/if}
+
+                   <!--       {form_field form=$form field='success_url'}
+                         	<input type="hidden" name="{$name}" value="{url path='admin/module/amazonintegration#amazon-feeds'}" />
+                         {/form_field} -->
+                                        
+						 {form_field form=$form field="reference"}
+						 	<label for="{$label_attr.for}">
+				            	{$label} :
+				           	</label>
+	                        <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                         {/form_field}
+						
+						<button type="submit" class="btn btn-primary action-btn" title="{intl l='Add product ref'}" >
+							<span class="glyphicon glyphicon-plus-sign"></span>
+						</button>
+			    	</form>
+				{/form}
 			</tbody>
 		</table>
 	</div>
