@@ -16,6 +16,7 @@ use Thelia\Model\Map\OrderTableMap;
 use Thelia\Model\Order;
 use Thelia\Model\OrderQuery;
 use Thelia\Tools\I18n;
+use Thelia\Log\Tlog;
 
 /**
  * Class BilligerProductExport
@@ -77,14 +78,33 @@ class BMDOrderExport extends AbstractExport
                 $processedData[$fieldAlias] = $data[$fieldName];
             }
         }
+        
         $orderSource = substr($processedData['belegnr'],0,3);
         switch($orderSource){
-        	case "ORD":$processedData['konto']="201599";break;
-        	case "ADE":$processedData['konto']="202699";break;
-        	case "AIT":$processedData['konto']="202799";break;
-        	case "AFR":$processedData['konto']="202899";break;
-        	case "ASP":$processedData['konto']="202999";break;
-        	case "AUK":$processedData['konto']="203099";break;
+        	case "ORD":{
+        		$processedData['konto']="201599";
+        		$processedData['belegnr']="100".substr($processedData['belegnr'],3);
+        	}break;
+        	case "ADE":{
+        		$processedData['konto']="202699";
+        		$processedData['belegnr']="200".substr($processedData['belegnr'],3);
+        	}break;
+        	case "AIT":{
+        		$processedData['konto']="202799";
+        		$processedData['belegnr']="300".substr($processedData['belegnr'],3);
+        	}break;
+        	case "AFR":{
+        		$processedData['konto']="202899";
+        		$processedData['belegnr']="400".substr($processedData['belegnr'],3);
+        	}break;
+        	case "ASP":{
+        		$processedData['konto']="202999";
+        		$processedData['belegnr']="500".substr($processedData['belegnr'],3);
+        	}break;
+        	case "AUK":{
+        		$processedData['konto']="203099";
+        		$processedData['belegnr']="600".substr($processedData['belegnr'],3);
+        	}break;
         }
         
 		$processedData['gkto'] = "4000";
@@ -118,8 +138,9 @@ class BMDOrderExport extends AbstractExport
     						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
-    				&& (strpos($order[OrderTableMap::REF],"ORD") !== false)
+    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false)
     				) {
+    					Tlog::getInstance()->error($order[OrderTableMap::REF]);
     					$this->next();
     					$getNext = true;
     				}
@@ -219,6 +240,7 @@ class BMDOrderExport extends AbstractExport
     					->endUse()
     					->select([
     							OrderTableMap::REF,
+    							OrderTableMap::INVOICE_DATE,
     							'customer_REF',
     							'product_TITLE',
     							'product_PRICE',

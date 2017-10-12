@@ -87,6 +87,8 @@ class IdealoProductExport extends AbstractExport
         $processedData['Produkt_BILD'] = $this->url_site . "/cache/images/product/" . $processedData['Produkt_BILD'];
         
         // set delivery time
+        $allCentersProduct = null;
+        if(class_exists("FulfilmentCenterProductsQuery") )
         $allCentersProduct = FulfilmentCenterProductsQuery::create()->addSelfSelectColumns()
             ->filterByProductId($data['product_sale_elements.PRODUCT_ID'])
             ->where('`fulfilment_center_products`.PRODUCT_STOCK ', Criteria::ISNOTNULL)
