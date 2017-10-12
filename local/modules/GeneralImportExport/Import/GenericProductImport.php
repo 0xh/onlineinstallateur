@@ -259,13 +259,13 @@ class GenericProductImport extends AbstractImport
     							
     							//save images
     							$image_path = THELIA_LOCAL_DIR."media".DS."images".DS."product".DS;
-    							$image_name = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/","", $bild_file).'.jpg';
+    							$image_name = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/","", $bild_file);
     										
     							$log->debug ( " generic_product_import image");
     										
     							try{
-    								$log->debug ( " generic_product_import image from ".THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file.'.jpg');
-    								$image_from_server =@file_get_contents ( THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file.'.jpg' );
+    								$log->debug ( " generic_product_import image from ".THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file);
+    								$image_from_server =@file_get_contents ( THELIA_LOCAL_DIR."media".DS."images".DS."importer".DS.$bild_file );
     								
     							}
     							catch (Exception $e) {

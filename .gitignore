@@ -10,3 +10,4 @@ templates/frontOffice/default/layout.tpl
 templates/frontOffice/default/layout.tpl
 templates/frontOffice/default/layout.tpl
 templates/frontOffice/default/order-placed.html
+local/modules/AmazonIntegration/Controller/Admin/AmazonIntegrationContoller.php
