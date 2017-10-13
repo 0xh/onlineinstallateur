@@ -1,18 +1,18 @@
 {extends file="admin-layout.tpl"} {block name="main-content"} {render
 action='AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::blockJs'}
-
+ {assign order_tab {$tab|default:$smarty.get.tab|default:"amazon-orders"}}
 <div class="general-block-decorator dashboard">
 	<div class="title title-without-tabs clearfix">{intl l='Dashboard
 		Amazon' d='amazonintegration.bo.default'}</div>
 
 	<ul class="nav nav-tabs nav-justified">
-		<li class="active"><a href="#amazon-orders" data-toggle="tab">{intl
+		<li {if $order_tab == 'amazon-orders'}class="active"{/if}><a href="#amazon-orders" data-tab-name="amazon-orders" data-toggle="tab">{intl
 				l="Orders" d='amazonintegrationhome.bo.default'} </a></li>
-		<li><a href="#amazon-products" data-toggle="tab">{intl
+		<li {if $order_tab == 'amazon-products'}class="active"{/if}><a href="#amazon-products" data-tab-name="amazon-products" data-toggle="tab">{intl
 				l="Products" d='amazonintegrationhome.bo.default'}</a></li>
-		<li><a href="#amazon-feeds" data-toggle="tab">{intl l="Feeds"
+		<li {if $order_tab == 'amazon-feeds'}class="active"{/if}><a href="#amazon-feeds" data-tab-name="amazon-feeds" data-toggle="tab">{intl l="Feeds"
 				d='amazonintegrationhome.bo.default'} </a></li>
-		<li><a href="#amazon-service" data-toggle="tab">{intl
+		<li {if $order_tab == 'amazon-service'}class="active"{/if}><a href="#amazon-service" data-tab-name="amazon-service" data-toggle="tab">{intl
 				l="Service" d='amazonintegrationhome.bo.default'} </a></li>
 	</ul>
 
