@@ -26,4 +26,8 @@
         <form name="amazonintegration.rankings.form" class="AmazonIntegration\Form\GetRankingsForm" />
     </forms>
     
+    <loops>
+        <loop name="amazon_ranking" class="AmazonIntegration\Loop\AmazonRankings" />
+    </loops>
+    
 </config>

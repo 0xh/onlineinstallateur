@@ -3,7 +3,7 @@
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<tbody>
-				
+				<br><br>
 				{form name="amazonintegration.rankings.form"}
 					<form action="{url path='/admin/module/amazonintegration/save-ranking'}" method="post">
 						
@@ -12,10 +12,10 @@
                          {if $form_error}
                          	<div class="alert alert-danger">{$form_error_message}</div>
                          {/if}
-
-                   <!--       {form_field form=$form field='success_url'}
+                         
+                         {form_field form=$form field='success_url'}
                          	<input type="hidden" name="{$name}" value="{url path='admin/module/amazonintegration#amazon-feeds'}" />
-                         {/form_field} -->
+                         {/form_field}
                                         
 						 {form_field form=$form field="reference"}
 						 	<label for="{$label_attr.for}">
@@ -23,13 +23,29 @@
 				           	</label>
 	                        <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
                          {/form_field}
-						
+						<br>
 						<button type="submit" class="btn btn-primary action-btn" title="{intl l='Add product ref'}" >
 							<span class="glyphicon glyphicon-plus-sign"></span>
 						</button>
 			    	</form>
 				{/form}
+				<br><br>
+				<dl class="row">
+			        <dt class="col-sm-2 ">Product id</dt>
+			        <dt class="col-sm-2 ">Ref</dt>
+			        <dt class="col-sm-2 ">Asin</dt>
+			        <dt class="col-sm-2 ">Ranking</dt>
+			    </dl>
+				{loop type="amazon_ranking" name="amazon_ranking" }
+			    <dl class="row">
+			        <dt class="col-sm-2 ">{$PRODUCT_ID}</dt>
+			        <dt class="col-sm-2 ">{$REF}</dt>
+			        <dt class="col-sm-2 ">{$ASIN}</dt>
+			        <dt class="col-sm-2 ">{$RANKING}</dt>
+			    </dl>
+				{/loop}
 			</tbody>
 		</table>
 	</div>
 </div>
+

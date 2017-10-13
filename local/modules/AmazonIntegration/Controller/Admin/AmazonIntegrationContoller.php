@@ -843,7 +843,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    		$result = invokeGetMatchingProductForId($service, $request);
 	    		
 	    		if ($result) {
-	    			print_r($result);
+	    			
 	    			if (isset($result->GetMatchingProductForIdResult->Products)) {
 	    				foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
 	    					
@@ -891,8 +891,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	}
 	    	
 	    	ini_set('max_execution_time', $max_time);
-	    	
-	    	die("Finish insert ranking from Amazon.");
+	    	return $this->generateSuccessRedirect($form);
+	    //	die("Finish insert ranking from Amazon.");
     	
     	} catch (\Exception $e) {
     		$this->setupFormErrorContext(
