@@ -259,9 +259,7 @@ class OfferDetail extends BaseLoop implements SearchLoopInterface, PropelSearchL
 			$amount = $offer->getTotalAmount($tax);
 			$hasVirtualDownload = $offer->hasVirtualProduct();
 			
-			//$createDate =  $offer->getCreatedAt()->getTimestamp();
-			//$createDate = $createDate->format("Y-m-d");;
-			//print_r($createDate); die();
+			
 			$loopResultRow = new LoopResultRow($offer);
 			$loopResultRow
 			->set("ID", $offer->getId())
@@ -291,12 +289,7 @@ class OfferDetail extends BaseLoop implements SearchLoopInterface, PropelSearchL
 			->set('TOTAL_AMOUNT', $amount - $tax)
 			->set('TOTAL_TAXED_AMOUNT', $amount)
 			->set('WEIGHT', $offer->getWeight());
-		/* 	->set('HAS_PAID_STATUS', $offer->isPaid())
-			->set('IS_PAID', $offer->isPaid(false))
-			->set('IS_CANCELED', $offer->isCancelled())
-			->set('IS_NOT_PAID', $offer->isNotPaid())
-			->set('IS_SENT', $offer->isSent())
-			->set('IS_PROCESSING', $offer->isProcessing()); */
+	
 			
 			if ($this->getWithPrevNextInfo()) {
 				// Find previous and next category
