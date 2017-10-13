@@ -9,8 +9,18 @@
         <hook id="amazonintegration.configuration.hook" class="AmazonIntegration\Hook\HookManager" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
         </hook>
+        
+        <hook id="amazonintegration.hook.css">
+            <tag name="hook.event_listener" event="main.head-css"  type="back" templates="css:assets/css/amazonintegration.css" />
+            <tag name="hook.event_listener" event="main.head-css"  type="back" templates="css:assets/css/jquery-ui.css" />
+        </hook>
+        
 	</hooks>
 	
+    <loops>
+        <loop name="amazon_orders_listing" class="AmazonIntegration\Loop\AmazonIntegrationListingLoop" />
+    </loops>
+    
     <forms>
         <form name="amazonintegration.form.configure" class="AmazonIntegration\Form\ConfigurationForm" />
         <form name="amazonintegration.rankings.form" class="AmazonIntegration\Form\GetRankingsForm" />
