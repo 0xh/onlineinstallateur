@@ -83,39 +83,49 @@ class BMDOrderExport extends AbstractExport
         switch($orderSource){
         	case "ORD":{
         		$processedData['konto']="201599";
-        		$processedData['belegnr']="100".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="1".substr($processedData['belegnr'],3);
         	}break;
         	case "ADE":{
         		$processedData['konto']="202699";
-        		$processedData['belegnr']="200".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="2".substr($processedData['belegnr'],3);
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
-        		$processedData['belegnr']="300".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="3".substr($processedData['belegnr'],3);
         	}break;
         	case "AFR":{
         		$processedData['konto']="202899";
-        		$processedData['belegnr']="400".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="4".substr($processedData['belegnr'],3);
         	}break;
-        	case "ASP":{
+        	case "AES":{
         		$processedData['konto']="202999";
-        		$processedData['belegnr']="500".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="5".substr($processedData['belegnr'],3);
         	}break;
         	case "AUK":{
         		$processedData['konto']="203099";
-        		$processedData['belegnr']="600".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="6".substr($processedData['belegnr'],3);
         	}break;
         }
         
 		$processedData['gkto'] = "4000";
 		$processedData['extbelegnr'] = "";
 		
-		$betrag = $processedData['betrag'];
-		$processedData['steuer'] = -($betrag/1.2)*0.2;
-		$processedData['betrag'] = $betrag + $processedData['steuer'];
+		$betrag = round($processedData['betrag'],2);
+		$processedData['steuer'] = round(-($betrag/1.2)*0.2,2);
+		$processedData['betrag'] = round($betrag + $processedData['steuer'],2);
 
 		$processedData['mwst'] = "20";
+		
+		$invoiceDate = date("d.m.Y", strtotime($processedData['buchdat']));	
+		$processedData['buchdat'] = $invoiceDate;
 		$processedData['belegdat'] = $processedData['buchdat'];
+		
+		if($processedData['text'] == "canceled")
+			$processedData['text'] = "Gutschrift";
+			
+		$processedData['text'] =mb_convert_encoding ($processedData['text'],"WINDOWS-1252");
+		Tlog::getInstance()->error($processedData['text']);
+		
 		$processedData['bucod'] = "1";
 		$processedData['zziel'] = "";
 		$processedData['skontopz'] = "";
@@ -138,9 +148,9 @@ class BMDOrderExport extends AbstractExport
     						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
-    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false)
+    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false || strpos($order[OrderTableMap::REF],"OFR") !== false)
     				) {
-    					Tlog::getInstance()->error($order[OrderTableMap::REF]);
+    					
     					$this->next();
     					$getNext = true;
     				}
