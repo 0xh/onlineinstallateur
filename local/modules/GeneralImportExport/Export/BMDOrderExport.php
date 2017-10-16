@@ -113,10 +113,18 @@ class BMDOrderExport extends AbstractExport
 		$betrag = round($processedData['betrag'],2);
 		$processedData['steuer'] = round(-($betrag/1.2)*0.2,2);
 		$processedData['betrag'] = round($betrag + $processedData['steuer'],2);
+		
+		$status = $processedData['skontotage'];
+		if($status == "Zurückerstattet") {
+			$processedData['steuer'] = -$processedData['steuer'];
+			$processedData['betrag'] = -$processedData['betrag'];
+			$processedData['text'] = "Gutschrift";
+		}
+		Tlog::getInstance()->error($status);
 
 		$processedData['mwst'] = "20";
 		
-		$invoiceDate = date("d.m.Y", strtotime($processedData['buchdat']));	
+		$invoiceDate = date("Y.m.d", strtotime($processedData['buchdat']));	
 		$processedData['buchdat'] = $invoiceDate;
 		$processedData['belegdat'] = $processedData['buchdat'];
 		
@@ -149,6 +157,7 @@ class BMDOrderExport extends AbstractExport
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
     				|| (strpos($order[OrderTableMap::REF],"ORD") !== false || strpos($order[OrderTableMap::REF],"OFR") !== false)
+    				|| (strpos($order[OrderTableMap::STATUS_ID],"5") !== false)
     				) {
     					
     					$this->next();
