@@ -278,15 +278,22 @@ class AmazonIntegrationContoller extends BaseAdminController
             	}
             	
                 $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
-                
-                if ($checkAmazonOrder) {  
-                    if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus) {
-                        $checkAmazonOrder->setOrderStatus($order->OrderStatus)->save($con);
-                        $updateOrderStatus = OrderQuery::create()
-                        						->filterById($checkAmazonOrder->getOrderId())
-                        						->findOne();
-                       	if($updateOrderStatus)
-                       		$updateOrderStatus->setStatusId($statusId)->save($con);
+                if ($checkAmazonOrder) { 
+
+                    if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
+                        $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
+                            
+                            $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
+                            $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
+                            $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
+                            $checkAmazonOrder->setOrderStatus($order->OrderStatus);
+                            $checkAmazonOrder->save($con);
+                            
+                            $updateOrderStatus = OrderQuery::create()
+                            						->filterById($checkAmazonOrder->getOrderId())
+                            						->findOne();
+                           	if($updateOrderStatus)
+                           		$updateOrderStatus->setStatusId($statusId)->save($con);
                     }
                 } else { 
                 	// Insert delivery address in order_address table

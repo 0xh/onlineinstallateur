@@ -13,10 +13,12 @@ function getAndUpdateOrders() {
 	     .done(function (data) {
 	    	 console.log(data);
 	    	 $('#wait').hide();
+	    	 location.reload();
 	     })
 	     .fail(function (data) {
 	    	 console.log(data.responseText);
 	    	 $('#wait').hide();
+	    	 location.reload();
 	     })     
 }
 
