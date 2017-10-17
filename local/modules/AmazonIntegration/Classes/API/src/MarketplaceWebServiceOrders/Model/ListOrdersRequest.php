@@ -50,7 +50,7 @@ require_once (dirname(__FILE__) . '/../Model.php');
 
  class MarketplaceWebServiceOrders_Model_ListOrdersRequest extends MarketplaceWebServiceOrders_Model {
 
-    public function __construct($data = null)
+    public function __construct($data = null, $fields = null)
     {
     $this->_fields = array (
     'SellerId' => array('FieldValue' => null, 'FieldType' => 'string'),
@@ -68,6 +68,10 @@ require_once (dirname(__FILE__) . '/../Model.php');
     'MaxResultsPerPage' => array('FieldValue' => null, 'FieldType' => 'int'),
     'TFMShipmentStatus' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Status'),
     );
+    
+    if (!is_null($fields))
+        $this->_fields = $fields;
+    
     parent::__construct($data);
     }
 

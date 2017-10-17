@@ -80,71 +80,25 @@ $orders = array();
  * *********************************************************************
  */
 
-$fieldsArr = array(
-    'SellerId' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'MWSAuthToken' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'CreatedAfter' => array(
-        'FieldValue' => "2012-04-01",
-        'FieldType'
-    ),
-    'CreatedBefore' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'LastUpdatedAfter' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'LastUpdatedBefore' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'OrderStatus' => array(
-        'FieldValue',
-        'FieldType',
-        'ListMemberName' => 'Status'
-    ),
-    'MarketplaceId' => array(
-        'FieldValue',
-        'FieldType',
-        'ListMemberName' => 'Id'
-    ),
-    'FulfillmentChannel' => array(
-        'FieldValue',
-        'FieldType',
-        'ListMemberName' => 'Channel'
-    ),
-    'PaymentMethod' => array(
-        'FieldValue',
-        'FieldType',
-        'ListMemberName' => 'Method'
-    ),
-    'BuyerEmail' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'SellerOrderId' => array(
-        'FieldValue',
-        'FieldType'
-    ),
-    'MaxResultsPerPage' => array(
-        'FieldValue',
-        'FieldType' => 'int'
-    ),
-    'TFMShipmentStatus' => array(
-        'FieldValue',
-        'FieldType',
-        'ListMemberName' => 'Status'
-    )
+$fieldsArr = array (
+    'SellerId' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'MWSAuthToken' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'CreatedAfter' => array('FieldValue' => $arrDate["dateCreatedAfter"] ? $arrDate["dateCreatedAfter"] : null, 'FieldType' => 'string'),
+    'CreatedBefore' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'LastUpdatedAfter' => array('FieldValue' => $arrDate["dateLastUpdatedAfter"] ? $arrDate["dateLastUpdatedAfter"] : null, 'FieldType' => 'string'),
+    'LastUpdatedBefore' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'OrderStatus' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Status'),
+    'MarketplaceId' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Id'),
+    'FulfillmentChannel' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Channel'),
+    'PaymentMethod' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Method'),
+    'BuyerEmail' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'SellerOrderId' => array('FieldValue' => null, 'FieldType' => 'string'),
+    'MaxResultsPerPage' => array('FieldValue' => null, 'FieldType' => 'int'),
+    'TFMShipmentStatus' => array('FieldValue' => array(), 'FieldType' => array('string'), 'ListMemberName' => 'Status'),
 );
+
 // @TODO: set request. Action can be passed as MarketplaceWebServiceOrders_Model_ListOrders
-$request = new MarketplaceWebServiceOrders_Model_ListOrdersRequest();
+$request = new MarketplaceWebServiceOrders_Model_ListOrdersRequest(null, $fieldsArr);
 $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
 // $request->isSetMaxResultsPerPage()
@@ -179,7 +133,8 @@ function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $reque
         $result = json_decode($array);
         if ($result) {
             
-            $_SESSION['nxtToken'] = $result->ListOrdersResult->NextToken;
+            if (isset($result->ListOrdersResult->NextToken))
+                $_SESSION['nxtToken'] = $result->ListOrdersResult->NextToken;
             
             foreach ($result->ListOrdersResult->Orders->Order as $order) {
                 array_push($orders, $order);
