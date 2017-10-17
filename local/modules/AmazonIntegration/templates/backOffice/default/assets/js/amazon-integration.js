@@ -1,4 +1,6 @@
 function getAndUpdateOrders() {
+	
+	$('#wait').show();
 
 	console.clear();
 	var datepickerCreatedAfter = $("#datepickerCreatedAfter").datepicker("getDate");
@@ -7,13 +9,15 @@ function getAndUpdateOrders() {
 	var dateCreatedAfter = $.datepicker.formatDate("yy-mm-dd", datepickerCreatedAfter);
 	var dateLastUpdatedAfter = $.datepicker.formatDate("yy-mm-dd", datepickerLastUpdatedAfter);
 	
-	  $.getJSON("amazonintegration/save-amazon-orders?dateCreatedAfter=" + dateCreatedAfter + "&dateLastUpdatedAfter=" + dateLastUpdatedAfter)
+	$.getJSON("amazonintegration/save-amazon-orders?dateCreatedAfter=" + dateCreatedAfter + "&dateLastUpdatedAfter=" + dateLastUpdatedAfter)
 	     .done(function (data) {
 	    	 console.log(data);
+	    	 $('#wait').hide();
 	     })
 	     .fail(function (data) {
 	    	 console.log(data.responseText);
-		     })
+	    	 $('#wait').hide();
+	     })     
 }
 
 function initDatepiker() {
