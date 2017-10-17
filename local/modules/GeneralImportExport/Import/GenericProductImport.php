@@ -290,6 +290,8 @@ class GenericProductImport extends AbstractImport
     								$product_image_i18n->setDescription($bild_beschreibung);
     								$product_image_i18n->setChapo($bild_kurz_beschreibung);
     								$product_image_i18n->setPostscriptum($bild_postscriptum);
+    								$product_image_i18n->setLocale ( "de_DE" );
+    								$product_image_i18n->save();
     	
     								$productThelia->addProductImage ( $product_image );
     								}

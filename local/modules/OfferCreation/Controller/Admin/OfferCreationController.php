@@ -4,8 +4,6 @@
 namespace OfferCreation\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Core\Security\AccessManager;
-use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Model\OrderStatusQuery;
 use OfferCreation\Model\OfferQuery;
@@ -32,10 +30,6 @@ class OfferCreationController extends BaseAdminController
 {
 	public function editOffer($offer_id)
 	{
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::VIEW)) {
-			return $response;
-		}
-		
 		return $this->render("edit-offer", array(
 				"offer_id" => $offer_id
 		));
@@ -43,11 +37,7 @@ class OfferCreationController extends BaseAdminController
 	
 	
 	public function updateStatus($offer_id = null)
-	{ 
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::UPDATE)) {
-			return $response;
-		}
-		
+	{ 	
 		$message = null;
 		
 		$con = Propel::getConnection(
@@ -171,10 +161,6 @@ class OfferCreationController extends BaseAdminController
 	
 	public function updateAddress($offer_id)
 	{		
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::UPDATE)) {
-			return $response;
-		}
-		
 		$message = null;
 	
 		$orderUpdateAddress = new OrderUpdateAddress($this->getRequest());
@@ -233,10 +219,6 @@ class OfferCreationController extends BaseAdminController
 	
 	public function updateDeliveryRef($offer_id)
 	{
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::UPDATE)) {
-			return $response;
-		}
-		
 		$message = null;
 		
 		try {
@@ -271,17 +253,11 @@ class OfferCreationController extends BaseAdminController
 	
 	public function generateInvoicePdf($offer_id, $browser)
 	{
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::UPDATE)) {
-			return $response;
-		}
 		return $this->generateBackOfficeOrderPdf($offer_id, ConfigQuery::read('pdf_invoice_file_offer', 'invoiceoffer'), $browser);
 	}
 	
 	public function generateDeliveryPdf($offer_id, $browser)
 	{
-		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('OfferCreation'), AccessManager::UPDATE)) {
-			return $response;
-		}
 		return $this->generateBackOfficeOrderPdf($offer_id, ConfigQuery::read('pdf_delivery_file_offer', 'deliveryoffer'), $browser);
 	}
 	
