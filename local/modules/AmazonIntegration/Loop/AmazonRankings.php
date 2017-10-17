@@ -18,13 +18,11 @@ class AmazonRankings extends BaseLoop implements PropelSearchLoopInterface
 		return new ArgumentCollection();
 	}
 	
-	
 	public function buildModelCriteria()
 	{
 		return ProductAmazonQuery::create();
 	}
-	
-	
+		
 	/**
 	 * @param LoopResult $loopResult
 	 *
@@ -38,9 +36,11 @@ class AmazonRankings extends BaseLoop implements PropelSearchLoopInterface
 			->set("PRODUCT_ID", $product->getProductId())
 			->set("REF", $product->getRef())
 			->set("ASIN", $product->getAsin())
-			->set("RANKING", $product->getRanking());
+			->set("RANKING", $product->getRanking())
+			->set("CATEGORY", $product->getAmazonCategoryId());
 			$loopResult->addRow($row);
 		}
+		
 		return $loopResult;
 	}
 }

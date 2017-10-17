@@ -28,6 +28,7 @@
     
     <loops>
         <loop name="amazon_ranking" class="AmazonIntegration\Loop\AmazonRankings" />
+        <loop name="amazon_product_categories" class="AmazonIntegration\Loop\AmazonProductCategories" />
     </loops>
     
 </config>

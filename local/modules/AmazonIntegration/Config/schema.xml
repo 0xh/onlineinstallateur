@@ -4,14 +4,13 @@
           xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
     
     <table name="product_amazon" namespace="AmazonIntegration\Model">
-    
        	<column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
 	    <column name="product_id" phpName="ProductId" type="INTEGER"/>
 	    <column name="ref" phpName="Ref" type="VARCHAR" size="255"/>
 	    <column name="ean_code" phpName="EanCode" type="VARCHAR" size="255"/>
 	    <column name="ASIN" phpName="ASIN"  type="VARCHAR" size="255"/>
 	    <column name="ranking" phpName="Ranking"  type="INTEGER" size="255"/>
-	    <column name="amazon_category_id" phpName="AmazonCategoryId" type="INTEGER" size="255"/>
+	    <column name="amazon_category_id" phpName="AmazonCategoryId" type="VARCHAR" size="45"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
@@ -158,5 +157,14 @@
     </vendor>
   </table>
   
+    <table name="amazon_product_category" namespace="AmazonIntegration\Model">
+       	<column name="category_id" phpName="CategoryId" type="INTEGER" primaryKey="true" required="true"/>
+	    <column name="parent_id" phpName="ParentId" type="INTEGER"/>
+	    <column name="name" phpName="Name" type="VARCHAR" size="45"/>
+	    <vendor type="mysql">
+	      <parameter name="Engine" value="InnoDB"/>
+	    </vendor>
+    </table>
+    
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>
