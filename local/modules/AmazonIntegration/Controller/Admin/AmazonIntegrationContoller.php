@@ -55,27 +55,8 @@ class AmazonIntegrationContoller extends BaseAdminController
         // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
         
         // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
-        $orders = array();
         
-        $amazonOrdersQuery = new AmazonOrdersQuery();
-        $ords = $amazonOrdersQuery->findById("*");
-        
-        foreach ($ords as $ord) {
-            
-            array_push($orders, array(
-                'AmazonOrderId' => $ord->getId(),
-                'PurchaseDate' => $ord->getPurchaseDate()->format('Y-m-d H:i:s'),
-                'OrderStatus' => $ord->getOrderStatus(),
-                'OrderTotal' => $ord->getOrderTotalAmount() . " " . $ord->getOrderTotalCurrencyCode(),
-                'MarketplaceId' => $ord->getMarketplaceId(),
-                'SalesChannel' => $ord->getSalesChannel(),
-            ));
-            
-        }
-        
-        return $this->render("AmazonIntegrationTemplate", array(
-            "orders" => $orders
-        ));
+        return $this->render("AmazonIntegrationTemplate");
     }
 
     public function addProductsForOrdersByAmazon()
@@ -209,6 +190,22 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function saveAmazonOrders()
     {
+
+        $arrDate = array(); 
+        if (isset($_GET["dateCreatedAfter"]) && $_GET["dateCreatedAfter"] != ""){
+            $arrDate["dateCreatedAfter"] = $_GET["dateCreatedAfter"];
+        }
+        else {
+            $arrDate["dateCreatedAfter"] = false;
+        }
+        
+        if (isset($_GET["dateLastUpdatedAfter"]) && $_GET["dateLastUpdatedAfter"] != ""){
+            $arrDate["dateLastUpdatedAfter"] = $_GET["dateLastUpdatedAfter"];
+        }
+        else {
+            $arrDate["dateLastUpdatedAfter"] = false;
+        }
+        
     	$this->getLogger()->error("import started");
     	
     	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';

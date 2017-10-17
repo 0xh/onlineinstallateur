@@ -1,3 +1,9 @@
-.test-florin {
-	    margin: 200px 0px 20px 0px;
+.txt-div
+{
+	background-color: #f7f7f9;
+    margin: 20px 0px 20px 0px;
+    display: inline-block;
+    width: 100%;
+    border: 3px solid #86AC34;
+    padding: 10px;
 }

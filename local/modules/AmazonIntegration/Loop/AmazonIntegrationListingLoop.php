@@ -8,6 +8,7 @@ use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
+use Doctrine\Common\Collections\Criteria;
 
 /**
  * AmazonIntegrationListing loop
@@ -59,7 +60,7 @@ class AmazonIntegrationListingLoop extends BaseI18nLoop implements PropelSearchL
 
     public function buildModelCriteria()
     {
-        $query = AmazonOrdersQuery::create();
+        $query = AmazonOrdersQuery::create()->orderByPurchaseDate(Criteria::DESC);
         return $query;
     }
 }

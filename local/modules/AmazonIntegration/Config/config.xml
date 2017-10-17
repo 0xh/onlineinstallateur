@@ -5,16 +5,12 @@
 	<hooks>
 		<hook id="hookadmincrawlerdashboard.hook.back1" class="AmazonIntegration\Hook\BackHook">
 			<tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+			<tag name="hook.event_listener" event="main.footer-js" type="back" method="onMainJs" />
+			<tag name="hook.event_listener" event="main.head-css" type="back" method="onMainCss" />
 		</hook>
         <hook id="amazonintegration.configuration.hook" class="AmazonIntegration\Hook\HookManager" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
         </hook>
-        
-        <hook id="amazonintegration.hook.css">
-            <tag name="hook.event_listener" event="main.head-css"  type="back" templates="css:assets/css/amazonintegration.css" />
-            <tag name="hook.event_listener" event="main.head-css"  type="back" templates="css:assets/css/jquery-ui.css" />
-        </hook>
-        
 	</hooks>
 	
     <loops>
