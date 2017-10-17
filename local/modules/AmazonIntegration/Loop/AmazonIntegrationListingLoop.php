@@ -50,6 +50,7 @@ class AmazonIntegrationListingLoop extends BaseI18nLoop implements PropelSearchL
                 ->set("sales_channel", $listing->getSalesChannel())
                 ->set("ship_service_level", $listing->getShipServiceLevel())
                 ->set("order_total_amount", $listing->getOrderTotalAmount())
+                ->set("number_of_items_shipped", $listing->getNumberOfItemsUnshipped())
                 ->set("order_total_currency_code", $listing->getOrderTotalCurrencyCode());
             
             $loopResult->addRow($loopResultRow);

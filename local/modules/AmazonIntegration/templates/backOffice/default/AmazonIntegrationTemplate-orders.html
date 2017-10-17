@@ -27,8 +27,10 @@
 					<th>PurchaseDate</th>
 					<th>LastUpdateDate</th>
 					<th>OrderStatus</th>
+					<th>NumberOfItemsShipped</th>
+					<th>OrderTotalAmount</th>
 					<th>SalesChannel</th>
-					<th>OrderTotal</th>
+					<th>ShipServiceLevel</th>
 				</tr>
 			</thead>
 			<tbody>  
@@ -39,8 +41,10 @@
 					<td>{$purchase_date}</td>
 					<td>{$last_update_date}</td>
 					<td>{$order_status}</td>
-					<td>{$ship_service_level}</td>
+					<td>{$number_of_items_shipped}</td>
 					<td>{$order_total_amount} {$order_total_currency_code}</td>
+					<td>{$sales_channel}</td>
+					<td>{$ship_service_level}</td>
 				</tr>
                  
                {/loop}
