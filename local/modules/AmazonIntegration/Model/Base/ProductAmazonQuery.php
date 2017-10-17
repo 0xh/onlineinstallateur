@@ -47,7 +47,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazon findOneByEanCode(string $ean_code) Return the first ChildProductAmazon filtered by the ean_code column
  * @method     ChildProductAmazon findOneByASIN(string $ASIN) Return the first ChildProductAmazon filtered by the ASIN column
  * @method     ChildProductAmazon findOneByRanking(int $ranking) Return the first ChildProductAmazon filtered by the ranking column
- * @method     ChildProductAmazon findOneByAmazonCategoryId(int $amazon_category_id) Return the first ChildProductAmazon filtered by the amazon_category_id column
+ * @method     ChildProductAmazon findOneByAmazonCategoryId(string $amazon_category_id) Return the first ChildProductAmazon filtered by the amazon_category_id column
  *
  * @method     array findById(int $id) Return ChildProductAmazon objects filtered by the id column
  * @method     array findByProductId(int $product_id) Return ChildProductAmazon objects filtered by the product_id column
@@ -55,7 +55,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByEanCode(string $ean_code) Return ChildProductAmazon objects filtered by the ean_code column
  * @method     array findByASIN(string $ASIN) Return ChildProductAmazon objects filtered by the ASIN column
  * @method     array findByRanking(int $ranking) Return ChildProductAmazon objects filtered by the ranking column
- * @method     array findByAmazonCategoryId(int $amazon_category_id) Return ChildProductAmazon objects filtered by the amazon_category_id column
+ * @method     array findByAmazonCategoryId(string $amazon_category_id) Return ChildProductAmazon objects filtered by the amazon_category_id column
  *
  */
 abstract class ProductAmazonQuery extends ModelCriteria
@@ -448,36 +448,24 @@ abstract class ProductAmazonQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByAmazonCategoryId(1234); // WHERE amazon_category_id = 1234
-     * $query->filterByAmazonCategoryId(array(12, 34)); // WHERE amazon_category_id IN (12, 34)
-     * $query->filterByAmazonCategoryId(array('min' => 12)); // WHERE amazon_category_id > 12
+     * $query->filterByAmazonCategoryId('fooValue');   // WHERE amazon_category_id = 'fooValue'
+     * $query->filterByAmazonCategoryId('%fooValue%'); // WHERE amazon_category_id LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $amazonCategoryId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $amazonCategoryId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildProductAmazonQuery The current query, for fluid interface
      */
     public function filterByAmazonCategoryId($amazonCategoryId = null, $comparison = null)
     {
-        if (is_array($amazonCategoryId)) {
-            $useMinMax = false;
-            if (isset($amazonCategoryId['min'])) {
-                $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($amazonCategoryId['max'])) {
-                $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($amazonCategoryId)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $amazonCategoryId)) {
+                $amazonCategoryId = str_replace('*', '%', $amazonCategoryId);
+                $comparison = Criteria::LIKE;
             }
         }
 

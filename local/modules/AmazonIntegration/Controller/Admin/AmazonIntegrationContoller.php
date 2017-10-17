@@ -35,6 +35,10 @@ use Thelia\Model\OrderProductTax;
 use Thelia\Model\OrderQuery;
 use AmazonIntegration\Form\GetRankingsForm;
 use AmazonIntegration\AmazonIntegration;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Thelia\Tools\URL;
+use AmazonIntegration\Model\AmazonProductCategory;
+use AmazonIntegration\Model\AmazonProductCategoryQuery;
 
 class AmazonIntegrationContoller extends BaseAdminController
 {
@@ -94,7 +98,7 @@ class AmazonIntegrationContoller extends BaseAdminController
         sleep(4); 
         ini_set('max_execution_time', $max_time);
      //   print_r($amazonOrderId);
-         print_r($productsOrderItem); 
+      //   print_r($productsOrderItem); 
   
         if(is_array($productsOrderItem->OrderItem)){
         	foreach($productsOrderItem->OrderItem as $orderItem) {
@@ -840,7 +844,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    		$result = invokeGetMatchingProductForId($service, $request);
 	    		
 	    		if ($result) {
-	    			
+	    			include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetProductCategoriesForASINSample.php';
 	    			if (isset($result->GetMatchingProductForIdResult->Products)) {
 	    				foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
 	    					
@@ -857,26 +861,34 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    						$productId = '';
 	    					}
 	    					
-	    					if (isset($prd->Identifiers) && isset($prd->SalesRankings->SalesRank)) {
-	    						$prodAmazon = new ProductAmazon();
-	    						$prodAmazon->setEanCode($eanCode)
-		    						->setProductId($productId)
-		    						->setRef($ref)
-		    						->setASIN($prd->Identifiers->MarketplaceASIN->ASIN)
-		    						->setRanking($prd->SalesRankings->SalesRank[0]->Rank)
-		    						->save();
+	    					if (isset($prd->Identifiers)) {
+	    						$asin = $prd->Identifiers->MarketplaceASIN->ASIN;
 	    					}
-	    					else
-	    						if (isset($prd->MarketplaceASIN) && isset($prd->SalesRankings->SalesRank)) {
-	    							$prodAmazon = new ProductAmazon();
-	    							$prodAmazon->setEanCode($eanCode)
-		    							->setProductId($productId)
-		    							->setRef($ref)
-		    							->setRanking($prd->SalesRankings->SalesRank[0]->Rank)
-		    							->setASIN($prd->MarketplaceASIN->ASIN)
-		    							->save();
-		    						
+	    					else {
+	    						if (isset($prd->MarketplaceASIN)) 
+	    							$asin = $prd->MarketplaceASIN->ASIN;
+	    					}
+	    					
+	    					if(isset($prd->SalesRankings->SalesRank)) {
+	    						if(is_array($prd->SalesRankings->SalesRank)) {
+	    							foreach($prd->SalesRankings->SalesRank as $ranks) {
+	    								$this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId);
+	    							}
 	    						}
+	    						
+	    						$requestCat->setASIN($asin);
+	    						$productCategories = invokeGetProductCategoriesForASIN($service, $requestCat);
+	    						
+	    						if($productCategories) {
+	    							if(is_array($productCategories->GetProductCategoriesForASINResult->Self)){
+	    								foreach($productCategories->GetProductCategoriesForASINResult->Self as $prodCat) {
+	    									$this->saveProductCategories($prodCat);
+	    								}
+	    							}
+	    							else
+	    								$this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
+	    						}
+	    					}
 	    				}
 	    			} /* else
 	    				$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], ""); */
@@ -888,7 +900,16 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	}
 	    	
 	    	ini_set('max_execution_time', $max_time);
-	    	return $this->generateSuccessRedirect($form);
+	    	$params = array();
+	    	$params["tab"] = $this->getRequest()->get("tab", 'amazon-feeds');
+	    	
+	    	return RedirectResponse::create(
+	    			URL::getInstance()->absoluteUrl(
+	    					'/admin/module/amazonintegration/', $params
+	    					)
+	    			);
+	    	
+	   // 	return $this->generateSuccessRedirect($form);
 	    //	die("Finish insert ranking from Amazon.");
     	
     	} catch (\Exception $e) {
@@ -899,6 +920,48 @@ class AmazonIntegrationContoller extends BaseAdminController
     				);
     		
     		return self::viewAction();
+    	}
+    }
+    
+    public function saveRanking($eanCode, $productId, $ref, $asin, $rank, $productCat) 
+    {
+    	$prodAmazon = new ProductAmazon();
+    	$prodAmazon->setEanCode($eanCode)
+	    	->setProductId($productId)
+	    	->setRef($ref)
+	    	->setASIN($asin)
+	    	->setRanking($rank)
+	    	->setAmazonCategoryId($productCat)
+	    	->save();
+    	
+    }
+    
+    public function saveProductCategories($productCategories) 
+    {
+    	if(isset($productCategories->ProductCategoryId)) {
+    		
+    		$checkProductCategory = AmazonProductCategoryQuery::create()
+    			->filterByCategoryId($productCategories->ProductCategoryId)
+	    		->findOne();
+    		
+	    	if(!$checkProductCategory) {
+    		
+	    		if(isset($productCategories->Parent)) {
+	    			$parentId = $productCategories->Parent->ProductCategoryId;
+	    		}
+	    		else 
+	    			$parentId = 0;
+	    		
+	    		$prodCategoryAmazon = new AmazonProductCategory();
+	    		$prodCategoryAmazon->setCategoryId($productCategories->ProductCategoryId)
+		    		->setParentId($parentId)
+		    		->setName($productCategories->ProductCategoryName)
+		    		->save();
+		    	
+		    	if(isset($productCategories->Parent)) {
+		    		$this->saveProductCategories($productCategories->Parent);
+		    	}
+	    	}
     	}
     }
     

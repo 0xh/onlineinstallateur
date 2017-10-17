@@ -2,8 +2,8 @@
 
 namespace AmazonIntegration\Model\Map;
 
-use AmazonIntegration\Model\ProductAmazon;
-use AmazonIntegration\Model\ProductAmazonQuery;
+use AmazonIntegration\Model\AmazonProductCategory;
+use AmazonIntegration\Model\AmazonProductCategoryQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'product_amazon' table.
+ * This class defines the structure of the 'amazon_product_category' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class ProductAmazonTableMap extends TableMap
+class AmazonProductCategoryTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'AmazonIntegration.Model.Map.ProductAmazonTableMap';
+    const CLASS_NAME = 'AmazonIntegration.Model.Map.AmazonProductCategoryTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class ProductAmazonTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'product_amazon';
+    const TABLE_NAME = 'amazon_product_category';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\AmazonIntegration\\Model\\ProductAmazon';
+    const OM_CLASS = '\\AmazonIntegration\\Model\\AmazonProductCategory';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'AmazonIntegration.Model.ProductAmazon';
+    const CLASS_DEFAULT = 'AmazonIntegration.Model.AmazonProductCategory';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,42 +68,22 @@ class ProductAmazonTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
-     * the column name for the ID field
+     * the column name for the CATEGORY_ID field
      */
-    const ID = 'product_amazon.ID';
+    const CATEGORY_ID = 'amazon_product_category.CATEGORY_ID';
 
     /**
-     * the column name for the PRODUCT_ID field
+     * the column name for the PARENT_ID field
      */
-    const PRODUCT_ID = 'product_amazon.PRODUCT_ID';
+    const PARENT_ID = 'amazon_product_category.PARENT_ID';
 
     /**
-     * the column name for the REF field
+     * the column name for the NAME field
      */
-    const REF = 'product_amazon.REF';
-
-    /**
-     * the column name for the EAN_CODE field
-     */
-    const EAN_CODE = 'product_amazon.EAN_CODE';
-
-    /**
-     * the column name for the ASIN field
-     */
-    const ASIN = 'product_amazon.ASIN';
-
-    /**
-     * the column name for the RANKING field
-     */
-    const RANKING = 'product_amazon.RANKING';
-
-    /**
-     * the column name for the AMAZON_CATEGORY_ID field
-     */
-    const AMAZON_CATEGORY_ID = 'product_amazon.AMAZON_CATEGORY_ID';
+    const NAME = 'amazon_product_category.NAME';
 
     /**
      * The default string format for model objects of the related table
@@ -117,12 +97,12 @@ class ProductAmazonTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Ref', 'EanCode', 'ASIN', 'Ranking', 'AmazonCategoryId', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'productId', 'ref', 'eanCode', 'aSIN', 'ranking', 'amazonCategoryId', ),
-        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID, ProductAmazonTableMap::PRODUCT_ID, ProductAmazonTableMap::REF, ProductAmazonTableMap::EAN_CODE, ProductAmazonTableMap::ASIN, ProductAmazonTableMap::RANKING, ProductAmazonTableMap::AMAZON_CATEGORY_ID, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_ID', 'REF', 'EAN_CODE', 'ASIN', 'RANKING', 'AMAZON_CATEGORY_ID', ),
-        self::TYPE_FIELDNAME     => array('id', 'product_id', 'ref', 'ean_code', 'ASIN', 'ranking', 'amazon_category_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('CategoryId', 'ParentId', 'Name', ),
+        self::TYPE_STUDLYPHPNAME => array('categoryId', 'parentId', 'name', ),
+        self::TYPE_COLNAME       => array(AmazonProductCategoryTableMap::CATEGORY_ID, AmazonProductCategoryTableMap::PARENT_ID, AmazonProductCategoryTableMap::NAME, ),
+        self::TYPE_RAW_COLNAME   => array('CATEGORY_ID', 'PARENT_ID', 'NAME', ),
+        self::TYPE_FIELDNAME     => array('category_id', 'parent_id', 'name', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -132,12 +112,12 @@ class ProductAmazonTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Ref' => 2, 'EanCode' => 3, 'ASIN' => 4, 'Ranking' => 5, 'AmazonCategoryId' => 6, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productId' => 1, 'ref' => 2, 'eanCode' => 3, 'aSIN' => 4, 'ranking' => 5, 'amazonCategoryId' => 6, ),
-        self::TYPE_COLNAME       => array(ProductAmazonTableMap::ID => 0, ProductAmazonTableMap::PRODUCT_ID => 1, ProductAmazonTableMap::REF => 2, ProductAmazonTableMap::EAN_CODE => 3, ProductAmazonTableMap::ASIN => 4, ProductAmazonTableMap::RANKING => 5, ProductAmazonTableMap::AMAZON_CATEGORY_ID => 6, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_ID' => 1, 'REF' => 2, 'EAN_CODE' => 3, 'ASIN' => 4, 'RANKING' => 5, 'AMAZON_CATEGORY_ID' => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'ref' => 2, 'ean_code' => 3, 'ASIN' => 4, 'ranking' => 5, 'amazon_category_id' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('CategoryId' => 0, 'ParentId' => 1, 'Name' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('categoryId' => 0, 'parentId' => 1, 'name' => 2, ),
+        self::TYPE_COLNAME       => array(AmazonProductCategoryTableMap::CATEGORY_ID => 0, AmazonProductCategoryTableMap::PARENT_ID => 1, AmazonProductCategoryTableMap::NAME => 2, ),
+        self::TYPE_RAW_COLNAME   => array('CATEGORY_ID' => 0, 'PARENT_ID' => 1, 'NAME' => 2, ),
+        self::TYPE_FIELDNAME     => array('category_id' => 0, 'parent_id' => 1, 'name' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -150,19 +130,15 @@ class ProductAmazonTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('product_amazon');
-        $this->setPhpName('ProductAmazon');
-        $this->setClassName('\\AmazonIntegration\\Model\\ProductAmazon');
+        $this->setName('amazon_product_category');
+        $this->setPhpName('AmazonProductCategory');
+        $this->setClassName('\\AmazonIntegration\\Model\\AmazonProductCategory');
         $this->setPackage('AmazonIntegration.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('PRODUCT_ID', 'ProductId', 'INTEGER', false, null, null);
-        $this->addColumn('REF', 'Ref', 'VARCHAR', false, 255, null);
-        $this->addColumn('EAN_CODE', 'EanCode', 'VARCHAR', false, 255, null);
-        $this->addColumn('ASIN', 'ASIN', 'VARCHAR', false, 255, null);
-        $this->addColumn('RANKING', 'Ranking', 'INTEGER', false, 255, null);
-        $this->addColumn('AMAZON_CATEGORY_ID', 'AmazonCategoryId', 'VARCHAR', false, 45, null);
+        $this->addPrimaryKey('CATEGORY_ID', 'CategoryId', 'INTEGER', true, null, null);
+        $this->addColumn('PARENT_ID', 'ParentId', 'INTEGER', false, null, null);
+        $this->addColumn('NAME', 'Name', 'VARCHAR', false, 45, null);
     } // initialize()
 
     /**
@@ -186,11 +162,11 @@ class ProductAmazonTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -211,7 +187,7 @@ class ProductAmazonTableMap extends TableMap
             return (int) $row[
                             $indexType == TableMap::TYPE_NUM
                             ? 0 + $offset
-                            : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                            : self::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
     
@@ -228,7 +204,7 @@ class ProductAmazonTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? ProductAmazonTableMap::CLASS_DEFAULT : ProductAmazonTableMap::OM_CLASS;
+        return $withPrefix ? AmazonProductCategoryTableMap::CLASS_DEFAULT : AmazonProductCategoryTableMap::OM_CLASS;
     }
 
     /**
@@ -242,21 +218,21 @@ class ProductAmazonTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (ProductAmazon object, last column rank)
+     * @return array (AmazonProductCategory object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = ProductAmazonTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = ProductAmazonTableMap::getInstanceFromPool($key))) {
+        $key = AmazonProductCategoryTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = AmazonProductCategoryTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + ProductAmazonTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + AmazonProductCategoryTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ProductAmazonTableMap::OM_CLASS;
+            $cls = AmazonProductCategoryTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            ProductAmazonTableMap::addInstanceToPool($obj, $key);
+            AmazonProductCategoryTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -279,8 +255,8 @@ class ProductAmazonTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = ProductAmazonTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = ProductAmazonTableMap::getInstanceFromPool($key))) {
+            $key = AmazonProductCategoryTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = AmazonProductCategoryTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -289,7 +265,7 @@ class ProductAmazonTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ProductAmazonTableMap::addInstanceToPool($obj, $key);
+                AmazonProductCategoryTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -310,21 +286,13 @@ class ProductAmazonTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ProductAmazonTableMap::ID);
-            $criteria->addSelectColumn(ProductAmazonTableMap::PRODUCT_ID);
-            $criteria->addSelectColumn(ProductAmazonTableMap::REF);
-            $criteria->addSelectColumn(ProductAmazonTableMap::EAN_CODE);
-            $criteria->addSelectColumn(ProductAmazonTableMap::ASIN);
-            $criteria->addSelectColumn(ProductAmazonTableMap::RANKING);
-            $criteria->addSelectColumn(ProductAmazonTableMap::AMAZON_CATEGORY_ID);
+            $criteria->addSelectColumn(AmazonProductCategoryTableMap::CATEGORY_ID);
+            $criteria->addSelectColumn(AmazonProductCategoryTableMap::PARENT_ID);
+            $criteria->addSelectColumn(AmazonProductCategoryTableMap::NAME);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.PRODUCT_ID');
-            $criteria->addSelectColumn($alias . '.REF');
-            $criteria->addSelectColumn($alias . '.EAN_CODE');
-            $criteria->addSelectColumn($alias . '.ASIN');
-            $criteria->addSelectColumn($alias . '.RANKING');
-            $criteria->addSelectColumn($alias . '.AMAZON_CATEGORY_ID');
+            $criteria->addSelectColumn($alias . '.CATEGORY_ID');
+            $criteria->addSelectColumn($alias . '.PARENT_ID');
+            $criteria->addSelectColumn($alias . '.NAME');
         }
     }
 
@@ -337,7 +305,7 @@ class ProductAmazonTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(ProductAmazonTableMap::DATABASE_NAME)->getTable(ProductAmazonTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(AmazonProductCategoryTableMap::DATABASE_NAME)->getTable(AmazonProductCategoryTableMap::TABLE_NAME);
     }
 
     /**
@@ -345,16 +313,16 @@ class ProductAmazonTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(ProductAmazonTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(ProductAmazonTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new ProductAmazonTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(AmazonProductCategoryTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(AmazonProductCategoryTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new AmazonProductCategoryTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a ProductAmazon or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a AmazonProductCategory or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ProductAmazon object or primary key or array of primary keys
+     * @param mixed               $values Criteria or AmazonProductCategory object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -365,25 +333,25 @@ class ProductAmazonTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProductAmazonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AmazonProductCategoryTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \AmazonIntegration\Model\ProductAmazon) { // it's a model object
+        } elseif ($values instanceof \AmazonIntegration\Model\AmazonProductCategory) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ProductAmazonTableMap::DATABASE_NAME);
-            $criteria->add(ProductAmazonTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(AmazonProductCategoryTableMap::DATABASE_NAME);
+            $criteria->add(AmazonProductCategoryTableMap::CATEGORY_ID, (array) $values, Criteria::IN);
         }
 
-        $query = ProductAmazonQuery::create()->mergeWith($criteria);
+        $query = AmazonProductCategoryQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { ProductAmazonTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { AmazonProductCategoryTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { ProductAmazonTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { AmazonProductCategoryTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -391,20 +359,20 @@ class ProductAmazonTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the product_amazon table.
+     * Deletes all rows from the amazon_product_category table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return ProductAmazonQuery::create()->doDeleteAll($con);
+        return AmazonProductCategoryQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a ProductAmazon or Criteria object.
+     * Performs an INSERT on the database, given a AmazonProductCategory or Criteria object.
      *
-     * @param mixed               $criteria Criteria or ProductAmazon object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or AmazonProductCategory object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -413,22 +381,18 @@ class ProductAmazonTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProductAmazonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AmazonProductCategoryTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from ProductAmazon object
-        }
-
-        if ($criteria->containsKey(ProductAmazonTableMap::ID) && $criteria->keyContainsValue(ProductAmazonTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ProductAmazonTableMap::ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from AmazonProductCategory object
         }
 
 
         // Set the correct dbName
-        $query = ProductAmazonQuery::create()->mergeWith($criteria);
+        $query = AmazonProductCategoryQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -444,7 +408,7 @@ class ProductAmazonTableMap extends TableMap
         return $pk;
     }
 
-} // ProductAmazonTableMap
+} // AmazonProductCategoryTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-ProductAmazonTableMap::buildTableMap();
+AmazonProductCategoryTableMap::buildTableMap();

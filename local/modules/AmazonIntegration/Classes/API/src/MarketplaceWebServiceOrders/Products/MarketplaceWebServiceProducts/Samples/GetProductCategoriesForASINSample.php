@@ -21,7 +21,9 @@
  * Get Product Categories For ASIN Sample
  */
 
-require_once('.config.inc.php');
+/* require_once('.config.inc.php'); */
+include_once dirname(__FILE__) . '/../Model/GetProductCategoriesForASINRequest.php';
+include_once dirname(__FILE__) . '/../Client.php';
 
 /************************************************************************
  * Instantiate Implementation of MarketplaceWebServiceProducts
@@ -34,7 +36,7 @@ require_once('.config.inc.php');
 // North America:
 //$serviceUrl = "https://mws.amazonservices.com/Products/2011-10-01";
 // Europe
-//$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
+$serviceUrl = "https://mws-eu.amazonservices.com/Products/2011-10-01";
 // Japan
 //$serviceUrl = "https://mws.amazonservices.jp/Products/2011-10-01";
 // China
@@ -74,10 +76,9 @@ require_once('.config.inc.php');
  * sample for Get Product Categories For ASIN Action
  ***********************************************************************/
  // @TODO: set request. Action can be passed as MarketplaceWebServiceProducts_Model_GetProductCategoriesForASIN
- $request = new MarketplaceWebServiceProducts_Model_GetProductCategoriesForASINRequest();
- $request->setSellerId(MERCHANT_ID);
- // object or array of parameters
- invokeGetProductCategoriesForASIN($service, $request);
+ $requestCat= new MarketplaceWebServiceProducts_Model_GetProductCategoriesForASINRequest();
+ $requestCat->setSellerId(MERCHANT_ID);
+ $requestCat->setMarketplaceId(MARKETPLACE_ID);
 
 /**
   * Get Get Product Categories For ASIN Action Sample
@@ -87,22 +88,27 @@ require_once('.config.inc.php');
   * @param MarketplaceWebServiceProducts_Interface $service instance of MarketplaceWebServiceProducts_Interface
   * @param mixed $request MarketplaceWebServiceProducts_Model_GetProductCategoriesForASIN or array of parameters
   */
-
-  function invokeGetProductCategoriesForASIN(MarketplaceWebServiceProducts_Interface $service, $request)
+ if (!function_exists('invokeGetProductCategoriesForASIN')) {
+ function invokeGetProductCategoriesForASIN(MarketplaceWebServiceProducts_Interface $service, $requestCat)
   {
       try {
-        $response = $service->GetProductCategoriesForASIN($request);
+      	$response = $service->GetProductCategoriesForASIN($requestCat);
 
         echo ("Service Response\n");
         echo ("=============================================================================\n");
-
+        
         $dom = new DOMDocument();
         $dom->loadXML($response->toXML());
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        echo $dom->saveXML();
-        echo("ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata() . "\n");
-
+        
+        $xml = $dom->saveXML();
+        $orderdata = new SimpleXMLElement($xml);
+        $array = json_encode($orderdata, TRUE);
+        $result = json_decode($array);
+        
+        return $result;
+        
      } catch (MarketplaceWebServiceProducts_Exception $ex) {
         echo("Caught Exception: " . $ex->getMessage() . "\n");
         echo("Response Status Code: " . $ex->getStatusCode() . "\n");
@@ -113,4 +119,4 @@ require_once('.config.inc.php');
         echo("ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "\n");
      }
  }
-
+ }

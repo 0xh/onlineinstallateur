@@ -4,8 +4,8 @@ namespace AmazonIntegration\Model\Base;
 
 use \Exception;
 use \PDO;
-use AmazonIntegration\Model\ProductAmazonQuery as ChildProductAmazonQuery;
-use AmazonIntegration\Model\Map\ProductAmazonTableMap;
+use AmazonIntegration\Model\AmazonProductCategoryQuery as ChildAmazonProductCategoryQuery;
+use AmazonIntegration\Model\Map\AmazonProductCategoryTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -17,12 +17,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
-abstract class ProductAmazon implements ActiveRecordInterface 
+abstract class AmazonProductCategory implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\AmazonIntegration\\Model\\Map\\ProductAmazonTableMap';
+    const TABLE_MAP = '\\AmazonIntegration\\Model\\Map\\AmazonProductCategoryTableMap';
 
 
     /**
@@ -52,46 +52,22 @@ abstract class ProductAmazon implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the category_id field.
      * @var        int
      */
-    protected $id;
+    protected $category_id;
 
     /**
-     * The value for the product_id field.
+     * The value for the parent_id field.
      * @var        int
      */
-    protected $product_id;
+    protected $parent_id;
 
     /**
-     * The value for the ref field.
+     * The value for the name field.
      * @var        string
      */
-    protected $ref;
-
-    /**
-     * The value for the ean_code field.
-     * @var        string
-     */
-    protected $ean_code;
-
-    /**
-     * The value for the asin field.
-     * @var        string
-     */
-    protected $asin;
-
-    /**
-     * The value for the ranking field.
-     * @var        int
-     */
-    protected $ranking;
-
-    /**
-     * The value for the amazon_category_id field.
-     * @var        string
-     */
-    protected $amazon_category_id;
+    protected $name;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,7 +78,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of AmazonIntegration\Model\Base\ProductAmazon object.
+     * Initializes internal state of AmazonIntegration\Model\Base\AmazonProductCategory object.
      */
     public function __construct()
     {
@@ -197,9 +173,9 @@ abstract class ProductAmazon implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>ProductAmazon</code> instance.  If
-     * <code>obj</code> is an instance of <code>ProductAmazon</code>, delegates to
-     * <code>equals(ProductAmazon)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>AmazonProductCategory</code> instance.  If
+     * <code>obj</code> is an instance of <code>AmazonProductCategory</code>, delegates to
+     * <code>equals(AmazonProductCategory)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -282,7 +258,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return ProductAmazon The current object, for fluid interface
+     * @return AmazonProductCategory The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -314,7 +290,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return ProductAmazon The current object, for fluid interface
+     * @return AmazonProductCategory The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -360,228 +336,100 @@ abstract class ProductAmazon implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [category_id] column value.
      * 
      * @return   int
      */
-    public function getId()
+    public function getCategoryId()
     {
 
-        return $this->id;
+        return $this->category_id;
     }
 
     /**
-     * Get the [product_id] column value.
+     * Get the [parent_id] column value.
      * 
      * @return   int
      */
-    public function getProductId()
+    public function getParentId()
     {
 
-        return $this->product_id;
+        return $this->parent_id;
     }
 
     /**
-     * Get the [ref] column value.
+     * Get the [name] column value.
      * 
      * @return   string
      */
-    public function getRef()
+    public function getName()
     {
 
-        return $this->ref;
+        return $this->name;
     }
 
     /**
-     * Get the [ean_code] column value.
-     * 
-     * @return   string
-     */
-    public function getEanCode()
-    {
-
-        return $this->ean_code;
-    }
-
-    /**
-     * Get the [asin] column value.
-     * 
-     * @return   string
-     */
-    public function getASIN()
-    {
-
-        return $this->asin;
-    }
-
-    /**
-     * Get the [ranking] column value.
-     * 
-     * @return   int
-     */
-    public function getRanking()
-    {
-
-        return $this->ranking;
-    }
-
-    /**
-     * Get the [amazon_category_id] column value.
-     * 
-     * @return   string
-     */
-    public function getAmazonCategoryId()
-    {
-
-        return $this->amazon_category_id;
-    }
-
-    /**
-     * Set the value of [id] column.
+     * Set the value of [category_id] column.
      * 
      * @param      int $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     * @return   \AmazonIntegration\Model\AmazonProductCategory The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setCategoryId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::ID] = true;
+        if ($this->category_id !== $v) {
+            $this->category_id = $v;
+            $this->modifiedColumns[AmazonProductCategoryTableMap::CATEGORY_ID] = true;
         }
 
 
         return $this;
-    } // setId()
+    } // setCategoryId()
 
     /**
-     * Set the value of [product_id] column.
+     * Set the value of [parent_id] column.
      * 
      * @param      int $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     * @return   \AmazonIntegration\Model\AmazonProductCategory The current object (for fluent API support)
      */
-    public function setProductId($v)
+    public function setParentId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::PRODUCT_ID] = true;
+        if ($this->parent_id !== $v) {
+            $this->parent_id = $v;
+            $this->modifiedColumns[AmazonProductCategoryTableMap::PARENT_ID] = true;
         }
 
 
         return $this;
-    } // setProductId()
+    } // setParentId()
 
     /**
-     * Set the value of [ref] column.
+     * Set the value of [name] column.
      * 
      * @param      string $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     * @return   \AmazonIntegration\Model\AmazonProductCategory The current object (for fluent API support)
      */
-    public function setRef($v)
+    public function setName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->ref !== $v) {
-            $this->ref = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::REF] = true;
+        if ($this->name !== $v) {
+            $this->name = $v;
+            $this->modifiedColumns[AmazonProductCategoryTableMap::NAME] = true;
         }
 
 
         return $this;
-    } // setRef()
-
-    /**
-     * Set the value of [ean_code] column.
-     * 
-     * @param      string $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
-     */
-    public function setEanCode($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->ean_code !== $v) {
-            $this->ean_code = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::EAN_CODE] = true;
-        }
-
-
-        return $this;
-    } // setEanCode()
-
-    /**
-     * Set the value of [asin] column.
-     * 
-     * @param      string $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
-     */
-    public function setASIN($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->asin !== $v) {
-            $this->asin = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::ASIN] = true;
-        }
-
-
-        return $this;
-    } // setASIN()
-
-    /**
-     * Set the value of [ranking] column.
-     * 
-     * @param      int $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
-     */
-    public function setRanking($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->ranking !== $v) {
-            $this->ranking = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::RANKING] = true;
-        }
-
-
-        return $this;
-    } // setRanking()
-
-    /**
-     * Set the value of [amazon_category_id] column.
-     * 
-     * @param      string $v new value
-     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
-     */
-    public function setAmazonCategoryId($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->amazon_category_id !== $v) {
-            $this->amazon_category_id = $v;
-            $this->modifiedColumns[ProductAmazonTableMap::AMAZON_CATEGORY_ID] = true;
-        }
-
-
-        return $this;
-    } // setAmazonCategoryId()
+    } // setName()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -620,26 +468,14 @@ abstract class ProductAmazon implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ProductAmazonTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AmazonProductCategoryTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ProductAmazonTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->product_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AmazonProductCategoryTableMap::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->parent_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ProductAmazonTableMap::translateFieldName('Ref', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->ref = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ProductAmazonTableMap::translateFieldName('EanCode', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->ean_code = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ProductAmazonTableMap::translateFieldName('ASIN', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->asin = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ProductAmazonTableMap::translateFieldName('Ranking', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->ranking = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductAmazonTableMap::translateFieldName('AmazonCategoryId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->amazon_category_id = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AmazonProductCategoryTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->name = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -648,10 +484,10 @@ abstract class ProductAmazon implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = ProductAmazonTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = AmazonProductCategoryTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \AmazonIntegration\Model\ProductAmazon object", 0, $e);
+            throw new PropelException("Error populating \AmazonIntegration\Model\AmazonProductCategory object", 0, $e);
         }
     }
 
@@ -693,13 +529,13 @@ abstract class ProductAmazon implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ProductAmazonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(AmazonProductCategoryTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildProductAmazonQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildAmazonProductCategoryQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -718,8 +554,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see ProductAmazon::setDeleted()
-     * @see ProductAmazon::isDeleted()
+     * @see AmazonProductCategory::setDeleted()
+     * @see AmazonProductCategory::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -728,12 +564,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProductAmazonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AmazonProductCategoryTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildProductAmazonQuery::create()
+            $deleteQuery = ChildAmazonProductCategoryQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -770,7 +606,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ProductAmazonTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AmazonProductCategoryTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -790,7 +626,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ProductAmazonTableMap::addInstanceToPool($this);
+                AmazonProductCategoryTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -851,36 +687,20 @@ abstract class ProductAmazon implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ProductAmazonTableMap::ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ProductAmazonTableMap::ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ProductAmazonTableMap::ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::CATEGORY_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_ID';
         }
-        if ($this->isColumnModified(ProductAmazonTableMap::PRODUCT_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'PRODUCT_ID';
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::PARENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'PARENT_ID';
         }
-        if ($this->isColumnModified(ProductAmazonTableMap::REF)) {
-            $modifiedColumns[':p' . $index++]  = 'REF';
-        }
-        if ($this->isColumnModified(ProductAmazonTableMap::EAN_CODE)) {
-            $modifiedColumns[':p' . $index++]  = 'EAN_CODE';
-        }
-        if ($this->isColumnModified(ProductAmazonTableMap::ASIN)) {
-            $modifiedColumns[':p' . $index++]  = 'ASIN';
-        }
-        if ($this->isColumnModified(ProductAmazonTableMap::RANKING)) {
-            $modifiedColumns[':p' . $index++]  = 'RANKING';
-        }
-        if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'AMAZON_CATEGORY_ID';
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'NAME';
         }
 
         $sql = sprintf(
-            'INSERT INTO product_amazon (%s) VALUES (%s)',
+            'INSERT INTO amazon_product_category (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -889,26 +709,14 @@ abstract class ProductAmazon implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'CATEGORY_ID':                        
+                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
                         break;
-                    case 'PRODUCT_ID':                        
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                    case 'PARENT_ID':                        
+                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
                         break;
-                    case 'REF':                        
-                        $stmt->bindValue($identifier, $this->ref, PDO::PARAM_STR);
-                        break;
-                    case 'EAN_CODE':                        
-                        $stmt->bindValue($identifier, $this->ean_code, PDO::PARAM_STR);
-                        break;
-                    case 'ASIN':                        
-                        $stmt->bindValue($identifier, $this->asin, PDO::PARAM_STR);
-                        break;
-                    case 'RANKING':                        
-                        $stmt->bindValue($identifier, $this->ranking, PDO::PARAM_INT);
-                        break;
-                    case 'AMAZON_CATEGORY_ID':                        
-                        $stmt->bindValue($identifier, $this->amazon_category_id, PDO::PARAM_STR);
+                    case 'NAME':                        
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -917,13 +725,6 @@ abstract class ProductAmazon implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', 0, $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -956,7 +757,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProductAmazonTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AmazonProductCategoryTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -973,25 +774,13 @@ abstract class ProductAmazon implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getCategoryId();
                 break;
             case 1:
-                return $this->getProductId();
+                return $this->getParentId();
                 break;
             case 2:
-                return $this->getRef();
-                break;
-            case 3:
-                return $this->getEanCode();
-                break;
-            case 4:
-                return $this->getASIN();
-                break;
-            case 5:
-                return $this->getRanking();
-                break;
-            case 6:
-                return $this->getAmazonCategoryId();
+                return $this->getName();
                 break;
             default:
                 return null;
@@ -1015,19 +804,15 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['ProductAmazon'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['AmazonProductCategory'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['ProductAmazon'][$this->getPrimaryKey()] = true;
-        $keys = ProductAmazonTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['AmazonProductCategory'][$this->getPrimaryKey()] = true;
+        $keys = AmazonProductCategoryTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getProductId(),
-            $keys[2] => $this->getRef(),
-            $keys[3] => $this->getEanCode(),
-            $keys[4] => $this->getASIN(),
-            $keys[5] => $this->getRanking(),
-            $keys[6] => $this->getAmazonCategoryId(),
+            $keys[0] => $this->getCategoryId(),
+            $keys[1] => $this->getParentId(),
+            $keys[2] => $this->getName(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1051,7 +836,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ProductAmazonTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AmazonProductCategoryTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1068,25 +853,13 @@ abstract class ProductAmazon implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setCategoryId($value);
                 break;
             case 1:
-                $this->setProductId($value);
+                $this->setParentId($value);
                 break;
             case 2:
-                $this->setRef($value);
-                break;
-            case 3:
-                $this->setEanCode($value);
-                break;
-            case 4:
-                $this->setASIN($value);
-                break;
-            case 5:
-                $this->setRanking($value);
-                break;
-            case 6:
-                $this->setAmazonCategoryId($value);
+                $this->setName($value);
                 break;
         } // switch()
     }
@@ -1110,15 +883,11 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ProductAmazonTableMap::getFieldNames($keyType);
+        $keys = AmazonProductCategoryTableMap::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setProductId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setRef($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setEanCode($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setASIN($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setRanking($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setAmazonCategoryId($arr[$keys[6]]);
+        if (array_key_exists($keys[0], $arr)) $this->setCategoryId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setParentId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
     }
 
     /**
@@ -1128,15 +897,11 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ProductAmazonTableMap::DATABASE_NAME);
+        $criteria = new Criteria(AmazonProductCategoryTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ProductAmazonTableMap::ID)) $criteria->add(ProductAmazonTableMap::ID, $this->id);
-        if ($this->isColumnModified(ProductAmazonTableMap::PRODUCT_ID)) $criteria->add(ProductAmazonTableMap::PRODUCT_ID, $this->product_id);
-        if ($this->isColumnModified(ProductAmazonTableMap::REF)) $criteria->add(ProductAmazonTableMap::REF, $this->ref);
-        if ($this->isColumnModified(ProductAmazonTableMap::EAN_CODE)) $criteria->add(ProductAmazonTableMap::EAN_CODE, $this->ean_code);
-        if ($this->isColumnModified(ProductAmazonTableMap::ASIN)) $criteria->add(ProductAmazonTableMap::ASIN, $this->asin);
-        if ($this->isColumnModified(ProductAmazonTableMap::RANKING)) $criteria->add(ProductAmazonTableMap::RANKING, $this->ranking);
-        if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) $criteria->add(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $this->amazon_category_id);
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::CATEGORY_ID)) $criteria->add(AmazonProductCategoryTableMap::CATEGORY_ID, $this->category_id);
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::PARENT_ID)) $criteria->add(AmazonProductCategoryTableMap::PARENT_ID, $this->parent_id);
+        if ($this->isColumnModified(AmazonProductCategoryTableMap::NAME)) $criteria->add(AmazonProductCategoryTableMap::NAME, $this->name);
 
         return $criteria;
     }
@@ -1151,8 +916,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ProductAmazonTableMap::DATABASE_NAME);
-        $criteria->add(ProductAmazonTableMap::ID, $this->id);
+        $criteria = new Criteria(AmazonProductCategoryTableMap::DATABASE_NAME);
+        $criteria->add(AmazonProductCategoryTableMap::CATEGORY_ID, $this->category_id);
 
         return $criteria;
     }
@@ -1163,18 +928,18 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getCategoryId();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (category_id column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setCategoryId($key);
     }
 
     /**
@@ -1184,7 +949,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getId();
+        return null === $this->getCategoryId();
     }
 
     /**
@@ -1193,22 +958,18 @@ abstract class ProductAmazon implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \AmazonIntegration\Model\ProductAmazon (or compatible) type.
+     * @param      object $copyObj An object of \AmazonIntegration\Model\AmazonProductCategory (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setProductId($this->getProductId());
-        $copyObj->setRef($this->getRef());
-        $copyObj->setEanCode($this->getEanCode());
-        $copyObj->setASIN($this->getASIN());
-        $copyObj->setRanking($this->getRanking());
-        $copyObj->setAmazonCategoryId($this->getAmazonCategoryId());
+        $copyObj->setCategoryId($this->getCategoryId());
+        $copyObj->setParentId($this->getParentId());
+        $copyObj->setName($this->getName());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1221,7 +982,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \AmazonIntegration\Model\ProductAmazon Clone of current object.
+     * @return                 \AmazonIntegration\Model\AmazonProductCategory Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1239,13 +1000,9 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function clear()
     {
-        $this->id = null;
-        $this->product_id = null;
-        $this->ref = null;
-        $this->ean_code = null;
-        $this->asin = null;
-        $this->ranking = null;
-        $this->amazon_category_id = null;
+        $this->category_id = null;
+        $this->parent_id = null;
+        $this->name = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1276,7 +1033,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ProductAmazonTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(AmazonProductCategoryTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**
