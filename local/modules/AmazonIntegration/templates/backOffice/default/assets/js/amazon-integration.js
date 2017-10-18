@@ -1,3 +1,10 @@
+function sortByDate() {
+	$( '.filter' ).change(function() {
+	  	pos = 'sort=' + $('.position_sorting').val();
+  		window.location.href = '?' + pos;
+	});
+}
+
 function getAndUpdateOrders() {
 	
 	$('#wait').show();
@@ -13,10 +20,12 @@ function getAndUpdateOrders() {
 	     .done(function (data) {
 	    	 console.log(data);
 	    	 $('#wait').hide();
+	    	 location.reload();
 	     })
 	     .fail(function (data) {
 	    	 console.log(data.responseText);
 	    	 $('#wait').hide();
+	    	 location.reload();
 	     })     
 }
 

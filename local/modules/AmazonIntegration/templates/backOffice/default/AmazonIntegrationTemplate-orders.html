@@ -19,6 +19,26 @@
 		</div>
 		
 		<p>Orders from amazon:</p>
+		<div class="txt-div" >
+			<div class="sidebar-search col-md-4">
+				<h5  id="search-label">{intl l="Search by AmazonOrderId" d="criteriasearch.fo.default"}</h5>
+		        <form action="{url path='/admin/module/amazonintegration'}">                                        
+		            <div class="input-group">
+		                <input type="text" class="form-control" id="search_term" name="search_term" placeholder="{intl l='Search'}" value="{trim($smarty.get.search_term)}">
+		                <span class="input-group-btn">
+		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+		                </span>
+		            </div>
+		        </form>
+		    </div>
+			<div class="block block-nav col-md-2 text-left" role="navigation" aria-labelledby="search-label">
+			    <h5  id="search-label">{intl l="Sorting by PurchaseDate" d="criteriasearch.fo.default"}</h5>
+			    <select class="filter position_sorting">
+			    	<option value="desc" {if $smarty.get.sort|strstr:"desc"}selected{/if}>{intl l="Desc"}</option>
+			    	<option value="asc" {if $smarty.get.sort|strstr:"asc"}selected{/if}>{intl l="Asc"}</option>
+			    </select>
+			</div>
+		</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -27,8 +47,10 @@
 					<th>PurchaseDate</th>
 					<th>LastUpdateDate</th>
 					<th>OrderStatus</th>
+					<th>NumberOfItemsShipped</th>
+					<th>OrderTotalAmount</th>
 					<th>SalesChannel</th>
-					<th>OrderTotal</th>
+					<th>ShipServiceLevel</th>
 				</tr>
 			</thead>
 			<tbody>  
@@ -39,8 +61,10 @@
 					<td>{$purchase_date}</td>
 					<td>{$last_update_date}</td>
 					<td>{$order_status}</td>
-					<td>{$ship_service_level}</td>
+					<td>{$number_of_items_shipped}</td>
 					<td>{$order_total_amount} {$order_total_currency_code}</td>
+					<td>{$sales_channel}</td>
+					<td>{$ship_service_level}</td>
 				</tr>
                  
                {/loop}

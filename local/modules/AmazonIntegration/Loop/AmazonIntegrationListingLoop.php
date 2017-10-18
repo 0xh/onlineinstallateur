@@ -9,6 +9,7 @@ use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use Doctrine\Common\Collections\Criteria;
+use Map\AmazonOrdersTableMap;
 
 /**
  * AmazonIntegrationListing loop
@@ -50,6 +51,7 @@ class AmazonIntegrationListingLoop extends BaseI18nLoop implements PropelSearchL
                 ->set("sales_channel", $listing->getSalesChannel())
                 ->set("ship_service_level", $listing->getShipServiceLevel())
                 ->set("order_total_amount", $listing->getOrderTotalAmount())
+                ->set("number_of_items_shipped", $listing->getNumberOfItemsUnshipped())
                 ->set("order_total_currency_code", $listing->getOrderTotalCurrencyCode());
             
             $loopResult->addRow($loopResultRow);
@@ -60,7 +62,24 @@ class AmazonIntegrationListingLoop extends BaseI18nLoop implements PropelSearchL
 
     public function buildModelCriteria()
     {
-        $query = AmazonOrdersQuery::create()->orderByPurchaseDate(Criteria::DESC);
+        $sort = (isset($_GET["sort"]) && $_GET["sort"] == "asc") ? Criteria::ASC : Criteria::DESC;
+        
+        $orderAmazonId = isset($_GET["search_term"]) ? $_GET["search_term"] : false;
+
+        if ($orderAmazonId)
+            $query = $this->sortByAmazonId($orderAmazonId, $sort);
+        else 
+            $query = AmazonOrdersQuery::create()
+                        ->orderByPurchaseDate($sort);
+
+        return $query;
+    }
+    
+    protected function sortByAmazonId($orderAmazonId, $sort){
+        $query = AmazonOrdersQuery::create()
+            ->where(AmazonOrdersTableMap::ID.' =?', $orderAmazonId, \PDO::PARAM_STR)
+            ->orderByPurchaseDate($sort);
+        
         return $query;
     }
 }
