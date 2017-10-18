@@ -110,21 +110,22 @@ class BMDOrderExport extends AbstractExport
 		$processedData['gkto'] = "4000";
 		$processedData['extbelegnr'] = "";
 		
-		$betrag = round($processedData['betrag'],2);
+		// betrag = betrag + steuer (leiferungkosten)
+		$betrag = round($processedData['betrag']+$processedData['steuer'],2);
 		$processedData['steuer'] = round(-($betrag/1.2)*0.2,2);
-		$processedData['betrag'] = round($betrag + $processedData['steuer'],2);
-		
+		$processedData['betrag'] = $betrag;//round($betrag + $processedData['steuer'],2);
+		//Tlog::getInstance()->error("steuer ".round(-(137.15/1.2)*0.2,2)." betrag ");
 		$status = $processedData['skontotage'];
 		if($status == "Zurückerstattet") {
 			$processedData['steuer'] = -$processedData['steuer'];
 			$processedData['betrag'] = -$processedData['betrag'];
 			$processedData['text'] = "Gutschrift";
 		}
-		Tlog::getInstance()->error($status);
+		//Tlog::getInstance()->error($status);
 
 		$processedData['mwst'] = "20";
 		
-		$invoiceDate = date("Y.m.d", strtotime($processedData['buchdat']));	
+		$invoiceDate = date("Ymd", strtotime($processedData['buchdat']));	
 		$processedData['buchdat'] = $invoiceDate;
 		$processedData['belegdat'] = $processedData['buchdat'];
 		
