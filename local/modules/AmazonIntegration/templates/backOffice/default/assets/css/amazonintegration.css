@@ -8,7 +8,7 @@
     padding: 10px;
 }
 
-.modal {
+.modal-loading {
     display:    none;
     position:   fixed;
     z-index:    1000;

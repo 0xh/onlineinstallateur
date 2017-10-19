@@ -15,10 +15,12 @@
 	
     <loops>
         <loop name="amazon_orders_listing" class="AmazonIntegration\Loop\AmazonIntegrationListingLoop" />
+        <loop name="amazon_config_marketplace" class="AmazonIntegration\Loop\AmazonIntegrationMarketPlaceIdLoop" />
     </loops>
     
     <forms>
         <form name="amazonintegration.form.configure" class="AmazonIntegration\Form\ConfigurationForm" />
+        <form name="amazonintegration.addmarketplaceid.form" class="AmazonIntegration\Form\MarketPlaceIdForm" />
         <form name="amazonintegration.rankings.form" class="AmazonIntegration\Form\GetRankingsForm" />
     </forms>
     

@@ -68,13 +68,13 @@ class ConfigurationForm extends BaseForm
                 new NotBlank()
             ],
             'label' => $this->translator->trans('MERCHANT ID', [], AmazonIntegration::DOMAIN_NAME)
-        ])
-            ->add("MARKETPLACE_ID", "text", [
-            'constraints' => [
-                new NotBlank()
-            ],
-            'label' => $this->translator->trans('MARKETPLACE ID', [], AmazonIntegration::DOMAIN_NAME)
         ]);
+//             ->add("MARKETPLACE_ID", "text", [
+//             'constraints' => [
+//                 new NotBlank()
+//             ],
+//             'label' => $this->translator->trans('MARKETPLACE ID', [], AmazonIntegration::DOMAIN_NAME)
+//         ]);
     }
 
     /**

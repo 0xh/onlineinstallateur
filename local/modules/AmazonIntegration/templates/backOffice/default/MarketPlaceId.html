@@ -1,0 +1,66 @@
+
+<div class="txt-div" >
+<table class="table table-striped">
+	<tbody>
+		<tr>
+		{form name="amazonintegration.addmarketplaceid.form"}
+			<form action="{url path='/admin/module/amazonintegration/marketplace/add'}" method="post">
+				{form_hidden_fields form=$form}
+				{if $form_error}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="alert alert-danger">{$form_error_message}</div>
+						</div>
+					</div>
+				{/if}
+				<td>#</td>
+				<td>{render_form_field form=$form field="marketplaceid" value=$marketplaceid}</td>
+				<td>{render_form_field form=$form field="marketplace" value=$marketplace}</td>
+				<td>
+					<button type="submit" class="btn btn-primary action-btn"
+						title="{intl l='Add'}" data-toggle="modal">
+						<span class="glyphicon glyphicon-plus-sign"></span>
+					</button>
+				</td>
+			</form>
+		{/form}
+		</tr>
+		{loop name="amazon_config_marketplace" type="amazon_config_marketplace" limit=20}
+			<tr>
+				{form name="amazonintegration.addmarketplaceid.form"}
+					<form action="{url path='/admin/module/amazonintegration/marketplace/update'}" method="post">
+						{form_hidden_fields form=$form}
+						<td>#</td>
+						<td>{render_form_field form=$form field="marketplaceid" value=$marketPlaceValue}</td>
+						<td style="pointer-events: none;">{render_form_field form=$form field="marketplace" value=$marketPlaceName}</td>
+						<td>
+							<button type="submit" name="save_mode" value="stay"
+								class="form-submit-button btn btn-sm btn-default btn-success"
+								title="{intl l="Update"}">
+								{intl l="Update"} <span class="glyphicon glyphicon-ok"></span>
+							</button>
+						</td>
+					</form>
+				{/form}
+	
+				<td>
+					{form name="amazonintegration.addmarketplaceid.form"}
+						<form action="{url path='/admin/module/amazonintegration/marketplace/delete'}"
+							method="post">
+							{form_hidden_fields form=$form}
+							<button type="submit" class="btn btn-danger action-btn"
+								title="{intl l='Delete marketplace'}" data-toggle="modal">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+							<td style="display: none;">{render_form_field form=$form field="marketplaceid" value=$marketPlaceValue}</td>
+							<td style="display: none;">{render_form_field form=$form field="marketplace" value=$marketPlaceName}</td>
+							
+						</form>
+					{/form}
+				</td>
+			</tr>
+		{/loop}
+	</tbody>
+</table>
+</div>
+
