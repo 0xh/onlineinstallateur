@@ -136,8 +136,8 @@ class AmazonProductCategoryTableMap extends TableMap
         $this->setPackage('AmazonIntegration.Model');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('CATEGORY_ID', 'CategoryId', 'INTEGER', true, null, null);
-        $this->addColumn('PARENT_ID', 'ParentId', 'INTEGER', false, null, null);
+        $this->addPrimaryKey('CATEGORY_ID', 'CategoryId', 'VARCHAR', true, 45, null);
+        $this->addColumn('PARENT_ID', 'ParentId', 'VARCHAR', false, 45, null);
         $this->addColumn('NAME', 'Name', 'VARCHAR', false, 45, null);
     } // initialize()
 
@@ -184,7 +184,7 @@ class AmazonProductCategoryTableMap extends TableMap
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
 
-            return (int) $row[
+            return (string) $row[
                             $indexType == TableMap::TYPE_NUM
                             ? 0 + $offset
                             : self::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)

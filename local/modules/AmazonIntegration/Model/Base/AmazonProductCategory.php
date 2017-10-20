@@ -53,13 +53,13 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
 
     /**
      * The value for the category_id field.
-     * @var        int
+     * @var        string
      */
     protected $category_id;
 
     /**
      * The value for the parent_id field.
-     * @var        int
+     * @var        string
      */
     protected $parent_id;
 
@@ -338,7 +338,7 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
     /**
      * Get the [category_id] column value.
      * 
-     * @return   int
+     * @return   string
      */
     public function getCategoryId()
     {
@@ -349,7 +349,7 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
     /**
      * Get the [parent_id] column value.
      * 
-     * @return   int
+     * @return   string
      */
     public function getParentId()
     {
@@ -371,13 +371,13 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
     /**
      * Set the value of [category_id] column.
      * 
-     * @param      int $v new value
+     * @param      string $v new value
      * @return   \AmazonIntegration\Model\AmazonProductCategory The current object (for fluent API support)
      */
     public function setCategoryId($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->category_id !== $v) {
@@ -392,13 +392,13 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
     /**
      * Set the value of [parent_id] column.
      * 
-     * @param      int $v new value
+     * @param      string $v new value
      * @return   \AmazonIntegration\Model\AmazonProductCategory The current object (for fluent API support)
      */
     public function setParentId($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->parent_id !== $v) {
@@ -469,10 +469,10 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
 
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AmazonProductCategoryTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->category_id = (null !== $col) ? (int) $col : null;
+            $this->category_id = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AmazonProductCategoryTableMap::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->parent_id = (null !== $col) ? (int) $col : null;
+            $this->parent_id = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AmazonProductCategoryTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
             $this->name = (null !== $col) ? (string) $col : null;
@@ -710,10 +710,10 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case 'CATEGORY_ID':                        
-                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_STR);
                         break;
                     case 'PARENT_ID':                        
-                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->parent_id, PDO::PARAM_STR);
                         break;
                     case 'NAME':                        
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
@@ -924,7 +924,7 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
 
     /**
      * Returns the primary key for this object (row).
-     * @return   int
+     * @return   string
      */
     public function getPrimaryKey()
     {
@@ -934,7 +934,7 @@ abstract class AmazonProductCategory implements ActiveRecordInterface
     /**
      * Generic method to set the primary key (category_id column).
      *
-     * @param       int $key Primary key.
+     * @param       string $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)

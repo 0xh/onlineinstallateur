@@ -54,6 +54,11 @@
 		</default>
 	</route>
 	
+	<route id="amazon.aws.description" path="/admin/module/amazonintegration/description/{productId}">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonAWSController::getDescription</default>
+		<requirement key="productId">.*</requirement>
+	</route>
+
     <route id="amazon.marketplace.add" path="/admin/module/amazonintegration/marketplace/add">
         <default key="_controller">AmazonIntegration\Controller\Admin\MarketPlaceIdController::addMarketPlace</default>
     </route>
@@ -65,4 +70,5 @@
     <route id="amazon.marketplace.delete" path="/admin/module/amazonintegration/marketplace/delete">
         <default key="_controller">AmazonIntegration\Controller\Admin\MarketPlaceIdController::deleteMarketPlace</default>
     </route>
+
 </routes>

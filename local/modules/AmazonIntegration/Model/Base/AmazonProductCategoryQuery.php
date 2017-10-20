@@ -33,12 +33,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonProductCategory findOne(ConnectionInterface $con = null) Return the first ChildAmazonProductCategory matching the query
  * @method     ChildAmazonProductCategory findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAmazonProductCategory matching the query, or a new ChildAmazonProductCategory object populated from the query conditions when no match is found
  *
- * @method     ChildAmazonProductCategory findOneByCategoryId(int $category_id) Return the first ChildAmazonProductCategory filtered by the category_id column
- * @method     ChildAmazonProductCategory findOneByParentId(int $parent_id) Return the first ChildAmazonProductCategory filtered by the parent_id column
+ * @method     ChildAmazonProductCategory findOneByCategoryId(string $category_id) Return the first ChildAmazonProductCategory filtered by the category_id column
+ * @method     ChildAmazonProductCategory findOneByParentId(string $parent_id) Return the first ChildAmazonProductCategory filtered by the parent_id column
  * @method     ChildAmazonProductCategory findOneByName(string $name) Return the first ChildAmazonProductCategory filtered by the name column
  *
- * @method     array findByCategoryId(int $category_id) Return ChildAmazonProductCategory objects filtered by the category_id column
- * @method     array findByParentId(int $parent_id) Return ChildAmazonProductCategory objects filtered by the parent_id column
+ * @method     array findByCategoryId(string $category_id) Return ChildAmazonProductCategory objects filtered by the category_id column
+ * @method     array findByParentId(string $parent_id) Return ChildAmazonProductCategory objects filtered by the parent_id column
  * @method     array findByName(string $name) Return ChildAmazonProductCategory objects filtered by the name column
  *
  */
@@ -131,7 +131,7 @@ abstract class AmazonProductCategoryQuery extends ModelCriteria
         $sql = 'SELECT CATEGORY_ID, PARENT_ID, NAME FROM amazon_product_category WHERE CATEGORY_ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
             Propel::log($e->getMessage(), Propel::LOG_ERR);
@@ -222,36 +222,24 @@ abstract class AmazonProductCategoryQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByCategoryId(1234); // WHERE category_id = 1234
-     * $query->filterByCategoryId(array(12, 34)); // WHERE category_id IN (12, 34)
-     * $query->filterByCategoryId(array('min' => 12)); // WHERE category_id > 12
+     * $query->filterByCategoryId('fooValue');   // WHERE category_id = 'fooValue'
+     * $query->filterByCategoryId('%fooValue%'); // WHERE category_id LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $categoryId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $categoryId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAmazonProductCategoryQuery The current query, for fluid interface
      */
     public function filterByCategoryId($categoryId = null, $comparison = null)
     {
-        if (is_array($categoryId)) {
-            $useMinMax = false;
-            if (isset($categoryId['min'])) {
-                $this->addUsingAlias(AmazonProductCategoryTableMap::CATEGORY_ID, $categoryId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($categoryId['max'])) {
-                $this->addUsingAlias(AmazonProductCategoryTableMap::CATEGORY_ID, $categoryId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($categoryId)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $categoryId)) {
+                $categoryId = str_replace('*', '%', $categoryId);
+                $comparison = Criteria::LIKE;
             }
         }
 
@@ -263,36 +251,24 @@ abstract class AmazonProductCategoryQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByParentId(1234); // WHERE parent_id = 1234
-     * $query->filterByParentId(array(12, 34)); // WHERE parent_id IN (12, 34)
-     * $query->filterByParentId(array('min' => 12)); // WHERE parent_id > 12
+     * $query->filterByParentId('fooValue');   // WHERE parent_id = 'fooValue'
+     * $query->filterByParentId('%fooValue%'); // WHERE parent_id LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $parentId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $parentId The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAmazonProductCategoryQuery The current query, for fluid interface
      */
     public function filterByParentId($parentId = null, $comparison = null)
     {
-        if (is_array($parentId)) {
-            $useMinMax = false;
-            if (isset($parentId['min'])) {
-                $this->addUsingAlias(AmazonProductCategoryTableMap::PARENT_ID, $parentId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($parentId['max'])) {
-                $this->addUsingAlias(AmazonProductCategoryTableMap::PARENT_ID, $parentId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($parentId)) {
                 $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $parentId)) {
+                $parentId = str_replace('*', '%', $parentId);
+                $comparison = Criteria::LIKE;
             }
         }
 
