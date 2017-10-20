@@ -147,11 +147,6 @@
     <index name="fk_a_amazon_order_id">
       <index-column name="amazon_order_id"/>
     </index>
-   <behavior name="timestampable" />
-	<behavior name="versionable">
-		<parameter name="log_created_at" value="true" />
-		<parameter name="log_created_by" value="true" />
-	</behavior>  
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>

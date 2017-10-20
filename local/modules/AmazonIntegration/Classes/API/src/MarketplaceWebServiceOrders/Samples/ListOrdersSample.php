@@ -103,7 +103,7 @@ $request->setSellerId(MERCHANT_ID);
 $request->setMarketplaceId(MARKETPLACE_ID);
 // $request->isSetMaxResultsPerPage()
 // object or array of parameters
-$orders = invokeListOrders($service, $request);
+// $orders = invokeListOrders($service, $request);
 
 /**
  * Get List Orders Action Sample
@@ -133,10 +133,6 @@ function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $reque
         $result = json_decode($array);
         if ($result) {
             
-//             echo "<pre>";
-//             var_dump($result);
-//             die;
-            
             if (isset($result->ListOrdersResult->NextToken))
                 $_SESSION['nxtToken'] = $result->ListOrdersResult->NextToken;
             else 
@@ -147,6 +143,7 @@ function invokeListOrders(MarketplaceWebServiceOrders_Interface $service, $reque
             }
         } else {
             AmazonIntegrationResponse::logError('error decoding json');
+            $_SESSION['finishedToGetOrders'] = true;
         }
         
         return $orders;

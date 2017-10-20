@@ -67,11 +67,6 @@ use Thelia\Model\OrderProduct;
  * @method     ChildAmazonOrderProductQuery orderByPriceDesignation($order = Criteria::ASC) Order by the price_designation column
  * @method     ChildAmazonOrderProductQuery orderByBuyerCustomizedURL($order = Criteria::ASC) Order by the buyer_customized_url column
  * @method     ChildAmazonOrderProductQuery orderByOrderProductId($order = Criteria::ASC) Order by the order_product_id column
- * @method     ChildAmazonOrderProductQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method     ChildAmazonOrderProductQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
- * @method     ChildAmazonOrderProductQuery orderByVersion($order = Criteria::ASC) Order by the version column
- * @method     ChildAmazonOrderProductQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
- * @method     ChildAmazonOrderProductQuery orderByVersionCreatedBy($order = Criteria::ASC) Order by the version_created_by column
  *
  * @method     ChildAmazonOrderProductQuery groupByOrderItemId() Group by the order_item_id column
  * @method     ChildAmazonOrderProductQuery groupByAmazonOrderId() Group by the amazon_order_id column
@@ -118,11 +113,6 @@ use Thelia\Model\OrderProduct;
  * @method     ChildAmazonOrderProductQuery groupByPriceDesignation() Group by the price_designation column
  * @method     ChildAmazonOrderProductQuery groupByBuyerCustomizedURL() Group by the buyer_customized_url column
  * @method     ChildAmazonOrderProductQuery groupByOrderProductId() Group by the order_product_id column
- * @method     ChildAmazonOrderProductQuery groupByCreatedAt() Group by the created_at column
- * @method     ChildAmazonOrderProductQuery groupByUpdatedAt() Group by the updated_at column
- * @method     ChildAmazonOrderProductQuery groupByVersion() Group by the version column
- * @method     ChildAmazonOrderProductQuery groupByVersionCreatedAt() Group by the version_created_at column
- * @method     ChildAmazonOrderProductQuery groupByVersionCreatedBy() Group by the version_created_by column
  *
  * @method     ChildAmazonOrderProductQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAmazonOrderProductQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -135,10 +125,6 @@ use Thelia\Model\OrderProduct;
  * @method     ChildAmazonOrderProductQuery leftJoinAmazonOrders($relationAlias = null) Adds a LEFT JOIN clause to the query using the AmazonOrders relation
  * @method     ChildAmazonOrderProductQuery rightJoinAmazonOrders($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AmazonOrders relation
  * @method     ChildAmazonOrderProductQuery innerJoinAmazonOrders($relationAlias = null) Adds a INNER JOIN clause to the query using the AmazonOrders relation
- *
- * @method     ChildAmazonOrderProductQuery leftJoinAmazonOrderProductVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the AmazonOrderProductVersion relation
- * @method     ChildAmazonOrderProductQuery rightJoinAmazonOrderProductVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AmazonOrderProductVersion relation
- * @method     ChildAmazonOrderProductQuery innerJoinAmazonOrderProductVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the AmazonOrderProductVersion relation
  *
  * @method     ChildAmazonOrderProduct findOne(ConnectionInterface $con = null) Return the first ChildAmazonOrderProduct matching the query
  * @method     ChildAmazonOrderProduct findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAmazonOrderProduct matching the query, or a new ChildAmazonOrderProduct object populated from the query conditions when no match is found
@@ -188,11 +174,6 @@ use Thelia\Model\OrderProduct;
  * @method     ChildAmazonOrderProduct findOneByPriceDesignation(string $price_designation) Return the first ChildAmazonOrderProduct filtered by the price_designation column
  * @method     ChildAmazonOrderProduct findOneByBuyerCustomizedURL(string $buyer_customized_url) Return the first ChildAmazonOrderProduct filtered by the buyer_customized_url column
  * @method     ChildAmazonOrderProduct findOneByOrderProductId(int $order_product_id) Return the first ChildAmazonOrderProduct filtered by the order_product_id column
- * @method     ChildAmazonOrderProduct findOneByCreatedAt(string $created_at) Return the first ChildAmazonOrderProduct filtered by the created_at column
- * @method     ChildAmazonOrderProduct findOneByUpdatedAt(string $updated_at) Return the first ChildAmazonOrderProduct filtered by the updated_at column
- * @method     ChildAmazonOrderProduct findOneByVersion(int $version) Return the first ChildAmazonOrderProduct filtered by the version column
- * @method     ChildAmazonOrderProduct findOneByVersionCreatedAt(string $version_created_at) Return the first ChildAmazonOrderProduct filtered by the version_created_at column
- * @method     ChildAmazonOrderProduct findOneByVersionCreatedBy(string $version_created_by) Return the first ChildAmazonOrderProduct filtered by the version_created_by column
  *
  * @method     array findByOrderItemId(string $order_item_id) Return ChildAmazonOrderProduct objects filtered by the order_item_id column
  * @method     array findByAmazonOrderId(string $amazon_order_id) Return ChildAmazonOrderProduct objects filtered by the amazon_order_id column
@@ -239,23 +220,11 @@ use Thelia\Model\OrderProduct;
  * @method     array findByPriceDesignation(string $price_designation) Return ChildAmazonOrderProduct objects filtered by the price_designation column
  * @method     array findByBuyerCustomizedURL(string $buyer_customized_url) Return ChildAmazonOrderProduct objects filtered by the buyer_customized_url column
  * @method     array findByOrderProductId(int $order_product_id) Return ChildAmazonOrderProduct objects filtered by the order_product_id column
- * @method     array findByCreatedAt(string $created_at) Return ChildAmazonOrderProduct objects filtered by the created_at column
- * @method     array findByUpdatedAt(string $updated_at) Return ChildAmazonOrderProduct objects filtered by the updated_at column
- * @method     array findByVersion(int $version) Return ChildAmazonOrderProduct objects filtered by the version column
- * @method     array findByVersionCreatedAt(string $version_created_at) Return ChildAmazonOrderProduct objects filtered by the version_created_at column
- * @method     array findByVersionCreatedBy(string $version_created_by) Return ChildAmazonOrderProduct objects filtered by the version_created_by column
  *
  */
 abstract class AmazonOrderProductQuery extends ModelCriteria
 {
     
-    // versionable behavior
-    
-    /**
-     * Whether the versioning is enabled
-     */
-    static $isVersioningEnabled = true;
-
     /**
      * Initializes internal state of \AmazonIntegration\Model\Base\AmazonOrderProductQuery object.
      *
@@ -339,7 +308,7 @@ abstract class AmazonOrderProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ORDER_ITEM_ID, AMAZON_ORDER_ID, ASIN, SELLER_SKU, TITLE, QUANTITY_ORDERED, QUANTITY_SHIPPED, POINTS_GRANTED_NUMBER, POINTS_GRANTED_CURRENCY_CODE, POINTS_GRANTED_AMOUNT, ITEM_PRICE_CURRENCY_CODE, ITEM_PRICE_AMOUNT, SHIPPING_PRICE_CURRENCY_CODE, SHIPPING_PRICE_AMOUNT, GIFT_WRAP_PRICE_CURRENCY_CODE, GIFT_WRAP_PRICE_AMOUNT, ITEM_TAX_CURRENCY_CODE, ITEM_TAX_AMOUNT, SHIPPING_TAX_CURRENCY_CODE, SHIPPING_TAX_AMOUNT, GIFT_WRAP_TAX_CURRENCY_CODE, GIFT_WRAP_TAX_AMOUNT, SHIPPING_DISCOUNT_CURRENCY_CODE, SHIPPING_DISCOUNT_AMOUNT, PROMOTION_DISCOUNT_CURRENCY_CODE, PROMOTION_DISCOUNT_AMOUNT, PROMOTION_ID, COD_FEE_CURRENCY_CODE, COD_FEE_AMOUNT, COD_FEE_DISCOUNT_CURRENCY_CODE, COD_FEE_DISCOUNT_AMOUNT, GIFT_MESSAGE_TEXT, GIFT_WRAP_LEVEL, INVOICE_REQUIREMENT, BUYER_SELECTED_INVOICE_CATEGORY, INVOICE_TITLE, INVOICE_INFORMATION, CONDITION_NOTE, CONDITION_ID, CONDITION_SUBTYPE_ID, SCHEDULE_DELIVERY_START_DATE, SCHEDULE_DELIVERY_END_DATE, PRICE_DESIGNATION, BUYER_CUSTOMIZED_URL, ORDER_PRODUCT_ID, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY FROM amazon_order_product WHERE ORDER_ITEM_ID = :p0';
+        $sql = 'SELECT ORDER_ITEM_ID, AMAZON_ORDER_ID, ASIN, SELLER_SKU, TITLE, QUANTITY_ORDERED, QUANTITY_SHIPPED, POINTS_GRANTED_NUMBER, POINTS_GRANTED_CURRENCY_CODE, POINTS_GRANTED_AMOUNT, ITEM_PRICE_CURRENCY_CODE, ITEM_PRICE_AMOUNT, SHIPPING_PRICE_CURRENCY_CODE, SHIPPING_PRICE_AMOUNT, GIFT_WRAP_PRICE_CURRENCY_CODE, GIFT_WRAP_PRICE_AMOUNT, ITEM_TAX_CURRENCY_CODE, ITEM_TAX_AMOUNT, SHIPPING_TAX_CURRENCY_CODE, SHIPPING_TAX_AMOUNT, GIFT_WRAP_TAX_CURRENCY_CODE, GIFT_WRAP_TAX_AMOUNT, SHIPPING_DISCOUNT_CURRENCY_CODE, SHIPPING_DISCOUNT_AMOUNT, PROMOTION_DISCOUNT_CURRENCY_CODE, PROMOTION_DISCOUNT_AMOUNT, PROMOTION_ID, COD_FEE_CURRENCY_CODE, COD_FEE_AMOUNT, COD_FEE_DISCOUNT_CURRENCY_CODE, COD_FEE_DISCOUNT_AMOUNT, GIFT_MESSAGE_TEXT, GIFT_WRAP_LEVEL, INVOICE_REQUIREMENT, BUYER_SELECTED_INVOICE_CATEGORY, INVOICE_TITLE, INVOICE_INFORMATION, CONDITION_NOTE, CONDITION_ID, CONDITION_SUBTYPE_ID, SCHEDULE_DELIVERY_START_DATE, SCHEDULE_DELIVERY_END_DATE, PRICE_DESIGNATION, BUYER_CUSTOMIZED_URL, ORDER_PRODUCT_ID FROM amazon_order_product WHERE ORDER_ITEM_ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_STR);
@@ -1784,205 +1753,6 @@ abstract class AmazonOrderProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(AmazonOrderProductTableMap::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(AmazonOrderProductTableMap::UPDATED_AT, $updatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the version column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVersion(1234); // WHERE version = 1234
-     * $query->filterByVersion(array(12, 34)); // WHERE version IN (12, 34)
-     * $query->filterByVersion(array('min' => 12)); // WHERE version > 12
-     * </code>
-     *
-     * @param     mixed $version The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByVersion($version = null, $comparison = null)
-    {
-        if (is_array($version)) {
-            $useMinMax = false;
-            if (isset($version['min'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::VERSION, $version['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($version['max'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::VERSION, $version['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(AmazonOrderProductTableMap::VERSION, $version, $comparison);
-    }
-
-    /**
-     * Filter the query on the version_created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVersionCreatedAt('2011-03-14'); // WHERE version_created_at = '2011-03-14'
-     * $query->filterByVersionCreatedAt('now'); // WHERE version_created_at = '2011-03-14'
-     * $query->filterByVersionCreatedAt(array('max' => 'yesterday')); // WHERE version_created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $versionCreatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByVersionCreatedAt($versionCreatedAt = null, $comparison = null)
-    {
-        if (is_array($versionCreatedAt)) {
-            $useMinMax = false;
-            if (isset($versionCreatedAt['min'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::VERSION_CREATED_AT, $versionCreatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($versionCreatedAt['max'])) {
-                $this->addUsingAlias(AmazonOrderProductTableMap::VERSION_CREATED_AT, $versionCreatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(AmazonOrderProductTableMap::VERSION_CREATED_AT, $versionCreatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query on the version_created_by column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVersionCreatedBy('fooValue');   // WHERE version_created_by = 'fooValue'
-     * $query->filterByVersionCreatedBy('%fooValue%'); // WHERE version_created_by LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $versionCreatedBy The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByVersionCreatedBy($versionCreatedBy = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($versionCreatedBy)) {
-                $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $versionCreatedBy)) {
-                $versionCreatedBy = str_replace('*', '%', $versionCreatedBy);
-                $comparison = Criteria::LIKE;
-            }
-        }
-
-        return $this->addUsingAlias(AmazonOrderProductTableMap::VERSION_CREATED_BY, $versionCreatedBy, $comparison);
-    }
-
-    /**
      * Filter the query by a related \Thelia\Model\OrderProduct object
      *
      * @param \Thelia\Model\OrderProduct|ObjectCollection $orderProduct The related object(s) to use as filter
@@ -2133,79 +1903,6 @@ abstract class AmazonOrderProductQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \AmazonIntegration\Model\AmazonOrderProductVersion object
-     *
-     * @param \AmazonIntegration\Model\AmazonOrderProductVersion|ObjectCollection $amazonOrderProductVersion  the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function filterByAmazonOrderProductVersion($amazonOrderProductVersion, $comparison = null)
-    {
-        if ($amazonOrderProductVersion instanceof \AmazonIntegration\Model\AmazonOrderProductVersion) {
-            return $this
-                ->addUsingAlias(AmazonOrderProductTableMap::ORDER_ITEM_ID, $amazonOrderProductVersion->getOrderItemId(), $comparison);
-        } elseif ($amazonOrderProductVersion instanceof ObjectCollection) {
-            return $this
-                ->useAmazonOrderProductVersionQuery()
-                ->filterByPrimaryKeys($amazonOrderProductVersion->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAmazonOrderProductVersion() only accepts arguments of type \AmazonIntegration\Model\AmazonOrderProductVersion or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the AmazonOrderProductVersion relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function joinAmazonOrderProductVersion($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('AmazonOrderProductVersion');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'AmazonOrderProductVersion');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the AmazonOrderProductVersion relation AmazonOrderProductVersion object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \AmazonIntegration\Model\AmazonOrderProductVersionQuery A secondary query class using the current class as primary query
-     */
-    public function useAmazonOrderProductVersionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinAmazonOrderProductVersion($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'AmazonOrderProductVersion', '\AmazonIntegration\Model\AmazonOrderProductVersionQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildAmazonOrderProduct $amazonOrderProduct Object to remove from the list of results
@@ -2294,100 +1991,6 @@ abstract class AmazonOrderProductQuery extends ModelCriteria
             $con->rollBack();
             throw $e;
         }
-    }
-
-    // timestampable behavior
-    
-    /**
-     * Filter by the latest updated
-     *
-     * @param      int $nbDays Maximum age of the latest update in days
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function recentlyUpdated($nbDays = 7)
-    {
-        return $this->addUsingAlias(AmazonOrderProductTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
-    }
-    
-    /**
-     * Filter by the latest created
-     *
-     * @param      int $nbDays Maximum age of in days
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function recentlyCreated($nbDays = 7)
-    {
-        return $this->addUsingAlias(AmazonOrderProductTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
-    }
-    
-    /**
-     * Order by update date desc
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function lastUpdatedFirst()
-    {
-        return $this->addDescendingOrderByColumn(AmazonOrderProductTableMap::UPDATED_AT);
-    }
-    
-    /**
-     * Order by update date asc
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function firstUpdatedFirst()
-    {
-        return $this->addAscendingOrderByColumn(AmazonOrderProductTableMap::UPDATED_AT);
-    }
-    
-    /**
-     * Order by create date desc
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function lastCreatedFirst()
-    {
-        return $this->addDescendingOrderByColumn(AmazonOrderProductTableMap::CREATED_AT);
-    }
-    
-    /**
-     * Order by create date asc
-     *
-     * @return     ChildAmazonOrderProductQuery The current query, for fluid interface
-     */
-    public function firstCreatedFirst()
-    {
-        return $this->addAscendingOrderByColumn(AmazonOrderProductTableMap::CREATED_AT);
-    }
-
-    // versionable behavior
-    
-    /**
-     * Checks whether versioning is enabled
-     *
-     * @return boolean
-     */
-    static public function isVersioningEnabled()
-    {
-        return self::$isVersioningEnabled;
-    }
-    
-    /**
-     * Enables versioning
-     */
-    static public function enableVersioning()
-    {
-        self::$isVersioningEnabled = true;
-    }
-    
-    /**
-     * Disables versioning
-     */
-    static public function disableVersioning()
-    {
-        self::$isVersioningEnabled = false;
     }
 
 } // AmazonOrderProductQuery

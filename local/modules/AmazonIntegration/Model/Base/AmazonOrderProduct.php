@@ -2,30 +2,22 @@
 
 namespace AmazonIntegration\Model\Base;
 
-use \DateTime;
 use \Exception;
 use \PDO;
-use AmazonIntegration\Model\AmazonOrderProduct as ChildAmazonOrderProduct;
 use AmazonIntegration\Model\AmazonOrderProductQuery as ChildAmazonOrderProductQuery;
-use AmazonIntegration\Model\AmazonOrderProductVersion as ChildAmazonOrderProductVersion;
-use AmazonIntegration\Model\AmazonOrderProductVersionQuery as ChildAmazonOrderProductVersionQuery;
 use AmazonIntegration\Model\AmazonOrders as ChildAmazonOrders;
 use AmazonIntegration\Model\AmazonOrdersQuery as ChildAmazonOrdersQuery;
-use AmazonIntegration\Model\AmazonOrdersVersionQuery as ChildAmazonOrdersVersionQuery;
 use AmazonIntegration\Model\Map\AmazonOrderProductTableMap;
-use AmazonIntegration\Model\Map\AmazonOrderProductVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 use Thelia\Model\OrderProduct as ChildOrderProduct;
 use Thelia\Model\OrderProductQuery;
 
@@ -334,37 +326,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
     protected $order_product_id;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
-
-    /**
-     * The value for the version field.
-     * Note: this column has a database default value of: 0
-     * @var        int
-     */
-    protected $version;
-
-    /**
-     * The value for the version_created_at field.
-     * @var        string
-     */
-    protected $version_created_at;
-
-    /**
-     * The value for the version_created_by field.
-     * @var        string
-     */
-    protected $version_created_by;
-
-    /**
      * @var        OrderProduct
      */
     protected $aOrderProduct;
@@ -375,12 +336,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
     protected $aAmazonOrders;
 
     /**
-     * @var        ObjectCollection|ChildAmazonOrderProductVersion[] Collection to store aggregation of ChildAmazonOrderProductVersion objects.
-     */
-    protected $collAmazonOrderProductVersions;
-    protected $collAmazonOrderProductVersionsPartial;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -388,38 +343,11 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
      */
     protected $alreadyInSave = false;
 
-    // versionable behavior
-    
-    
-    /**
-     * @var bool
-     */
-    protected $enforceVersion = false;
-            
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection
-     */
-    protected $amazonOrderProductVersionsScheduledForDeletion = null;
-
-    /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-        $this->version = 0;
-    }
-
     /**
      * Initializes internal state of AmazonIntegration\Model\Base\AmazonOrderProduct object.
-     * @see applyDefaults()
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -1166,88 +1094,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
     {
 
         return $this->order_product_id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [created_at] column value.
-     * 
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedAt($format = NULL)
-    {
-        if ($format === null) {
-            return $this->created_at;
-        } else {
-            return $this->created_at instanceof \DateTime ? $this->created_at->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
-     * 
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getUpdatedAt($format = NULL)
-    {
-        if ($format === null) {
-            return $this->updated_at;
-        } else {
-            return $this->updated_at instanceof \DateTime ? $this->updated_at->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [version] column value.
-     * 
-     * @return   int
-     */
-    public function getVersion()
-    {
-
-        return $this->version;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [version_created_at] column value.
-     * 
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getVersionCreatedAt($format = NULL)
-    {
-        if ($format === null) {
-            return $this->version_created_at;
-        } else {
-            return $this->version_created_at instanceof \DateTime ? $this->version_created_at->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [version_created_by] column value.
-     * 
-     * @return   string
-     */
-    public function getVersionCreatedBy()
-    {
-
-        return $this->version_created_by;
     }
 
     /**
@@ -2204,111 +2050,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
     } // setOrderProductId()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            if ($dt !== $this->created_at) {
-                $this->created_at = $dt;
-                $this->modifiedColumns[AmazonOrderProductTableMap::CREATED_AT] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setUpdatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            if ($dt !== $this->updated_at) {
-                $this->updated_at = $dt;
-                $this->modifiedColumns[AmazonOrderProductTableMap::UPDATED_AT] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
-
-    /**
-     * Set the value of [version] column.
-     * 
-     * @param      int $v new value
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setVersion($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->version !== $v) {
-            $this->version = $v;
-            $this->modifiedColumns[AmazonOrderProductTableMap::VERSION] = true;
-        }
-
-
-        return $this;
-    } // setVersion()
-
-    /**
-     * Sets the value of [version_created_at] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setVersionCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->version_created_at !== null || $dt !== null) {
-            if ($dt !== $this->version_created_at) {
-                $this->version_created_at = $dt;
-                $this->modifiedColumns[AmazonOrderProductTableMap::VERSION_CREATED_AT] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setVersionCreatedAt()
-
-    /**
-     * Set the value of [version_created_by] column.
-     * 
-     * @param      string $v new value
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setVersionCreatedBy($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->version_created_by !== $v) {
-            $this->version_created_by = $v;
-            $this->modifiedColumns[AmazonOrderProductTableMap::VERSION_CREATED_BY] = true;
-        }
-
-
-        return $this;
-    } // setVersionCreatedBy()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -2318,10 +2059,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->version !== 0) {
-                return false;
-            }
-
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -2483,30 +2220,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 44 + $startcol : AmazonOrderProductTableMap::translateFieldName('OrderProductId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->order_product_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 45 + $startcol : AmazonOrderProductTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 46 + $startcol : AmazonOrderProductTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 47 + $startcol : AmazonOrderProductTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->version = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 48 + $startcol : AmazonOrderProductTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 49 + $startcol : AmazonOrderProductTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->version_created_by = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -2515,7 +2228,7 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 50; // 50 = AmazonOrderProductTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 45; // 45 = AmazonOrderProductTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \AmazonIntegration\Model\AmazonOrderProduct object", 0, $e);
@@ -2584,8 +2297,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
 
             $this->aOrderProduct = null;
             $this->aAmazonOrders = null;
-            $this->collAmazonOrderProductVersions = null;
-
         } // if (deep)
     }
 
@@ -2654,29 +2365,10 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // versionable behavior
-            if ($this->isVersioningNecessary()) {
-                $this->setVersion($this->isNew() ? 1 : $this->getLastVersionNumber($con) + 1);
-                if (!$this->isColumnModified(AmazonOrderProductTableMap::VERSION_CREATED_AT)) {
-                    $this->setVersionCreatedAt(time());
-                }
-                $createVersion = true; // for postSave hook
-            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
-                // timestampable behavior
-                if (!$this->isColumnModified(AmazonOrderProductTableMap::CREATED_AT)) {
-                    $this->setCreatedAt(time());
-                }
-                if (!$this->isColumnModified(AmazonOrderProductTableMap::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
-                // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(AmazonOrderProductTableMap::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -2686,10 +2378,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                // versionable behavior
-                if (isset($createVersion)) {
-                    $this->addVersion($con);
-                }
                 AmazonOrderProductTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -2748,23 +2436,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->amazonOrderProductVersionsScheduledForDeletion !== null) {
-                if (!$this->amazonOrderProductVersionsScheduledForDeletion->isEmpty()) {
-                    \AmazonIntegration\Model\AmazonOrderProductVersionQuery::create()
-                        ->filterByPrimaryKeys($this->amazonOrderProductVersionsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->amazonOrderProductVersionsScheduledForDeletion = null;
-                }
-            }
-
-                if ($this->collAmazonOrderProductVersions !== null) {
-            foreach ($this->collAmazonOrderProductVersions as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -2924,21 +2595,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonOrderProductTableMap::ORDER_PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ORDER_PRODUCT_ID';
         }
-        if ($this->isColumnModified(AmazonOrderProductTableMap::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
-        }
-        if ($this->isColumnModified(AmazonOrderProductTableMap::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
-        }
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION';
-        }
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION_CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_AT';
-        }
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION_CREATED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_BY';
-        }
 
         $sql = sprintf(
             'INSERT INTO amazon_order_product (%s) VALUES (%s)',
@@ -3084,21 +2740,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
                         break;
                     case 'ORDER_PRODUCT_ID':                        
                         $stmt->bindValue($identifier, $this->order_product_id, PDO::PARAM_INT);
-                        break;
-                    case 'CREATED_AT':                        
-                        $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'UPDATED_AT':                        
-                        $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'VERSION':                        
-                        $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
-                        break;
-                    case 'VERSION_CREATED_AT':                        
-                        $stmt->bindValue($identifier, $this->version_created_at ? $this->version_created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'VERSION_CREATED_BY':                        
-                        $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -3290,21 +2931,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
             case 44:
                 return $this->getOrderProductId();
                 break;
-            case 45:
-                return $this->getCreatedAt();
-                break;
-            case 46:
-                return $this->getUpdatedAt();
-                break;
-            case 47:
-                return $this->getVersion();
-                break;
-            case 48:
-                return $this->getVersionCreatedAt();
-                break;
-            case 49:
-                return $this->getVersionCreatedBy();
-                break;
             default:
                 return null;
                 break;
@@ -3379,11 +3005,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
             $keys[42] => $this->getPriceDesignation(),
             $keys[43] => $this->getBuyerCustomizedURL(),
             $keys[44] => $this->getOrderProductId(),
-            $keys[45] => $this->getCreatedAt(),
-            $keys[46] => $this->getUpdatedAt(),
-            $keys[47] => $this->getVersion(),
-            $keys[48] => $this->getVersionCreatedAt(),
-            $keys[49] => $this->getVersionCreatedBy(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -3396,9 +3017,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
             }
             if (null !== $this->aAmazonOrders) {
                 $result['AmazonOrders'] = $this->aAmazonOrders->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collAmazonOrderProductVersions) {
-                $result['AmazonOrderProductVersions'] = $this->collAmazonOrderProductVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -3569,21 +3187,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
             case 44:
                 $this->setOrderProductId($value);
                 break;
-            case 45:
-                $this->setCreatedAt($value);
-                break;
-            case 46:
-                $this->setUpdatedAt($value);
-                break;
-            case 47:
-                $this->setVersion($value);
-                break;
-            case 48:
-                $this->setVersionCreatedAt($value);
-                break;
-            case 49:
-                $this->setVersionCreatedBy($value);
-                break;
         } // switch()
     }
 
@@ -3653,11 +3256,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         if (array_key_exists($keys[42], $arr)) $this->setPriceDesignation($arr[$keys[42]]);
         if (array_key_exists($keys[43], $arr)) $this->setBuyerCustomizedURL($arr[$keys[43]]);
         if (array_key_exists($keys[44], $arr)) $this->setOrderProductId($arr[$keys[44]]);
-        if (array_key_exists($keys[45], $arr)) $this->setCreatedAt($arr[$keys[45]]);
-        if (array_key_exists($keys[46], $arr)) $this->setUpdatedAt($arr[$keys[46]]);
-        if (array_key_exists($keys[47], $arr)) $this->setVersion($arr[$keys[47]]);
-        if (array_key_exists($keys[48], $arr)) $this->setVersionCreatedAt($arr[$keys[48]]);
-        if (array_key_exists($keys[49], $arr)) $this->setVersionCreatedBy($arr[$keys[49]]);
     }
 
     /**
@@ -3714,11 +3312,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonOrderProductTableMap::PRICE_DESIGNATION)) $criteria->add(AmazonOrderProductTableMap::PRICE_DESIGNATION, $this->price_designation);
         if ($this->isColumnModified(AmazonOrderProductTableMap::BUYER_CUSTOMIZED_URL)) $criteria->add(AmazonOrderProductTableMap::BUYER_CUSTOMIZED_URL, $this->buyer_customized_url);
         if ($this->isColumnModified(AmazonOrderProductTableMap::ORDER_PRODUCT_ID)) $criteria->add(AmazonOrderProductTableMap::ORDER_PRODUCT_ID, $this->order_product_id);
-        if ($this->isColumnModified(AmazonOrderProductTableMap::CREATED_AT)) $criteria->add(AmazonOrderProductTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(AmazonOrderProductTableMap::UPDATED_AT)) $criteria->add(AmazonOrderProductTableMap::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION)) $criteria->add(AmazonOrderProductTableMap::VERSION, $this->version);
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION_CREATED_AT)) $criteria->add(AmazonOrderProductTableMap::VERSION_CREATED_AT, $this->version_created_at);
-        if ($this->isColumnModified(AmazonOrderProductTableMap::VERSION_CREATED_BY)) $criteria->add(AmazonOrderProductTableMap::VERSION_CREATED_BY, $this->version_created_by);
 
         return $criteria;
     }
@@ -3827,25 +3420,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         $copyObj->setPriceDesignation($this->getPriceDesignation());
         $copyObj->setBuyerCustomizedURL($this->getBuyerCustomizedURL());
         $copyObj->setOrderProductId($this->getOrderProductId());
-        $copyObj->setCreatedAt($this->getCreatedAt());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setVersion($this->getVersion());
-        $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
-        $copyObj->setVersionCreatedBy($this->getVersionCreatedBy());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getAmazonOrderProductVersions() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAmazonOrderProductVersion($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -3975,243 +3549,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         return $this->aAmazonOrders;
     }
 
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('AmazonOrderProductVersion' == $relationName) {
-            return $this->initAmazonOrderProductVersions();
-        }
-    }
-
-    /**
-     * Clears out the collAmazonOrderProductVersions collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAmazonOrderProductVersions()
-     */
-    public function clearAmazonOrderProductVersions()
-    {
-        $this->collAmazonOrderProductVersions = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collAmazonOrderProductVersions collection loaded partially.
-     */
-    public function resetPartialAmazonOrderProductVersions($v = true)
-    {
-        $this->collAmazonOrderProductVersionsPartial = $v;
-    }
-
-    /**
-     * Initializes the collAmazonOrderProductVersions collection.
-     *
-     * By default this just sets the collAmazonOrderProductVersions collection to an empty array (like clearcollAmazonOrderProductVersions());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAmazonOrderProductVersions($overrideExisting = true)
-    {
-        if (null !== $this->collAmazonOrderProductVersions && !$overrideExisting) {
-            return;
-        }
-        $this->collAmazonOrderProductVersions = new ObjectCollection();
-        $this->collAmazonOrderProductVersions->setModel('\AmazonIntegration\Model\AmazonOrderProductVersion');
-    }
-
-    /**
-     * Gets an array of ChildAmazonOrderProductVersion objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildAmazonOrderProduct is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildAmazonOrderProductVersion[] List of ChildAmazonOrderProductVersion objects
-     * @throws PropelException
-     */
-    public function getAmazonOrderProductVersions($criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAmazonOrderProductVersionsPartial && !$this->isNew();
-        if (null === $this->collAmazonOrderProductVersions || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAmazonOrderProductVersions) {
-                // return empty collection
-                $this->initAmazonOrderProductVersions();
-            } else {
-                $collAmazonOrderProductVersions = ChildAmazonOrderProductVersionQuery::create(null, $criteria)
-                    ->filterByAmazonOrderProduct($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collAmazonOrderProductVersionsPartial && count($collAmazonOrderProductVersions)) {
-                        $this->initAmazonOrderProductVersions(false);
-
-                        foreach ($collAmazonOrderProductVersions as $obj) {
-                            if (false == $this->collAmazonOrderProductVersions->contains($obj)) {
-                                $this->collAmazonOrderProductVersions->append($obj);
-                            }
-                        }
-
-                        $this->collAmazonOrderProductVersionsPartial = true;
-                    }
-
-                    reset($collAmazonOrderProductVersions);
-
-                    return $collAmazonOrderProductVersions;
-                }
-
-                if ($partial && $this->collAmazonOrderProductVersions) {
-                    foreach ($this->collAmazonOrderProductVersions as $obj) {
-                        if ($obj->isNew()) {
-                            $collAmazonOrderProductVersions[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAmazonOrderProductVersions = $collAmazonOrderProductVersions;
-                $this->collAmazonOrderProductVersionsPartial = false;
-            }
-        }
-
-        return $this->collAmazonOrderProductVersions;
-    }
-
-    /**
-     * Sets a collection of AmazonOrderProductVersion objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $amazonOrderProductVersions A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildAmazonOrderProduct The current object (for fluent API support)
-     */
-    public function setAmazonOrderProductVersions(Collection $amazonOrderProductVersions, ConnectionInterface $con = null)
-    {
-        $amazonOrderProductVersionsToDelete = $this->getAmazonOrderProductVersions(new Criteria(), $con)->diff($amazonOrderProductVersions);
-
-        
-        //since at least one column in the foreign key is at the same time a PK
-        //we can not just set a PK to NULL in the lines below. We have to store
-        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->amazonOrderProductVersionsScheduledForDeletion = clone $amazonOrderProductVersionsToDelete;
-
-        foreach ($amazonOrderProductVersionsToDelete as $amazonOrderProductVersionRemoved) {
-            $amazonOrderProductVersionRemoved->setAmazonOrderProduct(null);
-        }
-
-        $this->collAmazonOrderProductVersions = null;
-        foreach ($amazonOrderProductVersions as $amazonOrderProductVersion) {
-            $this->addAmazonOrderProductVersion($amazonOrderProductVersion);
-        }
-
-        $this->collAmazonOrderProductVersions = $amazonOrderProductVersions;
-        $this->collAmazonOrderProductVersionsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related AmazonOrderProductVersion objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related AmazonOrderProductVersion objects.
-     * @throws PropelException
-     */
-    public function countAmazonOrderProductVersions(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAmazonOrderProductVersionsPartial && !$this->isNew();
-        if (null === $this->collAmazonOrderProductVersions || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAmazonOrderProductVersions) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getAmazonOrderProductVersions());
-            }
-
-            $query = ChildAmazonOrderProductVersionQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByAmazonOrderProduct($this)
-                ->count($con);
-        }
-
-        return count($this->collAmazonOrderProductVersions);
-    }
-
-    /**
-     * Method called to associate a ChildAmazonOrderProductVersion object to this object
-     * through the ChildAmazonOrderProductVersion foreign key attribute.
-     *
-     * @param    ChildAmazonOrderProductVersion $l ChildAmazonOrderProductVersion
-     * @return   \AmazonIntegration\Model\AmazonOrderProduct The current object (for fluent API support)
-     */
-    public function addAmazonOrderProductVersion(ChildAmazonOrderProductVersion $l)
-    {
-        if ($this->collAmazonOrderProductVersions === null) {
-            $this->initAmazonOrderProductVersions();
-            $this->collAmazonOrderProductVersionsPartial = true;
-        }
-
-        if (!in_array($l, $this->collAmazonOrderProductVersions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddAmazonOrderProductVersion($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param AmazonOrderProductVersion $amazonOrderProductVersion The amazonOrderProductVersion object to add.
-     */
-    protected function doAddAmazonOrderProductVersion($amazonOrderProductVersion)
-    {
-        $this->collAmazonOrderProductVersions[]= $amazonOrderProductVersion;
-        $amazonOrderProductVersion->setAmazonOrderProduct($this);
-    }
-
-    /**
-     * @param  AmazonOrderProductVersion $amazonOrderProductVersion The amazonOrderProductVersion object to remove.
-     * @return ChildAmazonOrderProduct The current object (for fluent API support)
-     */
-    public function removeAmazonOrderProductVersion($amazonOrderProductVersion)
-    {
-        if ($this->getAmazonOrderProductVersions()->contains($amazonOrderProductVersion)) {
-            $this->collAmazonOrderProductVersions->remove($this->collAmazonOrderProductVersions->search($amazonOrderProductVersion));
-            if (null === $this->amazonOrderProductVersionsScheduledForDeletion) {
-                $this->amazonOrderProductVersionsScheduledForDeletion = clone $this->collAmazonOrderProductVersions;
-                $this->amazonOrderProductVersionsScheduledForDeletion->clear();
-            }
-            $this->amazonOrderProductVersionsScheduledForDeletion[]= clone $amazonOrderProductVersion;
-            $amazonOrderProductVersion->setAmazonOrderProduct(null);
-        }
-
-        return $this;
-    }
-
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -4262,14 +3599,8 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         $this->price_designation = null;
         $this->buyer_customized_url = null;
         $this->order_product_id = null;
-        $this->created_at = null;
-        $this->updated_at = null;
-        $this->version = null;
-        $this->version_created_at = null;
-        $this->version_created_by = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -4287,14 +3618,8 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collAmazonOrderProductVersions) {
-                foreach ($this->collAmazonOrderProductVersions as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collAmazonOrderProductVersions = null;
         $this->aOrderProduct = null;
         $this->aAmazonOrders = null;
     }
@@ -4309,407 +3634,6 @@ abstract class AmazonOrderProduct implements ActiveRecordInterface
         return (string) $this->exportTo(AmazonOrderProductTableMap::DEFAULT_STRING_FORMAT);
     }
 
-    // timestampable behavior
-    
-    /**
-     * Mark the current object so that the update date doesn't get updated during next save
-     *
-     * @return     ChildAmazonOrderProduct The current object (for fluent API support)
-     */
-    public function keepUpdateDateUnchanged()
-    {
-        $this->modifiedColumns[AmazonOrderProductTableMap::UPDATED_AT] = true;
-    
-        return $this;
-    }
-
-    // versionable behavior
-    
-    /**
-     * Enforce a new Version of this object upon next save.
-     *
-     * @return \AmazonIntegration\Model\AmazonOrderProduct
-     */
-    public function enforceVersioning()
-    {
-        $this->enforceVersion = true;
-    
-        return $this;
-    }
-            
-    /**
-     * Checks whether the current state must be recorded as a version
-     *
-     * @return  boolean
-     */
-    public function isVersioningNecessary($con = null)
-    {
-        if ($this->alreadyInSave) {
-            return false;
-        }
-    
-        if ($this->enforceVersion) {
-            return true;
-        }
-    
-        if (ChildAmazonOrderProductQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
-            return true;
-        }
-        if (null !== ($object = $this->getAmazonOrders($con)) && $object->isVersioningNecessary($con)) {
-            return true;
-        }
-    
-    
-        return false;
-    }
-    
-    /**
-     * Creates a version of the current object and saves it.
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ChildAmazonOrderProductVersion A version object
-     */
-    public function addVersion($con = null)
-    {
-        $this->enforceVersion = false;
-    
-        $version = new ChildAmazonOrderProductVersion();
-        $version->setOrderItemId($this->getOrderItemId());
-        $version->setAmazonOrderId($this->getAmazonOrderId());
-        $version->setAsin($this->getAsin());
-        $version->setSellerSku($this->getSellerSku());
-        $version->setTitle($this->getTitle());
-        $version->setQuantityOrdered($this->getQuantityOrdered());
-        $version->setQuantityShipped($this->getQuantityShipped());
-        $version->setPointsGrantedNumber($this->getPointsGrantedNumber());
-        $version->setPointsGrantedCurrencyCode($this->getPointsGrantedCurrencyCode());
-        $version->setPointsGrantedAmount($this->getPointsGrantedAmount());
-        $version->setItemPriceCurrencyCode($this->getItemPriceCurrencyCode());
-        $version->setItemPriceAmount($this->getItemPriceAmount());
-        $version->setShippingPriceCurrencyCode($this->getShippingPriceCurrencyCode());
-        $version->setShippingPriceAmount($this->getShippingPriceAmount());
-        $version->setGiftWrapPriceCurrencyCode($this->getGiftWrapPriceCurrencyCode());
-        $version->setGiftWrapPriceAmount($this->getGiftWrapPriceAmount());
-        $version->setItemTaxCurrencyCode($this->getItemTaxCurrencyCode());
-        $version->setItemTaxAmount($this->getItemTaxAmount());
-        $version->setShippingTaxCurrencyCode($this->getShippingTaxCurrencyCode());
-        $version->setShippingTaxAmount($this->getShippingTaxAmount());
-        $version->setGiftWrapTaxCurrencyCode($this->getGiftWrapTaxCurrencyCode());
-        $version->setGiftWrapTaxAmount($this->getGiftWrapTaxAmount());
-        $version->setShippingDiscountCurrencyCode($this->getShippingDiscountCurrencyCode());
-        $version->setShippingDiscountAmount($this->getShippingDiscountAmount());
-        $version->setPromotionDiscountCurrencyCode($this->getPromotionDiscountCurrencyCode());
-        $version->setPromotionDiscountAmount($this->getPromotionDiscountAmount());
-        $version->setPromotionId($this->getPromotionId());
-        $version->setCodFeeCurrencyCode($this->getCodFeeCurrencyCode());
-        $version->setCodFeeAmount($this->getCodFeeAmount());
-        $version->setCodFeeDiscountCurrencyCode($this->getCodFeeDiscountCurrencyCode());
-        $version->setCodFeeDiscountAmount($this->getCodFeeDiscountAmount());
-        $version->setGiftMessageText($this->getGiftMessageText());
-        $version->setGiftWrapLevel($this->getGiftWrapLevel());
-        $version->setInvoiceRequirement($this->getInvoiceRequirement());
-        $version->setBuyerSelectedInvoiceCategory($this->getBuyerSelectedInvoiceCategory());
-        $version->setInvoiceTitle($this->getInvoiceTitle());
-        $version->setInvoiceInformation($this->getInvoiceInformation());
-        $version->setConditionNote($this->getConditionNote());
-        $version->setConditionId($this->getConditionId());
-        $version->setConditionSubtypeId($this->getConditionSubtypeId());
-        $version->setScheduledDeliveryStartDate($this->getScheduledDeliveryStartDate());
-        $version->setScheduledDeliveryEndDate($this->getScheduledDeliveryEndDate());
-        $version->setPriceDesignation($this->getPriceDesignation());
-        $version->setBuyerCustomizedURL($this->getBuyerCustomizedURL());
-        $version->setOrderProductId($this->getOrderProductId());
-        $version->setCreatedAt($this->getCreatedAt());
-        $version->setUpdatedAt($this->getUpdatedAt());
-        $version->setVersion($this->getVersion());
-        $version->setVersionCreatedAt($this->getVersionCreatedAt());
-        $version->setVersionCreatedBy($this->getVersionCreatedBy());
-        $version->setAmazonOrderProduct($this);
-        if (($related = $this->getAmazonOrders($con)) && $related->getVersion()) {
-            $version->setAmazonOrderIdVersion($related->getVersion());
-        }
-        $version->save($con);
-    
-        return $version;
-    }
-    
-    /**
-     * Sets the properties of the current object to the value they had at a specific version
-     *
-     * @param   integer $versionNumber The version number to read
-     * @param   ConnectionInterface $con The connection to use
-     *
-     * @return  ChildAmazonOrderProduct The current object (for fluent API support)
-     */
-    public function toVersion($versionNumber, $con = null)
-    {
-        $version = $this->getOneVersion($versionNumber, $con);
-        if (!$version) {
-            throw new PropelException(sprintf('No ChildAmazonOrderProduct object found with version %d', $version));
-        }
-        $this->populateFromVersion($version, $con);
-    
-        return $this;
-    }
-    
-    /**
-     * Sets the properties of the current object to the value they had at a specific version
-     *
-     * @param ChildAmazonOrderProductVersion $version The version object to use
-     * @param ConnectionInterface   $con the connection to use
-     * @param array                 $loadedObjects objects that been loaded in a chain of populateFromVersion calls on referrer or fk objects.
-     *
-     * @return ChildAmazonOrderProduct The current object (for fluent API support)
-     */
-    public function populateFromVersion($version, $con = null, &$loadedObjects = array())
-    {
-        $loadedObjects['ChildAmazonOrderProduct'][$version->getOrderItemId()][$version->getVersion()] = $this;
-        $this->setOrderItemId($version->getOrderItemId());
-        $this->setAmazonOrderId($version->getAmazonOrderId());
-        $this->setAsin($version->getAsin());
-        $this->setSellerSku($version->getSellerSku());
-        $this->setTitle($version->getTitle());
-        $this->setQuantityOrdered($version->getQuantityOrdered());
-        $this->setQuantityShipped($version->getQuantityShipped());
-        $this->setPointsGrantedNumber($version->getPointsGrantedNumber());
-        $this->setPointsGrantedCurrencyCode($version->getPointsGrantedCurrencyCode());
-        $this->setPointsGrantedAmount($version->getPointsGrantedAmount());
-        $this->setItemPriceCurrencyCode($version->getItemPriceCurrencyCode());
-        $this->setItemPriceAmount($version->getItemPriceAmount());
-        $this->setShippingPriceCurrencyCode($version->getShippingPriceCurrencyCode());
-        $this->setShippingPriceAmount($version->getShippingPriceAmount());
-        $this->setGiftWrapPriceCurrencyCode($version->getGiftWrapPriceCurrencyCode());
-        $this->setGiftWrapPriceAmount($version->getGiftWrapPriceAmount());
-        $this->setItemTaxCurrencyCode($version->getItemTaxCurrencyCode());
-        $this->setItemTaxAmount($version->getItemTaxAmount());
-        $this->setShippingTaxCurrencyCode($version->getShippingTaxCurrencyCode());
-        $this->setShippingTaxAmount($version->getShippingTaxAmount());
-        $this->setGiftWrapTaxCurrencyCode($version->getGiftWrapTaxCurrencyCode());
-        $this->setGiftWrapTaxAmount($version->getGiftWrapTaxAmount());
-        $this->setShippingDiscountCurrencyCode($version->getShippingDiscountCurrencyCode());
-        $this->setShippingDiscountAmount($version->getShippingDiscountAmount());
-        $this->setPromotionDiscountCurrencyCode($version->getPromotionDiscountCurrencyCode());
-        $this->setPromotionDiscountAmount($version->getPromotionDiscountAmount());
-        $this->setPromotionId($version->getPromotionId());
-        $this->setCodFeeCurrencyCode($version->getCodFeeCurrencyCode());
-        $this->setCodFeeAmount($version->getCodFeeAmount());
-        $this->setCodFeeDiscountCurrencyCode($version->getCodFeeDiscountCurrencyCode());
-        $this->setCodFeeDiscountAmount($version->getCodFeeDiscountAmount());
-        $this->setGiftMessageText($version->getGiftMessageText());
-        $this->setGiftWrapLevel($version->getGiftWrapLevel());
-        $this->setInvoiceRequirement($version->getInvoiceRequirement());
-        $this->setBuyerSelectedInvoiceCategory($version->getBuyerSelectedInvoiceCategory());
-        $this->setInvoiceTitle($version->getInvoiceTitle());
-        $this->setInvoiceInformation($version->getInvoiceInformation());
-        $this->setConditionNote($version->getConditionNote());
-        $this->setConditionId($version->getConditionId());
-        $this->setConditionSubtypeId($version->getConditionSubtypeId());
-        $this->setScheduledDeliveryStartDate($version->getScheduledDeliveryStartDate());
-        $this->setScheduledDeliveryEndDate($version->getScheduledDeliveryEndDate());
-        $this->setPriceDesignation($version->getPriceDesignation());
-        $this->setBuyerCustomizedURL($version->getBuyerCustomizedURL());
-        $this->setOrderProductId($version->getOrderProductId());
-        $this->setCreatedAt($version->getCreatedAt());
-        $this->setUpdatedAt($version->getUpdatedAt());
-        $this->setVersion($version->getVersion());
-        $this->setVersionCreatedAt($version->getVersionCreatedAt());
-        $this->setVersionCreatedBy($version->getVersionCreatedBy());
-        if ($fkValue = $version->getAmazonOrderId()) {
-            if (isset($loadedObjects['ChildAmazonOrders']) && isset($loadedObjects['ChildAmazonOrders'][$fkValue]) && isset($loadedObjects['ChildAmazonOrders'][$fkValue][$version->getAmazonOrderIdVersion()])) {
-                $related = $loadedObjects['ChildAmazonOrders'][$fkValue][$version->getAmazonOrderIdVersion()];
-            } else {
-                $related = new ChildAmazonOrders();
-                $relatedVersion = ChildAmazonOrdersVersionQuery::create()
-                    ->filterById($fkValue)
-                    ->filterByVersion($version->getAmazonOrderIdVersion())
-                    ->findOne($con);
-                $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
-                $related->setNew(false);
-            }
-            $this->setAmazonOrders($related);
-        }
-    
-        return $this;
-    }
-    
-    /**
-     * Gets the latest persisted version number for the current object
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  integer
-     */
-    public function getLastVersionNumber($con = null)
-    {
-        $v = ChildAmazonOrderProductVersionQuery::create()
-            ->filterByAmazonOrderProduct($this)
-            ->orderByVersion('desc')
-            ->findOne($con);
-        if (!$v) {
-            return 0;
-        }
-    
-        return $v->getVersion();
-    }
-    
-    /**
-     * Checks whether the current object is the latest one
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  Boolean
-     */
-    public function isLastVersion($con = null)
-    {
-        return $this->getLastVersionNumber($con) == $this->getVersion();
-    }
-    
-    /**
-     * Retrieves a version object for this entity and a version number
-     *
-     * @param   integer $versionNumber The version number to read
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ChildAmazonOrderProductVersion A version object
-     */
-    public function getOneVersion($versionNumber, $con = null)
-    {
-        return ChildAmazonOrderProductVersionQuery::create()
-            ->filterByAmazonOrderProduct($this)
-            ->filterByVersion($versionNumber)
-            ->findOne($con);
-    }
-    
-    /**
-     * Gets all the versions of this object, in incremental order
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ObjectCollection A list of ChildAmazonOrderProductVersion objects
-     */
-    public function getAllVersions($con = null)
-    {
-        $criteria = new Criteria();
-        $criteria->addAscendingOrderByColumn(AmazonOrderProductVersionTableMap::VERSION);
-    
-        return $this->getAmazonOrderProductVersions($criteria, $con);
-    }
-    
-    /**
-     * Compares the current object with another of its version.
-     * <code>
-     * print_r($book->compareVersion(1));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   integer             $versionNumber
-     * @param   string              $keys Main key used for the result diff (versions|columns)
-     * @param   ConnectionInterface $con the connection to use
-     * @param   array               $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    public function compareVersion($versionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
-    {
-        $fromVersion = $this->toArray();
-        $toVersion = $this->getOneVersion($versionNumber, $con)->toArray();
-    
-        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
-    }
-    
-    /**
-     * Compares two versions of the current object.
-     * <code>
-     * print_r($book->compareVersions(1, 2));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   integer             $fromVersionNumber
-     * @param   integer             $toVersionNumber
-     * @param   string              $keys Main key used for the result diff (versions|columns)
-     * @param   ConnectionInterface $con the connection to use
-     * @param   array               $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    public function compareVersions($fromVersionNumber, $toVersionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
-    {
-        $fromVersion = $this->getOneVersion($fromVersionNumber, $con)->toArray();
-        $toVersion = $this->getOneVersion($toVersionNumber, $con)->toArray();
-    
-        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
-    }
-    
-    /**
-     * Computes the diff between two versions.
-     * <code>
-     * print_r($book->computeDiff(1, 2));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   array     $fromVersion     An array representing the original version.
-     * @param   array     $toVersion       An array representing the destination version.
-     * @param   string    $keys            Main key used for the result diff (versions|columns).
-     * @param   array     $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    protected function computeDiff($fromVersion, $toVersion, $keys = 'columns', $ignoredColumns = array())
-    {
-        $fromVersionNumber = $fromVersion['Version'];
-        $toVersionNumber = $toVersion['Version'];
-        $ignoredColumns = array_merge(array(
-            'Version',
-            'VersionCreatedAt',
-            'VersionCreatedBy',
-        ), $ignoredColumns);
-        $diff = array();
-        foreach ($fromVersion as $key => $value) {
-            if (in_array($key, $ignoredColumns)) {
-                continue;
-            }
-            if ($toVersion[$key] != $value) {
-                switch ($keys) {
-                    case 'versions':
-                        $diff[$fromVersionNumber][$key] = $value;
-                        $diff[$toVersionNumber][$key] = $toVersion[$key];
-                        break;
-                    default:
-                        $diff[$key] = array(
-                            $fromVersionNumber => $value,
-                            $toVersionNumber => $toVersion[$key],
-                        );
-                        break;
-                }
-            }
-        }
-    
-        return $diff;
-    }
-    /**
-     * retrieve the last $number versions.
-     *
-     * @param Integer $number the number of record to return.
-     * @return PropelCollection|array \AmazonIntegration\Model\AmazonOrderProductVersion[] List of \AmazonIntegration\Model\AmazonOrderProductVersion objects
-     */
-    public function getLastVersions($number = 10, $criteria = null, $con = null)
-    {
-        $criteria = ChildAmazonOrderProductVersionQuery::create(null, $criteria);
-        $criteria->addDescendingOrderByColumn(AmazonOrderProductVersionTableMap::VERSION);
-        $criteria->limit($number);
-    
-        return $this->getAmazonOrderProductVersions($criteria, $con);
-    }
     /**
      * Code to be run before persisting the object
      * @param  ConnectionInterface $con

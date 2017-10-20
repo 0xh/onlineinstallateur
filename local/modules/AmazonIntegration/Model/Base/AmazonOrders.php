@@ -7,12 +7,10 @@ use \Exception;
 use \PDO;
 use AmazonIntegration\Model\AmazonOrderProduct as ChildAmazonOrderProduct;
 use AmazonIntegration\Model\AmazonOrderProductQuery as ChildAmazonOrderProductQuery;
-use AmazonIntegration\Model\AmazonOrderProductVersionQuery as ChildAmazonOrderProductVersionQuery;
 use AmazonIntegration\Model\AmazonOrders as ChildAmazonOrders;
 use AmazonIntegration\Model\AmazonOrdersQuery as ChildAmazonOrdersQuery;
 use AmazonIntegration\Model\AmazonOrdersVersion as ChildAmazonOrdersVersion;
 use AmazonIntegration\Model\AmazonOrdersVersionQuery as ChildAmazonOrdersVersionQuery;
-use AmazonIntegration\Model\Map\AmazonOrderProductVersionTableMap;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
 use AmazonIntegration\Model\Map\AmazonOrdersVersionTableMap;
 use Propel\Runtime\Propel;
@@ -4677,17 +4675,6 @@ abstract class AmazonOrders implements ActiveRecordInterface
             return true;
         }
     
-        // to avoid infinite loops, emulate in save
-        $this->alreadyInSave = true;
-        foreach ($this->getAmazonOrderProducts(null, $con) as $relatedObject) {
-            if ($relatedObject->isVersioningNecessary($con)) {
-                $this->alreadyInSave = false;
-    
-                return true;
-            }
-        }
-        $this->alreadyInSave = false;
-    
     
         return false;
     }
@@ -4757,10 +4744,6 @@ abstract class AmazonOrders implements ActiveRecordInterface
         }
         if (($related = $this->getOrder($con)) && $related->getVersion()) {
             $version->setOrderIdVersion($related->getVersion());
-        }
-        if ($relateds = $this->getAmazonOrderProducts($con)->toKeyValue('Id', 'Version')) {
-            $version->setAmazonOrderProductIds(array_keys($relateds));
-            $version->setAmazonOrderProductVersions(array_values($relateds));
         }
         $version->save($con);
     
@@ -4872,28 +4855,6 @@ abstract class AmazonOrders implements ActiveRecordInterface
                 $related->setNew(false);
             }
             $this->setOrder($related);
-        }
-        if ($fkValues = $version->getAmazonOrderProductIds()) {
-            $this->clearAmazonOrderProducts();
-            $fkVersions = $version->getAmazonOrderProductVersions();
-            $query = ChildAmazonOrderProductVersionQuery::create();
-            foreach ($fkValues as $key => $value) {
-                $c1 = $query->getNewCriterion(AmazonOrderProductVersionTableMap::ID, $value);
-                $c2 = $query->getNewCriterion(AmazonOrderProductVersionTableMap::VERSION, $fkVersions[$key]);
-                $c1->addAnd($c2);
-                $query->addOr($c1);
-            }
-            foreach ($query->find($con) as $relatedVersion) {
-                if (isset($loadedObjects['ChildAmazonOrderProduct']) && isset($loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()]) && isset($loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()][$relatedVersion->getVersion()])) {
-                    $related = $loadedObjects['ChildAmazonOrderProduct'][$relatedVersion->getId()][$relatedVersion->getVersion()];
-                } else {
-                    $related = new ChildAmazonOrderProduct();
-                    $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
-                    $related->setNew(false);
-                }
-                $this->addAmazonOrderProduct($related);
-                $this->collAmazonOrderProductsPartial = false;
-            }
         }
     
         return $this;
