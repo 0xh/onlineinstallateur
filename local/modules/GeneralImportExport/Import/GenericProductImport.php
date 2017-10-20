@@ -91,7 +91,7 @@ class GenericProductImport extends AbstractImport
     		$preis_reuter = $this->rowHasField($row, "Preis_reuter");
     		$vergleich_ek = $this->rowHasField($row, "Vergleich_ek");
     		$aufschlag = $this->rowHasField($row, "Aufschlag");
-    	
+    		$template_id = $this->rowHasField($row, "Template_id");
     	
     		//check for existing services
     		$productQuerry->clear ();
@@ -114,17 +114,20 @@ class GenericProductImport extends AbstractImport
     			$productThelia->setUpdatedAt ( $currentDate );
     			$productThelia->setVersion ( 1 );
     			$productThelia->setVersionCreatedAt ( $currentDate );
-    			$productThelia->setVersionCreatedBy ( "importer.2" );
+    			$productThelia->setVersionCreatedBy ( "importer.3" );
+    					
+    			if($template_id != null)
+    				$productThelia->setTemplateId($templateId);
+    			else
+    				$productThelia->setTemplateId(1);
+    					
     			if($ist_online != null)
     				$productThelia->setVisible($ist_online);
     					
-    					 
-    			if($gewicht == null)
-    				$gewicht = 'NULL';
-    			if($price == null)
-    				$price = 'NULL';
-    			
-    			$productThelia->create ( $kategorie_id, $price, 1, 1, $gewicht, 20 );
+    			$gewicht = isset($gewicht)? $gewicht : 'NULL';
+    			$price= isset($price)? $price: 'NULL';
+    			$productThelia->create ( $kategorie_id, $price, 1, 1, $gewicht, 10 );
+
     					 
     			// product description en_US
     			$productI18n = new ProductI18n ();

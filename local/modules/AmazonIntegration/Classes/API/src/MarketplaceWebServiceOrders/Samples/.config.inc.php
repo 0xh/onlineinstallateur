@@ -7,6 +7,7 @@
  * http://aws.amazon.com
  ***********************************************************************/
 use AmazonIntegration\AmazonIntegration;
+use AmazonIntegration\Controller\Admin\MarketPlaceIdController;
 
 define('AWS_ACCESS_KEY_ID', AmazonIntegration::getConfigValue('AWS_ACCESS_KEY_ID'));
 define('AWS_SECRET_ACCESS_KEY', AmazonIntegration::getConfigValue('AWS_SECRET_ACCESS_KEY'));
@@ -31,7 +32,7 @@ define('APPLICATION_VERSION', AmazonIntegration::getConfigValue('APPLICATION_VER
  * *********************************************************************
  */
 define('MERCHANT_ID', AmazonIntegration::getConfigValue('MERCHANT_ID'));
-define('MARKETPLACE_ID', AmazonIntegration::getConfigValue('MARKETPLACE_ID'));
+define('MARKETPLACE_ID', MarketPlaceIdController::getConfigValueMarketPlace());
 
 /**
  * **********************************************************************

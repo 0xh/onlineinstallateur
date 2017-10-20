@@ -4,7 +4,7 @@
 			<div class="col-md-12 title title-without-tabs">{intl
 				d='sofort.bo.default' l="Amazon Integration Configuration"}</div>
 		</div>
-
+		
 		<div class="form-container">
 			<div class="row">
 				<div class="col-md-12">
@@ -12,17 +12,17 @@
 					<form action="{url path="
 						admin/module/AmazonIntegration/configure"}" method="post">
 
-						{form_hidden_fields form=$form} {include file =
-						"includes/inner-form-toolbar.html" hide_flags = true page_url =
-						"{url path='/admin/module/AmazonIntegration'}" close_url = "{url
-						path='/admin/modules'}" } {if $form_error}
-						<div class="row">
-							<div class="col-md-12">
-								<div class="alert alert-danger">{$form_error_message}</div>
+						{form_hidden_fields form=$form} 
+						{include file = "includes/inner-form-toolbar.html" hide_flags = true page_url = "{url path='/admin/module/AmazonIntegration'}" 
+							close_url = "{url path='/admin/modules'}" } 
+						{if $form_error}
+							<div class="row">
+								<div class="col-md-12">
+									<div class="alert alert-danger">{$form_error_message}</div>
+								</div>
 							</div>
-						</div>
 						{/if}
-
+						
 						<div class="row">
 							<div class="col-md-4">
 								<p class="title title-without-tabs">{intl
@@ -33,16 +33,6 @@
 								{render_form_field form=$form field="APPLICATION_NAME" value=$APPLICATION_NAME}
 								{render_form_field form=$form field="APPLICATION_VERSION" value=$APPLICATION_VERSION} 
 								{render_form_field form=$form field="MERCHANT_ID" value=$MERCHANT_ID} 
-								
-								 {custom_render_form_field form=$form field='MARKETPLACE_ID'}
-				                    <select {form_field_attributes form=$form field='MARKETPLACE_ID'} name="MARKETPLACE_ID" class="form-control">
-										<option value="A1PA6795UKMFR9" {if $MARKETPLACE_ID == 'A1PA6795UKMFR9'}selected="selected"{/if}>amazon.de</option>
-										<option value="A13V1IB3VIYZZH" {if $MARKETPLACE_ID == 'A13V1IB3VIYZZH'}selected="selected"{/if}>amazon.fr</option>
-										<option value="APJ6JRA9NG5V4" {if $MARKETPLACE_ID == 'APJ6JRA9NG5V4'}selected="selected"{/if}>amazon.it</option>
-										<option value="A1RKKUPIHCS9HS" {if $MARKETPLACE_ID == 'A1RKKUPIHCS9HS'}selected="selected"{/if}>amazon.es</option>
-										<option value="A1F83G8C2ARO7P" {if $MARKETPLACE_ID == 'A1F83G8C2ARO7P'}selected="selected"{/if}>amazon.co.uk</option>
-				                    </select>
-								 {/custom_render_form_field}
 							</div>
 							<div class="col-md-4"></div>
 						</div>
@@ -50,6 +40,7 @@
 					{/form}
 				</div>
 			</div>
+					{include file='MarketPlaceId.html'}
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">

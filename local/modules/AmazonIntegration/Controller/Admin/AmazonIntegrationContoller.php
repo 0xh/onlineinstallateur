@@ -215,145 +215,155 @@ class AmazonIntegrationContoller extends BaseAdminController
     	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
 
         $_SESSION['finishedToGetOrders'] = false;
+//         die("Sas");
+//         unset($_SESSION['nxtToken']);
+//         die;
+        while ($_SESSION['finishedToGetOrders'] == false)
+        {
         
-        if (! isset($_SESSION['nxtToken'])) {
-            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
-          } else
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
-        
-        $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
-        $con->beginTransaction();
-       
-        $max_time = ini_get("max_execution_time");
-        ini_set('max_execution_time', 15000);
+            if (! isset($_SESSION['nxtToken'])) {
+                include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
+              } else
+            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
             
-        if ($orders) {
-            foreach ($orders as $i => $order) {
-            	
-            	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
-            	
-            	if (isset($order->ShippingAddress->CountryCode)) {
-            		$countryId = CountryQuery::create()->select('id')
-            		->filterByIsoalpha2($order->ShippingAddress->CountryCode)
-            		->findOne();
-            	} else {
-            		$countryId = '13';
-            	}
-            	
-            	// Insert new customers from Amazon or get the id
-            	$customerId = $this->createCustomer($order, $con, $countryId);
+            $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
+            $con->beginTransaction();
+           
+            $max_time = ini_get("max_execution_time");
+            ini_set('max_execution_time', 15000);
                 
-                /*
-                 * Check if amazon order exists in amazon_orders table
-                 * if doesn't exist insert the new order in 
-                 * - shipping address in order_address
-                 * - order
-                 * - all info from amazon in amazon_orders
-                 * - order_product
-                 * - all info from amazon in amazon_order_product
-                 * - if product doesn't exist insert it in 
-                 * 		- product
-                 * 		- product_price
-                 * 		- product_sale_elements
-                 * 		- product_i18n
-                 * 		- product_category
-                 */
-                
-            	switch ($order->OrderStatus) {
-            		case 'Canceled':
-            			$statusId = '5';
-            			break;
-            		case 'Pending':
-            			$statusId = '1';
-            			break;
-            		case 'Unshipped':
-            			$statusId = '3';
-            			break;
-            		case 'Shipped':
-            			$statusId = '4';
-            			break;
-            		default:
-            			$statusId = '1';
-            			break;
-            	}
-            	
-                $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
-                if ($checkAmazonOrder) { 
-
-                    if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
-                        $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
-                            
-                            $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
-                            $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
-                            $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
-                            $checkAmazonOrder->setOrderStatus($order->OrderStatus);
-                            $checkAmazonOrder->save($con);
-                            
-                            $updateOrderStatus = OrderQuery::create()
-                            						->filterById($checkAmazonOrder->getOrderId())
-                            						->findOne();
-                           	if($updateOrderStatus)
-                           		$updateOrderStatus->setStatusId($statusId)->save($con);
-                    }
-                } else { 
-                	// Insert delivery address in order_address table
-                	$orderAddressId = $this->createOrderAddress($order, $con, $countryId);
+            if ($orders) {
+                foreach ($orders as $i => $order) {
                 	
-                    // Insert order from amazon in order table
-                	$arrCreateOrder = $this->createOrder($order, $customerId, $orderAddressId, $con, $statusId);
+                	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
+                	
+                	if (isset($order->ShippingAddress->CountryCode)) {
+                		$countryId = CountryQuery::create()->select('id')
+                		->filterByIsoalpha2($order->ShippingAddress->CountryCode)
+                		->findOne();
+                	} else {
+                		$countryId = '13';
+                	}
+                	
+                	// Insert new customers from Amazon or get the id
+                	$customerId = $this->createCustomer($order, $con, $countryId);
                     
-                    $lang = $arrCreateOrder['lang'];
-                    $newOrder = $arrCreateOrder['order'];
-                    $orderId = $newOrder->getId();
+                    /*
+                     * Check if amazon order exists in amazon_orders table
+                     * if doesn't exist insert the new order in 
+                     * - shipping address in order_address
+                     * - order
+                     * - all info from amazon in amazon_orders
+                     * - order_product
+                     * - all info from amazon in amazon_order_product
+                     * - if product doesn't exist insert it in 
+                     * 		- product
+                     * 		- product_price
+                     * 		- product_sale_elements
+                     * 		- product_i18n
+                     * 		- product_category
+                     */
                     
-                    // Insert order from amazon to amazon_orders table
-                    $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
-                   
-                    // Get products for each order from amazon
-                    $amazonOrderId = $order->AmazonOrderId;
-                    // $amazonOrderId = '305-3292380-9658727';
-                   
-                    $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
-                   
-                    sleep(4); 
-                    
-                    $totalPostage = 0;
-                    
-                    if(isset($productsOrderItem->OrderItem)) {
-	                    $orderProduct = $productsOrderItem->OrderItem;
-	                    // More items for an order
-	                    if(is_array($orderProduct)){ 
-	                    	$orderProducts = $orderProduct;
-	                    	foreach($orderProducts as $orderProduct){
-	                    		
-	                    		if(isset($orderProduct->ShippingPrice->Amount))
-	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
-	                    		else 
-	                    			$totalPostage += 0;
-	                    		
-	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
-	                    	}
-	                    }
-	                    else {     
-	                    	if(isset($orderProduct->ShippingPrice->Amount))
-	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
-	                    	
-	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
-	                    }
+                	switch ($order->OrderStatus) {
+                		case 'Canceled':
+                			$statusId = '5';
+                			break;
+                		case 'Pending':
+                			$statusId = '1';
+                			break;
+                		case 'Unshipped':
+                			$statusId = '3';
+                			break;
+                		case 'Shipped':
+                			$statusId = '4';
+                			break;
+                		default:
+                			$statusId = '1';
+                			break;
+                	}
+                	
+                    $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
+                    if ($checkAmazonOrder) { 
+    
+                        if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
+                            $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
+                                
+                                $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
+                                if (isset($order->OrderTotal))
+                                {
+                                    $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
+                                    $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
+                                }
+                                $checkAmazonOrder->setOrderStatus($order->OrderStatus);
+                                $checkAmazonOrder->save($con);
+                                
+                                $updateOrderStatus = OrderQuery::create()
+                                						->filterById($checkAmazonOrder->getOrderId())
+                                						->findOne();
+                               	if($updateOrderStatus)
+                               		$updateOrderStatus->setStatusId($statusId)->save($con);
+                        }
+                    } else { 
+                    	// Insert delivery address in order_address table
+                    	$orderAddressId = $this->createOrderAddress($order, $con, $countryId);
+                    	
+                        // Insert order from amazon in order table
+                    	$arrCreateOrder = $this->createOrder($order, $customerId, $orderAddressId, $con, $statusId);
+                        
+                        $lang = $arrCreateOrder['lang'];
+                        $newOrder = $arrCreateOrder['order'];
+                        $orderId = $newOrder->getId();
+                        
+                        // Insert order from amazon to amazon_orders table
+                        $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
+                       
+                        // Get products for each order from amazon
+                        $amazonOrderId = $order->AmazonOrderId;
+                        // $amazonOrderId = '305-3292380-9658727';
+                       
+                        $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
+                       
+                        sleep(4); 
+                        
+                        $totalPostage = 0;
+                        
+                        if(isset($productsOrderItem->OrderItem)) {
+    	                    $orderProduct = $productsOrderItem->OrderItem;
+    	                    // More items for an order
+    	                    if(is_array($orderProduct)){ 
+    	                    	$orderProducts = $orderProduct;
+    	                    	foreach($orderProducts as $orderProduct){
+    	                    		
+    	                    		if(isset($orderProduct->ShippingPrice->Amount))
+    	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
+    	                    		else 
+    	                    			$totalPostage += 0;
+    	                    		
+    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
+    	                    	}
+    	                    }
+    	                    else {     
+    	                    	if(isset($orderProduct->ShippingPrice->Amount))
+    	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
+    	                    	
+    	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
+    	                    }
+                        }
+                        
+                        $taxPostage = 0.2 * $totalPostage;
+                        
+                        $newOrder->setPostage($totalPostage - $taxPostage)
+                        	->setPostageTax($taxPostage)
+                        	->save($con);
                     }
-                    
-                    $taxPostage = 0.2 * $totalPostage;
-                    
-                    $newOrder->setPostage($totalPostage - $taxPostage)
-                    	->setPostageTax($taxPostage)
-                    	->save($con);
+                   
                 }
-               
+                $con->commit(); 
             }
-            $con->commit(); 
+            
+            ini_set('max_execution_time', $max_time);
         }
         
-        ini_set('max_execution_time', $max_time);
         if ($_SESSION['finishedToGetOrders'])
             die("Finished to get orders.");
          

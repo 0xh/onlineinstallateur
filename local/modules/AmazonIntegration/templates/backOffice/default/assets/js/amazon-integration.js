@@ -20,12 +20,12 @@ function getAndUpdateOrders() {
 	     .done(function (data) {
 	    	 console.log(data);
 	    	 $('#wait').hide();
-	    	 location.reload();
+//	    	 location.reload();
 	     })
 	     .fail(function (data) {
 	    	 console.log(data.responseText);
 	    	 $('#wait').hide();
-	    	 location.reload();
+//	    	 location.reload();
 	     })     
 }
 
@@ -36,6 +36,8 @@ function initDatepiker() {
 	    		onSelect: function(date) {
 	    			$( "#datepickerLastUpdatedAfter" ).val('');
 			     }});
+		
+		$('#datepickerCreatedAfter').datepicker('setDate', 'today');
 	   
 		$( "#datepickerLastUpdatedAfter" ).datepicker({
     		onSelect: function(date) {
