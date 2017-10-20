@@ -289,8 +289,11 @@ class AmazonIntegrationContoller extends BaseAdminController
                             $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
                                 
                                 $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
-                                $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
-                                $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
+                                if (isset($order->OrderTotal))
+                                {
+                                    $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
+                                    $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
+                                }
                                 $checkAmazonOrder->setOrderStatus($order->OrderStatus);
                                 $checkAmazonOrder->save($con);
                                 
