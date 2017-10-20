@@ -109,81 +109,82 @@ class AmazonAWSController extends BaseAdminController
 		$result = json_decode($array);
 		$images = array();
 		
-		if(is_array($result->Items->Item)) 
-			$item = $result->Items->Item[0];
-		
-		else 
-			$item = $result->Items->Item;
-		
-		if(isset($item->ImageSets->ImageSet)) {
-			$log->debug ( "amazon url for product ".$eanCode.": ".$item->DetailPageURL);
+		if(isset($result->Items->Item)) {
+			if(is_array($result->Items->Item)) 
+				$item = $result->Items->Item[0];
 			
-			if(isset($item->ItemAttributes->Brand))
-				$brand = $item->ItemAttributes->Brand;
-				elseif (isset($item->ItemAttributes->Manufacturer))
-				$brand = $item->ItemAttributes->Manufacturer;
-				elseif (isset($item->ItemAttributes->Publisher))
-				$brand = $item->ItemAttributes->Publisher;
-				else
-					$brand = '';
-					
-					if($brand) {
-						$sub = strtoupper(substr($brand,0,3));
+			else 
+				$item = $result->Items->Item;
+			
+			if(isset($item->ImageSets->ImageSet)) {
+				$log->debug ( "amazon url for product ".$eanCode.": ".$item->DetailPageURL);
+				
+				if(isset($item->ItemAttributes->Brand))
+					$brand = $item->ItemAttributes->Brand;
+					elseif (isset($item->ItemAttributes->Manufacturer))
+					$brand = $item->ItemAttributes->Manufacturer;
+					elseif (isset($item->ItemAttributes->Publisher))
+					$brand = $item->ItemAttributes->Publisher;
+					else
+						$brand = '';
 						
-						if(isset($item->ItemAttributes->PartNumber))
-							$productRef = $sub.$item->ItemAttributes->PartNumber;
-							else
-								$productRef = $sub.$eanCode;
-					}
-					else {
-						if(isset($item->ItemAttributes->PartNumber))
-							$productRef = $item->ItemAttributes->PartNumber;
-							else
-								$productRef = $eanCode;
-					}
-					
-					//more images
-					if(is_array($item->ImageSets->ImageSet)) {
-						$i = 1;
-						foreach($item->ImageSets->ImageSet as $image) {
+						if($brand) {
+							$sub = strtoupper(substr($brand,0,3));
 							
-							$urlImage = $image->LargeImage->URL;
-							$file_name = $productRef.'_'.$i.'.jpg';
-							$images[$i] = array(
+							if(isset($item->ItemAttributes->PartNumber))
+								$productRef = $sub.$item->ItemAttributes->PartNumber;
+								else
+									$productRef = $sub.$eanCode;
+						}
+						else {
+							if(isset($item->ItemAttributes->PartNumber))
+								$productRef = $item->ItemAttributes->PartNumber;
+								else
+									$productRef = $eanCode;
+						}
+						
+						//more images
+						if(is_array($item->ImageSets->ImageSet)) {
+							$i = 1;
+							foreach($item->ImageSets->ImageSet as $image) {
+								
+								$urlImage = $image->LargeImage->URL;
+								$file_name = $productRef.'_'.$i.'.jpg';
+								$images[$i] = array(
+										'file_name' => $file_name,
+										'title' => isset($item->ItemAttributes->Title) ? $item->ItemAttributes->Title : ''
+								);
+								$i++;
+								
+								Tlog::getInstance()->info("url image ".$urlImage);
+								Tlog::getInstance()->info("file name ".$file_name);
+								
+								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+							}
+							
+						}
+						//one image
+						else {
+							$urlImage = $item->ImageSets->ImageSet->LargeImage->URL;
+							$file_name = $productRef.'.jpg';
+							$images[1] = array(
 									'file_name' => $file_name,
 									'title' => isset($item->ItemAttributes->Title) ? $item->ItemAttributes->Title : ''
 							);
-							$i++;
-							
-							Tlog::getInstance()->info("url image ".$urlImage);
-							Tlog::getInstance()->info("file name ".$file_name);
+							Tlog::getInstance()->info("url image".$urlImage);
+							Tlog::getInstance()->info("file name".$file_name);
 							
 							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+							
 						}
-						
-					}
-					//one image
-					else {
-						$urlImage = $item->ImageSets->ImageSet->LargeImage->URL;
-						$file_name = $productRef.'.jpg';
-						$images[1] = array(
-								'file_name' => $file_name,
-								'title' => isset($item->ItemAttributes->Title) ? $item->ItemAttributes->Title : ''
-						);
-						Tlog::getInstance()->info("url image".$urlImage);
-						Tlog::getInstance()->info("file name".$file_name);
-						
-						file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-						
-					}
+			}
+			else {
+				$log->debug ( " product ".$eanCode." doesn't have amazon images");
+			}
+			
+			ini_set('max_execution_time', $max_time);
+			sleep(10);
 		}
-		else {
-			$log->debug ( " product ".$eanCode." doesn't have amazon images");
-		}
-		
-		ini_set('max_execution_time', $max_time);
-		sleep(10);
-		
 		
 		return $images;
 	}
