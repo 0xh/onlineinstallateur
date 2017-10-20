@@ -158,8 +158,8 @@
   </table>
   
     <table name="amazon_product_category" namespace="AmazonIntegration\Model">
-       	<column name="category_id" phpName="CategoryId" type="INTEGER" primaryKey="true" required="true"/>
-	    <column name="parent_id" phpName="ParentId" type="INTEGER"/>
+       	<column name="category_id" phpName="CategoryId" type="VARCHAR" size="45" primaryKey="true" required="true"/>
+	    <column name="parent_id" phpName="ParentId" type="VARCHAR" size="45"/>
 	    <column name="name" phpName="Name" type="VARCHAR" size="45"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>

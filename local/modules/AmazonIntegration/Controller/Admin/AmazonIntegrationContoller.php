@@ -836,6 +836,10 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	
 	    	// GRO33552002 GRO29800000
 	    	$idType = 'SellerSKU';
+	    	
+	    	// GRO33552002 GRO29800000
+    		//$idType = 'EAN';
+    		
 	    	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
 	    	    	
 	    	$max_time = ini_get("max_execution_time");
@@ -874,7 +878,10 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    					else {
 	    						if (isset($prd->MarketplaceASIN)) 
 	    							$asin = $prd->MarketplaceASIN->ASIN;
+	    						else
+	    							$asin = '';
 	    					}
+	    					
 	    					
 	    					if(isset($prd->SalesRankings->SalesRank)) {
 	    						if(is_array($prd->SalesRankings->SalesRank)) {
@@ -897,8 +904,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    						}
 	    					}
 	    				}
-	    			} /* else
-	    				$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], ""); */
+	    			} 
 	    		} else {
 	    			echo ('error decoding json');
 	    		}
@@ -915,10 +921,6 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    					'/admin/module/amazonintegration/', $params
 	    					)
 	    			);
-	    	
-	   // 	return $this->generateSuccessRedirect($form);
-	    //	die("Finish insert ranking from Amazon.");
-    	
     	} catch (\Exception $e) {
     		$this->setupFormErrorContext(
     				$this->getTranslator()->trans("Error on insert ref : %message", ["message"=>$e->getMessage()], AmazonIntegration::DOMAIN_NAME),
