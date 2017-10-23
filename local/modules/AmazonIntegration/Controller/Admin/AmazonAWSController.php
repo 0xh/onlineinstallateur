@@ -84,12 +84,12 @@ class AmazonAWSController extends BaseAdminController
 			die();
 	}
 	
-	public function getImages($eanCode)
+	public function getImages($eanCode,$log)
 	{
-		$log = Tlog::getInstance();
+		//$log = Tlog::getInstance();
 		
 		$max_time = ini_get("max_execution_time");
-		ini_set('max_execution_time', 60);
+		ini_set('max_execution_time', 600);
 		
 		$secretAccessKey = 'zMneGO9zzYx58lqqmDoDPobcgT6gWYqs+BlcmhVi';
 		$url = 'http://webservices.amazon.de/onca/xml?'.
@@ -160,6 +160,7 @@ class AmazonAWSController extends BaseAdminController
 								Tlog::getInstance()->info("file name ".$file_name);
 								
 								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+								sleep(2);
 							}
 							
 						}
@@ -175,6 +176,7 @@ class AmazonAWSController extends BaseAdminController
 							Tlog::getInstance()->info("file name".$file_name);
 							
 							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+							sleep(2);
 							
 						}
 			}
