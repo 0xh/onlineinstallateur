@@ -61,6 +61,8 @@ class GeizhalsProductExport extends AbstractExport
      */
     public function applyOrderAndAliases(array $data)
     {
+        $data['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
+        
         if ($this->orderAndAliases === null) {
             return $data;
         }
