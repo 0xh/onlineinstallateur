@@ -40,7 +40,7 @@ class AmazonAWSController extends BaseAdminController
 
 		try{
 			$max_time = ini_get("max_execution_time");
-			ini_set('max_execution_time', 60);
+			ini_set('max_execution_time', 600);
 			
 			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
 			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
