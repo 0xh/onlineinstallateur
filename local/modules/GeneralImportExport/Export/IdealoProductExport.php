@@ -59,7 +59,9 @@ class IdealoProductExport extends AbstractExport
      * @return array Ordered and aliased data
      */
     public function applyOrderAndAliases(array $data)
-    {
+    {        
+        $data['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
+        
         if ($this->orderAndAliases === null) {
             return $data;
         }
