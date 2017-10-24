@@ -87,7 +87,7 @@ class AmazonAWSController extends BaseAdminController
 	public function getImages($eanCode)
 	{
 		$log = Tlog::getInstance();
-		
+
 		try{
 			$max_time = ini_get("max_execution_time");
 			ini_set('max_execution_time', 60);
@@ -161,6 +161,7 @@ class AmazonAWSController extends BaseAdminController
 								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
 							
 								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+								sleep(2);
 							}
 							
 						}

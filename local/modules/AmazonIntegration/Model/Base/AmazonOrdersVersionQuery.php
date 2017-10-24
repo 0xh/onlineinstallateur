@@ -70,8 +70,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonOrdersVersionQuery orderByVersionCreatedBy($order = Criteria::ASC) Order by the version_created_by column
  * @method     ChildAmazonOrdersVersionQuery orderByCustomerIdVersion($order = Criteria::ASC) Order by the customer_id_version column
  * @method     ChildAmazonOrdersVersionQuery orderByOrderIdVersion($order = Criteria::ASC) Order by the order_id_version column
- * @method     ChildAmazonOrdersVersionQuery orderByAmazonOrderProductIds($order = Criteria::ASC) Order by the amazon_order_product_ids column
- * @method     ChildAmazonOrdersVersionQuery orderByAmazonOrderProductVersions($order = Criteria::ASC) Order by the amazon_order_product_versions column
  *
  * @method     ChildAmazonOrdersVersionQuery groupById() Group by the id column
  * @method     ChildAmazonOrdersVersionQuery groupBySellerOrderId() Group by the seller_order_id column
@@ -122,8 +120,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonOrdersVersionQuery groupByVersionCreatedBy() Group by the version_created_by column
  * @method     ChildAmazonOrdersVersionQuery groupByCustomerIdVersion() Group by the customer_id_version column
  * @method     ChildAmazonOrdersVersionQuery groupByOrderIdVersion() Group by the order_id_version column
- * @method     ChildAmazonOrdersVersionQuery groupByAmazonOrderProductIds() Group by the amazon_order_product_ids column
- * @method     ChildAmazonOrdersVersionQuery groupByAmazonOrderProductVersions() Group by the amazon_order_product_versions column
  *
  * @method     ChildAmazonOrdersVersionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAmazonOrdersVersionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -185,8 +181,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonOrdersVersion findOneByVersionCreatedBy(string $version_created_by) Return the first ChildAmazonOrdersVersion filtered by the version_created_by column
  * @method     ChildAmazonOrdersVersion findOneByCustomerIdVersion(int $customer_id_version) Return the first ChildAmazonOrdersVersion filtered by the customer_id_version column
  * @method     ChildAmazonOrdersVersion findOneByOrderIdVersion(int $order_id_version) Return the first ChildAmazonOrdersVersion filtered by the order_id_version column
- * @method     ChildAmazonOrdersVersion findOneByAmazonOrderProductIds(array $amazon_order_product_ids) Return the first ChildAmazonOrdersVersion filtered by the amazon_order_product_ids column
- * @method     ChildAmazonOrdersVersion findOneByAmazonOrderProductVersions(array $amazon_order_product_versions) Return the first ChildAmazonOrdersVersion filtered by the amazon_order_product_versions column
  *
  * @method     array findById(string $id) Return ChildAmazonOrdersVersion objects filtered by the id column
  * @method     array findBySellerOrderId(string $seller_order_id) Return ChildAmazonOrdersVersion objects filtered by the seller_order_id column
@@ -237,8 +231,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByVersionCreatedBy(string $version_created_by) Return ChildAmazonOrdersVersion objects filtered by the version_created_by column
  * @method     array findByCustomerIdVersion(int $customer_id_version) Return ChildAmazonOrdersVersion objects filtered by the customer_id_version column
  * @method     array findByOrderIdVersion(int $order_id_version) Return ChildAmazonOrdersVersion objects filtered by the order_id_version column
- * @method     array findByAmazonOrderProductIds(array $amazon_order_product_ids) Return ChildAmazonOrdersVersion objects filtered by the amazon_order_product_ids column
- * @method     array findByAmazonOrderProductVersions(array $amazon_order_product_versions) Return ChildAmazonOrdersVersion objects filtered by the amazon_order_product_versions column
  *
  */
 abstract class AmazonOrdersVersionQuery extends ModelCriteria
@@ -327,7 +319,7 @@ abstract class AmazonOrdersVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, SELLER_ORDER_ID, PURCHASE_DATE, LAST_UPDATE_DATE, ORDER_STATUS, FULFILLMENT_CHANNEL, SALES_CHANNEL, ORDER_CHANNEL, SHIP_SERVICE_LEVEL, ORDER_TOTAL_CURRENCY_CODE, ORDER_TOTAL_AMOUNT, NUMBER_OF_ITEMS_SHIPPED, NUMBER_OF_ITEMS_UNSHIPPED, PAYMENT_EXECUTION_DETAIL_CURRENCY_CODE, PAYMENT_EXECUTION_DETAIL_TOTAL_AMOUNT, PAYMENT_EXECUTION_DETAIL_PAYMENT_METHOD, PAYMENT_METHOD, PAYMENT_METHOD_DETAIL, MARKETPLACE_ID, BUYER_COUNTY, BUYER_TAX_INFO_COMPANY, BUYER_TAX_INFO_TAXING_REGION, BUYER_TAX_INFO_TAX_NAME, BUYER_TAX_INFO_TAX_VALUE, SHIPMENT_SERVICE_LEVEL_CATEGORY, SHIPPED_BY_AMAZON_TFM, TFM_SHIPMENT_STATUS, CBA_DISPLAYABLE_SHIPPING_LABEL, ORDER_TYPE, EARLIEST_SHIP_DATE, LATEST_SHIP_DATE, EARLIEST_DELIVERY_DATE, LATEST_DELIVERY_DATE, IS_BUSINESS_ORDER, PURCHASE_ORDER_NUMBER, IS_PRIME, IS_PREMIUM_ORDER, REPLACED_ORDER_ID, IS_REPLACEMENT_ORDER, ORDER_ADDRESS_ID, CUSTOMER_ID, ORDER_ID, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY, CUSTOMER_ID_VERSION, ORDER_ID_VERSION, AMAZON_ORDER_PRODUCT_IDS, AMAZON_ORDER_PRODUCT_VERSIONS FROM amazon_orders_version WHERE ID = :p0 AND VERSION = :p1';
+        $sql = 'SELECT ID, SELLER_ORDER_ID, PURCHASE_DATE, LAST_UPDATE_DATE, ORDER_STATUS, FULFILLMENT_CHANNEL, SALES_CHANNEL, ORDER_CHANNEL, SHIP_SERVICE_LEVEL, ORDER_TOTAL_CURRENCY_CODE, ORDER_TOTAL_AMOUNT, NUMBER_OF_ITEMS_SHIPPED, NUMBER_OF_ITEMS_UNSHIPPED, PAYMENT_EXECUTION_DETAIL_CURRENCY_CODE, PAYMENT_EXECUTION_DETAIL_TOTAL_AMOUNT, PAYMENT_EXECUTION_DETAIL_PAYMENT_METHOD, PAYMENT_METHOD, PAYMENT_METHOD_DETAIL, MARKETPLACE_ID, BUYER_COUNTY, BUYER_TAX_INFO_COMPANY, BUYER_TAX_INFO_TAXING_REGION, BUYER_TAX_INFO_TAX_NAME, BUYER_TAX_INFO_TAX_VALUE, SHIPMENT_SERVICE_LEVEL_CATEGORY, SHIPPED_BY_AMAZON_TFM, TFM_SHIPMENT_STATUS, CBA_DISPLAYABLE_SHIPPING_LABEL, ORDER_TYPE, EARLIEST_SHIP_DATE, LATEST_SHIP_DATE, EARLIEST_DELIVERY_DATE, LATEST_DELIVERY_DATE, IS_BUSINESS_ORDER, PURCHASE_ORDER_NUMBER, IS_PRIME, IS_PREMIUM_ORDER, REPLACED_ORDER_ID, IS_REPLACEMENT_ORDER, ORDER_ADDRESS_ID, CUSTOMER_ID, ORDER_ID, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY, CUSTOMER_ID_VERSION, ORDER_ID_VERSION FROM amazon_orders_version WHERE ID = :p0 AND VERSION = :p1';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_STR);            
@@ -2153,168 +2145,6 @@ abstract class AmazonOrdersVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AmazonOrdersVersionTableMap::ORDER_ID_VERSION, $orderIdVersion, $comparison);
-    }
-
-    /**
-     * Filter the query on the amazon_order_product_ids column
-     *
-     * @param     array $amazonOrderProductIds The values to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrdersVersionQuery The current query, for fluid interface
-     */
-    public function filterByAmazonOrderProductIds($amazonOrderProductIds = null, $comparison = null)
-    {
-        $key = $this->getAliasedColName(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS);
-        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
-            foreach ($amazonOrderProductIds as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addAnd($key, $value, Criteria::LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::LIKE);
-                }
-            }
-
-            return $this;
-        } elseif ($comparison == Criteria::CONTAINS_SOME) {
-            foreach ($amazonOrderProductIds as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addOr($key, $value, Criteria::LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::LIKE);
-                }
-            }
-
-            return $this;
-        } elseif ($comparison == Criteria::CONTAINS_NONE) {
-            foreach ($amazonOrderProductIds as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addAnd($key, $value, Criteria::NOT_LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::NOT_LIKE);
-                }
-            }
-            $this->addOr($key, null, Criteria::ISNULL);
-
-            return $this;
-        }
-
-        return $this->addUsingAlias(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS, $amazonOrderProductIds, $comparison);
-    }
-
-    /**
-     * Filter the query on the amazon_order_product_ids column
-     * @param     mixed $amazonOrderProductIds The value to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::CONTAINS_ALL
-     *
-     * @return ChildAmazonOrdersVersionQuery The current query, for fluid interface
-     */
-    public function filterByAmazonOrderProductId($amazonOrderProductIds = null, $comparison = null)
-    {
-        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
-            if (is_scalar($amazonOrderProductIds)) {
-                $amazonOrderProductIds = '%| ' . $amazonOrderProductIds . ' |%';
-                $comparison = Criteria::LIKE;
-            }
-        } elseif ($comparison == Criteria::CONTAINS_NONE) {
-            $amazonOrderProductIds = '%| ' . $amazonOrderProductIds . ' |%';
-            $comparison = Criteria::NOT_LIKE;
-            $key = $this->getAliasedColName(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS);
-            if ($this->containsKey($key)) {
-                $this->addAnd($key, $amazonOrderProductIds, $comparison);
-            } else {
-                $this->addAnd($key, $amazonOrderProductIds, $comparison);
-            }
-            $this->addOr($key, null, Criteria::ISNULL);
-
-            return $this;
-        }
-
-        return $this->addUsingAlias(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_IDS, $amazonOrderProductIds, $comparison);
-    }
-
-    /**
-     * Filter the query on the amazon_order_product_versions column
-     *
-     * @param     array $amazonOrderProductVersions The values to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildAmazonOrdersVersionQuery The current query, for fluid interface
-     */
-    public function filterByAmazonOrderProductVersions($amazonOrderProductVersions = null, $comparison = null)
-    {
-        $key = $this->getAliasedColName(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS);
-        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
-            foreach ($amazonOrderProductVersions as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addAnd($key, $value, Criteria::LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::LIKE);
-                }
-            }
-
-            return $this;
-        } elseif ($comparison == Criteria::CONTAINS_SOME) {
-            foreach ($amazonOrderProductVersions as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addOr($key, $value, Criteria::LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::LIKE);
-                }
-            }
-
-            return $this;
-        } elseif ($comparison == Criteria::CONTAINS_NONE) {
-            foreach ($amazonOrderProductVersions as $value) {
-                $value = '%| ' . $value . ' |%';
-                if ($this->containsKey($key)) {
-                    $this->addAnd($key, $value, Criteria::NOT_LIKE);
-                } else {
-                    $this->add($key, $value, Criteria::NOT_LIKE);
-                }
-            }
-            $this->addOr($key, null, Criteria::ISNULL);
-
-            return $this;
-        }
-
-        return $this->addUsingAlias(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS, $amazonOrderProductVersions, $comparison);
-    }
-
-    /**
-     * Filter the query on the amazon_order_product_versions column
-     * @param     mixed $amazonOrderProductVersions The value to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::CONTAINS_ALL
-     *
-     * @return ChildAmazonOrdersVersionQuery The current query, for fluid interface
-     */
-    public function filterByAmazonOrderProductVersion($amazonOrderProductVersions = null, $comparison = null)
-    {
-        if (null === $comparison || $comparison == Criteria::CONTAINS_ALL) {
-            if (is_scalar($amazonOrderProductVersions)) {
-                $amazonOrderProductVersions = '%| ' . $amazonOrderProductVersions . ' |%';
-                $comparison = Criteria::LIKE;
-            }
-        } elseif ($comparison == Criteria::CONTAINS_NONE) {
-            $amazonOrderProductVersions = '%| ' . $amazonOrderProductVersions . ' |%';
-            $comparison = Criteria::NOT_LIKE;
-            $key = $this->getAliasedColName(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS);
-            if ($this->containsKey($key)) {
-                $this->addAnd($key, $amazonOrderProductVersions, $comparison);
-            } else {
-                $this->addAnd($key, $amazonOrderProductVersions, $comparison);
-            }
-            $this->addOr($key, null, Criteria::ISNULL);
-
-            return $this;
-        }
-
-        return $this->addUsingAlias(AmazonOrdersVersionTableMap::AMAZON_ORDER_PRODUCT_VERSIONS, $amazonOrderProductVersions, $comparison);
     }
 
     /**

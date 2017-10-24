@@ -44,6 +44,7 @@ class AmazonIntegrationMarketPlaceIdLoop extends BaseI18nLoop implements PropelS
                 ->set("marketPlaceName", ltrim($listing->getName(), 'MARKETPLACE_'))
                 ->set("marketPlaceValue", $listing->getValue());
             
+            $loopResult->setVersioned(false);
             $loopResult->addRow($loopResultRow);
         }
         

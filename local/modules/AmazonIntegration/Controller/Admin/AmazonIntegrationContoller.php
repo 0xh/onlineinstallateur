@@ -220,11 +220,19 @@ class AmazonIntegrationContoller extends BaseAdminController
 //         die;
         while ($_SESSION['finishedToGetOrders'] == false)
         {
-        
             if (! isset($_SESSION['nxtToken'])) {
-                include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
-              } else
-            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
+                include_once __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
+                $orders = invokeListOrders($service, $request);
+            } 
+            else
+            {
+                include_once  __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
+                
+                if (isset($_SESSION['nxtToken']))
+                    $request->setNextToken($_SESSION['nxtToken']);
+                
+                $orders = invokeListOrdersByNextToken($service, $request);
+            }
             
             $con = Propel::getConnection(AmazonOrdersTableMap::DATABASE_NAME);
             $con->beginTransaction();
@@ -324,6 +332,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                         $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
                        
                         sleep(4); 
+//                         sleep(1); 
                         
                         $totalPostage = 0;
                         
@@ -336,8 +345,6 @@ class AmazonIntegrationContoller extends BaseAdminController
     	                    		
     	                    		if(isset($orderProduct->ShippingPrice->Amount))
     	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
-    	                    		else 
-    	                    			$totalPostage += 0;
     	                    		
     	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
     	                    	}
@@ -365,8 +372,13 @@ class AmazonIntegrationContoller extends BaseAdminController
         }
         
         if ($_SESSION['finishedToGetOrders'])
+        {
+            AmazonIntegrationResponse::logError("Finished to get orders.");
+            unset($_SESSION['nxtToken']);
             die("Finished to get orders.");
+        }
          
+        AmazonIntegrationResponse::logError(' customer, order address and amazon Order');
         die(' customer, order address and amazon Order');
     }
     
@@ -392,6 +404,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    if(isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
 	    	if($orderProduct->QuantityOrdered > 0)
 	    		$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
+	    	else 
+	    	    $unitPrice = 1;
 	    }
 	    else 
 	    	$unitPrice = 1;
@@ -404,10 +418,14 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setCurrencyId(1)
 	    	->save($con);
 	    
+    	if (isset($lang))
+    	    $langLocale =  $lang->getLocale();
+	    else
+	        $langLocale = "de_DE";
     	$productI18n = new ProductI18n();
     	$productI18n
     		->setId($newProduct->getId())
-	    	->setLocale($lang->getLocale())
+	    	->setLocale($langLocale)
 	    	->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
 	    	->save($con);
     	
@@ -713,15 +731,22 @@ class AmazonIntegrationContoller extends BaseAdminController
     		
     	/* get translation */
     	/** @var ProductI18n $productI18n */
-    	$productI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'Product', $product->getId());
+        if (isset($lang))
+            $langLocale =  $lang->getLocale();
+        else 
+            $langLocale = "de_DE";
+    		
+    	$productI18n = I18n::forceI18nRetrieving($langLocale, 'Product', $product->getId());
     		
     	/* get tax */
     	/** @var TaxRuleI18n $taxRuleI18n */
-    	$taxRuleI18n = I18n::forceI18nRetrieving($lang->getLocale(), 'TaxRule', $product->getTaxRuleId());
+    	$taxRuleI18n = I18n::forceI18nRetrieving($langLocale, 'TaxRule', $product->getTaxRuleId());
     		
     	if(isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
     		if($orderProduct->QuantityOrdered > 0)
     			$unitPrice = $orderProduct->ItemPrice->Amount / $orderProduct->QuantityOrdered;
+    		else 
+    		    $unitPrice = 1;
     	}
     	else {
     		$unitPrice = 1;
