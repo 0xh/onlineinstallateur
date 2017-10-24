@@ -305,7 +305,8 @@ class GenericProductImport extends AbstractImport
     			// get images from amazon
     			$amazonAPI = new AmazonAWSController;
     			$imagesAmazon = $amazonAPI->getImages($EAN_code);
-    							
+    			$log->debug ( "AMAZON IMAGES - get images from Amazon in Generic product import");
+    			
     			if($imagesAmazon) {
     							
     				foreach($imagesAmazon as $imageAmazon) {
@@ -326,7 +327,11 @@ class GenericProductImport extends AbstractImport
 	    				$product_image_i18n->save();
 	    								
 	    				$productThelia->addProductImage ( $product_image );
+	    				$log->debug ( "AMAZON IMAGES -  file was inserted in DB ".$imageAmazon['file_name']);
     				} 
+    			}
+    			else{
+    				$log->debug ( "AMAZON IMAGES - no images for this product ".$EAN_code);
     			}
     		}
     	
