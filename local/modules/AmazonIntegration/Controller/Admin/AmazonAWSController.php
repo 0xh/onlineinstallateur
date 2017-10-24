@@ -3,23 +3,25 @@ namespace AmazonIntegration\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
-//require __DIR__ . '/../../Classes/AwsAPI/aws-autoloader.php';
+
+require __DIR__ . '/../../Config/config.php';
 
 class AmazonAWSController extends BaseAdminController
 {
-
+	// function just for testing
 	public function getDescription($productId)
 	{
-		$secretAccessKey = 'zMneGO9zzYx58lqqmDoDPobcgT6gWYqs+BlcmhVi';
-		$url = 'http://webservices.amazon.de/onca/xml?'.
-				'AWSAccessKeyId=AKIAJN6JJIY65M5L4XBQ&'.
-				'AssociateTag=sepa0c-21&'.
+		$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
+		$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
+				'AWSAccessKeyId='.PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID.'&'.
+				'AssociateTag='.PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG.'&'.
 				'ItemId='.$productId.'&'.
 				'IdType=EAN&'.
 				'Operation=ItemLookup&'.
 				'ResponseGroup=Images,Medium&'.
 				'SearchIndex=All&'.
 				'Service=AWSECommerceService';
+		
 		$amazonRequest = $this->amazonSign($url,$secretAccessKey);
 		
 		print_r($amazonRequest);
@@ -29,59 +31,7 @@ class AmazonAWSController extends BaseAdminController
 		$result = json_decode($array);
 		
 		print_r($result);
-		
-		print_r('<br>');
-		
-		if(is_array($result->Items->Item))
-			$item = $result->Items->Item[0];
-			
-			else
-				$item = $result->Items->Item;
-				print_r('----');
-				print_r($item);
 		die();
-		
-		if(isset($result->Items->Item->ImageSets->ImageSet)) {
-			
-			if(isset($result->Items->Item->ItemAttributes->Brand))
-				$brand = $result->Items->Item->ItemAttributes->Brand;
-			else if (isset($result->Items->Item->ItemAttributes->Manufacturer))
-				$brand = $result->Items->Item->ItemAttributes->Manufacturer;
-					
-			$sub = strtoupper(substr($brand,0,3));
-			$productRef = $sub.$result->Items->Item->ItemAttributes->PartNumber;
-					
-			//more images
-			if(is_array($result->Items->Item->ImageSets->ImageSet)) {
-				$i = 1;
-				foreach($result->Items->Item->ImageSets->ImageSet as $image) {
-					
-					$urlImage = $image->LargeImage->URL;
-					$file_name = $productRef.'_'.$i.'.jpg';
-					$i++;
-					
-					Tlog::getInstance()->info("url image ".$urlImage);
-					Tlog::getInstance()->info("file name ".$file_name);
-					
-					file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-					
-				}
-				
-					}	
-			//one image
-			else {
-				$urlImage = $result->Items->Item->ImageSets->ImageSet->LargeImage->URL;
-				$file_name = $productRef.'.jpg';
-				
-				Tlog::getInstance()->info("url image".$urlImage);
-				Tlog::getInstance()->info("file name".$file_name);
-				
-				file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-				
-			}
-		}	
-		
-			die();
 	}
 	
 	public function getImages($eanCode)
@@ -92,16 +42,17 @@ class AmazonAWSController extends BaseAdminController
 			$max_time = ini_get("max_execution_time");
 			ini_set('max_execution_time', 60);
 			
-			$secretAccessKey = 'zMneGO9zzYx58lqqmDoDPobcgT6gWYqs+BlcmhVi';
-			$url = 'http://webservices.amazon.de/onca/xml?'.
-					'AWSAccessKeyId=AKIAJN6JJIY65M5L4XBQ&'.
-					'AssociateTag=sepa0c-21&'.
+			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
+			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
+					'AWSAccessKeyId='.PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID.'&'.
+					'AssociateTag='.PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG.'&'.
 					'ItemId='.$eanCode.'&'.
 					'IdType=EAN&'.
 					'Operation=ItemLookup&'.
 					'ResponseGroup=Images,Medium&'.
 					'SearchIndex=All&'.
 					'Service=AWSECommerceService';
+			
 			$amazonRequest = $this->amazonSign($url,$secretAccessKey);
 			
 			$sxml = simplexml_load_file($amazonRequest);

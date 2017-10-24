@@ -68,13 +68,31 @@ class ConfigurationForm extends BaseForm
                 new NotBlank()
             ],
             'label' => $this->translator->trans('MERCHANT ID', [], AmazonIntegration::DOMAIN_NAME)
-        ]);
-//             ->add("MARKETPLACE_ID", "text", [
-//             'constraints' => [
-//                 new NotBlank()
-//             ],
-//             'label' => $this->translator->trans('MARKETPLACE ID', [], AmazonIntegration::DOMAIN_NAME)
-//         ]);
+        ])   
+        	->add("PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID", "text", [
+            'constraints' => [
+                 new NotBlank()
+            ],
+            'label' => $this->translator->trans('PRODUCT ADVERTISING AWS ACCESS KEY ID', [], AmazonIntegration::DOMAIN_NAME)
+         ])
+         	->add("PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY", "text", [
+         	'constraints' => [
+         		new NotBlank()
+         	],
+         	'label' => $this->translator->trans('PRODUCT ADVERTISING AWS SECRET ACCESS KEY', [], AmazonIntegration::DOMAIN_NAME)
+         ])
+         	->add("PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG", "text", [
+       		'constraints' => [
+         		new NotBlank()
+         	],
+         	'label' => $this->translator->trans('PRODUCT ADVERTISING AWS ASSOCIATE TAG', [], AmazonIntegration::DOMAIN_NAME)
+         ])
+         	->add("PRODUCT_ADVERTISING_AWS_MARKETPLACE", "text", [
+         	'constraints' => [
+         		new NotBlank()
+         	],
+         	'label' => $this->translator->trans('PRODUCT ADVERTISING AWS MARKETPLACE', [], AmazonIntegration::DOMAIN_NAME)
+         ]);
     }
 
     /**
