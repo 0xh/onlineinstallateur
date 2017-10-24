@@ -161,7 +161,7 @@ class AmazonAWSController extends BaseAdminController
 								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
 							
 								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-								sleep(2);
+								
 							}
 							
 						}
@@ -192,12 +192,6 @@ class AmazonAWSController extends BaseAdminController
 			
 			ini_set('max_execution_time', $max_time);
 			sleep(10);
-			
-			if(!$images)
-				$log->debug ( 'AMAZON IMAGES - '.$eanCode.' nu are imagini');
-			else {
-				$log->debug ('AMAZON IMAGES - '.$eanCode.' are imagini');
-			}
 			
 			return $images;
 		}

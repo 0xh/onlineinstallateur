@@ -1,3 +1,4 @@
+{assign page {$smarty.get.page|default:1}}
 <div class="tab-pane fade {if $order_tab == 'amazon-feeds'}active in{/if}" id="amazon-feeds">
 	<div class="table-responsive">
 		<br><br>
@@ -40,7 +41,7 @@
 					</tr>
 				</thead>
 				<tbody>  
-					{loop type="amazon_ranking" name="amazon_ranking"}
+					{loop type="amazon_ranking" name="amazon_ranking" page={$page} limit=50}
 					   	<tr>
 							<td>{$PRODUCT_ID}</td>
 							<td>{$REF}</td>
@@ -51,6 +52,18 @@
 						</tr>
 	              	{/loop}					
 	             </tbody>
+	             <tfoot>
+	             	 <tr>
+		                 <td colspan="100">
+		                     {include
+		                     file = "includes/pagination.html"
+		                     loop_ref       = "amazon_ranking"
+		                     max_page_count = 20
+		                     page_url       = {url path="/admin/module/amazonintegration?tab=amazon-feeds" }
+		                     }
+		                 </td>
+		             </tr>
+		         </tfoot>
 	    	</table>
     	{/ifloop}
 	</div>
