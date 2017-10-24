@@ -32,7 +32,9 @@ use AmazonIntegration\Controller\Admin\AmazonAWSController;
  */
 class GenericProductImport extends AbstractImport
 {
-    protected $mandatoryColumns = [
+	/* @var Tlog $log */
+	protected static $logger;
+	protected $mandatoryColumns = [
         'Ref'
     ];
     
@@ -45,8 +47,9 @@ class GenericProductImport extends AbstractImport
     public function importData(array $row)
     {
     	$errors = null;
-    	$log = Tlog::getInstance ();
-    	
+    	$log = $this->getLogger();
+    	$max_time = ini_get("max_execution_time");
+    	ini_set('max_execution_time', 60000);
     	//$brandI18nQuerry = BrandI18nQuery::create ();
     	$productQuerry = ProductQuery::create ();
     	
@@ -305,7 +308,8 @@ class GenericProductImport extends AbstractImport
     			// get images from amazon
     			$amazonAPI = new AmazonAWSController;
     			$imagesAmazon = $amazonAPI->getImages($EAN_code);
-    							
+    			$log->debug ( "AMAZON IMAGES - get images from Amazon in Generic product import");
+    			
     			if($imagesAmazon) {
     							
     				foreach($imagesAmazon as $imageAmazon) {
@@ -326,7 +330,11 @@ class GenericProductImport extends AbstractImport
 	    				$product_image_i18n->save();
 	    								
 	    				$productThelia->addProductImage ( $product_image );
+	    				$log->debug ( "AMAZON IMAGES -  file was inserted in DB ".$imageAmazon['file_name']);
     				} 
+    			}
+    			else{
+    				$log->debug ( "AMAZON IMAGES - no images for this product ".$EAN_code);
     			}
     		}
     	
@@ -335,8 +343,22 @@ class GenericProductImport extends AbstractImport
     			$errors .= "Product reference number ".$ref." is already in the database ";
     			$log->debug ( " ref number already in the database '" . $ref . "'" );
     		}
-    	
+    		ini_set('max_execution_time', $max_time);
     		if($errors == null)$this->importedRows++;
     	return $errors;
+    }
+    public function getLogger()
+    {
+    	if (self::$logger == null) {
+    		self::$logger = Tlog::getNewInstance();
+    		
+    		$logFilePath = THELIA_LOG_DIR . DS . "log-generic-importer.txt";
+    		
+    		self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+    		self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+    		self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+    		self::$logger->setLevel(Tlog::DEBUG);
+    	}
+    	return self::$logger;
     }
 }

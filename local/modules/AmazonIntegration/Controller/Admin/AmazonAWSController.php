@@ -3,23 +3,25 @@ namespace AmazonIntegration\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
-//require __DIR__ . '/../../Classes/AwsAPI/aws-autoloader.php';
+
+require __DIR__ . '/../../Config/config.php';
 
 class AmazonAWSController extends BaseAdminController
 {
-
+	// function just for testing
 	public function getDescription($productId)
 	{
-		$secretAccessKey = 'zMneGO9zzYx58lqqmDoDPobcgT6gWYqs+BlcmhVi';
-		$url = 'http://webservices.amazon.de/onca/xml?'.
-				'AWSAccessKeyId=AKIAJN6JJIY65M5L4XBQ&'.
-				'AssociateTag=sepa0c-21&'.
+		$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
+		$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
+				'AWSAccessKeyId='.PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID.'&'.
+				'AssociateTag='.PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG.'&'.
 				'ItemId='.$productId.'&'.
 				'IdType=EAN&'.
 				'Operation=ItemLookup&'.
 				'ResponseGroup=Images,Medium&'.
 				'SearchIndex=All&'.
 				'Service=AWSECommerceService';
+		
 		$amazonRequest = $this->amazonSign($url,$secretAccessKey);
 		
 		print_r($amazonRequest);
@@ -29,123 +31,73 @@ class AmazonAWSController extends BaseAdminController
 		$result = json_decode($array);
 		
 		print_r($result);
-		
-		print_r('<br>');
-		
-		if(is_array($result->Items->Item))
-			$item = $result->Items->Item[0];
-			
-			else
-				$item = $result->Items->Item;
-				print_r('----');
-				print_r($item);
 		die();
-		
-		if(isset($result->Items->Item->ImageSets->ImageSet)) {
-			
-			if(isset($result->Items->Item->ItemAttributes->Brand))
-				$brand = $result->Items->Item->ItemAttributes->Brand;
-			else if (isset($result->Items->Item->ItemAttributes->Manufacturer))
-				$brand = $result->Items->Item->ItemAttributes->Manufacturer;
-					
-			$sub = strtoupper(substr($brand,0,3));
-			$productRef = $sub.$result->Items->Item->ItemAttributes->PartNumber;
-					
-			//more images
-			if(is_array($result->Items->Item->ImageSets->ImageSet)) {
-				$i = 1;
-				foreach($result->Items->Item->ImageSets->ImageSet as $image) {
-					
-					$urlImage = $image->LargeImage->URL;
-					$file_name = $productRef.'_'.$i.'.jpg';
-					$i++;
-					
-					Tlog::getInstance()->info("url image ".$urlImage);
-					Tlog::getInstance()->info("file name ".$file_name);
-					
-					file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-					
-				}
-				
-					}	
-			//one image
-			else {
-				$urlImage = $result->Items->Item->ImageSets->ImageSet->LargeImage->URL;
-				$file_name = $productRef.'.jpg';
-				
-				Tlog::getInstance()->info("url image".$urlImage);
-				Tlog::getInstance()->info("file name".$file_name);
-				
-				file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-				
-			}
-		}	
-		
-			die();
 	}
 	
 	public function getImages($eanCode)
 	{
 		$log = Tlog::getInstance();
-		
-		$max_time = ini_get("max_execution_time");
-		ini_set('max_execution_time', 60);
-		
-		$secretAccessKey = 'zMneGO9zzYx58lqqmDoDPobcgT6gWYqs+BlcmhVi';
-		$url = 'http://webservices.amazon.de/onca/xml?'.
-				'AWSAccessKeyId=AKIAJN6JJIY65M5L4XBQ&'.
-				'AssociateTag=sepa0c-21&'.
-				'ItemId='.$eanCode.'&'.
-				'IdType=EAN&'.
-				'Operation=ItemLookup&'.
-				'ResponseGroup=Images,Medium&'.
-				'SearchIndex=All&'.
-				'Service=AWSECommerceService';
-		$amazonRequest = $this->amazonSign($url,$secretAccessKey);
-		
-		$sxml = simplexml_load_file($amazonRequest);
-		
-		$array = json_encode($sxml, TRUE);
-		$result = json_decode($array);
-		$images = array();
-		
-		if(isset($result->Items->Item)) {
-			if(is_array($result->Items->Item)) 
-				$item = $result->Items->Item[0];
+
+		try{
+			$max_time = ini_get("max_execution_time");
+			ini_set('max_execution_time', 60);
 			
-			else 
-				$item = $result->Items->Item;
+			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
+			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
+					'AWSAccessKeyId='.PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID.'&'.
+					'AssociateTag='.PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG.'&'.
+					'ItemId='.$eanCode.'&'.
+					'IdType=EAN&'.
+					'Operation=ItemLookup&'.
+					'ResponseGroup=Images,Medium&'.
+					'SearchIndex=All&'.
+					'Service=AWSECommerceService';
 			
-			if(isset($item->ImageSets->ImageSet)) {
-				$log->debug ( "amazon url for product ".$eanCode.": ".$item->DetailPageURL);
-				
-				if(isset($item->ItemAttributes->Brand))
-					$brand = $item->ItemAttributes->Brand;
-					elseif (isset($item->ItemAttributes->Manufacturer))
-					$brand = $item->ItemAttributes->Manufacturer;
-					elseif (isset($item->ItemAttributes->Publisher))
-					$brand = $item->ItemAttributes->Publisher;
+			$amazonRequest = $this->amazonSign($url,$secretAccessKey);
+			
+			$sxml = simplexml_load_file($amazonRequest);
+			
+			$array = json_encode($sxml, TRUE);
+			$result = json_decode($array);
+			$images = array();
+	
+			if(isset($result->Items->Item)) {			
+				if(isset($result->Items->Item->ItemAttributes->EANList->EANListElement) && !is_array($result->Items->Item->ItemAttributes->EANList->EANListElement)){
+					if(is_array($result->Items->Item))
+						$item = $result->Items->Item[0];
 					else
-						$brand = '';
-						
+						$item = $result->Items->Item;
+							
+					if(isset($item->ImageSets->ImageSet)) {
+						 $log->debug ( "AMAZON IMAGES - This product has images. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
+								
+						if(isset($item->ItemAttributes->Brand))
+							$brand = $item->ItemAttributes->Brand;
+						elseif (isset($item->ItemAttributes->Manufacturer))
+							$brand = $item->ItemAttributes->Manufacturer;
+						elseif (isset($item->ItemAttributes->Publisher))
+							$brand = $item->ItemAttributes->Publisher;
+						else
+							$brand = '';
+								
 						if($brand) {
 							$sub = strtoupper(substr($brand,0,3));
 							
 							if(isset($item->ItemAttributes->PartNumber))
 								$productRef = $sub.$item->ItemAttributes->PartNumber;
-								else
-									$productRef = $sub.$eanCode;
+							else
+								$productRef = $sub.$eanCode;
 						}
 						else {
 							if(isset($item->ItemAttributes->PartNumber))
 								$productRef = $item->ItemAttributes->PartNumber;
-								else
-									$productRef = $eanCode;
+							else
+								$productRef = $eanCode;
 						}
-						
+								
 						//more images
 						if(is_array($item->ImageSets->ImageSet)) {
-							$i = 1;
+							$i = 0;
 							foreach($item->ImageSets->ImageSet as $image) {
 								
 								$urlImage = $image->LargeImage->URL;
@@ -156,10 +108,11 @@ class AmazonAWSController extends BaseAdminController
 								);
 								$i++;
 								
-								Tlog::getInstance()->info("url image ".$urlImage);
-								Tlog::getInstance()->info("file name ".$file_name);
-								
+								Tlog::getInstance()->info("AMAZON IMAGES - url image ".$urlImage);
+								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
+							
 								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+								
 							}
 							
 						}
@@ -167,26 +120,36 @@ class AmazonAWSController extends BaseAdminController
 						else {
 							$urlImage = $item->ImageSets->ImageSet->LargeImage->URL;
 							$file_name = $productRef.'.jpg';
-							$images[1] = array(
+							$images[0] = array(
 									'file_name' => $file_name,
 									'title' => isset($item->ItemAttributes->Title) ? $item->ItemAttributes->Title : ''
 							);
-							Tlog::getInstance()->info("url image".$urlImage);
-							Tlog::getInstance()->info("file name".$file_name);
+							Tlog::getInstance()->info("AMAZON IMAGES - one image - url image".$urlImage);
+							Tlog::getInstance()->info("AMAZON IMAGES - one image - file name".$file_name);
 							
 							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
-							
 						}
-			}
-			else {
-				$log->debug ( " product ".$eanCode." doesn't have amazon images");
+					}
+					else {
+						$log->debug ( "AMAZON IMAGES - product '.$eanCode.' doesn't have amazon images");
+					}
+							
+				}
+				else{
+					$log->debug ( "AMAZON IMAGES - EANListElement is an array with more EAN codes for product ".$eanCode);
+				}
+						
 			}
 			
 			ini_set('max_execution_time', $max_time);
 			sleep(10);
+			
+			return $images;
 		}
-		
-		return $images;
+		catch (\Exception $e) {
+			$log->debug ("AMAZON IMAGES - Error images from amazon:".$e->getMessage());
+			return $this->getImages($eanCode);
+		}
 	}
 	
 	public function amazonEncode($text)

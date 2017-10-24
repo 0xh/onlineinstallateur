@@ -870,10 +870,9 @@ class AmazonIntegrationContoller extends BaseAdminController
     		$refArray =  explode(' ', $reference);
 	    	
 	    	// GRO33552002 GRO29800000
-	    	$idType = 'SellerSKU';
+	    	//$idType = 'SellerSKU';
 	    	
-	    	// GRO33552002 GRO29800000
-    		//$idType = 'EAN';
+    		$idType = 'EAN';
     		
 	    	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
 	    	    	
@@ -938,8 +937,14 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    								$this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
 	    						}
 	    					}
+	    					else {
+	    						$this->getLogger()->error($ref." doesn't have SalesRankings");
+	    					}
 	    				}
 	    			} 
+	    			else{
+	    				$this->getLogger()->error($ref." is an invalid SellerSKU for the marketplace ");
+	    			}
 	    		} else {
 	    			echo ('error decoding json');
 	    		}

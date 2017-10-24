@@ -34,7 +34,16 @@
 								{render_form_field form=$form field="APPLICATION_VERSION" value=$APPLICATION_VERSION} 
 								{render_form_field form=$form field="MERCHANT_ID" value=$MERCHANT_ID} 
 							</div>
-							<div class="col-md-4"></div>
+							<div class="col-md-2">
+							</div>
+							<div class="col-md-4">
+								<p class="title title-without-tabs">{intl
+									d='amazonintegration.bo.default' l="Amazon Product Advertising parameters"}</p>
+								{render_form_field form=$form field="PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID" value=$PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID}
+								{render_form_field form=$form field="PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY" value=$PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY}
+								{render_form_field form=$form field="PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG" value=$PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG}
+								{render_form_field form=$form field="PRODUCT_ADVERTISING_AWS_MARKETPLACE" value=$PRODUCT_ADVERTISING_AWS_MARKETPLACE}
+							</div>
 						</div>
 					</form>
 					{/form}
