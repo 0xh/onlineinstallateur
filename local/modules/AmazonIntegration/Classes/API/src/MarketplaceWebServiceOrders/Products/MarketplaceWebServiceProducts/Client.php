@@ -1398,6 +1398,9 @@ class MarketplaceWebServiceProducts_Client implements MarketplaceWebServiceProdu
     }
 
     private function _urlencode($value) {
+    	//hardcoded start
+    	if(is_array($value)) $value = $value[0];
+    	//hardcoded end
         return str_replace('%7E', '~', rawurlencode($value));
     }
 
