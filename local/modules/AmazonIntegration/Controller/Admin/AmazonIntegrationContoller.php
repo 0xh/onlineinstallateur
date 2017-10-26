@@ -53,61 +53,10 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function viewAction()
     {
-        // echo "<pre>";
-        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetServiceStatusSample.php';
-        
-        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
-        
-        // include __DIR__.'/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
-        
+      
         return $this->render("AmazonIntegrationTemplate");
     }
 
-    public function addProductsForOrdersByAmazon()
-    {
-        $amazonOrdersQuery = new AmazonOrdersQuery();
-        $prods = $amazonOrdersQuery->findById("*");
-        
-        $amazonOrdersArray = array();
-        
-        foreach ($prods as $value) {
-            array_push($amazonOrdersArray, $value->getId());
-            // $amazonOrderId = '305-4424625-0181155';
-          //  $amazonOrderId = $value->getId();
-          $amazonOrderId = '407-9880541-9385912';
-        }
-        // $amazonOrdersArray2 = array();
-        // foreach ($amazonOrdersArray as $key => $value)
-        // {
-        // echo $key." - ".$value."\n";
-        // if ($key > 645)
-        // array_push($amazonOrdersArray2, $value);
-        // }
-        // $amazonOrdersArray = $amazonOrdersArray2;
-        
-        // echo "<pre>";
-        // var_dump($amazonOrdersArray);
-        
-        // die;
-        
-        $max_time = ini_get("max_execution_time");
-        ini_set('max_execution_time', 6000);
-        
-        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
-        $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
-        sleep(4); 
-        ini_set('max_execution_time', $max_time);
-     //   print_r($amazonOrderId);
-      //   print_r($productsOrderItem); 
-  
-        if(is_array($productsOrderItem->OrderItem)){
-        	foreach($productsOrderItem->OrderItem as $orderItem) {
-        		print_r($orderItem);
-        	}
-        }
-        	 
-        die("Finish insert Products foreach Orders by Amazon.");
-    }
 
     public function saveAsinFromAmazon()
     {
@@ -215,9 +164,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
 
         $_SESSION['finishedToGetOrders'] = false;
-//         die("Sas");
-//         unset($_SESSION['nxtToken']);
-//         die;
+
         while ($_SESSION['finishedToGetOrders'] == false)
         {
             if (! isset($_SESSION['nxtToken'])) {
@@ -868,7 +815,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		$reference =  $data['reference'];
     		
     		$refArray =  explode(' ', $reference);
-	    	
+    		
 	    	// GRO33552002 GRO29800000
 	    	//$idType = 'SellerSKU';
 	    	
@@ -877,7 +824,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
 	    	    	
 	    	$max_time = ini_get("max_execution_time");
-	    	ini_set('max_execution_time', 3000);
+	    	ini_set('max_execution_time', 100);
 	    	
 	    	// object or array of parameters
 	    	foreach ($refArray as $ref) {
@@ -887,23 +834,39 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    		$request->setIdList($idList);
 	    		
 	    		$result = invokeGetMatchingProductForId($service, $request);
-	    		
+	   
 	    		if ($result) {
 	    			include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetProductCategoriesForASINSample.php';
 	    			if (isset($result->GetMatchingProductForIdResult->Products)) {
 	    				foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
 	    					
-	    					$pse = ProductSaleElementsQuery::create()
-			    						->filterByRef($ref)
-			    						->findOne();
+	    					if($idType == 'SellerSKU') {
+		    					$pse = ProductSaleElementsQuery::create()
+				    						->filterByRef($ref)
+				    						->findOne();
+	    						if($pse) {
+	    							$eanCode = $pse->getEanCode();
+	    							$productId = $pse->getProductId();
+	    						}
+	    						else {
+	    							$eanCode = '';
+	    							$productId = '';
+	    						}
 	    					
-	    					if($pse) {
-	    						$eanCode = $pse->getEanCode();
-	    						$productId = $pse->getProductId();
 	    					}
-	    					else {
-	    						$eanCode = '';
-	    						$productId = '';
+	    					elseif($idType == 'EAN'){
+	    						$pse = ProductSaleElementsQuery::create()
+		    						->filterByEanCode($ref)
+		    						->findOne();
+	    						
+	    						if($pse) {
+	    							$productId = $pse->getProductId();
+	    						}
+	    						else {
+	    							$productId = '';
+	    						}
+	    						
+	    						$eanCode = $ref;
 	    					}
 	    					
 	    					if (isset($prd->Identifiers)) {
@@ -916,11 +879,16 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    							$asin = '';
 	    					}
 	    					
+	    					// get price from amazon
+	    					$amazonAPI = new AmazonAWSController;
+	    					$priceAmazon = $amazonAPI->getLowestPrice($eanCode);
+	    				
+	    					$this->getLogger()->error( "AMAZON - get lowest price from Amazon in GetRanking");
 	    					
 	    					if(isset($prd->SalesRankings->SalesRank)) {
 	    						if(is_array($prd->SalesRankings->SalesRank)) {
 	    							foreach($prd->SalesRankings->SalesRank as $ranks) {
-	    								$this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId);
+	    								$this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId,$priceAmazon);
 	    							}
 	    						}
 	    						
@@ -938,12 +906,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    						}
 	    					}
 	    					else {
+	    						$this->saveRanking($eanCode, $productId, $ref, $asin, '', '',$priceAmazon);
 	    						$this->getLogger()->error($ref." doesn't have SalesRankings");
 	    					}
 	    				}
 	    			} 
 	    			else{
-	    				$this->getLogger()->error($ref." is an invalid SellerSKU for the marketplace ");
+	    				$this->getLogger()->error($ref." is an invalid EAN for the marketplace ");
 	    			}
 	    		} else {
 	    			echo ('error decoding json');
@@ -972,7 +941,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	}
     }
     
-    public function saveRanking($eanCode, $productId, $ref, $asin, $rank, $productCat) 
+    public function saveRanking($eanCode, $productId, $ref, $asin, $rank, $productCat, $priceAmazon) 
     {
     	$prodAmazon = new ProductAmazon();
     	$prodAmazon->setEanCode($eanCode)
@@ -981,6 +950,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setASIN($asin)
 	    	->setRanking($rank)
 	    	->setAmazonCategoryId($productCat)
+	    	->setLowestPrice($priceAmazon['lowestPrice'])
+	    	->setListPrice($priceAmazon['listPrice'])
 	    	->save();
     	
     }

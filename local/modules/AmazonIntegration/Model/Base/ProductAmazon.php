@@ -94,6 +94,18 @@ abstract class ProductAmazon implements ActiveRecordInterface
     protected $amazon_category_id;
 
     /**
+     * The value for the lowest_price field.
+     * @var        string
+     */
+    protected $lowest_price;
+
+    /**
+     * The value for the list_price field.
+     * @var        string
+     */
+    protected $list_price;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -437,6 +449,28 @@ abstract class ProductAmazon implements ActiveRecordInterface
     }
 
     /**
+     * Get the [lowest_price] column value.
+     * 
+     * @return   string
+     */
+    public function getLowestPrice()
+    {
+
+        return $this->lowest_price;
+    }
+
+    /**
+     * Get the [list_price] column value.
+     * 
+     * @return   string
+     */
+    public function getListPrice()
+    {
+
+        return $this->list_price;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -584,6 +618,48 @@ abstract class ProductAmazon implements ActiveRecordInterface
     } // setAmazonCategoryId()
 
     /**
+     * Set the value of [lowest_price] column.
+     * 
+     * @param      string $v new value
+     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     */
+    public function setLowestPrice($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->lowest_price !== $v) {
+            $this->lowest_price = $v;
+            $this->modifiedColumns[ProductAmazonTableMap::LOWEST_PRICE] = true;
+        }
+
+
+        return $this;
+    } // setLowestPrice()
+
+    /**
+     * Set the value of [list_price] column.
+     * 
+     * @param      string $v new value
+     * @return   \AmazonIntegration\Model\ProductAmazon The current object (for fluent API support)
+     */
+    public function setListPrice($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->list_price !== $v) {
+            $this->list_price = $v;
+            $this->modifiedColumns[ProductAmazonTableMap::LIST_PRICE] = true;
+        }
+
+
+        return $this;
+    } // setListPrice()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -640,6 +716,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ProductAmazonTableMap::translateFieldName('AmazonCategoryId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->amazon_category_id = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ProductAmazonTableMap::translateFieldName('LowestPrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->lowest_price = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : ProductAmazonTableMap::translateFieldName('ListPrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->list_price = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -648,7 +730,7 @@ abstract class ProductAmazon implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = ProductAmazonTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = ProductAmazonTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \AmazonIntegration\Model\ProductAmazon object", 0, $e);
@@ -878,6 +960,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) {
             $modifiedColumns[':p' . $index++]  = 'AMAZON_CATEGORY_ID';
         }
+        if ($this->isColumnModified(ProductAmazonTableMap::LOWEST_PRICE)) {
+            $modifiedColumns[':p' . $index++]  = 'LOWEST_PRICE';
+        }
+        if ($this->isColumnModified(ProductAmazonTableMap::LIST_PRICE)) {
+            $modifiedColumns[':p' . $index++]  = 'LIST_PRICE';
+        }
 
         $sql = sprintf(
             'INSERT INTO product_amazon (%s) VALUES (%s)',
@@ -909,6 +997,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
                         break;
                     case 'AMAZON_CATEGORY_ID':                        
                         $stmt->bindValue($identifier, $this->amazon_category_id, PDO::PARAM_STR);
+                        break;
+                    case 'LOWEST_PRICE':                        
+                        $stmt->bindValue($identifier, $this->lowest_price, PDO::PARAM_STR);
+                        break;
+                    case 'LIST_PRICE':                        
+                        $stmt->bindValue($identifier, $this->list_price, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -993,6 +1087,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
             case 6:
                 return $this->getAmazonCategoryId();
                 break;
+            case 7:
+                return $this->getLowestPrice();
+                break;
+            case 8:
+                return $this->getListPrice();
+                break;
             default:
                 return null;
                 break;
@@ -1028,6 +1128,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
             $keys[4] => $this->getASIN(),
             $keys[5] => $this->getRanking(),
             $keys[6] => $this->getAmazonCategoryId(),
+            $keys[7] => $this->getLowestPrice(),
+            $keys[8] => $this->getListPrice(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1088,6 +1190,12 @@ abstract class ProductAmazon implements ActiveRecordInterface
             case 6:
                 $this->setAmazonCategoryId($value);
                 break;
+            case 7:
+                $this->setLowestPrice($value);
+                break;
+            case 8:
+                $this->setListPrice($value);
+                break;
         } // switch()
     }
 
@@ -1119,6 +1227,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if (array_key_exists($keys[4], $arr)) $this->setASIN($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setRanking($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setAmazonCategoryId($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setLowestPrice($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setListPrice($arr[$keys[8]]);
     }
 
     /**
@@ -1137,6 +1247,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         if ($this->isColumnModified(ProductAmazonTableMap::ASIN)) $criteria->add(ProductAmazonTableMap::ASIN, $this->asin);
         if ($this->isColumnModified(ProductAmazonTableMap::RANKING)) $criteria->add(ProductAmazonTableMap::RANKING, $this->ranking);
         if ($this->isColumnModified(ProductAmazonTableMap::AMAZON_CATEGORY_ID)) $criteria->add(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $this->amazon_category_id);
+        if ($this->isColumnModified(ProductAmazonTableMap::LOWEST_PRICE)) $criteria->add(ProductAmazonTableMap::LOWEST_PRICE, $this->lowest_price);
+        if ($this->isColumnModified(ProductAmazonTableMap::LIST_PRICE)) $criteria->add(ProductAmazonTableMap::LIST_PRICE, $this->list_price);
 
         return $criteria;
     }
@@ -1206,6 +1318,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         $copyObj->setASIN($this->getASIN());
         $copyObj->setRanking($this->getRanking());
         $copyObj->setAmazonCategoryId($this->getAmazonCategoryId());
+        $copyObj->setLowestPrice($this->getLowestPrice());
+        $copyObj->setListPrice($this->getListPrice());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1246,6 +1360,8 @@ abstract class ProductAmazon implements ActiveRecordInterface
         $this->asin = null;
         $this->ranking = null;
         $this->amazon_category_id = null;
+        $this->lowest_price = null;
+        $this->list_price = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

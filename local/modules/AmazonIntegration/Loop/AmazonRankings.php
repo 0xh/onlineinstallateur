@@ -37,6 +37,8 @@ class AmazonRankings extends BaseLoop implements PropelSearchLoopInterface
 			->set("REF", $product->getRef())
 			->set("ASIN", $product->getAsin())
 			->set("RANKING", $product->getRanking())
+			->set("LOWEST_PRICE",$product->getLowestPrice())
+			->set("LIST_PRICE",$product->getListPrice())
 			->set("CATEGORY", $product->getAmazonCategoryId());
 			$loopResult->addRow($row);
 		}
