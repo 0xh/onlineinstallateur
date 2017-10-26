@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
     `ASIN` VARCHAR(255),
     `ranking` INTEGER(255),
     `amazon_category_id` VARCHAR(45),
+    `lowest_price` VARCHAR(45),
+    `list_price` VARCHAR(45),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
@@ -25,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
 -- amazon_orders
 -- ---------------------------------------------------------------------
 
-
+	
 
 CREATE TABLE IF NOT EXISTS `amazon_orders`
 (
@@ -147,11 +149,6 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
     `price_designation` VARCHAR(45),
     `buyer_customized_url` VARCHAR(45),
     `order_product_id` INTEGER,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `version` INTEGER DEFAULT 0,
-    `version_created_at` DATETIME,
-    `version_created_by` VARCHAR(100),
     PRIMARY KEY (`order_item_id`),
     INDEX `fk_a_order_product_id` (`order_product_id`),
     INDEX `fk_a_amazon_order_id` (`amazon_order_id`),
@@ -171,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
 
 
 
-CREATE TABLE IF NOT EXISTS `amazon_product_category`
+CREATE TABLE  IF NOT EXISTS `amazon_product_category`
 (
     `category_id` VARCHAR(45) NOT NULL,
     `parent_id` VARCHAR(45),
@@ -236,78 +233,10 @@ CREATE TABLE IF NOT EXISTS `amazon_orders_version`
     `version_created_by` VARCHAR(100),
     `customer_id_version` INTEGER DEFAULT 0,
     `order_id_version` INTEGER DEFAULT 0,
-    `amazon_order_product_ids` TEXT,
-    `amazon_order_product_versions` TEXT,
     PRIMARY KEY (`id`,`version`),
     CONSTRAINT `amazon_orders_version_FK_1`
         FOREIGN KEY (`id`)
         REFERENCES `amazon_orders` (`id`)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- amazon_order_product_version
--- ---------------------------------------------------------------------
-
-
-
-CREATE TABLE IF NOT EXISTS  `amazon_order_product_version`
-(
-    `order_item_id` VARCHAR(45) NOT NULL,
-    `amazon_order_id` VARCHAR(45),
-    `asin` VARCHAR(45),
-    `seller_sku` VARCHAR(45),
-    `title` VARCHAR(45),
-    `quantity_ordered` FLOAT,
-    `quantity_shipped` FLOAT,
-    `points_granted_number` FLOAT,
-    `points_granted_currency_code` VARCHAR(45),
-    `points_granted_amount` VARCHAR(45),
-    `item_price_currency_code` VARCHAR(45),
-    `item_price_amount` VARCHAR(45),
-    `shipping_price_currency_code` VARCHAR(45),
-    `shipping_price_amount` VARCHAR(45),
-    `gift_wrap_price_currency_code` VARCHAR(45),
-    `gift_wrap_price_amount` VARCHAR(45),
-    `item_tax_currency_code` VARCHAR(45),
-    `item_tax_amount` VARCHAR(45),
-    `shipping_tax_currency_code` VARCHAR(45),
-    `shipping_tax_amount` VARCHAR(45),
-    `gift_wrap_tax_currency_code` VARCHAR(45),
-    `gift_wrap_tax_amount` VARCHAR(45),
-    `shipping_discount_currency_code` VARCHAR(45),
-    `shipping_discount_amount` VARCHAR(45),
-    `promotion_discount_currency_code` VARCHAR(45),
-    `promotion_discount_amount` VARCHAR(45),
-    `promotion_id` VARCHAR(45),
-    `cod_fee_currency_code` VARCHAR(45),
-    `cod_fee_amount` VARCHAR(45),
-    `cod_fee_discount_currency_code` VARCHAR(45),
-    `cod_fee_discount_amount` VARCHAR(45),
-    `gift_message_text` VARCHAR(45),
-    `gift_wrap_level` VARCHAR(45),
-    `invoice_requirement` VARCHAR(45),
-    `buyer_selected_invoice_category` VARCHAR(45),
-    `invoice_title` VARCHAR(45),
-    `invoice_information` VARCHAR(45),
-    `condition_note` VARCHAR(45),
-    `condition_id` VARCHAR(45),
-    `condition_subtype_id` VARCHAR(45),
-    `schedule_delivery_start_date` VARCHAR(45),
-    `schedule_delivery_end_date` VARCHAR(45),
-    `price_designation` VARCHAR(45),
-    `buyer_customized_url` VARCHAR(45),
-    `order_product_id` INTEGER,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `version` INTEGER DEFAULT 0 NOT NULL,
-    `version_created_at` DATETIME,
-    `version_created_by` VARCHAR(100),
-    `amazon_order_id_version` INTEGER DEFAULT 0,
-    PRIMARY KEY (`order_item_id`,`version`),
-    CONSTRAINT `amazon_order_product_version_FK_1`
-        FOREIGN KEY (`order_item_id`)
-        REFERENCES `amazon_order_product` (`order_item_id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

@@ -25,6 +25,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazonQuery orderByASIN($order = Criteria::ASC) Order by the ASIN column
  * @method     ChildProductAmazonQuery orderByRanking($order = Criteria::ASC) Order by the ranking column
  * @method     ChildProductAmazonQuery orderByAmazonCategoryId($order = Criteria::ASC) Order by the amazon_category_id column
+ * @method     ChildProductAmazonQuery orderByLowestPrice($order = Criteria::ASC) Order by the lowest_price column
+ * @method     ChildProductAmazonQuery orderByListPrice($order = Criteria::ASC) Order by the list_price column
  *
  * @method     ChildProductAmazonQuery groupById() Group by the id column
  * @method     ChildProductAmazonQuery groupByProductId() Group by the product_id column
@@ -33,6 +35,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazonQuery groupByASIN() Group by the ASIN column
  * @method     ChildProductAmazonQuery groupByRanking() Group by the ranking column
  * @method     ChildProductAmazonQuery groupByAmazonCategoryId() Group by the amazon_category_id column
+ * @method     ChildProductAmazonQuery groupByLowestPrice() Group by the lowest_price column
+ * @method     ChildProductAmazonQuery groupByListPrice() Group by the list_price column
  *
  * @method     ChildProductAmazonQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildProductAmazonQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -48,6 +52,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildProductAmazon findOneByASIN(string $ASIN) Return the first ChildProductAmazon filtered by the ASIN column
  * @method     ChildProductAmazon findOneByRanking(int $ranking) Return the first ChildProductAmazon filtered by the ranking column
  * @method     ChildProductAmazon findOneByAmazonCategoryId(string $amazon_category_id) Return the first ChildProductAmazon filtered by the amazon_category_id column
+ * @method     ChildProductAmazon findOneByLowestPrice(string $lowest_price) Return the first ChildProductAmazon filtered by the lowest_price column
+ * @method     ChildProductAmazon findOneByListPrice(string $list_price) Return the first ChildProductAmazon filtered by the list_price column
  *
  * @method     array findById(int $id) Return ChildProductAmazon objects filtered by the id column
  * @method     array findByProductId(int $product_id) Return ChildProductAmazon objects filtered by the product_id column
@@ -56,6 +62,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByASIN(string $ASIN) Return ChildProductAmazon objects filtered by the ASIN column
  * @method     array findByRanking(int $ranking) Return ChildProductAmazon objects filtered by the ranking column
  * @method     array findByAmazonCategoryId(string $amazon_category_id) Return ChildProductAmazon objects filtered by the amazon_category_id column
+ * @method     array findByLowestPrice(string $lowest_price) Return ChildProductAmazon objects filtered by the lowest_price column
+ * @method     array findByListPrice(string $list_price) Return ChildProductAmazon objects filtered by the list_price column
  *
  */
 abstract class ProductAmazonQuery extends ModelCriteria
@@ -144,7 +152,7 @@ abstract class ProductAmazonQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN, RANKING, AMAZON_CATEGORY_ID FROM product_amazon WHERE ID = :p0';
+        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN, RANKING, AMAZON_CATEGORY_ID, LOWEST_PRICE, LIST_PRICE FROM product_amazon WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -470,6 +478,64 @@ abstract class ProductAmazonQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ProductAmazonTableMap::AMAZON_CATEGORY_ID, $amazonCategoryId, $comparison);
+    }
+
+    /**
+     * Filter the query on the lowest_price column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLowestPrice('fooValue');   // WHERE lowest_price = 'fooValue'
+     * $query->filterByLowestPrice('%fooValue%'); // WHERE lowest_price LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $lowestPrice The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductAmazonQuery The current query, for fluid interface
+     */
+    public function filterByLowestPrice($lowestPrice = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($lowestPrice)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $lowestPrice)) {
+                $lowestPrice = str_replace('*', '%', $lowestPrice);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProductAmazonTableMap::LOWEST_PRICE, $lowestPrice, $comparison);
+    }
+
+    /**
+     * Filter the query on the list_price column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByListPrice('fooValue');   // WHERE list_price = 'fooValue'
+     * $query->filterByListPrice('%fooValue%'); // WHERE list_price LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $listPrice The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildProductAmazonQuery The current query, for fluid interface
+     */
+    public function filterByListPrice($listPrice = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($listPrice)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $listPrice)) {
+                $listPrice = str_replace('*', '%', $listPrice);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(ProductAmazonTableMap::LIST_PRICE, $listPrice, $comparison);
     }
 
     /**

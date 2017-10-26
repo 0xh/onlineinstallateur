@@ -11,6 +11,8 @@
 	    <column name="ASIN" phpName="ASIN"  type="VARCHAR" size="255"/>
 	    <column name="ranking" phpName="Ranking"  type="INTEGER" size="255"/>
 	    <column name="amazon_category_id" phpName="AmazonCategoryId" type="VARCHAR" size="45"/>
+	    <column name="lowest_price" phpName="LowestPrice" type="VARCHAR" size="45"/>
+	    <column name="list_price" phpName="ListPrice" type="VARCHAR" size="45"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>

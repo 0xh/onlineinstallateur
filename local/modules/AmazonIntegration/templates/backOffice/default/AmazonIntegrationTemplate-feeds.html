@@ -36,6 +36,8 @@
 						<th>Ref</th>
 						<th>Asin</th>
 						<th>Ranking</th>
+						<th>Lowest price</th>
+						<th>List price</th>
 						<th>Category Id</th>
 						<th>Category Hierarchy</th>
 					</tr>
@@ -43,10 +45,12 @@
 				<tbody>  
 					{loop type="amazon_ranking" name="amazon_ranking" page={$page} limit=50}
 					   	<tr>
-							<td>{$PRODUCT_ID}</td>
+							<td>{if $PRODUCT_ID != 0}{$PRODUCT_ID}{else}Not in HF{/if}</td>
 							<td>{$REF}</td>
 							<td>{$ASIN}</td>
-							<td>{$RANKING}</td>
+							<td>{if $RANKING != 0}{$RANKING}{else}Without ranking{/if}</td>
+							<td>{if $LOWEST_PRICE}{$LOWEST_PRICE}{else}Currently unavailable{/if}</td>
+							<td>{if $LIST_PRICE}{$LIST_PRICE}{else}Currently unavailable{/if}</td>
 							<td>{$CATEGORY}</td>
 							<td> {loop type="amazon_product_categories" name="amazon_product_categories" category=$CATEGORY}{$ID}{/loop} </td>
 						</tr>
