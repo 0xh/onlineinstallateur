@@ -111,8 +111,8 @@ class AmazonAWSController extends BaseAdminController
 								
 								Tlog::getInstance()->info("AMAZON IMAGES - url image ".$urlImage);
 								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
-							
-								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+								Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
+							//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
 								
 							}
 							
@@ -127,8 +127,8 @@ class AmazonAWSController extends BaseAdminController
 							);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - url image".$urlImage);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - file name".$file_name);
-							
-							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+							Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
+						//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
 						}
 					}
 					else {
