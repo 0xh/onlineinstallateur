@@ -33,6 +33,7 @@ class GeizhalsProductExport extends AbstractExport
     const FILE_NAME = 'catalog_geizhals';
 
     private $url_site;
+    private $baseSourceFilePath = null;
 
     protected $orderAndAliases = [
         'product_i18nTITLE' => 'Bezeichnung',
@@ -68,7 +69,6 @@ class GeizhalsProductExport extends AbstractExport
         }
         
         $processedData = [];
-        
         foreach ($this->orderAndAliases as $key => $value) {
             if (is_integer($key)) {
                 $fieldName = $value;
@@ -99,8 +99,7 @@ class GeizhalsProductExport extends AbstractExport
         if ($processedData['Promo'] == 0)
             $processedData['Spezialpreis'] = "";
         
-        unset($processedData['Promo']);
-        
+        unset( $processedData['Promo']);       
         return $processedData;
     }
 
@@ -112,14 +111,13 @@ class GeizhalsProductExport extends AbstractExport
         // return URL::getInstance()->absoluteUrl(sprintf("%s/%s", $path, $safe_filename), null, URL::PATH_TO_FILE);
         $event = new ImageEvent();
         
-        $baseSourceFilePath = ConfigQuery::read('images_library_path');
-        if ($baseSourceFilePath === null) {
-            $baseSourceFilePath = THELIA_LOCAL_DIR . 'media' . DS . 'images';
+        if ($this->baseSourceFilePath === null) {
+        	$this->baseSourceFilePath= THELIA_LOCAL_DIR . 'media' . DS . 'images';
         } else {
-            $baseSourceFilePath = THELIA_ROOT . $baseSourceFilePath;
+        	$this->baseSourceFilePath= THELIA_ROOT . $this->baseSourceFilePath;
         }
         
-        $sourceFilePath = sprintf('%s/%s/%s', $baseSourceFilePath, $this->objectType, $result->getFile());
+        $sourceFilePath = sprintf('%s/%s/%s', $this->baseSourceFilePath, $this->objectType, $result->getFile());
         
         $event->setSourceFilepath($sourceFilePath);
         $event->setCacheSubdirectory($this->objectType);
@@ -128,6 +126,9 @@ class GeizhalsProductExport extends AbstractExport
 
     protected function getData()
     {
+    	$max_time = ini_get("max_execution_time");
+    	ini_set('max_execution_time', 300);
+    	
         $locale = $this->language->getLocale();
         
         $urlJoin = new Join(ProductTableMap::ID, RewritingUrlTableMap::VIEW_ID, Criteria::LEFT_JOIN);
@@ -188,6 +189,8 @@ class GeizhalsProductExport extends AbstractExport
             ->groupBy(ProductSaleElementsTableMap::ID)
             ->
         where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
+        
+        ini_set('max_execution_time', $max_time); 
         
         return $query;
     }

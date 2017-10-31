@@ -50,8 +50,6 @@ class FeedController extends BaseFrontController {
     /**
      * Key prefix for feed cache
      */
-    const FEED_CACHE_KEY = "feed";
-
 
     /**
      * render the RSS feed
@@ -63,10 +61,12 @@ class FeedController extends BaseFrontController {
      * @return Response
      * @throws \RuntimeException
      */
-    
     //TODO generate error pages and not only pageNotFound
     public function generateAction($context, $lang, $id)
     {
+    	$max_time = ini_get("max_execution_time");
+    	ini_set('max_execution_time', 300);
+    	
         /** @var Request $request */
         $request = $this->getRequest();
 
@@ -105,7 +105,7 @@ class FeedController extends BaseFrontController {
         }
 
         $flush = $request->query->get("flush", "");
-		Tlog::getInstance()->debug("format".$request->query->get("format", "csv"));
+		//Tlog::getInstance()->debug("format".$request->query->get("format", "csv"));
         // check if feed already in cache
         $cacheContent = false;
 
@@ -114,10 +114,6 @@ class FeedController extends BaseFrontController {
         
        
         if($format == "csv"){
-        //	$export = new ExportController();
-        //	$export->setContainer($this->container);
-        // 	$export_result = $export->exportAction(8);
-        	
         	$exportDBReference = "thelia.export.".$context.".".$platform;//ex: thelia.export.catalog.idealo
         	
         	//get export Object from DB based on reference
@@ -135,12 +131,12 @@ class FeedController extends BaseFrontController {
         	if ($export === null) {
         		return $this->pageNotFound();
         	}
-        		set_time_limit(0);//give the script some breathing room - this only gives an extra max_execution_time (world4you php configuration)
-        		/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
-        		$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
-        		/** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
-        		$serializer = $serializerManager->get("thelia.csv");//
-        		if($platform == "preisroboterde")
+
+        	/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
+        	$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
+        	/** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
+        	$serializer = $serializerManager->get("thelia.csv");//
+        	if($platform == "preisroboterde")
         		$serializer->setDelimiter("|");
         		
         	$lang = (new LangQuery)->findPk($lang);
@@ -159,25 +155,21 @@ class FeedController extends BaseFrontController {
         		$contentType = $serializer->getMimeType();
         		$fileExt = $serializer->getExtension();
         	}
+        	$contentDisposition = sprintf(
+        			'%s; filename="%s.%s"',
+        			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+        			$exportEvent->getExport()->getFileName(),
+        			$fileExt);
         	
         	$header = [
         				'Content-Type' => $contentType,
-        				'Content-Disposition' => sprintf(
-        								'%s; filename="%s.%s"',
-        								ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        								$exportEvent->getExport()->getFileName(),
-        								$fileExt)
+        				'Content-Disposition' => $contentDisposition
         				];
         				$content = mb_convert_encoding(readfile($exportEvent->getFilePath()), 'UTF-8', 'auto');
         				$response = new Response();
         				$response->setContent($content);
         				$response->headers->set('Content-Type', $contentType);
-        				$response->headers->set('Content-Disposition' , sprintf(
-        								'%s; filename="%s.%s"',
-        								ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        								$exportEvent->getExport()->getFileName(),
-        								$fileExt
-        								));
+        				$response->headers->set('Content-Disposition' , $contentDisposition);
         				//return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
         }
         else{
@@ -213,6 +205,8 @@ class FeedController extends BaseFrontController {
         $response->setContent($cacheContent);
         $response->headers->set('Content-Type', 'application/rss+xml');
         }
+        
+        ini_set('max_execution_time', $max_time); 
         return $response;
     }
 
