@@ -24,7 +24,7 @@ use Thelia\Model\ProductI18n;
 use Thelia\Model\ProductSaleElements;
 use Thelia\Model\ProductImageI18n;
 use Thelia\Model\ProductImage;
-//use AmazonIntegration\Controller\Admin\AmazonAWSController;
+use AmazonIntegration\Controller\Admin\AmazonAWSController;
 
 /**
  * Class ProductPricesImport
@@ -306,7 +306,7 @@ class GenericProductImport extends AbstractImport
     			}
     						  	
     			// get images from amazon
-    			/* $amazonAPI = new AmazonAWSController;
+    			$amazonAPI = new AmazonAWSController;
     			$imagesAmazon = $amazonAPI->getImages($EAN_code);
     			$log->debug ( "AMAZON IMAGES - get images from Amazon in Generic product import");
     			
@@ -335,7 +335,7 @@ class GenericProductImport extends AbstractImport
     			}
     			else{
     				$log->debug ( "AMAZON IMAGES - no images for this product ".$EAN_code);
-    			} */
+    			}
     		}
     	
     		else
