@@ -21,6 +21,7 @@ use Thelia\Model\Map\ProductPriceTableMap;
 use Thelia\Model\Map\ProductSaleElementsTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Map\RewritingUrlTableMap;
+use Thelia\Log\Tlog;
 
 /**
  * Class GeizhalsProductExport
@@ -62,12 +63,12 @@ class GeizhalsProductExport extends AbstractExport
      */
     public function applyOrderAndAliases(array $data)
     {
-        $data['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
+        //$data['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
         
         if ($this->orderAndAliases === null) {
             return $data;
         }
-        
+        Tlog::getInstance()->error($data['productID']);
         $processedData = [];
         foreach ($this->orderAndAliases as $key => $value) {
             if (is_integer($key)) {
@@ -129,6 +130,8 @@ class GeizhalsProductExport extends AbstractExport
     	$max_time = ini_get("max_execution_time");
     	ini_set('max_execution_time', 300);
     	
+    	$now = new \DateTime(null, new \DateTimeZone('Europe/Vienna'));
+    	Tlog::getInstance()->error("started geizhals query ".$now->format('Y-m-d H:i:s'));
         $locale = $this->language->getLocale();
         
         $urlJoin = new Join(ProductTableMap::ID, RewritingUrlTableMap::VIEW_ID, Criteria::LEFT_JOIN);
@@ -189,9 +192,9 @@ class GeizhalsProductExport extends AbstractExport
             ->groupBy(ProductSaleElementsTableMap::ID)
             ->
         where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
-        
+
         ini_set('max_execution_time', $max_time); 
-        
+
         return $query;
     }
 }
