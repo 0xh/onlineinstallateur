@@ -1,3 +1,0 @@
-pjMultibyte.component.php
-pjHttp.component.php
-framework 1.0.18
