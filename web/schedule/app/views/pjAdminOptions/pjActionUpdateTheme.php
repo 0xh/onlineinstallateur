@@ -1,1 +1,0 @@
-<?php include PJ_VIEWS_PATH . 'pjAdminOptions/elements/theme.php'; ?>
