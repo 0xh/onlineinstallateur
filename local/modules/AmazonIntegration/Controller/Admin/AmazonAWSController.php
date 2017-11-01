@@ -144,7 +144,7 @@ class AmazonAWSController extends BaseAdminController
 				$log->debug ( "AMAZON IMAGES - doesn't have items/item - ".$eanCode);
 			}
 			
-			sleep(10);
+			//sleep(10);
 			
 			return $images;
 		}
