@@ -1,7 +1,34 @@
 function sortByDate() {
-	$( '.filter' ).change(function() {
+	$( '.position_sorting' ).change(function() {
 	  	pos = 'sort=' + $('.position_sorting').val();
   		window.location.href = '?' + pos;
+	});
+}
+
+function filterMarketplace() {
+	$( '.position_marketplace' ).change(function() {
+		pos = 'position_marketplace=' + $('.position_marketplace').val();
+		pos += '&position_brand=' + $('.position_brand').val();
+		pos += '&position_sent_amazon=' + $('.position_sent_amazon').val();
+		window.location.href = '?' + pos;
+	});
+}
+
+function filterBrand() {
+	$( '.position_brand' ).change(function() {
+		pos = 'position_marketplace=' + $('.position_marketplace').val();
+		pos += '&position_brand=' + $('.position_brand').val();
+		pos += '&position_sent_amazon=' + $('.position_sent_amazon').val();
+		window.location.href = '?' + pos;
+	});
+}
+
+function filterSentAmazon() {
+	$( '.position_sent_amazon' ).change(function() {
+		pos = 'position_marketplace=' + $('.position_marketplace').val();
+		pos += '&position_brand=' + $('.position_brand').val();
+		pos += '&position_sent_amazon=' + $('.position_sent_amazon').val();
+		window.location.href = '?' + pos;
 	});
 }
 

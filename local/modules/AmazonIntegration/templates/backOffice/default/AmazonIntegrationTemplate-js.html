@@ -44,7 +44,33 @@ window.onload = function() {
  		getAndUpdateOrders();
  	});
 
+ 	
  	initDatepiker();
  	sortByDate();
+ 	
+ 	filterMarketplace();
+ 	filterBrand();
+ 	filterSentAmazon(); 
+
 }
+
+	function test(id)
+ 	{
+ 	 	$('#radio_' + id).click(function() {
+//  	 		alert("asd");
+//  	 		console.log($('#radio_' + id).prop('checked'));
+ 	        if ($('#radio_' + id).prop('checked'))
+ 	        {
+ 	        	$('#radio_' + id).prop('checked', false);
+//  	        	$('#radio_' + id).data('waschecked', false);
+ 	        }
+ 	        else
+        	{
+//  	        	$('#radio_' + id).data('waschecked', true);
+ 	        	$('#radio_' + id).prop('checked', true);
+        	}
+
+ 	 	});
+ 		
+ 	}
 </script>

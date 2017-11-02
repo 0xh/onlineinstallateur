@@ -15,7 +15,9 @@
 	
     <loops>
         <loop name="amazon_orders_listing" class="AmazonIntegration\Loop\AmazonIntegrationListingLoop" />
+        <loop name="amazon_products_listing" class="AmazonIntegration\Loop\AmazonProductsLoop" />
         <loop name="amazon_config_marketplace" class="AmazonIntegration\Loop\AmazonIntegrationMarketPlaceIdLoop" />
+        <loop name="amazon_brand" class="AmazonIntegration\Loop\BrandLoop" />
     </loops>
     
     <forms>
