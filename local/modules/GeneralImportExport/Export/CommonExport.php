@@ -32,7 +32,7 @@ class CommonExport
         $parentId = $category[0]->getParent();
         
         if ($parentId != 0) {
-            $catTitle .= ' '.CommonExport::getTitleCategory($parentId);
+        	$catTitle = CommonExport::getTitleCategory($parentId)." ".$catTitle;
             return CommonExport::getParentId($parentId, $catTitle);
         }
         return $catTitle;

@@ -1,6 +1,6 @@
 <?php
 
-namespace HookAdminCrawlerDashboard\Controller;
+namespace HookAdminCrawlerDashboard\Controller\Back;
 
 use Doctrine\Common\Cache\FilesystemCache;
 use HookAdminCrawlerDashboard\HookAdminCrawlerDashboard;
@@ -19,6 +19,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Model\Map\BrandTableMap;
 use Propel\Runtime\ActiveQuery\Join;
 use Thelia\Model\Map\ProductTableMap;
+use HookAdminCrawlerDashboard\Controller\Crawler\GoogleShoppingCrawler;
 
 /**
  * Class CrawlerController
@@ -389,7 +390,7 @@ class BackController extends BaseAdminController
     	//$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
     	//usleep(250000)sleep(rand(100,500));
     	}
-    	//Tlog::getInstance()->error($final);
+    	$this->getLogger()->error($final);
 
     	//return $this->crawlAmazonProduct("4005176314964");
     	//return $this->crawlGoogleShoppingProduct("4005176809996");

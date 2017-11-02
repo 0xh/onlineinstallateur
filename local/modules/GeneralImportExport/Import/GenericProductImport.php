@@ -304,7 +304,8 @@ class GenericProductImport extends AbstractImport
     	
     				$productThelia->addProductImage ( $product_image );
     			}
-    						  	
+    			
+    			$log->debug ( "AMAZON IMAGES - BEFORE get images from Amazon in Generic product import");
     			// get images from amazon
     			$amazonAPI = new AmazonAWSController;
     			$imagesAmazon = $amazonAPI->getImages($EAN_code);

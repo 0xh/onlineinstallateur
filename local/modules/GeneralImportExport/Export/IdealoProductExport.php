@@ -34,6 +34,7 @@ class IdealoProductExport extends AbstractExport
     const FILE_NAME = 'catalog_idealo';
 
     private $url_site;
+    private $baseSourceFilePath = null;
 
     protected $orderAndAliases = [
         'productID' => 'Artikelnummer',
@@ -59,12 +60,12 @@ class IdealoProductExport extends AbstractExport
      * @return array Ordered and aliased data
      */
     public function applyOrderAndAliases(array $data)
-    {        
-        $data['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
-        
+    {          
         if ($this->orderAndAliases === null) {
             return $data;
         }
+        if($this->baseSourceFilePath === null)
+        	$this->baseSourceFilePath = ConfigQuery::read('images_library_path');
         
         $processedData = [];
         
@@ -82,7 +83,7 @@ class IdealoProductExport extends AbstractExport
                 $processedData[$fieldAlias] = $data[$fieldName];
             }
         }
-        
+        $processedData['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
         if ($this->url_site == null)
             $this->url_site = ConfigQuery::read('url_site');
         $processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
@@ -121,14 +122,14 @@ class IdealoProductExport extends AbstractExport
         // return URL::getInstance()->absoluteUrl(sprintf("%s/%s", $path, $safe_filename), null, URL::PATH_TO_FILE);
         $event = new ImageEvent();
         
-        $baseSourceFilePath = ConfigQuery::read('images_library_path');
-        if ($baseSourceFilePath === null) {
-            $baseSourceFilePath = THELIA_LOCAL_DIR . 'media' . DS . 'images';
+        
+        if ($this->baseSourceFilePath === null) {
+        	$this->baseSourceFilePath= THELIA_LOCAL_DIR . 'media' . DS . 'images';
         } else {
-            $baseSourceFilePath = THELIA_ROOT . $baseSourceFilePath;
+        	$this->baseSourceFilePath= THELIA_ROOT . $this->baseSourceFilePath;
         }
         
-        $sourceFilePath = sprintf('%s/%s/%s', $baseSourceFilePath, $this->objectType, $result->getFile());
+        $sourceFilePath = sprintf('%s/%s/%s', $this->baseSourceFilePath, $this->objectType, $result->getFile());
         
         $event->setSourceFilepath($sourceFilePath);
         $event->setCacheSubdirectory($this->objectType);
@@ -178,23 +179,20 @@ class IdealoProductExport extends AbstractExport
             ->addJoinObject($imageJoin, 'product_image_join')
             ->addJoinCondition('product_image_join', ProductImageTableMap::POSITION . '= ?', "1", null, \PDO::PARAM_INT)
             ->withColumn(ProductImageTableMap::FILE)
-            ->
-        // ->addJoinCondition('product_image_join,')
-        
-        addJoinObject($brandJoin, 'brand_join')
-            ->addJoinCondition('brand_join', BrandI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->withColumn(BrandI18nTableMap::TITLE)
-            ->endUse()
-            ->useAttributeCombinationQuery(null, Criteria::LEFT_JOIN)
-            ->useAttributeAvQuery(null, Criteria::LEFT_JOIN)
-            ->addJoinObject($attributeAvJoin, 'attribute_av_join')
-            ->addJoinCondition('attribute_av_join', AttributeAvI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->addAsColumn('attribute_av_i18n_ATTRIBUTES', 'GROUP_CONCAT(DISTINCT ' . AttributeAvI18nTableMap::TITLE . ')')
-            ->endUse()
-            ->endUse()
-            ->orderBy(ProductSaleElementsTableMap::ID)
-            ->groupBy(ProductSaleElementsTableMap::ID)
-            ->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
+            ->addJoinObject($brandJoin, 'brand_join')
+		            ->addJoinCondition('brand_join', BrandI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
+		            ->withColumn(BrandI18nTableMap::TITLE)
+		            ->endUse()
+		            ->useAttributeCombinationQuery(null, Criteria::LEFT_JOIN)
+		            ->useAttributeAvQuery(null, Criteria::LEFT_JOIN)
+		            ->addJoinObject($attributeAvJoin, 'attribute_av_join')
+		            ->addJoinCondition('attribute_av_join', AttributeAvI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
+		            ->addAsColumn('attribute_av_i18n_ATTRIBUTES', 'GROUP_CONCAT(DISTINCT ' . AttributeAvI18nTableMap::TITLE . ')')
+		            ->endUse()
+		            ->endUse()
+		            ->orderBy(ProductSaleElementsTableMap::ID)
+		            ->groupBy(ProductSaleElementsTableMap::ID)
+		            ->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
         
         return $query;
     }

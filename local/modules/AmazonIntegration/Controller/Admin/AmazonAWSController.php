@@ -37,10 +37,8 @@ class AmazonAWSController extends BaseAdminController
 	public function getImages($eanCode)
 	{
 		$log = Tlog::getInstance();
-
+		$log->debug ( "AMAZON IMAGES - before try/catch");
 		try{
-			$max_time = ini_get("max_execution_time");
-			ini_set('max_execution_time', 600);
 			
 			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
 			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
@@ -53,14 +51,17 @@ class AmazonAWSController extends BaseAdminController
 					'SearchIndex=All&'.
 					'Service=AWSECommerceService';
 			
+			$log->debug ( "AMAZON IMAGES - in try/catch - before request");
 			$amazonRequest = $this->amazonSign($url,$secretAccessKey);
-			
+			$log->debug ( "AMAZON IMAGES - in try/catch - after request & before simplexml_load_file");
 			$sxml = simplexml_load_file($amazonRequest);
-			
+			$log->debug ( "AMAZON IMAGES - in try/catch - after simplexml_load_file");
 			$array = json_encode($sxml, TRUE);
 			$result = json_decode($array);
 			$images = array();
-	
+			
+			$log->debug ( "AMAZON IMAGES - in try/catch");
+			
 			if(isset($result->Items->Item)) {			
 				if(isset($result->Items->Item->ItemAttributes->EANList->EANListElement) && !is_array($result->Items->Item->ItemAttributes->EANList->EANListElement)){
 					if(is_array($result->Items->Item))
@@ -110,8 +111,8 @@ class AmazonAWSController extends BaseAdminController
 								
 								Tlog::getInstance()->info("AMAZON IMAGES - url image ".$urlImage);
 								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
-							
-								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+								Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
+							//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
 								
 							}
 							
@@ -126,8 +127,8 @@ class AmazonAWSController extends BaseAdminController
 							);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - url image".$urlImage);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - file name".$file_name);
-							
-							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
+							Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
+						//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
 						}
 					}
 					else {
@@ -139,10 +140,11 @@ class AmazonAWSController extends BaseAdminController
 					$log->debug ( "AMAZON IMAGES - EANListElement is an array with more EAN codes for product ".$eanCode);
 				}
 						
+			} else{
+				$log->debug ( "AMAZON IMAGES - doesn't have items/item - ".$eanCode);
 			}
 			
-			ini_set('max_execution_time', $max_time);
-			sleep(10);
+			//sleep(10);
 			
 			return $images;
 		}
