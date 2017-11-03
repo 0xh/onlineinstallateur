@@ -121,7 +121,7 @@ class GenericProductImport extends AbstractImport
     			$productThelia->setUpdatedAt ( $currentDate );
     			$productThelia->setVersion ( 1 );
     			$productThelia->setVersionCreatedAt ( $currentDate );
-    			$productThelia->setVersionCreatedBy ( "importer.3" );
+    			$productThelia->setVersionCreatedBy ( "importer.4" );
     					
     			if($template_id != null)
     				$productThelia->setTemplateId($template_id);
