@@ -3,6 +3,7 @@ namespace AmazonIntegration\Loop;
 
 use AmazonIntegration\Model\AmazonProductsHfQuery;
 use AmazonIntegration\Model\Map\AmazonProductsHfTableMap;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -74,7 +75,7 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
         $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : false;
 
         $query = ProductQuery::create()
-            
+                ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
                 ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                 ->addJoin(ProductTableMap::ID, ProductSaleElementsTableMap::PRODUCT_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                 ->addJoin(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)

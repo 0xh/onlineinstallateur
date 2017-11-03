@@ -71,4 +71,8 @@
         <default key="_controller">AmazonIntegration\Controller\Admin\MarketPlaceIdController::deleteMarketPlace</default>
     </route>
 
+    <route id="send.products.to.amazon" path="/admin/module/amazonintegration/send-to-amazon">
+        <default key="_controller">AmazonIntegration\Controller\Admin\SendProductToAmazonContoller::addProductsToAmazon</default>
+    </route>
+
 </routes>

@@ -54,23 +54,47 @@ window.onload = function() {
 
 }
 
-	function test(id)
- 	{
- 	 	$('#radio_' + id).click(function() {
-//  	 		alert("asd");
-//  	 		console.log($('#radio_' + id).prop('checked'));
- 	        if ($('#radio_' + id).prop('checked'))
- 	        {
- 	        	$('#radio_' + id).prop('checked', false);
-//  	        	$('#radio_' + id).data('waschecked', false);
- 	        }
- 	        else
-        	{
-//  	        	$('#radio_' + id).data('waschecked', true);
- 	        	$('#radio_' + id).prop('checked', true);
-        	}
+var fruits = [];
 
- 	 	});
- 		
- 	}
+function checkRadio(id)
+{
+	console.clear();
+	var previousValue = $('#radio_' + id).attr('storedValue');
+    if (previousValue == "true")
+	{
+      	$('#radio_' + id).prop('checked', false);
+      	$('#radio_' + id).attr('storedValue', false);
+      	var index = fruits.indexOf(id);
+      	if (index > -1) {
+      		fruits.splice(index, 1);
+		}
+      	console.log(fruits);
+      	$('#radioChecked').val(fruits);
+    }
+    else
+   	{
+      	fruits.push(id);
+      	$('#radio_' + id).prop('checked', true);
+      	$('#radio_' + id).attr('storedValue', 'true');
+      	$('#radioChecked').val(fruits);
+      	
+      	console.log(fruits);
+   	}
+}
+
+function changePriceOrQuantity(id)
+{
+ 	if ($('#price_' + id).val() || $('#quantity_' + id).val())
+ 		$('#radio_' + id).attr("disabled", false);
+ 	else
+	{
+ 		$('#radio_' + id).attr("disabled", true);
+      	$('#radio_' + id).prop('checked', false);
+      	checkRadio(id);
+	}
+ 	
+}
+
+
+
 </script>
