@@ -7,9 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- product_amazon
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `product_amazon`
+CREATE TABLE if not exists `product_amazon`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `product_id` INTEGER,
@@ -24,12 +22,29 @@ CREATE TABLE IF NOT EXISTS `product_amazon`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- amazon_products_hf
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `amazon_products_hf`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `product_id` INTEGER,
+    `ref` VARCHAR(255),
+    `ean_code` VARCHAR(255),
+    `ASIN` VARCHAR(255),
+    `SKU` VARCHAR(255),
+    `price` DECIMAL(16,2) DEFAULT 0.00,
+    `quantity` INTEGER DEFAULT 1,
+    `marketplace_id` VARCHAR(255),
+    `marketplace_locale` VARCHAR(255),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- amazon_orders
 -- ---------------------------------------------------------------------
 
-	
-
-CREATE TABLE IF NOT EXISTS `amazon_orders`
+CREATE TABLE if not exists `amazon_orders`
 (
     `id` VARCHAR(45) NOT NULL,
     `seller_order_id` VARCHAR(45),
@@ -100,9 +115,7 @@ CREATE TABLE IF NOT EXISTS `amazon_orders`
 -- amazon_order_product
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `amazon_order_product`
+CREATE TABLE if not exists `amazon_order_product`
 (
     `order_item_id` VARCHAR(45) NOT NULL,
     `amazon_order_id` VARCHAR(45),
@@ -166,9 +179,7 @@ CREATE TABLE IF NOT EXISTS `amazon_order_product`
 -- amazon_product_category
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE  IF NOT EXISTS `amazon_product_category`
+CREATE TABLE if not exists `amazon_product_category`
 (
     `category_id` VARCHAR(45) NOT NULL,
     `parent_id` VARCHAR(45),
@@ -180,9 +191,7 @@ CREATE TABLE  IF NOT EXISTS `amazon_product_category`
 -- amazon_orders_version
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `amazon_orders_version`
+CREATE TABLE if not exists `amazon_orders_version`
 (
     `id` VARCHAR(45) NOT NULL,
     `seller_order_id` VARCHAR(45),

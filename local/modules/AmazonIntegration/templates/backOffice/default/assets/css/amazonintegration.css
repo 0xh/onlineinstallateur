@@ -21,3 +21,12 @@
                 50% 50% 
                 no-repeat;
 }
+
+.price, .quantity {
+	width: 7%;
+}
+
+.select-product {
+	width: 6%;
+	text-align: center;
+}
