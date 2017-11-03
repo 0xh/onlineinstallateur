@@ -25,6 +25,10 @@ use Thelia\Model\ProductSaleElements;
 use Thelia\Model\ProductImageI18n;
 use Thelia\Model\ProductImage;
 use AmazonIntegration\Controller\Admin\AmazonAWSController;
+use Thelia\Model\FeatureAv;
+use Thelia\Model\FeatureAvI18nQuery;
+use Thelia\Model\FeatureAvI18n;
+use Thelia\Model\FeatureProduct;
 
 /**
  * Class ProductPricesImport
@@ -117,10 +121,10 @@ class GenericProductImport extends AbstractImport
     			$productThelia->setUpdatedAt ( $currentDate );
     			$productThelia->setVersion ( 1 );
     			$productThelia->setVersionCreatedAt ( $currentDate );
-    			$productThelia->setVersionCreatedBy ( "importer.3" );
+    			$productThelia->setVersionCreatedBy ( "importer.4" );
     					
     			if($template_id != null)
-    				$productThelia->setTemplateId($templateId);
+    				$productThelia->setTemplateId($template_id);
     			else
     				$productThelia->setTemplateId(1);
     					
@@ -131,6 +135,164 @@ class GenericProductImport extends AbstractImport
     			$price= isset($price)? $price: 'NULL';
     			$productThelia->create ( $kategorie_id, $price, 1, 1, $gewicht, 10 );
 
+    			$log->debug ( "AMAZON IMAGES - BEFORE get images from Amazon in Generic product import");
+    			// get info from amazon
+    			$amazonAPI = new AmazonAWSController;
+    			$infoAmazon = $amazonAPI->getProductInfoFromAmazon($EAN_code);
+    			$log->debug ( "AMAZON IMAGES - get images from Amazon in Generic product import");
+    			
+    			// save images from Amazon
+    			if($infoAmazon['images']) {
+    				
+    				foreach($infoAmazon['images'] as $imageAmazon) {
+    					$product_image = new ProductImage ();
+    					$product_image->setProduct ( $productThelia );
+    					$product_image->setVisible ( 1 );
+    					$product_image->setCreatedAt ( $currentDate );
+    					$product_image->setUpdatedAt ( $currentDate );
+    					$product_image->setFile ( $imageAmazon['file_name']);
+    					$product_image->save ();
+    					
+    					
+    					$product_image_i18n = new ProductImageI18n();
+    					$product_image_i18n->setProductImage($product_image);
+    					$product_image_i18n->setTitle($imageAmazon['title']);
+    					$product_image_i18n->setDescription($imageAmazon['title']);
+    					$product_image_i18n->setLocale ( "de_DE" );
+    					$product_image_i18n->save();
+    					
+    					$productThelia->addProductImage ( $product_image );
+    					$log->debug ( "AMAZON IMAGES -  file was inserted in DB ".$imageAmazon['file_name']);
+    				}
+    			}
+    			else{
+    				$log->debug ( "AMAZON IMAGES - no images for this product ".$EAN_code);
+    			}
+    			
+    			// save features from Amazon: color, height, length, width
+    			if($infoAmazon['color']) {
+    				
+    				$fav = new FeatureAv();
+    				$fav->setFeatureId(21)->save();
+    				
+    				// feature en_US
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    					->setLocale('en_US')
+    					->setTitle($infoAmazon['color'])
+    					->save();
+    				
+    				// feature de_DE
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    					->setLocale('de_DE')
+    					->setTitle($infoAmazon['color'])
+    					->save();
+    			
+    				// feature product
+    				$fav_product = new FeatureProduct();
+    				$fav_product
+    					->setProductId($productThelia->getId())
+    					->setFeatureId(21)
+    					->setFeatureAvId($fav->getId())
+    					->setFreeTextValue(1)
+    					->save();
+    				
+    				$log->debug ( "AMAZON - product ".$EAN_code." - saved color");
+    			}
+    			
+    			if($infoAmazon['height']) {
+    				
+    				$fav = new FeatureAv();
+    				$fav->setFeatureId(17)->save();
+    				
+    				// feature en_US
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+	    				->setLocale('en_US')
+	    				->setTitle($infoAmazon['height'])
+	    				->save();
+    				
+    				// feature de_DE
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+	    				->setLocale('de_DE')
+	    				->setTitle($infoAmazon['height'])
+	    				->save();
+    				
+    				// feature product
+    				$fav_product = new FeatureProduct();
+    				$fav_product
+	    				->setProductId($productThelia->getId())
+	    				->setFeatureId(17)
+	    				->setFeatureAvId($fav->getId())
+	    				->setFreeTextValue(1)
+	    				->save();
+    				
+	    			$log->debug ( "AMAZON - product ".$EAN_code." - saved height");
+    			}
+    			
+    			if($infoAmazon['length']) {
+    				
+    				$fav = new FeatureAv();
+    				$fav->setFeatureId(65)->save();
+    				
+    				// feature en_US
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    				->setLocale('en_US')
+    				->setTitle($infoAmazon['length'])
+    				->save();
+    				
+    				// feature de_DE
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    				->setLocale('de_DE')
+    				->setTitle($infoAmazon['length'])
+    				->save();
+    				
+    				// feature product
+    				$fav_product = new FeatureProduct();
+    				$fav_product
+    				->setProductId($productThelia->getId())
+    				->setFeatureId(65)
+    				->setFeatureAvId($fav->getId())
+    				->setFreeTextValue(1)
+    				->save();
+    				
+    				$log->debug ( "AMAZON - product ".$EAN_code." - saved length");
+    			}
+    			
+    			if($infoAmazon['width']) {
+    				
+    				$fav = new FeatureAv();
+    				$fav->setFeatureId(88)->save();
+    				
+    				// feature en_US
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    				->setLocale('en_US')
+    				->setTitle($infoAmazon['width'])
+    				->save();
+    				
+    				// feature de_DE
+    				$fav_i18n = new FeatureAvI18n;
+    				$fav_i18n->setId($fav->getId())
+    				->setLocale('de_DE')
+    				->setTitle($infoAmazon['width'])
+    				->save();
+    				
+    				// feature product
+    				$fav_product = new FeatureProduct();
+    				$fav_product
+    				->setProductId($productThelia->getId())
+    				->setFeatureId(88)
+    				->setFeatureAvId($fav->getId())
+    				->setFreeTextValue(1)
+    				->save();
+    				
+    				$log->debug ( "AMAZON - product ".$EAN_code." - saved width");
+    			}
     					 
     			// product description en_US
     			$productI18n = new ProductI18n ();
@@ -140,7 +302,9 @@ class GenericProductImport extends AbstractImport
     			if($produkt_titel != null)
     				$productI18n->setTitle ( $produkt_titel );
     					
-    			if($beschreibung != null)
+    			if($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)) )
+    				$productI18n->setDescription ( $infoAmazon['description']);
+    			elseif($beschreibung != null)
     				$productI18n->setDescription ( $beschreibung );
     					
     			if($kurze_beschreibung != null)
@@ -169,7 +333,9 @@ class GenericProductImport extends AbstractImport
     			if($produkt_titel != null)
     				$productI18n->setTitle ( $produkt_titel );
     					
-    			if($beschreibung != null)
+    			if($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)) )
+    				$productI18n->setDescription ( $infoAmazon['description']);
+    			elseif($beschreibung != null)
     				$productI18n->setDescription ( $beschreibung );
     					
     			if($kurze_beschreibung != null)
@@ -220,6 +386,8 @@ class GenericProductImport extends AbstractImport
     	
     			if($gewicht != null)
     				$pse->setWeight($gewicht);
+    			elseif($infoAmazon['weight'])
+    				$pse->setWeight($infoAmazon['weight']);
     	
     			if($EAN_code != null)
     				$pse->setEanCode($EAN_code);
@@ -305,38 +473,6 @@ class GenericProductImport extends AbstractImport
     				$productThelia->addProductImage ( $product_image );
     			}
     			
-    			$log->debug ( "AMAZON IMAGES - BEFORE get images from Amazon in Generic product import");
-    			// get images from amazon
-    			$amazonAPI = new AmazonAWSController;
-    			$imagesAmazon = $amazonAPI->getImages($EAN_code);
-    			$log->debug ( "AMAZON IMAGES - get images from Amazon in Generic product import");
-    			
-    			if($imagesAmazon) {
-    							
-    				foreach($imagesAmazon as $imageAmazon) {
-	    				$product_image = new ProductImage ();
-	    				$product_image->setProduct ( $productThelia );
-	    				$product_image->setVisible ( 1 );
-    					$product_image->setCreatedAt ( $currentDate );
-    					$product_image->setUpdatedAt ( $currentDate );
-    					$product_image->setFile ( $imageAmazon['file_name']);
-    					$product_image->save ();
-	    								
-	    								
-	    				$product_image_i18n = new ProductImageI18n();
-	    				$product_image_i18n->setProductImage($product_image);
-	    				$product_image_i18n->setTitle($imageAmazon['title']);
-	    				$product_image_i18n->setDescription($imageAmazon['title']);
-	    				$product_image_i18n->setLocale ( "de_DE" );
-	    				$product_image_i18n->save();
-	    								
-	    				$productThelia->addProductImage ( $product_image );
-	    				$log->debug ( "AMAZON IMAGES -  file was inserted in DB ".$imageAmazon['file_name']);
-    				} 
-    			}
-    			else{
-    				$log->debug ( "AMAZON IMAGES - no images for this product ".$EAN_code);
-    			}
     		}
     	
     		else

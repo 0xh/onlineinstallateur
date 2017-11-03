@@ -3,6 +3,7 @@ namespace AmazonIntegration\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
+use AmazonIntegration\Model\AmazonProductDescTempQuery;
 
 require __DIR__ . '/../../Config/config.php';
 
@@ -34,10 +35,123 @@ class AmazonAWSController extends BaseAdminController
 		die();
 	}
 	
-	public function getImages($eanCode)
+	public function correctDescription()
+	{
+		$products = AmazonProductDescTempQuery::create();
+		
+		if($products) {
+			foreach($products as $product) {
+				$updateDesc = AmazonProductDescTempQuery::create()
+					->filterById($product->getId())
+					->findOne();
+				
+				$description = $product->getDescription();
+				
+				$description = mb_convert_encoding ($description,"WINDOWS-1252");
+				
+				$updateDesc->setDescription($description)
+					->save();
+			}
+		}
+		die('done');
+	}
+	
+	public function saveDescriptionsFromAmazon() 
+	{	
+		$log = Tlog::getInstance();
+		
+		$products = AmazonProductDescTempQuery::create();
+		
+		if($products) {
+			foreach($products as $product) {
+				
+				$description = $this->getDescriptionFromAmazon($product->getEan());
+			
+				if($description) {
+					$updateDesc = AmazonProductDescTempQuery::create()
+									->filterByEan($product->getEan())
+									->findOne();
+								
+					if($updateDesc) {
+						$updateDesc->setDescription($description)
+							->save();
+						
+						$log->debug (  "AMAZON DESC for ".$product->getEan().'was saved in DB');
+					}
+				}
+			}	
+			$log->debug ( "AMAZON DESC - finish getting description");
+		}
+		else {
+			$log->debug ( "AMAZON DESC - no products in amazon_product_desc_temp table");
+		}
+	}
+	
+	public function getDescriptionFromAmazon($productId)
+	{ 
+		$log = Tlog::getInstance();
+		$description = '';
+				
+		try{
+			$max_time = ini_get("max_execution_time");
+			ini_set('max_execution_time', 600);
+			
+			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
+			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
+					'AWSAccessKeyId='.PRODUCT_ADVERTISING_AWS_ACCESS_KEY_ID.'&'.
+					'AssociateTag='.PRODUCT_ADVERTISING_AWS_ASSOCIATE_TAG.'&'.
+					'ItemId='.$productId.'&'.
+					'IdType=EAN&'.
+					'Operation=ItemLookup&'.
+					'ResponseGroup=Medium&'.
+					'SearchIndex=All&'.
+					'Service=AWSECommerceService';
+			
+			$amazonRequest = $this->amazonSign($url,$secretAccessKey);
+			$log->debug (  "AMAZON DESC request - ".$amazonRequest);
+			$sxml = simplexml_load_file($amazonRequest);
+			$array = json_encode($sxml, TRUE);
+			$result = json_decode($array);
+			
+			if(isset($result->Items->Item)) {
+				
+				if(is_array($result->Items->Item)) {
+					$item = $result->Items->Item[0];
+					$log->debug (  "AMAZON DESC - ".$productId.'is an array of items');
+				}
+				else
+					$item = $result->Items->Item;
+			
+				if(isset($item->EditorialReviews->EditorialReview->Content)) {
+					$description = $item->EditorialReviews->EditorialReview->Content;
+				}
+				
+				$log->debug ( "AMAZON DESC for ".$productId.'is: ');
+				$log->debug ( $description);
+			}
+			
+			ini_set('max_execution_time', $max_time);
+			
+			return $description;
+		}
+		catch (\Exception $e) {
+			$log->debug ("AMAZON DESC - Error desc from amazon:".$e->getMessage());
+			return $this->getDescriptionFromAmazon($productId);
+		}
+	}
+	
+	public function getProductInfoFromAmazon($eanCode)
 	{
 		$log = Tlog::getInstance();
 		$log->debug ( "AMAZON IMAGES - before try/catch");
+		$productInfo = array( 'images' => array(),
+						'description' => '',
+						'color'  => '',
+						'width'  => '',
+						'height' => '',
+						'length' => '',
+						'weight' => ''
+ 				);
 		try{
 			
 			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
@@ -68,7 +182,8 @@ class AmazonAWSController extends BaseAdminController
 						$item = $result->Items->Item[0];
 					else
 						$item = $result->Items->Item;
-							
+					
+					// images from AMAZON
 					if(isset($item->ImageSets->ImageSet)) {
 						 $log->debug ( "AMAZON IMAGES - This product has images. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
 								
@@ -112,7 +227,7 @@ class AmazonAWSController extends BaseAdminController
 								Tlog::getInstance()->info("AMAZON IMAGES - url image ".$urlImage);
 								Tlog::getInstance()->info("AMAZON IMAGES - file name ".$file_name);
 								Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
-							//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
+								file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
 								
 							}
 							
@@ -128,11 +243,94 @@ class AmazonAWSController extends BaseAdminController
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - url image".$urlImage);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - file name".$file_name);
 							Tlog::getInstance()->info("AMAZON IMAGES - one image - hf ".__DIR__ . "/../../../../media/images/product/".$file_name);
-						//	file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'w'));
+							file_put_contents(__DIR__ . "/../../../../media/images/product/".$file_name, fopen($urlImage, 'r'));
 						}
+						
+						$productInfo['images'] = $images;
 					}
 					else {
 						$log->debug ( "AMAZON IMAGES - product '.$eanCode.' doesn't have amazon images");
+					}
+					
+					// description from AMAZON
+					if(isset($item->EditorialReviews->EditorialReview->Content)) {
+						
+						$description = $item->EditorialReviews->EditorialReview->Content;
+						$description = mb_convert_encoding ($description,"WINDOWS-1252");
+						$productInfo['description'] = $description;
+					}	
+					
+					// attributes (color, height, length, width & weight) from AMAZON
+					if(isset($item->ItemAttributes->Color)) {
+						
+						$color = $result->Items->Item->ItemAttributes->Color;
+						$color= mb_convert_encoding ($color,"WINDOWS-1252");
+						$productInfo['color'] = $color;
+					}
+					
+					if(isset($item->ItemAttributes->ItemDimensions->Height)) {
+						if($item->ItemAttributes->ItemDimensions->Height != 0) {
+					
+							$dimension = strlen($item->ItemAttributes->ItemDimensions->Height);
+							$splitDimension = str_split($item->ItemAttributes->ItemDimensions->Height, $dimension-2);
+							$dimension = $splitDimension[0].'.'.$splitDimension[1];
+							$dimension = $dimension * 25.4;
+							
+							$productInfo['height'] = round($dimension).' mm';
+							$log->debug ( "AMAZON - item ".$eanCode." have height ". $productInfo['height']);
+						}
+					}
+					else {
+						$log->debug ( "AMAZON - item ".$eanCode."doesn't have height");
+					}
+					
+					if(isset($item->ItemAttributes->ItemDimensions->Length)) {
+						if($item->ItemAttributes->ItemDimensions->Length != 0) {
+							
+							$dimension = strlen($item->ItemAttributes->ItemDimensions->Length);
+							$splitDimension = str_split($item->ItemAttributes->ItemDimensions->Length, $dimension-2);
+							$dimension = $splitDimension[0].'.'.$splitDimension[1];
+							$dimension = $dimension * 25.4;
+							
+							$productInfo['length'] = round($dimension).' mm';
+							$log->debug ( "AMAZON - item ".$eanCode." have Length ". $productInfo['length']);
+						}
+					}
+					else {
+						$log->debug ( "AMAZON - item ".$eanCode."doesn't have Length");
+					}
+				
+					if(isset($item->ItemAttributes->ItemDimensions->Weight)) {
+						if($item->ItemAttributes->ItemDimensions->Weight != 0) {
+							
+							$dimension = strlen($item->ItemAttributes->ItemDimensions->Weight);
+							$splitDimension = str_split($item->ItemAttributes->ItemDimensions->Weight, $dimension-2);
+							$dimension = $splitDimension[0].'.'.$splitDimension[1];
+							$dimension = $dimension * 453.59237;
+							$dimension =  round($dimension)/1000;
+							
+							$productInfo['weight'] = round($dimension); 
+							$log->debug ( "AMAZON - item ".$eanCode." have Weight ". $productInfo['weight']);
+						}
+					}
+					else {
+						$log->debug ( "AMAZON - item ".$eanCode."doesn't have Weight");
+					}
+					
+					if(isset($item->ItemAttributes->ItemDimensions->Width)) {
+						if($item->ItemAttributes->ItemDimensions->Width != 0) {
+							
+							$dimension = strlen($item->ItemAttributes->ItemDimensions->Width);
+							$splitDimension = str_split($item->ItemAttributes->ItemDimensions->Width, $dimension-2);
+							$dimension = $splitDimension[0].'.'.$splitDimension[1];
+							$dimension = $dimension * 25.4;
+							
+							$productInfo['width'] = round($dimension).' mm';
+							$log->debug ( "AMAZON - item ".$eanCode." have Width ". $productInfo['width']);
+						}
+					}
+					else {
+						$log->debug ( "AMAZON - item ".$eanCode."doesn't have Width");
 					}
 							
 				}
@@ -146,11 +344,12 @@ class AmazonAWSController extends BaseAdminController
 			
 			//sleep(10);
 			
-			return $images;
+			return $productInfo;
 		}
 		catch (\Exception $e) {
 			$log->debug ("AMAZON IMAGES - Error images from amazon:".$e->getMessage());
-			return $this->getImages($eanCode);
+			sleep(1);
+			return $this->getProductInfoFromAmazon($eanCode);
 		}
 	}
 	
