@@ -87,6 +87,7 @@
 					<th>Title</th>
 					<th>Brand</th>
 					<th>Price</th>
+					<th>Currency</th>
 					<th>Quantity</th>
 					<th>Ean Code</th>
 					<th>Marketplace</th>
@@ -105,6 +106,7 @@
 					<td>{$title}</td>
 					<td>{$brand_title}</td>
 					<td>{$price}</td>
+					<td>{$currency}</td>
 					<td>{$quantity}</td>
 					<td>{$ean_code}<input type="hidden" name="ean_{$id}" id="ean_{$id}" value="{$ean_code}"></td>
 					<td>{$MARKETPLACE_LOCALE}</td>
@@ -134,14 +136,14 @@
 					  <div id="wait" class="modal-loading"></div>
 					</div>
 					<div class="block block-nav col-md-1 text-left" role="navigation" aria-labelledby="search-label">
-					    <select class="filter marketplace_to_send">
+					    <select class="filter marketplace_to_send" name="amazon_marketplace">
 					    {loop name="amazon_config_marketplace" type="amazon_config_marketplace"}
-					    	<option value="{$marketPlaceValue}" {if $smarty.get.position_marketplace|strstr:"{$marketPlaceValue}"}selected{/if}>{$marketPlaceName}</option>
+					    	<option value="{$marketPlaceValue};{$marketPlaceName}" {if $smarty.get.position_marketplace|strstr:"{$marketPlaceValue}"}selected{/if}>{$marketPlaceName}</option>
 					    {/loop}	
 					    </select>
 					</div>
 					<div class="block block-nav col-md-1 text-left" role="navigation" aria-labelledby="search-label">
-					    <select class="filter amazon_currency">
+					    <select class="filter amazon_currency" name="amazon_currency">
 					    {loop name="amazon_currency" type="amazon_currency"}
 					    	<option value="{$code}">{$code}</option>
 					    {/loop}	

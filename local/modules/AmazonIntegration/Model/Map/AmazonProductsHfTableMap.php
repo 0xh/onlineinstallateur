@@ -58,7 +58,7 @@ class AmazonProductsHfTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 11;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class AmazonProductsHfTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /**
      * the column name for the ID field
@@ -121,6 +121,11 @@ class AmazonProductsHfTableMap extends TableMap
     const MARKETPLACE_LOCALE = 'amazon_products_hf.MARKETPLACE_LOCALE';
 
     /**
+     * the column name for the CURRENCY field
+     */
+    const CURRENCY = 'amazon_products_hf.CURRENCY';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -132,12 +137,12 @@ class AmazonProductsHfTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Ref', 'EanCode', 'ASIN', 'SKU', 'Price', 'Quantity', 'MarketplaceId', 'MarketplaceLocale', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'productId', 'ref', 'eanCode', 'aSIN', 'sKU', 'price', 'quantity', 'marketplaceId', 'marketplaceLocale', ),
-        self::TYPE_COLNAME       => array(AmazonProductsHfTableMap::ID, AmazonProductsHfTableMap::PRODUCT_ID, AmazonProductsHfTableMap::REF, AmazonProductsHfTableMap::EAN_CODE, AmazonProductsHfTableMap::ASIN, AmazonProductsHfTableMap::SKU, AmazonProductsHfTableMap::PRICE, AmazonProductsHfTableMap::QUANTITY, AmazonProductsHfTableMap::MARKETPLACE_ID, AmazonProductsHfTableMap::MARKETPLACE_LOCALE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_ID', 'REF', 'EAN_CODE', 'ASIN', 'SKU', 'PRICE', 'QUANTITY', 'MARKETPLACE_ID', 'MARKETPLACE_LOCALE', ),
-        self::TYPE_FIELDNAME     => array('id', 'product_id', 'ref', 'ean_code', 'ASIN', 'SKU', 'price', 'quantity', 'marketplace_id', 'marketplace_locale', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id', 'ProductId', 'Ref', 'EanCode', 'ASIN', 'SKU', 'Price', 'Quantity', 'MarketplaceId', 'MarketplaceLocale', 'Currency', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'productId', 'ref', 'eanCode', 'aSIN', 'sKU', 'price', 'quantity', 'marketplaceId', 'marketplaceLocale', 'currency', ),
+        self::TYPE_COLNAME       => array(AmazonProductsHfTableMap::ID, AmazonProductsHfTableMap::PRODUCT_ID, AmazonProductsHfTableMap::REF, AmazonProductsHfTableMap::EAN_CODE, AmazonProductsHfTableMap::ASIN, AmazonProductsHfTableMap::SKU, AmazonProductsHfTableMap::PRICE, AmazonProductsHfTableMap::QUANTITY, AmazonProductsHfTableMap::MARKETPLACE_ID, AmazonProductsHfTableMap::MARKETPLACE_LOCALE, AmazonProductsHfTableMap::CURRENCY, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'PRODUCT_ID', 'REF', 'EAN_CODE', 'ASIN', 'SKU', 'PRICE', 'QUANTITY', 'MARKETPLACE_ID', 'MARKETPLACE_LOCALE', 'CURRENCY', ),
+        self::TYPE_FIELDNAME     => array('id', 'product_id', 'ref', 'ean_code', 'ASIN', 'SKU', 'price', 'quantity', 'marketplace_id', 'marketplace_locale', 'currency', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -147,12 +152,12 @@ class AmazonProductsHfTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Ref' => 2, 'EanCode' => 3, 'ASIN' => 4, 'SKU' => 5, 'Price' => 6, 'Quantity' => 7, 'MarketplaceId' => 8, 'MarketplaceLocale' => 9, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productId' => 1, 'ref' => 2, 'eanCode' => 3, 'aSIN' => 4, 'sKU' => 5, 'price' => 6, 'quantity' => 7, 'marketplaceId' => 8, 'marketplaceLocale' => 9, ),
-        self::TYPE_COLNAME       => array(AmazonProductsHfTableMap::ID => 0, AmazonProductsHfTableMap::PRODUCT_ID => 1, AmazonProductsHfTableMap::REF => 2, AmazonProductsHfTableMap::EAN_CODE => 3, AmazonProductsHfTableMap::ASIN => 4, AmazonProductsHfTableMap::SKU => 5, AmazonProductsHfTableMap::PRICE => 6, AmazonProductsHfTableMap::QUANTITY => 7, AmazonProductsHfTableMap::MARKETPLACE_ID => 8, AmazonProductsHfTableMap::MARKETPLACE_LOCALE => 9, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_ID' => 1, 'REF' => 2, 'EAN_CODE' => 3, 'ASIN' => 4, 'SKU' => 5, 'PRICE' => 6, 'QUANTITY' => 7, 'MARKETPLACE_ID' => 8, 'MARKETPLACE_LOCALE' => 9, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'ref' => 2, 'ean_code' => 3, 'ASIN' => 4, 'SKU' => 5, 'price' => 6, 'quantity' => 7, 'marketplace_id' => 8, 'marketplace_locale' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ProductId' => 1, 'Ref' => 2, 'EanCode' => 3, 'ASIN' => 4, 'SKU' => 5, 'Price' => 6, 'Quantity' => 7, 'MarketplaceId' => 8, 'MarketplaceLocale' => 9, 'Currency' => 10, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'productId' => 1, 'ref' => 2, 'eanCode' => 3, 'aSIN' => 4, 'sKU' => 5, 'price' => 6, 'quantity' => 7, 'marketplaceId' => 8, 'marketplaceLocale' => 9, 'currency' => 10, ),
+        self::TYPE_COLNAME       => array(AmazonProductsHfTableMap::ID => 0, AmazonProductsHfTableMap::PRODUCT_ID => 1, AmazonProductsHfTableMap::REF => 2, AmazonProductsHfTableMap::EAN_CODE => 3, AmazonProductsHfTableMap::ASIN => 4, AmazonProductsHfTableMap::SKU => 5, AmazonProductsHfTableMap::PRICE => 6, AmazonProductsHfTableMap::QUANTITY => 7, AmazonProductsHfTableMap::MARKETPLACE_ID => 8, AmazonProductsHfTableMap::MARKETPLACE_LOCALE => 9, AmazonProductsHfTableMap::CURRENCY => 10, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PRODUCT_ID' => 1, 'REF' => 2, 'EAN_CODE' => 3, 'ASIN' => 4, 'SKU' => 5, 'PRICE' => 6, 'QUANTITY' => 7, 'MARKETPLACE_ID' => 8, 'MARKETPLACE_LOCALE' => 9, 'CURRENCY' => 10, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'product_id' => 1, 'ref' => 2, 'ean_code' => 3, 'ASIN' => 4, 'SKU' => 5, 'price' => 6, 'quantity' => 7, 'marketplace_id' => 8, 'marketplace_locale' => 9, 'currency' => 10, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -181,6 +186,7 @@ class AmazonProductsHfTableMap extends TableMap
         $this->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null, 1);
         $this->addColumn('MARKETPLACE_ID', 'MarketplaceId', 'VARCHAR', false, 255, null);
         $this->addColumn('MARKETPLACE_LOCALE', 'MarketplaceLocale', 'VARCHAR', false, 255, null);
+        $this->addColumn('CURRENCY', 'Currency', 'VARCHAR', false, 10, null);
     } // initialize()
 
     /**
@@ -338,6 +344,7 @@ class AmazonProductsHfTableMap extends TableMap
             $criteria->addSelectColumn(AmazonProductsHfTableMap::QUANTITY);
             $criteria->addSelectColumn(AmazonProductsHfTableMap::MARKETPLACE_ID);
             $criteria->addSelectColumn(AmazonProductsHfTableMap::MARKETPLACE_LOCALE);
+            $criteria->addSelectColumn(AmazonProductsHfTableMap::CURRENCY);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.PRODUCT_ID');
@@ -349,6 +356,7 @@ class AmazonProductsHfTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.QUANTITY');
             $criteria->addSelectColumn($alias . '.MARKETPLACE_ID');
             $criteria->addSelectColumn($alias . '.MARKETPLACE_LOCALE');
+            $criteria->addSelectColumn($alias . '.CURRENCY');
         }
     }
 

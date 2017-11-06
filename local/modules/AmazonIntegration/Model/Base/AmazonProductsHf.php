@@ -114,6 +114,12 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
     protected $marketplace_locale;
 
     /**
+     * The value for the currency field.
+     * @var        string
+     */
+    protected $currency;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -504,6 +510,17 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
     }
 
     /**
+     * Get the [currency] column value.
+     * 
+     * @return   string
+     */
+    public function getCurrency()
+    {
+
+        return $this->currency;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -714,6 +731,27 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
     } // setMarketplaceLocale()
 
     /**
+     * Set the value of [currency] column.
+     * 
+     * @param      string $v new value
+     * @return   \AmazonIntegration\Model\AmazonProductsHf The current object (for fluent API support)
+     */
+    public function setCurrency($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->currency !== $v) {
+            $this->currency = $v;
+            $this->modifiedColumns[AmazonProductsHfTableMap::CURRENCY] = true;
+        }
+
+
+        return $this;
+    } // setCurrency()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -787,6 +825,9 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : AmazonProductsHfTableMap::translateFieldName('MarketplaceLocale', TableMap::TYPE_PHPNAME, $indexType)];
             $this->marketplace_locale = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : AmazonProductsHfTableMap::translateFieldName('Currency', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->currency = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -795,7 +836,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = AmazonProductsHfTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = AmazonProductsHfTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \AmazonIntegration\Model\AmazonProductsHf object", 0, $e);
@@ -1034,6 +1075,9 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonProductsHfTableMap::MARKETPLACE_LOCALE)) {
             $modifiedColumns[':p' . $index++]  = 'MARKETPLACE_LOCALE';
         }
+        if ($this->isColumnModified(AmazonProductsHfTableMap::CURRENCY)) {
+            $modifiedColumns[':p' . $index++]  = 'CURRENCY';
+        }
 
         $sql = sprintf(
             'INSERT INTO amazon_products_hf (%s) VALUES (%s)',
@@ -1074,6 +1118,9 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
                         break;
                     case 'MARKETPLACE_LOCALE':                        
                         $stmt->bindValue($identifier, $this->marketplace_locale, PDO::PARAM_STR);
+                        break;
+                    case 'CURRENCY':                        
+                        $stmt->bindValue($identifier, $this->currency, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1167,6 +1214,9 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
             case 9:
                 return $this->getMarketplaceLocale();
                 break;
+            case 10:
+                return $this->getCurrency();
+                break;
             default:
                 return null;
                 break;
@@ -1205,6 +1255,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
             $keys[7] => $this->getQuantity(),
             $keys[8] => $this->getMarketplaceId(),
             $keys[9] => $this->getMarketplaceLocale(),
+            $keys[10] => $this->getCurrency(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1274,6 +1325,9 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
             case 9:
                 $this->setMarketplaceLocale($value);
                 break;
+            case 10:
+                $this->setCurrency($value);
+                break;
         } // switch()
     }
 
@@ -1308,6 +1362,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
         if (array_key_exists($keys[7], $arr)) $this->setQuantity($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setMarketplaceId($arr[$keys[8]]);
         if (array_key_exists($keys[9], $arr)) $this->setMarketplaceLocale($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCurrency($arr[$keys[10]]);
     }
 
     /**
@@ -1329,6 +1384,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
         if ($this->isColumnModified(AmazonProductsHfTableMap::QUANTITY)) $criteria->add(AmazonProductsHfTableMap::QUANTITY, $this->quantity);
         if ($this->isColumnModified(AmazonProductsHfTableMap::MARKETPLACE_ID)) $criteria->add(AmazonProductsHfTableMap::MARKETPLACE_ID, $this->marketplace_id);
         if ($this->isColumnModified(AmazonProductsHfTableMap::MARKETPLACE_LOCALE)) $criteria->add(AmazonProductsHfTableMap::MARKETPLACE_LOCALE, $this->marketplace_locale);
+        if ($this->isColumnModified(AmazonProductsHfTableMap::CURRENCY)) $criteria->add(AmazonProductsHfTableMap::CURRENCY, $this->currency);
 
         return $criteria;
     }
@@ -1401,6 +1457,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
         $copyObj->setQuantity($this->getQuantity());
         $copyObj->setMarketplaceId($this->getMarketplaceId());
         $copyObj->setMarketplaceLocale($this->getMarketplaceLocale());
+        $copyObj->setCurrency($this->getCurrency());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1444,6 +1501,7 @@ abstract class AmazonProductsHf implements ActiveRecordInterface
         $this->quantity = null;
         $this->marketplace_id = null;
         $this->marketplace_locale = null;
+        $this->currency = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

@@ -1,6 +1,8 @@
 <?php
   
-   define ('DATE_FORMAT', 'Y-m-d\TH:i:s\Z');
+   use AmazonIntegration\AmazonIntegration;
+
+define ('DATE_FORMAT', 'Y-m-d\TH:i:s\Z');
 
    /************************************************************************
     * REQUIRED
@@ -14,8 +16,8 @@
     * to anyone. It is important to keep your Secret Access Key confidential
     * to protect your account.
     ***********************************************************************/
-    define('AWS_ACCESS_KEY_ID', '<Your Access Key ID>');
-    define('AWS_SECRET_ACCESS_KEY', '<Your Secret Access Key>');
+define('AWS_ACCESS_KEY_ID', AmazonIntegration::getConfigValue('AWS_ACCESS_KEY_ID'));
+define('AWS_SECRET_ACCESS_KEY', AmazonIntegration::getConfigValue('AWS_SECRET_ACCESS_KEY'));
 
    /************************************************************************
     * REQUIRED
@@ -23,8 +25,8 @@
     * All MWS requests must contain a User-Agent header. The application
     * name and version defined below are used in creating this value.
     ***********************************************************************/
-    define('APPLICATION_NAME', '<Your Application Name>');
-    define('APPLICATION_VERSION', '<Your Application Version or Build Number>');
+    define('APPLICATION_NAME', AmazonIntegration::getConfigValue('APPLICATION_NAME'));
+    define('APPLICATION_VERSION', AmazonIntegration::getConfigValue('APPLICATION_VERSION'));
     
    /************************************************************************
     * REQUIRED
@@ -32,7 +34,7 @@
     * All MWS requests must contain the seller's merchant ID and
     * marketplace ID.
     ***********************************************************************/
-    define ('MERCHANT_ID', '<Your Merchant ID>');
+    define ('MERCHANT_ID', AmazonIntegration::getConfigValue('MERCHANT_ID'));
     
    /************************************************************************ 
     * OPTIONAL ON SOME INSTALLATIONS

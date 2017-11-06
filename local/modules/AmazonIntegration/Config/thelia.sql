@@ -37,6 +37,7 @@ CREATE TABLE if not exists `amazon_products_hf`
     `quantity` INTEGER DEFAULT 1,
     `marketplace_id` VARCHAR(255),
     `marketplace_locale` VARCHAR(255),
+    `currency` VARCHAR(10),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
