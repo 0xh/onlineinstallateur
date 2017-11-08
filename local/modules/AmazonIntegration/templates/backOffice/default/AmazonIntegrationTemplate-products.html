@@ -100,7 +100,7 @@
 			   {assign var="nr" value="1"}
           	   {loop name="amazon_products_listing" type="amazon_products_listing" page={$page} limit=20}
                <tr>
-					<td>{$nr++}.</td>
+					<td>{$nr}.</td>
 					<td>{$id}</td>
 					<td>{$ref}<input type="hidden" name="ref_{$id}" id="ref_{$id}" value="{$ref}"></td>
 					<td>{$title}</td>
@@ -110,9 +110,9 @@
 					<td>{$quantity}</td>
 					<td>{$ean_code}<input type="hidden" name="ean_{$id}" id="ean_{$id}" value="{$ean_code}"></td>
 					<td>{$MARKETPLACE_LOCALE}</td>
-					<td class="price"><input type="text" class="form-control" name="price_{$id}" id="price_{$id}" onchange="changePriceOrQuantity({$id})" value=""></td>
-					<td class="quantity"><input type="text" class="form-control" name="quantity_{$id}" id="quantity_{$id}" onchange="changePriceOrQuantity({$id})" value=""></td>
-					<td class="select-product"><input type="radio" storedValue="false" id="radio_{$id}" disabled="disabled" onclick="checkRadio({$id})" value="{$id}"></label></td>
+					<td class="price"><input type="text" class="form-control" name="" id="price_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
+					<td class="quantity"><input type="text" class="form-control" name="" id="quantity_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
+					<td class="select-product"><input type="radio" storedValue="false" id="radio_{$id}{$nr}" disabled="disabled" onclick="checkRadio({$id},{$nr++})" value="{$id}"></label></td>
 				</tr>
                {/loop}
                </tbody>
