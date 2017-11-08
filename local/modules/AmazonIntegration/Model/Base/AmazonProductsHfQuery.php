@@ -28,6 +28,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonProductsHfQuery orderByQuantity($order = Criteria::ASC) Order by the quantity column
  * @method     ChildAmazonProductsHfQuery orderByMarketplaceId($order = Criteria::ASC) Order by the marketplace_id column
  * @method     ChildAmazonProductsHfQuery orderByMarketplaceLocale($order = Criteria::ASC) Order by the marketplace_locale column
+ * @method     ChildAmazonProductsHfQuery orderByCurrency($order = Criteria::ASC) Order by the currency column
  *
  * @method     ChildAmazonProductsHfQuery groupById() Group by the id column
  * @method     ChildAmazonProductsHfQuery groupByProductId() Group by the product_id column
@@ -39,6 +40,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonProductsHfQuery groupByQuantity() Group by the quantity column
  * @method     ChildAmazonProductsHfQuery groupByMarketplaceId() Group by the marketplace_id column
  * @method     ChildAmazonProductsHfQuery groupByMarketplaceLocale() Group by the marketplace_locale column
+ * @method     ChildAmazonProductsHfQuery groupByCurrency() Group by the currency column
  *
  * @method     ChildAmazonProductsHfQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAmazonProductsHfQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -57,6 +59,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmazonProductsHf findOneByQuantity(int $quantity) Return the first ChildAmazonProductsHf filtered by the quantity column
  * @method     ChildAmazonProductsHf findOneByMarketplaceId(string $marketplace_id) Return the first ChildAmazonProductsHf filtered by the marketplace_id column
  * @method     ChildAmazonProductsHf findOneByMarketplaceLocale(string $marketplace_locale) Return the first ChildAmazonProductsHf filtered by the marketplace_locale column
+ * @method     ChildAmazonProductsHf findOneByCurrency(string $currency) Return the first ChildAmazonProductsHf filtered by the currency column
  *
  * @method     array findById(int $id) Return ChildAmazonProductsHf objects filtered by the id column
  * @method     array findByProductId(int $product_id) Return ChildAmazonProductsHf objects filtered by the product_id column
@@ -68,6 +71,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByQuantity(int $quantity) Return ChildAmazonProductsHf objects filtered by the quantity column
  * @method     array findByMarketplaceId(string $marketplace_id) Return ChildAmazonProductsHf objects filtered by the marketplace_id column
  * @method     array findByMarketplaceLocale(string $marketplace_locale) Return ChildAmazonProductsHf objects filtered by the marketplace_locale column
+ * @method     array findByCurrency(string $currency) Return ChildAmazonProductsHf objects filtered by the currency column
  *
  */
 abstract class AmazonProductsHfQuery extends ModelCriteria
@@ -156,7 +160,7 @@ abstract class AmazonProductsHfQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN, SKU, PRICE, QUANTITY, MARKETPLACE_ID, MARKETPLACE_LOCALE FROM amazon_products_hf WHERE ID = :p0';
+        $sql = 'SELECT ID, PRODUCT_ID, REF, EAN_CODE, ASIN, SKU, PRICE, QUANTITY, MARKETPLACE_ID, MARKETPLACE_LOCALE, CURRENCY FROM amazon_products_hf WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -581,6 +585,35 @@ abstract class AmazonProductsHfQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AmazonProductsHfTableMap::MARKETPLACE_LOCALE, $marketplaceLocale, $comparison);
+    }
+
+    /**
+     * Filter the query on the currency column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCurrency('fooValue');   // WHERE currency = 'fooValue'
+     * $query->filterByCurrency('%fooValue%'); // WHERE currency LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $currency The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildAmazonProductsHfQuery The current query, for fluid interface
+     */
+    public function filterByCurrency($currency = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($currency)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $currency)) {
+                $currency = str_replace('*', '%', $currency);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(AmazonProductsHfTableMap::CURRENCY, $currency, $comparison);
     }
 
     /**

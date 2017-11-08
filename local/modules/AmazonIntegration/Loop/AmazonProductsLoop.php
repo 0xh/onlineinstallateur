@@ -3,6 +3,7 @@ namespace AmazonIntegration\Loop;
 
 use AmazonIntegration\Model\AmazonProductsHfQuery;
 use AmazonIntegration\Model\Map\AmazonProductsHfTableMap;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -51,6 +52,7 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
                 ->set("quantity", $listing->getVirtualColumn('quantity'))
                 ->set("MARKETPLACE_LOCALE", $listing->getVirtualColumn('MARKETPLACE_LOCALE'))
                 ->set("ean_code", $listing->getVirtualColumn('ean_code'))
+                ->set("currency", $listing->getVirtualColumn('currency'))
                 ->set("brand_title", $listing->getVirtualColumn('brand_title'))
                 ->set("price",$listing->getVirtualColumn('price'));
             
@@ -74,7 +76,7 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
         $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : false;
 
         $query = ProductQuery::create()
-            
+                ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
                 ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                 ->addJoin(ProductTableMap::ID, ProductSaleElementsTableMap::PRODUCT_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                 ->addJoin(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
@@ -85,6 +87,7 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
                 ->withColumn(AmazonProductsHfTableMap::PRICE, 'price' )
                 ->withColumn(ProductI18nTableMap::TITLE, 'title' )
                 ->withColumn(AmazonProductsHfTableMap::QUANTITY, 'quantity' )
+                ->withColumn(AmazonProductsHfTableMap::CURRENCY, 'currency' )
                 ->withColumn(ProductSaleElementsTableMap::EAN_CODE, 'ean_code' )
                 ->withColumn(BrandI18nTableMap::TITLE, 'brand_title' )
                 ->where(BrandI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR)

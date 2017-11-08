@@ -29,6 +29,7 @@
 	    <column name="quantity" phpName="Quantity" type="INTEGER" defaultValue="1"/>
 	    <column name="marketplace_id" phpName="MarketplaceId"  type="VARCHAR" size="255"/>
 	    <column name="marketplace_locale" phpName="MarketplaceLocale"  type="VARCHAR" size="255"/>
+	    <column name="currency" phpName="Currency"  type="VARCHAR" size="10"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
