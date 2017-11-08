@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<route id="admin.configuration.feature-av.update" path="/admin/configuration/feature-av/update/{feature_id}/{feature_av_id}">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FeatureAvController::updateAction</default>
+        <requirement key="feature_av_id">\d+</requirement>
+        <requirement key="feature_id">\d+</requirement>
+	</route>
+
+	<route id="admin.configuration.feature-av.save" path="/admin/configuration/feature-av/save">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FeatureAvController::saveAction</default>
+	</route>
+	
+	<route id="filter.configurator.module.config" path="/admin/module/FilterConfigurator">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::viewAction</default>
+    </route>
+    
+    <route id="filter.configurator.create" path="/admin/modules/filter-configurator/create">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::createAction</default>
+    </route>
+    
+    <route id="filter.configurator.save" path="/admin/modules/filter-configurator/save">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveAction</default>
+    </route>
+    
+    <route id="filter.configurator.image.form-ajax" path="/admin/modules/filter-configurator/image/{parentType}/{parentId}/form-ajax">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::getImageFormAjaxAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+    												
+    <route id="filter.configurator.image.toggle.process" path="/admin/modules/filter-configurator/image/{id}/toggle">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::toggleVisibilityImageAction</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+    
+    <route id="filter.configurator.image.update" path="/admin/modules/filter-configurator/image/{id}/update">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::updateImage</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+    
+   <route id="filter.configurator.image.list" path="/admin/modules/filter-configurator/image/{id}/list-ajax">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::getImageListAjaxAction</default>
+        <requirement key="id">\d+</requirement> 
+    </route>
+    
+    <route id="filter.configurator.image.save" path="/admin/modules/filter-configurator/image/{id}/update/save">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveImage</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+    
+    <route id="filter.configurator.image.delete" path="/admin/modules/filter-configurator/image/{id}/delete">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::deleteImageAction</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+  
+    <route id="filter.configurator.image.add" path="/admin/modules/filter-configurator/image/{id}/save-ajax">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveImageAction</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+    
+     <route id="filter.configurator.image.update-position" path="/admin/modules/filter-configurator/image/{id}/update-position">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::updateImagePosition</default>
+        <requirement key="id">\d+</requirement>
+    </route>
+    
+</routes>

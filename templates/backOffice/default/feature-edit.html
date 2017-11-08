@@ -153,6 +153,9 @@
     				                                    {hook name="features-value.table-row" location="features_value_table_row" feature_id={$feature_id} }
 
     				                                    <td class="actions">
+    				                                    	{loop type="auth" name="can_change" role="ADMIN" resource="admin.configuration.feature" access="UPDATE"}
+			    	                                            <a class="feature-change" title="{intl l='Change this product feature characteristic'}" href="{url path='/admin/configuration/feature-av/update/%feature_id/%feature_av_id' feature_av_id=$ID feature_id=$feature_id}"><span class="glyphicon glyphicon-edit"></span></a>
+			    	                                        {/loop}
                                                             {loop type="auth" name="can_create" role="ADMIN" resource="admin.configuration.feature" access="UPDATE"}
                                                                 <a class="btn btn-default btn-xs value-delete" title="{intl l='Delete this value'}" href="#delete_dialog" data-id="{$ID}" data-toggle="modal">
                                                                     <span class="glyphicon glyphicon-trash"></span>
