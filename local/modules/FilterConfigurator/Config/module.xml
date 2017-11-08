@@ -2,29 +2,25 @@
 <module xmlns="http://thelia.net/schema/dic/module"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
-    <fullnamespace>MultipleFullfilmentCenters\MultipleFullfilmentCenters</fullnamespace>
+    <fullnamespace>FilterConfigurator\FilterConfigurator</fullnamespace>
     <descriptive locale="en_US">
-        <title>Manage locations and stock</title>
-    </descriptive>
-    <descriptive locale="fr_FR">
-        <title>Afficher le délai de livraison des produits</title>
+        <title>Filter configurator</title>
     </descriptive>
     <descriptive locale="de_DE">
-        <title>Manage locations and stock</title>
+        <title>Filter configurator</title>
     </descriptive>
     <languages>
         <language>en_US</language>
-        <language>fr_FR</language>
         <language>de_DE</language>
     </languages>
-    <version>1.1</version>
-     <authors>
+    <version></version>
+    <authors>
         <author>
           	<name>Alis Stranici</name>
         	<email>alis.stranici@sepa.at</email>
         </author>
     </authors>
     <type>classic</type>
-    <thelia>2.1.0</thelia>
+    <thelia>2.2.0</thelia>
     <stability>other</stability>
 </module>

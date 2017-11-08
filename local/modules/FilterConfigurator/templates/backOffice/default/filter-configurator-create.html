@@ -1,0 +1,236 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl l='Filter configurator'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+
+{block name="main-content"}
+
+{assign order_tab {$tab|default:$smarty.get.tab|default:"general"}}
+<div class="features">
+
+    <div id="wrapper" class="container">
+    	
+	        <ul class="breadcrumb">
+	            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+	            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+	            <li><a href="{url path='admin/module/FilterConfigurator'}">{intl l="Filter configurator"}</a></li>
+	            <li>{intl l="New configurator" d=""}</li>
+	        </ul>
+		 <div class="col-md-12 general-block-decorator">
+             <div class="row">
+                 <div class="col-md-7 title">
+                     {intl l='Create new configurator'}
+                 </div>
+             </div>
+			<ul class="nav nav-tabs" id="tabbed-menu">
+			    <li {if $order_tab == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="General description"}</a></li>
+				<li {if $order_tab == 'images'}class="active"{/if}>
+                    <a href="#images"
+                       data-toggle="tab"
+                       data-href="{url path="/admin/modules/filter-configurator/image/configurator/1/form-ajax"}"
+                       data-callback="$.imageUploadManager.initImageDropZone">
+                        {intl l="Images"}
+                    </a>
+                </li>
+			</ul>
+	        <div class="tab-content">
+				<div class="tab-pane fade {if $order_tab == 'general'}active in{/if} form-container" id="general">
+					
+					{form name="filter.configurator"}
+					<form method="POST" action="{url path='/admin/modules/filter-configurator/save'}" {form_enctype} class="clearfix">
+					
+						{include file="includes/inner-form-toolbar.html" close_url="{url path='admin/module/FilterConfigurator'}"}
+				        {form_hidden_fields}
+				
+				        {form_field field='success_url'}
+				              {* on success, redirect *}
+				              <input type="hidden" name="{$name}" value="{url path='/admin/module/FilterConfigurator'}" />
+				        {/form_field}
+				
+				        
+				       	{if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+				
+						   {form_field field='id'}
+                                            <input type="hidden" name="{$name}" value="2222" />
+                                        {/form_field}
+                             
+                        {form_field field='locale'}
+                       		<input type="hidden" name="{$name}" value="{$edit_language_locale}" />
+                        {/form_field}           
+				        {render_form_field field="title"}
+						{render_form_field field="chapo"}
+						{render_form_field field="description" extra_class="wysiwyg"}
+					</form>										
+					{/form}
+				</div>
+				<div class="tab-pane fade" id="images">
+	                <div class="text-center"><span class="loading">{intl l="Please wait, loading"}</span></div>
+	            </div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+<!-- {block name="javascript-last-call"}
+    {hook name="wysiwyg.js" location="wysiwyg-feature-edit-js" }
+{/block} -->
+
+
+{block name="javascript-initialization"}
+
+    {javascripts file='assets/js/dropzone.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+    {javascripts file='assets/js/image-upload.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+    {javascripts file='assets/js/bootstrap-editable/bootstrap-editable.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+	{javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+	    <script src="{$asset_url}"></script>
+	{/javascripts}
+    {javascripts file='assets/js/jquery.typewatch.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+    {javascripts file='assets/js/jquery-ui-1.10.3.custom.min.js'}
+        <script src="{$asset_url}"></script>
+    {/javascripts}
+
+<script>
+$(function() {
+	
+	
+    // show tab documents
+    $(".alert-warning a[href^='javascript']").on('click', function () {
+        eval(this.href);
+        return false;
+        });
+    // Atomatic ajax tab load, if data-href is defined.
+    $('.nav-tabs a[data-href]').on('shown.bs.tab', function(ev) {
+        var $this = $(this);
+        $($this.attr('href')).load($this.data('href'), function(ev) {
+            if($this.data('callback')) {
+                eval($this.data('callback') + '();');
+            }
+        });
+
+    });
+    $('.nav-tabs a[data-trigger]').on('shown.bs.tab', function(ev) {
+        var $this = $(this);
+        var trigger = $this.data('trigger');
+        var triggers = trigger.split('::');
+        if (triggers.length == 2) {
+            $(triggers[0]).trigger(triggers[1]);
+        }
+    });
+
+
+
+    // Load active tab
+    $('.nav-tabs a[href="#{$current_tab}"]').trigger("click");
+
+
+   
+
+  
+
+    $(".pse-assoc-image-document").click(function() {
+        var $this = $(this);
+        var type = "none";
+        var toggle_event = "";
+
+
+        if ($this.hasClass("pse-assoc-image")) {
+            type = "image";
+            toggle_event = "click";
+        } else if ($this.hasClass("pse-assoc-document")) {
+            type = "document";
+            toggle_event = "switch-change";
+        } else {
+            if ($this.data("type")){
+                type = $this.data("type");
+                toggle_event = "switch-change";
+            }
+        }
+
+        var $modal_container = $("#pse-modal-container");
+        var pse_id = $(this).data("id");
+
+        $.ajax(
+            "{url path="/admin/product_sale_elements/ajax/"}"+ type + "/" + pse_id
+        ).done(function(data) {
+            $modal_container.html(data);
+
+            $("#pse-image-document-assoc-modal").modal();
+
+            $(".do-associate").on(toggle_event, function(e, data) {
+                var $file = $(this);
+                var type_id = $file.data("id");
+
+                $.ajax(
+                    "{url path='/admin/product_sale_elements'}/"+pse_id+"/"+type+"/"+type_id
+                ).done(function() {
+                    /**
+                     * If the modal is for images, add some graphics
+                     */
+                    if (type == "image") {
+                        if ($file.hasClass("is-associated")) {
+                            $file.removeClass("is-associated");
+                            $(".product-pse-image-join-glyphicon", $file.parent()).remove();
+                        } else {
+                            $file.addClass("is-associated");
+                            $file.parent().append("<span class='glyphicon glyphicon-ok product-pse-image-join-glyphicon'></span>");
+                        }
+                    } else if (type == "virtual") {
+                        if ( $file.bootstrapSwitch('status') ) {
+                            $(".do-associate").each(function(){
+                                if (type_id != $(this).data("id") && $(this).bootstrapSwitch('status')) {
+                                    $(this).bootstrapSwitch('setState', false);
+                                }
+                            });
+                        }
+                    }
+
+                }).fail(function(data) {
+                    var $body = $(".modal-body", $modal_container);
+                    $errorMessage = $("<div class='alert alert-danger'>"+data["error"]+"</div>");
+
+                    $body.html($errorMessage + $body.html());
+                });
+            });
+        }).fail(function(data) {
+            var $modal_title = $("#associate_images_documents_label");
+            var $body = $(".modal-body", $modal_container);
+
+            $modal_title.html("{intl l='Error'}");
+
+            var error_message = data["error"];
+            if (!error_message || error_message.length === 0) {
+                error_message = "{intl l='An unknown error occured, please try again.'}";
+            }
+
+            $body.html("<p>"+error_message+"</p>");
+
+            $("#pse-assoc-image-document-modal").modal();
+        });
+    });
+
+});
+
+</script>
+
+
+{/block}
+
+{block name="javascript-last-call"}
+
+
+    {hook name="wysiwyg.js" location="wysiwyg-product-edit-js" }
+{/block}

@@ -15,6 +15,10 @@ use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\TemplateQuery;
 use Thelia\Model\Map\FeatureProductTableMap;
 use Thelia\Model\ProductQuery;
+use Thelia\Model\FeatureAv;
+use Thelia\Model\FeatureAvI18n;
+use Thelia\Model\FeatureProduct;
+use Thelia\Model\Map\FeatureAvI18nTableMap;
 
 class ProductImport extends AbstractImport{
 	protected $mandatoryColumns = [
@@ -62,7 +66,7 @@ class ProductImport extends AbstractImport{
 				//$find_ref->save();
 				
 				$product_id= $find_ref->getProductId();
-				$this->import($product_features, $product_id, $template, $eventDispatcher);
+				$this->importFreeTextColumn($product_features, $product_id, $template, $eventDispatcher);
 			}
 			else{//GIBTS BEIDES NICHT DANN EXISTIERT DAS PRODUCT NICHT (neu erstellen könnte hier sein)!
 				$errors .= "Produkt mit EAN ".$EAN_code." existiert noch nicht im System";
@@ -75,11 +79,136 @@ class ProductImport extends AbstractImport{
 			
 			Tlog::getInstance()->info("EAN is !null");
 			
-			$this->import($product_features, $product_id, $template, $eventDispatcher);
+			$this->importFreeTextColumn($product_features, $product_id, $template, $eventDispatcher);
 	
 		}
 		//$errors .= "Es wurden ".$counter." Features erstellt";
 		return $errors;
+	}
+	
+	public function importFreeTextColumn($product_features, $product_id, $template, $eventDispatcher)
+	{
+		Tlog::getInstance()->info("importFreeTextColumn product id".$product_id);
+		
+		// update template id in product table
+		$product = ProductQuery::create()
+			->filterById($product_id)
+			->findOne();
+		
+		if(!$product->getTemplateId()) {
+			if(!$template)
+				$template = 1;
+				
+			$product->setTemplateId($template)
+				->save();
+		}
+		
+		foreach ($product_features as $key => $value)
+		{
+			if(!strpos($key, 'FTV')) {
+			
+				if ($value!=null){
+					
+					$feature_i18n_query= FeatureI18nQuery::create();
+					$get_feature = $feature_i18n_query->filterByTitle($key)
+						->filterByLocale("de_DE")
+						->findOne();
+					
+					if($get_feature == null) {
+						//---Set Template
+						$feature_template_query = TemplateQuery::create();
+						$found = $feature_template_query->findOneById($template);
+						$new_feature = new Feature();
+						$new_feature->setLocale("de_DE");
+						$new_feature->setTitle($key);
+						$new_feature->addTemplate($found);
+						$new_feature->save();
+						//---Set Template
+						Tlog::getInstance()->info("importFreeTextColumn SAVED K:".$key." V:".$value);
+						$feature_update_event = new FeatureProductUpdateEvent($product_id, $new_feature->getId(), $value,true); 
+						$feature_update_event
+							->setLocale("de_DE");
+						$eventDispatcher->dispatch(TheliaEvents::PRODUCT_FEATURE_UPDATE_VALUE, $feature_update_event);
+					}
+					else {
+						$feature_id = $get_feature->getId();
+
+						// free text value
+						if($product_features[$key.'FTV']) {
+							// insert in feature av
+							// insert in feature av i18n
+							// insert in feature product FTV 1
+							
+							$this->insertFeatureValue($product_id, $feature_id,$value,true);
+							Tlog::getInstance()->info("importFreeTextColumn - free text value -  K:".$key." V:".$value);
+							
+						}
+						// selectable value
+						else {
+							Tlog::getInstance()->info("importFreeTextColumn - selectable value -  K:".$key." V:".$value);
+							
+							$feature_av_i18n =  FeatureAvI18nQuery::create()
+								->useFeatureAvQuery()
+								->useFeatureQuery()
+								->filterById($feature_id)
+								->endUse()
+								->endUse()
+								->where(FeatureAvI18nTableMap::TITLE.\Propel\Runtime\ActiveQuery\Criteria::EQUAL.'"'.$value.'"')
+								->where(FeatureAvI18nTableMap::LOCALE.\Propel\Runtime\ActiveQuery\Criteria::EQUAL.'"'.'de_DE'.'"')
+								->findOne();
+								
+							// feature and value relation exist
+							if($feature_av_i18n) {
+								
+								Tlog::getInstance()->info("importFreeTextColumn -  feature and value relation exist -  K:".$key." V:".$value);
+								$this->insertFeatureProduct($product_id, $feature_id,$feature_av_i18n->getId(),false);
+							}
+							else {
+								// insert in feature av
+								// insert in feature av i18n
+								// insert in feature product FTV null
+								
+								Tlog::getInstance()->info("importFreeTextColumn -   value! exist or feature and value relation !exist-  K:".$key." V:".$value);
+								$this->insertFeatureValue($product_id, $feature_id,$value,false);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public function insertFeatureValue($product_id, $feature_id,$value,$freeText)
+	{
+		$featureAv = new FeatureAv();
+		$featureAv->setFeatureId($feature_id)->save();
+		
+		$featureAvI18n = new FeatureAvI18n();
+		$featureAvI18n->setId($featureAv->getId())
+			->setLocale('de_DE')
+			->setTitle($value)
+			->save();
+		
+		$this->insertFeatureProduct($product_id, $feature_id,$featureAv->getId(),$freeText);
+	}
+	
+	public function insertFeatureProduct($product_id, $feature_id,$featureAv_id,$freeText)
+	{
+		$featureProduct = new FeatureProduct();
+		if($freeText) {
+			
+			$featureProduct->setProductId($product_id)
+			->setFeatureId($feature_id)
+			->setFeatureAvId($featureAv_id)
+			->setFreeTextValue(1)
+			->save();
+		}
+		else {
+			$featureProduct->setProductId($product_id)
+			->setFeatureId($feature_id)
+			->setFeatureAvId($featureAv_id)
+			->save();
+		}
 	}
 	
 	public function import($product_features, $product_id, $template, $eventDispatcher) 
