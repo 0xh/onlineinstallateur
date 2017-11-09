@@ -60,11 +60,7 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
         $query = ProductQuery::create()
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
                 ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-                ->addMultipleJoin(array(
-                    array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
-                    array(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, $changeFulfilmentCenter))
-                    , \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN
-                )
+
                 ->withColumn(FulfilmentCenterProductsTableMap::PRODUCT_STOCK, 'PRODUCT_STOCK' )
                 ->withColumn(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, 'FULFILMENT_CENTER_ID' )
                 ->withColumn(ProductI18nTableMap::TITLE, 'title' );
@@ -74,6 +70,16 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
             if (!$searchById && !$searchByRef && !$searchByTitle)
                 $query = $query->where(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID." = '". 
                     $changeFulfilmentCenter ."'");
+           
+                $query = $query->addJoin(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN);
+        }
+        else 
+        {
+            $query = $query->addMultipleJoin(array(
+                array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
+                array(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, $changeFulfilmentCenter))
+                , \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN
+                );
         }
                 
         if ($searchById)
@@ -86,7 +92,6 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
             $query = $this->searchByTitle($searchByTitle, $query);
         
         $query = $query->where(ProductI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR);
-        $query = $query->groupById();
         
         $query = $query->orderById(); 
         
