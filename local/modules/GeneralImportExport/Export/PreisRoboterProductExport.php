@@ -174,6 +174,7 @@ class PreisRoboterProductExport extends AbstractExport
             ->withColumn(ProductPriceTableMap::PREIS_REUTER)
             ->endUse()
             ->useProductQuery()
+            ->where(ProductTableMap::VISIBLE." = ?","1")
             ->useProductCategoryQuery()
             ->addJoinObject($categoryJoin, 'category_join')
             ->addJoinCondition('category_join', CategoryI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
