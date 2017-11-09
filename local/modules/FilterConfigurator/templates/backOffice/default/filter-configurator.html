@@ -72,7 +72,29 @@
                                 </thead>
 
                                 <tbody>
-                                	<tr><td>Here should be the loop</td></tr>
+                                	{loop type="product_filter_configuration" name="product_filter_configuration"}
+	                                	<tr>  
+	                                		<div class="row">                          				
+	                                			<td class="text-left col-md-1">{$ID}</td>
+												<td class="text-left col-md-9"><a href="#">{$TITLE}</a></td>
+												<td class="text-center col-md-1">{$POSITION}</td>
+												<td class="text-right col-md-1 actions">
+													<div class="btn-toolbar btn toolbar-primary">
+		                                                <span class="glyphicon glyphicon-cog"></span>
+		                                            </div>
+		                                            <div class="toolbar-options hidden">
+		    	                                        {loop type="auth" name="can_change" role="ADMIN" resource="admin.configuration.feature" access="UPDATE"}
+		    	                                            <a class="feature-change" title="{intl l='Change this product feature'}" href="{url path='/admin/modules/filter-configurator/update' config_id=$ID}"><span class="glyphicon glyphicon-edit"></span></a>
+		    	                                        {/loop}
+		
+		    	                                        {loop type="auth" name="can_change" role="ADMIN" resource="admin.configuration.feature" access="DELETE"}
+		    	                                            <a class="feature-delete" title="{intl l='Delete this filter configurator'}" href="{url path='/admin/module/filter-configurator/delete/%id' id=$ID}"><span class="glyphicon glyphicon-trash"></span></a>
+		    	                                        {/loop}
+		                                            </div>
+												</td>
+											</div>
+	                                	</tr>
+                                	{/loop}
                                 </tbody>
                                 
                                 </table>
