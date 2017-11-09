@@ -1,14 +1,17 @@
 <?php
 namespace FilterConfigurator\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use FilterConfigurator\FilterConfigurator;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
+use Thelia\Tools\URL;
 use FilterConfigurator\Model\Configurator;
 use FilterConfigurator\Model\ConfiguratorI18n;
 use FilterConfigurator\Model\ConfiguratorImageQuery;
 use FilterConfigurator\Model\ConfiguratorImageI18nQuery;
+use FilterConfigurator\Model\ConfiguratorQuery;
 
 class FilterConfiguratorController extends BaseAdminController
 {
@@ -68,6 +71,28 @@ class FilterConfiguratorController extends BaseAdminController
 			return self::viewAction();
 		}
 		
+	}
+	
+	public function updateAction(){
+	    
+	}
+	
+	public function deleteAction($id){
+	    if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('FilterConfigurator'), AccessManager::UPDATE)) {
+	        return $response;
+	    }
+	    
+	    ConfiguratorQuery::create()
+	           ->filterById($id)
+	           ->delete();
+        
+       $params = array();
+       
+       return RedirectResponse::create(
+           URL::getInstance()->absoluteUrl(
+               '/admin/module/FilterConfigurator', $params
+               )
+           );
 	}
 	
 	public function getImageFormAjaxAction($parentId, $parentType)

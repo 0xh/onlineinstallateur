@@ -193,7 +193,10 @@ class StatementWrapper implements StatementInterface, \IteratorAggregate
      */
     public function execute($parameters = null)
     {
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 30000);
         $return = $this->statement->execute($parameters);
+        ini_set('max_execution_time', $max_time);
         if ($this->connection->useDebug) {
             $sql = $this->getExecutedQueryString();
             $this->connection->log($sql);

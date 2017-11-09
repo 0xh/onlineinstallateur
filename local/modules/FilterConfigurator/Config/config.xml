@@ -7,6 +7,7 @@
 	<loops>
         <loop name="feature_av" class="FilterConfigurator\Loop\FeatureAv" />
         <loop name="image_configurator" class="FilterConfigurator\Loop\Image" />
+        <loop name="product_filter_configuration" class="FilterConfigurator\Loop\ProductFilterConfigurator" />
     </loops>
 
     <forms>

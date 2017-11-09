@@ -158,6 +158,7 @@ class IdealoProductExport extends AbstractExport
             ->withColumn(ProductPriceTableMap::LISTEN_PRICE)
             ->endUse()
             ->useProductQuery()
+            ->where(ProductTableMap::VISIBLE." = ?","1")
             ->useProductCategoryQuery()
             ->addJoinObject($categoryJoin, 'category_join')
             ->addJoinCondition('category_join', CategoryI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
@@ -192,7 +193,8 @@ class IdealoProductExport extends AbstractExport
 		            ->endUse()
 		            ->orderBy(ProductSaleElementsTableMap::ID)
 		            ->groupBy(ProductSaleElementsTableMap::ID)
-		            ->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
+		            ->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL)
+		            ;
         
         return $query;
     }
