@@ -33,19 +33,19 @@ class SendProductToAmazonContoller extends BaseAdminController
         $this->addProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
         $this->updateQuantityProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
         $this->updatePriceProductAmazon($prodToSend, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale);
-        $this->addProdToHfTable($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
+        $this->addProdToHfTable($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale, $amazonCurrency);
 
        return $this->generateRedirect("/admin/module/amazonintegration", 303);
     }
     
-    protected function addProdToHfTable($prods, $marketPlaceId, $marketPlaceLocale)
+    protected function addProdToHfTable($prods, $marketPlaceId, $marketPlaceLocale, $amazonCurrency)
     {
         foreach ($prods as $key => $prod)
         {
             $query = AmazonProductsHfQuery::create()
                     ->filterByProductId($key)
                     ->findOneByMarketplaceId($marketPlaceId);
-            
+
             if ($query == null)
             {
                 $prodAmazon = new AmazonProductsHf();
@@ -58,6 +58,7 @@ class SendProductToAmazonContoller extends BaseAdminController
                 $prodAmazon->setQuantity($prod['quantity']);
                 $prodAmazon->setMarketplaceId($marketPlaceId);
                 $prodAmazon->setMarketplaceLocale($marketPlaceLocale);
+                $prodAmazon->setCurrency($amazonCurrency);
                 $prodAmazon->save();
                 $prodAmazon->clear();
             }
@@ -65,6 +66,7 @@ class SendProductToAmazonContoller extends BaseAdminController
             {
                 $query->setQuantity($prod['quantity']);
                 $query->setPrice($prod['price']);
+                $query->setCurrency($amazonCurrency);
                 $query->save();
             }
                 
@@ -109,9 +111,6 @@ class SendProductToAmazonContoller extends BaseAdminController
 
         $test = new SubmitFeedClass($feed, $feedType, $amazonMarketplaceId, $amazonMarketplaceLocale);
         $test->invokeSubmitFeed();
-//         var_dump($test);
-//         die;
-//         return $feed;
     }
     
     protected function updateQuantityProductAmazon($prods, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_INVENTORY_AVAILABILITY_DATA_")
@@ -144,8 +143,6 @@ class SendProductToAmazonContoller extends BaseAdminController
         
         $test = new SubmitFeedClass($feed, $feedType, $amazonMarketplaceId, $amazonMarketplaceLocale);
         $test->invokeSubmitFeed();
-//         die;
-//         return $feed;
     }
     
     protected function updatePriceProductAmazon($prods, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_PRODUCT_PRICING_DATA_")
@@ -175,7 +172,5 @@ class SendProductToAmazonContoller extends BaseAdminController
         
         $test = new SubmitFeedClass($feed, $feedType, $amazonMarketplaceId, $amazonMarketplaceLocale);
         $test->invokeSubmitFeed();
-//         die;
-//         return $feed;
     }
 }

@@ -54,47 +54,50 @@ window.onload = function() {
 
 }
 
-var fruits = [];
+var productsId = [];
 
-function checkRadio(id)
+function checkRadio(id, nr)
 {
 	console.clear();
-	var previousValue = $('#radio_' + id).attr('storedValue');
+	var previousValue = $('#radio_' + id + nr).attr('storedValue');
     if (previousValue == "true")
 	{
-      	$('#radio_' + id).prop('checked', false);
-      	$('#radio_' + id).attr('storedValue', false);
-      	var index = fruits.indexOf(id);
+      	$('#radio_' + id + nr).prop('checked', false);
+      	$('#radio_' + id + nr).attr('storedValue', false);
+      	var index = productsId.indexOf(id);
       	if (index > -1) {
-      		fruits.splice(index, 1);
+      		productsId.splice(index, 1);
 		}
-      	console.log(fruits);
-      	$('#radioChecked').val(fruits);
+      	console.log(productsId);
+      	$('#radioChecked').val(productsId);
+      	$('#price_' + id + nr).attr('name', '');
+      	$('#quantity_' + id + nr).attr('name', '');
+
     }
     else
    	{
-      	fruits.push(id);
-      	$('#radio_' + id).prop('checked', true);
-      	$('#radio_' + id).attr('storedValue', 'true');
-      	$('#radioChecked').val(fruits);
+      	productsId.push(id);
+      	$('#price_' + id + nr).attr('name', 'price_' + id);
+      	$('#quantity_' + id + nr).attr('name', 'quantity_' + id);
+      	$('#radio_' + id + nr).prop('checked', true);
+      	$('#radio_' + id + nr).attr('storedValue', 'true');
+      	$('#radioChecked').val(productsId);
       	
-      	console.log(fruits);
+      	console.log(productsId);
    	}
 }
 
-function changePriceOrQuantity(id)
+function changePriceOrQuantity(id, nr)
 {
- 	if ($('#price_' + id).val() || $('#quantity_' + id).val())
- 		$('#radio_' + id).attr("disabled", false);
+ 	if ($('#price_' + id + nr).val() && $('#quantity_' + id + nr).val())
+ 		$('#radio_' + id + nr).attr("disabled", false);
  	else
 	{
- 		$('#radio_' + id).attr("disabled", true);
-      	$('#radio_' + id).prop('checked', false);
+ 		$('#radio_' + id + nr).attr("disabled", true);
+      	$('#radio_' + id + nr).prop('checked', false);
       	checkRadio(id);
 	}
  	
 }
-
-
 
 </script>
