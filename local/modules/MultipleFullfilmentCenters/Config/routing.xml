@@ -35,4 +35,12 @@
     <route id="multiplefulfilmentcenters.cart.fulfilmentcenter" path="/cart/fulfilmentcenter">
         <default key="_controller">MultipleFullfilmentCenters\Controller\Front\CartProductStockLocationController::addProductLocation</default>
     </route>
+    
+    <route id="multiplefulfilmentcenters.setting.products" path="/admin/module/multiplefulfilmentcenters/setting-products">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::viewAction</default>
+    </route>
+    
+    <route id="multiplefulfilmentcenters.setting.products.update" path="/admin/module/multiplefulfilmentcenters/update-quantity-products">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::updateQuantityFullfilmentCenters</default>
+    </route>
 </routes>

@@ -25,10 +25,6 @@ use Thelia\Model\Map\ProductTableMap;
 class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterface
 {
 
-    protected $timestampable = true;
-
-    protected $versionable = true;
-
     /**
      *
      * @return ArgumentCollection
@@ -126,8 +122,6 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
             }
         }
         
-        $this->getProdcutsIdByMarketplaceId($positionMarketplace);
-        
         $_SESSION['position_brand'] = $positionBrand;
         $_SESSION['position_marketplace'] = $positionMarketplace;
         $_SESSION['position_sent_amazon'] = $positionSentAmazon;
@@ -143,11 +137,6 @@ class AmazonProductsLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
         
         if ($searchByTitle)
             $query = $this->searchByTitle($searchByTitle, $query);
-        
-//             $query = $query->toString();
-//                echo "<pre>";
-//                var_dump($query);
-//                 die;  
 
         $query = $query->orderById(); 
         return $query;
