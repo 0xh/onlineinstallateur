@@ -164,7 +164,8 @@ class AmazonIntegrationContoller extends BaseAdminController
     	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrderItemsSample.php';
 
         $_SESSION['finishedToGetOrders'] = false;
-
+        unset($_SESSION['nxtToken']);
+        
         while ($_SESSION['finishedToGetOrders'] == false)
         {
             if (! isset($_SESSION['nxtToken'])) {
