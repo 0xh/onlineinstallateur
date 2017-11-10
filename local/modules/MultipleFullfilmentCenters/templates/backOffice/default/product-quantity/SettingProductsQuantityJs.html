@@ -2,6 +2,7 @@
 
 window.onload = function() {
 	changeFulfilmentCenter();
+	changeFulfilmentCenterQuantity();
 }
 
 var productsId = [];
@@ -31,6 +32,15 @@ function changeQuantity(id)
 function changeFulfilmentCenter() {
 	$( '#change_fulfilment_center' ).change(function() {
 	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
+	  	pos += '&change_fulfilment_center_qunatity=' + $('#change_fulfilment_center_qunatity').val();
+  		window.location.href = '?' + pos;
+	});
+}
+
+function changeFulfilmentCenterQuantity() {
+	$( '#change_fulfilment_center_qunatity' ).change(function() {
+	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
+	  	pos += '&change_fulfilment_center_qunatity=' + $('#change_fulfilment_center_qunatity').val();
   		window.location.href = '?' + pos;
 	});
 }

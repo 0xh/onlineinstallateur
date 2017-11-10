@@ -11,7 +11,10 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductI18nTableMap;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
 use Thelia\Model\Map\ProductTableMap;
+use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
+use Propel\Runtime\ActiveQuery\Criteria;
 
 /**
  * SettingProductsQuantityLoop
@@ -40,6 +43,8 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
             $loopResultRow->set("id", $listing->getId())
                 ->set("ref", $listing->getRef())                
                 ->set("title", $listing->getVirtualColumn('title'))
+                ->set("ean_code", $listing->getVirtualColumn('ean_code'))
+                ->set("fulfilment_center_name", $listing->getVirtualColumn('fulfilment_center_name'))
                 ->set("quantity", $listing->getVirtualColumn('PRODUCT_STOCK'));
             
             $loopResult->addRow($loopResultRow); 
@@ -52,49 +57,69 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
     {
 
         $changeFulfilmentCenter = (isset($_GET["change_fulfilment_center"])) ? $_GET["change_fulfilment_center"] : -1;
+        $changeFulfilmentCenterQuantity = (isset($_GET["change_fulfilment_center_qunatity"])) ? $_GET["change_fulfilment_center_qunatity"] : -1;
         
         $searchById = isset($_GET["search_by_id"]) ? $_GET["search_by_id"] : false;
         $searchByRef = isset($_GET["search_by_ref"]) ? $_GET["search_by_ref"] : false;
+        $searchByEan = isset($_GET["search_by_ean"]) ? $_GET["search_by_ean"] : false;
         $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : false;
 
         $query = ProductQuery::create()
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
                 ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-
+                ->addJoin(ProductTableMap::ID, ProductSaleElementsTableMap::PRODUCT_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                 ->withColumn(FulfilmentCenterProductsTableMap::PRODUCT_STOCK, 'PRODUCT_STOCK' )
                 ->withColumn(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, 'FULFILMENT_CENTER_ID' )
+                ->withColumn(ProductSaleElementsTableMap::EAN_CODE, 'ean_code' )
                 ->withColumn(ProductI18nTableMap::TITLE, 'title' );
                 
         if ($changeFulfilmentCenter == -1)
         {
-            if (!$searchById && !$searchByRef && !$searchByTitle)
-                $query = $query->where(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID." = '". 
-                    $changeFulfilmentCenter ."'");
-           
+            if ($changeFulfilmentCenterQuantity == -1)
                 $query = $query->addJoin(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN);
+            else 
+                $query = $query->addMultipleJoin(array(
+                    array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
+                    array(FulfilmentCenterProductsTableMap::PRODUCT_STOCK, $changeFulfilmentCenterQuantity, Criteria::LESS_EQUAL)),
+                    \Propel\Runtime\ActiveQuery\Criteria::INNER_JOIN
+                );
         }
         else 
         {
-            $query = $query->addMultipleJoin(array(
-                array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
-                array(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, $changeFulfilmentCenter))
-                , \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN
-                );
+
+            if ($changeFulfilmentCenterQuantity > -1)
+                $query = $query->addMultipleJoin(array(
+                        array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
+                        array(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, $changeFulfilmentCenter),
+                        array(FulfilmentCenterProductsTableMap::PRODUCT_STOCK, $changeFulfilmentCenterQuantity, Criteria::LESS_EQUAL))
+                        , \Propel\Runtime\ActiveQuery\Criteria::INNER_JOIN
+                    );
+            else
+                $query = $query->addMultipleJoin(array(
+                        array(ProductTableMap::ID, FulfilmentCenterProductsTableMap::PRODUCT_ID),
+                        array(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, $changeFulfilmentCenter))
+                        , \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN
+                    );
         }
-                
+        
         if ($searchById)
             $query = $this->searchByID($searchById, $query);
         
         if ($searchByRef)
             $query = $this->searchByRef($searchByRef, $query);
+
+        if ($searchByEan)
+            $query = $this->searchByEan($searchByEan, $query);
         
         if ($searchByTitle)
             $query = $this->searchByTitle($searchByTitle, $query);
         
+        $query = $query->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
+                    ->withColumn(FulfilmentCenterTableMap::NAME, 'fulfilment_center_name' );
+            
         $query = $query->where(ProductI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR);
         
         $query = $query->orderById(); 
-        
         return $query;
     }
     
@@ -105,6 +130,11 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
     
     protected function searchByRef($searchByRef, $query){
         $query = $query->where(ProductTableMap::REF.' = ?', $searchByRef, \PDO::PARAM_STR);
+        return $query;
+    }
+    
+    protected function searchByEan($searchByEan, $query){
+        $query = $query->where(ProductSaleElementsTableMap::EAN_CODE.' = ?', $searchByEan, \PDO::PARAM_STR);
         return $query;
     }
     
