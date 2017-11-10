@@ -30,6 +30,17 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 		        </form>
 		    </div>
 			<div class="sidebar-search col-md-3">
+				<h5  id="search-label">{intl l="Search by Ean" d="criteriasearch.fo.default"}</h5>
+		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
+		            <div class="input-group">
+		                <input type="text" class="form-control" id="search_by_ean" name="search_by_ean" placeholder="{intl l='Search by Ean'}" value="{trim($smarty.get.search_by_ean)}">
+		                <span class="input-group-btn">
+		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+		                </span>
+		            </div>
+		        </form>
+		    </div>
+			<div class="sidebar-search col-md-3">
 				<h5  id="search-label">{intl l="Search by Product Title" d="criteriasearch.fo.default"}</h5>
 		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
 		            <div class="input-group">
@@ -50,6 +61,14 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 		            {/loop}
 			</select>
 		</div>
+		<div class="col-sm-2" style="margin-left: 155px;">
+			<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
+			<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity" style="width: 200px;">
+					<option value="-1">All</option>
+					<option value="0" {if $smarty.get.change_fulfilment_center_qunatity == 0}selected{/if}>Empty </option>
+					<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
+			</select>
+		</div>
 
 		<form action="{url path='/admin/module/multiplefulfilmentcenters/update-quantity-products'}">
 			<div class="txt-div" >
@@ -65,6 +84,8 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 					<th>Id</th>
 					<th>Ref</th>
 					<th>Title</th>
+					<th>Ean code</th>
+					<th>Center name</th>
 					<th>Quantity</th>
 					<th>Update quantity</th>
 				</tr>
@@ -77,13 +98,16 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 					<td>{$id}<input type="hidden" name="" id="prod_{$id}" value="{$id}"></td>
 					<td>{$ref}<input type="hidden" name="" id="ref_{$id}" value="{$ref}"></td>
 					<td>{$title}</td>
+					<td>{$ean_code}</td>
+					<td>{$fulfilment_center_name}</td>
 					<td>{if $quantity } {$quantity} {else} 0 {/if}</td>
-					<td class="quantity"><input type="text" class="form-control" name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
+					<td class="quantity"><input type="text" class="form-control" {if !isset($smarty.get.change_fulfilment_center) or $smarty.get.change_fulfilment_center < 0} disabled="disabled" {/if} name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
 				</tr>
                {/loop}
                </tbody>
             </table>
             <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.change_fulfilment_center}">
+            <input type="hidden" name="change_fulfilment_center_qunatity_val" value="{$smarty.get.change_fulfilment_center_qunatity}">
             <input type="hidden" name="list_prods_to_update_quantity" id="list_prods_to_update_quantity" value="">
 	         <tfoot>
 	             <tr>

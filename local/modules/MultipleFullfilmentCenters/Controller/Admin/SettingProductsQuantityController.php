@@ -23,13 +23,15 @@ class SettingProductsQuantityController extends BaseAdminController
 	{
 	    $idToUpdateQuantity = $_GET['list_prods_to_update_quantity'] ? $this->getIdToUpdateQuantity($_GET['list_prods_to_update_quantity']) : array();
 	    $fulfilmentCenterId = $_GET['change_fulfilment_center_val'];
+	    $fulfilmentCenterQuantity = $_GET['change_fulfilment_center_qunatity_val'];
 	    
 	    foreach ($idToUpdateQuantity as $id)
 	    {
 	        $this->updateProdQuantity($id, $_GET['quantity_'.$id], $fulfilmentCenterId);
 	    }
 	    
-	    return $this->generateRedirect("/admin/module/multiplefulfilmentcenters/setting-products?change_fulfilment_center=" . $fulfilmentCenterId, 303);
+	    return $this->generateRedirect("/admin/module/multiplefulfilmentcenters/setting-products?change_fulfilment_center=" 
+	        . $fulfilmentCenterId . "&change_fulfilment_center_qunatity=" . $fulfilmentCenterQuantity, 303);
 	}
 	
 	protected function updateProdQuantity($idProd, $quantity, $fulfilmentCenterId)
