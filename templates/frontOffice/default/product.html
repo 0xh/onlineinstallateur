@@ -5,6 +5,7 @@
     {$pse_count=1}
     {$product_virtual={product attr="virtual"}}
     {$check_availability={config key="check-available-stock" default="1"}}
+    {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
 {/block}
 
 {* Body Class *}
@@ -135,10 +136,12 @@
                     	<span id="pse-name" class="pse-name"></span>
                     </h1>
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
-                    
-                   <div>
+                  
+                  <!-- Original Loop listing -->  
+                  <!--  <div>
                    {assign var="attributes_limit" value=6}
-                    {loop name="attributes" type="feature" product=$product_id limit="8"}
+                    {loop name="attributes" type="feature" product=$product_id}
+                    
                     	{if $TITLE != "badge"}
                     		{ifloop rel="attributes_info"}
                     			{assign var="feature_title" value=$TITLE}	
@@ -154,8 +157,33 @@
                     		{/ifloop}
                     	{/if}
                 	{/loop}
-                	</div>
+                	</div> -->
                     
+                    <div>
+	                   {assign var="attributes_limit" value=6}
+	                    {loop name="attributes" type="feature" product=$product_id limit="8"}
+	                    	{if $TITLE != "badge"}
+	                    		{ifloop rel="attributes_info"}
+	                    			{assign var="feature_title" value=$TITLE}	
+	                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
+	                            		{if $TITLE != "highlight"}
+	                            		{$sizearr[$feature_title] = $sizearr[$feature_title]|cat: ', '|cat: $TITLE}
+	                                	{/if}
+	                            	{/loop}
+	                    		{/ifloop}
+	                    	{/if}
+	                	{/loop}
+	           
+                		{foreach $sizearr as $value}
+                			 <div class="row-fluid">
+								<div class="col-sm-4">{$value@key}:</div>
+								<div class="col-sm-8">{$value|substr:2}</div>
+								<div class="clearfix"></div>
+							</div>
+						{/foreach}
+                
+                	</div>
+               	                  
 <table class="price-table" style="font-size:12px; color:#7a7a7a">
     <tr style="padding-top:10px;">
         <td colspan="2" style="position:relative;padding-top:7px;">
@@ -199,14 +227,14 @@
     </tr>
      {/if}
     <tr>
-	{if !$QUANTITY}
+	{if !$QUANTITY || $fulfilment_center_active == "false"}
 	    <td class="highlight" colspan="2">
 	       {hook name="product.details-bottom" product={$ID}}               
 					{if $service_category != #services_category_id#}
 	                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
 	                {/if} 
 	    </td> 
-	{/if} 
+	 {/if}
     </tr>   
 
 </table>
@@ -230,9 +258,14 @@
                 <div class="availability">
 <span class="availibity-label sr-only">{intl l="Availability"}: </span>
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
-	                        	{if $QUANTITY}
+	                        
+	                        {if $QUANTITY && $fulfilment_center_active != "false"}
                     				<span>{intl l='Can be picked up immediately'}</span>
+                    				{else}
+                    	    <span class="in">{intl l='In Stock'}</span>                            
+	                        <span class="out">{intl l='Out of Stock'}</span>
                     			{/if}
+
 	                        </span>
 </div>
 
@@ -489,7 +522,7 @@
             {strip}
                 {capture "highlights"}
                     {ifloop rel="feature_info"}
-                            {loop name="highlights_info" type="feature" product={$ID}}
+                            {loop name="highlights_info" type="feature" product={$ID} order="alpha"}
                             {assign var="feature_description" value=$DESCRIPTION}
                             	{loop name="highlights_info_value" type="feature_value" feature={$ID} product=$product_id}
                             		{if $TITLE == "highlight"}

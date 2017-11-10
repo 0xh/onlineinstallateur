@@ -1,0 +1,38 @@
+<script>
+
+window.onload = function() {
+	changeFulfilmentCenter();
+}
+
+var productsId = [];
+
+function changeQuantity(id)
+{
+	console.clear();
+ 	if ($('#quantity_' + id).val())
+	{
+ 		$('#prod_' + id).attr('name', 'prod_' + id);
+ 		$('#quantity_' + id).attr('name', 'quantity_' + id);
+ 		productsId.push(id);
+ 		$('#list_prods_to_update_quantity').val(productsId);
+	}
+ 	else
+	{
+ 		$('#prod_' + id).attr('name', '');
+ 		$('#quantity_' + id).attr('name', '');
+ 		var index = productsId.indexOf(id);
+      	if (index > -1) {
+      		productsId.splice(index, 1);
+		}
+      	$('#list_prods_to_update_quantity').val(productsId);
+	}
+}
+
+function changeFulfilmentCenter() {
+	$( '#change_fulfilment_center' ).change(function() {
+	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
+  		window.location.href = '?' + pos;
+	});
+}
+
+</script>

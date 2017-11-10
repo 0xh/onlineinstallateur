@@ -29,6 +29,7 @@ use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Thelia\Model\ExportQuery;
+use Faker\Test\Provider\TestableLorem;
 
 /**
  * Controller uses to generate RSS Feeds
@@ -65,7 +66,7 @@ class FeedController extends BaseFrontController {
     public function generateAction($context, $lang, $id)
     {
     	$max_time = ini_get("max_execution_time");
-    	ini_set('max_execution_time', 300);
+    	ini_set('max_execution_time', 30000);
     	
         /** @var Request $request */
         $request = $this->getRequest();
@@ -105,106 +106,105 @@ class FeedController extends BaseFrontController {
         }
 
         $flush = $request->query->get("flush", "");
-		//Tlog::getInstance()->debug("format".$request->query->get("format", "csv"));
+        $format = $request->query->get("format","xml");
+        $platform = $request->query->get("platform","idealo");
+
         // check if feed already in cache
         $cacheContent = false;
 
-        $format = $request->query->get("format","xml");
-        $platform = $request->query->get("platform","idealo");
-        
-       
-        if($format == "csv"){
-        	$exportDBReference = "thelia.export.".$context.".".$platform;//ex: thelia.export.catalog.idealo
-        	
-        	//get export Object from DB based on reference
-        	$exportDBObject = ExportQuery::create()->findOneByRef($exportDBReference);
-        	
-        	if($exportDBObject === null){
-        		$this->pageNotFound();
-        	}
-        	
-        	//get the service for the thelia export handler
-        	/** @var \Thelia\Handler\ExportHandler $exportHandler */
-        	$exportHandler = $this->container->get('thelia.export.handler');
-        	$export = $exportHandler->getExport($exportDBObject->getId());//8 = catalog.idealo
-        	
-        	if ($export === null) {
-        		return $this->pageNotFound();
-        	}
-
-        	/** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
-        	$serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
-        	/** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
-        	$serializer = $serializerManager->get("thelia.csv");//
-        	if($platform == "preisroboterde")
-        		$serializer->setDelimiter("|");
-        		
-        	$lang = (new LangQuery)->findPk($lang);
-        	$exportEvent = $exportHandler->export(
-        						$export,$serializer,null, $lang,false,false, null);
-
-        	/** $var \Thelia\Core\Archiver\ArchiverInterface $archiver */
-        	$archiver = $exportEvent->getArchiver();
-        	if ($archiver !== null) {
-        		$contentType = $exportEvent->getArchiver()->getMimeType();
-        		$fileExt = $exportEvent->getArchiver()->getExtension();
-        	}
-        	else {
-        		/** @var \Thelia\Core\Serializer\SerializerInterface $serializer */
-        		$serializer = $exportEvent->getSerializer();
-        		$contentType = $serializer->getMimeType();
-        		$fileExt = $serializer->getExtension();
-        	}
-        	$contentDisposition = sprintf(
-        			'%s; filename="%s.%s"',
-        			ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-        			$exportEvent->getExport()->getFileName(),
-        			$fileExt);
-        	
-        	$header = [
-        				'Content-Type' => $contentType,
-        				'Content-Disposition' => $contentDisposition
-        				];
-        				$content = mb_convert_encoding(readfile($exportEvent->getFilePath()), 'UTF-8', 'auto');
-        				$response = new Response();
-        				$response->setContent($content);
-        				$response->headers->set('Content-Type', $contentType);
-        				$response->headers->set('Content-Disposition' , $contentDisposition);
-        				//return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
-        }
-        else{
         $cacheDir = $this->getCacheDir();
-        $cacheKey = self::FEED_CACHE_KEY . $lang . $context . $id;
-        $cacheExpire = intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
-
+        $cacheKey = "feeds" . $lang . $context . $id . $format . $platform;
+        $cacheExpire = 486400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
+        
         $cacheDriver = new FilesystemCache($cacheDir);
+        // if admin is NOT logged in and the flush is NOT set then use cached version 
         if (!($this->checkAdmin() && "" !== $flush)){
             $cacheContent = $cacheDriver->fetch($cacheKey);
         } else {
             $cacheDriver->delete($cacheKey);
         }
-
-        // if not in cache
-        if (false === $cacheContent){
-        	Tlog::getInstance()->err("got here");
-            // render the view
-            $cacheContent = $this->renderRaw(
-                "feed-google",
-                array(
-                    "_context_" => $context,
-                    "_lang_"    => $lang,
-                    "_id_"      => $id
-                )
-            );
-            Tlog::getInstance()->err("google ".$cacheContent);
-            // save cache
-            $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);
-        }
-
+       // $cacheContent = null;
         $response = new Response();
-        $response->setContent($cacheContent);
-        $response->headers->set('Content-Type', 'application/rss+xml');
+        
+    //    if (false === $cacheContent){
+            $contentType = "";
+            
+            if ($format == "csv"){
+                $exportDBReference = "thelia.export.".$context.".".$platform;//ex: thelia.export.catalog.idealo
+                
+                //get export Object from DB based on reference
+                $exportDBObject = ExportQuery::create()->findOneByRef($exportDBReference);
+                
+                if($exportDBObject === null)
+                    $this->pageNotFound();
+ 
+                //get the service for the thelia export handler
+                /** @var \Thelia\Handler\ExportHandler $exportHandler */
+                $exportHandler = $this->container->get('thelia.export.handler');
+                $export = $exportHandler->getExport($exportDBObject->getId());//8 = catalog.idealo
+                
+                if ($export === null)
+                    return $this->pageNotFound();
+                
+                /** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
+                $serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
+                /** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
+                $serializer = $serializerManager->get("thelia.csv");//
+                if($platform == "preisroboterde")
+                    $serializer->setDelimiter("|");
+                
+                $lang = (new LangQuery)->findPk($lang);
+                $exportEvent = $exportHandler->export(
+                    $export,$serializer,null, $lang,false,false, null);
+                
+                /** $var \Thelia\Core\Archiver\ArchiverInterface $archiver */
+                $archiver = $exportEvent->getArchiver();
+                if ($archiver !== null) {
+                    $contentType = $exportEvent->getArchiver()->getMimeType();
+                    $fileExt = $exportEvent->getArchiver()->getExtension();
+                }
+                else {
+                    /** @var \Thelia\Core\Serializer\SerializerInterface $serializer */
+                    $serializer = $exportEvent->getSerializer();
+                    $contentType = $serializer->getMimeType();
+                    $fileExt = $serializer->getExtension();
+                }
+                ob_start();
+                $fileSize = readfile($exportEvent->getFilePath());
+                $cacheContent = ob_get_clean();
+                $cacheContent = mb_convert_encoding($cacheContent,'UTF-8', 'auto'); 
+                
+                $contentDisposition = sprintf(
+                    '%s; filename="%s.%s"',
+                    ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                    "export_".$platform,
+                    $format);
+               
+              //  $response->headers->set('Content-Disposition' , $contentDisposition);
+            }
+            else{
+                // render the view
+                $cacheContent = $this->renderRaw(
+                    "feed-google",
+                    array(
+                        "_context_" => $context,
+                        "_lang_"    => $lang,
+                        "_id_"      => $id));
+                
+            }
+            $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);  
+    //    };
+        
+        if($format == "csv"){
+            $contentType = 'application/rss+xml';
         }
+        else{
+            $contentType = 'application/rss+xml';
+        }
+ 
+        $response->setContent($cacheContent);
+        $response->headers->set('Content-Type', $contentType);
+        //return new BinaryFileResponse($cacheContent, 200, $header, false);
         
         ini_set('max_execution_time', $max_time); 
         return $response;

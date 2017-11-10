@@ -6,6 +6,7 @@
 
     <loops>
         <loop name="fulfilment_center" class="MultipleFullfilmentCenters\Loop\FulfilmentCenter" />
+        <loop name="fulfilment.setting.product.quantity" class="MultipleFullfilmentCenters\Loop\SettingProductsQuantityLoop" />
         <loop name="product_stock_fulfilment_center" class="MultipleFullfilmentCenters\Loop\ProductStockFulfilmentCenter" />
         <loop name="fulfilment_center_pick_up_address" class="MultipleFullfilmentCenters\Loop\OrderPlacedPickUpAddress" />
     </loops>
@@ -27,6 +28,9 @@
             <tag name="hook.event_listener" event="product.fulfilment-center" type="front" method="locationStockOrderInvoice" />
             <tag name="hook.event_listener" event="product.fulfilment-center-address" type="front" method="locationStockOrderPlaced" />
         </hook> 
+    	<hook id="setting.product.quantity.hook.back" class="MultipleFullfilmentCenters\Hook\Admin\BackHook">
+			<tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+		</hook>
     </hooks>
     
     <services>

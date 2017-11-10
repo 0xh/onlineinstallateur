@@ -148,6 +148,7 @@ class BilligerProductExport extends AbstractExport
             ->withColumn(ProductPriceTableMap::LISTEN_PRICE)
             ->endUse()
             ->useProductQuery()
+            ->where(ProductTableMap::VISIBLE." = ?","1")
             ->useProductCategoryQuery()
             ->addJoinObject($categoryJoin, 'category_join')
             ->addJoinCondition('category_join', CategoryI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
