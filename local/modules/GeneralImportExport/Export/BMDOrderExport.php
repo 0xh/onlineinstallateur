@@ -26,6 +26,8 @@ use Thelia\Log\Tlog;
 class BMDOrderExport extends AbstractExport
 {
 
+    const USE_RANGE_DATE = true;
+    
     const FILE_NAME = 'order_bmd';
    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol 
     protected $orderAndAliases = [
