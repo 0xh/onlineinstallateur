@@ -10,39 +10,37 @@ Parameters:
 {* Set the default translation domain, that will be used by {intl} when the 'd' parameter is not set *}
 {default_translation_domain domain='bo.default'}
 
-{hook name="tab-image.top" id=$parentId type=$imageType}
+	<div class="image-manager" >
+	    <form action="{url path="/admin/modules/filter-configurator/image/%id/add-image" id=$parentId}" method="post" class="dropzone" id="images-dropzone" enctype="multipart/form-data">
+	        <div class="fallback">
+	            <input name="file" type="file" />
+	            <button type="submit" class="btn btn-info btn-upload"><span class="glyphicon glyphicon-send"></span> {intl l="Send files"}</button>
+	        </div>
+	
+	        <div class="btn-browse hide">
+	            {intl l="Drop files to upload"}
+	            <span>{intl l="Or"}</span>
+	            <button type="button" class="btn btn-info btn-upload"><span class="glyphicon glyphicon-upload"></span> {intl l="Browse files"}</button>
+	        </div>
+	
+	
+	    </form>
+	
+	    <div class="existing-image">
+	        {include file='includes/image-upload-list.html'
+	            imageType=$imageType
+	            parentId=$parentId
+	            resource=$resource
+	        }
+	    </div>
+	
+	</div>
 
-<div class="image-manager" >
-    <form action="{url path="/admin/image/type/%image/%id/save-ajax" image=$imageType id=$parentId}" method="post" class="dropzone" id="images-dropzone" enctype="multipart/form-data">
-        <div class="fallback">
-            <input name="file" type="file" />
-            <button type="submit" class="btn btn-info btn-upload"><span class="glyphicon glyphicon-send"></span> {intl l="Send files"}</button>
-        </div>
 
-        <div class="btn-browse hide">
-            {intl l="Drop files to upload"}
-            <span>{intl l="Or"}</span>
-            <button type="button" class="btn btn-info btn-upload"><span class="glyphicon glyphicon-upload"></span> {intl l="Browse files"}</button>
-        </div>
-
-
-    </form>
-
-    <div class="existing-image">
-        {include file='includes/image-upload-list.html'
-            imageType=$imageType
-            parentId=$parentId
-            resource=$resource
-        }
-    </div>
-
-</div>
-
-{hook name="tab-image.bottom" id=$parentId type=$imageType}
 
 <script>
-    var imageDropZoneUrl = "{url path="/admin/image/type/%image/%id/save-ajax" image=$imageType id=$parentId}";
-    var imageListUrl = "{url path="/admin/image/type/%image/%id/list-ajax" image=$imageType id=$parentId}";
+    var imageDropZoneUrl = "{url path="/admin/modules/filter-configurator/image/%id/add-image" id=$parentId}";
+    var imageListUrl = "{url path="/admin/modules/filter-configurator/image/%id/list-ajax" id=$parentId}";
     var imageReorder = "{url path="/admin/modules/filter-configurator/image/%id/update-position" id=$parentId}";
     var imageListErrorMessage = "{intl l='Can\'t load images, please refresh this page.'}";
     var imageReorderErrorMessage = "{intl l='Can\'t reorder images, please refresh this page.'}";

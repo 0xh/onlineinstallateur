@@ -27,10 +27,14 @@
     </route>
     
     <route id="filter.configurator.update" path="/admin/modules/filter-configurator/update/{id}">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::update</default>
+    </route>
+    
+    <route id="filter.configurator.update.save" path="/admin/modules/filter-configurator/update/{id}/save">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::updateAction</default>
     </route>
     
-    <route id="filter.configurator.delete" path="/admin/module/filter-configurator/delete/{id}">
+    <route id="filter.configurator.delete" path="/admin/modules/filter-configurator/delete/{id}">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::deleteAction</default>
     </route>
     
@@ -65,10 +69,10 @@
         <requirement key="id">\d+</requirement>
     </route>
   
-    <route id="filter.configurator.image.add" path="/admin/modules/filter-configurator/image/{id}/save-ajax">
+ 	<route id="filter.configurator.image.add" path="/admin/modules/filter-configurator/image/{id}/add-image">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveImageAction</default>
         <requirement key="id">\d+</requirement>
-    </route>
+    </route> 
     
      <route id="filter.configurator.image.update-position" path="/admin/modules/filter-configurator/image/{id}/update-position">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::updateImagePosition</default>

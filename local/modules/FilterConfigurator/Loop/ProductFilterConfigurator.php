@@ -9,14 +9,15 @@ use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-
-
+use Thelia\Core\Template\Loop\Argument\Argument;
+use Propel\Runtime\ActiveQuery\Criteria;
 
 class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInterface{
     
     protected function getArgDefinitions()
     {
-        return new ArgumentCollection();
+    	return new ArgumentCollection(	
+    			Argument::createAnyTypeArgument("locale"));
     }
 
     /**
@@ -41,7 +42,8 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
     {
         $search = ConfiguratorQuery::create()
             ->addJoin(ConfiguratorTableMap::ID, ConfiguratorI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-            ->withColumn(ConfiguratorI18nTableMap::TITLE, 'TITLE' );
+            ->withColumn(ConfiguratorI18nTableMap::TITLE, 'TITLE' )
+            ->where('`configurator_i18n`.LOCALE'.Criteria::EQUAL.'"'.$this->getLocale().'"');
             
         return $search;
     }

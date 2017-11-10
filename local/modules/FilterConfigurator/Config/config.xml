@@ -8,6 +8,7 @@
         <loop name="feature_av" class="FilterConfigurator\Loop\FeatureAv" />
         <loop name="image_configurator" class="FilterConfigurator\Loop\Image" />
         <loop name="product_filter_configuration" class="FilterConfigurator\Loop\ProductFilterConfigurator" />
+        <loop name="filter_configurator" class="FilterConfigurator\Loop\FilterConfigurator" />
     </loops>
 
     <forms>
@@ -15,5 +16,12 @@
          <form name="filter.configurator" class="FilterConfigurator\Form\FilterConfiguratorForm"/>
          <form name="filter.configurator.image" class="FilterConfigurator\Form\ImageModificationForm"/>
     </forms>
-
+    
+	<hooks>
+		<hook id="filter.configurator.hook" class="FilterConfigurator\Hook\JsHook" scope="request">
+			<tag name="hook.event_listener" event="filter.configurator" type="back" method="onMainJs" />
+		</hook>
+	</hooks>
+	
+	
 </config>

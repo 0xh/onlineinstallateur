@@ -12,64 +12,74 @@
 {block name="main-content"}
 
 {assign order_tab {$tab|default:$smarty.get.tab|default:"general"}}
-<div class="features">
+{loop type="filter_configurator" name="filter_configurator" id=$parentId locale=$edit_language_locale}
 
-    <div id="wrapper" class="container">
-    	
-	        <ul class="breadcrumb">
-	            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
-	            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
-	            <li><a href="{url path='admin/module/FilterConfigurator'}">{intl l="Filter configurator"}</a></li>
-	            <li>{intl l="New configurator" d=""}</li>
-	        </ul>
-		 <div class="col-md-12 general-block-decorator">
-             <div class="row">
-                 <div class="col-md-7 title">
-                     {intl l='Create new configurator'}
-                 </div>
-             </div>
-			<ul class="nav nav-tabs" id="tabbed-menu">
-			    <li {if $order_tab == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="General description"}</a></li>
-				<li {if $order_tab == 'images'}class="active"{/if}>
-                    <a href="#images"
-                       data-toggle="tab">
-                        {intl l="Images"}
-                    </a>
-                </li>
-			</ul>
-	        <div class="tab-content">
-				<div class="tab-pane fade {if $order_tab == 'general'}active in{/if} form-container" id="general">
+	<div class="features">
+	
+	    <div id="wrapper" class="container">
+	    	
+		        <ul class="breadcrumb">
+		            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+		            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+		            <li><a href="{url path='admin/module/FilterConfigurator'}">{intl l="Filter configurator"}</a></li>
+		            <li>{intl l='Editing configurator "%name"' name={$TITLE}}</li>
+		        </ul>
+			 <div class="col-md-12 general-block-decorator">
+	             <div class="row">
+	                 <div class="col-md-7 title">
+	                     {intl l='Create new configurator'}
+	                 </div>
+	             </div>
+				<ul class="nav nav-tabs" id="tabbed-menu">
+				    <li {if $order_tab == 'general'}class="active"{/if}><a href="#general" data-tab-name="general" data-toggle="tab">{intl l="General description"}</a></li>
+					<li {if $order_tab == 'images'}class="active"{/if}>
+	                    <a href="#images"
+	                       data-toggle="tab"
+	                       data-href="{url path="/admin/modules/filter-configurator/image/configurator/%id/form-ajax" id=$parentId}"
+	                       data-callback="$.imageUploadManager.initImageDropZone">
+	                        {intl l="Images"}
+	                    </a>
+	                </li>
+				</ul>
+		        <div class="tab-content">
+					<div class="tab-pane fade {if $order_tab == 'general'}active in{/if} form-container" id="general">  	
+						{form name="filter.configurator"}
+						<form method="POST" action="{url path='/admin/modules/filter-configurator/update/%id/save' id=$parentId}" {form_enctype} class="clearfix">
+						
+							{include file="includes/inner-form-toolbar.html" close_url="{url path='admin/module/FilterConfigurator'}"}
+					        {form_hidden_fields}
 					
-					{form name="filter.configurator"}
-					<form method="POST" action="{url path='/admin/modules/filter-configurator/save'}" {form_enctype} class="clearfix">
+					        {form_field field='success_url'}
+					              {* on success, redirect *}
+					              <input type="hidden" name="{$name}" value="{url path='/admin/modules/filter-configurator/update/%id' id=$parentId}" />
+					        {/form_field}
 					
-						{include file="includes/inner-form-toolbar.html" close_url="{url path='admin/module/FilterConfigurator'}"}
-				        {form_hidden_fields}
-				
-				        {form_field field='success_url'}
-				              {* on success, redirect *}
-				              <input type="hidden" name="{$name}" value="{url path='/admin/module/FilterConfigurator'}" />
-				        {/form_field}
-				
-				        
-				       	{if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
-                             
-                        {form_field field='locale'}
-                       		<input type="hidden" name="{$name}" value="{$edit_language_locale}" />
-                        {/form_field}           
-				        {render_form_field field="title"}
-						{render_form_field field="chapo"}
-						{render_form_field field="description" extra_class="wysiwyg"}
-					</form>										
-					{/form}
+					        
+					       	{if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+					
+							   {form_field field='id'}
+	                                            <input type="hidden" name="{$name}" value="{$ID}" />
+	                                        {/form_field}
+	                             
+	                        {form_field field='locale'}
+	                       		<input type="hidden" name="{$name}" value="{$edit_language_locale}" />
+	                        {/form_field}           
+					        {render_form_field field="title" value="{$TITLE}"}
+							{render_form_field field="chapo" value="{$CHAPO}"}
+							{render_form_field field="description" extra_class="wysiwyg"  value="{$DESCRIPTION}"}
+						</form>										
+						{/form}
+							
+					</div>
+					<div class="tab-pane fade" id="images">
+		                <div class="text-center"><span class="loading">{intl l="Please wait, loading"}</span></div>
+		            </div>
 				</div>
-				<div class="tab-pane fade" id="images">
-	                <div class="text-center">{intl l='Please save the new configurator and then add images'}</div>
-	            </div>
 			</div>
 		</div>
 	</div>
-</div>
+{/loop}
+						
 {/block}
 <!-- {block name="javascript-last-call"}
     {hook name="wysiwyg.js" location="wysiwyg-feature-edit-js" }
