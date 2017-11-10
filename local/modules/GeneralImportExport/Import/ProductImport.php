@@ -139,9 +139,21 @@ class ProductImport extends AbstractImport{
 							// insert in feature av i18n
 							// insert in feature product FTV 1
 							
-							$this->insertFeatureValue($product_id, $feature_id,$value,true);
-							Tlog::getInstance()->info("importFreeTextColumn - free text value -  K:".$key." V:".$value);
+							$feature_product =  FeatureProductQuery::create()
+								->filterByProductId($product_id)
+								->filterByFeatureId($feature_id)
+								->filterByFreeTextValue(1)
+								->findOne();
 							
+							// feature exist, update the value
+							if($feature_product) {
+								$this->updateFeatureValue($feature_product->getFeatureAvId(), $value);
+								Tlog::getInstance()->info("importFreeTextColumn - update free text value -  K:".$key." V:".$value);
+							}
+							else {
+								$this->insertFeatureValue($product_id, $feature_id,$value,true);
+							    Tlog::getInstance()->info("importFreeTextColumn - insert free text value -  K:".$key." V:".$value);
+							}
 						}
 						// selectable value
 						else {
@@ -161,7 +173,15 @@ class ProductImport extends AbstractImport{
 							if($feature_av_i18n) {
 								
 								Tlog::getInstance()->info("importFreeTextColumn -  feature and value relation exist -  K:".$key." V:".$value);
-								$this->insertFeatureProduct($product_id, $feature_id,$feature_av_i18n->getId(),false);
+								
+								$feature_product =  FeatureProductQuery::create()
+									->filterByProductId($product_id)
+									->filterByFeatureId($feature_id)
+									->filterByFeatureAvId($feature_av_i18n->getId())
+									->findOne();
+								
+								if(!$feature_product)
+									$this->insertFeatureProduct($product_id, $feature_id,$feature_av_i18n->getId(),false);
 							}
 							else {
 								// insert in feature av
@@ -176,6 +196,15 @@ class ProductImport extends AbstractImport{
 				}
 			}
 		}
+	}
+	public function updateFeatureValue($featureAvId, $value)
+	{
+		$feature_av_i18n = FeatureAvI18nQuery::create()
+			->filterById($featureAvId)
+			->filterByLocale('de_DE')
+			->findOne();
+		
+		$feature_av_i18n->setTitle($value)->save();
 	}
 	
 	public function insertFeatureValue($product_id, $feature_id,$value,$freeText)

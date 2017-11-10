@@ -259,7 +259,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                                	if($updateOrderStatus)
                                		$updateOrderStatus->setStatusId($statusId)->save($con);
                         }
-                    } else { 
+                    } elseif($statusId != '5'){ 
                     	// Insert delivery address in order_address table
                     	$orderAddressId = $this->createOrderAddress($order, $con, $countryId);
                     	
