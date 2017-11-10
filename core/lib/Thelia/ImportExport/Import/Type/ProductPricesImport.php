@@ -65,7 +65,10 @@ class ProductPricesImport extends AbstractImport
             }
 
             $price->setPrice($data['price']);
-            $price->setListenPrice($data['price']);
+            
+            if (isset($data['listen_price'])) {
+            	$price->setListenPrice($data['listen_price']);
+            }
             
             if (isset($data['promo_price'])) {
                 $price->setPromoPrice($data['promo_price']);
