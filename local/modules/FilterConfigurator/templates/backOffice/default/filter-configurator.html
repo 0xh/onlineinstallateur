@@ -1,5 +1,7 @@
 {extends file="admin-layout.tpl"}
 
+
+
 {block name="no-return-functions"}
     {$admin_current_location = 'modules'}
 {/block}
@@ -11,10 +13,20 @@
 
 {block name="main-content"}
 {assign order_tab {$tab|default:$smarty.get.tab|default:"general"}}
+{hook name="filter.configurator.hook"}
 <div class="configurator">
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> -->
+
+<!-- <script src="../../../../../templates/backOffice/default/assets/js/jquery-ui-1.10.3.custom.min.js"></script> -->
+
+
+<!-- <script src="https://dbrekalo.github.io/fastselect/dist/fastselect.standalone.js"></script>
+<link rel="stylesheet" href="https://dbrekalo.github.io/fastselect/dist/fastselect.min.css"> -->
 
     <div id="wrapper" class="container">
-
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://dbrekalo.github.io/fastselect/dist/fastselect.standalone.js"></script>
+		<link rel="stylesheet" href="https://dbrekalo.github.io/fastselect/dist/fastselect.min.css">
         <ul class="breadcrumb">
             <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
             <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
@@ -71,12 +83,12 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
-                                	{loop type="product_filter_configuration" name="product_filter_configuration"}
+                                <tbody> 
+                                	{loop type="product_filter_configuration" name="product_filter_configuration" locale="$locale"}
 	                                	<tr>  
 	                                		<div class="row">                          				
 	                                			<td class="text-left col-md-1">{$ID}</td>
-												<td class="text-left col-md-9"><a href="#">{$TITLE}</a></td>
+												<td class="text-left col-md-9"><a href="{url path='/admin/modules/filter-configurator/update/%id' id=$ID}">{$TITLE}</a></td>
 												<td class="text-center col-md-1">{$POSITION}</td>
 												<td class="text-right col-md-1 actions">
 													<div class="btn-toolbar btn toolbar-primary">
@@ -84,19 +96,39 @@
 		                                            </div>
 		                                            <div class="toolbar-options hidden">
 		    	                                        {loop type="auth" name="can_change" role="ADMIN" resource="admin.configuration.feature" access="UPDATE"}
-		    	                                            <a class="feature-change" title="{intl l='Change this product feature'}" href="{url path='/admin/modules/filter-configurator/update' config_id=$ID}"><span class="glyphicon glyphicon-edit"></span></a>
+		    	                                            <a class="feature-change" title="{intl l='Change this product feature'}" href="{url path='/admin/modules/filter-configurator/update/%id' id=$ID}"><span class="glyphicon glyphicon-edit"></span></a>
 		    	                                        {/loop}
 		
 		    	                                        {loop type="auth" name="can_change" role="ADMIN" resource="admin.configuration.feature" access="DELETE"}
-		    	                                            <a class="feature-delete" title="{intl l='Delete this filter configurator'}" href="{url path='/admin/module/filter-configurator/delete/%id' id=$ID}"><span class="glyphicon glyphicon-trash"></span></a>
+		    	                                            <a class="feature-delete" title="{intl l='Delete this filter configurator'}" href="{url path='/admin/modules/filter-configurator/delete/%id' id=$ID}"><span class="glyphicon glyphicon-trash"></span></a>
 		    	                                        {/loop}
 		                                            </div>
 												</td>
 											</div>
 	                                	</tr>
+	                                	
                                 	{/loop}
                                 </tbody>
-                                
+                                <tr>
+           <!--  {literal} 
+            	<input type="text" multiple class="demo" value="" name="language">
+            {/literal} -->
+            
+            <select class="multipleSelect" multiple="" name="language">
+	                <option value="Afghanistan">Afghanistan</option>
+	                <option value="Albania">Albania</option>
+	                <option value="Algeria">Algeria</option>
+	    			<option value="Andorra">Andorra</option>
+	                <option value="Zimbabwe">Zimbabwe</option>
+	        </select>
+            <!-- <button class="submitBtn" type="submit">Submit</button> -->
+            
+        <script>
+            (function($){
+            	$('.multipleSelect').fastselect();
+            	 })(jQuery); 
+     	</script>
+	                                	</tr>
                                 </table>
                         </div>
 	                </div>
@@ -107,3 +139,17 @@
     </div>
 </div>
 {/block}
+
+
+
+<!-- {block name="javascript-initialization"}
+
+<script>
+
+
+jQuery('.multipleSelect').Fastselect();
+	
+</script>
+
+{/block} -->
+

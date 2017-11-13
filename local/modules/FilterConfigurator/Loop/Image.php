@@ -336,7 +336,7 @@ class Image extends BaseI18nLoop implements PropelSearchLoopInterface
 			$event->setCacheSubdirectory($this->objectType);
 			
 			$loopResultRow = new LoopResultRow($result);
-			
+		
 			$loopResultRow
 			->set("ID", $result->getId())
 			->set("LOCALE", $this->locale)
@@ -347,8 +347,7 @@ class Image extends BaseI18nLoop implements PropelSearchLoopInterface
 			->set("POSTSCRIPTUM", $result->getVirtualColumn('i18n_POSTSCRIPTUM'))
 			->set("VISIBLE", $result->getVisible())
 			->set("POSITION", $result->getPosition())
-			->set("OBJECT_TYPE", $this->objectType)
-			->set("OBJECT_ID", $this->objectId)
+			->set("CONFIGURATOR_ID", $result->getConfiguratorId())
 			;
 			
 			$addRow = true;
