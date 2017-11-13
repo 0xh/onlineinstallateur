@@ -2,7 +2,7 @@
 action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::blockJs'}
 {assign page {$smarty.get.page|default:1}}
  
-<div class="general-block-decorator dashboard" style="width: 70%; margin: auto;">
+<div class="general-block-decorator dashboard">
 	<div class="title title-without-tabs clearfix">{intl l='Dashboard:
 		Setting the product quantity' d='amazonintegration.bo.default'}</div>
 
@@ -54,16 +54,16 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 		</div>
 		<div class="col-sm-2">
 			<h5  id="search-label">{intl l="Select fulfilment center:" d="criteriasearch.fo.default"}</h5>
-			<select class='form-control col-sm-1' name="fulfilment_center" id="change_fulfilment_center" style="width: 300px;">
+			<select class='form-control col-sm-1' name="fulfilment_center" id="change_fulfilment_center" >
 					<option value="-1">Select fulfilment center</option>
 		      		{loop type="fulfilment_center" name="fulfilment_center"}
 		           	<option value="{$ID}" {if $smarty.get.change_fulfilment_center|strstr:"{$ID}"}selected{/if}>{$NAME}</option>
 		            {/loop}
 			</select>
 		</div>
-		<div class="col-sm-2" style="margin-left: 155px;">
+		<div class="col-sm-2">
 			<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
-			<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity" style="width: 200px;">
+			<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity">
 					<option value="-1">All</option>
 					<option value="0" {if $smarty.get.change_fulfilment_center_qunatity == 0}selected{/if}>Empty </option>
 					<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
