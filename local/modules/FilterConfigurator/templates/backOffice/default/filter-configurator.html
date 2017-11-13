@@ -1,15 +1,6 @@
 {extends file="admin-layout.tpl"}
 
-{block name="javascript-initialization"}
-<!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->
 
- {javascripts file='assets/js/jquery-ui-1.10.3.custom.min.js'}
-    <script src="{$asset_url}"></script>
-{/javascripts} 
-
-{hook name="filter.configurator.hook"}
-
-{/block}
 
 {block name="no-return-functions"}
     {$admin_current_location = 'modules'}
@@ -22,10 +13,20 @@
 
 {block name="main-content"}
 {assign order_tab {$tab|default:$smarty.get.tab|default:"general"}}
+{hook name="filter.configurator.hook"}
 <div class="configurator">
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script> -->
+
+<!-- <script src="../../../../../templates/backOffice/default/assets/js/jquery-ui-1.10.3.custom.min.js"></script> -->
+
+
+<!-- <script src="https://dbrekalo.github.io/fastselect/dist/fastselect.standalone.js"></script>
+<link rel="stylesheet" href="https://dbrekalo.github.io/fastselect/dist/fastselect.min.css"> -->
 
     <div id="wrapper" class="container">
-
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="https://dbrekalo.github.io/fastselect/dist/fastselect.standalone.js"></script>
+		<link rel="stylesheet" href="https://dbrekalo.github.io/fastselect/dist/fastselect.min.css">
         <ul class="breadcrumb">
             <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
             <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
@@ -109,36 +110,24 @@
                                 	{/loop}
                                 </tbody>
                                 <tr>
-	                                  <!--  		<div class="fstElement fstMultipleMode fstActive fstResultsOpened"><div class="fstControls">
-	                                	
-	                                		<input class="fstQueryInput" style="width: 20px;"></div>
-	                                		<select class="multipleSelect" multiple="" name="language">
-                <option value="Afghanistan">Afghanistan</option>
-                <option value="Albania">Albania</option>
-                <option value="Algeria">Algeria</option>
+           <!--  {literal} 
+            	<input type="text" multiple class="demo" value="" name="language">
+            {/literal} -->
             
-           
-            </select><div class="fstResults">
-            <span class="fstResultItem">Afghanistan</span>
-            <span class="fstResultItem">Albania</span>
-            <span class="fstResultItem">Algeria</span></div></div>
- -->
- 
- 		
- 				
-		        <select class="multipleSelect" multiple="" name="language">
+            <select class="multipleSelect" multiple="" name="language">
 	                <option value="Afghanistan">Afghanistan</option>
 	                <option value="Albania">Albania</option>
 	                <option value="Algeria">Algeria</option>
-	                 <option value="Afghanistan">Afghanistan</option>
-	                <option value="Albania">Albania</option>
-	                <option value="Algeria">Algeria</option>
-	                 <option value="Afghanistan">Afghanistan</option>
-	                <option value="Albania">Albania</option>
-	                <option value="Algeria">Algeria</option>
-	            </select>
-	           
+	    			<option value="Andorra">Andorra</option>
+	                <option value="Zimbabwe">Zimbabwe</option>
+	        </select>
+            <!-- <button class="submitBtn" type="submit">Submit</button> -->
             
+        <script>
+            (function($){
+            	$('.multipleSelect').fastselect();
+            	 })(jQuery); 
+     	</script>
 	                                	</tr>
                                 </table>
                         </div>
@@ -153,13 +142,14 @@
 
 
 
-{block name="javascript-initialization"}
+<!-- {block name="javascript-initialization"}
 
 <script>
 
 
-$('.multipleSelect').Fastselect();
+jQuery('.multipleSelect').Fastselect();
 	
 </script>
 
-{/block}
+{/block} -->
+
