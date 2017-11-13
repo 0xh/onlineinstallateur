@@ -29,13 +29,18 @@ class SendProductToAmazonContoller extends BaseAdminController
                         'price' => $_GET['price_'.$rd],
             );
         }
-        
-        $this->addProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
-        $this->updateQuantityProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
-        $this->updatePriceProductAmazon($prodToSend, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale);
-        $this->addProdToHfTable($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale, $amazonCurrency);
 
-       return $this->generateRedirect("/admin/module/amazonintegration", 303);
+        if (!empty($radioChecked))
+        {
+            $this->addProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
+            $this->updateQuantityProductAmazon($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale);
+            $this->updatePriceProductAmazon($prodToSend, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale);
+            $this->addProdToHfTable($prodToSend, $amazonMarketplaceId, $amazonMarketplaceLocale, $amazonCurrency);
+        }
+
+        $redirectLink = isset($_GET['redirect_link']) ? $_GET['redirect_link'] : "";
+        
+        return $this->generateRedirect("/admin/module/amazonintegration?" . $redirectLink, 303);
     }
     
     protected function addProdToHfTable($prods, $marketPlaceId, $marketPlaceLocale, $amazonCurrency)
