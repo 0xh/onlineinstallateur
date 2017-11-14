@@ -24,6 +24,7 @@
 				<h5  id="search-label">{intl l="Search by AmazonOrderId" d="criteriasearch.fo.default"}</h5>
 		        <form action="{url path='/admin/module/amazonintegration'}">                                        
 		            <div class="input-group">
+		                <input type="hidden"name="tab" value="amazon-orders">
 		                <input type="text" class="form-control" id="search_term" name="search_term" placeholder="{intl l='Search'}" value="{trim($smarty.get.search_term)}">
 		                <span class="input-group-btn">
 		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
@@ -78,7 +79,7 @@
                      file = "includes/pagination.html"
                      loop_ref       = "amazon_orders_listing"
                      max_page_count = 20
-                     page_url       = {url path="/admin/module/amazonintegration" }
+                     page_url       = {url path="/admin/module/amazonintegration?tab={$smarty.get.tab}" }
                      }
                  </td>
              </tr>

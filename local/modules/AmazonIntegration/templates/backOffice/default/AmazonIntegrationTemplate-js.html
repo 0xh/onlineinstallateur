@@ -68,7 +68,6 @@ function checkRadio(id, nr)
       	if (index > -1) {
       		productsId.splice(index, 1);
 		}
-      	console.log(productsId);
       	$('#radioChecked').val(productsId);
       	$('#price_' + id + nr).attr('name', '');
       	$('#quantity_' + id + nr).attr('name', '');
@@ -83,7 +82,6 @@ function checkRadio(id, nr)
       	$('#radio_' + id + nr).attr('storedValue', 'true');
       	$('#radioChecked').val(productsId);
       	
-      	console.log(productsId);
    	}
 }
 
@@ -95,7 +93,11 @@ function changePriceOrQuantity(id, nr)
 	{
  		$('#radio_' + id + nr).attr("disabled", true);
       	$('#radio_' + id + nr).prop('checked', false);
-      	checkRadio(id);
+      	var index = productsId.indexOf(id);
+      	if (index > -1) {
+      		productsId.splice(index, 1);
+      		$('#radioChecked').val(productsId);
+		}
 	}
  	
 }
