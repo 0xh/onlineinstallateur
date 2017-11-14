@@ -51,6 +51,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildConfiguratorQuery rightJoinConfiguratorImage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ConfiguratorImage relation
  * @method     ChildConfiguratorQuery innerJoinConfiguratorImage($relationAlias = null) Adds a INNER JOIN clause to the query using the ConfiguratorImage relation
  *
+ * @method     ChildConfiguratorQuery leftJoinConfiguratorFeatures($relationAlias = null) Adds a LEFT JOIN clause to the query using the ConfiguratorFeatures relation
+ * @method     ChildConfiguratorQuery rightJoinConfiguratorFeatures($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ConfiguratorFeatures relation
+ * @method     ChildConfiguratorQuery innerJoinConfiguratorFeatures($relationAlias = null) Adds a INNER JOIN clause to the query using the ConfiguratorFeatures relation
+ *
  * @method     ChildConfiguratorQuery leftJoinConfiguratorVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the ConfiguratorVersion relation
  * @method     ChildConfiguratorQuery rightJoinConfiguratorVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ConfiguratorVersion relation
  * @method     ChildConfiguratorQuery innerJoinConfiguratorVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the ConfiguratorVersion relation
@@ -725,6 +729,79 @@ abstract class ConfiguratorQuery extends ModelCriteria
         return $this
             ->joinConfiguratorImage($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'ConfiguratorImage', '\FilterConfigurator\Model\ConfiguratorImageQuery');
+    }
+
+    /**
+     * Filter the query by a related \FilterConfigurator\Model\ConfiguratorFeatures object
+     *
+     * @param \FilterConfigurator\Model\ConfiguratorFeatures|ObjectCollection $configuratorFeatures  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildConfiguratorQuery The current query, for fluid interface
+     */
+    public function filterByConfiguratorFeatures($configuratorFeatures, $comparison = null)
+    {
+        if ($configuratorFeatures instanceof \FilterConfigurator\Model\ConfiguratorFeatures) {
+            return $this
+                ->addUsingAlias(ConfiguratorTableMap::ID, $configuratorFeatures->getConfiguratorId(), $comparison);
+        } elseif ($configuratorFeatures instanceof ObjectCollection) {
+            return $this
+                ->useConfiguratorFeaturesQuery()
+                ->filterByPrimaryKeys($configuratorFeatures->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByConfiguratorFeatures() only accepts arguments of type \FilterConfigurator\Model\ConfiguratorFeatures or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the ConfiguratorFeatures relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildConfiguratorQuery The current query, for fluid interface
+     */
+    public function joinConfiguratorFeatures($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('ConfiguratorFeatures');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'ConfiguratorFeatures');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the ConfiguratorFeatures relation ConfiguratorFeatures object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \FilterConfigurator\Model\ConfiguratorFeaturesQuery A secondary query class using the current class as primary query
+     */
+    public function useConfiguratorFeaturesQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinConfiguratorFeatures($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ConfiguratorFeatures', '\FilterConfigurator\Model\ConfiguratorFeaturesQuery');
     }
 
     /**

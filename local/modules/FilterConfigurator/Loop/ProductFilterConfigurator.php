@@ -28,7 +28,7 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
     {
         foreach ($loopResult->getResultDataCollection() as $listing) {
              $loopResultRow = new LoopResultRow($listing);
-             $loopResultRow->set("ID", $listing->getId())
+             $loopResultRow->set("CONFIGURATOR_ID", $listing->getId())
                            ->set("TITLE", $listing->getVirtualColumn('TITLE'))
                            ->set("POSITION",$listing->getPosition()); 
              

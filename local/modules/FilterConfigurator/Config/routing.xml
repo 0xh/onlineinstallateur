@@ -38,6 +38,10 @@
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::deleteAction</default>
     </route>
     
+    <route id="filter.configurator.features.save" path=" /admin/modules/filter-configurator-features/save">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveFiltersAction</default>
+    </route>
+   
     <route id="filter.configurator.image.form-ajax" path="/admin/modules/filter-configurator/image/{parentType}/{parentId}/form-ajax">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::getImageFormAjaxAction</default>
         <requirement key="parentType">.*</requirement>

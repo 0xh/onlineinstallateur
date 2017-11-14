@@ -2,8 +2,8 @@
 
 namespace FilterConfigurator\Model\Map;
 
-use FilterConfigurator\Model\Configurator;
-use FilterConfigurator\Model\ConfiguratorQuery;
+use FilterConfigurator\Model\ConfiguratorFeatures;
+use FilterConfigurator\Model\ConfiguratorFeaturesQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'configurator' table.
+ * This class defines the structure of the 'configurator_features' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class ConfiguratorTableMap extends TableMap
+class ConfiguratorFeaturesTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'FilterConfigurator.Model.Map.ConfiguratorTableMap';
+    const CLASS_NAME = 'FilterConfigurator.Model.Map.ConfiguratorFeaturesTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class ConfiguratorTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'configurator';
+    const TABLE_NAME = 'configurator_features';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\FilterConfigurator\\Model\\Configurator';
+    const OM_CLASS = '\\FilterConfigurator\\Model\\ConfiguratorFeatures';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'FilterConfigurator.Model.Configurator';
+    const CLASS_DEFAULT = 'FilterConfigurator.Model.ConfiguratorFeatures';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,47 +68,22 @@ class ConfiguratorTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'configurator.ID';
+    const ID = 'configurator_features.ID';
 
     /**
-     * the column name for the VISIBLE field
+     * the column name for the CONFIGURATOR_ID field
      */
-    const VISIBLE = 'configurator.VISIBLE';
+    const CONFIGURATOR_ID = 'configurator_features.CONFIGURATOR_ID';
 
     /**
-     * the column name for the POSITION field
+     * the column name for the FEATURE_ID field
      */
-    const POSITION = 'configurator.POSITION';
-
-    /**
-     * the column name for the CREATED_AT field
-     */
-    const CREATED_AT = 'configurator.CREATED_AT';
-
-    /**
-     * the column name for the UPDATED_AT field
-     */
-    const UPDATED_AT = 'configurator.UPDATED_AT';
-
-    /**
-     * the column name for the VERSION field
-     */
-    const VERSION = 'configurator.VERSION';
-
-    /**
-     * the column name for the VERSION_CREATED_AT field
-     */
-    const VERSION_CREATED_AT = 'configurator.VERSION_CREATED_AT';
-
-    /**
-     * the column name for the VERSION_CREATED_BY field
-     */
-    const VERSION_CREATED_BY = 'configurator.VERSION_CREATED_BY';
+    const FEATURE_ID = 'configurator_features.FEATURE_ID';
 
     /**
      * The default string format for model objects of the related table
@@ -122,12 +97,12 @@ class ConfiguratorTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'position', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
-        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID, ConfiguratorTableMap::VISIBLE, ConfiguratorTableMap::POSITION, ConfiguratorTableMap::CREATED_AT, ConfiguratorTableMap::UPDATED_AT, ConfiguratorTableMap::VERSION, ConfiguratorTableMap::VERSION_CREATED_AT, ConfiguratorTableMap::VERSION_CREATED_BY, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
-        self::TYPE_FIELDNAME     => array('id', 'visible', 'position', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id', 'ConfiguratorId', 'FeatureId', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'configuratorId', 'featureId', ),
+        self::TYPE_COLNAME       => array(ConfiguratorFeaturesTableMap::ID, ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, ConfiguratorFeaturesTableMap::FEATURE_ID, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CONFIGURATOR_ID', 'FEATURE_ID', ),
+        self::TYPE_FIELDNAME     => array('id', 'configurator_id', 'feature_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -137,12 +112,12 @@ class ConfiguratorTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Position' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'Version' => 5, 'VersionCreatedAt' => 6, 'VersionCreatedBy' => 7, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'position' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'version' => 5, 'versionCreatedAt' => 6, 'versionCreatedBy' => 7, ),
-        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID => 0, ConfiguratorTableMap::VISIBLE => 1, ConfiguratorTableMap::POSITION => 2, ConfiguratorTableMap::CREATED_AT => 3, ConfiguratorTableMap::UPDATED_AT => 4, ConfiguratorTableMap::VERSION => 5, ConfiguratorTableMap::VERSION_CREATED_AT => 6, ConfiguratorTableMap::VERSION_CREATED_BY => 7, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'POSITION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'VERSION' => 5, 'VERSION_CREATED_AT' => 6, 'VERSION_CREATED_BY' => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'position' => 2, 'created_at' => 3, 'updated_at' => 4, 'version' => 5, 'version_created_at' => 6, 'version_created_by' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'ConfiguratorId' => 1, 'FeatureId' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'configuratorId' => 1, 'featureId' => 2, ),
+        self::TYPE_COLNAME       => array(ConfiguratorFeaturesTableMap::ID => 0, ConfiguratorFeaturesTableMap::CONFIGURATOR_ID => 1, ConfiguratorFeaturesTableMap::FEATURE_ID => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CONFIGURATOR_ID' => 1, 'FEATURE_ID' => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'configurator_id' => 1, 'feature_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -155,20 +130,15 @@ class ConfiguratorTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configurator');
-        $this->setPhpName('Configurator');
-        $this->setClassName('\\FilterConfigurator\\Model\\Configurator');
+        $this->setName('configurator_features');
+        $this->setPhpName('ConfiguratorFeatures');
+        $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorFeatures');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 0);
-        $this->addColumn('POSITION', 'Position', 'INTEGER', true, null, 0);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
-        $this->addColumn('VERSION_CREATED_AT', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VERSION_CREATED_BY', 'VersionCreatedBy', 'VARCHAR', false, 100, null);
+        $this->addForeignKey('CONFIGURATOR_ID', 'ConfiguratorId', 'INTEGER', 'configurator', 'ID', false, null, null);
+        $this->addForeignKey('FEATURE_ID', 'FeatureId', 'INTEGER', 'feature', 'ID', false, null, null);
     } // initialize()
 
     /**
@@ -176,37 +146,9 @@ class ConfiguratorTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('ConfiguratorI18n', '\\FilterConfigurator\\Model\\ConfiguratorI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorI18ns');
-        $this->addRelation('ConfiguratorImage', '\\FilterConfigurator\\Model\\ConfiguratorImage', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorImages');
-        $this->addRelation('ConfiguratorFeatures', '\\FilterConfigurator\\Model\\ConfiguratorFeatures', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorFeaturess');
-        $this->addRelation('ConfiguratorVersion', '\\FilterConfigurator\\Model\\ConfiguratorVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorVersions');
+        $this->addRelation('Configurator', '\\FilterConfigurator\\Model\\Configurator', RelationMap::MANY_TO_ONE, array('configurator_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Feature', '\\Thelia\\Model\\Feature', RelationMap::MANY_TO_ONE, array('feature_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
-
-    /**
-     *
-     * Gets the list of behaviors registered for this table
-     *
-     * @return array Associative array (name => parameters) of behaviors
-     */
-    public function getBehaviors()
-    {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'versionable' => array('version_column' => 'version', 'version_table' => '', 'log_created_at' => 'true', 'log_created_by' => 'true', 'log_comment' => 'false', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', ),
-        );
-    } // getBehaviors()
-    /**
-     * Method to invalidate the instance pool of all tables related to configurator     * by a foreign key with ON DELETE CASCADE
-     */
-    public static function clearRelatedInstancePool()
-    {
-        // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                ConfiguratorI18nTableMap::clearInstancePool();
-                ConfiguratorImageTableMap::clearInstancePool();
-                ConfiguratorFeaturesTableMap::clearInstancePool();
-                ConfiguratorVersionTableMap::clearInstancePool();
-            }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -264,7 +206,7 @@ class ConfiguratorTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? ConfiguratorTableMap::CLASS_DEFAULT : ConfiguratorTableMap::OM_CLASS;
+        return $withPrefix ? ConfiguratorFeaturesTableMap::CLASS_DEFAULT : ConfiguratorFeaturesTableMap::OM_CLASS;
     }
 
     /**
@@ -278,21 +220,21 @@ class ConfiguratorTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (Configurator object, last column rank)
+     * @return array (ConfiguratorFeatures object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = ConfiguratorTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = ConfiguratorTableMap::getInstanceFromPool($key))) {
+        $key = ConfiguratorFeaturesTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = ConfiguratorFeaturesTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + ConfiguratorTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + ConfiguratorFeaturesTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ConfiguratorTableMap::OM_CLASS;
+            $cls = ConfiguratorFeaturesTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            ConfiguratorTableMap::addInstanceToPool($obj, $key);
+            ConfiguratorFeaturesTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -315,8 +257,8 @@ class ConfiguratorTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = ConfiguratorTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = ConfiguratorTableMap::getInstanceFromPool($key))) {
+            $key = ConfiguratorFeaturesTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = ConfiguratorFeaturesTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -325,7 +267,7 @@ class ConfiguratorTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ConfiguratorTableMap::addInstanceToPool($obj, $key);
+                ConfiguratorFeaturesTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -346,23 +288,13 @@ class ConfiguratorTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ConfiguratorTableMap::ID);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VISIBLE);
-            $criteria->addSelectColumn(ConfiguratorTableMap::POSITION);
-            $criteria->addSelectColumn(ConfiguratorTableMap::CREATED_AT);
-            $criteria->addSelectColumn(ConfiguratorTableMap::UPDATED_AT);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION_CREATED_AT);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION_CREATED_BY);
+            $criteria->addSelectColumn(ConfiguratorFeaturesTableMap::ID);
+            $criteria->addSelectColumn(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID);
+            $criteria->addSelectColumn(ConfiguratorFeaturesTableMap::FEATURE_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
-            $criteria->addSelectColumn($alias . '.POSITION');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
-            $criteria->addSelectColumn($alias . '.VERSION');
-            $criteria->addSelectColumn($alias . '.VERSION_CREATED_AT');
-            $criteria->addSelectColumn($alias . '.VERSION_CREATED_BY');
+            $criteria->addSelectColumn($alias . '.CONFIGURATOR_ID');
+            $criteria->addSelectColumn($alias . '.FEATURE_ID');
         }
     }
 
@@ -375,7 +307,7 @@ class ConfiguratorTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(ConfiguratorTableMap::DATABASE_NAME)->getTable(ConfiguratorTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(ConfiguratorFeaturesTableMap::DATABASE_NAME)->getTable(ConfiguratorFeaturesTableMap::TABLE_NAME);
     }
 
     /**
@@ -383,16 +315,16 @@ class ConfiguratorTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(ConfiguratorTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(ConfiguratorTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new ConfiguratorTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(ConfiguratorFeaturesTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new ConfiguratorFeaturesTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a Configurator or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ConfiguratorFeatures or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Configurator object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ConfiguratorFeatures object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -403,25 +335,25 @@ class ConfiguratorTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \FilterConfigurator\Model\Configurator) { // it's a model object
+        } elseif ($values instanceof \FilterConfigurator\Model\ConfiguratorFeatures) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ConfiguratorTableMap::DATABASE_NAME);
-            $criteria->add(ConfiguratorTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $criteria->add(ConfiguratorFeaturesTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = ConfiguratorQuery::create()->mergeWith($criteria);
+        $query = ConfiguratorFeaturesQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { ConfiguratorTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { ConfiguratorFeaturesTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { ConfiguratorTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { ConfiguratorFeaturesTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -429,20 +361,20 @@ class ConfiguratorTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the configurator table.
+     * Deletes all rows from the configurator_features table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return ConfiguratorQuery::create()->doDeleteAll($con);
+        return ConfiguratorFeaturesQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Configurator or Criteria object.
+     * Performs an INSERT on the database, given a ConfiguratorFeatures or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Configurator object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or ConfiguratorFeatures object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -451,22 +383,22 @@ class ConfiguratorTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Configurator object
+            $criteria = $criteria->buildCriteria(); // build Criteria from ConfiguratorFeatures object
         }
 
-        if ($criteria->containsKey(ConfiguratorTableMap::ID) && $criteria->keyContainsValue(ConfiguratorTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ConfiguratorTableMap::ID.')');
+        if ($criteria->containsKey(ConfiguratorFeaturesTableMap::ID) && $criteria->keyContainsValue(ConfiguratorFeaturesTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ConfiguratorFeaturesTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = ConfiguratorQuery::create()->mergeWith($criteria);
+        $query = ConfiguratorFeaturesQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -482,7 +414,7 @@ class ConfiguratorTableMap extends TableMap
         return $pk;
     }
 
-} // ConfiguratorTableMap
+} // ConfiguratorFeaturesTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-ConfiguratorTableMap::buildTableMap();
+ConfiguratorFeaturesTableMap::buildTableMap();

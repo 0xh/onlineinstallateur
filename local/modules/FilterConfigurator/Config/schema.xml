@@ -61,6 +61,21 @@
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
 	</table>
+	
+	<table name="configurator_features" idMethod="native" phpName="ConfiguratorFeatures" namespace="FilterConfigurator\Model">
+	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true"/>
+	    <column name="configurator_id" phpName="ConfiguratorId" type="INTEGER" />
+	    <column name="feature_id" phpName="FeatureId" type="INTEGER" />
+	    <foreign-key foreignTable="configurator" name="fk_conf_configurator_id" onDelete="CASCADE">
+	      <reference local="configurator_id" foreign="id"/>
+	    </foreign-key>
+	    <foreign-key foreignTable="feature" name="fk_conf_feature_id" onDelete="CASCADE">
+	      <reference local="feature_id" foreign="id"/>
+	    </foreign-key>
+	    <vendor type="mysql">
+	      <parameter name="Engine" value="InnoDB"/>
+	    </vendor>
+	</table>
   
 	
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
