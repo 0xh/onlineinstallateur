@@ -197,8 +197,8 @@ class FilterConfiguratorController extends BaseAdminController
 	public function toggleVisibilityImageAction($id)
 	{
 		$configurator =  ConfiguratorImageQuery::create()
-		->filterByConfiguratorId($id)
-		->findOne();
+			->filterById($id)
+			->findOne();
 		
 		if($configurator) {
 			$configurator->setVisible($configurator->getVisible() ? 0 : 1)
@@ -423,9 +423,9 @@ class FilterConfiguratorController extends BaseAdminController
 				}
 				
 				$configuratorImageLastPosition = ConfiguratorImageQuery::create()
-				->filterByConfiguratorId($parentId)
-				->orderByPosition(Criteria::DESC)
-				->findOne();
+					->filterByConfiguratorId($parentId)
+					->orderByPosition(Criteria::DESC)
+					->findOne();
 				
 				$configuratorImage =  new ConfiguratorImage();
 				
@@ -464,6 +464,28 @@ class FilterConfiguratorController extends BaseAdminController
 		
 		$posImage->setPosition($position)->save();
 		
+		$confImages = ConfiguratorImageQuery::create()
+			->filterByConfiguratorId($id)
+			->orderByPosition(Criteria::ASC)
+			->find();
+		
+		$i=1;
+		
+		foreach($confImages as $image) {
+			if($image->getId() == $image_id){
+				$image->setPosition($position)->save();
+			}
+			else {
+				if($i != $position) {
+					$image->setPosition($i)->save();
+				}
+				else {
+					$i++;
+					$image->setPosition($i)->save();
+				}
+				$i++;	
+			}
+		}	
 	}
 	
 	public function getImageListAjaxAction($id)
