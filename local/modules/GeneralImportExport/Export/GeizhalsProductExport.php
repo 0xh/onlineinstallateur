@@ -85,6 +85,7 @@ class GeizhalsProductExport extends AbstractExport
             }
         }
         
+        $processedData['Produktgruppe'] = CommonExport::getCategoryHierarchy($data['productID']);
         if ($this->url_site == null)
             $this->url_site = ConfigQuery::read('url_site');
         $processedData['Deeplink'] = $this->url_site . "/" . $processedData['Deeplink'];

@@ -25,9 +25,7 @@ use Thelia\Log\Tlog;
  */
 class BMDOrderExport extends AbstractExport
 {
-
     const USE_RANGE_DATE = true;
-    
     const FILE_NAME = 'order_bmd';
    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol 
     protected $orderAndAliases = [
@@ -82,9 +80,37 @@ class BMDOrderExport extends AbstractExport
         }
         
         $orderSource = substr($processedData['belegnr'],0,3);
+        $orderKonto = substr($processedData['text'],0,1);
         switch($orderSource){
         	case "ORD":{
-        		$processedData['konto']="201599";
+        	    $processedData['konto']="201599";
+        	    switch($orderKonto){
+        	        case 'A':$processedData['konto'] = "200099";break;
+        	        case 'B':$processedData['konto'] = "200199";break;
+        	        case 'C':$processedData['konto'] = "200299";break;
+        	        case 'D':$processedData['konto'] = "200399";break;
+        	        case 'E':$processedData['konto'] = "200499";break;
+        	        case 'F':$processedData['konto'] = "200599";break;
+        	        case 'G':$processedData['konto'] = "200699";break;
+        	        case 'H':$processedData['konto'] = "200799";break;
+        	        case 'I':$processedData['konto'] = "200899";break;
+        	        case 'J':$processedData['konto'] = "200999";break;
+        	        case 'K':$processedData['konto'] = "201099";break;
+        	        case 'L':$processedData['konto'] = "201199";break;
+        	        case 'M':$processedData['konto'] = "201299";break;
+        	        case 'N':$processedData['konto'] = "201399";break;
+        	        case 'O':$processedData['konto'] = "201499";break;
+        	        case 'P':$processedData['konto'] = "201599";break;
+        	        case 'R':$processedData['konto'] = "201799";break;
+        	        case 'S':$processedData['konto'] = "201899";break;
+        	        case 'T':$processedData['konto'] = "201999";break;
+        	        case 'U':$processedData['konto'] = "202099";break;
+        	        case 'V':$processedData['konto'] = "202199";break;
+        	        case 'W':$processedData['konto'] = "202299";break;
+        	        case 'X':$processedData['konto'] = "202399";break;
+        	        case 'Z':$processedData['konto'] = "202599";break;
+        	        default: $processedData['konto']="201599";
+        	    }
         		$processedData['belegnr']="1".substr($processedData['belegnr'],3);
         	}break;
         	case "ADE":{
@@ -159,8 +185,15 @@ class BMDOrderExport extends AbstractExport
     						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
     						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
     						)
-    				|| (strpos($order[OrderTableMap::REF],"ORD") !== false || strpos($order[OrderTableMap::REF],"OFR") !== false)
-    				|| (strpos($order[OrderTableMap::STATUS_ID],"5") !== false)
+    				|| (strpos($order[OrderTableMap::REF],"AUK") !== false 
+    				    || strpos($order[OrderTableMap::REF],"AIT") !== false
+    				    || strpos($order[OrderTableMap::REF],"AES") !== false
+    				    || strpos($order[OrderTableMap::REF],"ADE") !== false
+    				    || strpos($order[OrderTableMap::REF],"AFR") !== false
+    				    || strpos($order[OrderTableMap::REF],"OFR") !== false)
+    				|| (strpos($order[OrderTableMap::STATUS_ID],"5") !== false
+    				    || strpos($order[OrderTableMap::STATUS_ID],"10") !== false
+    				    || strpos($order[OrderTableMap::STATUS_ID],"1") !== false)
     				) {
     					
     					$this->next();

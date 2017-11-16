@@ -83,7 +83,7 @@ class IdealoProductExport extends AbstractExport
                 $processedData[$fieldAlias] = $data[$fieldName];
             }
         }
-        $processedData['category_i18nTITLE'] = CommonExport::getCategoryHierarchy($data['productID']);
+        $processedData['Produktgruppe'] = CommonExport::getCategoryHierarchy($data['productID']);
         if ($this->url_site == null)
             $this->url_site = ConfigQuery::read('url_site');
         $processedData['Produkt_URL'] = $this->url_site . "/" . $processedData['Produkt_URL'];
