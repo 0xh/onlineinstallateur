@@ -28,12 +28,13 @@ class Configuration extends BaseForm
     {
         $form = $this->formBuilder;
 
-        $value = GoogleTagManager::getConfigValue('googletagmanager_trackingcode');
+        $valueCode = GoogleTagManager::getConfigValue('googletagmanager_trackingcode');
+        $valueIframe = GoogleTagManager::getConfigValue('googletagmanager_trackingiframe');
         $form->add(
             "trackingcode",
             "text",
             array(
-                'data'  => $value,
+                'data'  => $valueCode,
                 'label' => Translator::getInstance()->trans("Tracking Code",[] ,GoogleTagManager::DOMAIN_NAME),
                 'label_attr' => array(
                     'for' => "trackingcode"
@@ -44,7 +45,7 @@ class Configuration extends BaseForm
             "trackingiframe",
             "text",
             array(
-                'data'  => $value,
+                'data'  => $valueIframe,
                 'label' => Translator::getInstance()->trans("Tracking iFrame",[] ,GoogleTagManager::DOMAIN_NAME),
                 'label_attr' => array(
                     'for' => "trackingiframe"
