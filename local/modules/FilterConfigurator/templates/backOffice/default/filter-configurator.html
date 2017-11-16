@@ -78,10 +78,10 @@
 										<tr> 
 								           <div class="row">  	
 	                                			<td colspan='4'> 
-										            <select class="multipleSelect" multiple="" name="{$CONFIGURATOR_ID}[]" data-attr="">
+										            <select class="multipleSelect" multiple="" name="{$CONFIGURATOR_ID}[]">
 										            	{loop name="list" type="feature" backend_context="1" lang=$lang_id}
 										            		{loop name="configurator_filter_relation" type="configurator_filter_relation" feature_id={$ID} configurator_id={$CONFIGURATOR_ID}}
-											            		<option value="{$ID}" {if $RELATION} selected="selected"{/if}><span data-select="{$CONFIGURATOR_ID}[]">{$TITLE}</span></option>
+											            		<option value="{$ID}" {if $RELATION} selected="selected"{/if}>{$TITLE}</option>
 											                {/loop}
 											             {/loop}
 											        </select>
