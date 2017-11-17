@@ -515,7 +515,7 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
     <!-- Custom scripts -->
     <script src="{javascript file='assets/dist/js/thelia.min.js'}"></script>
    
-  	{loop type="customer" name="customer.info"}ga('set', 'userId', {{{$ID}}});{/loop}
+  	{loop type="customer" name="customer.info"}gtag('set', 'userId', {{{$ID}}});{/loop}
   
 
     {hook name="main.body-bottom"}
