@@ -15,6 +15,7 @@ use Thelia\Model\Map\ProductSaleElementsTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 
 /**
  * SettingProductsQuantityLoop
@@ -58,6 +59,7 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
 
         $changeFulfilmentCenter = (isset($_GET["change_fulfilment_center"])) ? $_GET["change_fulfilment_center"] : -1;
         $changeFulfilmentCenterQuantity = (isset($_GET["change_fulfilment_center_qunatity"])) ? $_GET["change_fulfilment_center_qunatity"] : -1;
+        $isInFulfilmentCenter = (isset($_GET["is_in_fulfilment_center"])) ? $_GET["is_in_fulfilment_center"] : -1;
         
         $searchById = isset($_GET["search_by_id"]) ? $_GET["search_by_id"] : false;
         $searchByRef = isset($_GET["search_by_ref"]) ? $_GET["search_by_ref"] : false;
@@ -119,6 +121,16 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
             
         $query = $query->where(ProductI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR);
         
+        $idProds = $this->getProdId($changeFulfilmentCenter);
+        if ($isInFulfilmentCenter == 1)
+        {
+            $query = $query->where(ProductTableMap::ID . ' in ' . $idProds . '');
+        }
+        elseif ($isInFulfilmentCenter == 2)
+        {
+            $query = $query->where(ProductTableMap::ID . ' not in ' . $idProds );
+        }
+        
         $query = $query->orderById(); 
         return $query;
     }
@@ -141,5 +153,21 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
     protected function searchByTitle($searchByTitle, $query){
         $query = $query->where(ProductI18nTableMap::TITLE.' = ?', $searchByTitle, \PDO::PARAM_STR);
         return $query;
+    }
+    
+    protected function getProdId($changeFulfilmentCenter){
+        
+        $query = FulfilmentCenterProductsQuery::create()
+        ->where(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID.' = ?', $changeFulfilmentCenter, \PDO::PARAM_STR)
+                ->find();
+        $ids = "(";
+        foreach ($query as $q)
+        {
+            $ids .= $q->getProductId();
+            $ids .= ",";
+        }
+        $ids .= "0)";
+        
+        return $ids;
     }
 }

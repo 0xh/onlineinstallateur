@@ -3,6 +3,7 @@
 window.onload = function() {
 	changeFulfilmentCenter();
 	changeFulfilmentCenterQuantity();
+	changeIsOrNotInCenter();
 }
 
 var productsId = [];
@@ -33,6 +34,7 @@ function changeFulfilmentCenter() {
 	$( '#change_fulfilment_center' ).change(function() {
 	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
 	  	pos += '&change_fulfilment_center_qunatity=' + $('#change_fulfilment_center_qunatity').val();
+	  	pos += '&is_in_fulfilment_center=' + $('#is_in_fulfilment_center').val();
   		window.location.href = '?' + pos;
 	});
 }
@@ -41,6 +43,16 @@ function changeFulfilmentCenterQuantity() {
 	$( '#change_fulfilment_center_qunatity' ).change(function() {
 	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
 	  	pos += '&change_fulfilment_center_qunatity=' + $('#change_fulfilment_center_qunatity').val();
+	  	pos += '&is_in_fulfilment_center=' + $('#is_in_fulfilment_center').val();
+  		window.location.href = '?' + pos;
+	});
+}
+
+function changeIsOrNotInCenter() {
+	$( '#is_in_fulfilment_center' ).change(function() {
+	  	pos = 'change_fulfilment_center=' + $('#change_fulfilment_center').val();
+	  	pos += '&change_fulfilment_center_qunatity=' + $('#change_fulfilment_center_qunatity').val();
+	  	pos += '&is_in_fulfilment_center=' + $('#is_in_fulfilment_center').val();
   		window.location.href = '?' + pos;
 	});
 }

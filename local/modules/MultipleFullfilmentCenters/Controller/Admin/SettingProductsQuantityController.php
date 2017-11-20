@@ -18,20 +18,22 @@ class SettingProductsQuantityController extends BaseAdminController
 	{
 	    return $this->render("product-quantity/SettingProductsQuantityJs");
 	}
-	
+
 	public function updateQuantityFullfilmentCenters()
 	{
 	    $idToUpdateQuantity = $_GET['list_prods_to_update_quantity'] ? $this->getIdToUpdateQuantity($_GET['list_prods_to_update_quantity']) : array();
 	    $fulfilmentCenterId = $_GET['change_fulfilment_center_val'];
 	    $fulfilmentCenterQuantity = $_GET['change_fulfilment_center_qunatity_val'];
+	    $isInFulfilmentCenter = $_GET['is_in_fulfilment_center_val'];
 	    
 	    foreach ($idToUpdateQuantity as $id)
 	    {
 	        $this->updateProdQuantity($id, $_GET['quantity_'.$id], $fulfilmentCenterId);
 	    }
-	    
+
 	    return $this->generateRedirect("/admin/module/multiplefulfilmentcenters/setting-products?change_fulfilment_center=" 
-	        . $fulfilmentCenterId . "&change_fulfilment_center_qunatity=" . $fulfilmentCenterQuantity, 303);
+	        . $fulfilmentCenterId . "&change_fulfilment_center_qunatity=" . $fulfilmentCenterQuantity 
+	        . "&is_in_fulfilment_center=" . $isInFulfilmentCenter, 303);
 	}
 	
 	protected function updateProdQuantity($idProd, $quantity, $fulfilmentCenterId)

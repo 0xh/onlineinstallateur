@@ -65,8 +65,16 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 			<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
 			<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity">
 					<option value="-1">All</option>
-					<option value="0" {if $smarty.get.change_fulfilment_center_qunatity == 0}selected{/if}>Empty </option>
+					<option value="1" {if $smarty.get.change_fulfilment_center_qunatity == 1}selected{/if}>Empty </option>
 					<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<h5  id="search-label">{intl l="Select in/not center:" d="criteriasearch.fo.default"}</h5>
+			<select class='form-control col-sm-1' name="is_in_fulfilment_center" id="is_in_fulfilment_center">
+					<option value="0">All</option>
+					<option value="1" {if $smarty.get.is_in_fulfilment_center == 1}selected{/if}>Is in Center</option>
+					<option value="2" {if $smarty.get.is_in_fulfilment_center == 2}selected{/if}>Not in Center</option>
 			</select>
 		</div>
 
@@ -108,6 +116,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
             </table>
             <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.change_fulfilment_center}">
             <input type="hidden" name="change_fulfilment_center_qunatity_val" value="{$smarty.get.change_fulfilment_center_qunatity}">
+            <input type="hidden" name="is_in_fulfilment_center_val" value="{$smarty.get.is_in_fulfilment_center}">
             <input type="hidden" name="list_prods_to_update_quantity" id="list_prods_to_update_quantity" value="">
 	         <tfoot>
 	             <tr>
