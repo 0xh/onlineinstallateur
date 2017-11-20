@@ -145,45 +145,6 @@ class OfferDetail extends BaseLoop implements SearchLoopInterface, PropelSearchL
 			$search->filterById($id, Criteria::IN);
 		}
 		
-		$customer = $this->getCustomer();
-		
-		if ($customer === 'current') {
-			$currentCustomer = $this->securityContext->getCustomerUser();
-			if ($currentCustomer === null) {
-				return null;
-			} else {
-				$search->filterByCustomerId($currentCustomer->getId(), Criteria::EQUAL);
-			}
-		} elseif ($customer !== '*') {
-			$search->filterByCustomerId($customer, Criteria::EQUAL);
-		}
-		
-		$status = $this->getStatus();
-		
-		if (null !== $status && $status != '*') {
-			$search->filterByStatusId($status, Criteria::IN);
-		}
-		
-		if (null !== $excludeStatus = $this->getExcludeStatus()) {
-			$search->filterByStatusId($excludeStatus, Criteria::NOT_IN);
-		}
-		
-		$statusCode = $this->getStatusCode();
-		
-		if (null !== $statusCode && $statusCode != '*') {
-			$search
-			->useOrderStatusQuery()
-			->filterByCode($statusCode, Criteria::IN)
-			->endUse();
-		}
-		
-		if (null !== $excludeStatusCode = $this->getExcludeStatusCode()) {
-			$search
-			->useOrderStatusQuery()
-			->filterByCode($excludeStatusCode, Criteria::NOT_IN)
-			->endUse();
-		}
-		
 		$orderers = $this->getOrder();
 		
 		foreach ($orderers as $orderer) {

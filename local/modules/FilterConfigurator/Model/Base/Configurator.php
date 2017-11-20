@@ -6,6 +6,8 @@ use \DateTime;
 use \Exception;
 use \PDO;
 use FilterConfigurator\Model\Configurator as ChildConfigurator;
+use FilterConfigurator\Model\ConfiguratorFeatures as ChildConfiguratorFeatures;
+use FilterConfigurator\Model\ConfiguratorFeaturesQuery as ChildConfiguratorFeaturesQuery;
 use FilterConfigurator\Model\ConfiguratorI18n as ChildConfiguratorI18n;
 use FilterConfigurator\Model\ConfiguratorI18nQuery as ChildConfiguratorI18nQuery;
 use FilterConfigurator\Model\ConfiguratorImage as ChildConfiguratorImage;
@@ -126,6 +128,12 @@ abstract class Configurator implements ActiveRecordInterface
     protected $collConfiguratorImagesPartial;
 
     /**
+     * @var        ObjectCollection|ChildConfiguratorFeatures[] Collection to store aggregation of ChildConfiguratorFeatures objects.
+     */
+    protected $collConfiguratorFeaturess;
+    protected $collConfiguratorFeaturessPartial;
+
+    /**
      * @var        ObjectCollection|ChildConfiguratorVersion[] Collection to store aggregation of ChildConfiguratorVersion objects.
      */
     protected $collConfiguratorVersions;
@@ -158,6 +166,12 @@ abstract class Configurator implements ActiveRecordInterface
      * @var ObjectCollection
      */
     protected $configuratorImagesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $configuratorFeaturessScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -875,6 +889,8 @@ abstract class Configurator implements ActiveRecordInterface
 
             $this->collConfiguratorImages = null;
 
+            $this->collConfiguratorFeaturess = null;
+
             $this->collConfiguratorVersions = null;
 
         } // if (deep)
@@ -1050,6 +1066,23 @@ abstract class Configurator implements ActiveRecordInterface
 
                 if ($this->collConfiguratorImages !== null) {
             foreach ($this->collConfiguratorImages as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->configuratorFeaturessScheduledForDeletion !== null) {
+                if (!$this->configuratorFeaturessScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\ConfiguratorFeaturesQuery::create()
+                        ->filterByPrimaryKeys($this->configuratorFeaturessScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->configuratorFeaturessScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collConfiguratorFeaturess !== null) {
+            foreach ($this->collConfiguratorFeaturess as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1294,6 +1327,9 @@ abstract class Configurator implements ActiveRecordInterface
             if (null !== $this->collConfiguratorImages) {
                 $result['ConfiguratorImages'] = $this->collConfiguratorImages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collConfiguratorFeaturess) {
+                $result['ConfiguratorFeaturess'] = $this->collConfiguratorFeaturess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collConfiguratorVersions) {
                 $result['ConfiguratorVersions'] = $this->collConfiguratorVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1494,6 +1530,12 @@ abstract class Configurator implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getConfiguratorFeaturess() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addConfiguratorFeatures($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getConfiguratorVersions() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addConfiguratorVersion($relObj->copy($deepCopy));
@@ -1546,6 +1588,9 @@ abstract class Configurator implements ActiveRecordInterface
         }
         if ('ConfiguratorImage' == $relationName) {
             return $this->initConfiguratorImages();
+        }
+        if ('ConfiguratorFeatures' == $relationName) {
+            return $this->initConfiguratorFeaturess();
         }
         if ('ConfiguratorVersion' == $relationName) {
             return $this->initConfiguratorVersions();
@@ -1992,6 +2037,249 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collConfiguratorFeaturess collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addConfiguratorFeaturess()
+     */
+    public function clearConfiguratorFeaturess()
+    {
+        $this->collConfiguratorFeaturess = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collConfiguratorFeaturess collection loaded partially.
+     */
+    public function resetPartialConfiguratorFeaturess($v = true)
+    {
+        $this->collConfiguratorFeaturessPartial = $v;
+    }
+
+    /**
+     * Initializes the collConfiguratorFeaturess collection.
+     *
+     * By default this just sets the collConfiguratorFeaturess collection to an empty array (like clearcollConfiguratorFeaturess());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initConfiguratorFeaturess($overrideExisting = true)
+    {
+        if (null !== $this->collConfiguratorFeaturess && !$overrideExisting) {
+            return;
+        }
+        $this->collConfiguratorFeaturess = new ObjectCollection();
+        $this->collConfiguratorFeaturess->setModel('\FilterConfigurator\Model\ConfiguratorFeatures');
+    }
+
+    /**
+     * Gets an array of ChildConfiguratorFeatures objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildConfigurator is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildConfiguratorFeatures[] List of ChildConfiguratorFeatures objects
+     * @throws PropelException
+     */
+    public function getConfiguratorFeaturess($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collConfiguratorFeaturessPartial && !$this->isNew();
+        if (null === $this->collConfiguratorFeaturess || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collConfiguratorFeaturess) {
+                // return empty collection
+                $this->initConfiguratorFeaturess();
+            } else {
+                $collConfiguratorFeaturess = ChildConfiguratorFeaturesQuery::create(null, $criteria)
+                    ->filterByConfigurator($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collConfiguratorFeaturessPartial && count($collConfiguratorFeaturess)) {
+                        $this->initConfiguratorFeaturess(false);
+
+                        foreach ($collConfiguratorFeaturess as $obj) {
+                            if (false == $this->collConfiguratorFeaturess->contains($obj)) {
+                                $this->collConfiguratorFeaturess->append($obj);
+                            }
+                        }
+
+                        $this->collConfiguratorFeaturessPartial = true;
+                    }
+
+                    reset($collConfiguratorFeaturess);
+
+                    return $collConfiguratorFeaturess;
+                }
+
+                if ($partial && $this->collConfiguratorFeaturess) {
+                    foreach ($this->collConfiguratorFeaturess as $obj) {
+                        if ($obj->isNew()) {
+                            $collConfiguratorFeaturess[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collConfiguratorFeaturess = $collConfiguratorFeaturess;
+                $this->collConfiguratorFeaturessPartial = false;
+            }
+        }
+
+        return $this->collConfiguratorFeaturess;
+    }
+
+    /**
+     * Sets a collection of ConfiguratorFeatures objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $configuratorFeaturess A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildConfigurator The current object (for fluent API support)
+     */
+    public function setConfiguratorFeaturess(Collection $configuratorFeaturess, ConnectionInterface $con = null)
+    {
+        $configuratorFeaturessToDelete = $this->getConfiguratorFeaturess(new Criteria(), $con)->diff($configuratorFeaturess);
+
+        
+        $this->configuratorFeaturessScheduledForDeletion = $configuratorFeaturessToDelete;
+
+        foreach ($configuratorFeaturessToDelete as $configuratorFeaturesRemoved) {
+            $configuratorFeaturesRemoved->setConfigurator(null);
+        }
+
+        $this->collConfiguratorFeaturess = null;
+        foreach ($configuratorFeaturess as $configuratorFeatures) {
+            $this->addConfiguratorFeatures($configuratorFeatures);
+        }
+
+        $this->collConfiguratorFeaturess = $configuratorFeaturess;
+        $this->collConfiguratorFeaturessPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related ConfiguratorFeatures objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related ConfiguratorFeatures objects.
+     * @throws PropelException
+     */
+    public function countConfiguratorFeaturess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collConfiguratorFeaturessPartial && !$this->isNew();
+        if (null === $this->collConfiguratorFeaturess || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collConfiguratorFeaturess) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getConfiguratorFeaturess());
+            }
+
+            $query = ChildConfiguratorFeaturesQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByConfigurator($this)
+                ->count($con);
+        }
+
+        return count($this->collConfiguratorFeaturess);
+    }
+
+    /**
+     * Method called to associate a ChildConfiguratorFeatures object to this object
+     * through the ChildConfiguratorFeatures foreign key attribute.
+     *
+     * @param    ChildConfiguratorFeatures $l ChildConfiguratorFeatures
+     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     */
+    public function addConfiguratorFeatures(ChildConfiguratorFeatures $l)
+    {
+        if ($this->collConfiguratorFeaturess === null) {
+            $this->initConfiguratorFeaturess();
+            $this->collConfiguratorFeaturessPartial = true;
+        }
+
+        if (!in_array($l, $this->collConfiguratorFeaturess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddConfiguratorFeatures($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ConfiguratorFeatures $configuratorFeatures The configuratorFeatures object to add.
+     */
+    protected function doAddConfiguratorFeatures($configuratorFeatures)
+    {
+        $this->collConfiguratorFeaturess[]= $configuratorFeatures;
+        $configuratorFeatures->setConfigurator($this);
+    }
+
+    /**
+     * @param  ConfiguratorFeatures $configuratorFeatures The configuratorFeatures object to remove.
+     * @return ChildConfigurator The current object (for fluent API support)
+     */
+    public function removeConfiguratorFeatures($configuratorFeatures)
+    {
+        if ($this->getConfiguratorFeaturess()->contains($configuratorFeatures)) {
+            $this->collConfiguratorFeaturess->remove($this->collConfiguratorFeaturess->search($configuratorFeatures));
+            if (null === $this->configuratorFeaturessScheduledForDeletion) {
+                $this->configuratorFeaturessScheduledForDeletion = clone $this->collConfiguratorFeaturess;
+                $this->configuratorFeaturessScheduledForDeletion->clear();
+            }
+            $this->configuratorFeaturessScheduledForDeletion[]= $configuratorFeatures;
+            $configuratorFeatures->setConfigurator(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Configurator is new, it will return
+     * an empty collection; or if this Configurator has previously
+     * been saved, it will retrieve related ConfiguratorFeaturess from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Configurator.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildConfiguratorFeatures[] List of ChildConfiguratorFeatures objects
+     */
+    public function getConfiguratorFeaturessJoinFeature($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildConfiguratorFeaturesQuery::create(null, $criteria);
+        $query->joinWith('Feature', $joinBehavior);
+
+        return $this->getConfiguratorFeaturess($query, $con);
+    }
+
+    /**
      * Clears out the collConfiguratorVersions collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2255,6 +2543,11 @@ abstract class Configurator implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collConfiguratorFeaturess) {
+                foreach ($this->collConfiguratorFeaturess as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collConfiguratorVersions) {
                 foreach ($this->collConfiguratorVersions as $o) {
                     $o->clearAllReferences($deep);
@@ -2264,6 +2557,7 @@ abstract class Configurator implements ActiveRecordInterface
 
         $this->collConfiguratorI18ns = null;
         $this->collConfiguratorImages = null;
+        $this->collConfiguratorFeaturess = null;
         $this->collConfiguratorVersions = null;
     }
 

@@ -521,7 +521,7 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   
-  ga('create', 'UA-78676875-1', 'auto');
+  ga('create', 'UA-78676875-4', 'auto');
   {/literal}
   	{loop type="customer" name="customer.info"}ga('set', 'userId', {{{$ID}}});{/loop}
   {literal}

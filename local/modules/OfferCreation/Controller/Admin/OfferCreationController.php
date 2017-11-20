@@ -324,4 +324,91 @@ class OfferCreationController extends BaseAdminController
 						)
 				);
 	}
+	
+	public function updateOfferProduct()
+	{
+		
+		$form = $this->createForm("admin.order.edit.form");
+		
+		$message = null;
+		
+		try {
+			
+			$data = $this->validateForm($form)->getData();
+			
+			$offerProduct = OfferProductQuery::create()
+				->filterById($data['order_product_id'])
+				->findOne();
+			
+			$offerProductTax = OfferProductTaxQuery::create()
+				->filterByOfferProductId($data['order_product_id'])
+				->findOne();
+			
+			if($offerProduct) {
+				
+				if($offerProduct->getWasInPromo())
+					$offerProduct->setPromoPrice($data['product_price']);
+				else
+					$offerProduct->setPrice($data['product_price']);
+						
+				$offerProduct->setTitle($data['product_title']);
+				$offerProduct->setQuantity($data['product_quantity']);
+						
+				if($offerProductTax) {
+					if($offerProduct->getWasInPromo())
+						$offerProductTax->setPromoAmount(0.2 * $data['product_price']);
+					else
+						$offerProductTax->setAmount(0.2 * $data['product_price']);
+				}
+			}
+			$offerProduct->save();
+			$offerProductTax->save();
+			
+		} catch (\Exception $e) {
+			$message = $e->getMessage();
+		}
+		
+		$params = array();
+		
+		if ($message) {
+			$params["update_offer_product_error_message"] = $message;
+		}
+
+		return RedirectResponse::create(
+				URL::getInstance()->absoluteUrl(
+						'/admin/offer/update/'.$data['order_id'], $params
+						)
+				); 
+	}
+	
+	public function deleteOfferProduct()
+	{
+		$message = null;
+		
+		try {
+			OfferProductTaxQuery::create()
+				->filterByOfferProductId($_POST['offer_product_id'])
+				->delete();
+			
+			OfferProductQuery::create()
+				->filterById($_POST['offer_product_id'])
+				->delete();
+			
+		} catch (\Exception $e) {
+			$message = $e->getMessage();
+		}
+		
+		$params = array();
+		
+		if ($message) {
+			$params["delete_offer_product_error_message"] = $message;
+		}
+		
+		return RedirectResponse::create(
+				URL::getInstance()->absoluteUrl(
+						'/admin/offer/update/'.$_POST['offer_id'], $params
+						)
+				); 
+		
+	}
 }

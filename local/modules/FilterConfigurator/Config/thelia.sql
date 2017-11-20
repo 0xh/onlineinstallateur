@@ -7,9 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- configurator
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `configurator`
+CREATE TABLE if not exists `configurator`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `visible` TINYINT DEFAULT 0 NOT NULL,
@@ -26,9 +24,7 @@ CREATE TABLE IF NOT EXISTS `configurator`
 -- configurator_i18n
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `configurator_i18n`
+CREATE TABLE if not exists `configurator_i18n`
 (
     `id` INTEGER NOT NULL,
     `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,
@@ -47,9 +43,7 @@ CREATE TABLE IF NOT EXISTS `configurator_i18n`
 -- configurator_image
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `configurator_image`
+CREATE TABLE if not exists `configurator_image`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `configurator_id` INTEGER NOT NULL,
@@ -70,9 +64,7 @@ CREATE TABLE IF NOT EXISTS `configurator_image`
 -- configurator_image_i18n
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `configurator_image_i18n`
+CREATE TABLE if not exists `configurator_image_i18n`
 (
     `id` INTEGER NOT NULL,
     `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,
@@ -88,12 +80,32 @@ CREATE TABLE IF NOT EXISTS `configurator_image_i18n`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- configurator_features
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `configurator_features`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `configurator_id` INTEGER,
+    `feature_id` INTEGER,
+    PRIMARY KEY (`id`),
+    INDEX `FI_conf_configurator_id` (`configurator_id`),
+    INDEX `FI_conf_feature_id` (`feature_id`),
+    CONSTRAINT `fk_conf_configurator_id`
+        FOREIGN KEY (`configurator_id`)
+        REFERENCES `configurator` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `fk_conf_feature_id`
+        FOREIGN KEY (`feature_id`)
+        REFERENCES `feature` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- configurator_version
 -- ---------------------------------------------------------------------
 
-
-
-CREATE TABLE IF NOT EXISTS `configurator_version`
+CREATE TABLE if not exists `configurator_version`
 (
     `id` INTEGER NOT NULL,
     `visible` TINYINT DEFAULT 0 NOT NULL,

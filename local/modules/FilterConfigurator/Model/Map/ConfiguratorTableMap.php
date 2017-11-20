@@ -178,6 +178,7 @@ class ConfiguratorTableMap extends TableMap
     {
         $this->addRelation('ConfiguratorI18n', '\\FilterConfigurator\\Model\\ConfiguratorI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorI18ns');
         $this->addRelation('ConfiguratorImage', '\\FilterConfigurator\\Model\\ConfiguratorImage', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorImages');
+        $this->addRelation('ConfiguratorFeatures', '\\FilterConfigurator\\Model\\ConfiguratorFeatures', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorFeaturess');
         $this->addRelation('ConfiguratorVersion', '\\FilterConfigurator\\Model\\ConfiguratorVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorVersions');
     } // buildRelations()
 
@@ -203,6 +204,7 @@ class ConfiguratorTableMap extends TableMap
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
                 ConfiguratorI18nTableMap::clearInstancePool();
                 ConfiguratorImageTableMap::clearInstancePool();
+                ConfiguratorFeaturesTableMap::clearInstancePool();
                 ConfiguratorVersionTableMap::clearInstancePool();
             }
 

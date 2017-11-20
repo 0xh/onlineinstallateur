@@ -20,6 +20,8 @@ use FilterConfigurator\Model\ConfiguratorQuery;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Tools\URL;
 use FilterConfigurator\Model\ConfiguratorI18nQuery;
+use FilterConfigurator\Model\ConfiguratorFeatures;
+use FilterConfigurator\Model\ConfiguratorFeaturesQuery;
 
 class FilterConfiguratorController extends BaseAdminController
 {
@@ -62,7 +64,6 @@ class FilterConfiguratorController extends BaseAdminController
 		
 		$form = $this->createForm("filter.configurator");
 		
-	
 	 	try {
 	 		$data = $this->validateForm($form)->getData();
 	 	
@@ -89,7 +90,6 @@ class FilterConfiguratorController extends BaseAdminController
 		} 
 		
 	}
-	
 	
 	public function saveAction() {
 		
@@ -136,6 +136,57 @@ class FilterConfiguratorController extends BaseAdminController
 		
 	}
 	
+	public function saveFiltersAction()
+	{
+		$configurators_features = $_GET;
+		
+		if($configurators_features) {
+			foreach($configurators_features as $key=>$configurator_features) {
+				$featuresDb = array();
+				$featuresBack = array();
+				
+			    $configuratorFeatureRelation = ConfiguratorFeaturesQuery::create()
+					->filterByConfiguratorId($key)
+					->find();
+			    
+				foreach($configuratorFeatureRelation as $relation)
+					$featuresDb[] = $relation->getFeatureId();
+				
+				foreach($configurator_features as $features) 
+					$featuresBack[] = $features;
+					
+				$insert = array_diff($featuresBack, $featuresDb);
+				$delete = array_diff($featuresDb, $featuresBack);
+				
+				if($delete)
+					foreach($delete as $featureToDelete) {
+						
+						$configuratorFeatures = ConfiguratorFeaturesQuery::create()
+							->filterByConfiguratorId($key)
+							->filterByFeatureId($featureToDelete)
+							->delete();
+					}
+				
+				if($insert)
+					foreach($insert as $featureToInsert) {
+						$configuratorFeatures = new ConfiguratorFeatures;
+						
+						$configuratorFeatures->setConfiguratorId($key)
+							->setFeatureId($featureToInsert)
+							->save();
+					}
+			}
+		}
+		
+		$params = array();
+		
+		return RedirectResponse::create(
+				URL::getInstance()->absoluteUrl(
+						'/admin/module/FilterConfigurator', $params
+						)
+				);
+	}
+	
 	public function getImageFormAjaxAction($parentId, $parentType)
 	{
 		$args = array('imageType' => $parentType, 'parentId' => $parentId);
@@ -146,8 +197,8 @@ class FilterConfiguratorController extends BaseAdminController
 	public function toggleVisibilityImageAction($id)
 	{
 		$configurator =  ConfiguratorImageQuery::create()
-		->filterByConfiguratorId($id)
-		->findOne();
+			->filterById($id)
+			->findOne();
 		
 		if($configurator) {
 			$configurator->setVisible($configurator->getVisible() ? 0 : 1)
@@ -159,6 +210,10 @@ class FilterConfiguratorController extends BaseAdminController
 	
 	public function updateImage($id)
 	{
+		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('FilterConfigurator'), AccessManager::UPDATE)) {
+			return $response;
+		}
+		
 		$redirectUrl = '/admin/modules/filter-configurator/';
 		
 		return $this->render('includes/image-edit', array(
@@ -182,13 +237,13 @@ class FilterConfiguratorController extends BaseAdminController
 			$data = $this->validateForm($form)->getData();
 			
 			$confImage = ConfiguratorImageQuery::create()
-			->filterById($id)
-			->findOne();
+				->filterById($id)
+				->findOne();
 			
 			if($confImage) {
 				if($data['file']) {
 					$confImage->setFile($data['file']->getClientOriginalName())
-					->save();
+						->save();
 					
 					$target_dir = __DIR__ . "/../../../../media/images/configurator/";
 					$target_file = $target_dir . basename($data['file']->getClientOriginalName());
@@ -197,19 +252,19 @@ class FilterConfiguratorController extends BaseAdminController
 				}
 				
 				$confImage->setVisible($data['visible'])
-				->save();
+					->save();
 				
 				$confImageI18n = ConfiguratorImageI18nQuery::create()
-				->filterById($id)
-				->filterByLocale($data['locale'])
-				->findOneOrCreate();
+					->filterById($id)
+					->filterByLocale($data['locale'])
+					->findOneOrCreate();
 				
 				if($confImageI18n) {
 					$confImageI18n->setTitle($data['title'])
-					->setDescription($data['description'])
-					->setChapo($data['chapo'])
-					->setPostscriptum($data['postscriptum'])
-					->save();
+						->setDescription($data['description'])
+						->setChapo($data['chapo'])
+						->setPostscriptum($data['postscriptum'])
+						->save();
 				}
 			}
 			
@@ -232,12 +287,12 @@ class FilterConfiguratorController extends BaseAdminController
 		}
 		
 		ConfiguratorImageI18nQuery::create()
-		->filterById($id)
-		->delete();
+			->filterById($id)
+			->delete();
 		
 		ConfiguratorImageQuery::create()
-		->filterById($id)
-		->delete();
+			->filterById($id)
+			->delete();
 	}
 	
 	public function saveImageAction($id)
@@ -368,25 +423,25 @@ class FilterConfiguratorController extends BaseAdminController
 				}
 				
 				$configuratorImageLastPosition = ConfiguratorImageQuery::create()
-				->filterByConfiguratorId($parentId)
-				->orderByPosition(Criteria::DESC)
-				->findOne();
+					->filterByConfiguratorId($parentId)
+					->orderByPosition(Criteria::DESC)
+					->findOne();
 				
 				$configuratorImage =  new ConfiguratorImage();
 				
 				$configuratorImage
-				->setConfiguratorId($parentId)
-				->setFile($realFileName)
-				->setVisible(1)
-				->setPosition($configuratorImageLastPosition !== null ? $configuratorImageLastPosition->getPosition() + 1 : 1)
-				->save();
+					->setConfiguratorId($parentId)
+					->setFile($realFileName)
+					->setVisible(1)
+					->setPosition($configuratorImageLastPosition !== null ? $configuratorImageLastPosition->getPosition() + 1 : 1)
+					->save();
 				
 				$configuratorImageI18n =  new ConfiguratorImageI18n();
 				
 				$configuratorImageI18n
-				->setId($configuratorImage->getId())
-				->setLocale('de_DE')
-				->save();
+					->setId($configuratorImage->getId())
+					->setLocale('de_DE')
+					->save();
 				
 				$target_dir = __DIR__ . "/../../../../media/images/configurator/";
 				$target_file = $target_dir . basename($realFileName);
@@ -396,15 +451,41 @@ class FilterConfiguratorController extends BaseAdminController
 	
 	public function updateImagePosition($id)
 	{
+		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('FilterConfigurator'), AccessManager::UPDATE)) {
+			return $response;
+		}
+		
 		$position = $this->getRequest()->request->get('position');
 		$image_id= $this->getRequest()->request->get('image_id');
 		
 		$posImage = ConfiguratorImageQuery::create()
-		->filterById($image_id)
-		->findOne();
+			->filterById($image_id)
+			->findOne();
 		
 		$posImage->setPosition($position)->save();
 		
+		$confImages = ConfiguratorImageQuery::create()
+			->filterByConfiguratorId($id)
+			->orderByPosition(Criteria::ASC)
+			->find();
+		
+		$i=1;
+		
+		foreach($confImages as $image) {
+			if($image->getId() == $image_id){
+				$image->setPosition($position)->save();
+			}
+			else {
+				if($i != $position) {
+					$image->setPosition($i)->save();
+				}
+				else {
+					$i++;
+					$image->setPosition($i)->save();
+				}
+				$i++;	
+			}
+		}	
 	}
 	
 	public function getImageListAjaxAction($id)
@@ -419,14 +500,15 @@ class FilterConfiguratorController extends BaseAdminController
 		return $this->render('includes/image-upload-list', $args);
 	}
 	
-	public function deleteAction($id){
+	public function deleteAction($id)
+	{
 		if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('FilterConfigurator'), AccessManager::UPDATE)) {
 			return $response;
 		}
 		
 		ConfiguratorQuery::create()
-		->filterById($id)
-		->delete();
+			->filterById($id)
+			->delete();
 		
 		$params = array();
 		

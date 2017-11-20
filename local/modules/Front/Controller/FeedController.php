@@ -114,7 +114,7 @@ class FeedController extends BaseFrontController {
 
         $cacheDir = $this->getCacheDir();
         $cacheKey = "feeds" . $lang . $context . $id . $format . $platform;
-        $cacheExpire = 486400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
+        $cacheExpire = 986400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
         
         $cacheDriver = new FilesystemCache($cacheDir);
         // if admin is NOT logged in and the flush is NOT set then use cached version 

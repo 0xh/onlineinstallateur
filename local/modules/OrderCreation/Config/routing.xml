@@ -34,4 +34,12 @@
 	<route id="admin.order.creation.amazon" path="/admin/createAmazon" methods="get">
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::createOrderActionAmazon</default>
     </route>
+    
+	<route id="admin.order.product.update" path="/admin/order-product/update" methods="POST">
+        <default key="_controller">OrderCreation\Controller\Admin\OrderUpdateAdminController::updateOrderProduct</default>
+    </route>
+    
+    <route id="admin.order.product.delete" path="/admin/order-product/delete" methods="POST">
+        <default key="_controller">OrderCreation\Controller\Admin\OrderUpdateAdminController::deleteOrderProduct</default>
+    </route>
 </routes>

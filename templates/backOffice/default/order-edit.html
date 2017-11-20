@@ -132,7 +132,19 @@
                                                     {$smarty.get.update_status_error_message}
                                                 </div>
                                             {/if}
+                                            
+                                            {if $smarty.get.update_order_product_error_message}
+                                                <div class='alert alert-danger'>
+                                                    {$smarty.get.update_order_product_error_message}
+                                                </div>
+                                            {/if}
 
+											{if $smarty.get.delete_order_product_error_message}
+                                                <div class='alert alert-danger'>
+                                                    {$smarty.get.delete_order_product_error_message}
+                                                </div>
+                                            {/if}
+                                            
                                             {hook name="order-edit.before-order-product-list" location="before-order-product-list" order_id=$order_id}
 
                                             <table class="table table-striped table-condensed table-left-aligned">
@@ -148,6 +160,7 @@
                                                        <th class="col-md-1 text-right">{intl l="Unit taxed price"}</th>
                                                        <th class="text-right">{intl l="Quantity"}</th>
                                                        <th class="col-md-1 text-right">{intl l="Taxed total"}</th>
+                                                       <th class="actions">{intl l="Actions"}</th>
                                                     </tr>
                                                 </thead>
 
@@ -165,40 +178,42 @@
                                                         {assign "realTotalPrice" $TOTAL_TAXED_PRICE}
                                                     {/if}
                                                     {hook name="order-edit.before-order-product-row" location="before-order-product-row" order_id=$order_id order_product_id=$ID}
+                                                    
+                                                    {loop type="product_sale_elements" name="product_sale_elements" id=$PRODUCT_SALE_ELEMENTS_ID}
+				                                		{assign "entireQuantity" $QUANTITY}
+				                                		{assign "productId" $PRODUCT_ID}
+				                                	{/loop}
+				                                	
                                                     <tr>
                                                         <td>
-                                                            {ifloop rel="my_product_loop"}
-                                                                {loop type="product" name="my_product_loop" visible="*" ref=$REF return_url=false}
-                                                                    <a href="{url path='/admin/products/update' product_id=$ID}">{$REF} - {$TITLE}</a>
-                                                                    {if $VIRTUAL}<span class="glyphicon glyphicon-download text-muted" title="{intl l='Virtual product'}"></span>{/if}
-                                                                {/loop}
-                                                                <dl class="dl-horizontal">
-                                                                    <dt>{intl l='Combination reference'}</dt>
-                                                                    <dd>{$PRODUCT_SALE_ELEMENTS_REF}</dd>
-                                                                </dl>
-                                                            {/ifloop}
-                                                            {elseloop rel="my_product_loop"}
-                                                                {* The product doesn't exist anymore *}
-                                                                {$TITLE}
-                                                                {if $VIRTUAL}<span class="glyphicon glyphicon-download text-muted"></span>{/if}
-                                                            {/elseloop}
-                                                            {ifloop rel="combinations"}
-                                                            <dl class="dl-horizontal">
-                                                                {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
-                                                                <dt>{$ATTRIBUTE_TITLE}</dt>
-                                                                <dd>{$ATTRIBUTE_AVAILABILITY_TITLE}</dd>
-                                                                {/loop}
-                                                            </dl>
-                                                            {/ifloop}
-                                                            {hook name="order-edit.product-list" location="order-product-list" order_id=$order_id order_product_id=$ID}
+                                                            <span class="hidden" data-field-class="js-product-title"  data-value="{$TITLE}"></span>
+                                                            <a href="{url path='/admin/products/update' product_id=$productId}">{$REF} - {$TITLE}</a>
+                                                            {if $VIRTUAL}<span class="glyphicon glyphicon-download text-muted" title="{intl l='Virtual product'}"></span>{/if}
+                                                           
+                                                           	<dl class="dl-horizontal">
+	                                                           	<dt>{intl l='Combination reference'}</dt>
+	                                                           	<dd>{$PRODUCT_SALE_ELEMENTS_REF}</dd>
+                                                           	</dl>
+                                                            
+                                                        	{hook name="order-edit.product-list" location="order-product-list" order_id=$order_id order_product_id=$ID}
                                                         </td>
                                                         {hook name="order-edit.order-product-table-row" location="order_edit_table_row" order_product_id={$ID} }
-                                                        <td class="text-right">{format_money number=$realPrice currency_id=$CURRENCY}</td>
+                                                        <td class="text-right" data-field-class="js-product-price"  data-value="{number_format($realPrice, 2, '.', '')}">{format_money number=$realPrice currency_id=$CURRENCY}</td>
                                                         <td class="text-right">{format_money number=$realTax currency_id=$CURRENCY}</td>
                                                         <td class="text-right">{format_money number=$realTaxedPrice currency_id=$CURRENCY}</td>
-                                                        <td class="text-right">{$QUANTITY}</td>
+                                                        <td class="text-right" data-field-class="js-product-quantity" data-value="{$QUANTITY}">{$QUANTITY}
+                                                        	<span id="entire-quantity" data-field-class="js-entire-quantity" data-value="{$entireQuantity}" class="hidden">
+                                                        </td>
                                                         <td class="text-right">{format_money number=$realTotalPrice currency_id=$CURRENCY}</td>
-                                                    </tr>
+                                                        <td class="text-right">
+				                                           <div class=" toolbar-primary  col-md-offset-5 text-center">
+				                                                {loop type="auth" name="can_change" role="ADMIN" resource="admin.order" access="UPDATE"}
+				                                                    <a title="{intl l='Edit this order product'}" class="js-update-order-product tool-item" data-order-product-id="{$ID}" href="#edit_order_product_dialog" data-toggle="modal"><span class="glyphicon glyphicon-edit"></span></a>
+				                                                    <a class="order-product-delete tool-item" title="{intl l='Delete this order product'}" href="#cancel_order_dialog" data-id="{$ID}" data-toggle="modal"><span class="glyphicon glyphicon-remove-sign"></span></a>    
+				                                                {/loop}
+				                                           </div>
+						                                </td>
+						                            </tr>
                                                     {hook name="order-edit.after-order-product-row" location="after-order-product-row" order_id=$order_id order_product_id=$ID}
                                                 {/loop}
                                                 </tbody>
@@ -707,6 +722,84 @@
 
     {/form}
     
+    {* Update an Order product *}
+
+    {form name="admin.order.edit.form"}
+        
+        {* Capture the dialog body, to pass it to the generic dialog *}
+        {capture "edit_order_product_dialog"}
+            
+            {form_hidden_fields}
+            
+            {form_field field='order_id'}
+                <input type="hidden" id="{$label_attr.for}" name="{$name}" value="{$order_id}">
+            {/form_field}
+                    
+            {form_field field='order_product_id'}
+                <input type="hidden" id="{$label_attr.for}" name="{$name}" class="js-order-product-id" value="{$value}">
+            {/form_field}
+
+            {form_field field='product_title'}
+                <div class="form-group {if $error}has-error{/if}">
+                    <label for="{$label_attr.for}" class="control-label">{$label} : </label>
+                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control js-product-title" value="{$value}" title="{$label}" placeholder="{intl l='Title'}">
+                </div>
+            {/form_field}
+
+            {form_field field='product_quantity'}
+                <div class="form-group {if $error}has-error{/if}">
+                    <label for="{$label_attr.for}" class="control-label">{$label} <span id="label_entire_quantity"></span>: </label>
+                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control js-product-quantity" value="{$value}" title="{$label}" placeholder="{intl l='Quantity'}">
+                </div>
+            {/form_field}
+
+            {form_field field='product_price'}
+                <div class="form-group {if $error}has-error{/if}">
+                    <label for="{$label_attr.for}" class="control-label">{$label} : </label>
+                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control js-product-price" value="{$value}" title="{$label}" placeholder="{intl l='Price'}">
+                </div>
+            {/form_field}
+
+        {/capture}
+    
+        {include
+            file = "includes/generic-create-dialog.html"
+
+            dialog_id    = "edit_order_product_dialog"
+            dialog_title = {intl l="Edit order product"}
+            dialog_body  = {$smarty.capture.edit_order_product_dialog nofilter}
+
+            dialog_ok_label     = {intl l="Confirm changes"}
+            dialog_cancel_label = {intl l="Cancel"}
+
+            form_action        = {url path="/admin/order-product/update" id=$order_id}
+            form_enctype       = {form_enctype}
+            form_error_message = $form_error_message
+            form_id = 'updateOrderProductForm'
+        }
+
+    {/form}
+    
+    {* Cancel order product confirmation dialog *}
+
+	{capture "cancel_order_dialog"}
+	    <input type="hidden" name="order_product_id" id="delete_order_product_id" />
+	    <input type="hidden" name="order_id" value="{$order_id}" />
+	{/capture}
+	
+	{include
+	    file = "includes/generic-confirm-dialog.html"
+	
+	    dialog_id       = "cancel_order_dialog"
+	    dialog_title    = {intl l="Delete an order product"}
+	    dialog_message  = {intl l="Do you really want to delete this order product ?"}
+	
+	    form_action         = {token_url path='/admin/order-product/delete'}
+	    form_content        = {$smarty.capture.cancel_order_dialog nofilter}
+	    form_id             = "cancel-order-form"
+	}
+    
+    
 {/block}
 
 {block name="javascript-initialization"}
@@ -721,6 +814,10 @@
 
     <script type="text/javascript">
 
+	    $(".order-product-delete").click(function(){
+	        $("#delete_order_product_id").val($(this).attr("data-id"));
+	    });
+    
         $(function() {
             // Atomatic ajax tab load, if data-href is defined.
             $('.nav-tabs a[data-href]').on('shown.bs.tab', function (ev) {
@@ -743,6 +840,7 @@
             });
 
             $(".js-update-order-address").click(function () {
+            	
                 $(".js-order-address-id").val(
                         $(this).data("address-id")
                 );
@@ -768,6 +866,42 @@
                     if ($field.data('field-class') == 'js-country') {
                         $formField.trigger("change");
                     }
+                });
+            });
+            
+            $(".js-update-order-product").click(function () { 
+                $(".js-order-product-id").val(
+                	$(this).data("order-product-id")
+                );
+     
+            	$(this).parents('tr').find('td').each(function (k, v) { 
+                    var $field = $(v),
+                        $formField,
+                        fieldValue;
+                  
+                    if ($field.data('field-class') || $field.find('span').data('field-class')) {
+                        
+                    	if($field.data('field-class') == 'js-product-quantity')
+                    		 $("#label_entire_quantity").text($field.find('#entire-quantity').data('value'));
+                    	
+	                    if ($field.data('value')) {
+	                        fieldValue = $field.data('value');
+	                    } 
+	                    else if($field.find('span').data('value')){ 
+	                        fieldValue = $field.find('span').data('value');
+	                    }
+	                    else{
+	                        fieldValue = $field.text();
+	                    }
+	
+	                    if ($field.data('field-class'))
+	                    	$formField = $('.' + $field.data('field-class'));
+	                    else if($field.find('span').data('field-class')) 
+	                    	$formField = $('.' + $field.find('span').data('field-class'));
+	                    
+	                    $formField.val(fieldValue);
+                    }
+                  
                 });
             });
         });

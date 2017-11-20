@@ -1,0 +1,15 @@
+{if $existing_order}
+	<div class=" block  block-contact">			 
+		<div class="block-content alert bg-danger">
+			<p>{intl l="Making a new payment might result in multiple payments for the same order. You should contact customer support:"}</p>
+			<ul>
+				<li class="contact-email">{intl l="support@hausfabrik.at"}</li>
+				  {if {config key="store_phone"} }
+			      	<li class="contact-phone">
+			            <a href="tel:{config key="store_phone"}" class="tel" itemprop="telephone">{config key="store_phone"}</a>
+			      	</li>
+				  {/if}
+			</ul>
+		</div>
+	</div>
+{/if}

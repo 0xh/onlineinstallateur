@@ -35,28 +35,9 @@ class AmazonAWSController extends BaseAdminController
 		die();
 	}
 	
-	public function correctDescription()
-	{
-		$products = AmazonProductDescTempQuery::create();
-		
-		if($products) {
-			foreach($products as $product) {
-				$updateDesc = AmazonProductDescTempQuery::create()
-					->filterById($product->getId())
-					->findOne();
-				
-				$description = $product->getDescription();
-				
-				$description = mb_convert_encoding ($description,"WINDOWS-1252");
-				
-				$updateDesc->setDescription($description)
-					->save();
-			}
-		}
-		die('done');
-	}
-	
-	public function saveDescriptionsFromAmazon() 
+	/* DEPRECATED - used for inserting description on existing products - production
+	 * 
+	 * public function saveDescriptionsFromAmazon() 
 	{	
 		$log = Tlog::getInstance();
 		
@@ -68,6 +49,7 @@ class AmazonAWSController extends BaseAdminController
 				$description = $this->getDescriptionFromAmazon($product->getEan());
 			
 				if($description) {
+					$description = mb_convert_encoding ($description,"WINDOWS-1252");
 					$updateDesc = AmazonProductDescTempQuery::create()
 									->filterByEan($product->getEan())
 									->findOne();
@@ -139,7 +121,8 @@ class AmazonAWSController extends BaseAdminController
 			return $this->getDescriptionFromAmazon($productId);
 		}
 	}
-	
+	 */
+				
 	public function getProductInfoFromAmazon($eanCode)
 	{
 		$log = Tlog::getInstance();
