@@ -38,4 +38,12 @@
         <requirement key="browser">[0|1]</requirement>
         <requirement key="offer_id">\d+</requirement>
     </route>
+    
+    <route id="admin.offer.product.update" path="/admin/offer-product/update" methods="POST">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateOfferProduct</default>
+    </route>
+    
+    <route id="admin.offer.product.delete" path="/admin/offer-product/delete" methods="POST">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::deleteOfferProduct</default>
+    </route>
 </routes>
