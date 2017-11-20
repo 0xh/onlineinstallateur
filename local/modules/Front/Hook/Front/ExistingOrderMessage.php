@@ -21,9 +21,9 @@ class ExistingOrderMessage extends BaseHook
 			$params["existing_order"] = 1;
 		}
 		
-		$event->add($this->render(
+	/* 	$event->add($this->render(
 				'existing-order-message.html' ,
 				$params
-				));
+				)); */
 	}
 }
