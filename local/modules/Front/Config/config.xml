@@ -23,4 +23,10 @@
             <tag name="router.register" priority="128"/>
         </service>
     </services>
+    
+    <hooks>
+    	<hook id="existing.order.message" class="Front\Hook\Front\ExistingOrderMessage">
+			<tag name="hook.event_listener" event="existing_order_message" type="front"  method="viewAction" />
+		</hook>
+    </hooks>
 </config>

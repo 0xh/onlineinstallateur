@@ -48,7 +48,8 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 					->filterByCartId($order->getCartId())
 					->findOne();
 				
-				$cartProductLocation->delete(); 
+				if($cartProductLocation)
+					$cartProductLocation->delete(); 
 			}
 		}
 		
