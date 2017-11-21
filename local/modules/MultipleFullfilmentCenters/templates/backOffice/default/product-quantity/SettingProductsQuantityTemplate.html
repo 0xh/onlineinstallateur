@@ -6,78 +6,75 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 	<div class="title title-without-tabs clearfix">{intl l='Dashboard:
 		Setting the product quantity' d='amazonintegration.bo.default'}</div>
 
-		<div class="txt-div" >
-			<div class="sidebar-search col-md-3">
-				<h5  id="search-label">{intl l="Search by Id" d="criteriasearch.fo.default"}</h5>
-		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
-		            <div class="input-group">
-		                <input type="text" class="form-control" id="search_by_id" name="search_by_id" placeholder="{intl l='Search by Id'}" value="{trim($smarty.get.search_by_id)}">
-		                <span class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-		                </span>
-		            </div>
-		        </form>
-		    </div>
-			<div class="sidebar-search col-md-3">
-				<h5  id="search-label">{intl l="Search by Ref" d="criteriasearch.fo.default"}</h5>
-		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
-		            <div class="input-group">
-		                <input type="text" class="form-control" id="search_by_ref" name="search_by_ref" placeholder="{intl l='Search by Ref'}" value="{trim($smarty.get.search_by_ref)}">
-		                <span class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-		                </span>
-		            </div>
-		        </form>
-		    </div>
-			<div class="sidebar-search col-md-3">
-				<h5  id="search-label">{intl l="Search by Ean" d="criteriasearch.fo.default"}</h5>
-		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
-		            <div class="input-group">
-		                <input type="text" class="form-control" id="search_by_ean" name="search_by_ean" placeholder="{intl l='Search by Ean'}" value="{trim($smarty.get.search_by_ean)}">
-		                <span class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-		                </span>
-		            </div>
-		        </form>
-		    </div>
-			<div class="sidebar-search col-md-3">
-				<h5  id="search-label">{intl l="Search by Product Title" d="criteriasearch.fo.default"}</h5>
-		        <form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">                                        
-		            <div class="input-group">
-		                <input type="text" class="form-control" id="search_by_title" name="search_by_title" placeholder="{intl l='Search by Product Title'}" value="{trim($smarty.get.search_by_title)}">
-		                <span class="input-group-btn">
-		                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
-		                </span>
-		            </div>
-		        </form>
-		    </div>
-		</div>
-		<div class="col-sm-2">
-			<h5  id="search-label">{intl l="Select fulfilment center:" d="criteriasearch.fo.default"}</h5>
-			<select class='form-control col-sm-1' name="fulfilment_center" id="change_fulfilment_center" >
-					<option value="-1">Select fulfilment center</option>
-		      		{loop type="fulfilment_center" name="fulfilment_center"}
-		           	<option value="{$ID}" {if $smarty.get.change_fulfilment_center|strstr:"{$ID}"}selected{/if}>{$NAME}</option>
-		            {/loop}
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
-			<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity">
-					<option value="-1">All</option>
-					<option value="1" {if $smarty.get.change_fulfilment_center_qunatity == 1}selected{/if}>Empty </option>
-					<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
-			</select>
-		</div>
-		<div class="col-sm-2">
-			<h5  id="search-label">{intl l="Select in/not center:" d="criteriasearch.fo.default"}</h5>
-			<select class='form-control col-sm-1' name="is_in_fulfilment_center" id="is_in_fulfilment_center">
-					<option value="0">All</option>
-					<option value="1" {if $smarty.get.is_in_fulfilment_center == 1}selected{/if}>Is in Center</option>
-					<option value="2" {if $smarty.get.is_in_fulfilment_center == 2}selected{/if}>Not in Center</option>
-			</select>
-		</div>
-
+		<form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">
+			<div class="txt-div" >
+				<div class="sidebar-search col-md-3">
+					<h5  id="search-label">{intl l="Search by Id" d="criteriasearch.fo.default"}</h5>
+			            <div class="input-group">
+			                <input type="text" class="form-control" id="search_by_id" name="search_by_id" placeholder="{intl l='Search by Id'}" value="{trim($smarty.get.search_by_id)}">
+			                <span class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			                </span>
+			            </div>
+			    </div>
+				<div class="sidebar-search col-md-3">
+					<h5  id="search-label">{intl l="Search by Ref" d="criteriasearch.fo.default"}</h5>
+			            <div class="input-group">
+			                <input type="text" class="form-control" id="search_by_ref" name="search_by_ref" placeholder="{intl l='Search by Ref'}" value="{trim($smarty.get.search_by_ref)}">
+			                <span class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			                </span>
+			            </div>
+			    </div>
+				<div class="sidebar-search col-md-3">
+					<h5  id="search-label">{intl l="Search by Ean" d="criteriasearch.fo.default"}</h5>
+			            <div class="input-group">
+			                <input type="text" class="form-control" id="search_by_ean" name="search_by_ean" placeholder="{intl l='Search by Ean'}" value="{trim($smarty.get.search_by_ean)}">
+			                <span class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			                </span>
+			            </div>
+			    </div>
+				<div class="sidebar-search col-md-3">
+					<h5  id="search-label">{intl l="Search by Product Title" d="criteriasearch.fo.default"}</h5>
+			            <div class="input-group">
+			                <input type="text" class="form-control" id="search_by_title" name="search_by_title" placeholder="{intl l='Search by Product Title'}" value="{trim($smarty.get.search_by_title)}">
+			                <span class="input-group-btn">
+			                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			                </span>
+			            </div>
+			    </div>
+			</div>
+			<div class="col-sm-2">
+				<h5  id="search-label">{intl l="Select fulfilment center:" d="criteriasearch.fo.default"}</h5>
+				<select class='form-control col-sm-1' name="fulfilment_center" id="change_fulfilment_center" >
+						<option value="-1">Select fulfilment center</option>
+			      		{loop type="fulfilment_center" name="fulfilment_center"}
+			           	<option value="{$ID}" {if $smarty.get.fulfilment_center|strstr:"{$ID}"}selected{/if}>{$NAME}</option>
+			            {/loop}
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
+				<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity">
+						<option value="-1">All</option>
+						<option value="1" {if $smarty.get.change_fulfilment_center_qunatity == 1}selected{/if}>Empty </option>
+						<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<h5  id="search-label">{intl l="Select in/not center:" d="criteriasearch.fo.default"}</h5>
+				<select class='form-control col-sm-1' name="is_in_fulfilment_center" id="is_in_fulfilment_center">
+						<option value="0">All</option>
+						<option value="1" {if $smarty.get.is_in_fulfilment_center == 1}selected{/if}>Is in Center</option>
+						<option value="2" {if $smarty.get.is_in_fulfilment_center == 2}selected{/if}>Not in Center</option>
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<h5  id="search-label">{intl l="Search:" d="criteriasearch.fo.default"}</h5>
+				<button type="submit" id="" class="btn btn-info">Search</button>
+			</div>
+		</form>
 		<form action="{url path='/admin/module/multiplefulfilmentcenters/update-quantity-products'}">
 			<div class="txt-div" >
 				<div class="col-sm-1">
@@ -109,15 +106,20 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 					<td>{$ean_code}</td>
 					<td>{$fulfilment_center_name}</td>
 					<td>{if $quantity } {$quantity} {else} 0 {/if}</td>
-					<td class="quantity"><input type="text" class="form-control" {if !isset($smarty.get.change_fulfilment_center) or $smarty.get.change_fulfilment_center < 0} disabled="disabled" {/if} name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
+					<td class="quantity"><input type="text" class="form-control" {if !isset($smarty.get.fulfilment_center) or $smarty.get.fulfilment_center < 0} disabled="disabled" {/if} name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
 				</tr>
                {/loop}
                </tbody>
             </table>
-            <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.change_fulfilment_center}">
+            <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.fulfilment_center}">
             <input type="hidden" name="change_fulfilment_center_qunatity_val" value="{$smarty.get.change_fulfilment_center_qunatity}">
             <input type="hidden" name="is_in_fulfilment_center_val" value="{$smarty.get.is_in_fulfilment_center}">
             <input type="hidden" name="list_prods_to_update_quantity" id="list_prods_to_update_quantity" value="">
+            <input type="hidden" name="search_by_id" value="{$smarty.get.search_by_id}">
+            <input type="hidden" name="search_by_ref" value="{$smarty.get.is_in_fulfilment_center}">
+            <input type="hidden" name="search_by_ean" value="{$smarty.get.search_by_ref}">
+            <input type="hidden" name="search_by_title" value="{$smarty.get.search_by_title}">
+            <input type="hidden" name="nr_page" id="nr_page" value="{if $smarty.get.page} {$smarty.get.page} {else} 1 {/if}">
 	         <tfoot>
 	             <tr>
 	                 <td colspan="100">
@@ -125,7 +127,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 	                     file = "includes/pagination.html"
 	                     loop_ref       = "fulfilment.setting.product.quantity"
 	                     max_page_count = 100
-	                     page_url       = {url path="admin/module/multiplefulfilmentcenters/setting-products?change_fulfilment_center={$smarty.get.change_fulfilment_center}" }
+	                     page_url       = {url path="admin/module/multiplefulfilmentcenters/setting-products?fulfilment_center={$smarty.get.fulfilment_center}&change_fulfilment_center_qunatity={$smarty.get.change_fulfilment_center_qunatity}&is_in_fulfilment_center={$smarty.get.is_in_fulfilment_center}" }
 	                     }
 	                 </td>
 	             </tr>

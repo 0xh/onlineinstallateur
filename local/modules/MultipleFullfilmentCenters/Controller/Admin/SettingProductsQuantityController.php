@@ -26,15 +26,27 @@ class SettingProductsQuantityController extends BaseAdminController
 	    $fulfilmentCenterId = $_GET['change_fulfilment_center_val'];
 	    $fulfilmentCenterQuantity = $_GET['change_fulfilment_center_qunatity_val'];
 	    $isInFulfilmentCenter = $_GET['is_in_fulfilment_center_val'];
+	    $nrPage = trim($_GET['nr_page']);
+	    
+	    $searchById = isset($_GET["search_by_id"]) ? $_GET["search_by_id"] : '';
+	    $searchByRef = isset($_GET["search_by_ref"]) && $_GET["search_by_ref"] > 0 ? $_GET["search_by_ref"] : '';
+	    $searchByEan = isset($_GET["search_by_ean"]) && $_GET["search_by_ref"] > 0 ? $_GET["search_by_ean"] : '';
+	    $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : '';
+	    
 	    
 	    foreach ($idToUpdateQuantity as $id)
 	    {
 	        $this->updateProdQuantity($id, $_GET['quantity_'.$id], $fulfilmentCenterId);
 	    }
 
-	    return $this->generateRedirect("/admin/module/multiplefulfilmentcenters/setting-products?change_fulfilment_center=" 
+	    return $this->generateRedirect("/admin/module/multiplefulfilmentcenters/setting-products?fulfilment_center=" 
 	        . $fulfilmentCenterId . "&change_fulfilment_center_qunatity=" . $fulfilmentCenterQuantity 
-	        . "&is_in_fulfilment_center=" . $isInFulfilmentCenter, 303);
+	        . "&is_in_fulfilment_center=" . $isInFulfilmentCenter. "&page=" .$nrPage
+	        . "&search_by_id=" . $searchById
+	        . "&search_by_ref=" . $searchByRef
+	        . "&search_by_ean=" . $searchByEan
+	        . "&search_by_title=" . $searchByTitle
+	        , 303);
 	}
 	
 	protected function updateProdQuantity($idProd, $quantity, $fulfilmentCenterId)
