@@ -6,6 +6,7 @@ use Thelia\Controller\Admin\BaseAdminController;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
+use Thelia\Model\ProductSaleElementsQuery;
 
 class SettingProductsQuantityController extends BaseAdminController
 {
@@ -51,6 +52,27 @@ class SettingProductsQuantityController extends BaseAdminController
 	    {
 	        $this->insertProdQuantity($idProd, $quantity, $fulfilmentCenterId);
 	    }
+	    
+	    $this->updateEntireStock($idProd);
+	}
+	
+	protected function updateEntireStock($product_id) {
+		
+		$entireProductStock = FulfilmentCenterProductsQuery::create()
+			->findByProductId($product_id);
+		
+		$total = 0;
+		if($entireProductStock)
+			foreach ($entireProductStock as $i => $value) {
+				$total += $value->getProductStock();
+			}
+		
+		$productFinalStock =  ProductSaleElementsQuery::create()
+			->findOneByProductId($product_id);
+		
+		$productFinalStock
+			->setQuantity($total)
+			->save();
 	}
 	
 	protected function insertProdQuantity($idProd, $quantity, $fulfilmentCenterId)
