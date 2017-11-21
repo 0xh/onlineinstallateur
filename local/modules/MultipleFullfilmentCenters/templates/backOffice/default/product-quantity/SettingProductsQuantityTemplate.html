@@ -6,7 +6,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 	<div class="title title-without-tabs clearfix">{intl l='Dashboard:
 		Setting the product quantity' d='amazonintegration.bo.default'}</div>
 
-		<form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}">
+		<form action="{url path='/admin/module/multiplefulfilmentcenters/setting-products'}" id="search-data">
 			<div class="txt-div" >
 				<div class="sidebar-search col-md-3">
 					<h5  id="search-label">{intl l="Search by Id" d="criteriasearch.fo.default"}</h5>
@@ -69,10 +69,6 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 						<option value="1" {if $smarty.get.is_in_fulfilment_center == 1}selected{/if}>Is in Center</option>
 						<option value="2" {if $smarty.get.is_in_fulfilment_center == 2}selected{/if}>Not in Center</option>
 				</select>
-			</div>
-			<div class="col-sm-2">
-				<h5  id="search-label">{intl l="Search:" d="criteriasearch.fo.default"}</h5>
-				<button type="submit" id="" class="btn btn-info">Search</button>
 			</div>
 		</form>
 		<form action="{url path='/admin/module/multiplefulfilmentcenters/update-quantity-products'}">

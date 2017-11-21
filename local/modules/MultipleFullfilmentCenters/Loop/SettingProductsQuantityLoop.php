@@ -65,15 +65,6 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
         $searchByRef = isset($_GET["search_by_ref"]) ? $_GET["search_by_ref"] : false;
         $searchByEan = isset($_GET["search_by_ean"]) ? $_GET["search_by_ean"] : false;
         $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : false;
-
-//         var_dump($searchById);
-//         var_dump($searchByRef);
-//         var_dump($searchByEan);
-//         var_dump($searchByTitle);
-//         var_dump($changeFulfilmentCenter);
-//         var_dump($changeFulfilmentCenterQuantity);
-//         var_dump($isInFulfilmentCenter);
-//         var_dump($_GET);
         
         $query = ProductQuery::create()
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
@@ -114,19 +105,15 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
         }
         
         if ($searchById)
-//             $query = $this->searchByID($searchById, $query);
             $query = $query->where(ProductTableMap::ID.' = ?', $searchById, \PDO::PARAM_STR);
         
         if ($searchByRef)
-//             $query = $this->searchByRef($searchByRef, $query);
             $query = $query->where(ProductTableMap::REF.' = ?', $searchByRef, \PDO::PARAM_STR);
 
         if ($searchByEan)
-//             $query = $this->searchByEan($searchByEan, $query);
             $query = $query->where(ProductSaleElementsTableMap::EAN_CODE.' = ?', $searchByEan, \PDO::PARAM_STR);
         
         if ($searchByTitle)
-//             $query = $this->searchByTitle($searchByTitle, $query);
             $query = $query->where(ProductI18nTableMap::TITLE.' = ?', $searchByTitle, \PDO::PARAM_STR);
         
         $query = $query->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
