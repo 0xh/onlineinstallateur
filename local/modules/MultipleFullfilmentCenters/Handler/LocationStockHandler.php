@@ -21,11 +21,12 @@ class LocationStockHandler
 			->useFulfilmentCenterQuery()
 			->withColumn(FulfilmentCenterTableMap::NAME,'CenterName')
 			->endUse()
-			->filterByProductId($productId)
-			->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart);
+			->filterByProductId($productId);
 			
 		if($hideVirtualCenter) {
-			$stock->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID > 1')
+			$stock
+				->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart)
+				->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID > 1')
 				->find();
 		}
 		else {
