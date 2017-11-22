@@ -18,7 +18,8 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 	{
 		return new ArgumentCollection(
 				Argument::createIntTypeArgument("id"),
-				Argument::createIntTypeArgument("quantity")
+				Argument::createIntTypeArgument("quantity"),
+				Argument::createIntTypeArgument("hide_virtual_center")
 				);
 	}
 	
@@ -33,12 +34,17 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 		
 		if($this->getQuantity()) 
 			$quantityCart = $this->getQuantity();
+		// set quantity cart to 1, so LocationStockHandler->getStockLocationsForProduct should retrieve only the locations with stock available
 		else 
-			// set quantity cart to 1, so LocationStockHandler->getStockLocationsForProduct should retrieve only the locations with stock available
 			$quantityCart = '1';
 		
+		$hideVirtualCenter = '';
+		if($this->getHideVirtualCenter()){
+			$hideVirtualCenter = 1; 
+		}
+		
 		$handler = new LocationStockHandler();
-		$stockLocation = $handler->getStockLocationsForProduct($productId, $quantityCart);
+		$stockLocation = $handler->getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter);
 		return $stockLocation;
 	}	
 	

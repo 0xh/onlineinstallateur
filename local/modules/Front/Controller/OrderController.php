@@ -48,6 +48,7 @@ use Thelia\Model\OrderProductQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 
 /**
  * Class OrderController
@@ -203,7 +204,27 @@ class OrderController extends BaseFrontController
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_ADDRESS, $orderEvent);
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
-
+            
+            // fulfill order_local_pickup with product and virtual center - hausfabrik
+            $cartItems = $cart->getCartItems();
+           
+            foreach ($cartItems as $cartItem) {
+            	
+            	$cartProductLocation = OrderLocalPickupQuery::create()
+            		->filterByProductId($cartItem->getProductId())
+            		->filterByCartId($cartItem->getCartId())
+	            	->findOneOrCreate();
+            	
+	            $fulfilmentCenter = 1;
+	            
+	            if($cartProductLocation->getFulfilmentCenterId() && $deliveryModuleId == 49)
+	            	$fulfilmentCenter = $cartProductLocation->getFulfilmentCenterId();
+	            
+	            $cartProductLocation->setFulfilmentCenterId($fulfilmentCenter)
+            		->setQuantity($cartItem->getQuantity())
+	            	->save(); 
+            }
+            
             return $this->generateRedirectFromRoute("order.invoice");
 
         } catch (FormValidationException $e) {

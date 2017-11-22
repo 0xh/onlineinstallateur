@@ -14,7 +14,7 @@ class LocationStockHandler
 	 * @param $productId, $quantityCart
 	 * @return array
 	 */
-	public function getStockLocationsForProduct($productId, $quantityCart)
+	public function getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter)
 	 {  
 		$stock = FulfilmentCenterProductsQuery::create()
 			->addSelfSelectColumns()
@@ -22,8 +22,15 @@ class LocationStockHandler
 			->withColumn(FulfilmentCenterTableMap::NAME,'CenterName')
 			->endUse()
 			->filterByProductId($productId)
-			->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart)
-			->find();
+			->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart);
+			
+		if($hideVirtualCenter) {
+			$stock->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID > 1')
+				->find();
+		}
+		else {
+			$stock->find();
+		}
 		
 		foreach ($stock as $i => $value) {
 			$stockProduct[$i]["id"] = $value->getId();
