@@ -225,8 +225,9 @@ class OrderController extends BaseFrontController
 		            	->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
 		            	->findOne();
 	            	
-		           	if($productCenter->getProductStock() >= $cartItem->getQuantity())
-	            		$fulfilmentCenter = $cartProductLocation->getFulfilmentCenterId();
+		            if($productCenter)
+			           	if($productCenter->getProductStock() >= $cartItem->getQuantity())
+		            		$fulfilmentCenter = $cartProductLocation->getFulfilmentCenterId();
 	            	
 	            }
 	            
