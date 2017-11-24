@@ -11,52 +11,26 @@ use Thelia\Log\Tlog;
  */
 class StripePaymentLog
 {
-    const EMERGENCY = 'EMERGENCY';
-    const ALERT     = 'ALERT';
-    const CRITICAL  = 'CRITICAL';
-    const ERROR     = 'ERROR';
-    const WARNING   = 'WARNING';
-    const NOTICE    = 'NOTICE';
-    const INFO      = 'INFO';
-    const DEBUG     = 'DEBUG';
-    const LOGCLASS = "\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile";
-
-    /** @var Tlog $log */
-    protected $log;
-
-    /**
-     * Log a message
-     *
-     * @param string $message  Message
-     * @param string $severity EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG
-     * @param string $category Category
-     */
-    public function logText($message, $severity = 'ALERT', $category = 'stripe')
+    /* @var Tlog $log */
+    protected static $logger;
+    
+    public function logText($message)
     {
-        $this->setTLogStripe();
-        $msg = "$category.$severity: $message";
-        $this->log->info($msg);
-        // Back to previous state
-        $this->getBackToPreviousState();
+        self::setLogger()->error($message);
     }
-
-    /**
-     * @return Tlog
-     */
-    protected function setTLogStripe()
+    
+    public function setLogger()
     {
-        /*
-         * Write Log
-         */
-        $this->log = Tlog::getInstance();
-        $this->log->setPrefix("#LEVEL: #DATE #HOUR: ");
-        $this->log->setDestinations(self::LOGCLASS);
-        $this->log->setConfig(self::LOGCLASS, 0, THELIA_ROOT . "log" . DS . "log-stripe.txt");
-        $this->log->setLevel(Tlog::ERROR);
-    }
-
-    protected function getBackToPreviousState()
-    {
-        $this->log->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+        if (self::$logger == null) {
+            self::$logger = Tlog::getNewInstance();
+            
+            $logFilePath = THELIA_LOG_DIR . DS . "log-stripe.txt";
+            
+            self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+            self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setLevel(Tlog::ERROR);
+        }
+        return self::$logger;
     }
 }
