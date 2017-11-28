@@ -57,7 +57,7 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
     public function buildModelCriteria()
     {
 
-        $changeFulfilmentCenter = (isset($_GET["change_fulfilment_center"])) ? $_GET["change_fulfilment_center"] : -1;
+        $changeFulfilmentCenter = (isset($_GET["fulfilment_center"])) ? $_GET["fulfilment_center"] : -1;
         $changeFulfilmentCenterQuantity = (isset($_GET["change_fulfilment_center_qunatity"])) ? $_GET["change_fulfilment_center_qunatity"] : -1;
         $isInFulfilmentCenter = (isset($_GET["is_in_fulfilment_center"])) ? $_GET["is_in_fulfilment_center"] : -1;
         
@@ -65,7 +65,7 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
         $searchByRef = isset($_GET["search_by_ref"]) ? $_GET["search_by_ref"] : false;
         $searchByEan = isset($_GET["search_by_ean"]) ? $_GET["search_by_ean"] : false;
         $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : false;
-
+        
         $query = ProductQuery::create()
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
                 ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
@@ -105,16 +105,16 @@ class SettingProductsQuantityLoop extends BaseI18nLoop implements PropelSearchLo
         }
         
         if ($searchById)
-            $query = $this->searchByID($searchById, $query);
+            $query = $query->where(ProductTableMap::ID.' = ?', $searchById, \PDO::PARAM_STR);
         
         if ($searchByRef)
-            $query = $this->searchByRef($searchByRef, $query);
+            $query = $query->where(ProductTableMap::REF.' = ?', $searchByRef, \PDO::PARAM_STR);
 
         if ($searchByEan)
-            $query = $this->searchByEan($searchByEan, $query);
+            $query = $query->where(ProductSaleElementsTableMap::EAN_CODE.' = ?', $searchByEan, \PDO::PARAM_STR);
         
         if ($searchByTitle)
-            $query = $this->searchByTitle($searchByTitle, $query);
+            $query = $query->where(ProductI18nTableMap::TITLE.' = ?', $searchByTitle, \PDO::PARAM_STR);
         
         $query = $query->addJoin(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
                     ->withColumn(FulfilmentCenterTableMap::NAME, 'fulfilment_center_name' );

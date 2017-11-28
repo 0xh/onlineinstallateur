@@ -269,6 +269,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                         $lang = $arrCreateOrder['lang'];
                         $newOrder = $arrCreateOrder['order'];
                         $orderId = $newOrder->getId();
+                        $marketplace = $arrCreateOrder['marketplace'];
                         
                         // Insert order from amazon to amazon_orders table
                         $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
@@ -294,20 +295,25 @@ class AmazonIntegrationContoller extends BaseAdminController
     	                    		if(isset($orderProduct->ShippingPrice->Amount))
     	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
     	                    		
-    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
+    	                    			$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace);
     	                    	}
     	                    }
     	                    else {     
     	                    	if(isset($orderProduct->ShippingPrice->Amount))
     	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
     	                    	
-    	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId);
+    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace);
     	                    }
                         }
                         
-                        $taxPostage = 0.2 * $totalPostage;
+                        if($marketplace == 'DE') {
+                        	$taxPostage = round(($totalPostage/1.19)*0.19,2);
+                        }
+                        else{
+                        	$taxPostage = round(($totalPostage/1.2)*0.2,2);
+                        }
                         
-                        $newOrder->setPostage($totalPostage - $taxPostage)
+                        $newOrder->setPostage($totalPostage)
                         	->setPostageTax($taxPostage)
                         	->save($con);
                     }
@@ -581,6 +587,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->setPostage('')
     		->setPostageTax('')
     		->setInvoiceDate($order->PurchaseDate)
+    		->setVersionCreatedBy('amazonimporter.1')
     		->setDispatcher($this->getDispatcher())
     		;
     			
@@ -588,7 +595,8 @@ class AmazonIntegrationContoller extends BaseAdminController
     	
     	return array(
     			'lang' => $lang,
-    			'order' => $newOrder
+    			'order' => $newOrder,
+    			'marketplace' => $marketplace
     	);
     }
     
@@ -642,7 +650,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	$amazonOrder->save($con);
     }
     
-    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId) {
+    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace) {
     	
     	$productId = ProductAmazonQuery::create()
     		->select('product_id')
@@ -700,8 +708,14 @@ class AmazonIntegrationContoller extends BaseAdminController
     		$unitPrice = 1;
     	}
     	
-    	$tax = 0.2 * $unitPrice;
-    	$priceWithoutTax = $unitPrice - $tax;
+    	if($marketplace == 'DE') {
+    		$tax = round(($unitPrice/1.19)*0.19,2);
+    		$priceWithoutTax = $unitPrice - $tax;
+     	}
+     	else {
+     		$tax = 0.2 * $unitPrice;
+     		$priceWithoutTax = $unitPrice - $tax;
+     	}
     	
     	$newOrderProduct = new OrderProduct();
     	$newOrderProduct

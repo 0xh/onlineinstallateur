@@ -94,7 +94,7 @@ class ProductDefaultSaleElementUpdateForm extends ProductSaleElementUpdateForm
         
         
         //hausfabrik
-        ->add("listen_price", "integer", array(
+        ->add("listen_price", "number", array(
                 "label"      => Translator::getInstance()->trans("List price"),
                 "label_attr" => array("for" => "listen_price"),
         ))

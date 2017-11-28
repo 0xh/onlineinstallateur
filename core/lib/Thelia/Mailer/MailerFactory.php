@@ -146,6 +146,35 @@ class MailerFactory
             $messageParameters
         );
     }
+    
+    /**
+     * Send a message to a specific mail set in configuration
+     *
+     * @param string $messageCode
+     * @param array  $messageParameters an array of (name => value) parameters that will be available in the message.
+     */
+    public function sendEmailOrderFailed($messageCode, $messageParameters = [])
+    {
+    	//$storeName = ConfigQuery::getStoreName();
+    	
+    	// Build the list of email recipients
+    	//$recipients = ConfigQuery::getNotificationEmailsList();
+    	
+    	$to = [];
+ 
+    	/* foreach ($recipients as $recipient) {
+    		$to[$recipient] = $storeName;
+    	} */
+    	
+    	$to['alis.stranici@sepa.at'] = 'hausfabrik';
+    	$from['alis.stranici1@sepa.at'] = 'hausfabrik1';
+    	$this->sendEmailMessage(
+    			$messageCode,
+    			$from,
+    			$to,
+    			$messageParameters
+    			);
+    }
 
     /**
      * Send a message to the customer.

@@ -48,6 +48,8 @@ use Thelia\Model\OrderProductQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 
 /**
  * Class OrderController
@@ -56,6 +58,7 @@ use Thelia\Module\Exception\DeliveryException;
  */
 class OrderController extends BaseFrontController
 {
+	
     /**
      * Check if the cart contains only virtual products.
      */
@@ -203,7 +206,37 @@ class OrderController extends BaseFrontController
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_ADDRESS, $orderEvent);
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_DELIVERY_MODULE, $orderEvent);
             $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SET_POSTAGE, $orderEvent);
-
+            
+            // fulfill order_local_pickup with product and virtual center - hausfabrik
+            $cartItems = $cart->getCartItems();
+           
+            foreach ($cartItems as $cartItem) {
+            	
+            	$cartProductLocation = OrderLocalPickupQuery::create()
+            		->filterByProductId($cartItem->getProductId())
+            		->filterByCartId($cartItem->getCartId())
+	            	->findOneOrCreate();
+            	
+	            $fulfilmentCenter = 1;
+	            
+	            if($cartProductLocation->getFulfilmentCenterId() && $deliveryModuleId == 49) {
+	            	
+	            	$productCenter = FulfilmentCenterProductsQuery::create()
+		            	->filterByProductId($cartItem->getProductId())
+		            	->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
+		            	->findOne();
+	            	
+		            if($productCenter)
+			           	if($productCenter->getProductStock() >= $cartItem->getQuantity())
+		            		$fulfilmentCenter = $cartProductLocation->getFulfilmentCenterId();
+	            	
+	            }
+	            
+	            $cartProductLocation->setFulfilmentCenterId($fulfilmentCenter)
+            		->setQuantity($cartItem->getQuantity())
+	            	->save(); 
+            }
+            
             return $this->generateRedirectFromRoute("order.invoice");
 
         } catch (FormValidationException $e) {
@@ -333,7 +366,7 @@ class OrderController extends BaseFrontController
         $orderEvent = $this->getOrderEvent();
 
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_PAY, $orderEvent);
-
+   
         $placedOrder = $orderEvent->getPlacedOrder();
 
         if (null !== $placedOrder && null !== $placedOrder->getId()) {
@@ -393,14 +426,14 @@ class OrderController extends BaseFrontController
 
 
     public function orderFailed($order_id, $message)
-    {
+    { 
         if (empty($order_id)) {
             // Fallback to request parameter if the method parameter is empty.
             $order_id = $this->getRequest()->get('order_id');
         }
 
         $failedOrder = OrderQuery::create()->findPk($order_id);
-
+        
         if (null !== $failedOrder) {
             $customer = $this->getSecurityContext()->getCustomerUser();
 
@@ -418,6 +451,10 @@ class OrderController extends BaseFrontController
         } else {
             Tlog::getInstance()->warning("Failed order ID '$order_id' not found.");
         }
+        
+        // send email with failed orders
+        $orderEvent = $this->getOrderEvent();
+        $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SEND_EMAIL_ORDER_FAILED, $orderEvent, $message);
 
         $this->getParserContext()
             ->set("failed_order_id", $order_id)
@@ -606,4 +643,5 @@ class OrderController extends BaseFrontController
 
         return $deliveryAddress;
     }
+
 }

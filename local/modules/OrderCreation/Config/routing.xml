@@ -29,11 +29,6 @@
     <route id="admin.order.creation.country.request" path="/admin/module/OrderCreation/update/country/request" methods="POST">
         <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::updateCountryInRequest</default>
     </route>
-
-	<!--CREATE ORDER FROM AMAZON  --> 
-	<route id="admin.order.creation.amazon" path="/admin/createAmazon" methods="get">
-        <default key="_controller">OrderCreation\Controller\Admin\OrderCreationAdminController::createOrderActionAmazon</default>
-    </route>
     
 	<route id="admin.order.product.update" path="/admin/order-product/update" methods="POST">
         <default key="_controller">OrderCreation\Controller\Admin\OrderUpdateAdminController::updateOrderProduct</default>
