@@ -167,10 +167,10 @@ class MailerFactory
     	} */
     	
     	$to['alis.stranici@sepa.at'] = 'hausfabrik';
-    
+    	$from['alis.stranici1@sepa.at'] = 'hausfabrik1';
     	$this->sendEmailMessage(
     			$messageCode,
-    			'OrderFailed Hausfabrik',
+    			$from,
     			$to,
     			$messageParameters
     			);
