@@ -8,6 +8,7 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use FilterConfigurator\Model\ConfiguratorI18nQuery;
+use FilterConfigurator\Model\ConfiguratorQuery;
 
 class FilterConfigurator extends BaseLoop implements ArraySearchLoopInterface
 {
@@ -27,12 +28,20 @@ class FilterConfigurator extends BaseLoop implements ArraySearchLoopInterface
 			->filterById($this->getId())
 			->filterByLocale($this->getLocale())
 			->findOneOrCreate();
-
+        
 	 	$configurator[0]["id"] = $search->getId();
 	 	$configurator[0]["title"] = $search->getTitle();
 	 	$configurator[0]["decription"] = $search->getDescription();
 	 	$configurator[0]["chapo"] = $search->getChapo();
+	 	
+	 	$search2 = \FilterConfigurator\Model\Base\ConfiguratorQuery::create()
+	 	     ->filterbyId($this->getId())
+	 	     ->findOneOrCreate();
+	 	
+	 	$search2->getCategoryId();
 
+	 	$configurator[0]["category"] = $search2->getCategoryId();
+	 
 		return $configurator;
 	}
 	
@@ -51,7 +60,8 @@ class FilterConfigurator extends BaseLoop implements ArraySearchLoopInterface
 				->set("TITLE", $configurator["title"])
 				->set("CHAPO", $configurator["chapo"])
 				->set("DESCRIPTION", $configurator["decription"])
-				->set("POSITION",$configurator["position"]);
+				->set("POSITION",$configurator["position"])
+				->set("CATEGORY",$configurator["category"]);
 			
 			$loopResult->addRow($row);
 		}

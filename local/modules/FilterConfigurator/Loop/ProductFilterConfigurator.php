@@ -23,6 +23,7 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
     /**
      *
      * return Thelia\Core\Template\Element\LoopResult
+     * 
      */
     public function parseResults(LoopResult $loopResult)
     {
@@ -30,7 +31,8 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
              $loopResultRow = new LoopResultRow($listing);
              $loopResultRow->set("CONFIGURATOR_ID", $listing->getId())
                            ->set("TITLE", $listing->getVirtualColumn('TITLE'))
-                           ->set("POSITION",$listing->getPosition()); 
+                           ->set("POSITION",$listing->getPosition())
+                           ->set("CATEGORY", $listing->getCategoryId());
              
              $loopResult->addRow($loopResultRow);
         }
@@ -38,6 +40,7 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
         return $loopResult;
     }
 
+    //  list the filter configurators
     public function buildModelCriteria()
     {
         $search = ConfiguratorQuery::create()

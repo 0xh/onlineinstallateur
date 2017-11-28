@@ -39,7 +39,7 @@ class FilterConfiguratorRelation extends BaseLoop implements ArraySearchLoopInte
 	/**
 	 * @param LoopResult $loopResult
 	 *
-	 * @return LoopResult
+	 * if RELATION, mark as selected the features in dropdown
 	 */
 	public function parseResults(LoopResult $loopResult)
 	{

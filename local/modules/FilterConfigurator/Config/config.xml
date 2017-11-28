@@ -8,8 +8,11 @@
         <loop name="feature_av" class="FilterConfigurator\Loop\FeatureAv" />
         <loop name="image_configurator" class="FilterConfigurator\Loop\Image" />
         <loop name="product_filter_configuration" class="FilterConfigurator\Loop\ProductFilterConfigurator" />
-        <loop name="filter_configurator" class="FilterConfigurator\Loop\FilterConfigurator" />
+        <loop name="filter_configurator" class="FilterConfigurator\Loop\FilterConfigurator" />        
         <loop name="configurator_filter_relation" class="FilterConfigurator\Loop\FilterConfiguratorRelation" />
+        <loop name="category_configurator" class="FilterConfigurator\Loop\FilterCategoryConfigurator" />
+        <loop name="category_configurator_details" class="FilterConfigurator\Loop\FilterCategoryConfiguratorDetails" />
+        <loop name="filter_features_value" class="FilterConfigurator\Loop\FilterFeaturesValue" />
     </loops>
 
     <forms>

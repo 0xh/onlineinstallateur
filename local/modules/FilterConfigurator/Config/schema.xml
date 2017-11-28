@@ -5,13 +5,13 @@
 
     <table name="configurator" idMethod="native" phpName="Configurator"  namespace="FilterConfigurator\Model">
         <column autoIncrement="true" name="id" phpName="Id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="category_id" phpName="CategoryId" type="INTEGER" />
         <column defaultValue="0" name="visible" phpName="Visible" required="true" type="TINYINT" />
         <column defaultValue="0" name="position" phpName="Position" required="true" type="INTEGER" />
+        <foreign-key foreignTable="category" name="fk_configurator_category" onDelete="CASCADE">
+	      <reference local="category_id" foreign="id"/>
+	    </foreign-key>
         <behavior name="timestampable" />
-        <behavior name="versionable">
-            <parameter name="log_created_at" value="true" />
-            <parameter name="log_created_by" value="true" />
-        </behavior>
     </table>
 
 	<table name="configurator_i18n" idMethod="native" phpName="ConfiguratorI18n" namespace="FilterConfigurator\Model">

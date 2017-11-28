@@ -49,7 +49,16 @@ class FilterConfiguratorForm extends AttributeAvCreationForm
             		]
             		);
             
-            
+            $this->formBuilder->add("category_id", "integer", [
+                'constraints' => [ new NotBlank() ],
+                'required'    => true,
+                'label'       => Translator::getInstance()->trans('Select the category'),
+                'label_attr'  => [
+                    'for' => 'category_id',
+                    'help' => Translator::getInstance()->trans("Select the category for current configurator")
+                ]
+            ])
+            ;
             
             $this->formBuilder->add(
             		'chapo',

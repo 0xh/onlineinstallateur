@@ -240,7 +240,7 @@ class CriteriaSearchProductLoop extends Product implements PropelSearchLoopInter
      * @return LoopResult
      */
     public function parseResults(LoopResult $loopResult)
-    {
+    { 
         return parent::parseResults($loopResult);
     }
 }

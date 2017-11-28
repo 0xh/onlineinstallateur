@@ -13,10 +13,7 @@ use FilterConfigurator\Model\ConfiguratorI18nQuery as ChildConfiguratorI18nQuery
 use FilterConfigurator\Model\ConfiguratorImage as ChildConfiguratorImage;
 use FilterConfigurator\Model\ConfiguratorImageQuery as ChildConfiguratorImageQuery;
 use FilterConfigurator\Model\ConfiguratorQuery as ChildConfiguratorQuery;
-use FilterConfigurator\Model\ConfiguratorVersion as ChildConfiguratorVersion;
-use FilterConfigurator\Model\ConfiguratorVersionQuery as ChildConfiguratorVersionQuery;
 use FilterConfigurator\Model\Map\ConfiguratorTableMap;
-use FilterConfigurator\Model\Map\ConfiguratorVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -29,6 +26,8 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
+use Thelia\Model\CategoryQuery;
+use Thelia\Model\Category as ChildCategory;
 
 abstract class Configurator implements ActiveRecordInterface 
 {
@@ -71,6 +70,12 @@ abstract class Configurator implements ActiveRecordInterface
     protected $id;
 
     /**
+     * The value for the category_id field.
+     * @var        int
+     */
+    protected $category_id;
+
+    /**
      * The value for the visible field.
      * Note: this column has a database default value of: 0
      * @var        int
@@ -97,23 +102,9 @@ abstract class Configurator implements ActiveRecordInterface
     protected $updated_at;
 
     /**
-     * The value for the version field.
-     * Note: this column has a database default value of: 0
-     * @var        int
+     * @var        Category
      */
-    protected $version;
-
-    /**
-     * The value for the version_created_at field.
-     * @var        string
-     */
-    protected $version_created_at;
-
-    /**
-     * The value for the version_created_by field.
-     * @var        string
-     */
-    protected $version_created_by;
+    protected $aCategory;
 
     /**
      * @var        ObjectCollection|ChildConfiguratorI18n[] Collection to store aggregation of ChildConfiguratorI18n objects.
@@ -134,12 +125,6 @@ abstract class Configurator implements ActiveRecordInterface
     protected $collConfiguratorFeaturessPartial;
 
     /**
-     * @var        ObjectCollection|ChildConfiguratorVersion[] Collection to store aggregation of ChildConfiguratorVersion objects.
-     */
-    protected $collConfiguratorVersions;
-    protected $collConfiguratorVersionsPartial;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -147,14 +132,6 @@ abstract class Configurator implements ActiveRecordInterface
      */
     protected $alreadyInSave = false;
 
-    // versionable behavior
-    
-    
-    /**
-     * @var bool
-     */
-    protected $enforceVersion = false;
-            
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
@@ -174,12 +151,6 @@ abstract class Configurator implements ActiveRecordInterface
     protected $configuratorFeaturessScheduledForDeletion = null;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection
-     */
-    protected $configuratorVersionsScheduledForDeletion = null;
-
-    /**
      * Applies default values to this object.
      * This method should be called from the object's constructor (or
      * equivalent initialization method).
@@ -189,7 +160,6 @@ abstract class Configurator implements ActiveRecordInterface
     {
         $this->visible = 0;
         $this->position = 0;
-        $this->version = 0;
     }
 
     /**
@@ -464,6 +434,17 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
+     * Get the [category_id] column value.
+     * 
+     * @return   int
+     */
+    public function getCategoryId()
+    {
+
+        return $this->category_id;
+    }
+
+    /**
      * Get the [visible] column value.
      * 
      * @return   int
@@ -526,48 +507,6 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
-     * Get the [version] column value.
-     * 
-     * @return   int
-     */
-    public function getVersion()
-    {
-
-        return $this->version;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [version_created_at] column value.
-     * 
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getVersionCreatedAt($format = NULL)
-    {
-        if ($format === null) {
-            return $this->version_created_at;
-        } else {
-            return $this->version_created_at instanceof \DateTime ? $this->version_created_at->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [version_created_by] column value.
-     * 
-     * @return   string
-     */
-    public function getVersionCreatedBy()
-    {
-
-        return $this->version_created_by;
-    }
-
-    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -587,6 +526,31 @@ abstract class Configurator implements ActiveRecordInterface
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [category_id] column.
+     * 
+     * @param      int $v new value
+     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     */
+    public function setCategoryId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->category_id !== $v) {
+            $this->category_id = $v;
+            $this->modifiedColumns[ConfiguratorTableMap::CATEGORY_ID] = true;
+        }
+
+        if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
+            $this->aCategory = null;
+        }
+
+
+        return $this;
+    } // setCategoryId()
 
     /**
      * Set the value of [visible] column.
@@ -673,69 +637,6 @@ abstract class Configurator implements ActiveRecordInterface
     } // setUpdatedAt()
 
     /**
-     * Set the value of [version] column.
-     * 
-     * @param      int $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
-     */
-    public function setVersion($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->version !== $v) {
-            $this->version = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::VERSION] = true;
-        }
-
-
-        return $this;
-    } // setVersion()
-
-    /**
-     * Sets the value of [version_created_at] column to a normalized version of the date/time value specified.
-     * 
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
-     */
-    public function setVersionCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->version_created_at !== null || $dt !== null) {
-            if ($dt !== $this->version_created_at) {
-                $this->version_created_at = $dt;
-                $this->modifiedColumns[ConfiguratorTableMap::VERSION_CREATED_AT] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setVersionCreatedAt()
-
-    /**
-     * Set the value of [version_created_by] column.
-     * 
-     * @param      string $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
-     */
-    public function setVersionCreatedBy($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->version_created_by !== $v) {
-            $this->version_created_by = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::VERSION_CREATED_BY] = true;
-        }
-
-
-        return $this;
-    } // setVersionCreatedBy()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -750,10 +651,6 @@ abstract class Configurator implements ActiveRecordInterface
             }
 
             if ($this->position !== 0) {
-                return false;
-            }
-
-            if ($this->version !== 0) {
                 return false;
             }
 
@@ -787,35 +684,26 @@ abstract class Configurator implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ConfiguratorTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ConfiguratorTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ConfiguratorTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ConfiguratorTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
             $this->visible = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ConfiguratorTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ConfiguratorTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ConfiguratorTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ConfiguratorTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ConfiguratorTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ConfiguratorTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ConfiguratorTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->version = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ConfiguratorTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : ConfiguratorTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->version_created_by = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -824,7 +712,7 @@ abstract class Configurator implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = ConfiguratorTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = ConfiguratorTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \FilterConfigurator\Model\Configurator object", 0, $e);
@@ -846,6 +734,9 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aCategory !== null && $this->category_id !== $this->aCategory->getId()) {
+            $this->aCategory = null;
+        }
     } // ensureConsistency
 
     /**
@@ -885,13 +776,12 @@ abstract class Configurator implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCategory = null;
             $this->collConfiguratorI18ns = null;
 
             $this->collConfiguratorImages = null;
 
             $this->collConfiguratorFeaturess = null;
-
-            $this->collConfiguratorVersions = null;
 
         } // if (deep)
     }
@@ -961,14 +851,6 @@ abstract class Configurator implements ActiveRecordInterface
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
-            // versionable behavior
-            if ($this->isVersioningNecessary()) {
-                $this->setVersion($this->isNew() ? 1 : $this->getLastVersionNumber($con) + 1);
-                if (!$this->isColumnModified(ConfiguratorTableMap::VERSION_CREATED_AT)) {
-                    $this->setVersionCreatedAt(time());
-                }
-                $createVersion = true; // for postSave hook
-            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -993,10 +875,6 @@ abstract class Configurator implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                // versionable behavior
-                if (isset($createVersion)) {
-                    $this->addVersion($con);
-                }
                 ConfiguratorTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -1026,6 +904,18 @@ abstract class Configurator implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aCategory !== null) {
+                if ($this->aCategory->isModified() || $this->aCategory->isNew()) {
+                    $affectedRows += $this->aCategory->save($con);
+                }
+                $this->setCategory($this->aCategory);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -1089,23 +979,6 @@ abstract class Configurator implements ActiveRecordInterface
                 }
             }
 
-            if ($this->configuratorVersionsScheduledForDeletion !== null) {
-                if (!$this->configuratorVersionsScheduledForDeletion->isEmpty()) {
-                    \FilterConfigurator\Model\ConfiguratorVersionQuery::create()
-                        ->filterByPrimaryKeys($this->configuratorVersionsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->configuratorVersionsScheduledForDeletion = null;
-                }
-            }
-
-                if ($this->collConfiguratorVersions !== null) {
-            foreach ($this->collConfiguratorVersions as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -1135,6 +1008,9 @@ abstract class Configurator implements ActiveRecordInterface
         if ($this->isColumnModified(ConfiguratorTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
+        if ($this->isColumnModified(ConfiguratorTableMap::CATEGORY_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_ID';
+        }
         if ($this->isColumnModified(ConfiguratorTableMap::VISIBLE)) {
             $modifiedColumns[':p' . $index++]  = 'VISIBLE';
         }
@@ -1146,15 +1022,6 @@ abstract class Configurator implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
-        }
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION';
-        }
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION_CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_AT';
-        }
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION_CREATED_BY)) {
-            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_BY';
         }
 
         $sql = sprintf(
@@ -1170,6 +1037,9 @@ abstract class Configurator implements ActiveRecordInterface
                     case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
+                    case 'CATEGORY_ID':                        
+                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
+                        break;
                     case 'VISIBLE':                        
                         $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
                         break;
@@ -1181,15 +1051,6 @@ abstract class Configurator implements ActiveRecordInterface
                         break;
                     case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'VERSION':                        
-                        $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
-                        break;
-                    case 'VERSION_CREATED_AT':                        
-                        $stmt->bindValue($identifier, $this->version_created_at ? $this->version_created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'VERSION_CREATED_BY':                        
-                        $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1257,25 +1118,19 @@ abstract class Configurator implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getVisible();
+                return $this->getCategoryId();
                 break;
             case 2:
-                return $this->getPosition();
+                return $this->getVisible();
                 break;
             case 3:
-                return $this->getCreatedAt();
+                return $this->getPosition();
                 break;
             case 4:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 5:
-                return $this->getVersion();
-                break;
-            case 6:
-                return $this->getVersionCreatedAt();
-                break;
-            case 7:
-                return $this->getVersionCreatedBy();
+                return $this->getUpdatedAt();
                 break;
             default:
                 return null;
@@ -1307,13 +1162,11 @@ abstract class Configurator implements ActiveRecordInterface
         $keys = ConfiguratorTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getVisible(),
-            $keys[2] => $this->getPosition(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedAt(),
-            $keys[5] => $this->getVersion(),
-            $keys[6] => $this->getVersionCreatedAt(),
-            $keys[7] => $this->getVersionCreatedBy(),
+            $keys[1] => $this->getCategoryId(),
+            $keys[2] => $this->getVisible(),
+            $keys[3] => $this->getPosition(),
+            $keys[4] => $this->getCreatedAt(),
+            $keys[5] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1321,6 +1174,9 @@ abstract class Configurator implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
+            if (null !== $this->aCategory) {
+                $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collConfiguratorI18ns) {
                 $result['ConfiguratorI18ns'] = $this->collConfiguratorI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1329,9 +1185,6 @@ abstract class Configurator implements ActiveRecordInterface
             }
             if (null !== $this->collConfiguratorFeaturess) {
                 $result['ConfiguratorFeaturess'] = $this->collConfiguratorFeaturess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collConfiguratorVersions) {
-                $result['ConfiguratorVersions'] = $this->collConfiguratorVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1371,25 +1224,19 @@ abstract class Configurator implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setVisible($value);
+                $this->setCategoryId($value);
                 break;
             case 2:
-                $this->setPosition($value);
+                $this->setVisible($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
+                $this->setPosition($value);
                 break;
             case 4:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 5:
-                $this->setVersion($value);
-                break;
-            case 6:
-                $this->setVersionCreatedAt($value);
-                break;
-            case 7:
-                $this->setVersionCreatedBy($value);
+                $this->setUpdatedAt($value);
                 break;
         } // switch()
     }
@@ -1416,13 +1263,11 @@ abstract class Configurator implements ActiveRecordInterface
         $keys = ConfiguratorTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setVisible($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPosition($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setVersion($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setVersionCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setVersionCreatedBy($arr[$keys[7]]);
+        if (array_key_exists($keys[1], $arr)) $this->setCategoryId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setVisible($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPosition($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
     }
 
     /**
@@ -1435,13 +1280,11 @@ abstract class Configurator implements ActiveRecordInterface
         $criteria = new Criteria(ConfiguratorTableMap::DATABASE_NAME);
 
         if ($this->isColumnModified(ConfiguratorTableMap::ID)) $criteria->add(ConfiguratorTableMap::ID, $this->id);
+        if ($this->isColumnModified(ConfiguratorTableMap::CATEGORY_ID)) $criteria->add(ConfiguratorTableMap::CATEGORY_ID, $this->category_id);
         if ($this->isColumnModified(ConfiguratorTableMap::VISIBLE)) $criteria->add(ConfiguratorTableMap::VISIBLE, $this->visible);
         if ($this->isColumnModified(ConfiguratorTableMap::POSITION)) $criteria->add(ConfiguratorTableMap::POSITION, $this->position);
         if ($this->isColumnModified(ConfiguratorTableMap::CREATED_AT)) $criteria->add(ConfiguratorTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) $criteria->add(ConfiguratorTableMap::UPDATED_AT, $this->updated_at);
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION)) $criteria->add(ConfiguratorTableMap::VERSION, $this->version);
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION_CREATED_AT)) $criteria->add(ConfiguratorTableMap::VERSION_CREATED_AT, $this->version_created_at);
-        if ($this->isColumnModified(ConfiguratorTableMap::VERSION_CREATED_BY)) $criteria->add(ConfiguratorTableMap::VERSION_CREATED_BY, $this->version_created_by);
 
         return $criteria;
     }
@@ -1505,13 +1348,11 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setCategoryId($this->getCategoryId());
         $copyObj->setVisible($this->getVisible());
         $copyObj->setPosition($this->getPosition());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
-        $copyObj->setVersion($this->getVersion());
-        $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
-        $copyObj->setVersionCreatedBy($this->getVersionCreatedBy());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1533,12 +1374,6 @@ abstract class Configurator implements ActiveRecordInterface
             foreach ($this->getConfiguratorFeaturess() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addConfiguratorFeatures($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getConfiguratorVersions() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addConfiguratorVersion($relObj->copy($deepCopy));
                 }
             }
 
@@ -1572,6 +1407,57 @@ abstract class Configurator implements ActiveRecordInterface
         return $copyObj;
     }
 
+    /**
+     * Declares an association between this object and a ChildCategory object.
+     *
+     * @param                  ChildCategory $v
+     * @return                 \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCategory(ChildCategory $v = null)
+    {
+        if ($v === null) {
+            $this->setCategoryId(NULL);
+        } else {
+            $this->setCategoryId($v->getId());
+        }
+
+        $this->aCategory = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCategory object, it will not be re-added.
+        if ($v !== null) {
+            $v->addConfigurator($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCategory object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCategory The associated ChildCategory object.
+     * @throws PropelException
+     */
+    public function getCategory(ConnectionInterface $con = null)
+    {
+        if ($this->aCategory === null && ($this->category_id !== null)) {
+            $this->aCategory = CategoryQuery::create()->findPk($this->category_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCategory->addConfigurators($this);
+             */
+        }
+
+        return $this->aCategory;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1591,9 +1477,6 @@ abstract class Configurator implements ActiveRecordInterface
         }
         if ('ConfiguratorFeatures' == $relationName) {
             return $this->initConfiguratorFeaturess();
-        }
-        if ('ConfiguratorVersion' == $relationName) {
-            return $this->initConfiguratorVersions();
         }
     }
 
@@ -2280,239 +2163,16 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collConfiguratorVersions collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addConfiguratorVersions()
-     */
-    public function clearConfiguratorVersions()
-    {
-        $this->collConfiguratorVersions = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collConfiguratorVersions collection loaded partially.
-     */
-    public function resetPartialConfiguratorVersions($v = true)
-    {
-        $this->collConfiguratorVersionsPartial = $v;
-    }
-
-    /**
-     * Initializes the collConfiguratorVersions collection.
-     *
-     * By default this just sets the collConfiguratorVersions collection to an empty array (like clearcollConfiguratorVersions());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initConfiguratorVersions($overrideExisting = true)
-    {
-        if (null !== $this->collConfiguratorVersions && !$overrideExisting) {
-            return;
-        }
-        $this->collConfiguratorVersions = new ObjectCollection();
-        $this->collConfiguratorVersions->setModel('\FilterConfigurator\Model\ConfiguratorVersion');
-    }
-
-    /**
-     * Gets an array of ChildConfiguratorVersion objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildConfigurator is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildConfiguratorVersion[] List of ChildConfiguratorVersion objects
-     * @throws PropelException
-     */
-    public function getConfiguratorVersions($criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collConfiguratorVersionsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorVersions || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorVersions) {
-                // return empty collection
-                $this->initConfiguratorVersions();
-            } else {
-                $collConfiguratorVersions = ChildConfiguratorVersionQuery::create(null, $criteria)
-                    ->filterByConfigurator($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collConfiguratorVersionsPartial && count($collConfiguratorVersions)) {
-                        $this->initConfiguratorVersions(false);
-
-                        foreach ($collConfiguratorVersions as $obj) {
-                            if (false == $this->collConfiguratorVersions->contains($obj)) {
-                                $this->collConfiguratorVersions->append($obj);
-                            }
-                        }
-
-                        $this->collConfiguratorVersionsPartial = true;
-                    }
-
-                    reset($collConfiguratorVersions);
-
-                    return $collConfiguratorVersions;
-                }
-
-                if ($partial && $this->collConfiguratorVersions) {
-                    foreach ($this->collConfiguratorVersions as $obj) {
-                        if ($obj->isNew()) {
-                            $collConfiguratorVersions[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collConfiguratorVersions = $collConfiguratorVersions;
-                $this->collConfiguratorVersionsPartial = false;
-            }
-        }
-
-        return $this->collConfiguratorVersions;
-    }
-
-    /**
-     * Sets a collection of ConfiguratorVersion objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $configuratorVersions A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildConfigurator The current object (for fluent API support)
-     */
-    public function setConfiguratorVersions(Collection $configuratorVersions, ConnectionInterface $con = null)
-    {
-        $configuratorVersionsToDelete = $this->getConfiguratorVersions(new Criteria(), $con)->diff($configuratorVersions);
-
-        
-        //since at least one column in the foreign key is at the same time a PK
-        //we can not just set a PK to NULL in the lines below. We have to store
-        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->configuratorVersionsScheduledForDeletion = clone $configuratorVersionsToDelete;
-
-        foreach ($configuratorVersionsToDelete as $configuratorVersionRemoved) {
-            $configuratorVersionRemoved->setConfigurator(null);
-        }
-
-        $this->collConfiguratorVersions = null;
-        foreach ($configuratorVersions as $configuratorVersion) {
-            $this->addConfiguratorVersion($configuratorVersion);
-        }
-
-        $this->collConfiguratorVersions = $configuratorVersions;
-        $this->collConfiguratorVersionsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related ConfiguratorVersion objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related ConfiguratorVersion objects.
-     * @throws PropelException
-     */
-    public function countConfiguratorVersions(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collConfiguratorVersionsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorVersions || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorVersions) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getConfiguratorVersions());
-            }
-
-            $query = ChildConfiguratorVersionQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByConfigurator($this)
-                ->count($con);
-        }
-
-        return count($this->collConfiguratorVersions);
-    }
-
-    /**
-     * Method called to associate a ChildConfiguratorVersion object to this object
-     * through the ChildConfiguratorVersion foreign key attribute.
-     *
-     * @param    ChildConfiguratorVersion $l ChildConfiguratorVersion
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
-     */
-    public function addConfiguratorVersion(ChildConfiguratorVersion $l)
-    {
-        if ($this->collConfiguratorVersions === null) {
-            $this->initConfiguratorVersions();
-            $this->collConfiguratorVersionsPartial = true;
-        }
-
-        if (!in_array($l, $this->collConfiguratorVersions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddConfiguratorVersion($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ConfiguratorVersion $configuratorVersion The configuratorVersion object to add.
-     */
-    protected function doAddConfiguratorVersion($configuratorVersion)
-    {
-        $this->collConfiguratorVersions[]= $configuratorVersion;
-        $configuratorVersion->setConfigurator($this);
-    }
-
-    /**
-     * @param  ConfiguratorVersion $configuratorVersion The configuratorVersion object to remove.
-     * @return ChildConfigurator The current object (for fluent API support)
-     */
-    public function removeConfiguratorVersion($configuratorVersion)
-    {
-        if ($this->getConfiguratorVersions()->contains($configuratorVersion)) {
-            $this->collConfiguratorVersions->remove($this->collConfiguratorVersions->search($configuratorVersion));
-            if (null === $this->configuratorVersionsScheduledForDeletion) {
-                $this->configuratorVersionsScheduledForDeletion = clone $this->collConfiguratorVersions;
-                $this->configuratorVersionsScheduledForDeletion->clear();
-            }
-            $this->configuratorVersionsScheduledForDeletion[]= clone $configuratorVersion;
-            $configuratorVersion->setConfigurator(null);
-        }
-
-        return $this;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
+        $this->category_id = null;
         $this->visible = null;
         $this->position = null;
         $this->created_at = null;
         $this->updated_at = null;
-        $this->version = null;
-        $this->version_created_at = null;
-        $this->version_created_by = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
@@ -2548,17 +2208,12 @@ abstract class Configurator implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collConfiguratorVersions) {
-                foreach ($this->collConfiguratorVersions as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
         $this->collConfiguratorI18ns = null;
         $this->collConfiguratorImages = null;
         $this->collConfiguratorFeaturess = null;
-        $this->collConfiguratorVersions = null;
+        $this->aCategory = null;
     }
 
     /**
@@ -2585,288 +2240,6 @@ abstract class Configurator implements ActiveRecordInterface
         return $this;
     }
 
-    // versionable behavior
-    
-    /**
-     * Enforce a new Version of this object upon next save.
-     *
-     * @return \FilterConfigurator\Model\Configurator
-     */
-    public function enforceVersioning()
-    {
-        $this->enforceVersion = true;
-    
-        return $this;
-    }
-            
-    /**
-     * Checks whether the current state must be recorded as a version
-     *
-     * @return  boolean
-     */
-    public function isVersioningNecessary($con = null)
-    {
-        if ($this->alreadyInSave) {
-            return false;
-        }
-    
-        if ($this->enforceVersion) {
-            return true;
-        }
-    
-        if (ChildConfiguratorQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
-            return true;
-        }
-    
-        return false;
-    }
-    
-    /**
-     * Creates a version of the current object and saves it.
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ChildConfiguratorVersion A version object
-     */
-    public function addVersion($con = null)
-    {
-        $this->enforceVersion = false;
-    
-        $version = new ChildConfiguratorVersion();
-        $version->setId($this->getId());
-        $version->setVisible($this->getVisible());
-        $version->setPosition($this->getPosition());
-        $version->setCreatedAt($this->getCreatedAt());
-        $version->setUpdatedAt($this->getUpdatedAt());
-        $version->setVersion($this->getVersion());
-        $version->setVersionCreatedAt($this->getVersionCreatedAt());
-        $version->setVersionCreatedBy($this->getVersionCreatedBy());
-        $version->setConfigurator($this);
-        $version->save($con);
-    
-        return $version;
-    }
-    
-    /**
-     * Sets the properties of the current object to the value they had at a specific version
-     *
-     * @param   integer $versionNumber The version number to read
-     * @param   ConnectionInterface $con The connection to use
-     *
-     * @return  ChildConfigurator The current object (for fluent API support)
-     */
-    public function toVersion($versionNumber, $con = null)
-    {
-        $version = $this->getOneVersion($versionNumber, $con);
-        if (!$version) {
-            throw new PropelException(sprintf('No ChildConfigurator object found with version %d', $version));
-        }
-        $this->populateFromVersion($version, $con);
-    
-        return $this;
-    }
-    
-    /**
-     * Sets the properties of the current object to the value they had at a specific version
-     *
-     * @param ChildConfiguratorVersion $version The version object to use
-     * @param ConnectionInterface   $con the connection to use
-     * @param array                 $loadedObjects objects that been loaded in a chain of populateFromVersion calls on referrer or fk objects.
-     *
-     * @return ChildConfigurator The current object (for fluent API support)
-     */
-    public function populateFromVersion($version, $con = null, &$loadedObjects = array())
-    {
-        $loadedObjects['ChildConfigurator'][$version->getId()][$version->getVersion()] = $this;
-        $this->setId($version->getId());
-        $this->setVisible($version->getVisible());
-        $this->setPosition($version->getPosition());
-        $this->setCreatedAt($version->getCreatedAt());
-        $this->setUpdatedAt($version->getUpdatedAt());
-        $this->setVersion($version->getVersion());
-        $this->setVersionCreatedAt($version->getVersionCreatedAt());
-        $this->setVersionCreatedBy($version->getVersionCreatedBy());
-    
-        return $this;
-    }
-    
-    /**
-     * Gets the latest persisted version number for the current object
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  integer
-     */
-    public function getLastVersionNumber($con = null)
-    {
-        $v = ChildConfiguratorVersionQuery::create()
-            ->filterByConfigurator($this)
-            ->orderByVersion('desc')
-            ->findOne($con);
-        if (!$v) {
-            return 0;
-        }
-    
-        return $v->getVersion();
-    }
-    
-    /**
-     * Checks whether the current object is the latest one
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  Boolean
-     */
-    public function isLastVersion($con = null)
-    {
-        return $this->getLastVersionNumber($con) == $this->getVersion();
-    }
-    
-    /**
-     * Retrieves a version object for this entity and a version number
-     *
-     * @param   integer $versionNumber The version number to read
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ChildConfiguratorVersion A version object
-     */
-    public function getOneVersion($versionNumber, $con = null)
-    {
-        return ChildConfiguratorVersionQuery::create()
-            ->filterByConfigurator($this)
-            ->filterByVersion($versionNumber)
-            ->findOne($con);
-    }
-    
-    /**
-     * Gets all the versions of this object, in incremental order
-     *
-     * @param   ConnectionInterface $con the connection to use
-     *
-     * @return  ObjectCollection A list of ChildConfiguratorVersion objects
-     */
-    public function getAllVersions($con = null)
-    {
-        $criteria = new Criteria();
-        $criteria->addAscendingOrderByColumn(ConfiguratorVersionTableMap::VERSION);
-    
-        return $this->getConfiguratorVersions($criteria, $con);
-    }
-    
-    /**
-     * Compares the current object with another of its version.
-     * <code>
-     * print_r($book->compareVersion(1));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   integer             $versionNumber
-     * @param   string              $keys Main key used for the result diff (versions|columns)
-     * @param   ConnectionInterface $con the connection to use
-     * @param   array               $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    public function compareVersion($versionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
-    {
-        $fromVersion = $this->toArray();
-        $toVersion = $this->getOneVersion($versionNumber, $con)->toArray();
-    
-        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
-    }
-    
-    /**
-     * Compares two versions of the current object.
-     * <code>
-     * print_r($book->compareVersions(1, 2));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   integer             $fromVersionNumber
-     * @param   integer             $toVersionNumber
-     * @param   string              $keys Main key used for the result diff (versions|columns)
-     * @param   ConnectionInterface $con the connection to use
-     * @param   array               $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    public function compareVersions($fromVersionNumber, $toVersionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
-    {
-        $fromVersion = $this->getOneVersion($fromVersionNumber, $con)->toArray();
-        $toVersion = $this->getOneVersion($toVersionNumber, $con)->toArray();
-    
-        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
-    }
-    
-    /**
-     * Computes the diff between two versions.
-     * <code>
-     * print_r($book->computeDiff(1, 2));
-     * => array(
-     *   '1' => array('Title' => 'Book title at version 1'),
-     *   '2' => array('Title' => 'Book title at version 2')
-     * );
-     * </code>
-     *
-     * @param   array     $fromVersion     An array representing the original version.
-     * @param   array     $toVersion       An array representing the destination version.
-     * @param   string    $keys            Main key used for the result diff (versions|columns).
-     * @param   array     $ignoredColumns  The columns to exclude from the diff.
-     *
-     * @return  array A list of differences
-     */
-    protected function computeDiff($fromVersion, $toVersion, $keys = 'columns', $ignoredColumns = array())
-    {
-        $fromVersionNumber = $fromVersion['Version'];
-        $toVersionNumber = $toVersion['Version'];
-        $ignoredColumns = array_merge(array(
-            'Version',
-            'VersionCreatedAt',
-            'VersionCreatedBy',
-        ), $ignoredColumns);
-        $diff = array();
-        foreach ($fromVersion as $key => $value) {
-            if (in_array($key, $ignoredColumns)) {
-                continue;
-            }
-            if ($toVersion[$key] != $value) {
-                switch ($keys) {
-                    case 'versions':
-                        $diff[$fromVersionNumber][$key] = $value;
-                        $diff[$toVersionNumber][$key] = $toVersion[$key];
-                        break;
-                    default:
-                        $diff[$key] = array(
-                            $fromVersionNumber => $value,
-                            $toVersionNumber => $toVersion[$key],
-                        );
-                        break;
-                }
-            }
-        }
-    
-        return $diff;
-    }
-    /**
-     * retrieve the last $number versions.
-     *
-     * @param Integer $number the number of record to return.
-     * @return PropelCollection|array \FilterConfigurator\Model\ConfiguratorVersion[] List of \FilterConfigurator\Model\ConfiguratorVersion objects
-     */
-    public function getLastVersions($number = 10, $criteria = null, $con = null)
-    {
-        $criteria = ChildConfiguratorVersionQuery::create(null, $criteria);
-        $criteria->addDescendingOrderByColumn(ConfiguratorVersionTableMap::VERSION);
-        $criteria->limit($number);
-    
-        return $this->getConfiguratorVersions($criteria, $con);
-    }
     /**
      * Code to be run before persisting the object
      * @param  ConnectionInterface $con

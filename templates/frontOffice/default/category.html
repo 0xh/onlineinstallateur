@@ -114,7 +114,51 @@
             </section>
            
             {*/if*}
+            
+            <div class = "row configurator_details">
+            	{loop name="category_configurator_details" type="category_configurator_details" category="{$category_id}"}
+            		<div class="configurator-image col-md-12 col-sm-12 col-xs-12">
+		           		{loop type="image_configurator" name="image_configurator" source='configurator' order="manual" id={$CONFIGURATOR_DETAILS_IMAGE} resize_mode="borders" visible="*"}
+		           			 <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+		           		{/loop}
+		       		</div>
+		       		<div class="configurator-title col-md-12 col-sm-12 col-xs-12">
+		       			{$CONFIGURATOR_DETAILS_TITLE}
+		       		</div>
+		       		<div class="configurator-description col-md-12 col-sm-12 col-xs-12">
+		       			{$CONFIGURATOR_DETAILS_DESCRIPTION nofilter}
+		       		</div>
+		       	{/loop}
+			</div>
 
+            <div class="row filter_row">
+	            <div class="col-md-12">
+	            	<div class="match-filter bg-light-grey clean">
+	            		<ul class = "filters category-container">
+	            			{loop name="category_configurator" type="category_configurator" category="{$category_id}"}
+	            			<li class = "filter_1 col-md-12 main-category">
+	            				<div class="category-head">
+	            					<span>
+	            						<div>{$C_FEATURE_TITLE}</div>
+	            					</span>
+	            				</div>
+	            				 <div class="col-md-12 options_collection"> 
+						            <div class = "options-container clean active">
+							            {loop name="filter_features_value" type="filter_features_value" feature_id={"$C_FEATURE_ID"} }
+							            	<div class="checkbox col-md-3">	{$FEAT_AV_ID}
+												<input type="checkbox" data-name="level_price" value="all" id="levelprice-all" name="levelprice-all" data-tracked="true">
+												<label for="levelprice-all"> {$FEAT_AV_I18n_TITLE} </label>
+					                        </div>
+					                    {/loop}                          
+						            </div>
+					            </div>
+	            			</li>
+	            			{/loop}
+	            		</ul>
+	            	</div>
+	            </div>
+            </div>
+			
             {if #category_display_subcategories#}
             {ifloop rel="subcategories"}
                 <div class="block-links">
@@ -147,6 +191,16 @@
                
             {hook name="criteria-search.search-page" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
             
+           <!--  {loop name="category_configurator" type="category_configurator" category="{$category_id}" }
+            	<p> Titlu Configurator {$CONFIGURATOR_TITLE} !</p>
+            	<p> Titlu Image {$CONFIGURATOR_IMAGE} !</p>
+            	<p> Titlu Description {$CONFIGURATOR_DESCRIPTION} !</p>
+            	<p> Titlu ID {$C_FEATURE_ID} !</p>
+            	<p> Titlu Feature Title {$C_FEATURE_TITLE} !</p>
+            	<p> Titlu Feature Value {$C_FEATURE_VALUE} !</p>
+            	<br/>
+            	<p> Categoria {$IDCAT}   Feature {$FEATRUE_ID}</p>
+            {/loop} -->
             <div id="category-products">
                 <div class="products-content">
                     <ul class="list-unstyled row"> 
@@ -250,6 +304,131 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
 {block name="stylesheet"}
 {hook name="category.stylesheet"}
 {hook name="criteria-search.search-css"}
+<style>
+.category-container {
+	display: block;
+    /* list-style-type: disc; */
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+    width: 100%;
+}
+
+.main-category{
+	color: #fff;
+    box-sizing: border-box;
+    position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.category-head{
+    z-index: 3;
+    background: #3784bf;
+   /*  padding: 5px 15px; */
+    height: 45px;
+    font-size: 14px;
+    line-height: 1.2em;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    transition: background-color .2s;
+}
+.category-head ::after{
+	width: 45px;
+    height: 45px;
+    background: url(http://best-match.grohe.com/images/icons/arrow-filter.png) center center no-repeat;
+    background-size: 10px 16px;
+    display: block;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+}
+.category-head span{
+	display: table-cell;
+    vertical-align: middle;
+    padding-right: 60px;
+}
+.category-head span:after{
+	display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    background: 0 0;
+    z-index: 2;
+    content: '';
+    transition: bottom .3s,background-color .1s;
+}
+.category-head span.active{
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 60px;
+}
+.category-head span.active:after{
+	position: absolute;
+    width: 32px;
+    height: 32px;
+    content: '';
+    top: 2px;
+    right: 20px;
+    background: url(http://best-match.grohe.com/images/icons/filter-checked.jpg) center center no-repeat;
+    background-size: 32px 32px;
+    border-radius: 50%;
+}
+.category-head span div{
+	display: block;
+}
+.options-container {
+	display: none;
+	position: relative;
+    background-color: #111f38;
+    overflow: hidden;
+    display: none;
+    margin-bottom: 10px;
+    z-index: 3;
+    right: 0;
+    height : 300px;
+    display: none;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.filter_row .col_md_12{
+padding-left:0px;
+}
+.options_collection{
+position: relative;
+min-height: 1px;
+padding-left: 30px;
+padding-right: 30px;
+}
+
+.configurator-title{
+	font-size: 24px;
+    font-family: "quicksand"!important;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: left;
+}
+.configurator-description{
+    font-family: 'Open Sans', sans-serif;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    overflow-wrap: normal;
+overflow-wrap: break-word;
+}
+</style>
 {/block}
 
 {block name="after-javascript-include"}
@@ -258,6 +437,46 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
 	$(function() {
 		Grid.init();
 	});
+   </script>
+   <script type="text/javascript">
+   $('.match-filter .main-category').each(function() {
+	   var clicks = 0;
+       var mainBtn     = $(this);
+       var nextOptions = mainBtn.closest('.category-container').next('.options-container');
+
+       mainBtn.on('click', function() {
+    	   console.log("Click pe li");
+    	   clicks++;
+    	   if(clicks % 2 != 0 ){
+    		   $(".options-container").fadeIn();   
+    	   }else{
+    		   $(".options-container").fadeOut();
+    	   }
+    	   
+           if (mainBtn.hasClass('disabled')) {
+               return;
+           }
+
+           if (mainBtn.hasClass('active')) {
+               mainBtn.removeClass('active');
+
+               $('.options.active').slideUp(500,function() {
+                   nextOptions.removeClass('active');
+               });
+           } else {
+               var activeOptions = $('.options[data-options-id="' + mainBtn.data('main-cat-id') + '"]');
+
+               $('.match-filter .main-category').removeClass('active');
+               mainBtn.addClass('active');
+
+           }
+       });
+   });
+   $('.options-container .checkbox').each(function() {
+	   $(this).on('click', function() {
+		   console.log('Option selected!');
+	   });
+   });
    </script>
 {hook name="category.after-javascript-include"}
 {hook name="criteria-search.search-js"}

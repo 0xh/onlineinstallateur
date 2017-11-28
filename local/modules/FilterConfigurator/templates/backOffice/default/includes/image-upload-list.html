@@ -15,6 +15,7 @@ Parameters:
 
 {ifloop rel="image_configurator"}
     <ul id="js-sort-image" class="row list-unstyled">
+   
         {loop type="image_configurator" name="image_configurator" backend_context="on" source=$imageType order="manual" source_id=$parentId width="200" height="100" resize_mode="borders" visible="*"}
             <li class="col-sm-6 col-md-3 ui-state-default" data-sort-id="{$ID}">
                 <a href="{url path='/admin/modules/filter-configurator/image/%id/update' id=$ID}" title="{intl l='Update this image'}" class="thumbnail">

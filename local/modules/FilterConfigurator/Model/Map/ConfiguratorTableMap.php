@@ -58,7 +58,7 @@ class ConfiguratorTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -68,12 +68,17 @@ class ConfiguratorTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the ID field
      */
     const ID = 'configurator.ID';
+
+    /**
+     * the column name for the CATEGORY_ID field
+     */
+    const CATEGORY_ID = 'configurator.CATEGORY_ID';
 
     /**
      * the column name for the VISIBLE field
@@ -96,21 +101,6 @@ class ConfiguratorTableMap extends TableMap
     const UPDATED_AT = 'configurator.UPDATED_AT';
 
     /**
-     * the column name for the VERSION field
-     */
-    const VERSION = 'configurator.VERSION';
-
-    /**
-     * the column name for the VERSION_CREATED_AT field
-     */
-    const VERSION_CREATED_AT = 'configurator.VERSION_CREATED_AT';
-
-    /**
-     * the column name for the VERSION_CREATED_BY field
-     */
-    const VERSION_CREATED_BY = 'configurator.VERSION_CREATED_BY';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -122,12 +112,12 @@ class ConfiguratorTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'position', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
-        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID, ConfiguratorTableMap::VISIBLE, ConfiguratorTableMap::POSITION, ConfiguratorTableMap::CREATED_AT, ConfiguratorTableMap::UPDATED_AT, ConfiguratorTableMap::VERSION, ConfiguratorTableMap::VERSION_CREATED_AT, ConfiguratorTableMap::VERSION_CREATED_BY, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
-        self::TYPE_FIELDNAME     => array('id', 'visible', 'position', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id', 'CategoryId', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'categoryId', 'visible', 'position', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID, ConfiguratorTableMap::CATEGORY_ID, ConfiguratorTableMap::VISIBLE, ConfiguratorTableMap::POSITION, ConfiguratorTableMap::CREATED_AT, ConfiguratorTableMap::UPDATED_AT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CATEGORY_ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
+        self::TYPE_FIELDNAME     => array('id', 'category_id', 'visible', 'position', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -137,12 +127,12 @@ class ConfiguratorTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Position' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'Version' => 5, 'VersionCreatedAt' => 6, 'VersionCreatedBy' => 7, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'position' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'version' => 5, 'versionCreatedAt' => 6, 'versionCreatedBy' => 7, ),
-        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID => 0, ConfiguratorTableMap::VISIBLE => 1, ConfiguratorTableMap::POSITION => 2, ConfiguratorTableMap::CREATED_AT => 3, ConfiguratorTableMap::UPDATED_AT => 4, ConfiguratorTableMap::VERSION => 5, ConfiguratorTableMap::VERSION_CREATED_AT => 6, ConfiguratorTableMap::VERSION_CREATED_BY => 7, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'POSITION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'VERSION' => 5, 'VERSION_CREATED_AT' => 6, 'VERSION_CREATED_BY' => 7, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'position' => 2, 'created_at' => 3, 'updated_at' => 4, 'version' => 5, 'version_created_at' => 6, 'version_created_by' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'CategoryId' => 1, 'Visible' => 2, 'Position' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'categoryId' => 1, 'visible' => 2, 'position' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
+        self::TYPE_COLNAME       => array(ConfiguratorTableMap::ID => 0, ConfiguratorTableMap::CATEGORY_ID => 1, ConfiguratorTableMap::VISIBLE => 2, ConfiguratorTableMap::POSITION => 3, ConfiguratorTableMap::CREATED_AT => 4, ConfiguratorTableMap::UPDATED_AT => 5, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CATEGORY_ID' => 1, 'VISIBLE' => 2, 'POSITION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'category_id' => 1, 'visible' => 2, 'position' => 3, 'created_at' => 4, 'updated_at' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -162,13 +152,11 @@ class ConfiguratorTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('CATEGORY_ID', 'CategoryId', 'INTEGER', 'category', 'ID', false, null, null);
         $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 0);
         $this->addColumn('POSITION', 'Position', 'INTEGER', true, null, 0);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
-        $this->addColumn('VERSION_CREATED_AT', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('VERSION_CREATED_BY', 'VersionCreatedBy', 'VARCHAR', false, 100, null);
     } // initialize()
 
     /**
@@ -176,10 +164,10 @@ class ConfiguratorTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Category', '\\Thelia\\Model\\Category', RelationMap::MANY_TO_ONE, array('category_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('ConfiguratorI18n', '\\FilterConfigurator\\Model\\ConfiguratorI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorI18ns');
         $this->addRelation('ConfiguratorImage', '\\FilterConfigurator\\Model\\ConfiguratorImage', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorImages');
         $this->addRelation('ConfiguratorFeatures', '\\FilterConfigurator\\Model\\ConfiguratorFeatures', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'ConfiguratorFeaturess');
-        $this->addRelation('ConfiguratorVersion', '\\FilterConfigurator\\Model\\ConfiguratorVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorVersions');
     } // buildRelations()
 
     /**
@@ -192,7 +180,6 @@ class ConfiguratorTableMap extends TableMap
     {
         return array(
             'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'versionable' => array('version_column' => 'version', 'version_table' => '', 'log_created_at' => 'true', 'log_created_by' => 'true', 'log_comment' => 'false', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', ),
         );
     } // getBehaviors()
     /**
@@ -205,7 +192,6 @@ class ConfiguratorTableMap extends TableMap
                 ConfiguratorI18nTableMap::clearInstancePool();
                 ConfiguratorImageTableMap::clearInstancePool();
                 ConfiguratorFeaturesTableMap::clearInstancePool();
-                ConfiguratorVersionTableMap::clearInstancePool();
             }
 
     /**
@@ -347,22 +333,18 @@ class ConfiguratorTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(ConfiguratorTableMap::ID);
+            $criteria->addSelectColumn(ConfiguratorTableMap::CATEGORY_ID);
             $criteria->addSelectColumn(ConfiguratorTableMap::VISIBLE);
             $criteria->addSelectColumn(ConfiguratorTableMap::POSITION);
             $criteria->addSelectColumn(ConfiguratorTableMap::CREATED_AT);
             $criteria->addSelectColumn(ConfiguratorTableMap::UPDATED_AT);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION_CREATED_AT);
-            $criteria->addSelectColumn(ConfiguratorTableMap::VERSION_CREATED_BY);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.CATEGORY_ID');
             $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.POSITION');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
-            $criteria->addSelectColumn($alias . '.VERSION');
-            $criteria->addSelectColumn($alias . '.VERSION_CREATED_AT');
-            $criteria->addSelectColumn($alias . '.VERSION_CREATED_BY');
         }
     }
 

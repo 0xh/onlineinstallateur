@@ -66,7 +66,17 @@ class FilterConfiguratorController extends BaseAdminController
 		
 	 	try {
 	 		$data = $this->validateForm($form)->getData();
-	 	
+
+	 		if(isset($data["category_id"])){
+	 		    $configurator = ConfiguratorQuery::create()
+	 		        ->filterById($data['id'])
+	 		        ->findOneOrCreate();
+	 		    
+	 		     $configurator
+	 		        ->setCategoryId($data["category_id"])
+	 		        ->save();
+	 		}
+	 		
 			$configuratorI18n =  ConfiguratorI18nQuery::create()
 				->filterById($data['id'])
 				->filterByLocale($data["locale"])
@@ -100,6 +110,7 @@ class FilterConfiguratorController extends BaseAdminController
 		$form = $this->createForm("filter.configurator");
 		
 		try {
+		    
 			$data = $this->validateForm($form)->getData();
 			
 			$configuratorPosition = ConfiguratorQuery::create()
@@ -111,6 +122,7 @@ class FilterConfiguratorController extends BaseAdminController
 			$configurator
 				->setVisible(1)
 				->setPosition($configuratorPosition !== null ? $configuratorPosition->getPosition() + 1 : 1)
+				->setCategoryId($data["category_id"])
 				->save();
 			
 			$configuratorI18n =  new ConfiguratorI18n();
