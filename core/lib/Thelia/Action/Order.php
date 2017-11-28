@@ -481,7 +481,7 @@ class Order extends BaseAction implements EventSubscriberInterface
         $payEvent = new OrderPaymentEvent($placedOrder);
 
         $dispatcher->dispatch(TheliaEvents::MODULE_PAY, $payEvent);
-
+       
         if ($payEvent->hasResponse()) {
             $event->setResponse($payEvent->getResponse());
         }
@@ -722,6 +722,24 @@ class Order extends BaseAction implements EventSubscriberInterface
             : $module->manageStockOnCreation();
     }
 
+    
+    /**
+     * @param OrderEvent $event
+     * @param $payment_error_msg - error message for each payment type
+     * @throws \Exception if the message cannot be loaded.
+     */
+    public function sendEmailOrderFailed(OrderEvent $event, $payment_error_msg)
+    {
+    	$this->mailer->sendEmailOrderFailed(
+    			'order_failed',
+    			[
+    					'order_id' => $event->getOrder()->getId(),
+    					'order_ref' => $event->getOrder()->getRef(),
+    					'payment_error_msg' => $payment_error_msg
+    			]
+    			);
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -742,6 +760,7 @@ class Order extends BaseAction implements EventSubscriberInterface
             TheliaEvents::ORDER_UPDATE_DELIVERY_REF => array("updateDeliveryRef", 128),
             TheliaEvents::ORDER_UPDATE_ADDRESS => array("updateAddress", 128),
             TheliaEvents::ORDER_CREATE_MANUAL => array("createManual", 128),
+        	TheliaEvents::ORDER_SEND_EMAIL_ORDER_FAILED => array("sendEmailOrderFailed", 128),
         );
     }
 
