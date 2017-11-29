@@ -134,15 +134,68 @@
             <div class="row filter_row">
 	            <div class="col-md-12">
 	            	<div class="match-filter bg-light-grey clean">
-	            		<ul class = "filters category-container">
+	            		<ul class = "filters category-container nav nav-tabs">
 	            			{loop name="category_configurator" type="category_configurator" category="{$category_id}"}
-	            			<li class = "filter_1 col-md-12 main-category">
-	            				<div class="category-head">
+	            			<li class = "filter col-md-3 main-category">
+	            				<a class="category-head" a data-toggle="tab" href="#{$C_FEATURE_ID}">
 	            					<span>
 	            						<div>{$C_FEATURE_TITLE}</div>
 	            					</span>
-	            				</div>
-	            				 <div class="col-md-12 options_collection"> 
+	            				</a>
+	            			</li>
+	            			{$featarray[$C_FEATURE_ID] = $C_FEATURE_TITLE}
+	            			{/loop}
+	            		</ul>
+	            		
+	            		<div class="tab-content col-md-12 options_collection">
+	            		{foreach $featarray as $value}
+	            			<div id="{$value@key}" class="tab-pane fade options-container clean row">
+		            			{loop name="filter_features_value" type="filter_features_value" feature_id={$value@key} }
+											<div class="checkbox col-md-3">	{$FEAT_AV_ID}
+												<input type="checkbox" data-name="level_price" value="all" id="levelprice-all" name="levelprice-all" data-tracked="true">
+												<label for="levelprice-all"> {$FEAT_AV_I18n_TITLE} </label>
+											</div>
+								 {/loop}
+							 </div>
+						{/foreach}
+	            		</div>
+	            		
+	            	<!-- 	<div class="tab-content">
+						    <div id="1" class="tab-pane fade">
+						      <h3>HOME</h3>
+						      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						      	
+						      	
+						      	{foreach $featarray as $featureItem}
+						      		{foreach $featureItem as $Item}
+						      			{foreach $Item as $value}
+						      				{$value@key}
+						      				{$value}
+		                					</br>
+		                				{/foreach}
+									{/foreach}
+								{/foreach}
+						      </p>
+						    </div>
+						    <div id="4" class="tab-pane fade">
+						      <h3>Menu 1</h3>
+						      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+						    </div>
+						    <div id="12" class="tab-pane fade">
+						      <h3>Menu 2</h3>
+						      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+						    </div>
+						    <div id="19" class="tab-pane fade">
+						      <h3>Menu 3</h3>
+						      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+						    </div>
+						</div> -->
+	            		
+	            	</div>
+	            </div>
+            </div>
+			
+			<!-- <div class="col-md-12 options_collection"> 
 						            <div class = "options-container clean active">
 							            {loop name="filter_features_value" type="filter_features_value" feature_id={"$C_FEATURE_ID"} }
 							            	<div class="checkbox col-md-3">	{$FEAT_AV_ID}
@@ -151,13 +204,8 @@
 					                        </div>
 					                    {/loop}                          
 						            </div>
-					            </div>
-	            			</li>
-	            			{/loop}
-	            		</ul>
-	            	</div>
-	            </div>
-            </div>
+					            </div> -->
+			
 			
             {if #category_display_subcategories#}
             {ifloop rel="subcategories"}
@@ -315,6 +363,7 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
     -webkit-margin-end: 0px;
     -webkit-padding-start: 0px;
     width: 100%;
+    margin-bottom:0px;
 }
 
 .main-category{
@@ -405,10 +454,8 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
 padding-left:0px;
 }
 .options_collection{
-position: relative;
-min-height: 1px;
-padding-left: 30px;
-padding-right: 30px;
+	position: relative;
+	min-height: 1px;
 }
 
 .configurator-title{
@@ -426,7 +473,26 @@ padding-right: 30px;
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
     overflow-wrap: normal;
-overflow-wrap: break-word;
+	overflow-wrap: break-word;
+}
+.tab-pane .checkbox{
+	margin-top: 0px;
+}
+ul.category-container:first-child {
+	margin-left: 0 !important;
+}
+.category-container li.active a,
+.category-container li.active a:hover{
+	background-color: #111f38;
+	color: #fff;
+}
+.category-container li{
+    padding-left: 0px;
+    border-left-width: 0px;
+}
+.match-filter ul.nav-tabs{
+background-color: #111f38;
+border-bottom: none;
 }
 </style>
 {/block}
@@ -445,14 +511,7 @@ overflow-wrap: break-word;
        var nextOptions = mainBtn.closest('.category-container').next('.options-container');
 
        mainBtn.on('click', function() {
-    	   console.log("Click pe li");
-    	   clicks++;
-    	   if(clicks % 2 != 0 ){
-    		   $(".options-container").fadeIn();   
-    	   }else{
-    		   $(".options-container").fadeOut();
-    	   }
-    	   
+
            if (mainBtn.hasClass('disabled')) {
                return;
            }
@@ -477,6 +536,18 @@ overflow-wrap: break-word;
 		   console.log('Option selected!');
 	   });
    });
+   
+   $('ul.nav-tabs li:first-child').addClass("active");
+   $(".tab-content div.fade").first().addClass("active in");
+   
+   $('.nav-tabs li a').click(function() {
+	   $(this).addClass('active').siblings().removeClass('active');
+	    console.log($(this).attr('href'));
+	    $(".tab-content .tab-pane").removeClass("active");
+	    $(".tab-content" . '#'.$(this).attr('href')).addClass("active");
+	});
+   
+   
    </script>
 {hook name="category.after-javascript-include"}
 {hook name="criteria-search.search-js"}
