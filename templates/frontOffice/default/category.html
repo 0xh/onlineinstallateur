@@ -156,7 +156,10 @@
 										<div class="controller_wrapper clean checkbox-box">
 											<div class="checkbox">
 												<input type="checkbox" data-name="level_price" value="all" id="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" name="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" data-tracked="true">
-												<label for="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}">{$FEAT_AV_I18n_TITLE}</label>
+												<label for="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}">
+													{$FEAT_AV_I18n_TITLE} 
+													{strip}{$FEAT_AV_I18n_DESCRIPTION nofilter}{/strip}
+												</label>
 											</div>
 										</div>
 									</div>
@@ -402,6 +405,7 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
     display: none;
     padding-left: 15px;
     padding-right: 15px;
+    overflow-y: scroll;
 }
 .filter_row .col_md_12{
 padding-left:0px;
@@ -525,6 +529,18 @@ ul.category-container:first-child {
   color: #fff;
   background-color: #5cb85c;
 }
+.checkbox p{
+    width: 30px;
+    display: block;
+    float: right;
+    position: relative;
+    right: 20px;
+    top: 2px;
+}
+.checkbox p img{
+	width: 30px;
+    height: 30px;
+}
 
 </style>
 {/block}
@@ -575,14 +591,11 @@ ul.category-container:first-child {
    $('.nav-tabs li a').click(function() {
 	   $(this).addClass('active').siblings().removeClass('active');
 	    console.log($(this).attr('href'));
+	    $('.checkbox label p').innerHTML = $('.checkbox label p img').outerHTML;
 	    $(".tab-content .tab-pane").removeClass("active");
 	    $(".tab-content" . '#'.$(this).attr('href')).addClass("active");
 	});
    
-   $(".nav-tabs li a").click(function() {
-	   $(this).parent().slideUp(500).before(".nav-tabs li a:first").slideDown(500);
-	   return false;
-	 });
    </script>
 {hook name="category.after-javascript-include"}
 {hook name="criteria-search.search-js"}
