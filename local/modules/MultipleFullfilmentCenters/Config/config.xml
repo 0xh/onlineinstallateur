@@ -30,6 +30,7 @@
         </hook> 
     	<hook id="setting.product.quantity.hook.back" class="MultipleFullfilmentCenters\Hook\Admin\BackHook">
 			<tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+			<tag name="hook.event_listener" event="main.head-css" type="back" method="onMainCss" />
 		</hook>
     </hooks>
     

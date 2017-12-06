@@ -3,6 +3,7 @@ namespace MultipleFullfilmentCenters\Hook\Admin;
 
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
 use Thelia\Core\Event\Hook\HookRenderBlockEvent;
+use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Tools\URL;
 
@@ -28,5 +29,10 @@ class BackHook extends BaseHook
             'url' => URL::getInstance()->absoluteUrl('/admin/module/multiplefulfilmentcenters/setting-products'),
             'title' => $this->trans('Setting the product quantity', [], MultipleFullfilmentCenters::DOMAIN_NAME)
         ]);
+    }
+    
+    public function onMainCss(HookRenderEvent $event)
+    {
+        $event->add($this->addCSS('assets/css/style.css'));
     }
 }

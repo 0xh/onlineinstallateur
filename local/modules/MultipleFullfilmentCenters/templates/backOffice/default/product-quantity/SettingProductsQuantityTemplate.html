@@ -45,7 +45,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 			            </div>
 			    </div>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<h5  id="search-label">{intl l="Select fulfilment center:" d="criteriasearch.fo.default"}</h5>
 				<select class='form-control col-sm-1' name="fulfilment_center" id="change_fulfilment_center" >
 						<option value="-1">Select fulfilment center</option>
@@ -54,7 +54,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 			            {/loop}
 				</select>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<h5  id="search-label">{intl l="Select qunatity:" d="criteriasearch.fo.default"}</h5>
 				<select class='form-control col-sm-1' name="change_fulfilment_center_qunatity" id="change_fulfilment_center_qunatity">
 						<option value="-1">All</option>
@@ -62,7 +62,7 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 						<option value="5" {if $smarty.get.change_fulfilment_center_qunatity == 5}selected{/if}>Low</option>
 				</select>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-4">
 				<h5  id="search-label">{intl l="Select in/not center:" d="criteriasearch.fo.default"}</h5>
 				<select class='form-control col-sm-1' name="is_in_fulfilment_center" id="is_in_fulfilment_center">
 						<option value="0">All</option>
@@ -71,69 +71,72 @@ action='MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityContr
 				</select>
 			</div>
 		</form>
-		<form action="{url path='/admin/module/multiplefulfilmentcenters/update-quantity-products'}">
-			<div class="txt-div" >
-				<div class="col-sm-1">
-				  <button type="submit" id="update_products_quantity" class="btn btn-info">Update Quantity</button>
-				  <div id="wait" class="modal-loading"></div>
-				</div>
-			</div>
-			<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>No.</th>
-					<th>Id</th>
-					<th>Ref</th>
-					<th>Title</th>
-					<th>Ean code</th>
-					<th>Center name</th>
-					<th>Quantity</th>
-					<th>Update quantity</th>
-				</tr>
-			</thead>
-			<tbody>  
-			   {assign var="nr" value="1"}
-          	   {loop name="fulfilment.setting.product.quantity" type="fulfilment.setting.product.quantity" page={$page} limit=100}
-               <tr>
-					<td>{$nr++}.</td>
-					<td>{$id}<input type="hidden" name="" id="prod_{$id}" value="{$id}"></td>
-					<td>{$ref}<input type="hidden" name="" id="ref_{$id}" value="{$ref}"></td>
-					<td>{$title}</td>
-					<td>{$ean_code}</td>
-					<td>{$fulfilment_center_name}</td>
-					<td>{if $quantity } {$quantity} {else} 0 {/if}</td>
-					<td class="quantity"><input type="text" class="form-control" {if !isset($smarty.get.fulfilment_center) or $smarty.get.fulfilment_center < 0} disabled="disabled" {/if} name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
-				</tr>
-               {/loop}
-               </tbody>
-            </table>
-            <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.fulfilment_center}">
-            <input type="hidden" name="change_fulfilment_center_qunatity_val" value="{$smarty.get.change_fulfilment_center_qunatity}">
-            <input type="hidden" name="is_in_fulfilment_center_val" value="{$smarty.get.is_in_fulfilment_center}">
-            <input type="hidden" name="list_prods_to_update_quantity" id="list_prods_to_update_quantity" value="">
-            <input type="hidden" name="search_by_id" value="{$smarty.get.search_by_id}">
-            <input type="hidden" name="search_by_ref" value="{$smarty.get.is_in_fulfilment_center}">
-            <input type="hidden" name="search_by_ean" value="{$smarty.get.search_by_ref}">
-            <input type="hidden" name="search_by_title" value="{$smarty.get.search_by_title}">
-            <input type="hidden" name="nr_page" id="nr_page" value="{if $smarty.get.page} {$smarty.get.page} {else} 1 {/if}">
-	         <tfoot>
-	             <tr>
-	                 <td colspan="100">
-	                     {include
-	                     file = "includes/pagination.html"
-	                     loop_ref       = "fulfilment.setting.product.quantity"
-	                     max_page_count = 100
-	                     page_url       = {url path="admin/module/multiplefulfilmentcenters/setting-products?fulfilment_center={$smarty.get.fulfilment_center}&change_fulfilment_center_qunatity={$smarty.get.change_fulfilment_center_qunatity}&is_in_fulfilment_center={$smarty.get.is_in_fulfilment_center}" }
-	                     }
-	                 </td>
-	             </tr>
-	         </tfoot>
-			<div class="txt-div" >
-					<div class="col-sm-1">
+
+			<form action="{url path='/admin/module/multiplefulfilmentcenters/update-quantity-products'}">
+				<div class="txt-div" >
+					<div class="col-sm-12">
 					  <button type="submit" id="update_products_quantity" class="btn btn-info">Update Quantity</button>
 					  <div id="wait" class="modal-loading"></div>
 					</div>
-			</div>
-		</form>
+				</div>
+				<div class="media-scroll">
+					<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Id</th>
+							<th>Ref</th>
+							<th>Title</th>
+							<th>Ean code</th>
+							<th>Center name</th>
+							<th>Quantity</th>
+							<th>Update quantity</th>
+						</tr>
+					</thead>
+					<tbody>  
+					   {assign var="nr" value="1"}
+		          	   {loop name="fulfilment.setting.product.quantity" type="fulfilment.setting.product.quantity" page={$page} limit=100}
+		               <tr>
+							<td>{$nr++}.</td>
+							<td>{$id}<input type="hidden" name="" id="prod_{$id}" value="{$id}"></td>
+							<td>{$ref}<input type="hidden" name="" id="ref_{$id}" value="{$ref}"></td>
+							<td>{$title}</td>
+							<td>{$ean_code}</td>
+							<td>{$fulfilment_center_name}</td>
+							<td>{if $quantity } {$quantity} {else} 0 {/if}</td>
+							<td class="quantity"><input type="text" class="form-control" {if !isset($smarty.get.fulfilment_center) or $smarty.get.fulfilment_center < 0} disabled="disabled" {/if} name="" id="quantity_{$id}" onchange="changeQuantity({$id})" value=""></td>
+						</tr>
+		               {/loop}
+		               </tbody>
+		            </table>
+	            </div>
+	            <input type="hidden" name="change_fulfilment_center_val" value="{$smarty.get.fulfilment_center}">
+	            <input type="hidden" name="change_fulfilment_center_qunatity_val" value="{$smarty.get.change_fulfilment_center_qunatity}">
+	            <input type="hidden" name="is_in_fulfilment_center_val" value="{$smarty.get.is_in_fulfilment_center}">
+	            <input type="hidden" name="list_prods_to_update_quantity" id="list_prods_to_update_quantity" value="">
+	            <input type="hidden" name="search_by_id" value="{$smarty.get.search_by_id}">
+	            <input type="hidden" name="search_by_ref" value="{$smarty.get.is_in_fulfilment_center}">
+	            <input type="hidden" name="search_by_ean" value="{$smarty.get.search_by_ref}">
+	            <input type="hidden" name="search_by_title" value="{$smarty.get.search_by_title}">
+	            <input type="hidden" name="nr_page" id="nr_page" value="{if $smarty.get.page} {$smarty.get.page} {else} 1 {/if}">
+		         <tfoot>
+		             <tr>
+		                 <td colspan="100">
+		                     {include
+		                     file = "includes/pagination.html"
+		                     loop_ref       = "fulfilment.setting.product.quantity"
+		                     max_page_count = 10
+		                     page_url       = {url path="admin/module/multiplefulfilmentcenters/setting-products?fulfilment_center={$smarty.get.fulfilment_center}&change_fulfilment_center_qunatity={$smarty.get.change_fulfilment_center_qunatity}&is_in_fulfilment_center={$smarty.get.is_in_fulfilment_center}" }
+		                     }
+		                 </td>
+		             </tr>
+		         </tfoot>
+				<div class="txt-div" >
+						<div class="col-sm-1">
+						  <button type="submit" id="update_products_quantity" class="btn btn-info">Update Quantity</button>
+						  <div id="wait" class="modal-loading"></div>
+						</div>
+				</div>
+			</form>
 </div>
 {/block}
