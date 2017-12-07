@@ -30,3 +30,9 @@
 	width: 6%;
 	text-align: center;
 }
+
+@media (max-width: 1370px){
+	.media-scroll {
+	    overflow-x: scroll;
+	}
+}

@@ -6,14 +6,17 @@
 
 		<div class="txt-div" >
 			<div class="col-sm-4">
-			  <button type="button" id="get_update_orders" class="btn btn-info">Get and Update Orders</button>
+				<h5>{intl l="Get and update order from Amazon" d="createdafter.fo.default"}</h5>
+			  <button type="button" id="get_update_orders" class="btn btn-info form-control">Get and Update Orders</button>
 			  <div id="wait" class="modal-loading"></div>
 			</div>
 			<div class="col-sm-4">
-			  Created After: <input type="text" id="datepickerCreatedAfter">
+				<h5>{intl l="Created After:" d="createdafter.fo.default"}</h5>
+			   <input type="text" id="datepickerCreatedAfter" class="form-control">
 			</div>
 			<div class="col-sm-4">
-			  Last Updated After: <input type="text" id="datepickerLastUpdatedAfter">
+				<h5>{intl l="Last Updated After:" d="updateafter.fo.default"}</h5>
+			   <input type="text" id="datepickerLastUpdatedAfter" class="form-control">
 			</div>
 
 		</div>
@@ -40,45 +43,47 @@
 			    </select>
 			</div>
 		</div>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>AmazonOrderId</th>
-					<th>SellerOrderId</th>
-					<th>PurchaseDate</th>
-					<th>LastUpdateDate</th>
-					<th>OrderStatus</th>
-					<th>NumberOfItemsShipped</th>
-					<th>OrderTotalAmount</th>
-					<th>SalesChannel</th>
-					<th>ShipServiceLevel</th>
-				</tr>
-			</thead>
-			<tbody>  
-          	   {loop name="amazon_orders_listing" type="amazon_orders_listing" page={$page} limit=20}
-               <tr>
-					<td>{$id}</td>
-					<td>{$seller_order_id}</td>
-					<td>{$purchase_date}</td>
-					<td>{$last_update_date}</td>
-					<td>{$order_status}</td>
-					<td>{$number_of_items_shipped}</td>
-					<td>{$order_total_amount} {$order_total_currency_code}</td>
-					<td>{$sales_channel}</td>
-					<td>{$ship_service_level}</td>
-				</tr>
-                 
-               {/loop}
-               </tbody>
-                
-            </table>
+		<div class="media-scroll">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>AmazonOrderId</th>
+						<th>SellerOrderId</th>
+						<th>PurchaseDate</th>
+						<th>LastUpdateDate</th>
+						<th>OrderStatus</th>
+						<th>NumberOfItemsShipped</th>
+						<th>OrderTotalAmount</th>
+						<th>SalesChannel</th>
+						<th>ShipServiceLevel</th>
+					</tr>
+				</thead>
+				<tbody>  
+	          	   {loop name="amazon_orders_listing" type="amazon_orders_listing" page={$page} limit=20}
+	               <tr>
+						<td>{$id}</td>
+						<td>{$seller_order_id}</td>
+						<td>{$purchase_date}</td>
+						<td>{$last_update_date}</td>
+						<td>{$order_status}</td>
+						<td>{$number_of_items_shipped}</td>
+						<td>{$order_total_amount} {$order_total_currency_code}</td>
+						<td>{$sales_channel}</td>
+						<td>{$ship_service_level}</td>
+					</tr>
+	                 
+	               {/loop}
+	               </tbody>
+	                
+	            </table>
+           </div>
          <tfoot>
              <tr>
                  <td colspan="100">
                      {include
                      file = "includes/pagination.html"
                      loop_ref       = "amazon_orders_listing"
-                     max_page_count = 20
+                     max_page_count = 10
                      page_url       = {url path="/admin/module/amazonintegration?tab={$smarty.get.tab}" }
                      }
                  </td>
