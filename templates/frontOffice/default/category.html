@@ -114,7 +114,63 @@
             </section>
            
             {*/if*}
+            
+            <div class = "row configurator_details">
+            	{loop name="category_configurator_details" type="category_configurator_details" category="{$category_id}"}
+            		<div class="configurator-image col-md-12 col-sm-12 col-xs-12">
+		           		{loop type="image_configurator" name="image_configurator" source='configurator' order="manual" id={$CONFIGURATOR_DETAILS_IMAGE} resize_mode="borders" visible="*"}
+		           			 <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+		           		{/loop}
+		       		</div>
+		       		<div class="configurator-title col-md-12 col-sm-12 col-xs-12">
+		       			{$CONFIGURATOR_DETAILS_TITLE}
+		       		</div>
+		       		<div class="configurator-description col-md-12 col-sm-12 col-xs-12">
+		       			{$CONFIGURATOR_DETAILS_DESCRIPTION nofilter}
+		       		</div>
+		       	{/loop}
+			</div>
 
+            <div class="row filter_row">
+	            <div class="col-md-12">
+	            	<div class="match-filter bg-light-grey clean">
+	            		<ul class = "filters category-container nav nav-tabs">
+	            			{loop name="category_configurator" type="category_configurator" category="{$category_id}"}
+	            			<li class = "filter col-md-3 main-category">
+	            				<a class="category-head" a data-toggle="tab" href="#{$C_FEATURE_ID}">
+	            					<span>
+	            						<div>{$C_FEATURE_TITLE}</div>
+	            					</span>
+	            				</a>
+	            			</li>
+	            			{$featarray[$C_FEATURE_ID] = $C_FEATURE_TITLE}
+	            			{/loop}
+	            		</ul>
+	            		{assign var="feature_counter" value=0}
+	            		<div class="tab-content col-md-12 options_collection">
+	            		{foreach $featarray as $value}
+	            			<div id="{$value@key}" class="tab-pane fade options-container clean row">
+		            			{loop name="filter_features_value" type="filter_features_value" feature_id={$value@key} }
+		            			{assign var=feature_counter value=$feature_counter+1}
+									<div class="checkbox filter-option col-md-4 col-sm-12 ">	<!-- {$FEAT_AV_ID} -->
+										<div class="controller_wrapper clean checkbox-box">
+											<div class="checkbox">
+												<input type="checkbox" data-name="level_price" value="all" id="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" name="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" data-tracked="true">
+												<label for="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}">
+													{$FEAT_AV_I18n_TITLE} 
+													{strip}{$FEAT_AV_I18n_DESCRIPTION nofilter}{/strip}
+												</label>
+											</div>
+										</div>
+									</div>
+								 {/loop}
+							 </div>
+						{/foreach}
+	            		</div>	            		
+	            	</div>
+	            </div>
+            </div>
+			
             {if #category_display_subcategories#}
             {ifloop rel="subcategories"}
                 <div class="block-links">
@@ -250,6 +306,243 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
 {block name="stylesheet"}
 {hook name="category.stylesheet"}
 {hook name="criteria-search.search-css"}
+<style>
+.category-container {
+	display: block;
+    /* list-style-type: disc; */
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+    width: 100%;
+    margin-bottom:0px;
+}
+
+.main-category{
+	color: #fff;
+    box-sizing: border-box;
+    position: relative;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+.category-head{
+    z-index: 3;
+    background: #3784bf;
+   /*  padding: 5px 15px; */
+    height: 45px;
+    font-size: 14px;
+    line-height: 1.2em;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    transition: background-color .2s;
+}
+.category-head ::after{
+	width: 45px;
+    height: 45px;
+    background: url(http://best-match.grohe.com/images/icons/arrow-filter.png) center center no-repeat;
+    background-size: 10px 16px;
+    display: block;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 5;
+}
+.category-head span{
+	display: table-cell;
+    vertical-align: middle;
+    padding-right: 60px;
+    color: #fff;
+    font-weight:normal;
+}
+.category-head span:after{
+	display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0;
+    width: 100%;
+    background: 0 0;
+    z-index: 2;
+    content: '';
+    transition: bottom .3s,background-color .1s;
+}
+.category-head span.active{
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 60px;
+}
+.category-head span.active:after{
+	position: absolute;
+    width: 32px;
+    height: 32px;
+    content: '';
+    top: 2px;
+    right: 20px;
+    background: url(http://best-match.grohe.com/images/icons/filter-checked.jpg) center center no-repeat;
+    background-size: 32px 32px;
+    border-radius: 50%;
+}
+.category-head span div{
+	display: block;
+}
+.options-container {
+	display: none;
+	position: relative;
+    background-color: #111f38;
+    overflow: hidden;
+    display: none;
+    margin-bottom: 10px;
+    z-index: 3;
+    right: 0;
+    max-height: 225px;
+    display: none;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-y: scroll;
+}
+.filter_row .col_md_12{
+padding-left:0px;
+}
+.options_collection{
+	position: relative;
+	min-height: 1px;
+}
+
+.configurator-title{
+	font-size: 24px;
+    font-family: "quicksand"!important;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+    text-align: left;
+}
+.configurator-description{
+    font-family: 'Open Sans', sans-serif;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    overflow-wrap: normal;
+	overflow-wrap: break-word;
+}
+.tab-pane .checkbox{
+	margin-top: 0px;
+}
+ul.category-container:first-child {
+	margin-left: 0 !important;
+}
+.category-container li.active a,
+.category-container li.active a:hover{
+	background-color: #111f38;
+	color: #fff;
+}
+.category-container li.active a span{
+	color: #fff;
+}
+.category-container li{
+    padding-left: 0px;
+    border-left-width: 0px;
+}
+.match-filter ul.nav-tabs{
+	/* background-color: #111f38; */
+	background-color: #fff;
+	border-bottom: none;
+}
+ .nav li a:hover {
+	/* background-color: transparent; */
+	background-color: #3784bf;
+}
+.category-container .filter{
+	background
+}
+.nav-tabs li.active a:focus{
+	background-color: #111f38;
+	color:#fff;
+}
+.tab-content{
+	clear: both;
+  	overflow: hidden;
+}
+.tab-content label {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #D1D3D4;
+  font-weight: normal;
+  color: #fff;
+}
+.tab-content input[type="checkbox"]:empty {
+  display: none;
+}
+.tab-content input[type="checkbox"]:empty ~ label {
+  position: relative;
+  line-height: 2.5em;
+  text-indent: 1.3em;
+  cursor: pointer;
+  text-align: left;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tab-content input[type="checkbox"]:empty ~ label:before {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  content: '';
+  width: 2em;
+  background: #D1D3D4;
+  border-radius: 1px 0 0 1px;
+}
+.tab-content input[type="checkbox"]:hover:not(:checked) ~ label {
+  color: #fff;
+}
+.tab-content .checkbox input[type="checkbox"]:hover:not(:checked) ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  /* color: #C2C2C2; */
+  color: #fff;
+}
+.tab-content .checkbox input[type="checkbox"]:checked ~ label {
+  /* color: #777; */
+  color: #fff;
+      font-weight: bold;
+}
+.tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
+  content: '\2714';
+  text-indent: .9em;
+  color: #333;
+  background-color: #ccc;
+}
+.tab-content .checkbox input[type="checkbox"]:focus ~ label:before {
+  box-shadow: 0 0 0 3px #999;
+}
+.tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
+  color: #fff;
+  background-color: #5cb85c;
+}
+.checkbox p{
+    width: 30px;
+    display: block;
+    float: right;
+    position: relative;
+    right: 20px;
+    top: 2px;
+}
+.checkbox p img{
+	width: 30px;
+    height: 30px;
+}
+
+</style>
 {/block}
 
 {block name="after-javascript-include"}
@@ -258,6 +551,51 @@ Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung u
 	$(function() {
 		Grid.init();
 	});
+   </script>
+   <script type="text/javascript">
+   $('.match-filter .main-category').each(function() {
+	   var clicks = 0;
+       var mainBtn     = $(this);
+       var nextOptions = mainBtn.closest('.category-container').next('.options-container');
+
+       mainBtn.on('click', function() {
+
+           if (mainBtn.hasClass('disabled')) {
+               return;
+           }
+
+           if (mainBtn.hasClass('active')) {
+               mainBtn.removeClass('active');
+
+               $('.options.active').slideUp(500,function() {
+                   nextOptions.removeClass('active');
+               });
+           } else {
+               var activeOptions = $('.options[data-options-id="' + mainBtn.data('main-cat-id') + '"]');
+
+               $('.match-filter .main-category').removeClass('active');
+               mainBtn.addClass('active');
+
+           }
+       });
+   });
+   $('.options-container .checkbox').each(function() {
+	   $(this).on('click', function() {
+		   console.log('Option selected!');
+	   });
+   });
+   
+   $('ul.nav-tabs li:first-child').addClass("active");
+   $(".tab-content div.fade").first().addClass("active in");
+   
+   $('.nav-tabs li a').click(function() {
+	   $(this).addClass('active').siblings().removeClass('active');
+	    console.log($(this).attr('href'));
+	    $('.checkbox label p').innerHTML = $('.checkbox label p img').outerHTML;
+	    $(".tab-content .tab-pane").removeClass("active");
+	    $(".tab-content" . '#'.$(this).attr('href')).addClass("active");
+	});
+   
    </script>
 {hook name="category.after-javascript-include"}
 {hook name="criteria-search.search-js"}

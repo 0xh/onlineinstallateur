@@ -10,14 +10,17 @@ SET FOREIGN_KEY_CHECKS = 0;
 CREATE TABLE if not exists `configurator`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `category_id` INTEGER,
     `visible` TINYINT DEFAULT 0 NOT NULL,
     `position` INTEGER DEFAULT 0 NOT NULL,
     `created_at` DATETIME,
     `updated_at` DATETIME,
-    `version` INTEGER DEFAULT 0,
-    `version_created_at` DATETIME,
-    `version_created_by` VARCHAR(100),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `FI_configurator_category` (`category_id`),
+    CONSTRAINT `fk_configurator_category`
+        FOREIGN KEY (`category_id`)
+        REFERENCES `category` (`id`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -98,27 +101,6 @@ CREATE TABLE if not exists `configurator_features`
     CONSTRAINT `fk_conf_feature_id`
         FOREIGN KEY (`feature_id`)
         REFERENCES `feature` (`id`)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- configurator_version
--- ---------------------------------------------------------------------
-
-CREATE TABLE if not exists `configurator_version`
-(
-    `id` INTEGER NOT NULL,
-    `visible` TINYINT DEFAULT 0 NOT NULL,
-    `position` INTEGER DEFAULT 0 NOT NULL,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    `version` INTEGER DEFAULT 0 NOT NULL,
-    `version_created_at` DATETIME,
-    `version_created_by` VARCHAR(100),
-    PRIMARY KEY (`id`,`version`),
-    CONSTRAINT `configurator_version_FK_1`
-        FOREIGN KEY (`id`)
-        REFERENCES `configurator` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

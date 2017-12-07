@@ -23,10 +23,12 @@
             <tag name="router.register" priority="128"/>
         </service>
     </services>
+    <!--
+    DEPRECATED - implemented to inform the user the order exists and making a new payment might result in multiple payments for the same order
     
     <hooks>
     	<hook id="existing.order.message" class="Front\Hook\Front\ExistingOrderMessage">
 			<tag name="hook.event_listener" event="existing_order_message" type="front"  method="viewAction" />
 		</hook>
-    </hooks>
+    </hooks>-->
 </config>

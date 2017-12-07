@@ -1,0 +1,5 @@
+@media (max-width: 790px){
+	.media-scroll {
+	    overflow-x: scroll;
+	}
+}

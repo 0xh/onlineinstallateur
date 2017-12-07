@@ -58,6 +58,16 @@
                        		<input type="hidden" name="{$name}" value="{$edit_language_locale}" />
                         {/form_field}           
 				        {render_form_field field="title"}
+						
+						{custom_render_form_field  form=$form field='category_id'}
+	                        <select {form_field_attributes form=$form field='category_id'} name="category">
+							    {loop name="categories-tree" type="category-tree" category="0"}
+							        <option value="{$ID}">{"-"|str_repeat:$LEVEL} {$TITLE} {if $CHILD_COUNT != 0}({$CHILD_COUNT}){/if}</option>
+							    {/loop}
+							</select>
+						{/custom_render_form_field}
+				        
+				        
 						{render_form_field field="chapo"}
 						{render_form_field field="description" extra_class="wysiwyg"}
 					</form>										

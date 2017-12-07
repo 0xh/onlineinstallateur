@@ -22,6 +22,7 @@ use Propel\Runtime\Exception\PropelException;
  * 
  *
  * @method     ChildConfiguratorVersionQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildConfiguratorVersionQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
  * @method     ChildConfiguratorVersionQuery orderByVisible($order = Criteria::ASC) Order by the visible column
  * @method     ChildConfiguratorVersionQuery orderByPosition($order = Criteria::ASC) Order by the position column
  * @method     ChildConfiguratorVersionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
@@ -29,8 +30,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildConfiguratorVersionQuery orderByVersion($order = Criteria::ASC) Order by the version column
  * @method     ChildConfiguratorVersionQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
  * @method     ChildConfiguratorVersionQuery orderByVersionCreatedBy($order = Criteria::ASC) Order by the version_created_by column
+ * @method     ChildConfiguratorVersionQuery orderByCategoryIdVersion($order = Criteria::ASC) Order by the category_id_version column
  *
  * @method     ChildConfiguratorVersionQuery groupById() Group by the id column
+ * @method     ChildConfiguratorVersionQuery groupByCategoryId() Group by the category_id column
  * @method     ChildConfiguratorVersionQuery groupByVisible() Group by the visible column
  * @method     ChildConfiguratorVersionQuery groupByPosition() Group by the position column
  * @method     ChildConfiguratorVersionQuery groupByCreatedAt() Group by the created_at column
@@ -38,6 +41,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildConfiguratorVersionQuery groupByVersion() Group by the version column
  * @method     ChildConfiguratorVersionQuery groupByVersionCreatedAt() Group by the version_created_at column
  * @method     ChildConfiguratorVersionQuery groupByVersionCreatedBy() Group by the version_created_by column
+ * @method     ChildConfiguratorVersionQuery groupByCategoryIdVersion() Group by the category_id_version column
  *
  * @method     ChildConfiguratorVersionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildConfiguratorVersionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -51,6 +55,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildConfiguratorVersion findOneOrCreate(ConnectionInterface $con = null) Return the first ChildConfiguratorVersion matching the query, or a new ChildConfiguratorVersion object populated from the query conditions when no match is found
  *
  * @method     ChildConfiguratorVersion findOneById(int $id) Return the first ChildConfiguratorVersion filtered by the id column
+ * @method     ChildConfiguratorVersion findOneByCategoryId(int $category_id) Return the first ChildConfiguratorVersion filtered by the category_id column
  * @method     ChildConfiguratorVersion findOneByVisible(int $visible) Return the first ChildConfiguratorVersion filtered by the visible column
  * @method     ChildConfiguratorVersion findOneByPosition(int $position) Return the first ChildConfiguratorVersion filtered by the position column
  * @method     ChildConfiguratorVersion findOneByCreatedAt(string $created_at) Return the first ChildConfiguratorVersion filtered by the created_at column
@@ -58,8 +63,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildConfiguratorVersion findOneByVersion(int $version) Return the first ChildConfiguratorVersion filtered by the version column
  * @method     ChildConfiguratorVersion findOneByVersionCreatedAt(string $version_created_at) Return the first ChildConfiguratorVersion filtered by the version_created_at column
  * @method     ChildConfiguratorVersion findOneByVersionCreatedBy(string $version_created_by) Return the first ChildConfiguratorVersion filtered by the version_created_by column
+ * @method     ChildConfiguratorVersion findOneByCategoryIdVersion(int $category_id_version) Return the first ChildConfiguratorVersion filtered by the category_id_version column
  *
  * @method     array findById(int $id) Return ChildConfiguratorVersion objects filtered by the id column
+ * @method     array findByCategoryId(int $category_id) Return ChildConfiguratorVersion objects filtered by the category_id column
  * @method     array findByVisible(int $visible) Return ChildConfiguratorVersion objects filtered by the visible column
  * @method     array findByPosition(int $position) Return ChildConfiguratorVersion objects filtered by the position column
  * @method     array findByCreatedAt(string $created_at) Return ChildConfiguratorVersion objects filtered by the created_at column
@@ -67,6 +74,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByVersion(int $version) Return ChildConfiguratorVersion objects filtered by the version column
  * @method     array findByVersionCreatedAt(string $version_created_at) Return ChildConfiguratorVersion objects filtered by the version_created_at column
  * @method     array findByVersionCreatedBy(string $version_created_by) Return ChildConfiguratorVersion objects filtered by the version_created_by column
+ * @method     array findByCategoryIdVersion(int $category_id_version) Return ChildConfiguratorVersion objects filtered by the category_id_version column
  *
  */
 abstract class ConfiguratorVersionQuery extends ModelCriteria
@@ -155,7 +163,7 @@ abstract class ConfiguratorVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY FROM configurator_version WHERE ID = :p0 AND VERSION = :p1';
+        $sql = 'SELECT ID, CATEGORY_ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY, CATEGORY_ID_VERSION FROM configurator_version WHERE ID = :p0 AND VERSION = :p1';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
@@ -297,6 +305,47 @@ abstract class ConfiguratorVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ConfiguratorVersionTableMap::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the category_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCategoryId(1234); // WHERE category_id = 1234
+     * $query->filterByCategoryId(array(12, 34)); // WHERE category_id IN (12, 34)
+     * $query->filterByCategoryId(array('min' => 12)); // WHERE category_id > 12
+     * </code>
+     *
+     * @param     mixed $categoryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildConfiguratorVersionQuery The current query, for fluid interface
+     */
+    public function filterByCategoryId($categoryId = null, $comparison = null)
+    {
+        if (is_array($categoryId)) {
+            $useMinMax = false;
+            if (isset($categoryId['min'])) {
+                $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID, $categoryId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($categoryId['max'])) {
+                $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID, $categoryId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID, $categoryId, $comparison);
     }
 
     /**
@@ -578,6 +627,47 @@ abstract class ConfiguratorVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ConfiguratorVersionTableMap::VERSION_CREATED_BY, $versionCreatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the category_id_version column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCategoryIdVersion(1234); // WHERE category_id_version = 1234
+     * $query->filterByCategoryIdVersion(array(12, 34)); // WHERE category_id_version IN (12, 34)
+     * $query->filterByCategoryIdVersion(array('min' => 12)); // WHERE category_id_version > 12
+     * </code>
+     *
+     * @param     mixed $categoryIdVersion The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildConfiguratorVersionQuery The current query, for fluid interface
+     */
+    public function filterByCategoryIdVersion($categoryIdVersion = null, $comparison = null)
+    {
+        if (is_array($categoryIdVersion)) {
+            $useMinMax = false;
+            if (isset($categoryIdVersion['min'])) {
+                $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID_VERSION, $categoryIdVersion['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($categoryIdVersion['max'])) {
+                $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID_VERSION, $categoryIdVersion['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ConfiguratorVersionTableMap::CATEGORY_ID_VERSION, $categoryIdVersion, $comparison);
     }
 
     /**

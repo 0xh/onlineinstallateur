@@ -45,7 +45,9 @@
                                         <th>{intl l='ID'} </th>
 
                                         <th>{intl l='Title'} </th>
-
+											
+										<th class="text-center">{intl l="Category"} </th>
+										
                                         <th class="text-center">{intl l="Position"} </th>
 
                                         <th class="actions">{intl l="Actions"}</th>
@@ -57,7 +59,8 @@
 	                                	<tr>  
 	                                		<div class="row">                          				
 	                                			<td class="text-left col-md-1">{$CONFIGURATOR_ID}</td>
-												<td class="text-left col-md-9"><a href="{url path='/admin/modules/filter-configurator/update/%id' id=$CONFIGURATOR_ID}">{$TITLE}</a></td>
+												<td class="text-left col-md-7"><a href="{url path='/admin/modules/filter-configurator/update/%id' id=$CONFIGURATOR_ID}">{$TITLE}</a></td>
+												<td class="text-center col-md-2">{loop type="category" name="configuratorCategory" id=$CATEGORY }{$TITLE}{/loop}</td>
 												<td class="text-center col-md-1">{$POSITION}</td>
 												<td class="text-right col-md-1 actions">
 													<div class="btn-toolbar btn toolbar-primary">

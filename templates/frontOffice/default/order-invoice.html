@@ -330,9 +330,7 @@
 
                 <div id="payment-method" class="panel panel-default">
                     <div class="panel-heading">{intl l="Choose your payment method"}</div>
-                    {ifhook rel="existing_order_message"}
-                    	{hook name="existing_order_message"}
-					{/ifhook}
+                   
                     {if $error}
                         <span class="help-block"><span class="fa fa-remove"></span> {$message}</span>
                     {/if}
