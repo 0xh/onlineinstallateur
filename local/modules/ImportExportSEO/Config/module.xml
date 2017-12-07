@@ -9,7 +9,13 @@
     <descriptive locale="fr_FR">
         <title>Importer et exporter les données SEO</title>
     </descriptive>
+    
+    
+    <descriptive locale="de_DE">
+        <title>Import Export SEO Daten</title>
+    </descriptive>
     <languages>
+    	<language>de_DE</language>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>

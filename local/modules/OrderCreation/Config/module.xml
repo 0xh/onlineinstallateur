@@ -7,11 +7,19 @@
     <descriptive locale="fr_FR">
         <title>Creation de commande dans le BackOffice</title>
     </descriptive>
+    <descriptive locale="de_DE">
+        <title>Auftragserstellung in BackOffice</title>
+    </descriptive>
     <version>1.4</version>
     <author>
         <name>gbarral</name>
         <email>gbarral@openstudio.fr</email>
     </author>
+    <languages>
+    	<language>de_DE</language>
+        <language>en_US</language>
+        <language>fr_FR</language>
+    </languages>
     <type>classic</type>
     <thelia>2.1.1</thelia>
     <stability>other</stability>
