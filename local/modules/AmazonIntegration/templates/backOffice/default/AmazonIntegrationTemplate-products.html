@@ -54,27 +54,27 @@
 		    </div>
 		</div>
 		<div class="txt-div" >
-			<div class="block block-nav col-md-3 text-left" role="navigation" aria-labelledby="search-label">
+			<div class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
 			    <h5  id="search-label">{intl l="Marketplace" d="criteriasearch.fo.default"}</h5>
-			    <select class="filter position_marketplace">
+			    <select class="filter position_marketplace form-control">
 			    <option value="all" {if $smarty.get.position_marketplace|strstr:"all"}selected{/if}>All</option>
 			    {loop name="amazon_config_marketplace" type="amazon_config_marketplace"}
 			    	<option value="{$marketPlaceValue}" {if $smarty.get.position_marketplace|strstr:"{$marketPlaceValue}"}selected{/if}>{$marketPlaceName}</option>
 			    {/loop}	
 			    </select>
 			</div>
-			<div class="block block-nav col-md-3 text-left" role="navigation" aria-labelledby="search-label">
+			<div class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
 			    <h5  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h5>
-			    <select class="filter position_brand">
+			    <select class="filter position_brand form-control">
 			    	<option value="all" {if $smarty.get.position_brand|strstr:"all"}selected{/if}>All</option>
 			    {loop name="amazon_brand" type="amazon_brand"}
 			    	<option value="{$id}" {if $smarty.get.position_brand|strstr:"{$id}"}selected{/if}>{$title}</option>
 			    {/loop}	
 			    </select>
 			</div>
-			<div class="block block-nav col-md-3 text-left" role="navigation" aria-labelledby="search-label">
+			<div class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
 			    <h5  id="search-label">{intl l="Sent to amazon" d="criteriasearch.fo.default"}</h5>
-			    <select class="filter position_sent_amazon">
+			    <select class="filter position_sent_amazon form-control">
 			    	<option value="all" {if $smarty.get.position_sent_amazon|strstr:"all"}selected{/if}>All</option>
 			    	<option value="yes" {if $smarty.get.position_sent_amazon|strstr:"yes"}selected{/if}>Yes</option>
 			    	<option value="no" {if $smarty.get.position_sent_amazon|strstr:"no"}selected{/if}>No</option>
@@ -82,61 +82,63 @@
 			</div>
 		</div>
 		<form action="{url path='/admin/module/amazonintegration/send-to-amazon'}">
-			<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>No.</th>
-					<th>Id</th>
-					<th>Ref</th>
-					<th>Title</th>
-					<th>Brand</th>
-					<th>Price</th>
-					<th>Currency</th>
-					<th>Quantity</th>
-					<th>Ean Code</th>
-					<th>Marketplace</th>
-					<th>Input price</th>
-					<th>Input quantity</th>
-					<th>Select the product</th>
-				</tr>
-			</thead>
-			<tbody>  
-			   {assign var="nr" value="1"}
-			   {if $smarty.get.position_marketplace}
-				    {assign var="redirect_link" value="tab={$smarty.get.tab}&position_marketplace={$smarty.get.position_marketplace}&position_brand={$smarty.get.position_brand}&position_sent_amazon={$smarty.get.position_sent_amazon}"}
-				{else}
-					{if $smarty.get.search_by_id}
-				    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_id={$smarty.get.search_by_id}"}
-				    {/if}
-					{if $smarty.get.search_by_ref}
-				    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_ref={$smarty.get.search_by_ref}"}
-				    {/if}
-					{if $smarty.get.search_by_ean}
-				    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_ean={$smarty.get.search_by_ean}"}
-				    {/if}
-					{if $smarty.get.search_by_title}
-				    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_title={$smarty.get.search_by_title}"}
-				    {/if}
-				{/if}
-          	   {loop name="amazon_products_listing" type="amazon_products_listing" page={$page} limit=20}
-               <tr>
-					<td>{$nr}.</td>
-					<td>{$id}<input type="hidden" name="redirect_link" value="{$redirect_link}"></td>
-					<td>{$ref}<input type="hidden" name="ref_{$id}" id="ref_{$id}" value="{$ref}"></td>
-					<td>{$title}</td>
-					<td>{$brand_title}</td>
-					<td>{$price}</td>
-					<td>{$currency}</td>
-					<td>{$quantity}</td>
-					<td>{$ean_code}<input type="hidden" name="ean_{$id}" id="ean_{$id}" value="{$ean_code}"></td>
-					<td>{$MARKETPLACE_LOCALE}</td>
-					<td class="price"><input type="text" class="form-control" name="" id="price_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
-					<td class="quantity"><input type="text" class="form-control" name="" id="quantity_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
-					<td class="select-product"><input type="radio" storedValue="false" id="radio_{$id}{$nr}" disabled="disabled" onclick="checkRadio({$id},{$nr++})" value="{$id}"></label></td>
-				</tr>
-               {/loop}
-               </tbody>
-            </table>
+			<div class="media-scroll">
+				<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>No.</th>
+						<th>Id</th>
+						<th>Ref</th>
+						<th>Title</th>
+						<th>Brand</th>
+						<th>Price</th>
+						<th>Currency</th>
+						<th>Quantity</th>
+						<th>Ean Code</th>
+						<th>Marketplace</th>
+						<th>Input price</th>
+						<th>Input quantity</th>
+						<th>Select the product</th>
+					</tr>
+				</thead>
+				<tbody>  
+				   {assign var="nr" value="1"}
+				   {if $smarty.get.position_marketplace}
+					    {assign var="redirect_link" value="tab={$smarty.get.tab}&position_marketplace={$smarty.get.position_marketplace}&position_brand={$smarty.get.position_brand}&position_sent_amazon={$smarty.get.position_sent_amazon}"}
+					{else}
+						{if $smarty.get.search_by_id}
+					    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_id={$smarty.get.search_by_id}"}
+					    {/if}
+						{if $smarty.get.search_by_ref}
+					    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_ref={$smarty.get.search_by_ref}"}
+					    {/if}
+						{if $smarty.get.search_by_ean}
+					    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_ean={$smarty.get.search_by_ean}"}
+					    {/if}
+						{if $smarty.get.search_by_title}
+					    	{assign var="redirect_link" value="tab={$smarty.get.tab}&search_by_title={$smarty.get.search_by_title}"}
+					    {/if}
+					{/if}
+	          	   {loop name="amazon_products_listing" type="amazon_products_listing" page={$page} limit=20}
+	               <tr>
+						<td>{$nr}.</td>
+						<td>{$id}<input type="hidden" name="redirect_link" value="{$redirect_link}"></td>
+						<td>{$ref}<input type="hidden" name="ref_{$id}" id="ref_{$id}" value="{$ref}"></td>
+						<td>{$title}</td>
+						<td>{$brand_title}</td>
+						<td>{$price}</td>
+						<td>{$currency}</td>
+						<td>{$quantity}</td>
+						<td>{$ean_code}<input type="hidden" name="ean_{$id}" id="ean_{$id}" value="{$ean_code}"></td>
+						<td>{$MARKETPLACE_LOCALE}</td>
+						<td class="price"><input type="text" class="form-control" name="" id="price_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
+						<td class="quantity"><input type="text" class="form-control" name="" id="quantity_{$id}{$nr}" onchange="changePriceOrQuantity({$id},{$nr})" value=""></td>
+						<td class="select-product"><input type="radio" storedValue="false" id="radio_{$id}{$nr}" disabled="disabled" onclick="checkRadio({$id},{$nr++})" value="{$id}"></label></td>
+					</tr>
+	               {/loop}
+	               </tbody>
+	            </table>
+            </div>
             <input type="hidden" name="radioChecked" id="radioChecked" value="">
 	         <tfoot>
 	             <tr>
@@ -144,26 +146,26 @@
 	                     {include
 	                     file = "includes/pagination.html"
 	                     loop_ref       = "amazon_products_listing"
-	                     max_page_count = 20
+	                     max_page_count = 10
 	                     page_url       = {url path="/admin/module/amazonintegration?tab={$smarty.get.tab}&position_marketplace={$smarty.session.position_marketplace}&position_brand={$smarty.session.position_brand}&position_sent_amazon={$smarty.session.position_sent_amazon}" }
 	                     }
 	                 </td>
 	             </tr>
 	         </tfoot>
 			<div class="txt-div" >
-					<div class="col-sm-1">
-					  <button type="submit" id="get_update_orders" class="btn btn-info">Send to :</button>
+					<div class="col-sm-4">
+					  <button type="submit" id="get_update_orders" class="btn btn-info form-control">Send to :</button>
 					  <div id="wait" class="modal-loading"></div>
 					</div>
-					<div class="block block-nav col-md-1 text-left" role="navigation" aria-labelledby="search-label">
-					    <select class="filter marketplace_to_send" name="amazon_marketplace">
+					<div class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
+					    <select class="filter marketplace_to_send form-control" name="amazon_marketplace">
 					    {loop name="amazon_config_marketplace" type="amazon_config_marketplace"}
 					    	<option value="{$marketPlaceValue};{$marketPlaceName}" {if $smarty.get.position_marketplace|strstr:"{$marketPlaceValue}"}selected{/if}>{$marketPlaceName}</option>
 					    {/loop}	
 					    </select>
 					</div>
-					<div class="block block-nav col-md-1 text-left" role="navigation" aria-labelledby="search-label">
-					    <select class="filter amazon_currency" name="amazon_currency">
+					<div class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
+					    <select class="filter amazon_currency form-control" name="amazon_currency">
 					    {loop name="amazon_currency" type="amazon_currency"}
 					    	<option value="{$code}">{$code}</option>
 					    {/loop}	

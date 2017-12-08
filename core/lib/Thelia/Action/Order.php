@@ -728,16 +728,18 @@ class Order extends BaseAction implements EventSubscriberInterface
      * @param $payment_error_msg - error message for each payment type
      * @throws \Exception if the message cannot be loaded.
      */
-    public function sendEmailOrderFailed(OrderEvent $event, $payment_error_msg)
+    public function sendEmailOrderFailed(OrderEvent $event)
     {
+    	$session = $this->getSession();
+    	 	
     	$this->mailer->sendEmailOrderFailed(
     			'order_failed',
     			[
-    					'order_id' => $event->getOrder()->getId(),
-    					'order_ref' => $event->getOrder()->getRef(),
-    					'payment_error_msg' => $payment_error_msg
+    					'order_id' => $session->get("order_id"),
+    					'payment_error_msg' => $session->get("payment_error_message")
     			]
     			);
+
     }
     
     /**

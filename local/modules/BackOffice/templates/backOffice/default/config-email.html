@@ -1,0 +1,80 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'configuration'}
+{/block}
+
+{block name="page-title"}{intl l='Email for failed orders'}{/block}
+
+{block name="main-content"}
+<div class="variables edit-variable">
+
+    <div id="wrapper" class="container">
+
+        <ul class="breadcrumb">
+			<li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+            <li><a href="{url path='/admin/configuration'}">{intl l="Configuration"}</a></li>
+            <li>{intl l="Email"}</li>
+        </ul>
+
+		<div class="row">
+			<div class="col-md-12 general-block-decorator">
+				<div class="row">
+
+					<div class="col-md-12 title title-without-tabs">
+					   {intl l="Set email for failed orders"}
+					</div>
+                </div>
+
+                <div class="form-container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {form name='email.office'}
+	 						<form method="POST" action="{url path='/admin/configuration/office-email/save'}">
+                                {form_hidden_fields}
+
+                                {form_field field='success_url'}
+                                    <input type="hidden" name="{$name}" value="{url path='/admin/configuration'}">
+                                {/form_field}
+                                {include
+                                    file = "includes/inner-form-toolbar.html"
+                                    hide_flags = true
+
+                                    page_url  = "{url path='/admin/configuration/office-email'}"
+                                    close_url = "{url path='/admin/configuration'}"
+                                }
+                                <div class="row">
+                                    <div class="col-md-6">
+   										<fieldset>
+	                                        {if $form_error}
+	                                            <div class="alert alert-danger">{$form_error_message}</div>
+	                                        {/if}
+	
+	                                        {render_form_field field='office_email' value={$office_email}}
+                                        </fieldset>
+                                    </div>
+                                </div>
+
+                                {include
+                                file = "includes/inner-form-toolbar.html"
+                                hide_flags = true
+                                page_bottom = true
+
+                                page_url  = "{url path='/admin/configuration/office-email'}"
+                                close_url = "{url path='/admin/configuration'}"
+                                }
+
+							</form>
+							{/form}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
+{/block}
+
+{block name="javascript-last-call"}
+    {hook name="config-store.js" location="config-store-js" }
+{/block}

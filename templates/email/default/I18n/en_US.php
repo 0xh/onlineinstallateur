@@ -32,6 +32,7 @@ return array(
     'Our contact us at:' => 'Our contact us at:',
     'Our mailing address is:' => 'Our mailing address is:',
     'Paid With:' => 'Paid With:',
+	'Payment error for order Nº %id' => 'Payment error for order Nº %id',
     'Price in' => 'Price in',
     'Purchase Date:' => 'Purchase Date:',
     'Quantity : %qty' => 'Quantity : %qty',

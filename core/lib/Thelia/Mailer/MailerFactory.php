@@ -138,42 +138,34 @@ class MailerFactory
         foreach ($recipients as $recipient) {
             $to[$recipient] = $storeName;
         }
-
+      
         $this->sendEmailMessage(
             $messageCode,
             [ConfigQuery::getStoreEmail() => $storeName],
             $to,
             $messageParameters
         );
+        
     }
     
     /**
-     * Send a message to a specific mail set in configuration
+     * Send a message for failed orders
      *
      * @param string $messageCode
      * @param array  $messageParameters an array of (name => value) parameters that will be available in the message.
      */
     public function sendEmailOrderFailed($messageCode, $messageParameters = [])
     {
-    	//$storeName = ConfigQuery::getStoreName();
+    	$to_email = ConfigQuery::read('office_email');
+    	$storeName = ConfigQuery::getStoreName();
+    	$to[$to_email] = $to_email;
     	
-    	// Build the list of email recipients
-    	//$recipients = ConfigQuery::getNotificationEmailsList();
-    	
-    	$to = [];
- 
-    	/* foreach ($recipients as $recipient) {
-    		$to[$recipient] = $storeName;
-    	} */
-    	
-    	$to['alis.stranici@sepa.at'] = 'hausfabrik';
-    	$from['alis.stranici1@sepa.at'] = 'hausfabrik1';
     	$this->sendEmailMessage(
     			$messageCode,
-    			$from,
+    			[ConfigQuery::getStoreEmail() => $storeName],
     			$to,
     			$messageParameters
-    			);
+    			); 
     }
 
     /**
@@ -190,7 +182,7 @@ class MailerFactory
     public function sendEmailMessage($messageCode, $from, $to, $messageParameters = [], $locale = null, $cc = [], $bcc = [])
     {
         $store_email = ConfigQuery::getStoreEmail();
-
+      
         if (! empty($store_email)) {
             if (! empty($to)) {
 

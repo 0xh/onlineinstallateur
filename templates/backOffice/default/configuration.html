@@ -218,6 +218,10 @@
                                     <td><a class="btn btn-default btn-xs" href="{url path='/admin/module-hooks'}"><i class="glyphicon glyphicon-edit"></i></a></td>
                                 </tr>
                                 {/loop}
+                                <tr>
+                                    <td><a href="{url path='/admin/configuration/office-email'}">{intl l='Email - failed orders'}</a></td>
+                                    <td><a class="btn btn-default btn-xs" href="{url path='/admin/configuration/office-email'}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                </tr>
                                 {hook name="configuration.system-bottom" location="configuration_system_bottom" }
                             </table>
                         </div>
