@@ -14,6 +14,7 @@ namespace BackOffice;
 
 use Thelia\Module\BaseModule;
 use Thelia\Install\Database;
+use Propel\Runtime\Connection\ConnectionInterface;
 
 class BackOffice extends BaseModule
 {

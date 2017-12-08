@@ -50,6 +50,7 @@ use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
 use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
+use Thelia\Mailer\MailerFactory;
 
 /**
  * Class OrderController
@@ -58,7 +59,7 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
  */
 class OrderController extends BaseFrontController
 {
-	
+
     /**
      * Check if the cart contains only virtual products.
      */
@@ -453,10 +454,20 @@ class OrderController extends BaseFrontController
         }
         
         // send email to office_email with failed orders
-        $orderEvent = $this->getOrderEvent();
-        $this->getSession()->set("order_id", $order_id);
-        $this->getSession()->set("payment_error_message", $message);
-        $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SEND_EMAIL_ORDER_FAILED, $orderEvent, $message);
+        $messageParameters = array(
+	        'order_id' => $order_id,
+        	'payment_error_msg' => $message
+	    );
+        
+        $parser = $this->getParser($this->getTemplateHelper()->getActiveMailTemplate());
+        $mailer = new MailerFactory($this->getDispatcher(), $parser);
+        
+        $mailer->sendEmailMessage(
+        		'order_failed',
+        		[ConfigQuery::getStoreEmail() => ConfigQuery::getStoreName()],
+        		[ConfigQuery::read('office_email') => ConfigQuery::read('office_email')],
+        		$messageParameters
+        		); 
 
         $this->getParserContext()
             ->set("failed_order_id", $order_id)
