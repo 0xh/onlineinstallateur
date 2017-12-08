@@ -6,10 +6,10 @@
 {block name="pre-header"}{/block}
 
 {* Subject  *}
-{block name="email-subject"}{intl l="Your order confirmation Nº %ref" ref={$order_ref}}{/block}
+{block name="email-subject"}{intl l="Payment error for order Nº %id" id={$order_id}}{/block}
 
 {* Title  *}
-{block name="email-title"}{intl l="Thank you for your order!"}{/block}
+{block name="email-title"}{intl l="Payment error!"}{/block}
 
 {* Content  *}
 {block name="email-content"}
@@ -25,7 +25,6 @@
         {hook name="email-html.order-confirmation.before-address" order=$order_id}
         <p>{intl l="Payment error message:"}</p>
 		<p>{$payment_error_msg}</p>
-        {intl l="Here are the details of your purchase:"}<br /><br />
 		
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
@@ -134,54 +133,5 @@
 
     {hook name="email-html.order-confirmation.after-products" order=$order_id}
 
-    <br />
 
-    {ifhook rel="email-html.order-confirmation.footer"}
-        {hook name="email-html.order-confirmation.footer" order=$order_id}
-    {/ifhook}
-    {elsehook rel="email-html.order-confirmation.footer"}
-        <p><a href="{url path="/account"}">{intl l="View this order in your account at %shop_name" shop_name={config key="store_name"}}</a></p>
-
-        <br />
-
-        <h2>{intl l="Support"}</h2>
-        {intl l='For any questions, or concerns, feel free to contact <a href="mailto:%mail" style="color:#3c69c1;text-decoration:none" target="_blank">%mail</a>.' mail={config key="store_email"}}<br /><br />
-        <b>{intl l="Our contact us at:"}</b> <br />
-<div style="font-size:11px; border-top:solid 1px #86AC34">
-    <div style="width:40%; float:left">
-        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
-        {config key="nwing"}<br/>
-        {config key="store_address1"}<br/>
-        {config key="store_zipcode"}, {config key="store_city"}<br />
-        {if {config key="store_country"}}
-            {loop type="country" name="store_country" id={config key="store_country"}}
-                {$TITLE}
-            {/loop}
-        {/if} 
-    </div>
-        <div style="width:30%; float:left">
-        Tel.{config key="store_phone"}<br>
-        {config key="store_email"}<br/>
-        {config key="url_site"}<br />
-    </div>
-
-    <div style="width:30%; float:left">
-        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
-        IBAN: {config key="iban"}<br>
-        BIC: {config key="bic"}<br />
-        UID-Nr: {config key="uid-nr"}<br />
-        FN: {config key="fn"}<br />
-    </div>
-    
-    
-</div>
-<div style="clear:left"></div>
-<div style="font-size:10px;">
-       Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
-</div>
-
-        <br />
-        <br />
-        {intl l="Thanks"}<br/>
-    {/elsehook}
 {/block}

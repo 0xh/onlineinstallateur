@@ -452,8 +452,10 @@ class OrderController extends BaseFrontController
             Tlog::getInstance()->warning("Failed order ID '$order_id' not found.");
         }
         
-        // send email with failed orders
+        // send email to office_email with failed orders
         $orderEvent = $this->getOrderEvent();
+        $this->getSession()->set("order_id", $order_id);
+        $this->getSession()->set("payment_error_message", $message);
         $this->getDispatcher()->dispatch(TheliaEvents::ORDER_SEND_EMAIL_ORDER_FAILED, $orderEvent, $message);
 
         $this->getParserContext()
