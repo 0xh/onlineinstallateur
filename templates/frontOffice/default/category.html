@@ -157,7 +157,7 @@
 											<div class="checkbox">
 												<input type="checkbox" data-name="level_price" value="all" id="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" name="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}" data-tracked="true">
 												<label for="{$value@key}_{$value}_{$FEAT_AV_I18n_TITLE}_{$feature_counter}">
-													{$FEAT_AV_I18n_TITLE} 
+													<span>{$FEAT_AV_I18n_TITLE}</span> 
 													{strip}{$FEAT_AV_I18n_DESCRIPTION nofilter}{/strip}
 												</label>
 											</div>
@@ -434,6 +434,7 @@ padding-left:0px;
 }
 .tab-pane .checkbox{
 	margin-top: 0px;
+	min-height:200px;
 }
 ul.category-container:first-child {
 	margin-left: 0 !important;
@@ -490,6 +491,7 @@ ul.category-container:first-child {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  padding-left: 31px;
 }
 .tab-content input[type="checkbox"]:empty ~ label:before {
   position: absolute;
@@ -529,17 +531,25 @@ ul.category-container:first-child {
   color: #fff;
   background-color: #5cb85c;
 }
+.checkbox span{
+	display: block;
+	position: relative;
+}
 .checkbox p{
-    width: 30px;
     display: block;
-    float: right;
+    float: left;
     position: relative;
-    right: 20px;
     top: 2px;
+    width: 150px;
+    height: 150px;
 }
 .checkbox p img{
-	width: 30px;
-    height: 30px;
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-width: 100%;
+    max-height: 100%;
 }
 
 </style>
