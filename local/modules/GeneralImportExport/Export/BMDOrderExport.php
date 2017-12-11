@@ -183,11 +183,6 @@ class BMDOrderExport extends AbstractExport
     	do {
     		$order = parent::current();
     		$getNext = false;
-    				|| (strpos($order[OrderTableMap::REF],"AUK") !== false 
-    				    || strpos($order[OrderTableMap::REF],"AIT") !== false
-    				    || strpos($order[OrderTableMap::REF],"AES") !== false
-    				    || strpos($order[OrderTableMap::REF],"ADE") !== false
-    				    || strpos($order[OrderTableMap::REF],"OFR") !== false)
     		
     		if ($this->rangeDate !== null)
     		{
