@@ -45,6 +45,16 @@ abstract class AbstractExport implements \Iterator
     const USE_RANGE_DATE = false;
 
     /**
+     * @var boolean Use export from country/amazon/....
+     */
+    const USE_EXPORT_FROM = false;
+
+    /**
+     * @var boolean Use tva/taxes
+     */
+    const USE_TVA_TAXES = false;
+
+    /**
      * @var array|\Propel\Runtime\Util\PropelModelPager Data to export
      */
     private $data;
@@ -98,6 +108,48 @@ abstract class AbstractExport implements \Iterator
      * @var null|array Export date range
      */
     protected $rangeDate;
+    
+    /**
+     * @var string export_from
+     */
+    protected $exportFrom;
+    
+    /**
+     * @var string tva_taxes
+     */
+    protected $tvaTaxes;
+    
+    /**
+     * @return the $tvaTaxes
+     */
+    public function getTvaTaxes()
+    {
+        return $this->tvaTaxes;
+    }
+
+    /**
+     * @param string $tvaTaxes
+     */
+    public function setTvaTaxes($tvaTaxes)
+    {
+        $this->tvaTaxes = $tvaTaxes;
+    }
+
+    /**
+     * @return the $exportFrom
+     */
+    public function getExportFrom()
+    {
+        return $this->exportFrom;
+    }
+
+    /**
+     * @param string $exportFrom
+     */
+    public function setExportFrom($exportFrom)
+    {
+        $this->exportFrom = $exportFrom;
+    }
 
     public function current()
     {
@@ -106,12 +158,11 @@ abstract class AbstractExport implements \Iterator
         }
 
         $data = $this->data->getIterator()->current()->toArray(TableMap::TYPE_COLNAME, true, [], true);
-
         foreach ($this->data->getQuery()->getWith() as $withKey => $with) {
+            
             $data = array_merge($data, $data[$withKey]);
             unset($data[$withKey]);
         }
-
         return $data;
     }
 
@@ -381,6 +432,16 @@ abstract class AbstractExport implements \Iterator
     public function useRangeDate()
     {
         return static::USE_RANGE_DATE;
+    }
+
+    public function useExportFrom()
+    {
+        return static::USE_EXPORT_FROM;
+    }
+
+    public function useTvaTaxes()
+    {
+        return static::USE_TVA_TAXES;
     }
 
 

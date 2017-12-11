@@ -69,6 +69,54 @@
     </div>
 {/if}
 
+<div class="row vertical-row-space">
+	{if $useExportFrom} 
+		<div class="col-md-4">
+		 {form_field field="export_from"}
+			<div class="row">
+			     <div class="col-md-12">
+			         <label for="{$label_attr.for}">
+			             {$label}
+			         </label>
+			     </div>
+			     <div class="col-md-12">
+				    <select name="{$name}">
+				        <option value="ALL">All</option>
+				        <option value="AUK">amazon.uk</option>
+				        <option value="AIT">amazon.it</option>
+				        <option value="AES">amazon.es</option>
+				        <option value="ADE">amazon.de</option>
+				        <option value="AFR">amazon.fr</option>
+				        <option value="OFR">hausfabrik OFR</option>
+				        <option value="ORD">hausfabrik ORD</option>
+				    </select>
+			    </div>
+    		</div>
+   		{/form_field}
+		</div>
+	{/if}
+	
+	{if $useTvaTaxes} 
+		<div class="col-md-4">
+			{form_field field="tva_taxes"}
+			<div class="row">
+			     <div class="col-md-12">
+			         <label for="{$label_attr.for}">
+			             {$label}
+			         </label>
+			     </div>
+			     <div class="col-md-12">
+				    <select name="{$name}">
+				    {for $tvaTaxes=10 to 40}
+					    <option value="{$tvaTaxes}">{$tvaTaxes}</option>
+					{/for}
+				    </select>
+			    </div>
+		    </div>
+		   {/form_field}
+	    </div>
+	{/if}
+</div>
 <div class="row">
     <div class="col-md-12">
         {ifloop rel="serializer"}

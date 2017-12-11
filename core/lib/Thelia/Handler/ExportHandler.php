@@ -156,7 +156,9 @@ class ExportHandler
         Lang $language = null,
         $includeImages = false,
         $includeDocuments = false,
-        $rangeDate = null
+        $rangeDate = null,
+        $exportFrom = null,
+        $tvaTaxes = null
     ) {
         $exportHandleClass = $export->getHandleClass();
 
@@ -190,6 +192,9 @@ class ExportHandler
             );
         }
         $instance->setRangeDate($rangeDate);
+        
+        $instance->setExportFrom($exportFrom);
+        $instance->setTvaTaxes($tvaTaxes);
 
         // Process export
         $event = new ExportEvent($instance, $serializer, $archiver);

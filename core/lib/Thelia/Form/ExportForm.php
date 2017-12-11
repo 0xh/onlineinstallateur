@@ -78,6 +78,30 @@ class ExportForm extends BaseForm
                     ],
                 ]
             )
+            // Todo: use list
+            ->add(
+                'export_from',
+                'text',
+                [
+                    'required' => false,
+                    'label' => $this->translator->trans('Export from:'),
+                    'label_attr' => [
+                        'for' => 'export_from'
+                    ],
+                ]
+            )
+            // Todo: use list
+            ->add(
+                'tva_taxes',
+                'text',
+                [
+                    'required' => false,
+                    'label' => $this->translator->trans('Tva/Taxes:'),
+                    'label_attr' => [
+                        'for' => 'tva_taxes'
+                    ],
+                ]
+            )
             ->add("images", "checkbox", array(
                 "label" => $this->translator->trans("Include images"),
                 "label_attr" => ["for" => "with_images"],
