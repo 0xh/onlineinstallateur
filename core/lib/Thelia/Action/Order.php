@@ -465,7 +465,10 @@ class Order extends BaseAction implements EventSubscriberInterface
         		$placedOrder->setTransactionRef($eventOrder->getTransactionRef());
         	$placedOrder->setPostage($eventOrder->getPostage());
         	//$placedOrder = new Order();
-        	$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
+                
+                //try: remove delete order_product 
+        	//$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
+                
         	//$placedOrder->setLangId($eventOrder->getLang());
         	$placedOrder->setDiscount($eventOrder->getDiscount())
         	->save();

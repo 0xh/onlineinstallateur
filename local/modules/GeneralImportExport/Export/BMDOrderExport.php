@@ -3,6 +3,9 @@ namespace GeneralImportExport\Export;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\ImportExport\Export\AbstractExport;
+use Thelia\Log\Tlog;
+use Thelia\Model\Order;
+use Thelia\Model\OrderQuery;
 use Thelia\Model\Map\CountryI18nTableMap;
 use Thelia\Model\Map\CurrencyTableMap;
 use Thelia\Model\Map\CustomerTableMap;
@@ -13,10 +16,7 @@ use Thelia\Model\Map\OrderProductTaxTableMap;
 use Thelia\Model\Map\OrderStatusI18nTableMap;
 use Thelia\Model\Map\OrderStatusTableMap;
 use Thelia\Model\Map\OrderTableMap;
-use Thelia\Model\Order;
-use Thelia\Model\OrderQuery;
 use Thelia\Tools\I18n;
-use Thelia\Log\Tlog;
 
 /**
  * Class BilligerProductExport
@@ -26,6 +26,9 @@ use Thelia\Log\Tlog;
 class BMDOrderExport extends AbstractExport
 {
     const USE_RANGE_DATE = true;
+    const USE_EXPORT_FROM = true;
+    const USE_TVA_TAXES = true;
+    
     const FILE_NAME = 'order_bmd';
    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol 
     protected $orderAndAliases = [
@@ -140,7 +143,8 @@ class BMDOrderExport extends AbstractExport
 		
 		// betrag = betrag + steuer (leiferungkosten)
 		$betrag = round($processedData['betrag']+$processedData['steuer'],2);
-		$processedData['steuer'] = round(-($betrag/1.2)*0.2,2);
+        
+		$processedData['steuer'] = round(-($betrag/(1 + $this->getTvaTaxes() / 100 ))* ($this->getTvaTaxes() / 100),2);
 		$processedData['betrag'] = $betrag;//round($betrag + $processedData['steuer'],2);
 		//Tlog::getInstance()->error("steuer ".round(-(137.15/1.2)*0.2,2)." betrag ");
 		$status = $processedData['skontotage'];
@@ -178,29 +182,29 @@ class BMDOrderExport extends AbstractExport
     {
     	do {
     		$order = parent::current();
-    		
     		$getNext = false;
-    		if ($this->rangeDate !== null
-    				&& (
-    						$order[OrderTableMap::CREATED_AT] < $this->rangeDate['start']
-    						|| $order[OrderTableMap::CREATED_AT] > $this->rangeDate['end']
-    						)
-    				|| (strpos($order[OrderTableMap::REF],"AUK") !== false 
-    				    || strpos($order[OrderTableMap::REF],"AIT") !== false
-    				    || strpos($order[OrderTableMap::REF],"AES") !== false
-    				    || strpos($order[OrderTableMap::REF],"ADE") !== false
-    				    || strpos($order[OrderTableMap::REF],"AFR") !== false
-    				    || strpos($order[OrderTableMap::REF],"OFR") !== false)
-    				|| (strpos($order[OrderTableMap::STATUS_ID],"5") !== false
-    				    || strpos($order[OrderTableMap::STATUS_ID],"10") !== false
-    				    || strpos($order[OrderTableMap::STATUS_ID],"1") !== false)
-    				) {
-    					
-    					$this->next();
-    					$getNext = true;
-    				}
+    		
+    		if ($this->rangeDate !== null)
+    		{
+    		    if ($this->getExportFrom() === "ALL" || $this->getExportFrom() == null){
+    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'])
+    		        {
+    		            $this->next();
+    		            $getNext = true;
+    		        }
+    		    }
+    		    else 
+    		    {
+    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'] || (strpos($order[OrderTableMap::REF],$this->getExportFrom()) !== 0))
+    		        {
+    		            $this->next();
+    		            $getNext = true;
+    		        }
+    		    }
+    		}
+    				
     	} while ($getNext && $this->valid());
-    	
+
     	$locale = $this->language->getLocale();
     	
     	$query = OrderQuery::create()

@@ -153,7 +153,10 @@ class ExportController extends BaseAdminController
                 'exportId' => $id,
                 'hasImages' => $export->hasImages(),
                 'hasDocuments' => $export->hasDocuments(),
-                'useRange' => $export->useRangeDate()
+                'useRange' => $export->useRangeDate(),
+                'useExportFrom' => $export->useExportFrom(),
+                'useTvaTaxes' => $export->useTvaTaxes()
+                                
             ]
         );
     }
@@ -212,7 +215,9 @@ class ExportController extends BaseAdminController
                 $lang,
                 $validatedForm->get('images')->getData(),
                 $validatedForm->get('documents')->getData(),
-                $rangeDate
+                $rangeDate,
+                $validatedForm->get("export_from")->getData(),
+                $validatedForm->get("tva_taxes")->getData()
             );
 
             $contentType = $exportEvent->getSerializer()->getMimeType();
