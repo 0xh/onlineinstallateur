@@ -1,0 +1,15 @@
+<div class = "row configurator_details">
+	{loop name="category_configurator_details" type="category_configurator_details" category="{$category_id}"}
+		<div class="configurator-image col-md-12 col-sm-12 col-xs-12">
+	   		{loop type="image_configurator" name="image_configurator" source='configurator' order="manual" id={$CONFIGURATOR_DETAILS_IMAGE} resize_mode="borders" visible="*"}
+	   			 <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+	   		{/loop}
+		</div>
+		<div class="configurator-title col-md-12 col-sm-12 col-xs-12">
+			{$CONFIGURATOR_DETAILS_TITLE}
+		</div>
+		<div class="configurator-description col-md-12 col-sm-12 col-xs-12">
+			{$CONFIGURATOR_DETAILS_DESCRIPTION nofilter}
+		</div>
+	{/loop}
+</div>

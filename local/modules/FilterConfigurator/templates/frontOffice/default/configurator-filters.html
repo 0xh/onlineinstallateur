@@ -1,0 +1,40 @@
+ <div class="row filter_row">
+	<div class="col-md-12">
+         	<div class="match-filter bg-light-grey clean">
+         		<ul class = "category-container nav nav-tabs">
+         			{loop type="search_feature" name="search_feature_loop" category=$category_id}
+          				{if $SEARCHABLE}
+		          			{$featureId = $ID}
+		          			<li class = "col-md-3 main-category test" class="select-search">
+		          				<a class="category-head feature-{$ID}" a data-toggle="tab" href="#{$ID}">
+		          					<span>{$TITLE}</span>
+		          				</a>
+		          			</li>
+          				{/if}
+         			{/loop}       
+         		</ul> 
+         		<div class="tab-content col-md-12 options_collection">
+          		{loop type="search_feature" name="search_feature_loop" category=$category_id}
+          			{if $SEARCHABLE}
+	          			{$featureId = $ID}
+	          			<div id="{$ID}" class="tab-pane fade options-container clean row">
+		           			{loop type="search_feature_av" name="search_feature_av_loop" feature=$featureId category={', '|implode:$categories} return_empty=false force_return=true}
+								<div class="checkbox filter-option col-md-4 col-sm-12">	
+									<div class="controller_wrapper clean checkbox-box">
+										<div class="checkbox">
+											<input type="checkbox" data-name="level_price"  class="input-search" value="{$ID}" id="feature-{$featureId}-{$ID}" name="features[{$featureId}][]" data-tracked="true">
+											<label for="feature-{$featureId}-{$ID}">
+												<span>{$TITLE}</span> 
+												{strip}{$DESCRIPTION nofilter}{/strip}
+											</label>
+										</div>
+									</div>
+								</div>
+							 {/loop}
+					 	</div>
+          			{/if}
+				{/loop}     
+			</div>	   	
+		</div>
+	</div>
+</div> 

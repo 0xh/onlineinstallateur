@@ -64,6 +64,7 @@ class FilterFeaturesValue extends BaseI18nLoop implements PropelSearchLoopInterf
         }else{
             $feature_id = $this->getArgValue("feature_id");
         }
+        $locale =$this->getCurrentRequest()->getSession()->getLang()->getLocale();
         
         /* $search = FeatureQuery::create()
             ->addJoin(FeatureTableMap::ID, FeatureI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)

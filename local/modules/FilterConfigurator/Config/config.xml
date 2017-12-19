@@ -21,4 +21,10 @@
          <form name="filter.configurator.image" class="FilterConfigurator\Form\ImageModificationForm"/>
     </forms>
 	
+	<hooks>
+        <hook id="feature.configurator" class="FilterConfigurator\Hook\Front\FrontHook" scope="request">
+            <tag name="hook.event_listener" event="configurator.description" type="front" method="configuratorDescription" />
+            <tag name="hook.event_listener" event="configurator.filters" type="front" method="configuratorFilters" />
+        </hook>
+    </hooks>
 </config>
