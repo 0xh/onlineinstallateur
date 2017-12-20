@@ -247,7 +247,6 @@ ul.category-container:first-child {
 
 .category-container.nav-tabs li.active a.active{
 	background-color: #86AC34;
-	border: none;
 	color: #fff;
 }
 
