@@ -257,6 +257,7 @@ ul.category-container:first-child {
 .category-container li{
     padding-left: 0px;
     border-left-width: 0px;
+    margin-bottom: 10px;
 }
 .match-filter ul.nav-tabs{
 	background-color: #fff;
