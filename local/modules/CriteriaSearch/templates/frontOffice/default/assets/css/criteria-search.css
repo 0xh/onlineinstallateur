@@ -130,10 +130,15 @@ span.criteria-pagination{
 }
 
 .category-head span{
-	display: table-cell;
+	display: inline-block;
     vertical-align: middle;
-    padding-right: 60px;
+    padding-left: 0px;
     font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-align: left;
 }
 
 .category-head span.active{
@@ -262,10 +267,6 @@ ul.category-container:first-child {
 .match-filter ul.nav-tabs{
 	background-color: #fff;
 	border-bottom: none;
-}
-
-.category-container .filter{
-	background
 }
 
 .tab-content{

@@ -6,8 +6,9 @@
     {loop type="category" name="categories" parent=$category_id}
         {$categories[] = $ID}
     {/loop}
-	
-	{hook name="configurator.filters" category_id=$category_id categories=$categories}
+	{ifhook rel="configurator.filters"}
+		{hook name="configurator.filters" category_id=$category_id categories=$categories}
+	{/ifhook}
 	<!--  
      {loop type="search_feature" name="search_feature_loop" category=$category_id}
      {if $SEARCHABLE}

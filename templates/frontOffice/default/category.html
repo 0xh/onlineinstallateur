@@ -114,7 +114,9 @@
             </section>
            
             {*/if*}
-            {hook name="configurator.description" category_id=$category_id}
+            {ifhook rel="configurator.description"}
+            	{hook name="configurator.description" category_id=$category_id}
+			{/ifhook}
 			
             {if #category_display_subcategories#}
             {ifloop rel="subcategories"}
