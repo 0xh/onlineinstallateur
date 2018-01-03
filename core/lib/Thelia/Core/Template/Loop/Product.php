@@ -469,23 +469,47 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
      * @param string[] $feature_availability
      */
     protected function manageFeatureAv(&$search, $feature_availability)
-    {
+    { 
         if (null !== $feature_availability) {
+        	
+        	if(!is_array($feature_availability)) {
+        		// 1_(3|4),3_(11)
+        		//Array ( [1] => Array ( [0] => 6 ) [3] => Array ( [0] => 17 ) ) 
+        		$feature_availability_array = array();
+        		
+        		$feature_availability = str_replace("(","",$feature_availability);
+        		$feature_availability = str_replace(")","",$feature_availability);
+        		$feature_availability = explode(',',$feature_availability);
+        		
+        		foreach($feature_availability as $features) {
+        			$feature = explode('_',$features);
+        			$values = explode('|',$feature[1]); 
+        			
+        			$feature_availability_array = $feature_availability_array + array($feature[0] => $values);
+        		}
+        		
+        		$feature_availability = $feature_availability_array;
+        	}
+        	
             foreach ($feature_availability as $feature => $feature_choice) {
-                foreach ($feature_choice['values'] as $feature_av) {
+            	// original
+                // foreach ($feature_choice['values'] as $feature_av) {
+            	foreach ($feature_choice as $feature_av) {
                     $featureAlias = 'fa_' . $feature;
                     if ($feature_av != '*') {
                         $featureAlias .= '_' . $feature_av;
                     }
-                    $search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
+                   // original
+                   // $search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
+                    $search->joinFeatureProduct($featureAlias, Criteria::JOIN)
                         ->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_ID = ?", $feature, null, \PDO::PARAM_INT);
                     if ($feature_av != '*') {
                         $search->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_AV_ID = ?", $feature_av, null, \PDO::PARAM_INT);
                     }
                 }
-
+				// original 
                 /* format for mysql */
-                $sqlWhereString = $feature_choice['expression'];
+             /*    $sqlWhereString = $feature_choice['expression'];
                 if ($sqlWhereString == '*') {
                     $sqlWhereString = 'NOT ISNULL(`fa_' . $feature . '`.ID)';
                 } else {
@@ -494,7 +518,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                     $sqlWhereString = str_replace('|', ' OR ', $sqlWhereString);
                 }
 
-                $search->where("(" . $sqlWhereString . ")");
+                $search->where("(" . $sqlWhereString . ")"); */
             }
         }
     }
@@ -1058,9 +1082,10 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
 
         // ... to get the DISPLAY_INITIAL_PRICE column !
         $search->withColumn('`SalePriceDisplay`.DISPLAY_INITIAL_PRICE', 'display_initial_price');
-
-        $feature_availability = $this->getFeatureAvailability();
-
+		// original
+        //$feature_availability = $this->getFeatureAvailability();
+        $feature_availability = $_GET['features'];
+        	
         $this->manageFeatureAv($search, $feature_availability);
 
         $feature_values = $this->getFeatureValues();

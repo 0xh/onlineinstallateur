@@ -6,8 +6,12 @@
     {loop type="category" name="categories" parent=$category_id}
         {$categories[] = $ID}
     {/loop}
-    {loop type="search_feature" name="search_feature_loop" category=$category_id}
-        {if $SEARCHABLE}
+	{ifhook rel="configurator.filters"}
+		{hook name="configurator.filters" category_id=$category_id categories=$categories}
+	{/ifhook}
+	<!--  
+     {loop type="search_feature" name="search_feature_loop" category=$category_id}
+     {if $SEARCHABLE}
             {$featureId = $ID}
             {ifloop rel="search_feature_av_loop"}
                 <div id="search-feature" class="block block-nav col-md-3 text-left" role="navigation" aria-labelledby="categories-label">
@@ -19,8 +23,9 @@
                     </select>
                 </div>
             {/ifloop}
-        {/if}
-    {/loop}
+        {/if}	
+   
+    {/loop}   -->
     {loop type="search_attribute" name="search_attribute_loop" category=$category_id}
         {if $SEARCHABLE}
             {$attributeId = $ID}

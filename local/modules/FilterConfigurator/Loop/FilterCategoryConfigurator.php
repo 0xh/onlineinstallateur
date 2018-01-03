@@ -56,6 +56,8 @@ class FilterCategoryConfigurator extends BaseI18nLoop implements PropelSearchLoo
             $catId = $this->getArgValue("category")[0];
         }
         
+        $locale =$this->getCurrentRequest()->getSession()->getLang()->getLocale();
+        
         $search = ConfiguratorQuery::create()
             ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
             ->addJoin(ConfiguratorTableMap::ID, ConfiguratorImageTableMap::CONFIGURATOR_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
@@ -69,6 +71,7 @@ class FilterCategoryConfigurator extends BaseI18nLoop implements PropelSearchLoo
             ->withColumn(ConfiguratorFeaturesTableMap::FEATURE_ID, 'feature_id' )
             ->withColumn(FeatureI18nTableMap::TITLE,'feature_title')
             ->withColumn(FeatureAvI18nTableMap::TITLE,'feature_value')
+            ->where(ConfiguratorI18nTableMap::LOCALE.' = ?', $locale, \PDO::PARAM_STR)
             ->where(FeatureI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR)
             ->where(FeatureAvI18nTableMap::LOCALE.' = ?', 'de_DE', \PDO::PARAM_STR)
             ->where(ConfiguratorTableMap::CATEGORY_ID.' = ?', $catId, \PDO::PARAM_STR)

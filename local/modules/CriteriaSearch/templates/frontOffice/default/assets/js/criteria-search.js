@@ -25,6 +25,16 @@ jQuery(function($){
     var searchTimer = null;
 
     $('.input-search').on('change', function(e) {
+    	
+    	if($(this).attr('id') != undefined) {
+			var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
+			
+       		if(check)
+       			$('.main-category.active span').addClass('active');
+       		else
+       			$('.main-category.active span').removeClass('active');
+    	}
+    			
         if (searchTimer !== null) {
             clearTimeout(searchTimer)
         }
@@ -52,7 +62,8 @@ jQuery(function($){
         $('.input-search').each(function(){ this.checked = false; });
     }
 
-    function fillForm(displayProduct) {
+    function fillForm(displayProduct) { 
+    	
         $.ajax({
             url : "/criteria/page/info/search"+window.location.search,
             type: "GET"
@@ -71,6 +82,14 @@ jQuery(function($){
                 $('#'+v).each(function(){ this.checked = true; });
             });
 
+            
+            $( ".options-container" ).each(function( ) { 
+	        	var check = $(this).find('input[type=checkbox]:checked').length;
+	    		
+	       		if(check)
+	       			$('.category-head.feature-'+$(this).attr('id')+' span').addClass('active');
+	    	});
+            
             if (displayProduct) {
                 displaySearchProductList();
             }
@@ -145,4 +164,23 @@ jQuery(function($){
     function getURLParameter(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
     }
+    
+    // configurator
+    $('.nav-tabs li a').click(function() {
+		
+		if($(this).hasClass( "active" )) { 
+			 $(".tab-content " + $(this).attr('href')).removeClass('active').removeClass('in');
+			 $(this).removeClass('active').removeClass('in');
+		}
+		else {
+			  $(".tab-content .tab-pane").removeClass("active");
+			  $(".tab-content " + $(this).attr('href')).addClass("active").addClass("in");
+			  $('.main-category .category-head').removeClass('active');
+			  $(this).addClass('active')
+		}
+    	  
+    });
+
 });
+
+

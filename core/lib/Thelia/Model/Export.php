@@ -91,6 +91,24 @@ class Export extends BaseExport
         return static::$cache->useRangeDate();
     }
 
+    public function useExportFrom()
+    {
+        if (static::$cache === null) {
+            static::$cache = $this->getHandleClassInstance();
+        }
+
+        return static::$cache->useExportFrom();
+    }
+
+    public function useTvaTaxes()
+    {
+        if (static::$cache === null) {
+            static::$cache = $this->getHandleClassInstance();
+        }
+
+        return static::$cache->useTvaTaxes();
+    }
+
     /**
      * {@inheritDoc}
      */

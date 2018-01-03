@@ -465,7 +465,10 @@ class Order extends BaseAction implements EventSubscriberInterface
         		$placedOrder->setTransactionRef($eventOrder->getTransactionRef());
         	$placedOrder->setPostage($eventOrder->getPostage());
         	//$placedOrder = new Order();
-        	$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
+                
+                //try: remove delete order_product 
+        	//$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
+                
         	//$placedOrder->setLangId($eventOrder->getLang());
         	$placedOrder->setDiscount($eventOrder->getDiscount())
         	->save();
@@ -721,26 +724,6 @@ class Order extends BaseAction implements EventSubscriberInterface
             ? $event->getManageStock()
             : $module->manageStockOnCreation();
     }
-
-    
-    /**
-     * @param OrderEvent $event
-     * @param $payment_error_msg - error message for each payment type
-     * @throws \Exception if the message cannot be loaded.
-     */
-    public function sendEmailOrderFailed(OrderEvent $event)
-    {
-    	$session = $this->getSession();
-    	 	
-    	$this->mailer->sendEmailOrderFailed(
-    			'order_failed',
-    			[
-    					'order_id' => $session->get("order_id"),
-    					'payment_error_msg' => $session->get("payment_error_message")
-    			]
-    			);
-
-    }
     
     /**
      * {@inheritdoc}
@@ -761,8 +744,7 @@ class Order extends BaseAction implements EventSubscriberInterface
             TheliaEvents::ORDER_UPDATE_STATUS => array("updateStatus", 128),
             TheliaEvents::ORDER_UPDATE_DELIVERY_REF => array("updateDeliveryRef", 128),
             TheliaEvents::ORDER_UPDATE_ADDRESS => array("updateAddress", 128),
-            TheliaEvents::ORDER_CREATE_MANUAL => array("createManual", 128),
-        	TheliaEvents::ORDER_SEND_EMAIL_ORDER_FAILED => array("sendEmailOrderFailed", 128),
+            TheliaEvents::ORDER_CREATE_MANUAL => array("createManual", 128)
         );
     }
 

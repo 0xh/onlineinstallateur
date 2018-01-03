@@ -148,25 +148,6 @@ class MailerFactory
         
     }
     
-    /**
-     * Send a message for failed orders
-     *
-     * @param string $messageCode
-     * @param array  $messageParameters an array of (name => value) parameters that will be available in the message.
-     */
-    public function sendEmailOrderFailed($messageCode, $messageParameters = [])
-    {
-    	$to_email = ConfigQuery::read('office_email');
-    	$storeName = ConfigQuery::getStoreName();
-    	$to[$to_email] = $to_email;
-    	
-    	$this->sendEmailMessage(
-    			$messageCode,
-    			[ConfigQuery::getStoreEmail() => $storeName],
-    			$to,
-    			$messageParameters
-    			); 
-    }
 
     /**
      * Send a message to the customer.
@@ -180,7 +161,7 @@ class MailerFactory
      * @param array  $bcc               Bcc addresses. An array of (email-address => name) [optional]
      */
     public function sendEmailMessage($messageCode, $from, $to, $messageParameters = [], $locale = null, $cc = [], $bcc = [])
-    {
+    { 
         $store_email = ConfigQuery::getStoreEmail();
       
         if (! empty($store_email)) {
