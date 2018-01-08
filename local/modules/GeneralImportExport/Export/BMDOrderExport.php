@@ -27,7 +27,6 @@ class BMDOrderExport extends AbstractExport
 {
     const USE_RANGE_DATE = true;
     const USE_EXPORT_FROM = true;
-    const USE_TVA_TAXES = true;
     
     const FILE_NAME = 'order_bmd';
    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol 
@@ -37,7 +36,7 @@ class BMDOrderExport extends AbstractExport
     		OrderTableMap::REF=> 'belegnr',
     		OrderTableMap::DISCOUNT => 'extbelegnr',
     		'order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'=> 'betrag',
-    		OrderTableMap::POSTAGE => 'steuer',
+    		'order_TOTAL_TAX' => 'steuer',
     		'order_TOTAL_TTC' => 'mwst',
     		OrderTableMap::INVOICE_DATE=> 'buchdat',
     		OrderTableMap::DELIVERY_MODULE_ID=> 'belegdat',
@@ -61,6 +60,8 @@ class BMDOrderExport extends AbstractExport
      */
     public function applyOrderAndAliases(array $data)
     {
+        //is order invalid ?
+        if ($data == []) return [];
         if ($this->orderAndAliases === null) {
             return $data;
         }
@@ -81,6 +82,7 @@ class BMDOrderExport extends AbstractExport
                 $processedData[$fieldAlias] = $data[$fieldName];
             }
         }
+        $processedData['mwst'] = "20";
         
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
@@ -119,6 +121,7 @@ class BMDOrderExport extends AbstractExport
         	case "ADE":{
         		$processedData['konto']="202699";
         		$processedData['belegnr']="2".substr($processedData['belegnr'],3);
+        		$processedData['mwst'] = "19";
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
@@ -140,12 +143,9 @@ class BMDOrderExport extends AbstractExport
         
 		$processedData['gkto'] = "4000";
 		$processedData['extbelegnr'] = "";
-		
-		// betrag = betrag + steuer (leiferungkosten)
-		$betrag = round($processedData['betrag']+$processedData['steuer'],2);
         
-		$processedData['steuer'] = round(-($betrag/(1 + $this->getTvaTaxes() / 100 ))* ($this->getTvaTaxes() / 100),2);
-		$processedData['betrag'] = $betrag;//round($betrag + $processedData['steuer'],2);
+		$processedData['steuer'] = round(-$processedData['steuer'],2);
+		$processedData['betrag'] = round($processedData['betrag'],2);//round($betrag + $processedData['steuer'],2);
 		//Tlog::getInstance()->error("steuer ".round(-(137.15/1.2)*0.2,2)." betrag ");
 		$status = $processedData['skontotage'];
 		if($status == "Zurückerstattet") {
@@ -154,8 +154,6 @@ class BMDOrderExport extends AbstractExport
 			$processedData['text'] = "Gutschrift";
 		}
 		//Tlog::getInstance()->error($status);
-
-		$processedData['mwst'] = "20";
 		
 		$invoiceDate = date("Ymd", strtotime($processedData['buchdat']));	
 		$processedData['buchdat'] = $invoiceDate;
@@ -187,15 +185,16 @@ class BMDOrderExport extends AbstractExport
     		if ($this->rangeDate !== null)
     		{
     		    if ($this->getExportFrom() === "ALL" || $this->getExportFrom() == null){
-    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'])
+    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'] || $order[OrderTableMap::STATUS_ID] === 1 || $order[OrderTableMap::STATUS_ID] === 5 || $order[OrderTableMap::STATUS_ID] === 10)
     		        {
+    		            Tlog::getInstance()->error("status ".$order[OrderTableMap::STATUS_ID]);
     		            $this->next();
     		            $getNext = true;
     		        }
     		    }
     		    else 
     		    {
-    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'] || (strpos($order[OrderTableMap::REF],$this->getExportFrom()) !== 0))
+    		        if ($order[OrderTableMap::INVOICE_DATE] < $this->rangeDate['start'] || $order[OrderTableMap::INVOICE_DATE] > $this->rangeDate['end'] || (strpos($order[OrderTableMap::REF],$this->getExportFrom()) !== 0)  || $order[OrderTableMap::STATUS_ID] === 1 || $order[OrderTableMap::STATUS_ID] === 5 || $order[OrderTableMap::STATUS_ID] === 10)
     		        {
     		            $this->next();
     		            $getNext = true;
@@ -204,7 +203,9 @@ class BMDOrderExport extends AbstractExport
     		}
     				
     	} while ($getNext && $this->valid());
-
+    	//the last order might be invalid
+        if($this->valid() == false ) return [];
+        
     	$locale = $this->language->getLocale();
     	
     	$query = OrderQuery::create()
@@ -405,6 +406,7 @@ class BMDOrderExport extends AbstractExport
     					$data['order_TOTAL_TTC'] = $order->getTotalAmount($tax, false, false);
     					$data['order_TOTAL_WITH_DISCOUNT'] = $order->getTotalAmount($tax, false, true);
     					$data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] = $order->getTotalAmount($tax, true, true);
+    					$data['order_TOTAL_TAX'] = $tax;
     					
     					return $data;
     }
