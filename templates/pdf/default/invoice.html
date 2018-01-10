@@ -280,7 +280,7 @@
 
     {hook name="invoice.after-addresses" order=$order_id}
 
-    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
+    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;padding: 1mm;">
         <col style="width: 40%; padding: 1mm;" />
         <col style="width: 12%; padding: 1mm;" />
         <col style="width: 15%; padding: 1mm;" />
@@ -350,10 +350,9 @@
 {hook name="invoice.after-products" order=$order_id}
 
     <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
-        <col style="width: 60%; padding: 1mm;" />
-        <col style="width: 40%; padding: 1mm;" />
+
         <tr>
-            <td class="table-3-module">
+            <td class="table-3-module" style="width: 50%; padding: 1mm;" >
 
                 <h3>{intl l="Payment module"}</h3>
                 <p>
@@ -364,20 +363,15 @@
 
 
                 <h3>{intl l="Delivery module"}</h3>
-                
-                {ifhook rel="product.order-pdf-fulfilment-center-address"}
-               		{hook name="product.order-pdf-fulfilment-center-address" orderid=$order_id}	
-	            {/ifhook}
-				{elsehook rel="product.order-pdf-fulfilment-center-address"}
-                   	<p>
-	                    <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
-	                </p>
-                {/elsehook}
+                <p>
+	                <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
+	            </p>
+
                 
                 {hook name="invoice.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
 
             </td>
-            <td>
+            <td style="width: 50%; " >
                 <table class="table-3">
                     <col style="width: 50%; padding: 1mm;">
                     <col style="width: 50%; padding: 1mm;">

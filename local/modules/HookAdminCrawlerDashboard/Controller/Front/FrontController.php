@@ -6482,4 +6482,11 @@ class FrontController extends BaseFrontController
     	}
     	return self::$logger;
     }
+    
+    public function fromJira() {
+        /** @var Request $request */
+        $request = $this->getRequest();
+        $jiraUser = $request->query->get("jirauser", "");
+        $this->getLogger()->error("jirauser is ".$jiraUser);
+    }
 }

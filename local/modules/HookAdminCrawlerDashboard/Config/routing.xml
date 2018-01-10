@@ -11,7 +11,9 @@
 	<route id="front.crawler.cron" path="/crawler/cron">
         <default key="_controller">HookAdminCrawlerDashboard\Controller\Front\FrontController::runCronJob</default>
     </route>
-
+	<route id="front.crawler.jira" path="/jiraintegration">
+        <default key="_controller">HookAdminCrawlerDashboard\Controller\Front\FrontController::fromJira</default>
+    </route>
     <!--
 
     if a /admin/module/hookadmincrawlerdashboard/ route is provided, a "Configuration" button will be displayed
