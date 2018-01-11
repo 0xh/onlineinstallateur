@@ -14,4 +14,3 @@ local/modules/AmazonIntegration/Controller/Admin/AmazonIntegrationContoller.php
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
-local/config/database.yml
