@@ -14,3 +14,6 @@ local/modules/AmazonIntegration/Controller/Admin/AmazonIntegrationContoller.php
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
+web/index.php
+log/.htaccess
+.htaccess
