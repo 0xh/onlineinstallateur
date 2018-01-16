@@ -1,2 +1,2 @@
-DELETE FROM `thelia`.`export`
+DELETE FROM `export`
 WHERE 1;
