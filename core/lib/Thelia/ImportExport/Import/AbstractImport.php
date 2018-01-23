@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace Thelia\ImportExport\Import;
 
@@ -21,8 +22,18 @@ use Thelia\Model\Lang;
  * Class AbstractImport
  * @author Jérôme Billiras <jbilliras@openstudio.fr>
  */
-abstract class AbstractImport implements \Iterator
-{
+abstract class AbstractImport implements \Iterator {
+
+    /**
+     * @var boolean Use fulfilment center
+     */
+    const USE_FULFILMENT_CENTER = false;
+
+    /**
+     * @var array
+     */
+    protected $fulfilmentCenter;
+
     /**
      * @var array
      */
@@ -53,28 +64,35 @@ abstract class AbstractImport implements \Iterator
      */
     protected $importedRows = 0;
 
-    public function current()
-    {
+    function getFulfilmentCenter() {
+        return $this->fulfilmentCenter;
+    }
+
+    function setFulfilmentCenter($fulfilmentCenter) {
+        $this->fulfilmentCenter = $fulfilmentCenter;
+    }
+
+    public static function useFulfilmentCenter() {
+        return static::USE_FULFILMENT_CENTER;
+    }
+
+    public function current() {
         return current($this->data);
     }
 
-    public function key()
-    {
+    public function key() {
         return key($this->data);
     }
 
-    public function next()
-    {
+    public function next() {
         next($this->data);
     }
 
-    public function rewind()
-    {
+    public function rewind() {
         reset($this->data);
     }
 
-    public function valid()
-    {
+    public function valid() {
         return key($this->data) !== null;
     }
 
@@ -83,8 +101,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return array Parsed data
      */
-    public function getData()
-    {
+    public function getData() {
         return $this->data;
     }
 
@@ -95,8 +112,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return $this Return $this, allow chaining
      */
-    public function setData(array $data)
-    {
+    public function setData(array $data) {
         $this->data = $data;
 
         return $this;
@@ -107,8 +123,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return \Symfony\Component\HttpFoundation\File\File
      */
-    public function getFile()
-    {
+    public function getFile() {
         return $this->file;
     }
 
@@ -119,8 +134,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return $this Return $this, allow chaining
      */
-    public function setFile(File $file)
-    {
+    public function setFile(File $file) {
         $this->file = $file;
 
         return $this;
@@ -131,8 +145,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return \Thelia\Model\Lang A language model
      */
-    public function getLang()
-    {
+    public function getLang() {
         return $this->language;
     }
 
@@ -143,8 +156,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return $this Return $this, allow chaining
      */
-    public function setLang(Lang $language = null)
-    {
+    public function setLang(Lang $language = null) {
         $this->language = $language;
 
         return $this;
@@ -157,18 +169,16 @@ abstract class AbstractImport implements \Iterator
      *
      * @return boolean Data contains mandatory columns or not
      */
-    public function checkMandatoryColumns(array $data)
-    {
+    public function checkMandatoryColumns(array $data) {
         $diff = array_diff($this->mandatoryColumns, array_keys($data));
 
         if (count($diff) > 0) {
             throw new \UnexpectedValueException(
-                Translator::getInstance()->trans(
-                    'The following columns are missing: %columns',
-                    [
-                        '%columns' => implode(', ', $diff)
+            Translator::getInstance()->trans(
+                    'The following columns are missing: %columns', [
+                '%columns' => implode(', ', $diff)
                     ]
-                )
+            )
             );
         }
     }
@@ -178,8 +188,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return int Imported rows count
      */
-    public function getImportedRows()
-    {
+    public function getImportedRows() {
         return $this->importedRows;
     }
 
@@ -190,8 +199,7 @@ abstract class AbstractImport implements \Iterator
      *
      * @return $this Return $this, allow chaining
      */
-    public function setImportedRows($importedRows)
-    {
+    public function setImportedRows($importedRows) {
         $this->importedRows = $importedRows;
 
         return $this;
@@ -200,16 +208,14 @@ abstract class AbstractImport implements \Iterator
     /**
      * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface $container)
-    {
+    public function setContainer(ContainerInterface $container) {
         $this->container = $container;
     }
 
     /**
      * @return ContainerInterface
      */
-    protected function getContainer()
-    {
+    protected function getContainer() {
         return $this->container;
     }
 

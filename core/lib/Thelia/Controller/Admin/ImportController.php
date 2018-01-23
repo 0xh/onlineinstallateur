@@ -167,6 +167,7 @@ class ImportController extends BaseAdminController
                 'importId' => $id,
                 'ALLOWED_MIME_TYPES' => implode(', ', $mimeTypes),
                 'ALLOWED_EXTENSIONS' => implode(', ', $extensions),
+                'useFulfilmentCenter' => $import->useFulfilmentCenter()
             ]
         );
     }

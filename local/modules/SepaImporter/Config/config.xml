@@ -135,5 +135,33 @@
                 </description>
             </import_descriptive>
         </import>
+        <import id="thelia.update.stock.product.inventory"
+                class="SepaImporter\Import\UpdateStockProductInventory"
+                category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Update stock product inventory</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Ref(megabildnr): The ref of your product </li>
+                        <li>Stock(verfuegbarkeit): The stock of your product </li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Update stock product inventory</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Ref(megabildnr): The ref of your product </li>
+                        <li>Stock(verfuegbarkeit): The stock of your product </li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+        </import>
     </imports>
 </config>
