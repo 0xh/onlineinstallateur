@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md-12 general-block-decorator">
+        <div class="row">
+            <div class="col-md-12 title title-without-tabs">{intl
+                d='sofort.bo.default' l="Module's fix cost and transaction cost"}</div>
+        </div>
+
+        <div class="form-container">
+            <div class="row">
+                <div class="col-md-12">
+                    {form name="revenue.dashboard.form.configure"}
+                    <form action="{url path="admin/module/RevenueDashboard/configure"}" method="post">
+
+                          {form_hidden_fields form=$form} 
+                          {include file = "includes/inner-form-toolbar.html" hide_flags = true page_url = "{url path='/admin/module/RevenueDashboard'}" 
+                          close_url = "{url path='/admin/modules'}" } 
+                          {if $form_error}
+                          <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            </div>
+                        </div>
+                        {/if}
+                        
+                        {foreach $module as $modul}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    {render_form_field form=$form field="cost_module_{$modul[0]}" value=$cost_module_{$modul[0]}}
+                                </div>    
+                                <div class="col-md-4">
+                                    {render_form_field form=$form field="cost_transaction_module_{$modul[0]}" value=$cost_transaction_module_{$modul[0]}}
+                                </div>
+                            </div>
+                        {/foreach}
+                        
+                    </form>
+                    {/form}
+                </div>
+            </div>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {intl d='revenue.dashboard.bo.default' l="Revenue responses history"}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div id="log-container" style="font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: scroll">
+                        {$trace_content nofilter}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="{url path='/admin/module/revenuedashboard/log'}" class="btn btn-sm btn-primary">
+                        <span class="glyphicon glyphicon-download-alt"></span>
+                        {intl d='revenue.dashboard.bo.default' l="Download full log"}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
