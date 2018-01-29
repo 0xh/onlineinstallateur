@@ -29,8 +29,8 @@ class SettingProductsQuantityController extends BaseAdminController
 	    $nrPage = trim($_GET['nr_page']);
 	    
 	    $searchById = isset($_GET["search_by_id"]) ? $_GET["search_by_id"] : '';
-	    $searchByRef = isset($_GET["search_by_ref"]) && $_GET["search_by_ref"] > 0 ? $_GET["search_by_ref"] : '';
-	    $searchByEan = isset($_GET["search_by_ean"]) && $_GET["search_by_ref"] > 0 ? $_GET["search_by_ean"] : '';
+	    $searchByRef = isset($_GET["search_by_ref"]) ? $_GET["search_by_ref"] : '';
+	    $searchByEan = isset($_GET["search_by_ean"]) ? $_GET["search_by_ean"] : '';
 	    $searchByTitle = isset($_GET["search_by_title"]) ? $_GET["search_by_title"] : '';
 	    
 	    

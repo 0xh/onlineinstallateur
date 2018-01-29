@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="id.revenue.dashboard" path="/admin/module/revenuedashboard">
+        <default key="_controller">RevenueDashboard\Controller\Admin\RevenueDashboardContoller::viewAction
+        </default>
+    </route>
+    
+    <route id="id.revenue.dashboard.configure" path="/admin/module/RevenueDashboard/configure"
+           methods="post">
+        <default key="_controller">RevenueDashboard\Controller\Admin\ConfigurationController::configure
+        </default>
+    </route>
+    
+    <route id="sofort.download.log" path="/admin/module/revenuedashboard/log">
+        <default key="_controller">RevenueDashboard\Controller\Admin\ConfigurationController::downloadLog
+        </default>
+    </route>
+        
+</routes>

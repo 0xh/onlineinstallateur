@@ -1,0 +1,2 @@
+DELETE FROM `export`
+WHERE 1;

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <hooks>
+        <hook id="revenue.dashboard.hook.back" class="RevenueDashboard\Hook\BackHook">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+        </hook>
+        <hook id="revenue.dashboard.configuration.hook" class="RevenueDashboard\Hook\HookManager" scope="request">
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
+        </hook>
+    </hooks>
+
+    <forms>
+        <form name="revenue.dashboard.form.configure" class="RevenueDashboard\Form\ConfigurationForm" />
+    </forms>
+</config>
