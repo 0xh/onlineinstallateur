@@ -39,7 +39,7 @@ web : http://www.hausfabrik.at
     <meta charset="utf-8">
 
     {* Page Title *}
-    <title>{block name="page-title"}{strip}{if $page_title}{$page_title}{elseif $breadcrumbs}{foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape} - {/foreach}{$store_name}{else}{$store_name}{/if}{/strip}{/block}</title>
+    <title>{block name="page-title"}{strip}{if $page_title}{$page_title}{elseif $breadcrumbs}{foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape}{/foreach}{else}{$store_name}{/if}{/strip}{/block}</title>
 
     {* Meta Tags *}
     <meta name="generator" content="{intl l='Thelia V2'}">
