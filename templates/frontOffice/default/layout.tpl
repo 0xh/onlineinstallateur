@@ -39,7 +39,7 @@ web : http://www.hausfabrik.at
     <meta charset="utf-8">
 
     {* Page Title *}
-    <title>{block name="page-title"}{strip}{if $page_title}{$page_title}{elseif $breadcrumbs}{foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape}{/foreach}{else}{$store_name}{/if}{/strip}{/block}</title>
+    <title>{block name="page-title"}{strip}{if $page_title}{$page_title}{elseif $breadcrumbs}{foreach from=$breadcrumbs|array_reverse item=breadcrumb}{$breadcrumb.title|unescape}{break}{/foreach}{else}{$store_name}{/if}{/strip}{/block}</title>
 
     {* Meta Tags *}
     <meta name="generator" content="{intl l='Thelia V2'}">
@@ -161,10 +161,27 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
 
 <!-- End Cookie Consent plugin -->
+
+{literal}   		
+<!-- Google Tag Manager -->		
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':		
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],		
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=		
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);		
+})(window,document,'script','dataLayer','GTM-TJDVM5X');</script>		
+<!-- End Google Tag Manager -->		
+{/literal} 
    
     {hook name="main.head-bottom"}
 </head>
 <body class="{block name="body-class"}{/block}" itemscope itemtype="http://schema.org/WebPage">
+{literal} 		
+<!-- Google Tag Manager (noscript) -->		
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJDVM5X"		
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>		
+<!-- End Google Tag Manager (noscript) -->		
+{/literal}
+
     {hook name="main.body-top"}
 
     <!-- Accessibility -->
@@ -514,6 +531,8 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
 
     <!-- Custom scripts -->
     <script src="{javascript file='assets/dist/js/thelia.min.js'}"></script>
+
+<!--
     {literal}
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -528,6 +547,7 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
     ga('send', 'pageview');
 </script>
     {/literal}
+-->
 
     {hook name="main.body-bottom"}
     {literal}
