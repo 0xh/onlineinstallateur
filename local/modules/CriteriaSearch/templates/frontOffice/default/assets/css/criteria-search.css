@@ -299,14 +299,11 @@ ul.category-container:first-child {
   border-radius: 1px 0 0 1px;
 }
 
-.tab-content label:hover {
-	border: 1px solid #86AC34;
-}
-
-.tab-content input[type="checkbox"]:hover:not(:checked) ~ label {
+.tab-content input[type="checkbox"]:focus:not(:checked) ~ label {
   color: #86AC34;
+  border: 1px solid #86AC34;
 }
-.tab-content .checkbox input[type="checkbox"]:hover:not(:checked) ~ label:before {
+.tab-content .checkbox input[type="checkbox"]:focus:not(:checked) ~ label:before {
   content: '\2714';
   text-indent: .6em;
   color: #fff;
@@ -321,13 +318,27 @@ ul.category-container:first-child {
   text-indent: .6em;
   background-color: #ccc;
 }
-.tab-content .checkbox input[type="checkbox"]:focus ~ label:before {
-  box-shadow: 0 0 0 3px #999;
+.tab-content input[type="checkbox"]:not(:checked) ~ label {
+  color: #86AC34;
+}
+.tab-content .checkbox input[type="checkbox"]:not(:checked) ~ label:before {
+  content: '\2714';
+  text-indent: .6em;
+  color: #fff;
+}
+.tab-content .checkbox input[type="checkbox"]:not(:checked):focus ~ label{
+  border: 1px solid #D1D3D4;
+}
+@media (-moz-touch-enabled: 0), (pointer:fine) {
+    .tab-content .checkbox label:hover {
+      border: 1px solid #86AC34;
+    }
 }
 .tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
   color: #fff;
   background-color: #86AC34;
 }
+
 .checkbox span{
 	display: block;
 	position: relative;
