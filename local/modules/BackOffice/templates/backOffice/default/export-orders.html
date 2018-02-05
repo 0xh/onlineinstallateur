@@ -1,0 +1,56 @@
+{extends file="admin-layout.tpl"} 
+{block name="main-content"}
+<div class="general-block-decorator dashboard export-orders">
+	<div class="title title-without-tabs clearfix">{intl l='Export orders to pdf file' d='backoffice.bo.default'}</div>
+
+
+	<div class="txt-div" >
+
+		{form type="export.order.pdf.form" name="export.order.pdf.form"}
+			<form action="{url path='/admin/export-order-pdf-get-file'}" method="post">
+				{form_hidden_fields form=$form}
+				
+				{form_field form=$form field='success_url'}
+				    <input type="hidden" name="{$name}" value="{url path={navigate to='current'}}" />
+				{/form_field}
+				
+				<div class="col-sm-4">
+					{form_field form=$form field="datepickerCreatedAfter"}
+						<label for="{$label_attr.for}">
+			            	{$label} :
+			           	</label>
+
+			        	<input type="text" id="datepickerCreatedAfter" name="{$name}" value="{$value}" class="form-control" autocomplete="off">
+			        {/form_field}
+			    </div>
+
+		        <div class="col-sm-4">         
+					{form_field form=$form field="datepickerCreatedBefore"}
+						<label for="{$label_attr.for}">
+			            	{$label} :
+			           	</label>  
+
+			        	<input type="text" id="datepickerCreatedBefore" name="{$name}" value="{$value}" class="form-control" autocomplete="off">
+			        {/form_field}
+				</div>
+
+				<div class="col-sm-4">
+					<label>{intl l='Get orders to pdf file' d='backoffice.bo.default'}</label>
+		            <button type="submit" class="btn btn-primary action-btn form-control" title="{intl l='Get pdf'}" data-toggle="modal">
+		            	{intl l="Download pdf"}</span>
+		            </button>
+		        </div>
+			</form>
+		{/form}
+
+	</div>
+</div>
+
+<script>
+	window.onload = function() {
+	 	
+		$( "#datepickerCreatedAfter" ).datepicker({});
+		$( "#datepickerCreatedBefore" ).datepicker({});
+	}
+</script>	
+{/block}

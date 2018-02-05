@@ -8,3 +8,5 @@ INSERT INTO `message_i18n` (`id`,`locale`, `title`, `subject`) VALUES
 
 INSERT INTO `message_i18n` (`id`,`locale`, `title`, `subject`) VALUES
 (@last_id_in_message,'de_DE','Message sent to the shop owner when a order failed', 'Zahlungsfehler bei Bestellung Nr. {$order_id}');
+
+INSERT INTO `config` (`name`, `value`, `secured`, `hidden`, `created_at`, `updated_at`) VALUES ('pdf_orders_file', 'orders', '0', '0', '2018-02-05 15:17:47', '2018-02-05 15:17:47');

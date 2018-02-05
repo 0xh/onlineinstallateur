@@ -11,4 +11,12 @@
     <route id="admin.configuration.email.save" path="/admin/configuration/office-email/save">
         <default key="_controller">BackOffice\Controller\Admin\ConfigurationController::saveAction</default>
     </route>
+
+    <route id="admin.export.order.pdf" path="/admin/export-order-pdf">
+        <default key="_controller">BackOffice\Controller\Admin\OrderController::viewAction</default>
+    </route>
+
+    <route id="admin.export.order.get.pdf" path="/admin/export-order-pdf-get-file">
+        <default key="_controller">BackOffice\Controller\Admin\OrderController::getFile</default>
+    </route>
 </routes>
