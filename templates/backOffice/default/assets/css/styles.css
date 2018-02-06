@@ -8533,6 +8533,9 @@ fieldset[disabled] .has-switch span.switch-default:hover {
 .label-offer {
     background-color: #008080
 }
+.label-pickup {
+    background-color: #ad1a82
+}
 .label-Refunded_test {
     background-color: #d9534f
 }
