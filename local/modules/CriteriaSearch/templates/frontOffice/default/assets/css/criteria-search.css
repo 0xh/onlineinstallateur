@@ -319,10 +319,10 @@ ul.category-container:first-child {
   background-color: #ccc;
 }
 .tab-content input[type="checkbox"]:not(:checked) ~ label {
-  color: #86AC34;
+  color: #7a7a7a;
 }
 .tab-content .checkbox input[type="checkbox"]:not(:checked) ~ label:before {
-  content: '\2714';
+  content: '';
   text-indent: .6em;
   color: #fff;
 }
@@ -330,8 +330,12 @@ ul.category-container:first-child {
   border: 1px solid #D1D3D4;
 }
 @media (-moz-touch-enabled: 0), (pointer:fine) {
-    .tab-content .checkbox label:hover {
+    .tab-content .checkbox label:hover{
       border: 1px solid #86AC34;
+      color: #86AC34;
+    }
+    .tab-content .checkbox span:hover{
+      color: #86AC34; 
     }
 }
 .tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
