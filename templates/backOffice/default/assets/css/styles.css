@@ -9573,6 +9573,6 @@ footer {
 .p5  a,.p4  a ,.p3  a,.p2  a,.p1  a {color:#fff;}
 
 
-.export-orders .form-control:focus {
+.export-orders .btn:focus {
     background: #86AC34;
 }
