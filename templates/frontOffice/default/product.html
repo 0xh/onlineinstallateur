@@ -522,7 +522,7 @@
             {strip}
                 {capture "highlights"}
                     {ifloop rel="feature_info"}
-                            {loop name="highlights_info" type="feature" product={$ID} order="alpha"}
+                            {loop name="highlights_info" type="feature" product={$ID} order="manual"}
                             {assign var="feature_description" value=$DESCRIPTION}
                             	{loop name="highlights_info_value" type="feature_value" feature={$ID} product=$product_id}
                             		{if $TITLE == "highlight"}

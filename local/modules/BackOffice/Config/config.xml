@@ -5,6 +5,14 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
   	<forms>
-         <form name="email.office" class="BackOffice\Form\ConfigEmailOfficeForm"/>
+      <form name="email.office" class="BackOffice\Form\ConfigEmailOfficeForm"/>
+      <form name="export.order.pdf.form" class="BackOffice\Form\ExportOrderPdfForm" /> 
     </forms>
+
+    <hooks>
+    	<hook id="admin.export.order.pdf" class="BackOffice\Hook\Admin\BackOfficeHook">
+  			<tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+		  </hook>
+    </hooks>
+
 </config>
