@@ -50,8 +50,7 @@ use Thelia\Module\PaymentModuleInterface;
 use Thelia\Tools\I18n;
 use Thelia\Log\Tlog;
 use Thelia\Model\OrderQuery;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
-use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
+
 
 
 
@@ -464,11 +463,7 @@ class Order extends BaseAction implements EventSubscriberInterface
         	if($eventOrder->getTransactionRef())
         		$placedOrder->setTransactionRef($eventOrder->getTransactionRef());
         	$placedOrder->setPostage($eventOrder->getPostage());
-        	//$placedOrder = new Order();
-                
-                //try: remove delete order_product 
-        	//$placedOrder->setOrderProducts($eventOrder->getOrderProducts());
-                
+        	  
         	//$placedOrder->setLangId($eventOrder->getLang());
         	$placedOrder->setDiscount($eventOrder->getDiscount())
         	->save();
@@ -744,7 +739,7 @@ class Order extends BaseAction implements EventSubscriberInterface
             TheliaEvents::ORDER_UPDATE_STATUS => array("updateStatus", 128),
             TheliaEvents::ORDER_UPDATE_DELIVERY_REF => array("updateDeliveryRef", 128),
             TheliaEvents::ORDER_UPDATE_ADDRESS => array("updateAddress", 128),
-            TheliaEvents::ORDER_CREATE_MANUAL => array("createManual", 128)
+            TheliaEvents::ORDER_CREATE_MANUAL => array("createManual", 128),
         );
     }
 
