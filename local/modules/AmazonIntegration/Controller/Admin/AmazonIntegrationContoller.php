@@ -713,7 +713,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		$priceWithoutTax = $unitPrice - $tax;
      	}
      	else {
-     		$tax = 0.2 * $unitPrice;
+     		$tax = round(($unitPrice/1.2)*0.2,2);
      		$priceWithoutTax = $unitPrice - $tax;
      	}
     	
