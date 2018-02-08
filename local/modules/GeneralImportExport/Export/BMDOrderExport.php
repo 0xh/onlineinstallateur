@@ -140,8 +140,14 @@ class BMDOrderExport extends AbstractExport
         		$processedData['belegnr']="6".substr($processedData['belegnr'],3);
         	}break;
         }
+      
+        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
+        	$processedData['gkto'] = "4200";
+        	$processedData['mwst'] = "19";
+        }
+        else 
+			$processedData['gkto'] = "4000";
         
-		$processedData['gkto'] = "4000";
 		$processedData['extbelegnr'] = "";
         
 		$processedData['steuer'] = round(-$processedData['steuer'],2);
