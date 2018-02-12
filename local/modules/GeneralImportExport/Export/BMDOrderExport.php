@@ -116,7 +116,7 @@ class BMDOrderExport extends AbstractExport
         	        case 'Z':$processedData['konto'] = "202599";break;
         	        default: $processedData['konto']="201599";
         	    }
-        		$processedData['belegnr']="1".substr($processedData['belegnr'],3);
+        		$processedData['belegnr']="1".substr($processedData['belegnr'],7);
         	}break;
         	case "ADE":{
         		$processedData['konto']="202699";
@@ -135,9 +135,13 @@ class BMDOrderExport extends AbstractExport
         		$processedData['konto']="202999";
         		$processedData['belegnr']="5".substr($processedData['belegnr'],3);
         	}break;
-        	case "AUK":{
+        	case "ACO":{
         		$processedData['konto']="203099";
         		$processedData['belegnr']="6".substr($processedData['belegnr'],3);
+        	}break;
+        	case "AUK":{
+        		$processedData['konto']="203099";
+        		$processedData['belegnr']="7".substr($processedData['belegnr'],3);
         	}break;
         }
       

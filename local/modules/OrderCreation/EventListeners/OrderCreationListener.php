@@ -245,13 +245,10 @@ Tlog::getInstance()->error("ordercreationbug after ORDER_UPDATE_STATUS");
     	$order = OrderQuery::create()
 	    	->filterById($event->getOrder()->getId())
 	    	->findOne();
-    	
-   // 	$con = Propel::getConnection(OrderTableMap::DATABASE_NAME);
-    //	$con->beginTransaction();
 	
     	if($this->request->getSession()->get('marketplace')) {
     		
-    		$prefix = 'A'.$this->request->getSession()->get('marketplace').'2017';
+    		$prefix = 'A'.$this->request->getSession()->get('marketplace').$event->getOrder()->getInvoiceDate()->format('Y');
     		$lastOrder = OrderQuery::create()
 	    		->select('ref')
 	    		->filterByRef($prefix.'%')
