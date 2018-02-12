@@ -19,4 +19,8 @@
     <route id="admin.export.order.get.pdf" path="/admin/export-order-pdf-get-file">
         <default key="_controller">BackOffice\Controller\Admin\OrderController::getFile</default>
     </route>
+
+    <route id="admin.update.stock.mysht" path="/admin/update-stock-mysht">
+        <default key="_controller">BackOffice\Controller\Front\MyshtUpdateStockController::updateStockMysht</default>
+    </route>
 </routes>
