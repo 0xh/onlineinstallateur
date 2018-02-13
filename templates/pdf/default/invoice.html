@@ -219,7 +219,7 @@
            </td>
                 <td style="text-align:right">
 
-           <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br>
+            <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br>  
 
             Marke der Nwing-network GmbH<br>
             Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
@@ -288,10 +288,18 @@
         <col style="width: 7%; padding: 1mm;" />
         <col style="width: 14%; padding: 1mm;" />
 
+        {loop type="order_product" name="order-products" order=$ID limit=1}
+
+            {if $TAX_RULE_TITLE|strstr:"19"}
+                {assign "VatTitle" "19% Mehrwertsteuer"}
+            {else}
+                {assign "VatTitle" "20% Mehrwertsteuer"}
+            {/if}
+        {/loop}
         <tr class="table-1">
             <td><h4>{intl l="Product"}</h4></td>
             <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
-            <td><h4 class="align-center">{intl l="20% Mehrwertsteuer"}</h4></td>
+            <td><h4 class="align-center">{intl l=$VatTitle}</h4></td>
             <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
             <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
             <td style="background:#86ac34"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
@@ -409,7 +417,7 @@
                     {/strip}
                     {if $smarty.capture.tax ne ""}
                     <tr>
-                        <td class="table-3-1"><p>{intl l="Tax"}</p></td>
+                        <td class="table-3-1"><p>{intl l=$VatTitle}</p></td>
                         <td class="table-3-1 align-right"><p>{format_money number=$TOTAL_TAX currency_id=$CURRENCY}</p></td>
                     </tr>
                     {$smarty.capture.tax nofilter}

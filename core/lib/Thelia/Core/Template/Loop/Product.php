@@ -472,9 +472,12 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
     { 
         if (null !== $feature_availability) {
         	
-        	if(!is_array($feature_availability)) {
-        		// 1_(3|4),3_(11)
-        		//Array ( [1] => Array ( [0] => 6 ) [3] => Array ( [0] => 17 ) ) 
+            /* when refresh the search link, feature_availability is not an array.
+            given result: 1_(3|4),3_(11)
+            expected result: Array ( [1] => Array ( [0] => 6 ) [3] => Array ( [0] => 17 ) ) 
+            */
+        	if(!is_array($feature_availability)) { 
+        		
         		$feature_availability_array = array();
         		
         		$feature_availability = str_replace("(","",$feature_availability);
@@ -491,25 +494,44 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
         		$feature_availability = $feature_availability_array;
         	}
         	
+            /* build $feature_availability in order to support multiplechoices 
+            example of expected result: Array ( [1] => Array ( [values] => Array ( [0] => 2 [1] => 5 ) [expression] => (2|5) ) [2] => Array ( [values] => Array ( [0] => 3 ) [expression] => (3) ) ) 
+            */ 
+            $feature_availability_multiplechoice = array();
             foreach ($feature_availability as $feature => $feature_choice) {
-            	// original
-                // foreach ($feature_choice['values'] as $feature_av) {
-            	foreach ($feature_choice as $feature_av) {
+
+                $expression = '(';
+
+                foreach ($feature_choice as $feature_av) {
+                    $expression .= $feature_av.'|';
+                }
+
+                $expression =  substr($expression, 0, -1);
+                $expression .= ')';
+
+                $feature_availability_multiplechoice[$feature] = array(
+                                                                    'values' => $feature_choice,
+                                                                    'expression' => $expression
+                                                                );
+            }
+
+            foreach ($feature_availability_multiplechoice as $feature => $feature_choice) {
+
+                foreach ($feature_choice['values'] as $feature_av) {
                     $featureAlias = 'fa_' . $feature;
                     if ($feature_av != '*') {
                         $featureAlias .= '_' . $feature_av;
                     }
-                   // original
-                   // $search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
-                    $search->joinFeatureProduct($featureAlias, Criteria::JOIN)
+
+                    $search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
                         ->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_ID = ?", $feature, null, \PDO::PARAM_INT);
                     if ($feature_av != '*') {
                         $search->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_AV_ID = ?", $feature_av, null, \PDO::PARAM_INT);
                     }
                 }
-				// original 
+				
                 /* format for mysql */
-             /*    $sqlWhereString = $feature_choice['expression'];
+                $sqlWhereString = $feature_choice['expression'];
                 if ($sqlWhereString == '*') {
                     $sqlWhereString = 'NOT ISNULL(`fa_' . $feature . '`.ID)';
                 } else {
@@ -518,7 +540,7 @@ class Product extends BaseI18nLoop implements PropelSearchLoopInterface, SearchL
                     $sqlWhereString = str_replace('|', ' OR ', $sqlWhereString);
                 }
 
-                $search->where("(" . $sqlWhereString . ")"); */
+                $search->where("(" . $sqlWhereString . ")"); 
             }
         }
     }
