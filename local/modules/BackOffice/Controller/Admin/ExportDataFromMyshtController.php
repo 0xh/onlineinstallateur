@@ -6,26 +6,24 @@
  * and open the template in the editor.
  */
 
-namespace BackOffice\Controller\Front;
+namespace BackOffice\Controller\Admin;
 
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
-use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterProductsTableMap;
-use Thelia\Controller\Front\BaseFrontController;
+use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\Security\AccessManager;
+use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Log\Tlog;
-use Thelia\Model\Map\ProductTableMap;
-use Thelia\Model\ProductQuery;
+use ZipArchive;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
 
 /**
- * Description of MyshtUpdateStockController
+ * Description of ExportDataFromMyshtController
  *
  * @author Catana Florin
  */
-class MyshtUpdateStockController extends BaseFrontController {
+class ExportDataFromMyshtController extends BaseAdminController {
     /* @var Tlog $log */
 
     protected static $logger;
@@ -34,44 +32,45 @@ class MyshtUpdateStockController extends BaseFrontController {
     protected $username = "hausf";
     protected $password = "My21Sht";
     protected $version = "2017";
-    protected $cookiefile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "myshtcookie.txt";
+    protected $info = [];
+    protected $cookiefile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "myshtcookieexport.txt";
+    protected $csvFile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "exportCsvDataMysht.csv";
+    protected $imageLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images" . DS;
+    protected $imageZip = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images.zip";
 
-    public function updateStockMysht() {
+    public function export() {
 
-        $prods = $this->getProductsExternId();
-        $idCenter = $this->getIdFulfilmentCenterMysht();
+        if ($this->getRequest()->get("idartikels")) {
+            $this->logout();
+            $idartikels = explode(',', $this->getRequest()->get("idartikels"));
 
-        foreach ($prods as $prod) {
-            $idartikel = $prod["idartikel"];
-
-            $artnr = $this->getArtNr($idartikel);
-            if ($artnr === FALSE) {
-                $this->logout();
-                $this->login();
-                $artnr = $this->getArtNr($idartikel);
+            foreach ($idartikels as $idartikel) {
+                $artnr = $this->getArtNr(trim($idartikel));
+                if ($artnr === FALSE) {
+                    $this->logout();
+                    $this->login();
+                    $artnr = $this->getArtNr($idartikel);
+                }
+                if (!is_array($artnr)) {
+                    $this->getImage($artnr);
+                }
             }
 
-            $stock = 0;
-            if (!is_array($artnr)) {
-                $stock = $this->getStock($artnr, $idartikel);
+            $zip = new ZipArchive;
+            $zip->open($this->imageZip, ZipArchive::CREATE);
+            $files = scandir($this->imageLocation);
 
-                $this->setLogger()->error("stock =  $stock # ");
-                echo 'stock = ' . $stock;
-            } else {
-                $this->setLogger()->error("error = # " . $artnr[0]);
+            foreach ($files as $file) {
+                if ($file != "." && $file != "..")
+                    $zip->addFile($this->imageLocation . $file, $file);
             }
+            $zip->close();
 
-            $this->updateStockForMysht($idCenter, $prod["prodid"], $stock);
+            $this->exportToCsv();
+            $this->logout();
         }
 
-//        $idartikel = 15074400;//3
-//        $idartikel = 2766300; //14
-//        $idartikel = 32663001;//7
-//        $idartikel = 6958652;//error 1
-
-        $this->logout();
-
-        die("end");
+        return $this->render("export-data-mysht");
     }
 
     protected function login() {
@@ -129,7 +128,6 @@ class MyshtUpdateStockController extends BaseFrontController {
         $err = curl_error($curl);
 
         curl_close($curl);
-
         if ($err) {
             $this->setLogger()->error("getArtNr - cURL Error #: " . $err);
         } else {
@@ -142,6 +140,11 @@ class MyshtUpdateStockController extends BaseFrontController {
 
             if ($response["data"]) {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
+                array_push($this->info, array("idartikel" => $idartikel, "MegabildNr" => $response["data"][0]["MegabildNr"], "Lieferantename" => $response["data"][0]["Lieferantename"],
+                    "title" => $response["data"][0]["Zeile1"],
+                    "description" => $response["data"][0]["Zeile2"] . " " . $response["data"][0]["agzeile1"],
+                    "stock" => $response["data"][0]["SAPLiefermenge"] ? $response["data"][0]["SAPLiefermenge"] : 0,
+                    "price" => $response["data"][0]["aktpreis"]));
                 return $response["data"][0]["MegabildNr"];
             } else {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
@@ -150,18 +153,17 @@ class MyshtUpdateStockController extends BaseFrontController {
         }
     }
 
-    protected function getStock($artnr, $idartikel) {
+    protected function getImage($artnr) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.mysht.at/21051_DE",
+            CURLOPT_URL => "https://www.mysht.at/1478_DE.htm?nurartnr=$artnr&size=g",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version, "artnr" => $idartikel),
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile,
         ));
@@ -171,26 +173,11 @@ class MyshtUpdateStockController extends BaseFrontController {
 
         curl_close($curl);
 
-        if ($err) {
-            $this->setLogger()->error("getStock - cURL Error #: " . $err);
-        } else {
-            $response = json_decode($response, true);
+        $imageFile = $this->imageLocation . $artnr . ".jpg";
 
-            if ($response["status"] == "NOSESSION") {
-                $this->setLogger()->error("status = NOSESSION #: logout -> login ");
-                $this->logout();
-                $this->login();
-                $this->getStock($artnr, $idartikel);
-            }
-
-            if (isset($response["sofort"])) {
-                $this->setLogger()->error("getStock - idartikel = $idartikel response #: stock = " . $response["sofort"] . ". " . json_encode($response));
-                return $response["sofort"];
-            } else {
-                $this->setLogger()->error("getStock - idartikel = $idartikel #: stock = 0. " . json_encode($response));
-                return 0;
-            }
-        }
+        $saveImage = fopen($imageFile, 'w');
+        fwrite($saveImage, $response);
+        fclose($saveImage);
     }
 
     public function setLogger() {
@@ -208,46 +195,44 @@ class MyshtUpdateStockController extends BaseFrontController {
     }
 
     public function logout() {
-        unlink($this->cookiefile);
+        @unlink($this->cookiefile);
     }
 
-    function getProductsExternId() {
-        $prods = ProductQuery::create()
-                ->where(ProductTableMap::EXTERN_ID . " IS NOT NULL and " . ProductTableMap::VISIBLE . " = 1");
-        $arrayProds = array();
-        foreach ($prods as $prod) {
-            array_push($arrayProds, array("idartikel" => $prod->getExternId(), "prodid" => $prod->getId()));
+    function exportToCsv() {
+        $fp = fopen($this->csvFile, 'w');
+
+        $fields = array("idartikel", "MegabildNr", "Lieferantename", "title", "description", "stock", "price");
+        fputcsv($fp, $fields);
+
+        foreach ($this->info as $fields) {
+            fputcsv($fp, $fields);
         }
 
-        return $arrayProds;
+        fclose($fp);
     }
 
-    function getIdFulfilmentCenterMysht() {
-        $id = FulfilmentCenterQuery::create()
-                ->findOneByName("mysht");
+    function downloadCsv() {
 
-        return $id->getId();
-    }
-
-    function updateStockForMysht($idCenter, $prodId, $stock) {
-        $prod = FulfilmentCenterProductsQuery::create()
-                ->where(FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID . " = " . $idCenter)
-                ->findOneByProductId($prodId);
-
-        if ($prod) {
-            $prod->setProductStock($stock);
-            $prod->save();
-        } else {
-            $this->addProdInFulfilmentCenterMysht($idCenter, $prodId, $stock);
+        if (null !== $response = $this->checkAuth(AdminResources::MODULE, 'atos', AccessManager::UPDATE)) {
+            return $response;
         }
+
+        return Response::create(@file_get_contents($this->csvFile), 200, array(
+                    'Content-type' => "text/plain",
+                    'Content-Disposition' => sprintf('Attachment;filename=export-csv-data-mysht.csv')
+        ));
     }
 
-    function addProdInFulfilmentCenterMysht($idCenter, $prodId, $stock) {
-        $prod = new FulfilmentCenterProducts();
-        $prod->setFulfilmentCenterId($idCenter);
-        $prod->setProductId($prodId);
-        $prod->setProductStock($stock);
-        $prod->save();
+    function downloadImages() {
+
+        if (null !== $response = $this->checkAuth(AdminResources::MODULE, 'atos', AccessManager::UPDATE)) {
+            return $response;
+        }
+
+        return Response::create(@file_get_contents($this->imageZip), 200, array(
+                    'Content-type' => "text/plain",
+                    'Content-Disposition' => sprintf('Attachment;filename=imagesMysht.zip')
+        ));
     }
 
 }
