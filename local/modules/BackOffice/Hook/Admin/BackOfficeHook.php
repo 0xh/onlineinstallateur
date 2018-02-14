@@ -29,5 +29,11 @@ class BackOfficeHook extends BaseHook
             'url' => URL::getInstance()->absoluteUrl('/admin/export-order-pdf'),
             'title' => $this->trans('Export pdf orders', [], BackOffice::DOMAIN_NAME)
         ]);
+        $event->add([
+            'id' => 'tools_menu_export_data_mysht',
+            'class' => '',
+            'url' => URL::getInstance()->absoluteUrl('/admin/export-data-mysht'),
+            'title' => $this->trans('Export from Mysht', [], BackOffice::DOMAIN_NAME)
+        ]);
     }
 }
