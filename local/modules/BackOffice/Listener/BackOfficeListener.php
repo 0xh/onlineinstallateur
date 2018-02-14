@@ -7,16 +7,13 @@ use Thelia\Action\BaseAction;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Mailer\MailerFactory;
-use Thelia\Model\ConfigQuery;
 
-class BackOfficeListener extends BaseAction implements EventSubscriberInterface {
-
-  //  protected $request;
-	
+class BackOfficeListener extends BaseAction implements EventSubscriberInterface 
+{
    /** @var MailerFactory  */
     protected $mailer;
 
-    public function __construct(MailerFactory $mailer )
+    public function __construct(MailerFactory $mailer)
     {
         $this->mailer = $mailer;
     }

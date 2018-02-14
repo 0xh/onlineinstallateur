@@ -16,7 +16,7 @@
     </hooks>
 
     <services>
-        <service id="send.mail.pickup.status" class="BackOffice\Listener\BackOfficeListener">
+        <service id="send.mail.pickup.status" class="BackOffice\Listener\BackOfficeListener" scope="request">
             <argument type="service" id="mailer"/>
             <tag name="kernel.event_subscriber"/>
         </service>
