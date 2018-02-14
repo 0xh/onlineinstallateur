@@ -6,7 +6,7 @@
 {block name="pre-header"}{/block}
 
 {* Subject  *}
-{block name="email-subject"}{intl l="Your order Nº %id is ready for pickup" id={$order_id}}{/block}
+{block name="email-subject"}{intl l="Your order Nº %ref is ready for pickup" ref={$order_ref}}{/block}
 
 {* Content  *}
 {block name="email-content"}
@@ -20,20 +20,24 @@
             <h2>{intl l="Dear %title %lname %fname," title={$title} fname={$FIRSTNAME|upper} lname={$LASTNAME|upper}}</h2>
         {/loop}
 
-        <p>{intl l="Your order %id from %date is ready for pickup." id={$order_id} date={$CREATE_DATE|date_format:"%d-%m-%Y"}}</p>
+        <p>{intl l="Your order %ref from %date is ready for pickup." ref={$order_ref} date={$CREATE_DATE|date_format:"%d.%m.%Y"}}</p>
 		
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td valign="top" width="55%">
-                    <strong>{intl l="Pickup address:"}</strong><br>
-                    <p>IZ NÖ Süd</p>
-                    <p>Straße 16 Objekt 69/8</p>
-                    <p>2355 Wr. Neudorf</p>
+                    <strong>{intl l="Pickup address:"}</strong>
+                    <ul style="list-style-type: none; padding:0px;">
+                        <li>IZ NÖ Süd</li>
+                        <li>Straße 16 Objekt 69/8</li>
+                        <li>2355 Wr. Neudorf</li>
+                    </ul>
                 </td>
                 <td valign="top">
-                    <strong>{intl l="Pickup times:"}</strong><br />
-                    <p>Mo - Do 07:30 - 12:00 und 13:00 - 16:30</p>
-                    <p>Fr 07:30 - 12:00</p>
+                    <strong>{intl l="Pickup times:"}</strong>
+                    <ul style="list-style-type: none; padding:0px;">
+                        <li>Mo - Do 07:30 - 12:00 und 13:00 - 16:30</li>
+                        <li>Fr 07:30 - 12:00</li>
+                    </ul>
                 </td>
             </tr>
         </table>

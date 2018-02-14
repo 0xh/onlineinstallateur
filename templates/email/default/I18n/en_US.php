@@ -69,7 +69,8 @@ return array(
     'Your new password is %pass' => 'Your new password is %pass',
     'Your new password is <span style="font-family: courier, fixed; font-size: 120%">%pass</span>' => 'Your new password is <span style="font-family: courier, fixed; font-size: 120%">%pass</span>',
     'Your order confirmation Nº %ref' => 'Your order confirmation Nº %ref',
-    'Your order Nº %id is ready for pickup' => 'Your order Nº %id is ready for pickup',
+    'Your order Nº %ref is ready for pickup' => 'Your order Nº %ref is ready for pickup',
+    'Your order %ref from %date is ready for pickup.' => 'Your order %ref from %date is ready for pickup.',
     'Your password for %store' => 'Your password for %store',
     'Your password is <span style="font-family: courier, fixed; font-size: 120%">%pass</span>' => 'Your password is <span style="font-family: courier, fixed; font-size: 120%">%pass</span>',
 );

@@ -34,7 +34,8 @@ class BackOfficeListener extends BaseAction implements EventSubscriberInterface
                 'pickup_order',
                 $order->getCustomer(),
                 [
-                    'order_id' => $order->getId()
+                    'order_id' => $order->getId(),
+                    'order_ref' => $order->getRef()
                 ]
             );
         } else { 

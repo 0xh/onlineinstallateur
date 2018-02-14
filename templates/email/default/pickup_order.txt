@@ -8,7 +8,7 @@
     {/loop}
 
 
-    {intl l="Your order %id from %date is ready for pickup." id={$order_id} date={$CREATE_DATE|date_format:"%d-%m-%Y"}}
+    {intl l="Your order %ref from %date is ready for pickup." ref={$order_ref} date={$CREATE_DATE|date_format:"%d.%m.%Y"}}
 
     {intl l="Pickup address:"}</strong>
     IZ NÖ Süd
@@ -20,5 +20,5 @@
     Fr 07:30 - 12:00
 
     {intl l="Best regards,"}
-    {intl l="Your Hausfabrik Team"}
+    {intl l="Your %store_name team" store_name={config key="store_name"}}
 {/loop}
