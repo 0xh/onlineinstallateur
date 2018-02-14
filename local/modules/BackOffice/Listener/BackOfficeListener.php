@@ -31,15 +31,14 @@ class BackOfficeListener extends BaseAction implements EventSubscriberInterface 
     
         if ($event->getOrder()->getStatusId() == 11) {
 
-            $messageParameters = array(
-                'order_id' => $event->getOrder()->getId()
-            );
+            $order = $event->getOrder();
 
-            $this->mailer->sendEmailMessage(
-                    'pickup_order', 
-                    [ConfigQuery::getStoreEmail() => ConfigQuery::getStoreName()], 
-                    [$event->getOrder()->getCustomer()->getEmail() => $event->getOrder()->getCustomer()->getFirstname() . " " . $event->getOrder()->getCustomer()->getLastname()], 
-                    $messageParameters
+            $this->mailer->sendEmailToCustomer(
+                'pickup_order',
+                $order->getCustomer(),
+                [
+                    'order_id' => $order->getId()
+                ]
             );
         } else { 
             return;
