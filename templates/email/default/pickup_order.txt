@@ -1,0 +1,24 @@
+{default_translation_domain domain='email.default'}
+{loop name="order.invoice" type="order" id=$order_id customer="*"}
+    {loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}
+        {loop type="title" name="customer.title.info" id=$TITLE}
+            {assign var="title" value=$LONG}
+        {/loop}
+        {intl l="Dear %title %lname %fname," title={$title} fname={$FIRSTNAME|upper} lname={$LASTNAME|upper}}
+    {/loop}
+
+
+    {intl l="Your order %id from %date is ready for pickup." id={$order_id} date={$CREATE_DATE|date_format:"%d-%m-%Y"}}
+
+    {intl l="Pickup address:"}</strong>
+    IZ NÖ Süd
+    Straße 16 Objekt 69/8
+    2355 Wr. Neudorf
+
+    {intl l="Pickup times:"}
+    Mo - Do 07:30 - 12:00 und 13:00 - 16:30
+    Fr 07:30 - 12:00
+
+    {intl l="Best regards,"}
+    {intl l="Your Hausfabrik Team"}
+{/loop}

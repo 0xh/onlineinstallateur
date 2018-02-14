@@ -1,0 +1,44 @@
+{extends file="email-layout.tpl"}
+
+{* Do not provide a "Open in browser" link  *}
+{block name="browser"}{/block}
+{* No pre-header *}
+{block name="pre-header"}{/block}
+
+{* Subject  *}
+{block name="email-subject"}{intl l="Your order Nº %id is ready for pickup" id={$order_id}}{/block}
+
+{* Content  *}
+{block name="email-content"}
+
+    {loop name="order.invoice" type="order" id={$order_id} customer="*"}
+      
+        {loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}
+            {loop type="title" name="customer.title.info" id=$TITLE}
+                {assign var="title" value=$LONG}
+            {/loop}
+            <h2>{intl l="Dear %title %lname %fname," title={$title} fname={$FIRSTNAME|upper} lname={$LASTNAME|upper}}</h2>
+        {/loop}
+
+        <p>{intl l="Your order %id from %date is ready for pickup." id={$order_id} date={$CREATE_DATE|date_format:"%d-%m-%Y"}}</p>
+		
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td valign="top" width="55%">
+                    <strong>{intl l="Pickup address:"}</strong><br>
+                    <p>IZ NÖ Süd</p>
+                    <p>Straße 16 Objekt 69/8</p>
+                    <p>2355 Wr. Neudorf</p>
+                </td>
+                <td valign="top">
+                    <strong>{intl l="Pickup times:"}</strong><br />
+                    <p>Mo - Do 07:30 - 12:00 und 13:00 - 16:30</p>
+                    <p>Fr 07:30 - 12:00</p>
+                </td>
+            </tr>
+        </table>
+    {/loop}
+    <hr>
+    <p>{intl l="Best regards,"}</p>
+    <p>{intl l="Your %store_name team" store_name={config key="store_name"}</p>
+{/block}
