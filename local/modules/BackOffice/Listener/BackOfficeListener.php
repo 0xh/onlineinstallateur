@@ -24,7 +24,7 @@ class BackOfficeListener extends BaseAction implements EventSubscriberInterface 
      */
     public function sendEmailPickupStatusOrder(OrderEvent $event) {
 
-        if ($event->getOrder()->getStatusId() == 12) {
+        if ($event->getOrder()->getStatusId() == 11) {
 
             $messageParameters = array(
                 'order_id' => $event->getOrder()->getId()
