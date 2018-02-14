@@ -44,6 +44,11 @@ class ExportDataFromMyshtController extends BaseAdminController {
             $this->logout();
             $idartikels = explode(',', $this->getRequest()->get("idartikels"));
 
+            $files = scandir($this->imageLocation);
+            foreach ($files as $file) {
+                @unlink($this->imageLocation . $file);
+            }
+
             foreach ($idartikels as $idartikel) {
                 $artnr = $this->getArtNr(trim($idartikel));
                 if ($artnr === FALSE) {
@@ -56,6 +61,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 }
             }
 
+            @unlink($this->imageZip);
             $zip = new ZipArchive;
             $zip->open($this->imageZip, ZipArchive::CREATE);
             $files = scandir($this->imageLocation);
