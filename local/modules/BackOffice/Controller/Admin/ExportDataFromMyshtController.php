@@ -144,7 +144,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 return FALSE;
             }
 
-            if ($response["data"]) {
+            if (isset($response["data"]) && $response["data"]) {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
                 array_push($this->info, array("idartikel" => $idartikel, "MegabildNr" => $response["data"][0]["MegabildNr"], "Lieferantename" => $response["data"][0]["Lieferantename"],
                     "title" => $response["data"][0]["Zeile1"],
@@ -154,7 +154,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 return $response["data"][0]["MegabildNr"];
             } else {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
-                return array(0 => $response["servererror"]);
+                return array(0 => @$response["servererror"]);
             }
         }
     }
