@@ -447,5 +447,41 @@
 				</description>
 			</export_descriptive>
 		</export>
+		<export id="thelia.export.catalog.triworx" class="GeneralImportExport\Export\TriworxProductExport"
+                        category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Triworx Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Triworx CSV format:
+                    <ul>
+                        <li>ean_code, title, ref, extern_id</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Triworx Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Triworx CSV format:
+                    <ul>
+                        <li>ean_code, title, ref, extern_id</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Triworx Product Catalog Export</title>
+                <description>
+                <![CDATA[
+                    Export the Product Catalog in the required Triworx CSV format:
+                    <ul>
+                        <li>ean_code, title, ref, extern_id</li>
+                    </ul>
+                    ]]>
+                </description>
+            </export_descriptive>
+        </export>
 	</exports>
 </config>
