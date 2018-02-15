@@ -46,6 +46,8 @@ function getAndUpdateOrders() {
 	$.getJSON("amazonintegration/save-amazon-orders?dateCreatedAfter=" + dateCreatedAfter + "&dateLastUpdatedAfter=" + dateLastUpdatedAfter)
 	     .done(function (data) {
 	    	 console.log(data);
+	    	 $( "#amazon_order_error" ).removeClass('hide');
+	    	 $( "#amazon_order_error" ).text(data);
 	    	 $('#wait').hide();
 	    	 location.reload();
 	     })

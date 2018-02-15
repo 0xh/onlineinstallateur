@@ -192,7 +192,7 @@ class AmazonIntegrationContoller extends BaseAdminController
             if ($orders) {
                 foreach ($orders as $i => $order) {
                 	
-                	if(isset($order->OrderTotal->Amount) && $order->OrderTotal->Amount == 0 ) {
+                	if(!isset($order->OrderTotal->Amount) || (isset($order->OrderTotal->Amount) && $order->OrderTotal->Amount == 0 )) {
                 		$_SESSION['ordersWithTotalZero'] = true;
                 		break;
                 	}
