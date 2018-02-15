@@ -143,7 +143,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function saveAmazonOrders()
     {
-
+    	$_SESSION['ordersWithTotalZero'] = false;
+    	
         $arrDate = array(); 
         if (isset($_GET["dateCreatedAfter"]) && $_GET["dateCreatedAfter"] != ""){
             $arrDate["dateCreatedAfter"] = $_GET["dateCreatedAfter"];
@@ -166,7 +167,7 @@ class AmazonIntegrationContoller extends BaseAdminController
         $_SESSION['finishedToGetOrders'] = false;
         unset($_SESSION['nxtToken']);
         
-        while ($_SESSION['finishedToGetOrders'] == false)
+        while ($_SESSION['finishedToGetOrders'] == false && $_SESSION['ordersWithTotalZero'] == false)
         {
             if (! isset($_SESSION['nxtToken'])) {
                 include_once __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
@@ -191,6 +192,10 @@ class AmazonIntegrationContoller extends BaseAdminController
             if ($orders) {
                 foreach ($orders as $i => $order) {
                 	
+                	if($order->OrderTotal->Amount == 0 ) {
+                		$_SESSION['ordersWithTotalZero'] = true;
+                		break;
+                	}
                 	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
                 	
                 	if (isset($order->ShippingAddress->CountryCode)) {
@@ -323,10 +328,19 @@ class AmazonIntegrationContoller extends BaseAdminController
                     }
                    
                 }
-                $con->commit(); 
+                
+                if($_SESSION['ordersWithTotalZero'] == false) {
+                	$con->commit(); 
+                }
             }
             
             ini_set('max_execution_time', $max_time);
+        }
+        
+        if ($_SESSION['ordersWithTotalZero']) {
+        	AmazonIntegrationResponse::logError("No orders were imported. There are orders with total amount zero.");
+        	unset($_SESSION['nxtToken']);
+        	die("No orders were imported. There are orders with total amount zero.");
         }
         
         if ($_SESSION['finishedToGetOrders'])
