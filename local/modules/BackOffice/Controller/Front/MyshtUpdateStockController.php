@@ -31,8 +31,9 @@ class MyshtUpdateStockController extends BaseFrontController {
     protected static $logger;
 //    protected $username = "nmbures";
 //    protected $password = "nsht123";
-//    protected $username = "hausf";
-//    protected $password = "My21Sht";
+    protected $username = "hausf";
+    protected $password = "My21Sht";
+    protected $version = "2017";
     protected $cookiefile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "myshtcookie.txt";
 
     public function updateStockMysht() {
@@ -75,7 +76,6 @@ class MyshtUpdateStockController extends BaseFrontController {
 
     protected function login() {
 
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -87,12 +87,8 @@ class MyshtUpdateStockController extends BaseFrontController {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nhausf\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nMy21Sht\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"version\"\r\n\r\n2017\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--",
-            CURLOPT_HTTPHEADER => array(
-                "cache-control: no-cache",
-                "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-                "postman-token: 4e69c845-6595-2262-9a17-3b2b975cb488"
-            ),
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version),
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile
         ));
@@ -165,12 +161,7 @@ class MyshtUpdateStockController extends BaseFrontController {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"username\"\r\n\r\nhausf\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"password\"\r\n\r\nMy21Sht\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"artnr\"\r\n\r\n$idartikel\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--",
-            CURLOPT_HTTPHEADER => array(
-                "cache-control: no-cache",
-                "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-                "postman-token: 1c2831c9-1000-6a8e-14ca-14cdf4eccc7f"
-            ),
+            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version, "artnr" => $idartikel),
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile,
         ));

@@ -1,0 +1,27 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+{$admin_current_location = 'configuration'}
+{/block}
+
+{block name="page-title"}{intl l='Export data from Mysht'}{/block}
+
+{block name="main-content"}
+<form action="/admin/export-data-mysht" method="post">
+    <div class="form-group">
+        <label for="usr">Id artikels (eg: 123456, 56789, 456789):</label>
+        <input type="text" class="form-control" id="usr" name="idartikels">
+    </div>
+    <button type="submit" class="btn btn-default">Export</button>
+</form>
+<div class="panel-footer">
+    <a href="{url path='/admin/export-data-mysht/log-csv'}" class="btn btn-sm btn-primary">
+        <span class="glyphicon glyphicon-download-alt"></span>
+        {intl d='amazonintegration.bo.default' l="Download Csv"}
+    </a>
+    <a href="{url path='/admin/export-data-mysht/log-images'}" class="btn btn-sm btn-primary">
+        <span class="glyphicon glyphicon-download-alt"></span>
+        {intl d='amazonintegration.bo.default' l="Download Images"}
+    </a>
+</div>
+{/block}
