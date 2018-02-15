@@ -58,19 +58,19 @@ class TriworxProductExport extends AbstractExport
 		$productJoin = new Join(ProductTableMap::ID, ProductI18nTableMap::ID, Criteria::LEFT_JOIN);
 		
 		$query = ProductSaleElementsQuery::create()
-		->addSelfSelectColumns()
-		->useProductQuery()
-		->where(ProductTableMap::VISIBLE." = ?","1") 
-		->addJoinObject($productJoin, 'product_join')
-		->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-		->withColumn(ProductI18nTableMap::TITLE)
-		->withColumn(ProductTableMap::EXTERN_ID)
-		->withColumn(ProductTableMap::REF)
-		->endUse()
-		->orderBy(ProductSaleElementsTableMap::ID)
-		->groupBy(ProductSaleElementsTableMap::ID) 
-		//->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL)
-		;
+			->addSelfSelectColumns()
+			->useProductQuery()
+			->where(ProductTableMap::VISIBLE." = ?","1") 
+			->addJoinObject($productJoin, 'product_join')
+			->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
+			->withColumn(ProductI18nTableMap::TITLE)
+			->withColumn(ProductTableMap::EXTERN_ID)
+			->withColumn(ProductTableMap::REF)
+			->endUse()
+			->orderBy(ProductSaleElementsTableMap::ID)
+			->groupBy(ProductSaleElementsTableMap::ID) 
+			->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL)
+			;
 		
 		return $query;
 	}
