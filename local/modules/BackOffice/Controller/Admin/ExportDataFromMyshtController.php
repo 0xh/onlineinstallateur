@@ -39,6 +39,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
     protected $imageLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images" . DS;
     protected $imageZip = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images.zip";
     const MYSHT_CSV_FILE = 'exportCsvDataMysht';
+    protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
     
     public function export() {
         
@@ -46,6 +47,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
             /** @var Session $session */
             $session = $this->getRequest()->getSession();
             $date = date('m.d.Y.h.i.s.a', time());
+            $this->logFilePath = $this->logFilePath.$date.".txt";
             $this->csvFilename = $this->csvFileLocation.self::MYSHT_CSV_FILE.$date.".csv";
             $session->set(self::MYSHT_CSV_FILE, $this->csvFilename);
             $this->initCsvFile($this->csvFilename);
@@ -200,11 +202,9 @@ class ExportDataFromMyshtController extends BaseAdminController {
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
 
-            $logFilePath = THELIA_LOG_DIR . DS . "update-stock-mysht.txt";
-
             self::$logger->setPrefix("#DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
-            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $this->logFilePath);
             self::$logger->setLevel(Tlog::ERROR);
         }
         return self::$logger;
