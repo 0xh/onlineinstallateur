@@ -190,9 +190,11 @@ span.criteria-pagination{
 .mobileFilterItem button [aria-expanded="true"]{
   color: #ffffff;
 }
-/*.mobileFilterItem button [aria-expanded=true]{
-
-}*/
+.mobileFilterItem button{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-left: 1px solid #86ac34!important;
+}
 .mobileFilterItem button{
   margin-left: 0px;
   margin-right: 0px;
