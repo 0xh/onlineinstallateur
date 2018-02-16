@@ -200,6 +200,20 @@ span.criteria-pagination{
   margin-right: 0px;
   margin-bottom: 0px;
 }
+#mobileButtonKonfigurator{
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  background-color: #01758D;
+  width: 100%;
+  margin-right: 0px;
+  border-right-width: 0px;
+  margin-left: 0px;
+  min-height: 44px;
+  text-align: left;
+}
+#mobileButtonKonfigurator [aria-expanded="true"]{
+}
 .mobileFilterItem .tab-content{
   margin-bottom: 0px;
   border: 1px solid #86AC34;
