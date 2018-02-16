@@ -27,8 +27,12 @@ jQuery(function($){
     $('.input-search').on('change', function(e) {
     	
     	if($(this).attr('id') != undefined) {
-			var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
-			
+            
+            //Old Event Listener parrent
+			//var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
+
+            //New Event Listener parrent
+            var check = $(this).parents('.checkbox-box').find('input[type=checkbox]:checked').length;
        		if(check)
        			$('.main-category.active span').addClass('active');
        		else
@@ -83,7 +87,7 @@ jQuery(function($){
             });
 
             
-            $( ".options-container" ).each(function( ) { 
+            $( ".checkbox-box" ).each(function( ) { 
 	        	var check = $(this).find('input[type=checkbox]:checked').length;
 	    		
 	       		if(check)
