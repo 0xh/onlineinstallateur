@@ -1,3 +1,4 @@
+
 function sortByDate() {
 	$( '.position_sorting' ).change(function() {
 	  	pos = 'tab=amazon-orders&sort=' + $('.position_sorting').val();
@@ -72,5 +73,3 @@ function initDatepiker() {
 		     }});
 	  });
 }
-
-
