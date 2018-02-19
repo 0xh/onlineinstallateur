@@ -285,10 +285,6 @@ class AmazonIntegrationContoller extends BaseAdminController
                         $this->getLogger()->error("success getting order items");
                        // sleep(4); 
                         sleep(2); 
-                        if(isset($order->FulfillmentChannel))
-                            $fulfillmentChannel = $order->FulfillmentChannel;
-                        else 
-                            $fulfillmentChannel = 'MFN';
                         
                         $totalPostage = 0;
                         
@@ -304,7 +300,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	                    		if(isset($orderProduct->ShippingPrice->Amount))
     	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
     	                    		
-    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace);
     	                    	}
     	                    }
     	                    else {     
@@ -312,11 +308,11 @@ class AmazonIntegrationContoller extends BaseAdminController
     	                    	if(isset($orderProduct->ShippingPrice->Amount))
     	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
     	                    	
-    	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+    	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace);
     	                    }
                         }
                         
-                        if($fulfillmentChannel == 'AFN') {
+                        if($marketplace == 'DE') {
                         	$taxPostage = round(($totalPostage/1.19)*0.19,2);
                         }
                         else{
@@ -668,7 +664,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	$amazonOrder->save($con);
     }
     
-    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $fulfillmentChannel) {
+    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace) {
     	$this->getLogger()->error("insert data in OrderProduct table. step 1");
     	$productId = ProductAmazonQuery::create()
     		->select('product_id')
@@ -727,15 +723,13 @@ class AmazonIntegrationContoller extends BaseAdminController
     	}
     	$this->getLogger()->error("Product unit price ".$unitPrice);
     	
-    	if($fulfillmentChannel == 'AFN') {
+    	if($marketplace == 'DE') {
     		$tax = round(($unitPrice/1.19)*0.19,2);
     		$priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '19%  VAT';
      	}
      	else {
      		$tax = round(($unitPrice/1.2)*0.2,2);
      		$priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '20%  VAT';
      	}
     	
      	$this->getLogger()->error("Tax ".$tax.'. PriceWithoutTax'.$priceWithoutTax);
@@ -758,8 +752,8 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->setWasNew('')
     		->setWasInPromo('')
     		->setWeight($productSaleElement->getWeight())
-    		->setTaxRuleTitle($taxTitle)
-    		->setTaxRuleDescription('')
+    		->setTaxRuleTitle($taxRuleI18n->getTitle())
+    		->setTaxRuleDescription($taxRuleI18n->getDescription())
     		->setEanCode($productSaleElement->getEanCode())
     		->save($con);
     	
@@ -770,7 +764,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	$orderProductTax = new OrderProductTax();
     	$orderProductTax 
     		->setOrderProductId($orderProductId)
-    		->setTitle($taxTitle)
+    		->setTitle('20% MwSt.')
     		->setAmount($tax)
     		->setPromoAmount($tax)
     		->save($con);
