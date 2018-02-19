@@ -1,0 +1,63 @@
+{default_translation_domain domain='googleshopping.ai'}
+
+{javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+    <script src='{$asset_url}'></script>
+{/javascripts}
+
+<script>
+    $(function () {
+        $(".switch").bootstrapSwitch();
+
+        $("#search-taxonomy").keyup(function () {
+            search = $(this).val();
+            if (search.length > 2) {
+                $.get('{url path="/admin/module/googleshopping/taxonomy/{$edit_language_id}"}', function (data) {
+                    var res = "";
+                    $.each(data.cats, function (k, v) {
+                        var searchUp = search.toUpperCase();
+                        var linesUp = k.toUpperCase();
+                        if (-1 !== linesUp.search(searchUp)) {
+                            res += '<option value="' + v + '">' + k + '</option>';
+                        }
+                    });
+                    $("#google-taxonomy").html(res);
+                })
+            }
+        });
+
+        $(".ajax-form").submit(function (event) {
+            event.preventDefault();
+            var form = $(this);
+            var btn = form.find('button[type="submit"]');
+            var btnHtml = btn.html();
+            btn.addClass('disabled').html('{intl l="Please wait..."} <span class="glyphicon glyphicon-hourglass"></span>');
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize()
+            }).done(function(data){
+                $("#alert").html('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                btn.removeClass('disabled').html(btnHtml);
+
+                if (deleteId = form.data('delete')) {
+                    $("#"+deleteId).remove();
+                }
+
+            }).fail(function(jqXHR, textStatus ){
+                $("#alert").html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+jqXHR.responseText+'</div>');
+                btn.removeClass('disabled').html(btnHtml);
+            });
+        });
+
+        $('#google-shopping-excluded-shipping .make-switch').on('switch-change', function () {
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: '{url path='/admin/module/googleshopping/toggle/shipping-module/'}' + id,
+                type: 'GET'
+            }).done( function () {
+
+            });
+        });
+    })
+</script>

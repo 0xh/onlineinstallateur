@@ -1,6 +1,6 @@
-<?php
-
-return array(
-    'buildingtype' => 'Gebäudeart',
-
-);
+<?php
+
+return array(
+    'buildingtype' => 'Gebäudeart',
+
+);

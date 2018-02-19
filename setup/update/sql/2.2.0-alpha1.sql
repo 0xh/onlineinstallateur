@@ -15,7 +15,7 @@ INSERT INTO `order_status` VALUES
 ;
 
 INSERT INTO `order_status_i18n` VALUES
-(@max_id + 1, "de_DE", 'Zurückerstattet', "", "", ""),
+(@max_id + 1, "de_DE", 'Zrückerstattet', "", "", ""),
 (@max_id + 1, "en_US", 'Refunded', "", "", ""),
 (@max_id + 1, "es_ES", 'Reembolsado', "", "", ""),
 (@max_id + 1, "fr_FR", 'Remboursé', "", "", "")

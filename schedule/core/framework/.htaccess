@@ -1,0 +1,5 @@
+
+<FilesMatch ".(php|sql)$">
+Order allow,deny
+Deny from All
+</FilesMatch>

@@ -1,5 +1,5 @@
-<?php
-
-return [
-    'abholung instructions configuration' => 'Scheck-Anleitungen-Konfiguration',
-];
+<?php
+
+return [
+    'abholung instructions configuration' => 'Scheck-Anleitungen-Konfiguration',
+];

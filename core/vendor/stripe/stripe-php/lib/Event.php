@@ -20,8 +20,7 @@ namespace Stripe;
 class Event extends ApiResource
 {
     /**
-     * @param array|string $id The ID of the event to retrieve, or an options
-     *     array containing an `id` key.
+     * @param string $id The ID of the event to retrieve.
      * @param array|string|null $opts
      *
      * @return Event

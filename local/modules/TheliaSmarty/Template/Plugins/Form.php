@@ -185,10 +185,10 @@ class Form extends AbstractSmartyPlugin
 
         /** @var FormErrorIterator $errors */
         $errors = $fieldVars["errors"];
-        if ($errors) {
-            $template->assign("error", $errors->count() ? true : false);
-            $this->assignFieldErrorVars($template, $errors);
-        }
+
+        $template->assign("error", $errors->count() ? true : false);
+
+        $this->assignFieldErrorVars($template, $errors);
 
         $attr = array();
 

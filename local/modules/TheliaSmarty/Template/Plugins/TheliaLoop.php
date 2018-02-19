@@ -151,9 +151,7 @@ class TheliaLoop extends AbstractSmartyPlugin
 
             self::$pagination[$name] = null;
 
-            // We have to clone the result, as exec() returns a cached LoopResult object, which may cause side effects
-            // if loops with the same argument set are nested (see https://github.com/thelia/thelia/issues/2213)
-            $loopResults = clone($loop->exec(self::$pagination[$name]));
+            $loopResults = $loop->exec(self::$pagination[$name]);
 
             $loopResults->rewind();
 
@@ -300,7 +298,7 @@ class TheliaLoop extends AbstractSmartyPlugin
             if ($totalPageCount > $displayedPageCount) {
                 $startPage = $currentPage - round($displayedPageCount / 2);
 
-                if ($startPage <= 0) {
+                if ($startPage < 0) {
                     $startPage = 1;
                 }
             }

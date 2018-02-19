@@ -1,17 +1,17 @@
-{if $orderId}
-	{ifloop rel="fulfilment_center_pick_up_address"}
-		 {intl l="Pickup from"}
-		 	<table>
-		    {loop type="fulfilment_center_pick_up_address" name="fulfilment_center_pick_up_address" orderid={$orderId}}
-	        <tr>
-	            <td>
-	                {$PRODUCT_TITLE} : 
-	            </td>
-	            <td>
-	               {$CENTER_ADDRESS}
-	            </td>
-	        </tr>
-			{/loop}
-			</table>
-	{/ifloop}	
+{if $orderId}
+	{ifloop rel="fulfilment_center_pick_up_address"}
+		 {intl l="Pickup from"}
+		 	<table>
+		    {loop type="fulfilment_center_pick_up_address" name="fulfilment_center_pick_up_address" orderid={$orderId}}
+	        <tr>
+	            <td>
+	                {$PRODUCT_TITLE} : 
+	            </td>
+	            <td>
+	               {$CENTER_ADDRESS}
+	            </td>
+	        </tr>
+			{/loop}
+			</table>
+	{/ifloop}	
 {/if}

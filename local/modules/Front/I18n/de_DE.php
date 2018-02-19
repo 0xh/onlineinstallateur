@@ -15,7 +15,7 @@ return [
     'Sorry, an error occured: %s' => 'Leider ist ein Fehler aufgetreten: %s',
     'Sorry, an error occurred: %message' => 'Leider ist ein Fehler aufgetreten: %message',
     'Sorry, an error occurred: %s' => 'Es tut uns Leid, aber ein Fehler ist aufgetreten: %s',
-    'Thanks for signing up! We\'ll keep you posted whenever we have any new updates.' => 'Vielen Dank für Ihre Anmeldung! Wir halten Sie auf dem Laufenden über neuen Updates.',
+    'Thanks for signing up! We\'ll keep you posted whenever we have any new updates.' => 'Vielen Dank für Ihre Anmeldung! Wir halten Ihnen auf dem Laufenden über neuen Updates.',
     'To enable the virtual product feature, the VirtualProductDelivery module should be activated' => 'Um das virtuelle Produkt-Feature zu aktivieren, sollte das VirtualProductDelivery-Modul aktiviert werden',
     'Wrong email or password. Please try again' => 'E-Mail oder Passwort falsch. Bitte erneut versuchen',
     'You\'re currently logged in. Please log out before requesting a new password.' => 'Sie sind derzeit angemeldet. Bitte melden Sie sich ab, bevor Sie ein neues Passwort anfordern.',

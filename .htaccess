@@ -1,9 +1,9 @@
-RewriteEngine on
-RewriteCond %{HTTP_HOST} ^hausfabrik.at$ [NC,OR]
-RewriteCond %{HTTP_HOST} ^www.hausfabrik.at$ 
-RewriteCond %{REQUEST_URI} !web/
-RewriteRule (.*) /web/$1 [L]
-
-
-
-
+RewriteEngine on
+
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^hausfabrik.at$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.hausfabrik.at$ 
+RewriteCond %{REQUEST_URI} !web/
+RewriteRule (.*) /web/$1 [L]

@@ -1,151 +1,151 @@
-{form name="admin.order.creation.create.form"}
-    {* Capture the dialog body, to pass it to the generic dialog *}
-    {capture "order_create_dialog"}
-
-        {form_hidden_fields form=$form}
-
-        {form_field form=$form field='customer_id'}
-            <input type="hidden" name="{$name}" value="{$ID}">
-        {/form_field}
-
-        <table class="table">
-            <thead>
-            <tr>
-                <td>
-                    {form_field form=$form field='delivery_address_id'}
-                    <div class="form-group {if $error}has-error{/if}">
-                        <label for="{$label_attr.for}" class="control-label">{$label} * : </label>
-
-                        <select name="{$name}" id="{$label_attr.for}" class="form-control" required="required">
-                            <option value="0">{intl l="Choose" d="ordercreation"}</option>
-                            {loop type="address" name="address-delivery" customer=$ID}
-                            <option value="{$ID}">{$LABEL}</option>
-                            {/loop}
-                        </select>
-                    </div>
-                    {/form_field}
-                </td>
-                <td>
-                    {form_field form=$form field='invoice_address_id'}
-                    <div class="form-group {if $error}has-error{/if}">
-                        <label for="{$label_attr.for}" class="control-label">{$label} : </label>
-
-                        <select name="{$name}" id="{$label_attr.for}" class="form-control">
-                            {loop type="address" name="address-invoice" customer=$ID}
-                            <option value="{$ID}">{$LABEL}</option>
-                            {/loop}
-                        </select>
-                    </div>
-                    {/form_field}
-                </td>
-            </tr>
-            </thead>
-            <tbody id="body-order-cart">
-
-            </tbody>
-            <tfoot>
-           <!--  <tr>
-                <td colspan="2">
-                    <a id="add-cart-item" class="btn btn-default btn-primary action-btn" title="{intl l='Add product' d='ordercreation'}" href="#" data-toggle="modal">
-                        <span>{intl l="Add product" d="ordercreation"}</span>
-                    </a>
-                </td>
-            </tr> -->
-            <tr>
-                <td colspan="2">
-	                {form_field form=$form field='order_status_id'}
-	                    <label for="{$label_attr.for}" class="control-label">{$label} : </label>
-	                    <select class="js-update-order-status form-control" name="{$name}">
-		                    {loop type="order-status" name="all-status"}
-		                        {assign "orderStatusCode" "order_$CODE"}
-		                        {if #$orderStatusCode# == ''}
-		                            {assign "defaultLabel" "label-default"}
-		                            {assign "orderStatusLabel" $CODE}
-		                        {else}
-		                            {assign "defaultLabel" ''}
-		                            {assign "orderStatusLabel" #$orderStatusCode#}
-		                        {/if}
-		                        <option {if $ID == $orderStatusId}selected="selected" {/if} value="{$ID}" data-content="<span class='label {$defaultLabel} label-{$orderStatusLabel}'>{$TITLE}</span>">{$TITLE}</option>
-		                    {/loop}
-	                    </select>
-	            	 {/form_field}
-                </td>
-            </tr>
-            {hook name="offer.creation.employee-notice"}
-            <tr>
-            	<td colspan="2"> 
-              		<label for="search{$position}" class="control-label">{intl l="Search" d="ordercreation"}</label>
-                    <section class="clearfix">
-	                                                         
-			            <div class="input-group">
-			                <input type="text" class="search_term form-control" name="search_term" placeholder="{intl l='Search'}">
-			                <span class="btn btn-default" id="search_button">
-			                	<span class="glyphicon glyphicon-search"></span>
-			                </span>
-			            </div>
-				     
-						<div class="sidebar-search">
-							<select id="search_product_list" class="form-control"> 
-							</select>
-					    </div>
-					  
-					    <div id="selected_product_list" class="col-md-12">
-					    </div>
-					    
-					</section>
-				</td>
-            </tr>
-            <tr>
-                <td>
-                    {form_field form=$form field='delivery-module'}
-                    <div class="form-group {if $error}has-error{/if}">
-                        <label for="{$label_attr.for}" class="control-label">{$label} * : </label><br />
-                        <input type="hidden" name="{$name}" id="delivery-module" value="" />
-                        <div id="list-delivery">
-                            <div class="alert alert-danger">
-                                {intl l="Choose a delivery address first" d="ordercreation"}
-                            </div>
-                        </div>
-                        <!--
-                        <select name="{$name}" id="{$label_attr.for}" class="form-control" required="required">
-                            <option>{intl l="Choose" d="ordercreation"}</option>
-                            {loop type="module" name="module-delivery" module_type="2" active="1"}
-                            <option value="{$ID}">{$TITLE}</option>
-                            {/loop}
-                        </select>
-                        -->
-                    </div>
-                    {/form_field}
-                </td>
-                <td>
-                    {form_field form=$form field='payment_module_id'}
-                    <div class="form-group {if $error}has-error{/if}">
-                        <label for="{$label_attr.for}" class="control-label">{$label} : </label>
-
-                        <select name="{$name}" id="{$label_attr.for}" class="form-control">
-                            {loop type="module" name="module-payment" module_type="3" active="1"}
-                            <option value="{$ID}">{$TITLE}</option>
-                            {/loop}
-                        </select>
-                    </div>
-                    {/form_field}
-                </td>
-            </tr>
-            </tfoot>
-        </table>
-
-    {/capture}
-    {include
-        file = "includes/generic-create-dialog.html"
-
-        dialog_id    = "order_create_dialog"
-        dialog_title = {intl l="Generate a new order" d="ordercreation"}
-        dialog_body  = {$smarty.capture.order_create_dialog nofilter}
-
-        dialog_ok_label     = {intl l="Save"}
-
-        form_action        = {url path='/admin/module/OrderCreation/order/create'}
-        form_enctype       = {form_enctype form=$form}
-        form_error_message = $form_error_message
-    }
-{/form}
+{form name="admin.order.creation.create.form"}
+    {* Capture the dialog body, to pass it to the generic dialog *}
+    {capture "order_create_dialog"}
+
+        {form_hidden_fields form=$form}
+
+        {form_field form=$form field='customer_id'}
+            <input type="hidden" name="{$name}" value="{$ID}">
+        {/form_field}
+
+        <table class="table">
+            <thead>
+            <tr>
+                <td>
+                    {form_field form=$form field='delivery_address_id'}
+                    <div class="form-group {if $error}has-error{/if}">
+                        <label for="{$label_attr.for}" class="control-label">{$label} * : </label>
+
+                        <select name="{$name}" id="{$label_attr.for}" class="form-control" required="required">
+                            <option value="0">{intl l="Choose" d="ordercreation"}</option>
+                            {loop type="address" name="address-delivery" customer=$ID}
+                            <option value="{$ID}">{$LABEL}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                    {/form_field}
+                </td>
+                <td>
+                    {form_field form=$form field='invoice_address_id'}
+                    <div class="form-group {if $error}has-error{/if}">
+                        <label for="{$label_attr.for}" class="control-label">{$label} : </label>
+
+                        <select name="{$name}" id="{$label_attr.for}" class="form-control">
+                            {loop type="address" name="address-invoice" customer=$ID}
+                            <option value="{$ID}">{$LABEL}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                    {/form_field}
+                </td>
+            </tr>
+            </thead>
+            <tbody id="body-order-cart">
+
+            </tbody>
+            <tfoot>
+           <!--  <tr>
+                <td colspan="2">
+                    <a id="add-cart-item" class="btn btn-default btn-primary action-btn" title="{intl l='Add product' d='ordercreation'}" href="#" data-toggle="modal">
+                        <span>{intl l="Add product" d="ordercreation"}</span>
+                    </a>
+                </td>
+            </tr> -->
+            <tr>
+                <td colspan="2">
+	                {form_field form=$form field='order_status_id'}
+	                    <label for="{$label_attr.for}" class="control-label">{$label} : </label>
+	                    <select class="js-update-order-status form-control" name="{$name}">
+		                    {loop type="order-status" name="all-status"}
+		                        {assign "orderStatusCode" "order_$CODE"}
+		                        {if #$orderStatusCode# == ''}
+		                            {assign "defaultLabel" "label-default"}
+		                            {assign "orderStatusLabel" $CODE}
+		                        {else}
+		                            {assign "defaultLabel" ''}
+		                            {assign "orderStatusLabel" #$orderStatusCode#}
+		                        {/if}
+		                        <option {if $ID == $orderStatusId}selected="selected" {/if} value="{$ID}" data-content="<span class='label {$defaultLabel} label-{$orderStatusLabel}'>{$TITLE}</span>">{$TITLE}</option>
+		                    {/loop}
+	                    </select>
+	            	 {/form_field}
+                </td>
+            </tr>
+            {hook name="offer.creation.employee-notice"}
+            <tr>
+            	<td colspan="2"> 
+              		<label for="search{$position}" class="control-label">{intl l="Search" d="ordercreation"}</label>
+                    <section class="clearfix">
+	                                                         
+			            <div class="input-group">
+			                <input type="text" class="search_term form-control" name="search_term" placeholder="{intl l='Search'}">
+			                <span class="btn btn-default" id="search_button">
+			                	<span class="glyphicon glyphicon-search"></span>
+			                </span>
+			            </div>
+				     
+						<div class="sidebar-search">
+							<select id="search_product_list" class="form-control"> 
+							</select>
+					    </div>
+					  
+					    <div id="selected_product_list" class="col-md-12">
+					    </div>
+					    
+					</section>
+				</td>
+            </tr>
+            <tr>
+                <td>
+                    {form_field form=$form field='delivery-module'}
+                    <div class="form-group {if $error}has-error{/if}">
+                        <label for="{$label_attr.for}" class="control-label">{$label} * : </label><br />
+                        <input type="hidden" name="{$name}" id="delivery-module" value="" />
+                        <div id="list-delivery">
+                            <div class="alert alert-danger">
+                                {intl l="Choose a delivery address first" d="ordercreation"}
+                            </div>
+                        </div>
+                        <!--
+                        <select name="{$name}" id="{$label_attr.for}" class="form-control" required="required">
+                            <option>{intl l="Choose" d="ordercreation"}</option>
+                            {loop type="module" name="module-delivery" module_type="2" active="1"}
+                            <option value="{$ID}">{$TITLE}</option>
+                            {/loop}
+                        </select>
+                        -->
+                    </div>
+                    {/form_field}
+                </td>
+                <td>
+                    {form_field form=$form field='payment_module_id'}
+                    <div class="form-group {if $error}has-error{/if}">
+                        <label for="{$label_attr.for}" class="control-label">{$label} : </label>
+
+                        <select name="{$name}" id="{$label_attr.for}" class="form-control">
+                            {loop type="module" name="module-payment" module_type="3" active="1"}
+                            <option value="{$ID}">{$TITLE}</option>
+                            {/loop}
+                        </select>
+                    </div>
+                    {/form_field}
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+
+    {/capture}
+    {include
+        file = "includes/generic-create-dialog.html"
+
+        dialog_id    = "order_create_dialog"
+        dialog_title = {intl l="Generate a new order" d="ordercreation"}
+        dialog_body  = {$smarty.capture.order_create_dialog nofilter}
+
+        dialog_ok_label     = {intl l="Save"}
+
+        form_action        = {url path='/admin/module/OrderCreation/order/create'}
+        form_enctype       = {form_enctype form=$form}
+        form_error_message = $form_error_message
+    }
+{/form}

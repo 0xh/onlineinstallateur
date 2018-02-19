@@ -1,0 +1,565 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl l='GoogleShopping'}{/block}
+
+{block name="check-auth"}
+    {check_auth role="ADMIN" module=$module_code access="view" login_tpl="/admin/login"}
+{/block}
+
+{block name="main-content"}
+    {default_translation_domain domain='googleshopping.bo.default'}
+    {if isset($smarty.get.current_cat)}
+        {assign var="curr_cat" value=$smarty.get.current_cat}
+    {/if}
+    {assign var="tab" value="configuration"}
+    {if isset($smarty.get.current_tab)}
+        {assign var="tab" value=$smarty.get.current_tab}
+        {if $tab == ""}
+            {assign var="tab" value="configuration"}
+        {/if}
+    {/if}
+    <div class="modules-configure">
+        <div id="wrapper" class="container">
+            <div class="clearfix">
+                <ul class="breadcrumb pull-left">
+                    <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+                    <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+                    <li><a href="#">{intl l="Configure"} : GoogleShopping</a></li>
+                </ul>
+            </div>
+
+            {hook name="module.configuration" location="module_configuration"  modulecode="$module_code"}
+
+            {oAuthCheckToken}
+            <div class="general-block-decorator">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul id="tabbed-menu" class="nav nav-tabs">
+                            <li class="{if $tab eq "configuration"}active{/if}"><a data-toggle="tab"
+                                                                                   href="#configuration">{intl l="Configuration"}</a>
+                            </li>
+                            <li class="{if $tab eq "management"}active{/if}"><a data-toggle="tab"
+                                                                                href="#management">{intl l="Catalog management"}</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="configuration"
+                                 class="tab-pane {if $tab eq "configuration"}active{/if} form-container">
+                                <div class="panel panel-default">
+                                    {form name="googleshopping.api.configuration"}
+                                        <form method="post" action='{url path="/admin/module/googleshopping/api"}'>
+                                            <div class="panel-heading">
+                                                <h4>{intl l="Google Api configuration"}</h4>
+                                                {include
+                                                file      = "includes/inner-form-toolbar.html"
+                                                hide_flags = true
+                                                close_url = {url path='/admin/modules'}
+                                                }
+                                            </div>
+                                            <div class="panel-body">
+                                                {form_hidden_fields form=$form}
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        {form_field form=$form field="application_name"}
+                                                            <div class="form-group col-md-6 {if $error}has-error{/if}">
+                                                                <label for="{$label_attr.for}">{$label}</label>
+                                                                <input id="{$label_attr.for}" class="form-control"
+                                                                       name="{$name}" value="{$value}" required/>
+                                                                <span class="help-block">{intl l="The application name you have define when you have create the api application"}</span>
+                                                            </div>
+                                                        {/form_field}
+
+                                                        {form_field form=$form field="client_id"}
+                                                            <div class="form-group col-md-6 {if $error}has-error{/if}">
+                                                                <label for="{$label_attr.for}">{$label}</label>
+                                                                <input id="{$label_attr.for}" class="form-control"
+                                                                       type="text" name="{$name}" value="{$value}"
+                                                                       required/>
+                                                                <span class="help-block">{intl l="The client ID of the api who can be found in https://console.developers.google.com at APIs & auth > Credentials"}</span>
+                                                            </div>
+                                                        {/form_field}
+
+                                                        {form_field form=$form field="client_secret"}
+                                                            <div class="form-group col-md-6 {if $error}has-error{/if}">
+                                                                <label for="{$label_attr.for}">{$label}</label>
+                                                                <input id="{$label_attr.for}" class="form-control"
+                                                                       type="text" name="{$name}" value="{$value}"
+                                                                       required/>
+                                                                <span class="help-block">{intl l="The client secret associate to client ID"}</span>
+                                                            </div>
+                                                        {/form_field}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    {/form}
+                                </div>
+                                <div class="panel panel-default">
+                                    <div></div>
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            <h4>{intl l="Google Merchant configurations"}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        {form name="googleshopping.merchant.configuration"}
+                                            <div class="row">
+                                                <form class="ajax-form" method="post" action='{url path="/admin/module/googleshopping/merchant/account/add"}'>
+                                                    {form_hidden_fields form=$form}
+                                                    {form_field form=$form field="title"}
+                                                        <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <input id="{$label_attr.for}" class="form-control"
+                                                                   name="{$name}" required/>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="merchant_id"}
+                                                        <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <input id="{$label_attr.for}" class="form-control"
+                                                                   name="{$name}" required/>
+                                                            <span class="help-block">{intl l="Your google merchant ID, can be found in Google Merchant center, normally the numbers at top right"}</span>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="lang_id"}
+                                                        <div class="form-group col-md-1 {if $error}has-error{/if}">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <select id="{$label_attr.for}" class="form-control"
+                                                                    name="{$name}">
+                                                                {loop type="lang" name="lang_id"}
+                                                                    <option value="{$ID}">{$TITLE}</option>
+                                                                {/loop}
+                                                            </select>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="country_id"}
+                                                        <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <select id="{$label_attr.for}" class="form-control"
+                                                                    name="{$name}">
+                                                                {loop type="country" name="country_id"}
+                                                                    <option value="{$ID}">{$TITLE}</option>
+                                                                {/loop}
+                                                            </select>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="currency_id"}
+                                                        <div class="form-group col-md-1 {if $error}has-error{/if}">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <select id="{$label_attr.for}" class="form-control"
+                                                                    name="{$name}">
+                                                                {loop type="currency" name="currency_id"}
+                                                                    <option value="{$ID}">{$SYMBOL}</option>
+                                                                {/loop}
+                                                            </select>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="is_default"}
+                                                        <div class="form-group col-md-1">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <br>
+                                                            <div id="{$label_attr.for}" class="switch-small switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                                                <input  name="{$name}" type="checkbox"/>
+                                                            </div>
+                                                        </div>
+                                                    {/form_field}
+                                                    {form_field form=$form field="sync"}
+                                                        <div class="form-group col-md-1">
+                                                            <label for="{$label_attr.for}">{$label}</label>
+                                                            <br>
+                                                            <div id="{$label_attr.for}" class="switch-small switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                                                <input  name="{$name}" type="checkbox" checked/>
+                                                            </div>
+                                                        </div>
+                                                    {/form_field}
+                                                    <div class="form-group col-md-2">
+                                                        <label class="control-label">&nbsp;</label>
+                                                        <button class="btn btn-default btn-primary form-control"
+                                                                type="submit">
+                                                            <span class="glyphicon glyphicon-plus"></span>
+                                                            {intl l="Add"}
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        {/form}
+                                        {loop type="googleshopping.configuration" name="googleshopping.configuration"}
+                                            <div id="account_{$ID}" class="row">
+                                                {form name="googleshopping.merchant.configuration"}
+                                                    <form class="ajax-form" method="post" action='{url path="/admin/module/googleshopping/merchant/account/update/{$ID}"}'>
+                                                        {form_hidden_fields form=$form}
+                                                        {form_field form=$form field="title"}
+                                                            <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                                <input id="{$label_attr.for}" class="form-control"
+                                                                       name="{$name}" value="{$TITLE}" required/>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="merchant_id"}
+                                                            <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                                <input id="{$label_attr.for}" class="form-control"
+                                                                       name="{$name}" value="{$MERCHANT_ID}" required/>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="lang_id"}
+                                                            <div class="form-group col-md-1 {if $error}has-error{/if}">
+                                                                <select id="{$label_attr.for}" class="form-control"
+                                                                        name="{$name}">
+                                                                    {loop type="lang" name="lang_id"}
+                                                                        <option value="{$ID}"
+                                                                                {if $LANG_ID == $ID}selected{/if} >{$TITLE}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="country_id"}
+                                                            <div class="form-group col-md-2 {if $error}has-error{/if}">
+                                                                <select id="{$label_attr.for}" class="form-control"
+                                                                        name="{$name}">
+                                                                    {loop type="country" name="default_country"}
+                                                                        <option value="{$ID}"
+                                                                                {if $COUNTRY_ID == $ID}selected{/if} >{$TITLE}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="currency_id"}
+                                                            <div class="form-group col-md-1 {if $error}has-error{/if}">
+                                                                <select id="{$label_attr.for}" class="form-control"
+                                                                        name="{$name}">
+                                                                    {loop type="currency" name="default_currency_id"}
+                                                                        <option value="{$ID}" {if $CURRENCY_ID == $ID}selected{/if} >{$SYMBOL}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="is_default"}
+                                                            <div class="form-group col-md-1">
+                                                                <div class="switch-small switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                                                    <input name="{$name}" type="checkbox" {if $IS_DEFAULT}checked{/if}/>
+                                                                </div>
+                                                            </div>
+                                                        {/form_field}
+                                                        {form_field form=$form field="sync"}
+                                                            <div class="form-group col-md-1">
+                                                                <div id="{$label_attr.for}" class="switch-small switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                                                    <input  name="{$name}" type="checkbox" {if $SYNC}checked{/if}/>
+                                                                </div>
+                                                            </div>
+                                                        {/form_field}
+                                                        <div class="form-group col-md-1">
+                                                            <button class="btn btn-default btn-primary form-control"
+                                                                    type="submit">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                                {intl l="Update"}
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                {/form}
+                                                {form name="googleshopping.merchant.configuration"}
+                                                    <form class="ajax-form" data-delete="account_{$ID}" method="post" action='{url path="/admin/module/googleshopping/merchant/account/delete/{$ID}"}'>
+                                                        {form_hidden_fields form=$form}
+                                                        {form_field form=$form field="merchant_id"}
+                                                                <input type="hidden"
+                                                                       name="{$name}" value="{$MERCHANT_ID}" required/>
+                                                        {/form_field}
+                                                        <div class="form-group col-md-1">
+                                                            <button class="btn btn-default btn-danger form-control"
+                                                                    type="submit">
+                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                                {intl l="Delete"}
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                {/form}
+                                            </div>
+                                        {/loop}
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    {form name="googleshopping.misc.configuration"}
+                                        <form method="post"
+                                              action='{url path="/admin/module/googleshopping/misc/configuration"}'>
+                                            <div class="panel-heading">
+                                                <h4>{intl l="Others configuration"}</h4>
+                                                {include
+                                                    file      = "includes/inner-form-toolbar.html"
+                                                    hide_flags = true
+                                                    close_url = {url path='/admin/modules'}
+                                                }
+                                            </div>
+                                            {form_hidden_fields form=$form}
+                                            <div class="panel-body">
+                                                <div class="form-group col-md-2">
+                                                    {form_field form=$form field="check_gtin"}
+                                                        <label for="{$label_attr.for}">{$label}</label>
+                                                        <br>
+                                                        <div class="switch-small switch" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                                            <input id="{$label_attr.for}" name="{$name}" type="checkbox" {if $value}checked{/if}/>
+                                                        </div>
+                                                    {/form_field}
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <h4 class="title">{intl l="Attribute correspondance"}</h4>
+                                                    <div class="row">
+                                                        {form_field form=$form field="attribute_color"}
+                                                            <div class="form-group col-md-6 {if $error}has-error{/if}">
+                                                                <label for="{$label_attr.for}">{$label}</label>
+                                                                <select class="form-control" name="{$name}[]" multiple id="{$label_attr.for}">
+                                                                    {loop type="attribute" name="color_attribute"}
+                                                                        <option value="{$ID}" {if $ID|in_array:$value}selected{/if}>{$TITLE}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                                <span class="help-block">{intl l="Select color attributes"}</span>
+                                                            </div>
+                                                        {/form_field}
+
+                                                        {form_field form=$form field="attribute_size"}
+                                                            <div class="form-group col-md-6 {if $error}has-error{/if}">
+                                                                <label for="{$label_attr.for}">{$label}</label>
+                                                                <select class="form-control" name="{$name}[]" multiple id="{$label_attr.for}">
+                                                                    {loop type="attribute" name="color_attribute"}
+                                                                        <option value="{$ID}" {if $ID|in_array:$value}selected{/if}>{$TITLE}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                                <span class="help-block">{intl l="Select size attributes"}</span>
+                                                            </div>
+                                                        {/form_field}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    {/form}
+
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            <h4>{intl l="Google synchronisation"}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="alert alert-info col-md-12"
+                                             role="alert">{intl l="Url to call for Cron sync :"} {url path="/admin/module/googleshopping/sync/catalog/"}{$sync_secret}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            <h4>{intl l="Exclude Shipping modules"}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <div class="general-block-decorator">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-condensed table-left-aligned" id="google-shopping-excluded-shipping">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>{intl l='ID'}</th>
+                                                            <th>{intl l='Name'}</th>
+                                                            <th>{intl l='Code'}</th>
+                                                            <th class="text-center">{intl l='Enable/Disable'}</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        {loop type="googleshopping.shipping.modules" name="module.2" module_type=2 backend_context=1 active=true}
+                                                            <tr id="module-{$ID}">
+                                                                <td>{$ID}</td>
+                                                                <td>{$TITLE}</td>
+                                                                <td>{$CODE}</td>
+
+                                                                {if $EXISTS}
+                                                                    <td class="text-center">
+                                                                        <div class="make-switch switch-small" data-id="{$ID}" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok-circle'></i>" data-off-label="<i class='glyphicon glyphicon-remove-circle'></i>">
+                                                                            <input type="checkbox" {if !$EXCLUDED}checked{/if}>
+                                                                        </div>
+                                                                    </td>
+                                                                {else}
+                                                                    <td colspan="2" class="text-left">
+                                                                        <span class="label label-warning">Warning</span>
+                                                                        {intl l="This module cannot be started, some files are probably missing."}
+                                                                    </td>
+                                                                {/if}
+                                                            </tr>
+                                                        {/loop}
+                                                        {elseloop rel="module.2"}
+                                                            <tr>
+                                                                <td colspan="8">
+                                                                    <br />
+                                                                    <div class="alert alert-info">
+                                                                        {intl l="No Delivery module found."}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        {/elseloop}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="management" class="tab-pane {if $tab eq "management"}active{/if} form-container">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading clearfix">
+                                        <h4>{intl l="Choose language"}</h4>
+
+                                        <div class="row inner-toolbar{if $page_bottom} inner-toolbar-bottom{/if}">
+                                            <div class="col-md-3 inner-actions">
+                                                <ul class="nav nav-pills">
+                                                    {loop name="lang_list" type="lang"}
+                                                        <li {if $ID == $edit_language_id}class="active"{/if}>
+                                                            {$lang_url = {url path={$page_url|default:$current_url nofilter} edit_language_id=$ID current_tab="management"}}
+                                                            <a class="language-change-button" data-language-id="{$ID}"
+                                                               href="{$lang_url nofilter}"
+                                                               title="{intl l='Edit information in %lng' lng={$TITLE}}">
+                                                                <img src="{image file="assets/img/flags/$CODE.png"}"
+                                                                     alt=$TITLE/>
+                                                            </a>
+                                                        </li>
+                                                    {/loop}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        {form name="googleshopping.taxonomy"}
+                                            <form action="{url path="/admin/modules/googleshopping/taxonomy/associate"}"
+                                                  method="post">
+                                                {form_hidden_fields form=$form}
+                                                {form_field form=$form field="lang"}
+                                                    <input type="hidden" name="{$name}" value="{$edit_language_id}">
+                                                {/form_field}
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-3">
+                                                            {form_field form=$form field="thelia_category_id"}
+                                                                <label for="thelia-category">{intl l="Thelia category"}</label>
+                                                                <select id="thelia-category" class="form-control"
+                                                                        name="{$name}">
+                                                                    {loop type="category" id=$not_empty_category order="alpha" name="thelia-category"}
+                                                                        <option value="{$ID}">{$TITLE}</option>
+                                                                    {/loop}
+                                                                </select>
+                                                            {/form_field}
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label for="search-taxonomy">{intl l="Search category"}</label>
+
+                                                            <div class="input-group">
+                                                                <input class="form-control" type="text"
+                                                                       id="search-taxonomy"/>
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-arrow-right"></span>
+                                                    </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            {form_field form=$form field="google_category"}
+                                                                <label for="google-taxonomy">{intl l="Google Category"}</label>
+                                                                <select class="form-control" name="{$name}"
+                                                                        id="google-taxonomy">
+
+                                                                </select>
+                                                            {/form_field}
+                                                        </div>
+                                                        <div class="form-group col-md-3">
+                                                            <label class="control-label">&nbsp;</label>
+                                                            <button class="btn btn-default btn-primary form-control"
+                                                                    type="submit">
+                                                                <span class="glyphicon glyphicon-check"></span>
+                                                                {intl l="Associate"}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        {/form}
+                                        <div class="table-responsive col-md-12">
+                                            <table class="table table-striped table-condensed table-left-aligned">
+                                                <caption class="clearfix">
+                                                    {intl l="GoogleShopping associated categories"}
+                                                </caption>
+                                                {loop type="googleshopping.category.associated" lang_id={$edit_language_id} name="googleshopping_category_associated"}
+                                                {if $LOOP_COUNT === 1}
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{intl l="Thelia category Id"}</th>
+                                                        <th>{intl l="Thelia category Title"}</th>
+                                                        <th>{intl l="Associated Google category"}</th>
+                                                        <th class="text-center">{intl l="Action"}</th>
+                                                    </tr>
+                                                    </thead>
+                                                {/if}
+                                                    <tbody>
+                                                    <tr id="tr_category_{$THELIA_CATEGORY_ID}">
+                                                        <td>
+                                                            {$THELIA_CATEGORY_ID}
+                                                        </td>
+                                                        <td>
+                                                            {$THELIA_CATEGORY_TITLE}
+                                                        </td>
+                                                        <td>
+                                                            {$GOOGLE_CATEGORY}
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <div class="btn-group" role="group">
+                                                                <a class="btn btn-primary" href="{url path="/admin/module/GoogleShopping/category/management/%id" id=$THELIA_CATEGORY_ID lang_id=$edit_language_id}"><span class="glyphicon glyphicon-transfer"></span> {intl l="Manage Catalog"}</a>
+                                                                <form class="btn-group ajax-form" data-delete="tr_category_{$THELIA_CATEGORY_ID}" method="post" action='{url path="/admin/modules/googleshopping/taxonomy/delete"}'>
+                                                                    <input type="hidden" name="category_id" value="{$THELIA_CATEGORY_ID}"/>
+                                                                    <input type="hidden" name="lang_id" value="{$edit_language_id}"/>
+                                                                    <button class="btn btn-danger" type="submit">
+                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                        {intl l="Delete association"}
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                {/loop}
+                                                {elseloop rel="googleshopping_category_associated"}
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <p class="alert alert-info" role="alert">
+                                                                {intl l="No associated category"}
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                {/elseloop}
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="alert" style="position: fixed; top: 30px; z-index: 1000; margin: 0 auto;">
+                <div class="container">
+
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="javascript-initialization"}
+    {include file="google-shopping/configuration-js.html"}
+{/block}
+
+{block name="javascript-last-call"}
+
+{/block}

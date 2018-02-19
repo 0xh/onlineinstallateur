@@ -1,9 +1,9 @@
-<?php
-
-namespace Thelia\Model;
-
-use Thelia\Model\Base\ProfileResource as BaseProfileResource;
-
-class ProfileResource extends BaseProfileResource
-{
-}
+<?php
+
+namespace Thelia\Model;
+
+use Thelia\Model\Base\ProfileResource as BaseProfileResource;
+
+class ProfileResource extends BaseProfileResource
+{
+}

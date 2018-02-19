@@ -53,7 +53,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function viewAction()
     {
-      
+    	
         return $this->render("AmazonIntegrationTemplate");
     }
 
@@ -143,8 +143,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function saveAmazonOrders()
     {
-    	$_SESSION['ordersWithTotalZero'] = false;
-    	
+
         $arrDate = array(); 
         if (isset($_GET["dateCreatedAfter"]) && $_GET["dateCreatedAfter"] != ""){
             $arrDate["dateCreatedAfter"] = $_GET["dateCreatedAfter"];
@@ -167,14 +166,16 @@ class AmazonIntegrationContoller extends BaseAdminController
         $_SESSION['finishedToGetOrders'] = false;
         unset($_SESSION['nxtToken']);
         
-        while ($_SESSION['finishedToGetOrders'] == false && $_SESSION['ordersWithTotalZero'] == false)
+        while ($_SESSION['finishedToGetOrders'] == false)
         {
             if (! isset($_SESSION['nxtToken'])) {
+            	$this->getLogger()->error("first set of orders");
                 include_once __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersSample.php';
                 $orders = invokeListOrders($service, $request);
             } 
             else
             {
+            	$this->getLogger()->error("next set of orders");
                 include_once  __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/ListOrdersByNextTokenSample.php';
                 
                 if (isset($_SESSION['nxtToken']))
@@ -190,12 +191,9 @@ class AmazonIntegrationContoller extends BaseAdminController
             ini_set('max_execution_time', 15000);
                 
             if ($orders) {
+            	$this->getLogger()->error("orders exist");
                 foreach ($orders as $i => $order) {
                 	
-                	if(!isset($order->OrderTotal->Amount) || (isset($order->OrderTotal->Amount) && $order->OrderTotal->Amount == 0 )) {
-                		$_SESSION['ordersWithTotalZero'] = true;
-                		break;
-                	}
                 	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
                 	
                 	if (isset($order->ShippingAddress->CountryCode)) {
@@ -245,7 +243,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                 	
                     $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
                     if ($checkAmazonOrder) { 
-    
+                    	$this->getLogger()->error("order ".$order->AmazonOrderId.", thelia id ".$checkAmazonOrder->getOrderId()." is in DB");
                         if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
                             $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
                                 
@@ -284,9 +282,9 @@ class AmazonIntegrationContoller extends BaseAdminController
                         // $amazonOrderId = '305-3292380-9658727';
                        
                         $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
-                       
-                        sleep(4); 
-
+                        $this->getLogger()->error("success getting order items");
+                       // sleep(4); 
+                        sleep(2); 
                         if(isset($order->FulfillmentChannel))
                             $fulfillmentChannel = $order->FulfillmentChannel;
                         else 
@@ -295,23 +293,26 @@ class AmazonIntegrationContoller extends BaseAdminController
                         $totalPostage = 0;
                         
                         if(isset($productsOrderItem->OrderItem)) {
+                        	$this->getLogger()->error("order has items");
     	                    $orderProduct = $productsOrderItem->OrderItem;
     	                    // More items for an order
     	                    if(is_array($orderProduct)){ 
+    	                    	$this->getLogger()->error("order has more items");
     	                    	$orderProducts = $orderProduct;
     	                    	foreach($orderProducts as $orderProduct){
     	                    		
     	                    		if(isset($orderProduct->ShippingPrice->Amount))
     	                    			$totalPostage += $orderProduct->ShippingPrice->Amount;
     	                    		
-    	                    			$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
     	                    	}
     	                    }
     	                    else {     
+    	                    	$this->getLogger()->error("order has one items");
     	                    	if(isset($orderProduct->ShippingPrice->Amount))
     	                    		$totalPostage = $orderProduct->ShippingPrice->Amount;
     	                    	
-    	                    		$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+    	                    	$this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
     	                    }
                         }
                         
@@ -328,19 +329,10 @@ class AmazonIntegrationContoller extends BaseAdminController
                     }
                    
                 }
-                
-                if($_SESSION['ordersWithTotalZero'] == false) {
-                	$con->commit(); 
-                }
+                $con->commit(); 
             }
             
             ini_set('max_execution_time', $max_time);
-        }
-        
-        if ($_SESSION['ordersWithTotalZero']) {
-        	AmazonIntegrationResponse::logError("No orders were imported. There are orders with total amount zero.");
-        	unset($_SESSION['nxtToken']);
-        	die("No orders were imported. There are orders with total amount zero.");
         }
         
         if ($_SESSION['finishedToGetOrders'])
@@ -355,7 +347,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     }
     
     public function saveProducts($orderProduct, $lang, $con) {
-    	
+    	$this->getLogger()->error("insert a new product in product table");
     	$newProduct = new Product();
     	$newProduct
     		->setRef($orderProduct->SellerSKU)
@@ -364,6 +356,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->setTaxRuleId(1)
     		->setVersionCreatedBy('amazon_integration')
     		->save($con);
+    	$this->getLogger()->error("product id ".$newProduct->getId());
     	
     	$pse = new ProductSaleElements();
 	    $pse
@@ -372,6 +365,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setQuantity(0)
 	    	->setIsDefault(1)
 	    	->save($con);
+	    $this->getLogger()->error("pse id ".$pse->getId());
 	    
 	    if(isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
 	    	if($orderProduct->QuantityOrdered > 0)
@@ -389,18 +383,21 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setFromDefaultCurrency(0)
 	    	->setCurrencyId(1)
 	    	->save($con);
+	    $this->getLogger()->error("product price id ".$productPrice->getProductSaleElementsId());
 	    
     	if (isset($lang))
     	    $langLocale =  $lang->getLocale();
 	    else
 	        $langLocale = "de_DE";
+	    
     	$productI18n = new ProductI18n();
     	$productI18n
     		->setId($newProduct->getId())
 	    	->setLocale($langLocale)
 	    	->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
 	    	->save($con);
-    	
+	    $this->getLogger()->error("product i18n id ".$productI18n->getId());
+	    
 	    // insert in product_category 
 	    $categoryId = CategoryI18nQuery::create()
 	    	->select('id')
@@ -414,6 +411,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	->setDefaultCategory(1)
 	    	->setPosition(1)
 	    	->save($con);
+	    $this->getLogger()->error("product category id ".$productCategory->getProductId());
 	    	
 	    return $newProduct->getId();
     }
@@ -554,6 +552,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		$orderAddressId = $orderAddress->getId();
     	}
     	
+    	$this->getLogger()->error("insert data in OrderAddress table. OrderAddress id ".$orderAddressId);
     	return $orderAddressId;
     }
     
@@ -611,6 +610,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     			
     	$newOrder->save($con);
     	
+    	$this->getLogger()->error("insert data in Order table. thelia order id ".$newOrder->getId());
     	return array(
     			'lang' => $lang,
     			'order' => $newOrder,
@@ -619,7 +619,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     }
     
     public function createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con) {
-    	
+    	$this->getLogger()->error("insert order in AmazonOrder table");
     	$amazonOrder = new AmazonOrders();
     	
     	$amazonOrder->setId(isset($order->AmazonOrderId) ? $order->AmazonOrderId : '')
@@ -669,7 +669,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     }
     
     public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $fulfillmentChannel) {
-    	
+    	$this->getLogger()->error("insert data in OrderProduct table. step 1");
     	$productId = ProductAmazonQuery::create()
     		->select('product_id')
     		->filterByASIN($orderProduct->ASIN)
@@ -725,6 +725,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     	else {
     		$unitPrice = 1;
     	}
+    	$this->getLogger()->error("Product unit price ".$unitPrice);
     	
     	if($fulfillmentChannel == 'AFN') {
     		$tax = round(($unitPrice/1.19)*0.19,2);
@@ -737,6 +738,8 @@ class AmazonIntegrationContoller extends BaseAdminController
             $taxTitle = '20%  VAT';
      	}
     	
+     	$this->getLogger()->error("Tax ".$tax.'. PriceWithoutTax'.$priceWithoutTax);
+     	
     	$newOrderProduct = new OrderProduct();
     	$newOrderProduct
     		->setOrderId($orderId)
@@ -761,6 +764,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->save($con);
     	
     	$orderProductId = $newOrderProduct->getId();
+    	$this->getLogger()->error("insert data in OrderProduct table. OrderProduct id ".$orderProductId);
     	
     	// Insert product in order_product_tax
     	$orderProductTax = new OrderProductTax();
@@ -771,6 +775,8 @@ class AmazonIntegrationContoller extends BaseAdminController
     		->setPromoAmount($tax)
     		->save($con);
     	
+    	$this->getLogger()->error("insert data in OrderProductTax table. OrderProductTax id ".$orderProductTax->getId());
+    		
     	// Insert products from amazon to amazon_orders_product table
     	$amazonOrderProduct = new AmazonOrderProduct();
     		$amazonOrderProduct

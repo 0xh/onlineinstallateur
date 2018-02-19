@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <!--
 
 
@@ -161,7 +161,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
 
 <!-- End Cookie Consent plugin -->
-
+   
 {literal}   		
 <!-- Google Tag Manager -->		
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':		
@@ -169,9 +169,10 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=		
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);		
 })(window,document,'script','dataLayer','GTM-TJDVM5X');</script>		
-<!-- End Google Tag Manager -->		
+<!-- End Google Tag Manager -->	
+
 {/literal} 
-   
+
     {hook name="main.head-bottom"}
 </head>
 <body class="{block name="body-class"}{/block}" itemscope itemtype="http://schema.org/WebPage">
@@ -540,7 +541,7 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
   
-  ga('create', 'UA-78676875-4', 'auto');
+ ga('create', 'UA-78676875-1', 'auto');
   {/literal}
   	{loop type="customer" name="customer.info"}ga('set', 'userId', {{{$ID}}});{/loop}
   {literal}

@@ -1,310 +1,310 @@
-<!-- /templates/frontOffice/default dort hinlegen-->
-
-{extends file="layout.tpl"}
-
-{* Body Class *}
-{block name="body-class"}page-konfigurator{/block}
-
-{* Breadcrumb *}
-{block name='no-return-functions' append}
-    {$breadcrumbs = [['title' => {intl l="So funktioniert es" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/sofunktionierts"}]]}
-{/block}
-
-{block name="main-content"}
-    <div class="main">
-            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
-
-<div class="container1">
-
-			
-
-            <div class="so-funktionierst row">
-    <h2 class="title">SO FUNKTIONIERT'S</h2>    
-       
-<!--      <table>
-<tr><td>1.jpg</td><td>2.jpg</td><td>3.jpg</td></tr>
-<tr><td>4.jpg</td><td>5.jpg</td><td>6.jpg</td></tr>
-<tr><td>7.jpg</td><td>8.jpg</td><td>9.jpg</td></tr>
-
-</table> -->
-  
-  
-<div align="center">
-      
-<!---------IMAGE VIDEO------------>
-<div class="so-funktionierst row happyclient">
-     
-    
-      <h2>ONLINE BESTELLEN UND INSTALLATEUR BUCHEN</h2> 
-    
-        <div class="col-sm-6">
-           <iframe width="444" height="250" src="https://www.youtube.com/embed/lVkK0y8XiqI?rel=0" frameborder="0" allowfullscreen></iframe>
-            
-        </div>
-     <div class="col-sm-6">
-           <iframe width="444" height="250" src="https://www.youtube.com/embed/Y0GHDbFjiWA?rel=0" frameborder="0" allowfullscreen></iframe>
-            
-        </div>
-      <div class="clearfix"></div> 
-<br>
-    
-</div>
-    
-<!--div class="col-sm-6">     
-        
-    <h4 style="text-align:center">In 5 Minuten zum neuen Heizsystem</h4>
-       <a href="#ihrneuesheizsystem" class="anchor">
-            <div class="col col-sm-4">    
-                <img src="assets/frontOffice/default/template-assets/assets/dist/img/services/heizung_mb.png" style="width:100%">
-                </div>
-       </a>
-            
-        <div style="text-align:center"><a href="/konfigurator"><button class="btn btn-1 btn-1a">ZU IHREM HEIZUNGSANGEBOT</button></a></div> 
-</div> 
-<div class="col-sm-6"> 
-
-		<h4 style="text-align:center">Mieten Sie Ihren Installateur</h4>    
-		<a href="#mietensieihreninstallateuer" class="anchor">
-            <div class="col col-sm-4">
-            
-                <img src="assets/frontOffice/default/template-assets/assets/dist/img/services/installateur_mb.png" style="width:100%">
-           </div>
-            </a>
-	      <h4 style="text-align:center"><a href="/services"><button class="btn btn-1 btn-1a">MIETEN SIE IHREN INSTALLATEUR</button></a></h4> 
-</div--> 
-
-</div>
-</div>
-
-    <div class="distance50"></div>
-         <h2 class="title">SO EINFACH GEHT'S!</h2>
-        
-        
-<div id="ihrneuesheizsystem">         
-<h3 class="title"> Ihr neues Heizsystem!</h3>
-<h6>Wir bieten Ihnen sowohl einen Heizungstausch als auch die Planung einer neuen Heizung an!</h6>
-<div class="distance50"></div>
-
-<div class="howitworks-page">
-            <a href="#dateneingabe" class="anchor">
-            <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                    <img src="{image file='assets/dist/img/sofunktionierts/dateneingabe.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="DATENEINGABE"}</strong></div>
-            </div>
-            </a>
-            
-           <a href="#fotobegehung" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/fotobegehung.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="FOTOBEGEHUNG"}</strong></div>
-                
-            </div>
-            </a>
-            
-            
-           <a href="#angebot" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/individuelles-angebot.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="IHR INDIVIDUELLES ANGEBOT"}</strong></div>
-                
-            </div>
-            </a>
-            
-           <a href="#beratung" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/beratung.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="BERATUNG VOM FACHPERSONAL"}</strong></div>
-                
-            </div>
-            </a>
-            
-            
-            
-           <a href="#montage" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/montage.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="MONTAGE UND WARTUNG"}</strong></div>
-               
-            </div>
-            </a>
-        </div>
-        <div class="clearfix"></div>
-        </div>
-
-
-
-
-<div class="distance50"></div>
- <div id="dateneingabe">
-
-<h4>Dateneingabe</h4>
-Bitte geben Sie die wichtigsten Eckdaten zu Ihrem Haus/Ihrer Wohnung in unseren Konfigurator ein. Informieren Sie uns über Ihr aktuelles Heizsystem und Ihr gewünschtes System. Die Dateneingabe nimmt nur maximal 5 Minuten in Anspruch. Unsere Mitarbeiter unterstützen Sie gerne bei möglichen Unklarheiten und beantworten Ihnen offene Fragen. Wir nehmen uns für jedes Projekt Zeit und beraten Sie gerne!
-
-
- <div class="distance50"></div>
- <div id="fotobegehung">
-<h4>Fotobegehung</h4>
-Für eine genaue Planung benötigen wir Fotos von Ihrer Ist-Situation. Bitte legen Sie die Fotos per Drag&Drop in dem vorgesehenen Feld im jeweiligen Formular ab. Dieser Vorgang ersetzt die Vor-Ort Begehung und beschleunigt die Angebotserstellung. Zusätzliche können wir eine Planungssicherheit garantieren und Sie sparen wertvolle Zeit.
-
-</div>
-<div class="distance50"></div>
- <div id="angebot">
-<h4>Ihr individuelles Angebot</h4>
-
-Nach Eingabe Ihrer Daten und Zusendung der Fotos erhalten Sie das professionell erstellte Angebot von uns per E-Mail. Dieses Angebot versteht sich inklusive Hardware, Service und Montage. Das Angebot ist 30 Tage nach Angebotslegung gültig, somit können Sie sich alle Details in Ruhe ansehen. Sollten Sie dazu Fragen haben, zögern Sie bitte nicht und kontaktieren uns umgehend per  E-mail oder telefonisch unter 0800/022573. Bei dem individuell erstelltem Angebot handelt es sich um ein Komplettpaket mit Preisgarantie. Das Angebot ist für uns bindend und für Sie unverbindlich. Alle unsere Heizungspakete enthalten:
-
-<ul>
-<li>Heizung Ihrer Wahl inklusive Therme, Speicher, Abgassystem, Montageteile und einige Peripheriegeräte, sowie optional solarthermische Anlage und zusätzlicher Heizkreis die Montage selbst</li>
-<li>Koordination mit dem Schornsteinfeger</li>
-<li>Koordination mit dem Netzbetreiber (nur bei Gasheizungen notwendig)</li>
-<li>5 Jahre Gewährleistung auf die Heizungsinstallation</li>
-<li>Gewährleistung auf die Heizung (je nach Hersteller)</li> 
-</ul>
-
- <div class="distance50"></div>
- <div id="beratung">
-<h4>Beratung vom Fachpersonal</h4>
-Drei Werktage nach Angebotserhalt wird sich einer unserer Kundenberater telefonisch bei Ihnen melden. Wir werden alle Details des Angebots mit Ihnen besprechen und gerne Ihre Fragen beantworten. Die Projekte unserer Kunden liegen uns am Herzen und deshalb nehmen wir uns ausreichend Zeit für Sie – versprochen!
-</div>
-<div class="distance50"></div>
-<div id="montage">
-
-<h4>Montage und Wartung</h4>
-Auf Wunsch bieten wir Ihnen auch gerne unser Montageservice an. Unsere Monteure stellen sicher, dass Ihre neue Heizung optimal montiert und installiert wird. Nachdem Sie uns den Auftrag erteilt haben, planen wir gerne Ihr Projekt. In Abstimmung mit Ihrem Wunschtermin und basierend auf unserer Auslastung vereinbaren wir den gewünschten Installationstermin. Unsere Installateure führen nicht nur die Installation der neuen Heizung durch, sie kümmern sich auch um die Wartung und stehen Ihnen bei Notfällen zu Verfügung. Die HAUSFABRIK garantiert Ihnen eine schnelle und professionelle Montage. 
-</div>               
-        
-<!-- teil 2 Mieten Sie Ihren Installateur-->
-
-
- <!--h3 class="title">Mieten Sie Ihren Installateur!</h3>
-<h6>Unsere Installateure lösen die Probleme in den verschiedensten Bereichen Ihres Hauses/Ihrer Wohnung. Auch für individuelle Projekten können Sie unsere Installateure mieten!</h6>
-<div class="distance50"></div>
-<div class="howitworks-page">
-            <a href="#dateneingabe_M" class="anchor">
-            <div class="col col-sm-2">
-                <span class="shopicon  fa-flip-horizontal">
-                    <img src="{image file='assets/dist/img/sofunktionierts/dateneingabe.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="DATENEINGABE"}</strong></div>
-                
-            </div>
-            </a>
-            
-            <a href="#fotobegehung_M" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/fotobegehung.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="FOTOBEGEHUNG UND VOR-ORT BESICHTIGUNG"}</strong></div>
-                
-            </div>
-            </a>
-            
-            
-            <a href="#angebot_M" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/individuelles-angebot.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="IHR INDIVIDUELLES ANGEBOT"}</strong></div>
-                
-            </div>
-            </a>
-            
-             <a href="#beratung_M" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/beratung.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="BERATUNG VOM FACHPERSONAL"}</strong></div>
-                
-            </div>
-            </a>
-            
-            
-            
-            <a href="#montage_M" >
-           <div class="col col-sm-2">
-                <span class="shopicon fa-flip-horizontal">
-                <img src="{image file='assets/dist/img/sofunktionierts/montage.svg'}">
-                </span>
-                <div class="text-dark"><strong>{intl l="MONTAGE UND WARTUNG"}</strong></div>
-               
-            </div>
-            </a>
-        </div></div>
-<div class="clearfix"></div>
-
-
-<div class="distance50"></div>
- <div id="dateneingabe_M">
-<h4>Dateneingabe</h4>
-Um einen Installateur zu mieten, müssen Sie nur die Fragen in unserem Formular beantworten. Im 1. Schritt geben Sie uns bitte bekannt, um welches Projekt es sich handelt. Im 2. Schritt bitten wir Sie das Problem zu beschreiben. Fügen Sie so viele Details wie möglich an um das perfekte Angebot zu erhalten. Die Dateneingabe nimmt nur maximal 5 Minuten in Anspruch. Unsere Mitarbeiter unterstützen Sie gerne bei möglichen Unklarheiten und beantworten Ihnen offene Fragen. Wir nehmen uns für jedes Projekt Zeit und beraten Sie gerne!
-
- <div class="distance50"></div>
- <div id="fotobegehung_M">
-<h4>Fotobegehung & Vor-Ort Besichtigung</h4>
-
-Für eine genaue Angebotserstellung benötigen wir Fotos von Ihrer Ist-Situation. Bitte legen Sie die Fotos per Drag&Drop in dem vorgesehenen Feld im jeweiligen Formular ab. Es kann sein, dass unsere Experten trotz der Fotos eine Vor-Ort Besichtigung vorziehen. Denn für einige Projekte, muss unser Installateur die spezifische Situation kennen, um ein genaues Angebot erstellen zu können. Wenn ein Installateur einen Vor-Ort Termin mit Ihnen vereinbaren möchte, erhalten Sie eine Anfrage per Email bezüglich des Termins. Sollten Kosten für diesen Vor-Ort Besuch entstehen, finden Sie diese in dem Email angeführt. Sie können den Termin online vereinbaren und erhalten nach dem Besuch unseres Installateurs ein persönliches Angebot. Sollte Ihnen das Angebot zusagen, können Sie den Installateur für diesen Auftrag mieten. Es besteht jedoch keine Verpflichtung das Angebot anzunehmen, auch nicht wenn ein Vor-Ort Besuch stattgefunden hat.
-</div>
-<div class="distance50"></div>
- <div id="angebot_M">
-<h4>Ihr individuelles Angebot</h4>
-Nach Eingabe Ihrer Daten und Zusendung der Fotos erhalten Sie das professionell erstellte Angebot von uns per E-Mail. Das Angebot ist 30 Tage nach Angebotslegung gültig, somit können Sie sich alle Details in Ruhe ansehen. Die Anfrage einen Installateur zu mieten ist kostenlos und enthält keine Verpflichtung zum Kauf. Auch ein Kostenvoranschlag von einem unserer Installateure ist kostenlos. Sollten Sie dazu Fragen haben, zögern Sie bitte nicht und kontaktieren uns umgehend per  E-mail oder telefonisch unter 0800/022573. 
-</div>
- <div class="distance50"></div>
- <div id="beratung_M">
-<h4>Beratung vom Fachpersonal</h4>
-Drei Werktage nach Angebotserhalt wird sich einer unserer Kundenberater telefonisch bei Ihnen melden. Wir werden alle Details des Angebots mit Ihnen besprechen und gerne Ihre Fragen beantworten. Die Projekte unserer Kunden liegen uns am Herzen und deshalb nehmen wir uns ausreichend Zeit für Sie – versprochen!
-</div>
-<div class="distance50"></div>
-<div id="montage_M">
-
-<h4>Montage und Wartung</h4>
-Je nach Projekt bieten wir Ihnen auf Wunsch auch unser Montageservice an. Unsere Installateure stellen sicher, dass Ihr Projekt effizient umgesetzt wird. Nachdem Sie uns den Auftrag erteilt haben, planen wir gerne Ihr Projekt. 
-</div>          
-        
-        
-        
-        
-        
-        </div-->
-</div>
-          
-           
-    </div><!-- /.layout -->
-{/block}
-
-{block name="stylesheet"}
-
-{hook name="register.stylesheet"}
-
-{/block}
-
-
-{block name="after-javascript-include"}
-
-
-
-
-
-
-
-
-{hook name="register.after-javascript-include"}
-
-{/block}
-
-{block name="javascript-initialization"}
-{hook name="register.javascript-initialization"}
+<!-- /templates/frontOffice/default dort hinlegen-->
+
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="So funktioniert es" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/sofunktionierts"}]]}
+{/block}
+
+{block name="main-content"}
+    <div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+<div class="container1">
+
+			
+
+            <div class="so-funktionierst row">
+    <h2 class="title">SO FUNKTIONIERT'S</h2>    
+       
+<!--      <table>
+<tr><td>1.jpg</td><td>2.jpg</td><td>3.jpg</td></tr>
+<tr><td>4.jpg</td><td>5.jpg</td><td>6.jpg</td></tr>
+<tr><td>7.jpg</td><td>8.jpg</td><td>9.jpg</td></tr>
+
+</table> -->
+  
+  
+<div align="center">
+      
+<!---------IMAGE VIDEO------------>
+<div class="so-funktionierst row happyclient">
+     
+    
+      <h2>ONLINE BESTELLEN UND INSTALLATEUR BUCHEN</h2> 
+    
+        <div class="col-sm-6">
+           <iframe width="444" height="250" src="https://www.youtube.com/embed/lVkK0y8XiqI?rel=0" frameborder="0" allowfullscreen></iframe>
+            
+        </div>
+     <div class="col-sm-6">
+           <iframe width="444" height="250" src="https://www.youtube.com/embed/Y0GHDbFjiWA?rel=0" frameborder="0" allowfullscreen></iframe>
+            
+        </div>
+      <div class="clearfix"></div> 
+<br>
+    
+</div>
+    
+<!--div class="col-sm-6">     
+        
+    <h4 style="text-align:center">In 5 Minuten zum neuen Heizsystem</h4>
+       <a href="#ihrneuesheizsystem" class="anchor">
+            <div class="col col-sm-4">    
+                <img src="assets/frontOffice/default/template-assets/assets/dist/img/services/heizung_mb.png" style="width:100%">
+                </div>
+       </a>
+            
+        <div style="text-align:center"><a href="/konfigurator"><button class="btn btn-1 btn-1a">ZU IHREM HEIZUNGSANGEBOT</button></a></div> 
+</div> 
+<div class="col-sm-6"> 
+
+		<h4 style="text-align:center">Mieten Sie Ihren Installateur</h4>    
+		<a href="#mietensieihreninstallateuer" class="anchor">
+            <div class="col col-sm-4">
+            
+                <img src="assets/frontOffice/default/template-assets/assets/dist/img/services/installateur_mb.png" style="width:100%">
+           </div>
+            </a>
+	      <h4 style="text-align:center"><a href="/services"><button class="btn btn-1 btn-1a">MIETEN SIE IHREN INSTALLATEUR</button></a></h4> 
+</div--> 
+
+</div>
+</div>
+
+    <div class="distance50"></div>
+         <h2 class="title">SO EINFACH GEHT'S!</h2>
+        
+        
+<div id="ihrneuesheizsystem">         
+<h3 class="title"> Ihr neues Heizsystem!</h3>
+<h6>Wir bieten Ihnen sowohl einen Heizungstausch als auch die Planung einer neuen Heizung an!</h6>
+<div class="distance50"></div>
+
+<div class="howitworks-page">
+            <a href="#dateneingabe" class="anchor">
+            <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                    <img src="{image file='assets/dist/img/sofunktionierts/dateneingabe.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="DATENEINGABE"}</strong></div>
+            </div>
+            </a>
+            
+           <a href="#fotobegehung" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/fotobegehung.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="FOTOBEGEHUNG"}</strong></div>
+                
+            </div>
+            </a>
+            
+            
+           <a href="#angebot" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/individuelles-angebot.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="IHR INDIVIDUELLES ANGEBOT"}</strong></div>
+                
+            </div>
+            </a>
+            
+           <a href="#beratung" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/beratung.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="BERATUNG VOM FACHPERSONAL"}</strong></div>
+                
+            </div>
+            </a>
+            
+            
+            
+           <a href="#montage" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/montage.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="MONTAGE UND WARTUNG"}</strong></div>
+               
+            </div>
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        </div>
+
+
+
+
+<div class="distance50"></div>
+ <div id="dateneingabe">
+
+<h4>Dateneingabe</h4>
+Bitte geben Sie die wichtigsten Eckdaten zu Ihrem Haus/Ihrer Wohnung in unseren Konfigurator ein. Informieren Sie uns über Ihr aktuelles Heizsystem und Ihr gewünschtes System. Die Dateneingabe nimmt nur maximal 5 Minuten in Anspruch. Unsere Mitarbeiter unterstützen Sie gerne bei möglichen Unklarheiten und beantworten Ihnen offene Fragen. Wir nehmen uns für jedes Projekt Zeit und beraten Sie gerne!
+
+
+ <div class="distance50"></div>
+ <div id="fotobegehung">
+<h4>Fotobegehung</h4>
+Für eine genaue Planung benötigen wir Fotos von Ihrer Ist-Situation. Bitte legen Sie die Fotos per Drag&Drop in dem vorgesehenen Feld im jeweiligen Formular ab. Dieser Vorgang ersetzt die Vor-Ort Begehung und beschleunigt die Angebotserstellung. Zusätzliche können wir eine Planungssicherheit garantieren und Sie sparen wertvolle Zeit.
+
+</div>
+<div class="distance50"></div>
+ <div id="angebot">
+<h4>Ihr individuelles Angebot</h4>
+
+Nach Eingabe Ihrer Daten und Zusendung der Fotos erhalten Sie das professionell erstellte Angebot von uns per E-Mail. Dieses Angebot versteht sich inklusive Hardware, Service und Montage. Das Angebot ist 30 Tage nach Angebotslegung gültig, somit können Sie sich alle Details in Ruhe ansehen. Sollten Sie dazu Fragen haben, zögern Sie bitte nicht und kontaktieren uns umgehend per  E-mail oder telefonisch unter 0800/022573. Bei dem individuell erstelltem Angebot handelt es sich um ein Komplettpaket mit Preisgarantie. Das Angebot ist für uns bindend und für Sie unverbindlich. Alle unsere Heizungspakete enthalten:
+
+<ul>
+<li>Heizung Ihrer Wahl inklusive Therme, Speicher, Abgassystem, Montageteile und einige Peripheriegeräte, sowie optional solarthermische Anlage und zusätzlicher Heizkreis die Montage selbst</li>
+<li>Koordination mit dem Schornsteinfeger</li>
+<li>Koordination mit dem Netzbetreiber (nur bei Gasheizungen notwendig)</li>
+<li>5 Jahre Gewährleistung auf die Heizungsinstallation</li>
+<li>Gewährleistung auf die Heizung (je nach Hersteller)</li> 
+</ul>
+
+ <div class="distance50"></div>
+ <div id="beratung">
+<h4>Beratung vom Fachpersonal</h4>
+Drei Werktage nach Angebotserhalt wird sich einer unserer Kundenberater telefonisch bei Ihnen melden. Wir werden alle Details des Angebots mit Ihnen besprechen und gerne Ihre Fragen beantworten. Die Projekte unserer Kunden liegen uns am Herzen und deshalb nehmen wir uns ausreichend Zeit für Sie – versprochen!
+</div>
+<div class="distance50"></div>
+<div id="montage">
+
+<h4>Montage und Wartung</h4>
+Auf Wunsch bieten wir Ihnen auch gerne unser Montageservice an. Unsere Monteure stellen sicher, dass Ihre neue Heizung optimal montiert und installiert wird. Nachdem Sie uns den Auftrag erteilt haben, planen wir gerne Ihr Projekt. In Abstimmung mit Ihrem Wunschtermin und basierend auf unserer Auslastung vereinbaren wir den gewünschten Installationstermin. Unsere Installateure führen nicht nur die Installation der neuen Heizung durch, sie kümmern sich auch um die Wartung und stehen Ihnen bei Notfällen zu Verfügung. Die HAUSFABRIK garantiert Ihnen eine schnelle und professionelle Montage. 
+</div>               
+        
+<!-- teil 2 Mieten Sie Ihren Installateur-->
+
+
+ <!--h3 class="title">Mieten Sie Ihren Installateur!</h3>
+<h6>Unsere Installateure lösen die Probleme in den verschiedensten Bereichen Ihres Hauses/Ihrer Wohnung. Auch für individuelle Projekten können Sie unsere Installateure mieten!</h6>
+<div class="distance50"></div>
+<div class="howitworks-page">
+            <a href="#dateneingabe_M" class="anchor">
+            <div class="col col-sm-2">
+                <span class="shopicon  fa-flip-horizontal">
+                    <img src="{image file='assets/dist/img/sofunktionierts/dateneingabe.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="DATENEINGABE"}</strong></div>
+                
+            </div>
+            </a>
+            
+            <a href="#fotobegehung_M" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/fotobegehung.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="FOTOBEGEHUNG UND VOR-ORT BESICHTIGUNG"}</strong></div>
+                
+            </div>
+            </a>
+            
+            
+            <a href="#angebot_M" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/individuelles-angebot.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="IHR INDIVIDUELLES ANGEBOT"}</strong></div>
+                
+            </div>
+            </a>
+            
+             <a href="#beratung_M" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/beratung.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="BERATUNG VOM FACHPERSONAL"}</strong></div>
+                
+            </div>
+            </a>
+            
+            
+            
+            <a href="#montage_M" >
+           <div class="col col-sm-2">
+                <span class="shopicon fa-flip-horizontal">
+                <img src="{image file='assets/dist/img/sofunktionierts/montage.svg'}">
+                </span>
+                <div class="text-dark"><strong>{intl l="MONTAGE UND WARTUNG"}</strong></div>
+               
+            </div>
+            </a>
+        </div></div>
+<div class="clearfix"></div>
+
+
+<div class="distance50"></div>
+ <div id="dateneingabe_M">
+<h4>Dateneingabe</h4>
+Um einen Installateur zu mieten, müssen Sie nur die Fragen in unserem Formular beantworten. Im 1. Schritt geben Sie uns bitte bekannt, um welches Projekt es sich handelt. Im 2. Schritt bitten wir Sie das Problem zu beschreiben. Fügen Sie so viele Details wie möglich an um das perfekte Angebot zu erhalten. Die Dateneingabe nimmt nur maximal 5 Minuten in Anspruch. Unsere Mitarbeiter unterstützen Sie gerne bei möglichen Unklarheiten und beantworten Ihnen offene Fragen. Wir nehmen uns für jedes Projekt Zeit und beraten Sie gerne!
+
+ <div class="distance50"></div>
+ <div id="fotobegehung_M">
+<h4>Fotobegehung & Vor-Ort Besichtigung</h4>
+
+Für eine genaue Angebotserstellung benötigen wir Fotos von Ihrer Ist-Situation. Bitte legen Sie die Fotos per Drag&Drop in dem vorgesehenen Feld im jeweiligen Formular ab. Es kann sein, dass unsere Experten trotz der Fotos eine Vor-Ort Besichtigung vorziehen. Denn für einige Projekte, muss unser Installateur die spezifische Situation kennen, um ein genaues Angebot erstellen zu können. Wenn ein Installateur einen Vor-Ort Termin mit Ihnen vereinbaren möchte, erhalten Sie eine Anfrage per Email bezüglich des Termins. Sollten Kosten für diesen Vor-Ort Besuch entstehen, finden Sie diese in dem Email angeführt. Sie können den Termin online vereinbaren und erhalten nach dem Besuch unseres Installateurs ein persönliches Angebot. Sollte Ihnen das Angebot zusagen, können Sie den Installateur für diesen Auftrag mieten. Es besteht jedoch keine Verpflichtung das Angebot anzunehmen, auch nicht wenn ein Vor-Ort Besuch stattgefunden hat.
+</div>
+<div class="distance50"></div>
+ <div id="angebot_M">
+<h4>Ihr individuelles Angebot</h4>
+Nach Eingabe Ihrer Daten und Zusendung der Fotos erhalten Sie das professionell erstellte Angebot von uns per E-Mail. Das Angebot ist 30 Tage nach Angebotslegung gültig, somit können Sie sich alle Details in Ruhe ansehen. Die Anfrage einen Installateur zu mieten ist kostenlos und enthält keine Verpflichtung zum Kauf. Auch ein Kostenvoranschlag von einem unserer Installateure ist kostenlos. Sollten Sie dazu Fragen haben, zögern Sie bitte nicht und kontaktieren uns umgehend per  E-mail oder telefonisch unter 0800/022573. 
+</div>
+ <div class="distance50"></div>
+ <div id="beratung_M">
+<h4>Beratung vom Fachpersonal</h4>
+Drei Werktage nach Angebotserhalt wird sich einer unserer Kundenberater telefonisch bei Ihnen melden. Wir werden alle Details des Angebots mit Ihnen besprechen und gerne Ihre Fragen beantworten. Die Projekte unserer Kunden liegen uns am Herzen und deshalb nehmen wir uns ausreichend Zeit für Sie – versprochen!
+</div>
+<div class="distance50"></div>
+<div id="montage_M">
+
+<h4>Montage und Wartung</h4>
+Je nach Projekt bieten wir Ihnen auf Wunsch auch unser Montageservice an. Unsere Installateure stellen sicher, dass Ihr Projekt effizient umgesetzt wird. Nachdem Sie uns den Auftrag erteilt haben, planen wir gerne Ihr Projekt. 
+</div>          
+        
+        
+        
+        
+        
+        </div-->
+</div>
+          
+           
+    </div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+
+{hook name="register.stylesheet"}
+
+{/block}
+
+
+{block name="after-javascript-include"}
+
+
+
+
+
+
+
+
+{hook name="register.after-javascript-include"}
+
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
 {/block}

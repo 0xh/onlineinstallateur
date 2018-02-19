@@ -373,7 +373,7 @@ class SmartyParser extends Smarty implements ParserInterface
         if ($compressOutput == false) {
             $this->registerFilter('output', array($this, "trimWhitespaces"));
         }
-        
+
         return $output;
     }
 

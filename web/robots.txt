@@ -6,4 +6,4 @@ Disallow: /admin
 Disallow: /cart
 Disallow: /404
 
-Sitemap: http://www.hausfabrik.at/sitemap
+#Sitemap: http://www.yourdomain.com/sitemap

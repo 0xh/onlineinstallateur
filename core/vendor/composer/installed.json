@@ -349,8 +349,7 @@
         "keywords": [
             "TCPDF",
             "pdf"
-        ],
-        "abandoned": "tecnickcom/tcpdf"
+        ]
     },
     {
         "name": "ensepar/html2pdf",
@@ -401,8 +400,7 @@
             "html",
             "html2pdf",
             "pdf"
-        ],
-        "abandoned": "spipu/html2pdf"
+        ]
     },
     {
         "name": "imagine/imagine",
@@ -2815,8 +2813,7 @@
         "keywords": [
             "icu",
             "intl"
-        ],
-        "abandoned": "symfony/intl"
+        ]
     },
     {
         "name": "symfony/polyfill-util",
@@ -4359,32 +4356,6 @@
         "notification-url": "https://packagist.org/downloads/"
     },
     {
-        "name": "thelia/hooktest-template",
-        "version": "1.1",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/thelia/hooktest-template.git",
-            "reference": "bb0a26df8ecfe7e41e2e391adb22360201088dda"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/thelia/hooktest-template/zipball/bb0a26df8ecfe7e41e2e391adb22360201088dda",
-            "reference": "bb0a26df8ecfe7e41e2e391adb22360201088dda",
-            "shasum": ""
-        },
-        "require": {
-            "thelia/installer": "~1.1"
-        },
-        "time": "2014-12-24 09:51:48",
-        "type": "thelia-frontoffice-template",
-        "extra": {
-            "installer-name": "hooktest"
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/"
-    },
-    {
         "name": "stripe/stripe-php",
         "version": "v3.23.0",
         "version_normalized": "3.23.0.0",
@@ -4442,32 +4413,29 @@
         ]
     },
     {
-        "name": "thelia/hook-toolbar-module",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
+        "name": "thelia/hooktest-template",
+        "version": "1.1",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/thelia-modules/HookToolbar.git",
-            "reference": "38eee4f98b25c79d605c625913ad4f07511765d7"
+            "url": "https://github.com/thelia/hooktest-template.git",
+            "reference": "bb0a26df8ecfe7e41e2e391adb22360201088dda"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/thelia-modules/HookToolbar/zipball/38eee4f98b25c79d605c625913ad4f07511765d7",
-            "reference": "38eee4f98b25c79d605c625913ad4f07511765d7",
+            "url": "https://api.github.com/repos/thelia/hooktest-template/zipball/bb0a26df8ecfe7e41e2e391adb22360201088dda",
+            "reference": "bb0a26df8ecfe7e41e2e391adb22360201088dda",
             "shasum": ""
         },
         "require": {
             "thelia/installer": "~1.1"
         },
-        "time": "2015-03-14 19:32:44",
-        "type": "thelia-module",
+        "time": "2014-12-24 09:51:48",
+        "type": "thelia-frontoffice-template",
         "extra": {
-            "installer-name": "HookToolbar"
+            "installer-name": "hooktest"
         },
         "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-3.0+"
-        ]
+        "notification-url": "https://packagist.org/downloads/"
     }
 ]

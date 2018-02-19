@@ -1,6 +1,6 @@
-<?php
-
-return array(
-    'Be sure to sign your abholung !' => '',
-    'Please make your abholung payable to <b>%name</b>, and send it to the following address :' => '',
-);
+<?php
+
+return array(
+    'Be sure to sign your abholung !' => '',
+    'Please make your abholung payable to <b>%name</b>, and send it to the following address :' => '',
+);

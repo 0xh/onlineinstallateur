@@ -1,5 +1,5 @@
-<?php
-
-return array(
-	'buildingtype' => 'Building type',
-);
+<?php
+
+return array(
+	'buildingtype' => 'Building type',
+);

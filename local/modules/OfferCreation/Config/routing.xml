@@ -1,49 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<routes xmlns="http://symfony.com/schema/routing"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
-
-    <route id="admin.offer.update.view" path="/admin/offer/update/{offer_id}">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::editOffer</default>
-        <requirement key="offer_id">\d+</requirement>
-    </route>    
-    
-    <route id="admin.offer.update.status" path="/admin/offer/update/{offer_id}/status">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateStatus</default>
-    </route>
-    
-    <route id="admin.offer.list.update.status" path="/admin/offer/update/status">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateStatus</default>
-    </route>
-    
-    <route id="admin.offer.update.address" path="/admin/offer/update/{offer_id}/address">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateAddress</default>
-    </route>
-
-	<route id="admin.offer.update.deliveryRef" path="/admin/offer/update/{offer_id}/delivery-ref">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateDeliveryRef</default>
-    </route>
-    
-    <route id="admin.offer.pdf.invoice" path="/admin/offer/pdf/invoice/{offer_id}/{browser}">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::generateInvoicePdf</default>
-        <default key="browser">0</default>
-        <requirement key="browser">[0|1]</requirement>
-        <requirement key="offer_id">\d+</requirement>
-    </route>
-
-    <route id="admin.offer.pdf.delivery" path="/admin/offer/pdf/delivery/{offer_id}/{browser}">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::generateDeliveryPdf</default>
-        <default key="browser">0</default>
-        <requirement key="browser">[0|1]</requirement>
-        <requirement key="offer_id">\d+</requirement>
-    </route>
-    
-    <route id="admin.offer.product.update" path="/admin/offer-product/update" methods="POST">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateOfferProduct</default>
-    </route>
-    
-    <route id="admin.offer.product.delete" path="/admin/offer-product/delete" methods="POST">
-        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::deleteOfferProduct</default>
-    </route>
-</routes>
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="admin.offer.update.view" path="/admin/offer/update/{offer_id}">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::editOffer</default>
+        <requirement key="offer_id">\d+</requirement>
+    </route>    
+    
+    <route id="admin.offer.update.status" path="/admin/offer/update/{offer_id}/status">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateStatus</default>
+    </route>
+    
+    <route id="admin.offer.list.update.status" path="/admin/offer/update/status">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateStatus</default>
+    </route>
+    
+    <route id="admin.offer.update.address" path="/admin/offer/update/{offer_id}/address">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateAddress</default>
+    </route>
+
+	<route id="admin.offer.update.deliveryRef" path="/admin/offer/update/{offer_id}/delivery-ref">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateDeliveryRef</default>
+    </route>
+    
+    <route id="admin.offer.pdf.invoice" path="/admin/offer/pdf/invoice/{offer_id}/{browser}">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::generateInvoicePdf</default>
+        <default key="browser">0</default>
+        <requirement key="browser">[0|1]</requirement>
+        <requirement key="offer_id">\d+</requirement>
+    </route>
+
+    <route id="admin.offer.pdf.delivery" path="/admin/offer/pdf/delivery/{offer_id}/{browser}">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::generateDeliveryPdf</default>
+        <default key="browser">0</default>
+        <requirement key="browser">[0|1]</requirement>
+        <requirement key="offer_id">\d+</requirement>
+    </route>
+    
+    <route id="admin.offer.product.update" path="/admin/offer-product/update" methods="POST">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::updateOfferProduct</default>
+    </route>
+    
+    <route id="admin.offer.product.delete" path="/admin/offer-product/delete" methods="POST">
+        <default key="_controller">OfferCreation\Controller\Admin\OfferCreationController::deleteOfferProduct</default>
+    </route>
+</routes>

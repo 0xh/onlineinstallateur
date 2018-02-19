@@ -1,56 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<config xmlns="http://thelia.net/schema/dic/config"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
-
-    <loops>
-        <loop name="bestseller_product" class="HookHomepage\Loop\BestsellerLoop" />
-    </loops>
-
-    <forms>
-        <!--
-        <form name="MyFormName" class="HookHomepage\Form\MySuperForm" />
-        -->
-    </forms>
-
-    <commands>
-        <!--
-        <command class="HookHomepage\Command\MySuperCommand" />
-        -->
-    </commands>
-
-    <!--
-    <services>
-
-    </services>
-    -->
-
-    
-    <hooks>
-        <hook id="hookhomepage.hook.front" class="HookHomepage\Hook\HomepageContentHook" scope="request">
-            <tag name="hook.event_listener" event="home.body" />
-        </hook>
-         <hook id="hookhomepage.bestseller.hook.front">
-            <tag name="hook.event_listener" event="home.body" templates="render:home-body.html" />
-        </hook>
-        <hook id="hookhomepage.bestsellercategory.hook.front">
-            <tag name="hook.event_listener" event="category.bottom" templates="render:home-body.html" />
-        </hook>
-    
-  
-    </hooks>
-   
-
-    <!--
-    <exports>
-
-    </exports>
-    -->
-
-    <!--
-    <imports>
-
-    </imports>
-    -->
-</config>
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="bestseller_product" class="HookHomepage\Loop\BestsellerLoop" />
+    </loops>
+
+    <forms>
+        <!--
+        <form name="MyFormName" class="HookHomepage\Form\MySuperForm" />
+        -->
+    </forms>
+
+    <commands>
+        <!--
+        <command class="HookHomepage\Command\MySuperCommand" />
+        -->
+    </commands>
+
+    <!--
+    <services>
+
+    </services>
+    -->
+
+    
+    <hooks>
+        <hook id="hookhomepage.hook.front" class="HookHomepage\Hook\HomepageContentHook" scope="request">
+            <tag name="hook.event_listener" event="home.body" />
+        </hook>
+         <hook id="hookhomepage.bestseller.hook.front">
+            <tag name="hook.event_listener" event="home.body" templates="render:home-body.html" />
+        </hook>
+        <hook id="hookhomepage.bestsellercategory.hook.front">
+            <tag name="hook.event_listener" event="category.bottom" templates="render:home-body.html" />
+        </hook>
+    
+  
+    </hooks>
+   
+
+    <!--
+    <exports>
+
+    </exports>
+    -->
+
+    <!--
+    <imports>
+
+    </imports>
+    -->
+</config>

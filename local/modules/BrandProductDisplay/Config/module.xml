@@ -11,13 +11,8 @@
         <title>Affichage des produits par marque</title>
         <description>Ajoute les produits liés dans la page de marque</description>
     </descriptive>
-    <descriptive locale="de_DE">
-        <title>Markenprodukt-Anzeige</title>
-    </descriptive>
-    
     <!-- <logo></logo> -->
     <languages>
-    	<language>de_DE</language>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>

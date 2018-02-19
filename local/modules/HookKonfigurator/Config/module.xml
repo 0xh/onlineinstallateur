@@ -1,43 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module xmlns="http://thelia.net/schema/dic/module"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
-    <fullnamespace>HookKonfigurator\HookKonfigurator</fullnamespace>
-    <descriptive locale="en_US">
-        <title>Configurator</title>
-        <!--
-        <subtitle></subtitle>
-        <description></description>
-        <postscriptum></postscriptum>
-        -->
-    </descriptive>
-	<descriptive locale="de_DE">
-        <title>Konfigurator</title>
-    </descriptive>
-    <!-- <logo></logo> -->
-    <!--<images-folder>images</images-folder>-->
-    <languages>
-        <language>en_US</language>
-        <language>de_DE</language>
-		<language>fr_FR</language>
-    </languages>
-    <version>0.1214</version>
-	<authors>
-        <author>
-            <name>Emanuel Plopu</name>
-            <email>emanuel.plopu@sepa.at</email>
-        </author>
-    </authors>
-	
-    <type>classic</type>
-    <!--
-    module dependencies
-    <required>
-        <module version="&gt;=0.1">Front</module>
-        <module version="~1.0">HookCart</module>
-        <module version="&gt;0.2">HookSearch</module>
-    </required>
-    -->
-    <thelia>2.2.0</thelia>
-    <stability>other</stability>
-</module>
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="http://thelia.net/schema/dic/module"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
+    <fullnamespace>HookKonfigurator\HookKonfigurator</fullnamespace>
+    <descriptive locale="en_US">
+        <title>Configurator</title>
+        <!--
+        <subtitle></subtitle>
+        <description></description>
+        <postscriptum></postscriptum>
+        -->
+    </descriptive>
+	<descriptive locale="de_DE">
+        <title>Konfigurator</title>
+    </descriptive>
+    <!-- <logo></logo> -->
+    <!--<images-folder>images</images-folder>-->
+    <languages>
+        <language>en_US</language>
+        <language>de_DE</language>
+		<language>fr_FR</language>
+    </languages>
+    <version>0.1214</version>
+	<authors>
+        <author>
+            <name>Emanuel Plopu</name>
+            <email>emanuel.plopu@sepa.at</email>
+        </author>
+    </authors>
+	
+    <type>classic</type>
+    <!--
+    module dependencies
+    <required>
+        <module version="&gt;=0.1">Front</module>
+        <module version="~1.0">HookCart</module>
+        <module version="&gt;0.2">HookSearch</module>
+    </required>
+    -->
+    <thelia>2.2.0</thelia>
+    <stability>other</stability>
+</module>

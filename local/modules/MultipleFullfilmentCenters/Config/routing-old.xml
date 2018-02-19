@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="MultipleFullfilmentCenters_module_config" path="/admin/module/MultipleFullfilmentCenters">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\MultipleFullfilmentCentersController::viewAction</default>
+    </route>
+
+    <route id="multiplefulfilmentcenters.productstock.add" path="/admin/module/multiplefulfilmentcenters/productstock/add">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ProductStockController::addProductStock</default>
+    </route>
+     
+    <route id="multiplefulfilmentcenters.productstock.update" path="/admin/module/multiplefulfilmentcenters/productstock/update">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ProductStockController::updateProductStock</default>
+    </route>
+    
+    <route id="multiplefulfilmentcenters.productstock.delete" path="/admin/module/multiplefulfilmentcenters/productstock/delete">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\ProductStockController::deleteProductStock</default>
+    </route>
+
+    <route id="multiplefulfilmentcenters.locations.add" path="/admin/module/multiplefulfilmentcenters/locations/add">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\LocationStockController::addLocationStock</default>
+    </route>
+    
+    <route id="multiplefulfilmentcenters.locations.update" path="/admin/module/multiplefulfilmentcenters/locations/update">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\LocationStockController::updateLocationStock</default>
+    </route>
+
+    <route id="multiplefulfilmentcenters.locations.delete" path="/admin/module/multiplefulfilmentcenters/locations/delete">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\LocationStockController::deleteLocationStock</default>
+    </route>
+
+    <route id="multiplefulfilmentcenters.cart.fulfilmentcenter" path="/cart/fulfilmentcenter">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Front\CartProductStockLocationController::addProductLocation</default>
+    </route>
+    
+    <route id="multiplefulfilmentcenters.setting.products" path="/admin/module/multiplefulfilmentcenters/setting-products">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::viewAction</default>
+    </route>
+    
+    <route id="multiplefulfilmentcenters.setting.products.update" path="/admin/module/multiplefulfilmentcenters/update-quantity-products">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::updateQuantityFullfilmentCenters</default>
+    </route>
+</routes>

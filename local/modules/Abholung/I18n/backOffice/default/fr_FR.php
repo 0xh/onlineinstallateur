@@ -1,5 +1,5 @@
-<?php
-
-return [
-    'abholung instructions configuration' => 'Instructions de paiement par chèque',
-];
+<?php
+
+return [
+    'abholung instructions configuration' => 'Instructions de paiement par chèque',
+];

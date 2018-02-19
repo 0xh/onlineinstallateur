@@ -1,5 +1,5 @@
-<?php
-
-return [
-    'abholung instructions configuration' => 'Çek yönergeleri yapılandırma',
-];
+<?php
+
+return [
+    'abholung instructions configuration' => 'Çek yönergeleri yapılandırma',
+];

@@ -8533,9 +8533,11 @@ fieldset[disabled] .has-switch span.switch-default:hover {
 .label-offer {
     background-color: #008080
 }
+
 .label-pickup {
     background-color: #ad1a82
 }
+
 .label-Refunded_test {
     background-color: #d9534f
 }
@@ -9575,7 +9577,6 @@ footer {
 .p2,.p1  { background:rgba(66,133,244,1);}
 .p5  a,.p4  a ,.p3  a,.p2  a,.p1  a {color:#fff;}
 
-
 .export-orders .btn:focus {
-    background: #86AC34;
-}
+     background: #86AC34;
+ }

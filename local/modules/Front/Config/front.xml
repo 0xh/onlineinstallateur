@@ -373,4 +373,5 @@
         <default key="_view">index</default>
         <requirement key="_view">^(?!admin|api)[^/]+</requirement>
     </route>
+    
 </routes>

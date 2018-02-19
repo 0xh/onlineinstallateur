@@ -1,0 +1,1 @@
+Bisher wurden noch keine Daten im ErrorLog erfasst bzw. verursachen Ihre Scripte keine Fehler. So far nothing showed up in your ErrorLog, your scripts do not trigger any errors.

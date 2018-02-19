@@ -331,7 +331,7 @@
                             </thead>
 
                             <tbody>
-                            {loop type="product" name="product-search" visible="*" search_mode="sentence" search_term=$searchTerm search_in="ref,title,description,ean_code" return_url=false  limit=26}
+                            {loop type="product" name="product-search" visible="*" search_mode="sentence" search_term=$searchTerm search_in="ref,title" return_url=false  limit=26}
                             {if $LOOP_COUNT < 26}
                                 {$id_product=$ID}
                                  <tr>

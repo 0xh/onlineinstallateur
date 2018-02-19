@@ -377,7 +377,7 @@ var pseManager = (function($){
             .ajaxError(function () { $loader.hide(); });
 
         // Check if the size of the window is appropriate for ajax
-        var doAjax = true;//($(window).width() > 768) ? true : false;
+        var doAjax = ($(window).width() > 768) ? true : false;
 
         // Main Navigation Hover
         $('.navbar')
@@ -469,10 +469,10 @@ var pseManager = (function($){
                 var url_action  = $(this).attr("action"),
                     product_id  = $("input[name$='product_id']",this).val(),
                     pse_id  = $("input.pse-id",this).val();
-				
-				$serviceObject = $(this).find($("[name=price_service_o]"));
-				$productid = $serviceObject.attr('product');
-				var totalPrice = $("[name=price_product_"+$productid+"]").text();
+					
+					$serviceObject = $(this).find($("[name=price_service_o]"));
+					$productid = $serviceObject.attr('product');
+					var totalPrice = $("[name=price_product_"+$productid+"]").text();
 
                 $.ajax({type: "POST", data: $(this).serialize(), url: url_action,
                     success: function(data){

@@ -15,6 +15,7 @@ namespace Carousel\Hook;
 
 use Carousel\Carousel;
 use Thelia\Core\Event\Hook\HookRenderBlockEvent;
+use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Tools\URL;
 

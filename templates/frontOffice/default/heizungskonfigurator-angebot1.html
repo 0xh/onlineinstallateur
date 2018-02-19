@@ -1,0 +1,346 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Ihr persönliches Angebot für die Heizung" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/heizungskonfigurator-angebot"}]]}
+{/block}
+
+{block name="main-content"}
+    <div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+	<div class="container1">
+	 {block name="heizung-angebot-form"}    
+		<div>
+			
+               
+            {form name="heizung.angebot"}
+				<form id="form-heizungangebot"   
+     class="form-horizontal fs-form fs-form-full" action="{url path="/heizungskonfigurator-angebot/sendmail"}" method="post" autocomplete="off" enctype="multipart/form-data">
+             <!--     <div class="dropzone" id="my-awesome-dropzone" style="background:#666;" class="" style="height:150px; border:dotted 2px #CCC">
+                </div>
+                <div class="fallback">
+    <input name="file" type="file" multiple />
+  </div>
+                -->
+                {form_field field='error_message'}
+                	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
+                {/form_field} 
+                {form_hidden_fields}
+                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                 
+					<fieldset id="register-info" class="panel panel-default">
+                    <div class="panel-heading">
+                        1. {intl l="Personale Informationen"}
+                    </div>
+
+                    <div class="panel-body">
+                    <div class="col-sm-7">
+                        {form_field field="firstname"}
+                        <div class="form-group group-firstname{if $error} has-error{/if}">
+                            <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                            <div class="control-input col-sm-5">
+                                <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder firstname"}" value="{$value}" {if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                    {assign var="error_focus" value="true"}
+                                {/if}
+                            </div>
+                            
+                        </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="lastname"}
+                            <div class="form-group group-lastname{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder lastname"}" value="{$value}" {if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="email"}
+                        <div class="form-group group-email{if $error} has-error{/if}">
+                            <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+
+                            <div class="control-input col-sm-5">
+                                <input type="email" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder email"}" value="{$smarty.get.email|default:$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                    {assign var="error_focus" value="true"}
+                                {/if}
+                            </div>
+                        </div><!--/.form-group-->
+                        {/form_field}
+                       
+                        {form_field field="phone"}
+                            <div class="form-group group-phone{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder phone"}" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="cellphone"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder cellphone"}" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                    </div>
+                    <div class="col-sm-5"><img src="{image file='assets/dist/img/angebot.png'}" alt="Persönliches Angebot"></div>
+                    </div>
+                    
+                </fieldset>
+                <fieldset  class="panel panel-default">
+                     <div class="panel-heading">
+                        2. {intl l="Fotobegehung"}
+                    </div>
+                    <div class="panel-body">
+                    {form_field field="image_upload"}
+                              <input type="file" name="{$name}" id="{$label_attr.for}">  
+                    {/form_field}
+                    </div>  
+                </fieldset>
+                <fieldset  class="panel panel-default">
+                     <div class="panel-heading">
+                        3. {intl l="Zusätzliche Daten"}
+                    </div>
+                    <div class="panel-body">
+                    {form_field field="building_etage"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="5" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="etage"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="3" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="gebaeudeart"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                    <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                                        </select>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="heizboden"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                 
+                              		    {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                	   {/foreach}
+                            		
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="lage"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                 
+                              		    {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                	   {/foreach}
+                            		
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="thermoregulator"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                 
+                              		    {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                	   {/foreach}
+                            		
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        
+                        {form_field field="marke"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="z.B Gree" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="radiatortyp"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                    <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                                        </select>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="heizkoerpermarke"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                        <br>
+    				               <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                                        </select>
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="anschlussarten"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                        <br>
+    				                {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                   {/foreach}
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                         {form_field field="waermepumpe"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                        <br>
+    				                {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                   {/foreach}
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="ausgaenge"}
+                            <div class="group-lastname{if $error} has-error{/if}">
+                                <label class="control-label" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input ">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="3"}" value="{$value}" {if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="roehrenheizkoerper"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                        <br>
+    				                {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                   {/foreach}
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="fittings"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                        <br>
+    				                {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="fs-field-label-sm">{$choice->label}</label></span>
+                                   {/foreach}
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="roehremarke"}
+                            <div class="group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label" for="{$label_attr.for}">{$label}</label>
+                                <br>
+    				                <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                                    </select>
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+							<label class="fs-field-label" for="q15">Anmerkungen zu Ihrer Heizung</label><br>
+							<textarea id="q15" name="q15" placeholder="Anmerkungen" style="width: 90%;height: 120px;"></textarea>
+						
+						
+                        
+                    <div class="form-group group-btn">
+                    <div class="control-btn col-sm-5 col-sm-offset-3">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> {intl l="Senden"}</button>
+                    </div>
+                </div><!--/.form-group-->
+                    </div>  
+                </fieldset>
+                    
+
+				</form><!-- /fs-form -->
+                {/form}
+			</div><!-- /fs-form-wrap -->
+        {/block}
+		</div><!-- /container -->
+            
+            <form 
+     ></form>
+            
+		<section id="products-new">	
+			<div class="products-heading">  
+            	<div id="waermebedarf"></div>        
+			</div>
+			<div id="category-products">
+            </div><!-- /#category-products -->
+		</section><!-- #products-heizung -->	
+		
+		<div id="product_suggestion">
+			<ul id="products"></ul>
+		</div>
+    </div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+	{hook name="register.stylesheet"}
+{/block}
+
+
+{block name="after-javascript-include"}
+ 
+
+
+{hook name="register.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}

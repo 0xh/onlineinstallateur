@@ -1,0 +1,388 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'modules'}
+{/block}
+
+{block name="page-title"}{intl l='GoogleShopping'}{/block}
+
+{block name="main-content"}
+    {oAuthCheckToken}
+    {default_translation_domain domain='googleshopping.bo.default'}
+    {if 'none' === $tokenExist}
+        <h4>{intl l="You have to authorise this site on GoogleShopping before adding products :"}</h4>
+        <div class="form-group col-md-12">
+            <div class="form-group">
+                <form action="{url path='/googleshopping/oauth2callback'}" method="get">
+                    <input type="hidden" name="redirect" value="{url path={navigate to="current"}}"/>
+                    <button class="btn btn-default btn-primary form-control" type="submit">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        {intl l="Authorize"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    {elseif true === $tokenExpired}
+        <h4>{intl l="Your authorisation expired please refresh it before adding products :"}</h4>
+        <div class="form-group col-md-12">
+            <div class="form-group">
+                <form action="{url path='/googleshopping/oauth2callback'}" method="get">
+                    <input type="hidden" name="redirect" value="{url path={navigate to="current"}}"/>
+                    <button class="btn btn-default btn-primary form-control" type="submit">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        {intl l="Refresh"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    {else}
+        {loop type="category" name="category" id="$categoryId"}
+
+            <div id="wrapper" class="container">
+            <div class="clearfix">
+                <ul class="breadcrumb pull-left">
+                    <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+                    <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+                    <li>
+                        <a href="{url path="/admin/module/GoogleShopping" current_tab="management"}">{intl l="Configure"}
+                            : GoogleShopping</a></li>
+                    <li><a href="#">{$TITLE}</a></li>
+                </ul>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading js-hash-product-category-{$categoryId}">
+                    <h4 class="panel-title">
+                        {intl l="Choose configuration before export :"}
+                    </h4>
+
+                    <div class="row inner-toolbar{if $page_bottom} inner-toolbar-bottom{/if}">
+                        <div class="col-md-3 inner-actions">
+                            <label for="select-configuration">{intl l="Configuration"}</label>
+                            <select id="select-configuration" class="form-control" name="{$name}">
+                                {loop type="googleshopping.configuration" name="googleshopping.configuration"}
+                                    <option value="{$ID}" {if $ID === $configId}selected{/if}>
+                                        {$TITLE}
+                                    </option>
+                                {/loop}
+                            </select>
+                        </div>
+                        <div class="col-md-2 inner-actions">
+                            <label for="account">{intl l="Merchant account"}</label>
+                            <input id="account" class="form-control" type="text" readonly value="{$merchantId}">
+                        </div>
+                        <div class="col-md-2 inner-actions">
+                            {loop name="lang" type="lang" id=$langId}
+                                <label for="lang">{intl l="Current language of exportation"}</label>
+                                <input id="lang" class="form-control" type="text" readonly value="{$TITLE}">
+                            {/loop}
+                        </div>
+                        <div class="col-md-2 inner-actions">
+                            <label for="select-country">{intl l="Target country"}</label>
+                            <select id="select-country" disabled class="form-control" name="{$name}">
+                                <option>
+                                    {intl l="Choose target country"}
+                                </option>
+                                {loop type="country" name="country-select"}
+                                    <option value="{$ID}" {if $ID === $countryId}selected{/if}>
+                                        {$TITLE}
+                                    </option>
+                                {/loop}
+                            </select>
+                        </div>
+                        <div class="col-md-2 inner-actions">
+                            <label for="select-currency">{intl l="Currency"}</label>
+                            <select id="select-currency" disabled class="form-control" name="{$name}">
+                                <option>
+                                    {intl l="Choose currency"}
+                                </option>
+                                {loop type="currency" name="currency-select"}
+                                    <option value="{$ID}" {if $ID === $currencyId}selected{/if}>
+                                        {$SYMBOL}
+                                    </option>
+                                {/loop}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: none;" id="product-category">
+                    <div class="panel-body">
+                        {ifloop rel="googleshopping_product"}
+                            <table class="table table-striped table-condensed table-left-aligned">
+                                <thead>
+                                <tr>
+                                    <th class="object-title">
+                                        {admin_sortable_header
+                                        current_order=$smarty.get.product_order
+                                        order='id'
+                                        reverse_order='id_reverse'
+                                        path={url path={navigate to="current"} current_cat=$categoryId}
+                                        request_parameter_name='product_order'
+                                        label={intl l='ID'}
+                                        }
+                                    </th>
+
+                                    <th class="object-title">
+                                        {admin_sortable_header
+                                        current_order=$smarty.get.product_order
+                                        order='ref'
+                                        reverse_order='ref_reverse'
+                                        path={url path={navigate to="current"} current_cat=$categoryId}
+                                        request_parameter_name='product_order'
+                                        label={intl l='Ref'}
+                                        }
+                                    </th>
+
+                                    <th class="object-title">
+                                        {admin_sortable_header
+                                        current_order=$smarty.get.product_order
+                                        order='ean'
+                                        reverse_order='ean_reverse'
+                                        path={url path={navigate to="current"} current_cat=$categoryId}
+                                        request_parameter_name='product_order'
+                                        label={intl l='GTIN'}
+                                        }
+                                        {*<input class="check-all-gtin" data-category="{$categoryId}" type="checkbox"/>*}
+                                    </th>
+
+                                    <th class="object-title">
+                                        {admin_sortable_header
+                                        current_order=$smarty.get.product_order
+                                        order='alpha'
+                                        reverse_order='alpha_reverse'
+                                        path={url path={navigate to="current"} current_cat=$categoryId}
+                                        request_parameter_name='product_order'
+                                        label={intl l='Title'}
+                                        }
+                                    </th>
+
+                                    <th class="text-center">
+                                        <input class="check-all-product" data-category="{$categoryId}" type="checkbox"/>
+                                    </th>
+                                    <th class="text-center">
+                                        <div class="btn-group">
+                                            <button class="send-checked btn btn-success" data-category="{$categoryId}" type="submit">
+                                                {intl l="Send checked"}
+                                            </button>
+                                            <button class="delete-checked btn btn-danger" data-category="{$categoryId}" type="submit">
+                                                {intl l="Delete checked"}
+                                            </button>
+                                        </div>
+                                    </th>
+                                    <th class="text-center">
+                                        {intl l="Google info"}
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {loop type="googleshopping.product" name="googleshopping_product" visible="true" category_id={$categoryId} locale={$edit_language_locale} product_order=$smarty.get.product_order}
+                                {$SYNC_ENABLE = false}
+                                    <tr class="tr-product" data-product="{$ID}" id="tr-product-{$ID}">
+                                        <td>{$ID}</td>
+                                        <td>
+                                            <a href="{url path="/admin/products/update?product_id=%product_id" product_id=$ID}">{$REF}</a>
+                                        </td>
+                                        <td id="td-gtin-product-{$ID}">{if $VALID_EAN === false}
+                                                {intl l="Warning : At least one GTIN is empty or invalid."}
+                                                <br/>
+                                            {else}
+                                                {intl l="GTIN ok"}
+                                            {/if}
+                                        </td>
+                                        <td>{$TITLE}</td>
+                                        <td class="text-center td-product-{$ID} td-not-exist-{$ID}">
+                                            <input class="check-product" type="checkbox" data-product="{$ID}" name="products[{$ID}][checkbox]"/>
+                                        </td>
+                                        <td class="text-center td-product-{$ID} td-not-exist-{$ID}">
+                                            <div class="btn-group" role="group">
+                                                <form class="ajax-form btn-group" id="add-form-product-{$ID}" action="/admin/module/googleshopping/add/{$ID}" method="post">
+                                                    <input class="product_account" type="hidden" name="account" value="{$merchantId}">
+                                                    <input class="product_country" type="hidden" name="country" value="{$countryId}">
+                                                    <input class="product_currency" type="hidden" name="currency" value="{$currencyId}">
+                                                    <input type="hidden" name="lang" value="{$langId}">
+                                                    <input type="hidden" name="gtin" id="gtin-product-{$ID}"/>
+                                                    <button class="btn btn-primary btn-block"
+                                                            type="submit">
+                                                        {intl l="Send"}
+                                                    </button>
+                                                </form>
+                                                <form data-active="false" class="ajax-form btn-group" id="delete-form-product-{$ID}" action="/admin/module/googleshopping/delete/{$ID}" method="post" style="display: none">
+                                                    <input class="product_account" type="hidden" name="account" value="{$merchantId}">
+                                                    <input class="product_country" type="hidden" name="country" value="{$countryId}">
+                                                    <input type="hidden" name="lang" value="{$langId}">
+                                                    <button class="btn btn-danger" type="submit">{intl l="Delete"}</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" id="info-{$ID}">
+                                            {intl l="Not sended"}
+                                        </td>
+                                    </tr>
+                                {/loop}
+                                </tbody>
+                            </table>
+                        {/ifloop}
+                        {elseloop rel="googleshopping_product"}
+                            <div class="panel-body panel-warning">
+                                <div class="panel-heading js-hash-product-category">
+                                    <p>{intl l="Warning : No one products have this category on default category"}</p>
+                                </div>
+                            </div>
+                        {/elseloop}
+                    </div>
+                </div>
+            </div>
+        {/loop}
+        </div>
+    {/if}
+    <div style="position: fixed; top: 30px; z-index: 1000; margin: 0 auto;">
+        <div id="alert" class="container">
+
+        </div>
+    </div>
+{/block}
+
+{block name="javascript-initialization"}
+
+    {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+        <script src='{$asset_url}'></script>
+    {/javascripts}
+    <script>
+        $("#product-category").show();
+        batchStatusProducts();
+
+        $("#select-configuration").change(function (event) {
+            window.location.href = '{url path="/admin/module/GoogleShopping/category/management/%categoryId/" categoryId=$categoryId}'+$(this).val();
+        });
+
+        $("#select-country").change(function (event) {
+           var countryId = $(this).val();
+            $(".product_country").each(function(){
+                $(this).val(countryId);
+            });
+
+            batchStatusProducts();
+        });
+
+        $("#select-currency").change(function (event) {
+           var currencyId = $(this).val();
+            $(".product_currency").each(function(){
+                $(this).val(currencyId);
+            });
+
+            batchStatusProducts();
+        });
+
+        $(".ajax-form").submit(function (event) {
+            event.preventDefault();
+            var form = $(this);
+            var btn = form.find('button[type="submit"]');
+            var btnHtml = btn.html();
+            btn.addClass('disabled').html('{intl l="Please wait..."} <span class="glyphicon glyphicon-hourglass"></span>');
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize()
+            }).done(function(data){
+                $("#alert").html('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
+                btn.removeClass('disabled').html(btnHtml);
+            }).fail(function(jqXHR, textStatus ){
+                $("#alert").html('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+jqXHR.responseText+'</div>');
+                btn.removeClass('disabled').html(btnHtml);
+            });
+        });
+
+        $(".check-all-product").click(function (event) {
+            if (this.checked) {
+                $('.check-product').each(function () {
+                    this.checked = true;
+                });
+            } else {
+                $('.check-product').each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+
+        $(".send-checked").click(function (event) {
+            $('.check-product:checked').each(function () {
+                var productId = $(this).data("product");
+                $(".td-product-" + productId + ":first").html('<span class="loading" style="margin:auto"></span>');
+                var form = $("#add-form-product-" + productId);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize()
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    $(".td-product-" + productId).html('');
+                    $("#tr-product-" + productId).removeClass("success").addClass("danger");
+                    $("#info-"+productId).html(jqXHR.responseText);
+                }).done(function (data) {
+                    $(".td-product-" + productId).html('');
+                    $("#info-"+productId).html('Product add with success');
+                    $("#tr-product-" + productId).removeClass("danger").addClass("success");
+                })
+            });
+        });
+
+        $(".delete-checked").click(function (event) {
+            $('.check-product:checked').each(function () {
+                var productId = $(this).data("product");
+                var form = $("#delete-form-product-" + productId);
+                if (form.data('active') != false) {
+                    $(".td-product-" + productId + ":first").html('<span class="loading" style="margin:auto"></span>');
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: form.attr('method'),
+                        data: form.serialize()
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        $(".td-product-" + productId).html('');
+                        $("#tr-product-" + productId).removeClass("success").addClass("danger");
+                        $("#info-"+productId).html(jqXHR.responseText);
+                    }).done(function (data) {
+                        $(".td-product-" + productId).html('');
+                        $("#info-"+productId).html('Product deleted with success');
+                        $("#tr-product-" + productId).removeClass("danger").addClass("success");
+                    })
+                }
+            });
+        });
+
+        function batchStatusProducts() {
+            var merchantId = {$merchantId};
+            var categoryId = {$categoryId};
+            var langId = {$langId};
+            var countryId = {$countryId};
+
+            $.ajax({
+                url: '{url path="/admin/module/googleshopping/get/status/%merchantId/%categoryId/%langId/%countryId" merchantId=$merchantId categoryId=$categoryId langId=$langId countryId=$countryId}',
+                method: 'GET',
+                data: ''
+            }).done(function(data){
+                $.each(data['approvedProducts'], function(key, productId) {
+                    updateProductLine(productId, 'success', 'Ok');
+                });
+                $.each(data['disapprovedProducts'], function(key, productId) {
+                    updateProductLine(productId, 'danger', 'Error with google');
+                });
+            });
+        }
+
+        function updateProductLine(productId, statusClass, message) {
+            var tr = $("#tr-product-"+productId);
+            var deleteForm = $("#delete-form-product-" + productId);
+            var addForm = $("#add-form-product-" + productId);
+
+            tr.addClass(statusClass);
+            $("#info-"+productId).html(message);
+
+            deleteForm.show().attr("data-active", "true");
+            addForm.children("button").html("{intl l="Update"}");
+
+            $("#td-exist-" + productId).show();
+        }
+    </script>
+{/block}
+
+{block name="javascript-last-call"}
+
+{/block}

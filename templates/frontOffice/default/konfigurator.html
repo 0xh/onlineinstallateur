@@ -1,744 +1,744 @@
-{extends file="layout.tpl"}
-
-{* Body Class *}
-{block name="body-class"}page-konfigurator{/block}
-
-{* Breadcrumb *}
-{block name='no-return-functions' append}
-    {$breadcrumbs = [['title' => {intl l="Configurator" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/konfigurator"}]]}
-{/block}
-
-{block name="stylesheet"}
-    {stylesheets file='assets/dist/css/dropzone.css'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-	{hook name="register.stylesheet"}
-{/block}
-
-{block name="main-content"}
-    <div class="main">
-            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
-
-	<div class="">
-
-		<div class="fs-form-wrap" id="fs-form-wrap" >
-			<div>
-				<h1>HEIZUNGSTAUSCH</h1>
-			</div>
-              
-          
-        {hook name="konfigurator.top"}
-            {form name="konfigurator.heizlast.berechnung"}
-            <div  style="float:left; width:90%; height:auto">
-                
-				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/konfigurator/suggestions"}" method="post" autocomplete="off" enctype="multipart/form-data">
-                   
-                   
-                {form_field field='error_message'}
-                	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
-                {/form_field} 
-                {form_hidden_fields}   
-                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
-                {hook name="konfigurator.form-top"}
-               
-                    <ol class="fs-fields">
-                       
-						<li>
-                             
-							<h3>Brennstoff</h3>
-                            
-                            {form_field field="brennstoff_momentan"} 
-                            <div class="frage">
-                                <div><label class="fragelabel fs-field-label fs-anim-upper" for="{$for}">{$label}</label></div>
-                                <!--input class="fs-anim-lower" id="q1" name="q1" type="text" placeholder="Dean Moriarty" required/-->
-                                <div class="fs-radio-group fs-radio-custom clearfix fs-anim-lower">
-                                        <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                        {foreach $choices as $choice}
-                                            <span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
-                                        {/foreach}
-                                        </div>
-
-                                </div>
-                            </div>
-                            {/form_field}
-						</li>
-                        <li>
-							<h3>Brennstoff</h3>
-                            <div id="brennstoff_zukunft">
-                            {form_field field="brennstoff_zukunft"} 
-                            <div class="frage">
-                                <div><label class="fragelabel fs-field-label fs-anim-upper" for="q2">{$label}</label></div>
-                                <div class="fs-radio-group fs-radio-custom clearfix fs-anim-lower">
-
-
-
-                                        <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                        {foreach $choices as $choice}
-                                            <span><input class="brennstoffzukunft" id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
-                                        {/foreach}
-                                        </div>
-                                </div> 
-                            </div>
-                            {/form_field}
-                            </div>
-						</li>
-                        
-						<li>
-                            <h3 class="fs-anim-upper">Gebäude und Bewohner</h3>
-							<div class="row">
-								<div class="col-md-6">
-                            		<div> 
-                                        {form_field field="gebaeudeart"}
-                                        <div class="frage">
-                           				<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q3" >{$label}</label><br>
-                                 
-                           				 <span>
-											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
-                              					{foreach $choices as $choice}
-                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
-							 					{/foreach}
-                            				</select>
-                                            </span>
-                                        </div>
-                                  		{/form_field}
-                               		</div> 
-									
-									<div>
-                                        {form_field field="personen_anzahl"}
-                                        <div class="frage">
-										<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
-                                            <span>
-                          					<input class="fs-anim-lower" name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" style="width:20%"/>
-                                            </span>
-                                        </div>
-                                        {/form_field}
-                            		</div>
-                                    
-                                    <div>
-                                        {form_field field="etagen"}
-                                        <div class="frage">
-										<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
-                                            <span>
-                          					<input class="fs-anim-lower" name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" style="width:20%"/>
-                                            </span>
-                                        </div>
-                                        {/form_field}
-                            		</div>
-                                    
-                                   
-                            	</div>
-                            	
-                            	<div class="col-md-6">
-                                     <!--div>
-                                        {form_field field="bestehendes_geraet_mit_warmwasser"}
-                           				<label class="fs-field-label-sm fs-anim-upper" for="q3" >{$label}</label><br>
-                                 
-                           				 
-											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
-                              					{foreach $choices as $choice}
-                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
-							 					{/foreach}
-                            				</select>
-                                  		{/form_field}
-                            		</div-->
-                                    <!--div>
-                                        {form_field field="bestehendes_geraet_kw"}
-										<label class="fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
-                          					<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="20" step="1" min="1" style="width:20%"/>
-                                        {/form_field}
-                            		</div-->
-                                	<div>
-                                        {form_field field="baujahr"}
-                                        <div class="frage">
-                            			<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q5" >{$label}</label>
-                                		<br>
-                            			<span>
-											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
-                            				{foreach $choices as $choice}
-                             					<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
-                           					{/foreach}
-                            				</select>
-                                        </span>
-                                        </div>
-                            			{/form_field}
-                                	</div>
-                                	
-                            		<div>
-                                        {form_field field="flaeche"}
-                                        <div class="frage">
-                                		<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label>
-                            			
-                                    		<span class="help-block">{$message}</span>
-                                            <span>
-                                    		<input type="text" style="width:30%;" placeholder="110" class="fs-anim-upper" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control input-sm" maxlength="50" {$attr} {if $required}aria-required="true" required{/if}{if !$value || $error} autofocus{/if}>
-											{if $error}
-												{assign var="error_focus" value="true"}
-											{elseif !$value}
-												{assign var="error_focus" value="true"}
-											{/if} 
-                                            </span>
-                                        </div>
-                            			{/form_field}    
-                            		</div>
-                            	</div>
-                            
-							</div>
-                            
-						</li>
-                        
-                        
-						<li>
-                            <h3 class="fs-anim-upper">Aktueller Wärmeschutz</h3>
-                                {form_field field="waermedaemmung"}
-                                <div class="frage">
-								<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q7" >{$label}</label>
-                            	
-									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                	{foreach $choices as $choice}
-                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-                                	{/foreach}
-                            		</div>
-                                </div>
-                            	{/form_field}
-                            
-                                {form_field field="fenster"}
-                                <div class="frage">
-                                <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q8" >{$label}</label> 	
-									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                	{foreach $choices as $choice}
-										<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								 	{/foreach}
-									</div>
-                                </div>
-                            {/form_field}
-                            
-                                                        
-                            {form_field field="dach_daemmung"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q11" >{$label}</label>
-                           
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q11b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-                            
-                            
-                            <!--label class="fs-field-label-sm fs-anim-upper" for="q9" >{$label}Ist das Dach gedaÌˆmmt?</label>
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-								<span><input id="q9b" name="q9" type="radio" value="conversion"/><label for="q9b" class="radio-conversion fs-field-label-sm">Ja</label></span>
-								<span><input id="q9c" name="q9" type="radio" value="social"/><label for="q9c" class="radio-social fs-field-label-sm">Nein</label></span>
-							</div--> 
-						</li>
-                        
-                        <li>
-                            <h3 class="fs-anim-upper">LAGE</h3>
-                            {form_field field="lage_des_gebaeudes"}
-                            <div class="frage">
-							<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q10" >{$label}</label>
-                            
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-                                	<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q10b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-                                {/foreach}
-                            </div>
-                            </div>
-                            {/form_field}
-                            {form_field field="windlage_des_gebaudes"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q11" >{$label}</label>
-                           
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q11b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-
-                            
-                            
-                            {form_field field="anzahl_aussenwaende"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q12" >{$label}</label>
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-								<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q12b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								 {/foreach}
-							</div>
-                            </div>
-                            {/form_field} 
-						</li>
-                        
-						<li>
-							<h3 class="fs-anim-upper">Temperatur</h3>
-                            {form_field field="wohnraumtemperatur"}
-                            <div class="frage">
-							<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q13" >{$label}</label>
-                            
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-								<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q13b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-                            
-                            {form_field field="aussentemperatur"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-						</li>
-                        
-                        
-                        <li>
-							<h3 class="fs-anim-upper">Fragen zu Ihrer Heizung </h3>
-                            <div style="float:left;">
-                            {form_field field="abgasfuehrung"}
-                                <div class="frage">
-							                  <label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label><br>         		
-                                    <span>	 
-											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
-                              					{foreach $choices as $choice}
-                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
-							 					{/foreach}
-                            				</select>
-                                    </span>
-                                </div>
-                            {/form_field}
-
-                            {form_field field="waermeabgabe"}
-
-							 <div class="frage">
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                <label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label><br>
-                                <span>
-                                <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
-                              					{foreach $choices as $choice}
-                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
-							 					{/foreach}
-                                </select>
-                                </span>
-							</div>
-                            </div>
-                            {/form_field}
-                            </div>
-                            <div style="float:left; padding-left:70px;">
-                            {form_field field="duschwasser"}
-                            <div class="frage">
-
-                            <label class="fragelabel  fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-
-                            {form_field field="wasserabfluss"}
-                            <label class="fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            {/form_field}
-                            </div>
-                            <div class="clearfix"></div>
-
-                            
-                            <div id="warmwasserversorgung" >
-                             {form_field field="warmwasserversorgung"}
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" class="warmwasseuberheizung" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            {/form_field}
-                            </div>
-                            
-                            <div id="warmwasserversorgung-extra" style="display:none">                       
-                             {form_field field="warmwasserversorgung-extra"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-                            </div>
-                            
-                            <!--Fragen für Wärmepumpe-->
-                           <div id="warmwasserversorgung-extra-waermepumpe" style="display:none">                       
-                             {form_field field="warmwasserversorgung-extra-waermepumpe"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-                            </div>
-                            
-                            <!-- Fragen für Öl und Holz -->
-                            <div id="warmwasserversorgung-extra-oel-holz" style="display:none">                       
-                             {form_field field="warmwasserversorgung-extra-oel-holz"}
-                            <div class="frage">
-                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
-							
-							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
-                                {foreach $choices as $choice}
-									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
-								{/foreach}
-							</div>
-                            </div>
-                            {/form_field}
-                            </div>
-                                                       
-                            
-						</li>
-                        
-				
-                       	<li>
-                            {form_field field="anmerkungen"}
-                            <div class="frage">
-							<label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label>
-                            <span>
-							<textarea class="fs-anim-lower" id="{$label_attr.for}" name="{$name}" placeholder="Anmerkungen"></textarea>
-                            </span>
-                             
-                       <!--div id="dragdrop" class="fs-anim-upper">                     
-                          <div class="fallback">
-                              <input name="file" type="file" id="{$label_attr.for}" multiple />
-                          </div>
-                          <div class="dz-default dz-message dz-clickable" id="dropzonePreview" >
-                             <span>Bitte hier Fotos von Ihrem alten Gerät ablegen (optional)</span>
-                          </div>
-                          <div id="previews" class="dropzone"></div>
-                       </div-->
-                            </div>
-                            {/form_field}
-                            
-                            
-						</li>
-                        
-                    </ol>
-                    </form><!-- /fs-form -->
-                {/form}
-                    <div class="row">
-                    <div id="review" class="col-sm-3" style="display:none">
-                        <h3>Ihre Daten</h3>
-                    </div>
-                    <div class="konfigurator-buttons vorschlag-button col-sm-9" style="display:none">
-               	    <button type="button" id="fs-submit-angebot"  class="fs-submit"  style="margin-bottom:20px; float:left; margin:10px;font-size:20px">Individuelles Angebot</button> 
-					<button type="submit" class="fs-submit" id="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
-                        <div style="clear:left"></div>
-                        <section id="products-new" class="konfigurator-ergebniss">	
-                            <div class="products-heading">  
-                                <div id="waermebedarf"></div>        
-                            </div>
-                            <div id="category-products">
-                            </div><!-- /#category-products -->
-                        </section><!-- #products-heizung -->	
-		
-                        <div id="product_suggestion ">
-                            <ul id="products"></ul>
-                        </div>
-                    </div>
-                        </div>
-                 
-                    
-				
-                </div>
-                
-               <div class="fs-controls fs-show">
-            
-                   <nav class="fs-nav-dots fs-show"></nav>
-                   <span class="fs-numbers">
-                                      <span class="fs-number-new">
-                   
-                   </span>
-                   </span>
-                   <button class="fs-continue fs-show">weiter</button>
-              </div> 
-               
-			</div><!-- /fs-form-wrap -->
-		</div><!-- /container -->
-            
-		
-    </div><!-- /.layout -->
-{/block}
-
-{block name="stylesheet"}
-	{hook name="register.stylesheet"}
-{/block}
-
-{block name="after-javascript-include"}
- <script src="{javascript file='assets/dist/js/vendors/classie.js'}"></script>
- <script src="{javascript file='assets/dist/js/vendors/selectFx.js'}"></script>
- <script src="{javascript file='assets/dist/js/vendors/fullscreenForm.js'}"></script>
-<script> 
-    
-   $("#warmwasserversorgung").change(function(){
-       var warmwasseuberheizung =  $('.warmwasseuberheizung:checked').val();
-       var brennstoffzukunft =  $('.brennstoffzukunft:checked').val();
-
-     //bei öl,holz,wärme
-       if((brennstoffzukunft==2) || (brennstoffzukunft==3) || (brennstoffzukunft==4)){
-        if(warmwasseuberheizung==1){
-          
-        $("#warmwasserversorgung-extra").hide();
-        $("#warmwasserversorgung-extra-oel-holz").show();
-        }
-            else{
-           $("#warmwasserversorgung-extra-oel-holz").hide();
-            $("#warmwasserversorgung-extra").hide();
-            } 
-        }
-       else  
-           if(warmwasseuberheizung==1){
-           $("#warmwasserversorgung-extra-oel-holz").hide();
-            $("#warmwasserversorgung-extra").show();
-            }   
-            else{
-           $("#warmwasserversorgung-extra-oel-holz").hide();
-            $("#warmwasserversorgung-extra").hide();
-            }  
-});
-         
-  /* $("#brennstoff_zukunft").change(function(){
-       var radiovaluebrennstoff =  $('.radiovaluebrennstoff:checked').val();
-       var radiovalue =  $('.radiovalue:checked').val();
-      if(radiovaluebrennstoff==4){
-          //alert("waermepumpe")
-          if(warmwasse-uber-heizung==1){
-        $("#warmwasserversorgung-extra").hide();
-        $("#warmwasserversorgung-extra-waermepumpe").show();
-              }
-        }
-       else {
-           
-        $("#warmwasserversorgung-extra-waermepumpe").hide();
-        $("#warmwasserversorgung-extra").hide();
-            }
-});*/
-</script>
-
-<!--Dropzone script start-->
-
-<script>
-    
-    $("#fs-submit").click(function(e) {
-        $("#form-personal-data").hide();
-        e.preventDefault();
-    $.ajax({
-                      type: $("#form-konfigurator").attr('method'),
-                      url: $("#form-konfigurator").attr('action'),
-                      data: $("#form-konfigurator").serialize()
-                     })
-                     .done(function (data, textStatus, request) {
-                      $waermebedarf = request.getResponseHeader('waermebedarf');
-                      if($waermebedarf != null) 
-                       //$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-                      if(data.indexOf("product-info")>0)
-                      $("#category-products").empty().append(data);
-                      else $("#category-products").empty().append('Kein Ergebnis, nutzen Sie bitte unser  individuelles Angebot');
-                     })
-                     .fail(function (jqXHR, textStatus, errorThrown) {
-                      if (typeof jqXHR.responseJSON !== 'undefined') {
-                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
-                        $('#form_body').html(jqXHR.responseJSON.form);
-                       }
-                       $('.form_error').html(jqXHR.responseJSON.message);
-                      } else {
-                       alert(errorThrown);
-                      }
-                     });
-    
-    });
-    /* INDIVIDUELES ANGEBOT */
-    
-   $("#fs-submit-angebot").click(function(e) {
-   
-		    	e.preventDefault();
-                 
-                    $.ajax({
-                      type: $("#form-konfigurator").attr('method'),
-                      url: "/konfigurator/personaldata",
-                      data: $("#form-konfigurator").serialize()
-                     })
-                     .done(function (data, textStatus, request) {
-                      $waermebedarf = request.getResponseHeader('waermebedarf');
-                      //if($waermebedarf != null) 
-                      // $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-
-                      $("#category-products").empty().append(data);
-                     })
-                     .fail(function (jqXHR, textStatus, errorThrown) {
-                      if (typeof jqXHR.responseJSON !== 'undefined') {
-                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
-                        $('#form_body').html(jqXHR.responseJSON.form);
-                       }
-                       $('.form_error').html(jqXHR.responseJSON.message);
-                      } else {
-                       alert(errorThrown);
-                      }
-                     });
-
-                
-                
-                
-		    });
-		 
-    /*
- Dropzone.options.formKonfigurator = {
-
-		  // Prevents Dropzone from uploading dropped files immediately
-		  autoProcessQueue: false,
-		  uploadMultiple: true,
-		  addRemoveLinks: true,
-		  parallelUploads: 10,
-		  maxFilesize: 256,
-		  clickable:'#dragdrop',
-		  previewsContainer: '#previews',
-	      dictDefaultMessage: "Drop files here to upload",
-	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
-	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
-	      dictFileTooBig: "File is too big ( { { filesize } } MiB). Max filesize: { { maxFilesize } } MiB.",
-	      dictInvalidFileType: "You can't upload files of this type.",
-	      dictResponseError: "Server responded with { { statusCode } } code.",
-	      dictCancelUpload: "Cancel upload",
-	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
-	      dictRemoveFile: "Remove file",
-	      dictRemoveFileConfirmation: null,
-	      dictMaxFilesExceeded: "You can not upload any more files.",
-	      
-		  init: function() {
-		    var submitButton =document.getElementById("fs-submit");
-         
-		        myDropzone = this; // closure
-
-              
-		    submitButton.addEventListener("click", function(e) {
-               
-		    	e.preventDefault();
-                 if(myDropzone.files.length!=0)
-		      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
-                else {
-                    $.ajax({
-                      type: $("#form-konfigurator").attr('method'),
-                      url: $("#form-konfigurator").attr('action'),
-                      data: $("#form-konfigurator").serialize()
-                     })
-                     .done(function (data, textStatus, request) {
-                      $waermebedarf = request.getResponseHeader('waermebedarf');
-                      if($waermebedarf != null) 
-                       $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-
-                      $("#category-products").empty().append(data);
-                     })
-                     .fail(function (jqXHR, textStatus, errorThrown) {
-                      if (typeof jqXHR.responseJSON !== 'undefined') {
-                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
-                        $('#form_body').html(jqXHR.responseJSON.form);
-                       }
-                       $('.form_error').html(jqXHR.responseJSON.message);
-                      } else {
-                       alert(errorThrown);
-                      }
-                     });
-                }
-                
-                
-                
-		    });
-		  },
-	     success: function(file,response, e, xhr){
-
-	   $waermebedarf = xhr.getResponseHeader('waermebedarf');
-		if($waermebedarf != null) 
-			$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-	   
-		$("#category-products").empty().append(response);
-	      }
-        /*totalUploadProgress: function(totalUploadProgress, totalBytes,totalBytesSent){
-            
-        }
-		};*/
-</script>
-<!--Dropzone script end-->
-
-
-
-
- 
-<script>
-/*$('body').on('submit', '.form-horizontal', function (e) {
-	e.preventDefault();
-	
-});*/
-    
-    
-(function() {
-	var formWrap = document.getElementById( 'fs-form-wrap' );
-
-	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {	
-		new SelectFx( el, {
-			stickyPlaceholder: false,
-			onChange: function(val){
-				document.querySelector('span.cs-placeholder').style.backgroundColor = val;
-			}
-		});
-	});
-
-	new FForm( formWrap, {
-		onReview : function() {
-			//classie.add( document.body, 'overview' ); // for demo purposes only
-            $('#review' ).show();
-            $('#fs-form-wrap').css("margin-top",'0px');
-			$formvalues = $( "#form-konfigurator .frage");
-       		//$formvalues = $("#form-konfigurator").serializeArray();
-
-		    $.each( $formvalues, function( i, field ) {
-		
-		    	frage = $( field).find(".fragelabel" ).text();
-		        antwort = $( field).find("span :checked + label" ).text();
-		        if(!antwort)
-		           antwort = $( field).find("span :selected" ).text();
-		        if(!antwort)
-		            antwort = $( field).find("span input" ).val();
-		        if(!antwort)
-		            antwort = $( field).find("span textarea" ).val();
-		        $( "#review" ).append( frage + ": <strong><br>" + antwort + "</strong><br><br>");
-		        });  
-		}
-	});
-})();
-</script>
-
-{hook name="register.after-javascript-include"}
-{/block}
-
-{block name="javascript-initialization"}
-{hook name="register.javascript-initialization"}
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Configurator" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/konfigurator"}]]}
+{/block}
+
+{block name="stylesheet"}
+    {stylesheets file='assets/dist/css/dropzone.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{hook name="register.stylesheet"}
+{/block}
+
+{block name="main-content"}
+    <div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+	<div class="">
+
+		<div class="fs-form-wrap" id="fs-form-wrap" >
+			<div>
+				<h1>HEIZUNGSTAUSCH</h1>
+			</div>
+              
+          
+        {hook name="konfigurator.top"}
+            {form name="konfigurator.heizlast.berechnung"}
+            <div  style="float:left; width:90%; height:auto">
+                
+				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/konfigurator/suggestions"}" method="post" autocomplete="off" enctype="multipart/form-data">
+                   
+                   
+                {form_field field='error_message'}
+                	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
+                {/form_field} 
+                {form_hidden_fields}   
+                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                {hook name="konfigurator.form-top"}
+               
+                    <ol class="fs-fields">
+                       
+						<li>
+                             
+							<h3>Brennstoff</h3>
+                            
+                            {form_field field="brennstoff_momentan"} 
+                            <div class="frage">
+                                <div><label class="fragelabel fs-field-label fs-anim-upper" for="{$for}">{$label}</label></div>
+                                <!--input class="fs-anim-lower" id="q1" name="q1" type="text" placeholder="Dean Moriarty" required/-->
+                                <div class="fs-radio-group fs-radio-custom clearfix fs-anim-lower">
+                                        <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                        {foreach $choices as $choice}
+                                            <span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
+                                        {/foreach}
+                                        </div>
+
+                                </div>
+                            </div>
+                            {/form_field}
+						</li>
+                        <li>
+							<h3>Brennstoff</h3>
+                            <div id="brennstoff_zukunft">
+                            {form_field field="brennstoff_zukunft"} 
+                            <div class="frage">
+                                <div><label class="fragelabel fs-field-label fs-anim-upper" for="q2">{$label}</label></div>
+                                <div class="fs-radio-group fs-radio-custom clearfix fs-anim-lower">
+
+
+
+                                        <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                        {foreach $choices as $choice}
+                                            <span><input class="brennstoffzukunft" id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="{$label_attr.for}{$choice->value}" class="radio{$choice->value} fs-field-label-sm radiolabel">{$choice->label}</label></span>
+                                        {/foreach}
+                                        </div>
+                                </div> 
+                            </div>
+                            {/form_field}
+                            </div>
+						</li>
+                        
+						<li>
+                            <h3 class="fs-anim-upper">Gebäude und Bewohner</h3>
+							<div class="row">
+								<div class="col-md-6">
+                            		<div> 
+                                        {form_field field="gebaeudeart"}
+                                        <div class="frage">
+                           				<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q3" >{$label}</label><br>
+                                 
+                           				 <span>
+											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+                                            </span>
+                                        </div>
+                                  		{/form_field}
+                               		</div> 
+									
+									<div>
+                                        {form_field field="personen_anzahl"}
+                                        <div class="frage">
+										<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
+                                            <span>
+                          					<input class="fs-anim-lower" name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" style="width:20%"/>
+                                            </span>
+                                        </div>
+                                        {/form_field}
+                            		</div>
+                                    
+                                    <div>
+                                        {form_field field="etagen"}
+                                        <div class="frage">
+										<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
+                                            <span>
+                          					<input class="fs-anim-lower" name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" style="width:20%"/>
+                                            </span>
+                                        </div>
+                                        {/form_field}
+                            		</div>
+                                    
+                                   
+                            	</div>
+                            	
+                            	<div class="col-md-6">
+                                     <!--div>
+                                        {form_field field="bestehendes_geraet_mit_warmwasser"}
+                           				<label class="fs-field-label-sm fs-anim-upper" for="q3" >{$label}</label><br>
+                                 
+                           				 
+											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+                                  		{/form_field}
+                            		</div-->
+                                    <!--div>
+                                        {form_field field="bestehendes_geraet_kw"}
+										<label class="fs-field-label-sm fs-anim-upper" for="q4" >{$label}</label>
+                          					<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="20" step="1" min="1" style="width:20%"/>
+                                        {/form_field}
+                            		</div-->
+                                	<div>
+                                        {form_field field="baujahr"}
+                                        <div class="frage">
+                            			<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q5" >{$label}</label>
+                                		<br>
+                            			<span>
+											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                            				{foreach $choices as $choice}
+                             					<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+                           					{/foreach}
+                            				</select>
+                                        </span>
+                                        </div>
+                            			{/form_field}
+                                	</div>
+                                	
+                            		<div>
+                                        {form_field field="flaeche"}
+                                        <div class="frage">
+                                		<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label>
+                            			
+                                    		<span class="help-block">{$message}</span>
+                                            <span>
+                                    		<input type="text" style="width:30%;" placeholder="110" class="fs-anim-upper" name="{$name}" id="{$label_attr.for}" value="{$value}" class="form-control input-sm" maxlength="50" {$attr} {if $required}aria-required="true" required{/if}{if !$value || $error} autofocus{/if}>
+											{if $error}
+												{assign var="error_focus" value="true"}
+											{elseif !$value}
+												{assign var="error_focus" value="true"}
+											{/if} 
+                                            </span>
+                                        </div>
+                            			{/form_field}    
+                            		</div>
+                            	</div>
+                            
+							</div>
+                            
+						</li>
+                        
+                        
+						<li>
+                            <h3 class="fs-anim-upper">Aktueller Wärmeschutz</h3>
+                                {form_field field="waermedaemmung"}
+                                <div class="frage">
+								<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q7" >{$label}</label>
+                            	
+									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                	{foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+                                	{/foreach}
+                            		</div>
+                                </div>
+                            	{/form_field}
+                            
+                                {form_field field="fenster"}
+                                <div class="frage">
+                                <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q8" >{$label}</label> 	
+									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                	{foreach $choices as $choice}
+										<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								 	{/foreach}
+									</div>
+                                </div>
+                            {/form_field}
+                            
+                                                        
+                            {form_field field="dach_daemmung"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q11" >{$label}</label>
+                           
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q11b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            
+                            
+                            <!--label class="fs-field-label-sm fs-anim-upper" for="q9" >{$label}Ist das Dach gedaÌˆmmt?</label>
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+								<span><input id="q9b" name="q9" type="radio" value="conversion"/><label for="q9b" class="radio-conversion fs-field-label-sm">Ja</label></span>
+								<span><input id="q9c" name="q9" type="radio" value="social"/><label for="q9c" class="radio-social fs-field-label-sm">Nein</label></span>
+							</div--> 
+						</li>
+                        
+                        <li>
+                            <h3 class="fs-anim-upper">LAGE</h3>
+                            {form_field field="lage_des_gebaeudes"}
+                            <div class="frage">
+							<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q10" >{$label}</label>
+                            
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+                                	<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q10b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+                                {/foreach}
+                            </div>
+                            </div>
+                            {/form_field}
+                            {form_field field="windlage_des_gebaudes"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q11" >{$label}</label>
+                           
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q11b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+
+                            
+                            
+                            {form_field field="anzahl_aussenwaende"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q12" >{$label}</label>
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+								<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q12b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								 {/foreach}
+							</div>
+                            </div>
+                            {/form_field} 
+						</li>
+                        
+						<li>
+							<h3 class="fs-anim-upper">Temperatur</h3>
+                            {form_field field="wohnraumtemperatur"}
+                            <div class="frage">
+							<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q13" >{$label}</label>
+                            
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+								<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q13b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            
+                            {form_field field="aussentemperatur"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+						</li>
+                        
+                        
+                        <li>
+							<h3 class="fs-anim-upper">Fragen zu Ihrer Heizung </h3>
+                            <div style="float:left;">
+                            {form_field field="abgasfuehrung"}
+                                <div class="frage">
+							                  <label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label><br>         		
+                                    <span>	 
+											<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+                                    </span>
+                                </div>
+                            {/form_field}
+
+                            {form_field field="waermeabgabe"}
+
+							 <div class="frage">
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                <label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label><br>
+                                <span>
+                                <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                                </select>
+                                </span>
+							</div>
+                            </div>
+                            {/form_field}
+                            </div>
+                            <div style="float:left; padding-left:70px;">
+                            {form_field field="duschwasser"}
+                            <div class="frage">
+
+                            <label class="fragelabel  fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+
+                            {form_field field="wasserabfluss"}
+                            <label class="fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            {/form_field}
+                            </div>
+                            <div class="clearfix"></div>
+
+                            
+                            <div id="warmwasserversorgung" >
+                             {form_field field="warmwasserversorgung"}
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" class="warmwasseuberheizung" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            {/form_field}
+                            </div>
+                            
+                            <div id="warmwasserversorgung-extra" style="display:none">                       
+                             {form_field field="warmwasserversorgung-extra"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            </div>
+                            
+                            <!--Fragen für Wärmepumpe-->
+                           <div id="warmwasserversorgung-extra-waermepumpe" style="display:none">                       
+                             {form_field field="warmwasserversorgung-extra-waermepumpe"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            </div>
+                            
+                            <!-- Fragen für Öl und Holz -->
+                            <div id="warmwasserversorgung-extra-oel-holz" style="display:none">                       
+                             {form_field field="warmwasserversorgung-extra-oel-holz"}
+                            <div class="frage">
+                            <label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label><br>
+							
+							<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                {foreach $choices as $choice}
+									<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q14b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+								{/foreach}
+							</div>
+                            </div>
+                            {/form_field}
+                            </div>
+                                                       
+                            
+						</li>
+                        
+				
+                       	<li>
+                            {form_field field="anmerkungen"}
+                            <div class="frage">
+							<label class="fragelabel fs-field-label fs-anim-upper" for="q15">{$label}</label>
+                            <span>
+							<textarea class="fs-anim-lower" id="{$label_attr.for}" name="{$name}" placeholder="Anmerkungen"></textarea>
+                            </span>
+                             
+                       <!--div id="dragdrop" class="fs-anim-upper">                     
+                          <div class="fallback">
+                              <input name="file" type="file" id="{$label_attr.for}" multiple />
+                          </div>
+                          <div class="dz-default dz-message dz-clickable" id="dropzonePreview" >
+                             <span>Bitte hier Fotos von Ihrem alten Gerät ablegen (optional)</span>
+                          </div>
+                          <div id="previews" class="dropzone"></div>
+                       </div-->
+                            </div>
+                            {/form_field}
+                            
+                            
+						</li>
+                        
+                    </ol>
+                    </form><!-- /fs-form -->
+                {/form}
+                    <div class="row">
+                    <div id="review" class="col-sm-3" style="display:none">
+                        <h3>Ihre Daten</h3>
+                    </div>
+                    <div class="konfigurator-buttons vorschlag-button col-sm-9" style="display:none">
+               	    <button type="button" id="fs-submit-angebot"  class="fs-submit"  style="margin-bottom:20px; float:left; margin:10px;font-size:20px">Individuelles Angebot</button> 
+					<button type="submit" class="fs-submit" id="fs-submit" style="float:left; margin:10px; font-size:20px">Vorschlag sehen</button>
+                        <div style="clear:left"></div>
+                        <section id="products-new" class="konfigurator-ergebniss">	
+                            <div class="products-heading">  
+                                <div id="waermebedarf"></div>        
+                            </div>
+                            <div id="category-products">
+                            </div><!-- /#category-products -->
+                        </section><!-- #products-heizung -->	
+		
+                        <div id="product_suggestion ">
+                            <ul id="products"></ul>
+                        </div>
+                    </div>
+                        </div>
+                 
+                    
+				
+                </div>
+                
+               <div class="fs-controls fs-show">
+            
+                   <nav class="fs-nav-dots fs-show"></nav>
+                   <span class="fs-numbers">
+                                      <span class="fs-number-new">
+                   
+                   </span>
+                   </span>
+                   <button class="fs-continue fs-show">weiter</button>
+              </div> 
+               
+			</div><!-- /fs-form-wrap -->
+		</div><!-- /container -->
+            
+		
+    </div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+	{hook name="register.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+ <script src="{javascript file='assets/dist/js/vendors/classie.js'}"></script>
+ <script src="{javascript file='assets/dist/js/vendors/selectFx.js'}"></script>
+ <script src="{javascript file='assets/dist/js/vendors/fullscreenForm.js'}"></script>
+<script> 
+    
+   $("#warmwasserversorgung").change(function(){
+       var warmwasseuberheizung =  $('.warmwasseuberheizung:checked').val();
+       var brennstoffzukunft =  $('.brennstoffzukunft:checked').val();
+
+     //bei öl,holz,wärme
+       if((brennstoffzukunft==2) || (brennstoffzukunft==3) || (brennstoffzukunft==4)){
+        if(warmwasseuberheizung==1){
+          
+        $("#warmwasserversorgung-extra").hide();
+        $("#warmwasserversorgung-extra-oel-holz").show();
+        }
+            else{
+           $("#warmwasserversorgung-extra-oel-holz").hide();
+            $("#warmwasserversorgung-extra").hide();
+            } 
+        }
+       else  
+           if(warmwasseuberheizung==1){
+           $("#warmwasserversorgung-extra-oel-holz").hide();
+            $("#warmwasserversorgung-extra").show();
+            }   
+            else{
+           $("#warmwasserversorgung-extra-oel-holz").hide();
+            $("#warmwasserversorgung-extra").hide();
+            }  
+});
+         
+  /* $("#brennstoff_zukunft").change(function(){
+       var radiovaluebrennstoff =  $('.radiovaluebrennstoff:checked').val();
+       var radiovalue =  $('.radiovalue:checked').val();
+      if(radiovaluebrennstoff==4){
+          //alert("waermepumpe")
+          if(warmwasse-uber-heizung==1){
+        $("#warmwasserversorgung-extra").hide();
+        $("#warmwasserversorgung-extra-waermepumpe").show();
+              }
+        }
+       else {
+           
+        $("#warmwasserversorgung-extra-waermepumpe").hide();
+        $("#warmwasserversorgung-extra").hide();
+            }
+});*/
+</script>
+
+<!--Dropzone script start-->
+
+<script>
+    
+    $("#fs-submit").click(function(e) {
+        $("#form-personal-data").hide();
+        e.preventDefault();
+    $.ajax({
+                      type: $("#form-konfigurator").attr('method'),
+                      url: $("#form-konfigurator").attr('action'),
+                      data: $("#form-konfigurator").serialize()
+                     })
+                     .done(function (data, textStatus, request) {
+                      $waermebedarf = request.getResponseHeader('waermebedarf');
+                      if($waermebedarf != null) 
+                       //$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
+                      if(data.indexOf("product-info")>0)
+                      $("#category-products").empty().append(data);
+                      else $("#category-products").empty().append('Kein Ergebnis, nutzen Sie bitte unser  individuelles Angebot');
+                     })
+                     .fail(function (jqXHR, textStatus, errorThrown) {
+                      if (typeof jqXHR.responseJSON !== 'undefined') {
+                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
+                        $('#form_body').html(jqXHR.responseJSON.form);
+                       }
+                       $('.form_error').html(jqXHR.responseJSON.message);
+                      } else {
+                       alert(errorThrown);
+                      }
+                     });
+    
+    });
+    /* INDIVIDUELES ANGEBOT */
+    
+   $("#fs-submit-angebot").click(function(e) {
+   
+		    	e.preventDefault();
+                 
+                    $.ajax({
+                      type: $("#form-konfigurator").attr('method'),
+                      url: "/konfigurator/personaldata",
+                      data: $("#form-konfigurator").serialize()
+                     })
+                     .done(function (data, textStatus, request) {
+                      $waermebedarf = request.getResponseHeader('waermebedarf');
+                      //if($waermebedarf != null) 
+                      // $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
+
+                      $("#category-products").empty().append(data);
+                     })
+                     .fail(function (jqXHR, textStatus, errorThrown) {
+                      if (typeof jqXHR.responseJSON !== 'undefined') {
+                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
+                        $('#form_body').html(jqXHR.responseJSON.form);
+                       }
+                       $('.form_error').html(jqXHR.responseJSON.message);
+                      } else {
+                       alert(errorThrown);
+                      }
+                     });
+
+                
+                
+                
+		    });
+		 
+    /*
+ Dropzone.options.formKonfigurator = {
+
+		  // Prevents Dropzone from uploading dropped files immediately
+		  autoProcessQueue: false,
+		  uploadMultiple: true,
+		  addRemoveLinks: true,
+		  parallelUploads: 10,
+		  maxFilesize: 256,
+		  clickable:'#dragdrop',
+		  previewsContainer: '#previews',
+	      dictDefaultMessage: "Drop files here to upload",
+	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+	      dictFileTooBig: "File is too big ( { { filesize } } MiB). Max filesize: { { maxFilesize } } MiB.",
+	      dictInvalidFileType: "You can't upload files of this type.",
+	      dictResponseError: "Server responded with { { statusCode } } code.",
+	      dictCancelUpload: "Cancel upload",
+	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+	      dictRemoveFile: "Remove file",
+	      dictRemoveFileConfirmation: null,
+	      dictMaxFilesExceeded: "You can not upload any more files.",
+	      
+		  init: function() {
+		    var submitButton =document.getElementById("fs-submit");
+         
+		        myDropzone = this; // closure
+
+              
+		    submitButton.addEventListener("click", function(e) {
+               
+		    	e.preventDefault();
+                 if(myDropzone.files.length!=0)
+		      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+                else {
+                    $.ajax({
+                      type: $("#form-konfigurator").attr('method'),
+                      url: $("#form-konfigurator").attr('action'),
+                      data: $("#form-konfigurator").serialize()
+                     })
+                     .done(function (data, textStatus, request) {
+                      $waermebedarf = request.getResponseHeader('waermebedarf');
+                      if($waermebedarf != null) 
+                       $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
+
+                      $("#category-products").empty().append(data);
+                     })
+                     .fail(function (jqXHR, textStatus, errorThrown) {
+                      if (typeof jqXHR.responseJSON !== 'undefined') {
+                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
+                        $('#form_body').html(jqXHR.responseJSON.form);
+                       }
+                       $('.form_error').html(jqXHR.responseJSON.message);
+                      } else {
+                       alert(errorThrown);
+                      }
+                     });
+                }
+                
+                
+                
+		    });
+		  },
+	     success: function(file,response, e, xhr){
+
+	   $waermebedarf = xhr.getResponseHeader('waermebedarf');
+		if($waermebedarf != null) 
+			$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
+	   
+		$("#category-products").empty().append(response);
+	      }
+        /*totalUploadProgress: function(totalUploadProgress, totalBytes,totalBytesSent){
+            
+        }
+		};*/
+</script>
+<!--Dropzone script end-->
+
+
+
+
+ 
+<script>
+/*$('body').on('submit', '.form-horizontal', function (e) {
+	e.preventDefault();
+	
+});*/
+    
+    
+(function() {
+	var formWrap = document.getElementById( 'fs-form-wrap' );
+
+	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {	
+		new SelectFx( el, {
+			stickyPlaceholder: false,
+			onChange: function(val){
+				document.querySelector('span.cs-placeholder').style.backgroundColor = val;
+			}
+		});
+	});
+
+	new FForm( formWrap, {
+		onReview : function() {
+			//classie.add( document.body, 'overview' ); // for demo purposes only
+            $('#review' ).show();
+            $('#fs-form-wrap').css("margin-top",'0px');
+			$formvalues = $( "#form-konfigurator .frage");
+       		//$formvalues = $("#form-konfigurator").serializeArray();
+
+		    $.each( $formvalues, function( i, field ) {
+		
+		    	frage = $( field).find(".fragelabel" ).text();
+		        antwort = $( field).find("span :checked + label" ).text();
+		        if(!antwort)
+		           antwort = $( field).find("span :selected" ).text();
+		        if(!antwort)
+		            antwort = $( field).find("span input" ).val();
+		        if(!antwort)
+		            antwort = $( field).find("span textarea" ).val();
+		        $( "#review" ).append( frage + ": <strong><br>" + antwort + "</strong><br><br>");
+		        });  
+		}
+	});
+})();
+</script>
+
+{hook name="register.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
 {/block}

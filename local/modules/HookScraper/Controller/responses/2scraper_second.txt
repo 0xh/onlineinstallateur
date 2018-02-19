@@ -1,126 +1,59 @@
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>
-	GC-OnlinePlus
-</title>
-
-    
-    <script src="Scripts/LAB/LAB.min.js" type="text/javascript"></script>
-
-    <script type="text/javascript">
-        $LAB
-        .setOptions({ AllowDuplicates: false })
-        .script("Scripts/jquery/1.8.3/jquery.js").wait()
-        .script("Scripts/jquery.validate.min.js").wait()
-        .script("Scripts/LoginPanel-1.0.14.min.js")
-        .wait(function () { $(document).ready(function () { OnLoginPanelReady(); }) });
-    </script>
-
-
-<link type="text/css" rel="stylesheet" href="layouts/_default/default-1.0.22.min.css" /><link type="text/css" rel="stylesheet" href="layouts/gc-gruppe.de/gc-1.0.11.min.css" /></head>
-<body id="bodyLogin" style="height:250px;width:250px;">
-    <form method="post" action="./loginpanel.aspx" id="frmLoginPanel">
-<div class="aspNetHidden">
-<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
-<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE1OTY1NjQwNTgPZBYCAgMPZBYCAgEPZBYOAg8PFgIeCWlubmVyaHRtbAUCREVkAhUPFgIfAAUQbndpbmctTmV0d29ya2luZ2QCFw8WAh8ABQJXQWQCGQ8WAh8ABQM1NTJkAhsPFgIfAAUKV2lsbGtvbW1lbmQCHQ8WAh8ABXdXaWxsa29tbWVuJmx0O2JyJmd0OyZsdDtiJmd0O253aW5nLU5ldHdvcmtpbmchJmx0Oy9iJmd0OyZsdDticiZndDsmbHQ7YnImZ3Q7TGV0enRlcyBMb2dpbjombHQ7YnImZ3Q7MDcvMjAvMjAxNiAxNjo0ODozOGQCHw8WAh8AZWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgQFCmNoa0xvZ2luT0sFCGNoa1dzdk9LBRBjaGtOZXh0UGFnZU1vZGFsBRBjaGtVc2VJbmZvQ2VudGVyw6B95u+85O/1d3hDxdFD4eIBI2I=" />
-</div>
-
-<script type="text/javascript">
-//<![CDATA[
-var theForm = document.forms['frmLoginPanel'];
-if (!theForm) {
-    theForm = document.frmLoginPanel;
-}
-function __doPostBack(eventTarget, eventArgument) {
-    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
-        theForm.__EVENTTARGET.value = eventTarget;
-        theForm.__EVENTARGUMENT.value = eventArgument;
-        theForm.submit();
-    }
-}
-//]]>
-</script>
-
-
-<div class="aspNetHidden">
-
-	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="FA0B6320" />
-	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAgnVgmMPh/ic4h2RyisgNLCY3plgk0YBAefRz3MyBlTcHY2+Mc6SrnAqio3oCKbxYYxrKuDueUWsOM0U7wBRXmi/FNTWG01YRzBQO/ghCqFBGCk6sZcYSA7IxplkQW9RM64VQQoNyYxUGrCNNmLJzFSsC0kTOvtbO67ad4OBYqt+8Tnnahec4JhFeKjFx+I24RPO/TR" />
-</div>
-    <div class="pnlLogin" style="height:250px;">
-        <div><span class="panelHeader">Kunden-Login</span></div>
-        <br />
-        <table id="tblLogin" class="tblLogin">
-            <tr style="height:36px;">
-                <td>
-                    Benutzer
-                </td>
-                <td>
-                    <input name="txtUserName" type="text" id="txtUserName" style="width:132px;text-transform:uppercase;" value="NWING14C5" />
-                </td>
-            </tr>
-            <tr style="height:36px;">
-                <td>
-                    Kennwort
-                </td>
-                <td>
-                    <input name="txtPassword" type="password" id="txtPassword" style="width:132px;" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                </td>
-            </tr>
-        </table>
-
-        <br />
-
-        <table class="fullWidth">
-            <tr style="height:27px;">
-                <td>&nbsp;</td> 
-                <td style="width:82px;" class="btnGC" onclick="OnBtnLoginClick()">
-                    <div>Login</div>
-                </td>
-                <td style="width:40px;"></td>
-            </tr>        
-        </table>
-
-        <br /><br />
-
-        <div id="divForgotten">
-            <a href="javascript:OnButtonPasswordClick()"><span style="font-style:italic;">Kennwort vergessen?</span></a>
-        </div>
-    </div>
-
-    <label id="txtLanguage" class="hidden">DE</label>
-    <input name="chkLoginOK" type="checkbox" id="chkLoginOK" class="hidden" checked="checked" />
-    <input name="chkWsvOK" type="checkbox" id="chkWsvOK" class="hidden" />
-    <label id="lblFullUserName" class="hidden">nwing-Networking</label>
-    <label id="lblInstallation" class="hidden">WA</label>
-    <label id="lblCompany" class="hidden">552</label> 
-    <label id="lblHello" class="hidden">Willkommen</label>
-    <label id="lblWelcomeText" class="hidden">Willkommen&lt;br&gt;&lt;b&gt;nwing-Networking!&lt;/b&gt;&lt;br&gt;&lt;br&gt;Letztes Login:&lt;br&gt;07/20/2016 16:48:38</label>
-    <label id="txtNextPage" class="hidden"></label>
-    <label id="txtNextPageHeight" class="hidden"></label>
-    <label id="txtNextPageWidth" class="hidden"></label>
-    <label id="txtNextPageTitle" class="hidden"></label>
-    <input name="chkNextPageModal" type="checkbox" id="chkNextPageModal" class="hidden" />
-    <input name="chkUseInfoCenter" type="checkbox" id="chkUseInfoCenter" class="hidden" checked="checked" /> 
-    <a id="enablesJSPostBack" href="javascript:__doPostBack(&#39;enablesJSPostBack&#39;,&#39;&#39;)" style="display: none;"></a>
-
-    </form>
-
-    <span id="lblErrUserName" class="hidden">Bitte geben Sie einen Benutzernamen ein.</span>
-    <span id="lblErrPassword" class="hidden">Bitte geben Sie Ihr Kennwort ein.</span>
-    <span id="lblPwdTitle" class="hidden">Neues Kennwort zusenden</span>
-
-</body>
-</html>
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Die Ressource kann nicht gefunden werden.</title>
+        <meta name="viewport" content="width=device-width" />
+        <style>
+         body {font-family:"Verdana";font-weight:normal;font-size: .7em;color:black;} 
+         p {font-family:"Verdana";font-weight:normal;color:black;margin-top: -5px}
+         b {font-family:"Verdana";font-weight:bold;color:black;margin-top: -5px}
+         H1 { font-family:"Verdana";font-weight:normal;font-size:18pt;color:red }
+         H2 { font-family:"Verdana";font-weight:normal;font-size:14pt;color:maroon }
+         pre {font-family:"Consolas","Lucida Console",Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}
+         .marker {font-weight: bold; color: black;text-decoration: none;}
+         .version {color: gray;}
+         .error {margin-bottom: 10px;}
+         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }
+         @media screen and (max-width: 639px) {
+          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }
+         }
+         @media screen and (max-width: 479px) {
+          pre { width: 280px; }
+         }
+        </style>
+    </head>
+
+    <body bgcolor="white">
+
+            <span><H1>Serverfehler in der Anwendung /.<hr width=100% size=1 color=silver></H1>
+
+            <h2> <i>Die Ressource kann nicht gefunden werden.</i> </h2></span>
+
+            <font face="Arial, Helvetica, Geneva, SunSans-Regular, sans-serif ">
+
+            <b> Beschreibung: </b>HTTP 404. Die gesuchte Ressource oder eine ihrer Abh&#228;ngigkeiten wurde m&#246;glicherweise entfernt, umbenannt oder ist vor&#252;bergehend nicht verf&#252;gbar. &#220;berpr&#252;fen Sie folgende URL, und stellen Sie sicher, dass sie richtig geschrieben wurde.
+            <br><br>
+
+            <b> Angeforderter URL: </b>/loginpanel.aspx<br><br>
+
+            <hr width=100% size=1 color=silver>
+
+            <b>Versionsinformationen:</b>&nbsp;Microsoft .NET Framework-Version:4.0.30319; ASP.NET-Version:4.6.1085.0
+
+            </font>
+
+    </body>
+</html>
+<!-- 
+[HttpException]: Die Datei /loginpanel.aspx ist nicht vorhanden.
+   bei System.Web.UI.Util.CheckVirtualFileExists(VirtualPath virtualPath)
+   bei System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   bei System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   bei System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   bei System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   bei System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   bei System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   bei System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+--><!-- 
+Diese Seite enthält möglicherweise vertrauliche Informationen, weil ASP.NET für die Anzeige ausführlicher Fehlermeldungen mit &lt;customErrors mode="Off"/&gt; konfiguriert ist. In Produktionsumgebungen sollten Sie &lt;customErrors mode="On"/&gt; oder &lt;customErrors mode="RemoteOnly"/&gt; verwenden.-->
 

@@ -27,29 +27,11 @@ class StripeObject implements ArrayAccess, JsonSerializable
     {
         self::$permanentAttributes = new Util\Set(array('_opts', 'id'));
         self::$nestedUpdatableAttributes = new Util\Set(array(
-            // Numbers are in place for indexes in an `additional_owners` array.
-            //
-            // There's a maximum allowed additional owners of 3, but leave the
-            // 4th so errors work properly.
-            0, 1, 2, 3, 4,
-
-            'additional_owners',
-            'address',
-            'address_kana',
-            'address_kanji',
-            'dob',
-            'inventory',
-            'legal_entity',
-            'metadata',
-            'owner',
-            'payout_schedule',
-            'personal_address',
-            'personal_address_kana',
-            'personal_address_kanji',
-            'shipping',
-            'tos_acceptance',
-            'transfer_schedule',
-            'verification',
+            'metadata', 'legal_entity', 'address', 'dob', 'transfer_schedule', 'verification',
+            'tos_acceptance', 'personal_address',
+            // will make the array into an AttachedObject: weird, but works for now
+            'additional_owners', 0, 1, 2, 3, 4, // Max 3, but leave the 4th so errors work properly
+            'inventory'
         ));
     }
 
@@ -148,11 +130,11 @@ class StripeObject implements ArrayAccess, JsonSerializable
                     . "with the result returned by Stripe's API, "
                     . "probably as a result of a save(). The attributes currently "
                     . "available on this object are: $attrs";
-            Stripe::getLogger()->error($message);
+            error_log($message);
             return $nullval;
         } else {
             $class = get_class($this);
-            Stripe::getLogger()->error("Stripe Notice: Undefined property of $class instance: $k");
+            error_log("Stripe Notice: Undefined property of $class instance: $k");
             return $nullval;
         }
     }

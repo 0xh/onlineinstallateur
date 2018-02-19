@@ -23,9 +23,5 @@ class HomepageController extends BaseFrontController {
     public function klimaSetsAction(Request $request) {
 		return $this->render("klimasets");
 	}
-	public function blackfridayAction(Request $request) {
-		return $this->render("blackfriday");
-	}	
-	
 
 }

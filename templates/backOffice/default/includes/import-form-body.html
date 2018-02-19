@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="row vertical-row-space">
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 {form_field field="language"}
                     <div>
                         <label for="{$label_attr.for}">
@@ -27,28 +27,7 @@
                     </div>
                 {/form_field}
             </div>
-            
-            {if $useFulfilmentCenter} 
-                <div class="col-xs-4">
-                        <div>
-                            <label for="{$label_attr.for}">
-                                {intl l="Select Fulfilment Center"}
-                            </label>
-                        </div>
-                        <div>
-                            <select id="{$label_attr.for}" name="fulfilment_center" required>
-                                <option value="0">PSE</option>
-                                {loop type="module" name="module" code="multiplefullfilmentcenters" active="1"}
-                                    {loop type="fulfilment_center" name="fulfilment_center" active="1"}
-                                        <option value="{$ID}">{$NAME}</option>
-                                    {/loop}
-                                {/loop}
-                            </select>
-                        </div>
-                </div>
-            {/if}
-            
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 {form_field field="file_upload"}
                     <div>
                         <label form="{$label_attr.for}">

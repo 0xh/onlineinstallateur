@@ -1,5 +1,5 @@
-<?php
-
-return [
-    'Copyright' => 'Copyright',
-];
+<?php
+
+return [
+    'Copyright' => 'Copyright',
+];

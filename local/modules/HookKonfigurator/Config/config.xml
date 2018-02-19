@@ -1,151 +1,151 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-<config xmlns="http://thelia.net/schema/dic/config"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
-
-    <loops>
-        <loop name="product_heizung" class="HookKonfigurator\Loop\ProductHeizung" />
-        <loop name="service" class="HookKonfigurator\Loop\Service" />
-    </loops>
-
-    <forms>
-        <form name="konfigurator.heizlast.berechnung" class="HookKonfigurator\Form\HeizlastBerechnung" />
-        <form name="konfigurator.personal.data" class="HookKonfigurator\Form\PersonalData" />
-    </forms>
-
- <!--
-    <commands>
-        <command class="HookKonfigurator\Command\MySuperCommand" />
-    </commands>
-  -->
-    <!--
-    <services>
-    </services>
-    -->
-    
-    <hooks>
-        <hook id="hookkonfigurator.hook.front" class="HookKonfigurator\Hook\Front" scope="request">
-		    <tag name="hook.event_listener" event="main.head-bottom" />
-            <tag name="hook.event_listener" event="main.navbar-primary" />
-            <tag name="hook.event_listener" event="konfigurator-suggestions" />
-        </hook>
-    </hooks>
-    
-    <!--
-    <exports>
-    </exports>
-    -->
-
-	<imports>
-		<import id="hookkonfigurator.import.services" class="HookKonfigurator\Import\ServicesImport" category_id="thelia.import.products">
-			<import_descriptive locale="en_US">
-				<title>Import services </title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name, description, type, price, quantity,unit, extra_quantity_price, constraints_values, constraints_names, currency, duration</br>
-                    Indications:
-                    <ul>
-                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
-                        <li>Decimal numbers must use "," as separator : 12,34</li>
-                        <li>Values are always numbers(even constraint vales)</li>
-                        <li>"False" and "true" must be replaced with 0 and 1</li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-			<import_descriptive locale="de_DE">
-				<title>Services importieren </title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name, description, type, price, quantity,unit, extra_quantity_price, constraints_values, constraints_names, currency, duration</br>
-                    Indications:
-                    <ul>
-                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
-                        <li>Decimal numbers must use "," as separator : 12,34</li>
-                        <li>Values are always numbers(even constraint vales)</li>
-                        <li>"False" and "true" must be replaced with 0 and 1</li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-		</import>
-		<import id="hookkonfigurator.import.heating" class="HookKonfigurator\Import\HeatingImport" category_id="thelia.import.products">
-			<import_descriptive locale="en_US">
-				<title>Import heating products </title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name</br>
-                    Indications:
-                    <ul>
-                        <li></li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-			<import_descriptive locale="de_DE">
-				<title>Heizungsprodukte importieren </title>
-				 <description> describe service import format </description>
-			</import_descriptive>
-		</import>
-		<import id="hookkonfigurator.import.sanitary" class="HookKonfigurator\Import\SanitaryImport" category_id="thelia.import.products">
-			<import_descriptive locale="en_US">
-				<title>Import sanitary products </title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name</br>
-                    Indications:
-                    <ul>
-                        <li></li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-			<import_descriptive locale="de_DE">
-				<title>Sanitär produkte importieren </title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name</br>
-                    Indications:
-                    <ul>
-                        <li></li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-		</import>
-		<import id="hookkonfigurator.import.updateproducts" class="HookKonfigurator\Import\UpdateProducts" category_id="thelia.import.products">
-			<import_descriptive locale="en_US">
-				<title>Update products</title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name</br>
-                    Indications:
-                    <ul>
-                        <li></li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-			<import_descriptive locale="de_DE">
-				<title>Aktualisieren Produkte</title>
-				 <description>
-				  <![CDATA[
-                    Importer.1 supports the following structure:</br>
-                    id, ref, name</br>
-                    Indications:
-                    <ul>
-                        <li></li>
-                    </ul>
-                    ]]>
-				 </description>
-			</import_descriptive>
-		</import>
-	</imports>
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="product_heizung" class="HookKonfigurator\Loop\ProductHeizung" />
+        <loop name="service" class="HookKonfigurator\Loop\Service" />
+    </loops>
+
+    <forms>
+        <form name="konfigurator.heizlast.berechnung" class="HookKonfigurator\Form\HeizlastBerechnung" />
+        <form name="konfigurator.personal.data" class="HookKonfigurator\Form\PersonalData" />
+    </forms>
+
+ <!--
+    <commands>
+        <command class="HookKonfigurator\Command\MySuperCommand" />
+    </commands>
+  -->
+    <!--
+    <services>
+    </services>
+    -->
+    
+    <hooks>
+        <hook id="hookkonfigurator.hook.front" class="HookKonfigurator\Hook\Front" scope="request">
+		    <tag name="hook.event_listener" event="main.head-bottom" />
+            <tag name="hook.event_listener" event="main.navbar-primary" />
+            <tag name="hook.event_listener" event="konfigurator-suggestions" />
+        </hook>
+    </hooks>
+    
+    <!--
+    <exports>
+    </exports>
+    -->
+
+	<imports>
+		<import id="hookkonfigurator.import.services" class="HookKonfigurator\Import\ServicesImport" category_id="thelia.import.products">
+			<import_descriptive locale="en_US">
+				<title>Import services </title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name, description, type, price, quantity,unit, extra_quantity_price, constraints_values, constraints_names, currency, duration</br>
+                    Indications:
+                    <ul>
+                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
+                        <li>Decimal numbers must use "," as separator : 12,34</li>
+                        <li>Values are always numbers(even constraint vales)</li>
+                        <li>"False" and "true" must be replaced with 0 and 1</li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+			<import_descriptive locale="de_DE">
+				<title>Services importieren </title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name, description, type, price, quantity,unit, extra_quantity_price, constraints_values, constraints_names, currency, duration</br>
+                    Indications:
+                    <ul>
+                        <li>Missing field values must be replaced with NULL : 2,green,NULL,A and not 2,green,,A </li>
+                        <li>Decimal numbers must use "," as separator : 12,34</li>
+                        <li>Values are always numbers(even constraint vales)</li>
+                        <li>"False" and "true" must be replaced with 0 and 1</li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+		</import>
+		<import id="hookkonfigurator.import.heating" class="HookKonfigurator\Import\HeatingImport" category_id="thelia.import.products">
+			<import_descriptive locale="en_US">
+				<title>Import heating products </title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name</br>
+                    Indications:
+                    <ul>
+                        <li></li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+			<import_descriptive locale="de_DE">
+				<title>Heizungsprodukte importieren </title>
+				 <description> describe service import format </description>
+			</import_descriptive>
+		</import>
+		<import id="hookkonfigurator.import.sanitary" class="HookKonfigurator\Import\SanitaryImport" category_id="thelia.import.products">
+			<import_descriptive locale="en_US">
+				<title>Import sanitary products </title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name</br>
+                    Indications:
+                    <ul>
+                        <li></li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+			<import_descriptive locale="de_DE">
+				<title>Sanitär produkte importieren </title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name</br>
+                    Indications:
+                    <ul>
+                        <li></li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+		</import>
+		<import id="hookkonfigurator.import.updateproducts" class="HookKonfigurator\Import\UpdateProducts" category_id="thelia.import.products">
+			<import_descriptive locale="en_US">
+				<title>Update products</title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name</br>
+                    Indications:
+                    <ul>
+                        <li></li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+			<import_descriptive locale="de_DE">
+				<title>Aktualisieren Produkte</title>
+				 <description>
+				  <![CDATA[
+                    Importer.1 supports the following structure:</br>
+                    id, ref, name</br>
+                    Indications:
+                    <ul>
+                        <li></li>
+                    </ul>
+                    ]]>
+				 </description>
+			</import_descriptive>
+		</import>
+	</imports>
 </config>

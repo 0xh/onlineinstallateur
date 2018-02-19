@@ -1,84 +1,84 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<buildpath>
-	<buildpathentry kind="src" path="core/lib/Thelia"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/phpunit/src"/>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="core/vendor/symfony/intl"/>
-	<buildpathentry excluding="lib/Thelia/|vendor/composer/|vendor/doctrine/cache/lib/|vendor/doctrine/instantiator/src/Doctrine/Instantiator/|vendor/ensepar/html2pdf/|vendor/ensepar/tcpdf/|vendor/fzaninotto/faker/src/Faker/|vendor/imagine/imagine/lib/|vendor/ircmaxell/password-compat/lib/|vendor/kriswallsmith/assetic/src/|vendor/leafo/lessphp/|vendor/michelf/php-markdown/|vendor/oyejorge/less.php/|vendor/phpdocumentor/reflection-docblock/src/|vendor/phpspec/prophecy/src/|vendor/phpunit/php-code-coverage/src/|vendor/phpunit/php-file-iterator/File/|vendor/phpunit/php-text-template/src/|vendor/phpunit/php-timer/src/|vendor/phpunit/php-token-stream/src/|vendor/phpunit/phpunit-mock-objects/src/|vendor/phpunit/phpunit/src/|vendor/propel/propel/src/|vendor/psr/log/|vendor/ptachoire/cssembed/src/|vendor/ramsey/array_column/src/|vendor/sebastian/comparator/src/|vendor/sebastian/diff/src/|vendor/sebastian/environment/src/|vendor/sebastian/exporter/src/|vendor/sebastian/global-state/src/|vendor/sebastian/recursion-context/src/|vendor/sebastian/version/src/|vendor/simplepie/simplepie/library/|vendor/smarty/smarty/libs/|vendor/stack/builder/src/|vendor/swiftmailer/swiftmailer/lib/|vendor/symfony-cmf/routing/|vendor/symfony/browser-kit/|vendor/symfony/class-loader/|vendor/symfony/config/|vendor/symfony/console/|vendor/symfony/debug/|vendor/symfony/dependency-injection/|vendor/symfony/dom-crawler/|vendor/symfony/event-dispatcher/|vendor/symfony/filesystem/|vendor/symfony/finder/|vendor/symfony/form/|vendor/symfony/http-foundation/|vendor/symfony/http-kernel/|vendor/symfony/icu/|vendor/symfony/intl/|vendor/symfony/options-resolver/|vendor/symfony/polyfill-apcu/|vendor/symfony/polyfill-intl-icu/|vendor/symfony/polyfill-mbstring/|vendor/symfony/polyfill-php54/|vendor/symfony/process/|vendor/symfony/property-access/|vendor/symfony/routing/|vendor/symfony/serializer/|vendor/symfony/translation/|vendor/symfony/validator/|vendor/symfony/var-dumper/|vendor/symfony/yaml/|vendor/thelia/currency-converter/src/|vendor/thelia/installer/src/|vendor/thelia/math-tools/src/" kind="src" path="core"/>
-	<buildpathentry kind="src" path="core/vendor/stack/builder/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/class-loader"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/dom-crawler"/>
-	<buildpathentry kind="src" path="core/vendor/thelia/currency-converter/src"/>
-	<buildpathentry kind="src" path="core/vendor/propel/propel/src"/>
-	<buildpathentry excluding="Symfony/Component/HttpFoundation/Resources/stubs/" kind="src" path="core/vendor/symfony/http-foundation"/>
-	<buildpathentry kind="src" path="core/vendor/ensepar/html2pdf"/>
-	<buildpathentry kind="src" path="core/vendor/ensepar/tcpdf/config/lang"/>
-	<buildpathentry kind="src" path="core/vendor/imagine/imagine/lib"/>
-	<buildpathentry excluding="lib/" kind="src" path="core/vendor/oyejorge/less.php"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/config"/>
-	<buildpathentry kind="src" path="core/vendor/ramsey/array_column/src"/>
-	<buildpathentry kind="src" path="core/vendor/ptachoire/cssembed/src"/>
-	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/php-file-iterator/File"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/version/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/property-access"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/browser-kit"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/icu"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/comparator/src"/>
-	<buildpathentry kind="src" path="core/vendor/leafo/lessphp"/>
-	<buildpathentry kind="src" path="core/vendor/phpspec/prophecy/src"/>
-	<buildpathentry excluding="config/|fonts/" kind="src" path="core/vendor/ensepar/tcpdf"/>
-	<buildpathentry kind="src" path="core/vendor/oyejorge/less.php/lib"/>
-	<buildpathentry kind="src" path="core/vendor/phpdocumentor/reflection-docblock/src"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/phpunit-mock-objects/src"/>
-	<buildpathentry excluding="Resources/stubs/" kind="src" path="core/vendor/symfony/polyfill-php54"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-php54/Resources/stubs"/>
-	<buildpathentry kind="src" path="core/vendor/fzaninotto/faker/src/Faker"/>
-	<buildpathentry kind="src" path="core/vendor/psr/log"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/global-state/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/event-dispatcher"/>
-	<buildpathentry kind="src" path="core/vendor/ensepar/tcpdf/fonts"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/dependency-injection"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/http-kernel"/>
-	<buildpathentry kind="src" path="core/vendor/kriswallsmith/assetic/src"/>
-	<buildpathentry excluding="sysplugins/" kind="src" path="core/vendor/smarty/smarty/libs"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/debug"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/form"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/validator"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/recursion-context/src"/>
-	<buildpathentry kind="src" path="core/vendor/swiftmailer/swiftmailer/lib"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/process"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/environment/src"/>
-	<buildpathentry kind="src" path="core/vendor/simplepie/simplepie/library"/>
-	<buildpathentry kind="src" path="core/vendor/composer"/>
-	<buildpathentry excluding="Resources/functions/" kind="src" path="core/vendor/symfony/var-dumper"/>
-	<buildpathentry kind="src" path="core/vendor/ircmaxell/password-compat/lib"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-apcu"/>
-	<buildpathentry kind="src" path="core/vendor/michelf/php-markdown"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/translation"/>
-	<buildpathentry kind="src" path="core/vendor/thelia/math-tools/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/routing"/>
-	<buildpathentry kind="src" path="local/modules"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/exporter/src"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/php-text-template/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-intl-icu"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/serializer"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/php-timer/src"/>
-	<buildpathentry kind="src" path="core/vendor/doctrine/instantiator/src/Doctrine/Instantiator"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-mbstring"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/console"/>
-	<buildpathentry kind="src" path="core/vendor/smarty/smarty/libs/sysplugins"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/php-code-coverage/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/options-resolver"/>
-	<buildpathentry kind="src" path="core/vendor/doctrine/cache/lib"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/filesystem"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/intl/Resources/stubs"/>
-	<buildpathentry kind="src" path="core/vendor/sebastian/diff/src"/>
-	<buildpathentry excluding="lang/" kind="src" path="core/vendor/ensepar/tcpdf/config"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/finder"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/yaml"/>
-	<buildpathentry kind="src" path="core/vendor/thelia/installer/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony-cmf/routing"/>
-	<buildpathentry kind="src" path="core/vendor/phpunit/php-token-stream/src"/>
-	<buildpathentry kind="src" path="core/vendor/symfony/var-dumper/Resources/functions"/>
-</buildpath>
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path="core/lib/Thelia"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/phpunit/src"/>
+	<buildpathentry excluding="Resources/stubs/" kind="src" path="core/vendor/symfony/intl"/>
+	<buildpathentry excluding="lib/Thelia/|vendor/composer/|vendor/doctrine/cache/lib/|vendor/doctrine/instantiator/src/Doctrine/Instantiator/|vendor/ensepar/html2pdf/|vendor/ensepar/tcpdf/|vendor/fzaninotto/faker/src/Faker/|vendor/imagine/imagine/lib/|vendor/ircmaxell/password-compat/lib/|vendor/kriswallsmith/assetic/src/|vendor/leafo/lessphp/|vendor/michelf/php-markdown/|vendor/oyejorge/less.php/|vendor/phpdocumentor/reflection-docblock/src/|vendor/phpspec/prophecy/src/|vendor/phpunit/php-code-coverage/src/|vendor/phpunit/php-file-iterator/File/|vendor/phpunit/php-text-template/src/|vendor/phpunit/php-timer/src/|vendor/phpunit/php-token-stream/src/|vendor/phpunit/phpunit-mock-objects/src/|vendor/phpunit/phpunit/src/|vendor/propel/propel/src/|vendor/psr/log/|vendor/ptachoire/cssembed/src/|vendor/ramsey/array_column/src/|vendor/sebastian/comparator/src/|vendor/sebastian/diff/src/|vendor/sebastian/environment/src/|vendor/sebastian/exporter/src/|vendor/sebastian/global-state/src/|vendor/sebastian/recursion-context/src/|vendor/sebastian/version/src/|vendor/simplepie/simplepie/library/|vendor/smarty/smarty/libs/|vendor/stack/builder/src/|vendor/swiftmailer/swiftmailer/lib/|vendor/symfony-cmf/routing/|vendor/symfony/browser-kit/|vendor/symfony/class-loader/|vendor/symfony/config/|vendor/symfony/console/|vendor/symfony/debug/|vendor/symfony/dependency-injection/|vendor/symfony/dom-crawler/|vendor/symfony/event-dispatcher/|vendor/symfony/filesystem/|vendor/symfony/finder/|vendor/symfony/form/|vendor/symfony/http-foundation/|vendor/symfony/http-kernel/|vendor/symfony/icu/|vendor/symfony/intl/|vendor/symfony/options-resolver/|vendor/symfony/polyfill-apcu/|vendor/symfony/polyfill-intl-icu/|vendor/symfony/polyfill-mbstring/|vendor/symfony/polyfill-php54/|vendor/symfony/process/|vendor/symfony/property-access/|vendor/symfony/routing/|vendor/symfony/serializer/|vendor/symfony/translation/|vendor/symfony/validator/|vendor/symfony/var-dumper/|vendor/symfony/yaml/|vendor/thelia/currency-converter/src/|vendor/thelia/installer/src/|vendor/thelia/math-tools/src/" kind="src" path="core"/>
+	<buildpathentry kind="src" path="core/vendor/stack/builder/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/class-loader"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/dom-crawler"/>
+	<buildpathentry kind="src" path="core/vendor/thelia/currency-converter/src"/>
+	<buildpathentry kind="src" path="core/vendor/propel/propel/src"/>
+	<buildpathentry excluding="Symfony/Component/HttpFoundation/Resources/stubs/" kind="src" path="core/vendor/symfony/http-foundation"/>
+	<buildpathentry kind="src" path="core/vendor/ensepar/html2pdf"/>
+	<buildpathentry kind="src" path="core/vendor/ensepar/tcpdf/config/lang"/>
+	<buildpathentry kind="src" path="core/vendor/imagine/imagine/lib"/>
+	<buildpathentry excluding="lib/" kind="src" path="core/vendor/oyejorge/less.php"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/config"/>
+	<buildpathentry kind="src" path="core/vendor/ramsey/array_column/src"/>
+	<buildpathentry kind="src" path="core/vendor/ptachoire/cssembed/src"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/php-file-iterator/File"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/version/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/property-access"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/browser-kit"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/icu"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/comparator/src"/>
+	<buildpathentry kind="src" path="core/vendor/leafo/lessphp"/>
+	<buildpathentry kind="src" path="core/vendor/phpspec/prophecy/src"/>
+	<buildpathentry excluding="config/|fonts/" kind="src" path="core/vendor/ensepar/tcpdf"/>
+	<buildpathentry kind="src" path="core/vendor/oyejorge/less.php/lib"/>
+	<buildpathentry kind="src" path="core/vendor/phpdocumentor/reflection-docblock/src"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/phpunit-mock-objects/src"/>
+	<buildpathentry excluding="Resources/stubs/" kind="src" path="core/vendor/symfony/polyfill-php54"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-php54/Resources/stubs"/>
+	<buildpathentry kind="src" path="core/vendor/fzaninotto/faker/src/Faker"/>
+	<buildpathentry kind="src" path="core/vendor/psr/log"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/global-state/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/event-dispatcher"/>
+	<buildpathentry kind="src" path="core/vendor/ensepar/tcpdf/fonts"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/dependency-injection"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/http-kernel"/>
+	<buildpathentry kind="src" path="core/vendor/kriswallsmith/assetic/src"/>
+	<buildpathentry excluding="sysplugins/" kind="src" path="core/vendor/smarty/smarty/libs"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/debug"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/form"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/validator"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/recursion-context/src"/>
+	<buildpathentry kind="src" path="core/vendor/swiftmailer/swiftmailer/lib"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/process"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/environment/src"/>
+	<buildpathentry kind="src" path="core/vendor/simplepie/simplepie/library"/>
+	<buildpathentry kind="src" path="core/vendor/composer"/>
+	<buildpathentry excluding="Resources/functions/" kind="src" path="core/vendor/symfony/var-dumper"/>
+	<buildpathentry kind="src" path="core/vendor/ircmaxell/password-compat/lib"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-apcu"/>
+	<buildpathentry kind="src" path="core/vendor/michelf/php-markdown"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/translation"/>
+	<buildpathentry kind="src" path="core/vendor/thelia/math-tools/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/routing"/>
+	<buildpathentry kind="src" path="local/modules"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/exporter/src"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/php-text-template/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-intl-icu"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/serializer"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/php-timer/src"/>
+	<buildpathentry kind="src" path="core/vendor/doctrine/instantiator/src/Doctrine/Instantiator"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/polyfill-mbstring"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/console"/>
+	<buildpathentry kind="src" path="core/vendor/smarty/smarty/libs/sysplugins"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/php-code-coverage/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/options-resolver"/>
+	<buildpathentry kind="src" path="core/vendor/doctrine/cache/lib"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/filesystem"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/intl/Resources/stubs"/>
+	<buildpathentry kind="src" path="core/vendor/sebastian/diff/src"/>
+	<buildpathentry excluding="lang/" kind="src" path="core/vendor/ensepar/tcpdf/config"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/finder"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/yaml"/>
+	<buildpathentry kind="src" path="core/vendor/thelia/installer/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony-cmf/routing"/>
+	<buildpathentry kind="src" path="core/vendor/phpunit/php-token-stream/src"/>
+	<buildpathentry kind="src" path="core/vendor/symfony/var-dumper/Resources/functions"/>
+</buildpath>

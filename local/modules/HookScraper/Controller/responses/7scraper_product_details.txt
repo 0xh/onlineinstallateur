@@ -1,2 +1,59 @@
-{"d":{"__type":"GcOnline.getProductDetailsReturn","Variant":"01","Supplier":"VARE01","RunNumber":8218,"ProductNumber":"V0020108134","Key1":"LI","Key2":"D","Key3":"100","Key4":"V0020108","CustomerProductNumber":"","GTIN":"","SupplierProductNumber":"0020108134","Description1":"Vaillant Witterungsgeführter Regler","Description2":"calorMatic 470f","DTN":"\u003cbr /\u003eRaumheizungs-Energieeffizienz-\u003cbr /\u003eKlasse                      VI\u003cbr /\u003eRaumheizungs-Energieeffizienz-\u003cbr /\u003eKlasse der Verbundanlage\u003cbr /\u003enwh                       %\u003cbr /\u003eBestell-Nr.             0020108134\u003cbr /\u003eVAILLANT Funk Heizungsregler\u003cbr /\u003ecalorMATIC 470f\u003cbr /\u003e1 HK, witterungsgef., mod. erweiterbar\u003cbr /\u003e\u003cbr /\u003eProduktvorteile\u003cbr /\u003e- Witterungsgeführter Funk-Regler\u003cbr /\u003emit beleuchteter Klartextanzeige\u003cbr /\u003e- Display-Kontrasteinstellung\u003cbr /\u003e- Kombinierbar mit Warmwasser-\u003cbr /\u003eSchichtladespeicher actoSTOR\u003cbr /\u003e- Schnelle Inbetriebnahme durch\u003cbr /\u003eInstallationsassistent mit Abfrage\u003cbr /\u003eder anlagenspezifischen\u003cbr /\u003eBetriebsparameter\u003cbr /\u003e- Aktivierung eines Temperaturprofils\u003cbr /\u003ezur zeit- und temperaturabhängigen\u003cbr /\u003eEstrichtrocknung\u003cbr /\u003e- Legionellen-Schutzfunktion\u003cbr /\u003e- Grafische Solarertragsanzeige\u003cbr /\u003e- Funktion 1 Tag außer Haus\u003cbr /\u003eoder 1 Tag zu Hause\u003cbr /\u003e- Funktion Stoßlüftung\u003cbr /\u003e- Einstellmöglichkeit für automatische\u003cbr /\u003eWartungsintervall-Erinnerung des\u003cbr /\u003eHeizsystems\u003cbr /\u003e- Einstellmöglichkeit verschiedener\u003cbr /\u003eLändersprachen\u003cbr /\u003e- automatische Sommer-/\u003cbr /\u003eWinterzeitumstellung\u003cbr /\u003e\u003cbr /\u003eAusstattung\u003cbr /\u003e- witterungsgeführter Regler\u003cbr /\u003ecalorMATIC 470f- mit intergriertem\u003cbr /\u003eTischaufsteller\u003cbr /\u003e- optionale Wandbefestigung für\u003cbr /\u003ecalorMATIC 470f\u003cbr /\u003e- Wandsockel für Basisstation\u003cbr /\u003e- Stiftleiste 3-polig\u003cbr /\u003e- 1 Batterie Set\u003cbr /\u003e- Außenfühler VR 21 mit Wandsockel,\u003cbr /\u003eFunkuhrsignal(DCF)und Fotovoltaik-\u003cbr /\u003ezelle zur Energieversorgung\u003cbr /\u003e- Empfangseinheit\u003cbr /\u003e\u003cbr /\u003eEinsatzmöglichkeiten\u003cbr /\u003e- Für alle Vaillant Wärmeerzeuger\u003cbr /\u003eeBUS-Elektronik\u003cbr /\u003e- Als 1-Kreisregler oder mit Mischer-\u003cbr /\u003emodul VR 61/3 als 2-Kreisregler\u003cbr /\u003eeinsetzbar.\u003cbr /\u003eHinweis Der erste Heizkreis\u003cbr /\u003eist immer ein ungemischter, direkter\u003cbr /\u003eHeizkreis\u003cbr /\u003e- Mit Zusatzmodul VR 68/2 als\u003cbr /\u003eSolarregler einsetzbar\u003cbr /\u003e- In Verbindung mit vrnetDIALOG\u003cbr /\u003eÜberwachung und Fernsteuerung\u003cbr /\u003edes Heizungssystems möglich -\u003cbr /\u003eweitere Informationen siehe Internet\u003cbr /\u003eKommunikationssystem\u003cbr /\u003e\u003cbr /\u003e\u003cbr /\u003e\u003cbr /\u003e\u003cbr /\u003e","GrosPrice":"916000.00","GrosCurrency":"EUR","NetPrice":"","NetCurrency":"","Unit":"Stück","UnitCode":"ST","PriceUnit":"Per 1","PackageUnit1":"","PackageUnit2":"","PackageUnit3":"","PackageUnit4":"","PackageUnit5":"","PackageUnitFactor1":0,"PackageUnitFactor2":0,"PackageUnitFactor3":0,"PackageUnitFactor4":0,"PackageUnitFactor5":0,"HintText":"","DiscountGroup":"L3AD","DiscountGroupText":"Vaillant Regelungen u.Zubehör f.Thermen","DecimalsAllowed":false,"OX_SupplierProductNumber":"0020108134","OX_GTIN":"4024074611074","OX_Supplier":"VARE01","OX_ModelNumber":"","NF_Variant":"","NF_Supplier":"","NF_RunNumber":0,"NF_ProductNumber":"","NF_Desription1":"","NF_Desription2":"","ALT_Variant":"","ALT_Supplier":"","ALT_RunNumber":0,"ALT_ProductNumber":"","ALT_Desription1":"","ALT_Desription2":"","MeasurementUnit":"Vaillant Witterungsgeführter Regler","ProductType":"1","MarkOrderStock":"V","MFVCentralStock":"","CentralStock":"","ShortCutIGNM":"","CaptionProductNumber":"Artikelnummer","CaptionCustomerProductNumber":"Kundeneigene Artikelnummer","CaptionGTIN":"GTIN","CaptionSupplierProductNumber":"Hersteller Artikelnummer","CaptionDescription1":"Bezeichnung 1","CaptionDescription2":"Bezeichnung 2","CaptionDTN":"Langtext","CaptionGrosPrice":"Bruttopreis","CaptionGrosCurrency":"Währung","CaptionUnit":"Mengeneinheit","CaptionPriceUnit":"Preiseinheit","CaptionPackageUnit":"Verpackungseinheit","CaptionPkgUnitFactor":"Verpackungsfaktor","CaptionHinttext":"Hinweis","CaptionNetPrice":"Nettopreis","CaptionNetCurrency":"Währung Nettopreis","CaptionDiscountGroup":"Rabattgruppe","CaptionDiscountGrpText":"Rabattgruppen Beschreibung","TabPictures":null,"TabPicturePriceList":"\u003ctable\u003e\u003ctr\u003e\u003ctd class=\u0027dxmVerticalMenu jqBPLItem\u0027 style=\u0027cursor:pointer;padding:5px;\u0027\u003eHeizung 148\u003c/td\u003e\u003ctd class=\u0027hidden jqBPLLink\u0027\u003eimages/data/ZENTRAL/Inst_CG/BPL/HTML5/A1/ebooks/AT_Heizung_2016/index.html#page/148\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e","TabOthers":null,"Tab3D":"","ShowMultimedia":false,"ShowNet":false,"ShowDTN":true,"ShowStock":false,"ShowBPL":true,"ShowJumbo":false,"ShowNRF":false,"ShowOxomi":false,"MultimediaItems":null,"Attributes":null,"IsAbleX":false,"IsUnlimited":false,"UnlimitedHint":null}}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Die Ressource kann nicht gefunden werden.</title>
+        <meta name="viewport" content="width=device-width" />
+        <style>
+         body {font-family:"Verdana";font-weight:normal;font-size: .7em;color:black;} 
+         p {font-family:"Verdana";font-weight:normal;color:black;margin-top: -5px}
+         b {font-family:"Verdana";font-weight:bold;color:black;margin-top: -5px}
+         H1 { font-family:"Verdana";font-weight:normal;font-size:18pt;color:red }
+         H2 { font-family:"Verdana";font-weight:normal;font-size:14pt;color:maroon }
+         pre {font-family:"Consolas","Lucida Console",Monospace;font-size:11pt;margin:0;padding:0.5em;line-height:14pt}
+         .marker {font-weight: bold; color: black;text-decoration: none;}
+         .version {color: gray;}
+         .error {margin-bottom: 10px;}
+         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }
+         @media screen and (max-width: 639px) {
+          pre { width: 440px; overflow: auto; white-space: pre-wrap; word-wrap: break-word; }
+         }
+         @media screen and (max-width: 479px) {
+          pre { width: 280px; }
+         }
+        </style>
+    </head>
+
+    <body bgcolor="white">
+
+            <span><H1>Serverfehler in der Anwendung /.<hr width=100% size=1 color=silver></H1>
+
+            <h2> <i>Die Ressource kann nicht gefunden werden.</i> </h2></span>
+
+            <font face="Arial, Helvetica, Geneva, SunSans-Regular, sans-serif ">
+
+            <b> Beschreibung: </b>HTTP 404. Die gesuchte Ressource oder eine ihrer Abh&#228;ngigkeiten wurde m&#246;glicherweise entfernt, umbenannt oder ist vor&#252;bergehend nicht verf&#252;gbar. &#220;berpr&#252;fen Sie folgende URL, und stellen Sie sicher, dass sie richtig geschrieben wurde.
+            <br><br>
+
+            <b> Angeforderter URL: </b>/ProductDetails2.aspx/getDetails<br><br>
+
+            <hr width=100% size=1 color=silver>
+
+            <b>Versionsinformationen:</b>&nbsp;Microsoft .NET Framework-Version:4.0.30319; ASP.NET-Version:4.6.1085.0
+
+            </font>
+
+    </body>
+</html>
+<!-- 
+[HttpException]: Die Datei /ProductDetails2.aspx ist nicht vorhanden.
+   bei System.Web.UI.Util.CheckVirtualFileExists(VirtualPath virtualPath)
+   bei System.Web.Compilation.BuildManager.GetVPathBuildResultInternal(VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   bei System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(HttpContext context, VirtualPath virtualPath, Boolean noBuild, Boolean allowCrossApp, Boolean allowBuildInPrecompile, Boolean throwIfNotFound, Boolean ensureIsUpToDate)
+   bei System.Web.Compilation.BuildManager.GetVirtualPathObjectFactory(VirtualPath virtualPath, HttpContext context, Boolean allowCrossApp, Boolean throwIfNotFound)
+   bei System.Web.Compilation.BuildManager.CreateInstanceFromVirtualPath(VirtualPath virtualPath, Type requiredBaseType, HttpContext context, Boolean allowCrossApp)
+   bei System.Web.UI.PageHandlerFactory.GetHandlerHelper(HttpContext context, String requestType, VirtualPath virtualPath, String physicalPath)
+   bei System.Web.HttpApplication.MaterializeHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   bei System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+--><!-- 
+Diese Seite enthält möglicherweise vertrauliche Informationen, weil ASP.NET für die Anzeige ausführlicher Fehlermeldungen mit &lt;customErrors mode="Off"/&gt; konfiguriert ist. In Produktionsumgebungen sollten Sie &lt;customErrors mode="On"/&gt; oder &lt;customErrors mode="RemoteOnly"/&gt; verwenden.-->
 

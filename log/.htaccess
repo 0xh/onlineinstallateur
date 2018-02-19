@@ -1,5 +1,2 @@
-RewriteEngine on
-RewriteCond %{HTTP_HOST} ^hausfabrik.at$ [NC,OR]
-RewriteCond %{HTTP_HOST} ^www.hausfabrik.at$ 
-RewriteCond %{REQUEST_URI} !web/
-RewriteRule (.*) /web/$1 [L]
+order deny,allow
+deny from all

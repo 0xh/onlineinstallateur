@@ -1,0 +1,3 @@
+id;ref;name;description;type;price;quantity;unit;extra_quantity_price;constraints_values;constraints_names;currency;duration
+1;15184968;Elektro-Design/Badheizkörper Montage;Elektro-Design/Badheizkörper montieren Betriebsweise: Elektro (Glykolgemisch);Verlegung;0;1;PA;NULL;1;with_dämmung;€;NULL
+2;723846526;Anfahrtspauschale;Anfahrtspauschale: Einmalige Anrechnung je Montageauftrag (unabhängig von der Anzahl der Montagepositionen). inkl. An- und abfahrt zur Montage bis 30 km vom Markt;Montage;189;1;piece;NULL;200;bauhöhe_min_cm;€;NULL

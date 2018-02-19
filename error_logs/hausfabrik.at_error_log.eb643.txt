@@ -1,0 +1,116 @@
+[Mon May 09 13:28:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:28:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:28:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:28:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:29:09 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:09 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:09 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:29:09 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:29:20 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:20 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:20 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:29:20 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:29:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:29:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:29:51 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:29:51 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:30:32 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:30:32 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:30:32 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:30:32 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:30:33 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:30:33 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:30:33 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:30:33 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:31:48 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:31:48 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:31:49 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:31:49 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:31:52 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:31:52 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:31:52 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:31:52 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:34:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:34:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:34:29 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:39:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:39:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:39:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:39:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:38 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:38 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:38 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:38 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:46 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:46 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:45:46 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:45:46 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:47:01 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:47:01 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:47:01 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:47:01 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:47:15 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:47:15 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:47:15 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:47:15 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:48:10 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:48:10 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:48:10 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:48:10 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:48:12 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:48:12 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:48:12 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:48:12 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:00 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:00 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:00 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:49:00 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:49:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:49:28 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/admin
+[Mon May 09 13:49:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:31 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:48 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:48 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:49 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:49 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:50 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:50 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:49:50 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:49:50 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:40 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:42 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:42 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:42 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:42 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:56:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:56:45 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:57:03 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:57:03 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:57:03 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:57:03 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:57:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:57:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here
+[Mon May 09 13:57:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 13:57:56 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/web/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Mon May 09 14:06:31 2016] [error] [client 83.65.71.106] Directory index forbidden by Options directive: /home/.sites/142/site4416661/web/
+[Mon May 09 14:06:31 2016] [error] [client 83.65.71.106] File does not exist: /home/.sites/142/site4416661/web/favicon.ico, referer: http://www.hausfabrik.at/

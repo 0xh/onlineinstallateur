@@ -1,195 +1,195 @@
-<script>
-    var nb_products = 0;
-    //Automatic product add during order creation
-    $('#add-cart-item').click(function(ev) {
-        $.get("{url path='/admin/module/OrderCreation/add-item'}/"+nb_products, function(data){
-            nb_products += 1;
-            $('#body-order-cart').append(data);
-        },'html');
-    });
-
-    
- 	// List the selected products
- 	var nr_products = 0;
-    $('#search_product_list').change(function(ev) {  
-    	var order_status = $( ".js-update-order-status" ).val();
-		$.get("{url path='/admin/module/OrderCreation/list'}/"+$('#search_product_list').val()+"/"+nr_products+"/"+order_status, function(data){
-			nr_products += 1;
-		    $('#selected_product_list').append(data);
-		},'html');
-	});
-    
-    // Search a product by id, ref, ean code
-    $('#search_button').click(function(ev) {  
-		$.get("{url path='/admin/module/OrderCreation/search'}/"+$('.search_term').val(), function(data){
-		    $('#search_product_list').empty();
-		    $('#search_product_list').append(data);
-		    $('#search_product_list').show();
-		},'html');
-	});
-    
-    // Delete a product from list
-    $('#selected_product_list').on('click', '.item-ajax-delete', function(clickEvent){
-        $('#'+$(this).data('target')).remove();
-    });
-    
-    $('#body-order-cart').on('change', '.category-list', function(clickEvent){
-        var target_id = $(this).data('target');
-        var target_destination_id = $(this).data('destination');
-
-        $.ajax({
-            url      : '{url path="/admin/module/OrderCreation/0/list-products/"}' + $(this).val() + '.xml',
-            type     : 'get',
-            dataType : 'json',
-            success  : function(json) {
-                $('#'+target_id).empty();
-
-                var have_content = false;
-                var oldValue = null;
-                var isOptGroupOpen = false;
-                var listOfOptions = "";
-
-                $.each(json, function(idx, value) {
-
-                    if (oldValue == null) {
-                        oldValue = value;
-                    } else {
-
-                        if (oldValue.product_id == value.product_id) {
-
-                            if (isOptGroupOpen == false) {
-                                listOfOptions +=
-                                    '<optgroup label="' + oldValue.title + '">' +
-                                        '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>'
-                                ;
-
-                                isOptGroupOpen = true;
-                            } else {
-                                listOfOptions +=
-                                    '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>'
-                                ;
-                            }
-                        } else {
-
-                            if (isOptGroupOpen == true) {
-                                listOfOptions +=
-                                    '</optgroup>'
-                                ;
-                            }
-
-                            listOfOptions +=
-                                '<option value="' + oldValue.id + '">' + oldValue.title + '(' + oldValue.quantity + ')' + '</option>'
-                            ;
-                        }
-
-                        oldValue = value;
-
-                    }
-
-
-
-                    //$('#'+target_id).append($('<option>').text(value.title+" ("+value.quantity+")").attr('value', value.id));
-                    have_content = true;
-                });
-
-
-
-                if (isOptGroupOpen == true) {
-                    listOfOptions +=
-                            '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>' +
-                        '</optgroup>'
-                    ;
-                } else {
-                    listOfOptions +=
-                        '<option value="' + oldValue.id + '">' + oldValue.title + '(' + oldValue.quantity + ')' + '</option>'
-                    ;
-                }
-                $('#'+target_id).append(listOfOptions);
-                if (have_content) {
-                    $('#'+target_destination_id).removeClass('hide');
-                }
-                else {
-                    $('#'+target_destination_id).addClass('hide');
-                }
-            }
-        });
-    });
-
-    $('#body-order-cart').on('click', '.item-ajax-delete', function(clickEvent){
-        $('#'+$(this).data('target')).remove();
-    });
-
-    $('#type_order_form').change(function(ev) {
-        if($(this).val() == 2){
-            $('#type_order_info').removeClass('hide');
-        }else{
-            $('#type_order_info').addClass('hide');
-        }
-    });
-
-    var prefixUrl = document.location.href.split('/admin');
-
-    $('#delivery_address_id_form').on('change', function(){
-
-        if ($(this).val() > 0) {
-            $('#list-delivery').addClass('loading');
-
-            //update the country in the request
-            $.ajax({
-                type: "POST",
-                url: prefixUrl[0] + "/admin/module/OrderCreation/update/country/request",
-                data: {
-                    address_id: $(this).val()
-                }
-            })
-            .done(function(response){
-
-                $.ajax({
-                    type: "GET",
-                    url: prefixUrl[0] + "/order/deliveryModuleList"
-                })
-                .done(function(response){
-                    $('#list-delivery').removeClass('loading');
-                    $('#list-delivery').html(response);
-
-                    $('#list-delivery input.delivery-method').each(function(){
-                        if ($(this).is(':checked')) {
-                            $('#delivery-module').val($(this).val());
-                        }
-                    });
-
-                    //clear both between all radio button
-                    $('#list-delivery .radio').each(function(){
-                        $(this).css('clear', 'both');
-                    });
-                })
-                .error(function(error){
-                    $('#list-delivery').removeClass('loading');
-                    if (typeof(error.statusTexddt) != 'undefined') {
-                        $('#list-delivery').html('<div class="alert alert-danger">' + error.statusText + '</div>');
-                    }
-                });
-            })
-            .error(function(error){
-
-                $('#list-delivery').removeClass('loading');
-                if (typeof(error.statusTexddt) != 'undefined') {
-                    $('#list-delivery').html('<div class="alert alert-danger">' + error.statusText + '</div>');
-                }
-            });
-        } else {
-            $('#delivery-module').val(0);
-            $('#list-delivery').removeClass('loading');
-            $('#list-delivery').html(
-                '<div class="alert alert-danger">' +
-                    "{intl l='Choose a delivery address first' d='ordercreation'}" +
-                '</div>'
-            );
-        }
-
-    });
-
-    $('#list-delivery').on('change', '.delivery-method', function(){
-        $('#delivery-module').val($(this).val());
-    })
-</script>
+<script>
+    var nb_products = 0;
+    //Automatic product add during order creation
+    $('#add-cart-item').click(function(ev) {
+        $.get("{url path='/admin/module/OrderCreation/add-item'}/"+nb_products, function(data){
+            nb_products += 1;
+            $('#body-order-cart').append(data);
+        },'html');
+    });
+
+    
+ 	// List the selected products
+ 	var nr_products = 0;
+    $('#search_product_list').change(function(ev) {  
+    	var order_status = $( ".js-update-order-status" ).val();
+		$.get("{url path='/admin/module/OrderCreation/list'}/"+$('#search_product_list').val()+"/"+nr_products+"/"+order_status, function(data){
+			nr_products += 1;
+		    $('#selected_product_list').append(data);
+		},'html');
+	});
+    
+    // Search a product by id, ref, ean code
+    $('#search_button').click(function(ev) {  
+		$.get("{url path='/admin/module/OrderCreation/search'}/"+$('.search_term').val(), function(data){
+		    $('#search_product_list').empty();
+		    $('#search_product_list').append(data);
+		    $('#search_product_list').show();
+		},'html');
+	});
+    
+    // Delete a product from list
+    $('#selected_product_list').on('click', '.item-ajax-delete', function(clickEvent){
+        $('#'+$(this).data('target')).remove();
+    });
+    
+    $('#body-order-cart').on('change', '.category-list', function(clickEvent){
+        var target_id = $(this).data('target');
+        var target_destination_id = $(this).data('destination');
+
+        $.ajax({
+            url      : '{url path="/admin/module/OrderCreation/0/list-products/"}' + $(this).val() + '.xml',
+            type     : 'get',
+            dataType : 'json',
+            success  : function(json) {
+                $('#'+target_id).empty();
+
+                var have_content = false;
+                var oldValue = null;
+                var isOptGroupOpen = false;
+                var listOfOptions = "";
+
+                $.each(json, function(idx, value) {
+
+                    if (oldValue == null) {
+                        oldValue = value;
+                    } else {
+
+                        if (oldValue.product_id == value.product_id) {
+
+                            if (isOptGroupOpen == false) {
+                                listOfOptions +=
+                                    '<optgroup label="' + oldValue.title + '">' +
+                                        '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>'
+                                ;
+
+                                isOptGroupOpen = true;
+                            } else {
+                                listOfOptions +=
+                                    '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>'
+                                ;
+                            }
+                        } else {
+
+                            if (isOptGroupOpen == true) {
+                                listOfOptions +=
+                                    '</optgroup>'
+                                ;
+                            }
+
+                            listOfOptions +=
+                                '<option value="' + oldValue.id + '">' + oldValue.title + '(' + oldValue.quantity + ')' + '</option>'
+                            ;
+                        }
+
+                        oldValue = value;
+
+                    }
+
+
+
+                    //$('#'+target_id).append($('<option>').text(value.title+" ("+value.quantity+")").attr('value', value.id));
+                    have_content = true;
+                });
+
+
+
+                if (isOptGroupOpen == true) {
+                    listOfOptions +=
+                            '<option value="' + oldValue.id + '">' + oldValue.ref + '(' + oldValue.quantity + ')' + '</option>' +
+                        '</optgroup>'
+                    ;
+                } else {
+                    listOfOptions +=
+                        '<option value="' + oldValue.id + '">' + oldValue.title + '(' + oldValue.quantity + ')' + '</option>'
+                    ;
+                }
+                $('#'+target_id).append(listOfOptions);
+                if (have_content) {
+                    $('#'+target_destination_id).removeClass('hide');
+                }
+                else {
+                    $('#'+target_destination_id).addClass('hide');
+                }
+            }
+        });
+    });
+
+    $('#body-order-cart').on('click', '.item-ajax-delete', function(clickEvent){
+        $('#'+$(this).data('target')).remove();
+    });
+
+    $('#type_order_form').change(function(ev) {
+        if($(this).val() == 2){
+            $('#type_order_info').removeClass('hide');
+        }else{
+            $('#type_order_info').addClass('hide');
+        }
+    });
+
+    var prefixUrl = document.location.href.split('/admin');
+
+    $('#delivery_address_id_form').on('change', function(){
+
+        if ($(this).val() > 0) {
+            $('#list-delivery').addClass('loading');
+
+            //update the country in the request
+            $.ajax({
+                type: "POST",
+                url: prefixUrl[0] + "/admin/module/OrderCreation/update/country/request",
+                data: {
+                    address_id: $(this).val()
+                }
+            })
+            .done(function(response){
+
+                $.ajax({
+                    type: "GET",
+                    url: prefixUrl[0] + "/order/deliveryModuleList"
+                })
+                .done(function(response){
+                    $('#list-delivery').removeClass('loading');
+                    $('#list-delivery').html(response);
+
+                    $('#list-delivery input.delivery-method').each(function(){
+                        if ($(this).is(':checked')) {
+                            $('#delivery-module').val($(this).val());
+                        }
+                    });
+
+                    //clear both between all radio button
+                    $('#list-delivery .radio').each(function(){
+                        $(this).css('clear', 'both');
+                    });
+                })
+                .error(function(error){
+                    $('#list-delivery').removeClass('loading');
+                    if (typeof(error.statusTexddt) != 'undefined') {
+                        $('#list-delivery').html('<div class="alert alert-danger">' + error.statusText + '</div>');
+                    }
+                });
+            })
+            .error(function(error){
+
+                $('#list-delivery').removeClass('loading');
+                if (typeof(error.statusTexddt) != 'undefined') {
+                    $('#list-delivery').html('<div class="alert alert-danger">' + error.statusText + '</div>');
+                }
+            });
+        } else {
+            $('#delivery-module').val(0);
+            $('#list-delivery').removeClass('loading');
+            $('#list-delivery').html(
+                '<div class="alert alert-danger">' +
+                    "{intl l='Choose a delivery address first' d='ordercreation'}" +
+                '</div>'
+            );
+        }
+
+    });
+
+    $('#list-delivery').on('change', '.delivery-method', function(){
+        $('#delivery-module').val($(this).val());
+    })
+</script>

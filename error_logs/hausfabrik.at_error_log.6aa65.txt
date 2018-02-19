@@ -1,0 +1,2 @@
+[Sat Jun 18 13:27:46 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/schedule/core/framework/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/
+[Sat Jun 18 13:30:09 2016] [alert] [client 83.65.71.106] /home/.sites/142/site4416661/web/schedule/core/framework/.htaccess: Options not allowed here, referer: http://www.hausfabrik.at/

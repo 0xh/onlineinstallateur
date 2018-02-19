@@ -1,0 +1,13 @@
+id;ref;name;description;type;price;quantity;unit;extra_quantity_price;constraints_values;constraints_names;currency;duration
+1;8834815;An-und-abfahrt;An und Abfahrt ;Anfahrt;49;40;km;1,4;null;null;€;1
+2;8637665;heizkörpermontage;Montage Heizkörper;montage;104;1;piece;null;"90;100";"bauhöhe_max_cm;länge_max_cm";€;1
+3;8637666;heizkörpermontage;Montage Heizkörper;montage;157;1;piece;null;"90;200";"bauhöhe_max_cm;länge_max_cm";€;1
+4;7995619;entleerungheizungsanlage;Entleerung Heizungsanlage;entleerung;91;1;piece;null;10;heizkörperanzahl_max_piece;€;2
+5;7995620;entleerungheizungsanlage;Entleerung Heizungsanlage;entleerung;63;1;piece;null;120;fußbodenheizung_max_qm;€;2
+6;7995623;gasheizgerätmontage;Wand-Montage Gasheizgerät;montage;357;1;piece;null;"25;0";"power_max_kw;with_tw-bereitung";€;2
+7;7995635;gasheizgerätmontage;Wand-Montage Gasheizgerät;montage;475;1;piece;null;"25;1";"power_max_kw;with_trinkwasserbereitung";€;2
+8;7995626;gasheizgerätdemontage;Demontage wandhängendes Gasheizgerät;demontage;119;1;piece;null;null;null;€;1
+9;7995612;heizkreisanscluß/einbindung;Anschluß/Einbindung weitere Heizkreis oder Bestands-TW-Speicher;anschluß/einbindung;115;1;piece;null;0;with-anlagen-entleerung;€;1
+10;7995627;heizungs-ausdehnungsgefäßmontage;Montage Heizungs-ausdehnungsgefäß;montage;93;1;piece;null;"110;0";"capacity_max_l;with-anlagen-entleerung";€;1
+11;7995621;heizungsanlagebefüllung;Befüllung Heizungsanlage;befüllung;86;1;piece;null;10;heizkörperanzahl_max_piece;€;1
+12;8834818;gasheizgerätinbetriebnahme;Gasheizgerät inbetriebnahme;inbetriebnahme;349;1;piece;null;null;null;€;1

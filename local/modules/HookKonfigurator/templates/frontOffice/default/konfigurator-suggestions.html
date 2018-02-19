@@ -1,66 +1,66 @@
-<div class="products-content">
-	<ul class="list-unstyled">
-          <div class="contact-success alert alert-info" style="display: table;">
-              <div class="fa fa-warning" style="font-size:4em; display: table-cell;vertical-align: middle;float:left"></div>
-              <div class="col-sm-11" style="float:left">
-                  
-              {if $brennstoff_zukunft==4}
-              Wärmepumpen legt man mit noch weiteren Parametern aus. Um Ihnen hier die Optimale Wärmepumpe auslegen zu können, empfehlen wir eine Beratung durch unser Fachpersonal.
-Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen, sowie keine Kaminsanierung (Brennwertgeräte benötgen in der Regel ein Kaminsanierung) und Montagematerial (wie z.B.: keine neu Verrohrung und hat die bestehende Anlage nicht berücksichtigt). 
-              {else}
-              Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen, sowie keine Kaminsanierung (Brennwertgeräte benötgen in der Regel ein Kaminsanierung) und Montagematerial (wie z.B.: keine neu Verrohrung und hat die bestehende Anlage nicht berücksichtigt). Sollten sie ein unverbindliches Angebot benötigen bitte nutzen sie unser <a href="/heizungskonfigurator-angebot">Individuelles Angebot.</a>
-              {/if}
-              </div>
-              <div class="clearfix"></div>
-        </div>
-		{loop type="product_heizung" name="product_list" category=$category_id limit="8" }
-			{include file="includes/product-suggestion.html" product_id=$ID hasBtn=true hasDescription=true hasPower=false hasGrade=false hasWarmwater=false hasQuickView=true width="300" height="230"}
-		{/loop}
-	</ul>
-</div>    
-
-{block name="after-javascript-include"}
-<script>
-var formatter = new Intl.NumberFormat('de-DE', {
-	  style: 'currency',
-	  currency: 'EUR',
-	  minimumFractionDigits: 2,
-	});
-	
-$('.products-content').on('click', '.thumbnail', function (event) {
-  $(".zwischensumme").show();
-   /* $(".zwischensumme").each(function(){
-        
-        $(this).show();
-    });*/
-	if($(this).hasClass("selected")){
-
-	$(this).removeClass("selected");
-    //now disable inputs
-     $(this).find($("[name^=service]")).prop('disabled',true);
-    //remove price
-	    $(this).find($("[name^=service]")).prop('disabled',false);
-	    //remove service price from product
-	    $serviceObject = $(this).find($("[name=price_service_o]"));
-	    $productid = $serviceObject.attr('product');
-	    $productObject = $("[name=price_product_"+$productid+"]");
-	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
-	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())-parseFloat($serviceObject.text()));
-	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())));
-	}
-	else  {
-		$(this).addClass("selected");
-	    $(this).find($("[name^=service]")).prop('disabled',false);
-	    //add service price to product
-	    $serviceObject = $(this).find($("[name=price_service_o]"));
-	    $productid = $serviceObject.attr('product');
-	    $productObject = $("[name=price_product_"+$productid+"]");
-	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
-	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())+parseFloat($serviceObject.text()));
-	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())));
-	}
-});
-</script>
-
-{hook name="register.after-javascript-include"}
+<div class="products-content">
+	<ul class="list-unstyled">
+          <div class="contact-success alert alert-info" style="display: table;">
+              <div class="fa fa-warning" style="font-size:4em; display: table-cell;vertical-align: middle;float:left"></div>
+              <div class="col-sm-11" style="float:left">
+                  
+              {if $brennstoff_zukunft==4}
+              Wärmepumpen legt man mit noch weiteren Parametern aus. Um Ihnen hier die Optimale Wärmepumpe auslegen zu können, empfehlen wir eine Beratung durch unser Fachpersonal.
+Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen, sowie keine Kaminsanierung (Brennwertgeräte benötgen in der Regel ein Kaminsanierung) und Montagematerial (wie z.B.: keine neu Verrohrung und hat die bestehende Anlage nicht berücksichtigt). 
+              {else}
+              Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen, sowie keine Kaminsanierung (Brennwertgeräte benötgen in der Regel ein Kaminsanierung) und Montagematerial (wie z.B.: keine neu Verrohrung und hat die bestehende Anlage nicht berücksichtigt). Sollten sie ein unverbindliches Angebot benötigen bitte nutzen sie unser <a href="/heizungskonfigurator-angebot">Individuelles Angebot.</a>
+              {/if}
+              </div>
+              <div class="clearfix"></div>
+        </div>
+		{loop type="product_heizung" name="product_list" category=$category_id limit="8" }
+			{include file="includes/product-suggestion.html" product_id=$ID hasBtn=true hasDescription=true hasPower=false hasGrade=false hasWarmwater=false hasQuickView=true width="300" height="230"}
+		{/loop}
+	</ul>
+</div>    
+
+{block name="after-javascript-include"}
+<script>
+var formatter = new Intl.NumberFormat('de-DE', {
+	  style: 'currency',
+	  currency: 'EUR',
+	  minimumFractionDigits: 2,
+	});
+	
+$('.products-content').on('click', '.thumbnail', function (event) {
+  $(".zwischensumme").show();
+   /* $(".zwischensumme").each(function(){
+        
+        $(this).show();
+    });*/
+	if($(this).hasClass("selected")){
+
+	$(this).removeClass("selected");
+    //now disable inputs
+     $(this).find($("[name^=service]")).prop('disabled',true);
+    //remove price
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //remove service price from product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
+	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())-parseFloat($serviceObject.text()));
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())));
+	}
+	else  {
+		$(this).addClass("selected");
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //add service price to product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
+	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())+parseFloat($serviceObject.text()));
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())));
+	}
+});
+</script>
+
+{hook name="register.after-javascript-include"}
 {/block}

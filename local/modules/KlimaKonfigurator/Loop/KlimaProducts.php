@@ -24,9 +24,32 @@ use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use Thelia\Model\ProductQuery;
+use HookKonfigurator\Model\HfproductsQuery;
 use Thelia\Model\Product;
+use Thelia\Model\ProductI18n;
+use Thelia\Model\ProductImage;
+use Thelia\Model\Brand;
+use HookKonfigurator\Model\VendorsQuery;
+use HookKonfigurator\Model\Vendors;
+use HookKonfigurator\Model\Hfproducts;
+use Thelia\Model\BrandI18nQuery;
+use Thelia\Model\ProductDocument;
+use Thelia\Model\ProductDocumentI18n;
 use Propel\Runtime\ActiveQuery\Join;
+use HookKonfigurator\Model\Map\ProductHeizungTableMap;
 use Thelia\Model\Map\ProductTableMap;
+use HookKonfigurator\Model\Konfiguratoreinstellung;
+use HookKonfigurator\Model\Montage;
+use HookKonfigurator\Model\ConstraintsQuery;
+use HookKonfigurator\Model\MontageConstraints;
+use HookKonfigurator\Model\Constraints;
+use HookKonfigurator\Model\Map\ProductHeizungMontageTableMap;
+use HookKonfigurator\Model\MontageQuery;
+use Thelia\Model\Map\SaleTableMap;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Thelia\Model\Map\ProductPriceTableMap;
+use Thelia\Model\CurrencyQuery;
+use KlimaKonfigurator\Model\KlimaKonfiguratorEinstellungen;
 use HookKonfigurator\Model\Map\SetProductsTableMap;
 
 /**
@@ -181,7 +204,7 @@ class KlimaProducts extends BaseI18nLoop implements PropelSearchLoopInterface, S
 		->withColumn ( '`sp`.product_position', 'product_position' )
 		->condition ( 'same_product_id', 'product.id = `sp`.product_id' )
 		->setJoinCondition ( 'KlimaSetProduct', 'same_product_id' )
-		//->condition ( 'set_id_condition', 'power >= ?', 1900, \PDO::PARAM_INT )
+		//->condition ( 'set_id_condition', 'power >= ?', $setid, \PDO::PARAM_INT )
 		->where ( 'set_id = ?', $setid, \PDO::PARAM_INT )
 		->orderBy('product_position'); // power_condition
 		

@@ -1,0 +1,17 @@
+{ifloop rel="product_stock_fulfilment_center"} 
+	<select class='form-control location-product-stock' name="location_stock">
+	    <option disabled selected="selected">{intl l="Please choose a fulfilment center"}</option>
+		{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$productId quantity=$quantity}
+	   		<option value="{$CENTERID}" {if $CENTERID == $fulfimentCenterId}selected="selected"{/if}>
+				{$CENTERNAME}
+			</option>
+		{/loop}
+	</select>
+	
+	<input type="hidden" name="cartId" class="cart-id" value="{$cartId}" />
+	<input type="hidden" name="productId" class="product-id" value="{$productId}" />
+	<input type="hidden" name="quantity" class="quantity" value="{$quantity}" />
+{/ifloop} 
+{elseloop rel="product_stock_fulfilment_center"}
+	<p>{hook name="product.delivery-delay" product={$productId}}</p>
+{/elseloop}

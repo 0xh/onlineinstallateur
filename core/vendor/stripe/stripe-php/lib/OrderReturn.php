@@ -10,19 +10,7 @@ namespace Stripe;
 class OrderReturn extends ApiResource
 {
     /**
-     * This is a special case because the order returns endpoint has an
-     *    underscore in it. The parent `className` function strips underscores.
-     *
-     * @return string The name of the class.
-     */
-    public static function className()
-    {
-        return 'order_return';
-    }
-
-    /**
-     * @param array|string $id The ID of the order return to retrieve, or an
-     *     options array containing an `id` field.
+     * @param string $id The ID of the OrderReturn to retrieve.
      * @param array|string|null $opts
      *
      * @return Order

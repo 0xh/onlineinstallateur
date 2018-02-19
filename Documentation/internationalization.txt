@@ -1,0 +1,2 @@
+template:  {intl l="{$label}" d="hookkonfigurator.fo.default"} //{$label} for a variable or simple text, fo - front office
+language files: i18n\frontOffice\default\en_US.php

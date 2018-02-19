@@ -21,8 +21,7 @@ class Subscription extends ApiResource
     const STATUS_UNPAID = 'unpaid';
 
     /**
-     * @param array|string $id The ID of the subscription to retrieve, or an
-     *     options array containing an `id` key.
+     * @param string $id The ID of the subscription to retrieve.
      * @param array|string|null $opts
      *
      * @return Subscription

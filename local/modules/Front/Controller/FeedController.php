@@ -114,7 +114,7 @@ class FeedController extends BaseFrontController {
 
         $cacheDir = $this->getCacheDir();
         $cacheKey = "feeds" . $lang . $context . $id . $format . $platform;
-        $cacheExpire = 986400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
+        $cacheExpire = 386400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
         
         $cacheDriver = new FilesystemCache($cacheDir);
         // if admin is NOT logged in and the flush is NOT set then use cached version 
@@ -123,10 +123,10 @@ class FeedController extends BaseFrontController {
         } else {
             $cacheDriver->delete($cacheKey);
         }
-       // $cacheContent = null;
+        
         $response = new Response();
         
-    //    if (false === $cacheContent){
+        if (false === $cacheContent){
             $contentType = "";
             
             if ($format == "csv"){
@@ -193,7 +193,7 @@ class FeedController extends BaseFrontController {
                 
             }
             $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);  
-    //    };
+        };
         
         if($format == "csv"){
             $contentType = 'application/rss+xml';

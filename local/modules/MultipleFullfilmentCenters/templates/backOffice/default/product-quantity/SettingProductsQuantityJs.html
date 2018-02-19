@@ -1,51 +1,51 @@
-<script>
-
-window.onload = function() {
-	changeFulfilmentCenter();
-	changeFulfilmentCenterQuantity();
-	changeIsOrNotInCenter();
-}
-
-var productsId = [];
-
-function changeQuantity(id)
-{
-	console.clear();
- 	if ($('#quantity_' + id).val())
-	{
- 		$('#prod_' + id).attr('name', 'prod_' + id);
- 		$('#quantity_' + id).attr('name', 'quantity_' + id);
- 		productsId.push(id);
- 		$('#list_prods_to_update_quantity').val(productsId);
-	}
- 	else
-	{
- 		$('#prod_' + id).attr('name', '');
- 		$('#quantity_' + id).attr('name', '');
- 		var index = productsId.indexOf(id);
-      	if (index > -1) {
-      		productsId.splice(index, 1);
-		}
-      	$('#list_prods_to_update_quantity').val(productsId);
-	}
-}
-
-function changeFulfilmentCenter() {
-	$( '#change_fulfilment_center' ).change(function() {
-		document.getElementById("search-data").submit();
-	});
-}
-
-function changeFulfilmentCenterQuantity() {
-	$( '#change_fulfilment_center_qunatity' ).change(function() {
-		document.getElementById("search-data").submit();
-	});
-}
-
-function changeIsOrNotInCenter() {
-	$( '#is_in_fulfilment_center' ).change(function() {
-		document.getElementById("search-data").submit();
-	});
-}
-
+<script>
+
+window.onload = function() {
+	changeFulfilmentCenter();
+	changeFulfilmentCenterQuantity();
+	changeIsOrNotInCenter();
+}
+
+var productsId = [];
+
+function changeQuantity(id)
+{
+	console.clear();
+ 	if ($('#quantity_' + id).val())
+	{
+ 		$('#prod_' + id).attr('name', 'prod_' + id);
+ 		$('#quantity_' + id).attr('name', 'quantity_' + id);
+ 		productsId.push(id);
+ 		$('#list_prods_to_update_quantity').val(productsId);
+	}
+ 	else
+	{
+ 		$('#prod_' + id).attr('name', '');
+ 		$('#quantity_' + id).attr('name', '');
+ 		var index = productsId.indexOf(id);
+      	if (index > -1) {
+      		productsId.splice(index, 1);
+		}
+      	$('#list_prods_to_update_quantity').val(productsId);
+	}
+}
+
+function changeFulfilmentCenter() {
+	$( '#change_fulfilment_center' ).change(function() {
+		document.getElementById("search-data").submit();
+	});
+}
+
+function changeFulfilmentCenterQuantity() {
+	$( '#change_fulfilment_center_qunatity' ).change(function() {
+		document.getElementById("search-data").submit();
+	});
+}
+
+function changeIsOrNotInCenter() {
+	$( '#is_in_fulfilment_center' ).change(function() {
+		document.getElementById("search-data").submit();
+	});
+}
+
 </script>

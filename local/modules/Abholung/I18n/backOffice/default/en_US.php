@@ -1,5 +1,5 @@
-<?php
-
-return array(
-    'abholung instructions configuration' => 'abholung instructions configuration',
-);
+<?php
+
+return array(
+    'abholung instructions configuration' => 'abholung instructions configuration',
+);

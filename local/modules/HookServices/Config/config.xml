@@ -32,7 +32,7 @@
     <hooks>
         <hook id="hookservices.hook.front" class="HookServices\Hook\Front" scope="request">
             <tag name="hook.event_listener" event="main.head-bottom" active="1"/>
-<!--             <tag name="hook.event_listener" event="servicesjs.bottom" active="1"/> -->
+            <!--tag name="hook.event_listener" event="servicesjs.bottom" active="1"/-->
             <tag name="hook.event_listener" event="register.after-javascript-include" active="1"/>        
         </hook>
     </hooks>

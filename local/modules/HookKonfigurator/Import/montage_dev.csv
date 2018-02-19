@@ -1,0 +1,62 @@
+id;ref;name;description;type;price;quantity;unit;extra_quantity_price;constraints_values;constraints_names;currency;duration
+1;5184968;Elektro-Design/Badheizkörper Montage;Elektro-Design/Badheizkörper montieren, Betriebsweise: Elektro, (Glykolgemisch);Verlegung;0;1;PA;NULL;TRUE;with_dämmung;€;NULL
+2;7846526;Anfahrtspauschale;Anfahrtspauschale: Einmalige Anrechnung je Montageauftrag (unabhängig von der Anzahl der Montagepositionen), inkl. An- und abfahrt zur Montage bis 30 km vom Markt;Montage;189;1;piece;NULL;200;bauhöhe_min_cm;€;NULL
+3;7846527;Stand-WC-Schüssel Montage;Stand-WC-Schüssel Montage;Montage;87;1;piece;NULL;NULL;NULL;€;NULL
+4;7846528;Wand-WC-Schüssel Montage;Wand-WC-Schüssel Montage;Montage;49.5;1;piece;NULL;NULL;NULL;€;NULL
+5;7846529;Aufputz Spülkasten oder Druckspüler montieren;Aufputz Spülkasten oder Druckspüler montieren;Montage;39.5;1;piece;NULL;0.8;spiegel_max_qm;€;NULL
+6;7846530;Spiegel Montage;Spiegel Montage bis 0,8 qm Fläche montieren, mit/ohne Beleuchtung;Montage;61;1;piece;NULL;01.Feb;breite_max_m;€;NULL
+7;7846531;Spiegelschrank Montage;Spiegelschrank bis 1,2 m Breite montieren, mit/ohne Beleuchtung;Montage;52;1;piece;NULL;NULL;NULL;€;NULL
+8;7846532;Badmöbelschrank Montage;Badmöbelschrank montieren, (bereits vormontierter Korpus);Montage;49;1;set;NULL;5;badaccessoires_max_piece;€;NULL
+9;7846533;Bad-Accessoires Montage;Bad-Accesoires montieren (Set mit bis zu 5 Stück);Montage;73;1;piece;NULL;NULL;NULL;€;NULL
+10;7846534;Einfachwaschtisch Montage;Einfachwaschtisch mit Armatur montieren;Montage;96;1;piece;NULL;NULL;NULL;€;NULL
+11;7846535;Doppelwaschtisch Montage;Doppelwaschtisch mit Armaturen montieren;Montage;42;1;piece;NULL;NULL;NULL;€;NULL
+12;7846536;Einloch- Armatur Montage;Einloch-Armatur auf Bestands-Waschtisch oder Spültisch montiern;Montage;48;1;piece;NULL;NULL;NULL;€;NULL
+13;7846537;Niederdruckspeicher Montage;Niederdruckspeicher oder Kleinstdurch-Lauferhitzer (230 V) montieren;Montage;49;1;piece;NULL;FALSE;with_brauseganitur;€;NULL
+14;7846538;Aufputz-Wandbatterie Montage;Aufputz-Wandbatterie montieren, (ohne Brauseganitur);Montage;35;1;piece;NULL;NULL;NULL;€;NULL
+15;7846539;Standventil oder Wand-Auslaufventil Montage;Standventil oder Wand-Auslaufventil Montage (Kaltwasseranschluss) montieren;Montage;26.Mai;1;piece;NULL;NULL;NULL;€;NULL
+16;7846540;Aufputz-Brausegarnitur Montage;Aufputz-Brausegarnitur montieren und an Bestands-Armatur anschließen;Montage;28.Mai;1;piece;NULL;NULL;NULL;€;NULL
+17;7846541;Sifon/Geruchsverschluß Montage;"Sifon/Geruchsverschluß an Normwaschrtisch (1 1/4"") montieren";Montage;49;1;piece;NULL;NULL;NULL;€;NULL
+18;7846542;Sifon/Geruchsverschluß Montage;Sifon/Geruchsverschluß Ab/- und Überlaufgarnitur an Normspültisch montieren;Montage;78;1;piece;NULL;NULL;NULL;€;NULL
+19;7846543;Komplettspüle Aufbau und Sifon/Ablaufgarn. Montage;Komplettspüle aufbauen und Sifon/Ablaufgarnitur montieren (ohne Armatur);Montage/Anschluß;287;1;piece;NULL;01.Mai;wärmeerzeuger_max_anschlusslänge;€;NULL
+20;7846544;Miniküche Aufbau und Sifon/Ablaufgarn. Monatge;Miniküche (100x60cm) aufbauen und Sifon/Ablaufgarn. montieren (ohne Arm.);Sanierung;364;1;piece;NULL;12;kusto-Leitung_max_meter;€;NULL
+21;7995108;Aufmaß-Paket;"Aufmaß-Paket: An- und Abfahrt zum Aufmaß (im Umkreis von 40km vom Markt),Aufmaß und Baustellenbesichtigung; Datenermittlung und Aufmaßdokumentation";Demontage;27;1;piece;NULL;"false;30";"with_entsorgung_;bestandsheizkörper_max_kilo";€;NULL
+22;7995611;Montage und Anschluss neuer TW-Speicher;Montage und Anschluss neuer TW-Speicher mit Vorlauf/Rücklauf z. Wärmeerzeuger b. 1,5 lfm Anschlusslänge;Inbetriebnahme;349;1;piece;NULL;NULL;NULL;€;1
+23;7995612;Anschluß/Einbindung ;Anschluß/Einbindung weitere Heizkreis oder Bestands-TW-Speicher b. entleerter Anlage;Dämmung;0;1;PA;NULL;NULL;NULL;€;NULL
+24;7995613;Demontage bodenstehender Heizkessel;Demontage bodenstehender Heizkessel aus Stahl/Gußeisen <= 20kW.;Entleerung;91;1;piece;NULL;10;heizkörperanzahl_max_piece;€;2
+25;7995614;Demontage Trinkwasserbereiter;Demontage Trinkwasserbereiter inkl. Entleerung und Entsorgung;Entleerung;63;1;piece;NULL;120;fußbodenheizung_max_qm;€;2
+26;7995616;Montage Heizungs-Ausdehnungsgefäß;Montage Heizungs-Ausdehnungsgefäß bis 110 Ltr. (ohne Anlage-Entleerung);Demontage;119;1;piece;NULL;NULL;NULL;€;1
+27;7995617;Montage Trinkwasser-Ausdehnungsgefäß;Montage Trinkwasser-Ausdehnungsgefäß inkl. Einbindung in die Kalt-TW-Leitung;Individuelle Zusatzleistungen;0;1;piece;NULL;NULL;NULL;€;NULL
+28;7995618;Montage zusätzlicher Reinigungs-oder Prüf-Öffnungen;Montage zusätzlicher Reinigungs-oder Prüf-Öffnungen im Abgasrohr zwischen Kesseel und Kaminanschluss;Montage;157;1;piece;NULL;"90;200";"bauhöhe_max_cm;länge_max_cm";€;1
+29;7995619;Entleerung Heizungsanlage;Entleerung Heizungsanlage mit bis zu 10 Heizkörpern;Aufbau/Montage;93;1;piece;NULL;FALSE;with_armatur;€;NULL
+30;7995620;Entleerung Heizungsanlage;Entleerung Heizungsanlage mit bis zu 120qm Fußbodenheizung o. ausblasen;Aufbau/Montage;104;1;piece;NULL;NULL;NULL;€;NULL
+31;7995621;Befüllung Heizungsanlage;Befüllung Heizungsanlage mit bis zu 10 Heizkörpern;Demontage;204;1;piece;NULL;20;power_max_kw;€;NULL
+32;7995622;Befüllung Heizungsanlage;Befüllung Heizungsanlage mit bis zu 120 mq Fußbodenheizung inkl. Spülen;Individuelle Zusatzleistungen;0;1;piece;NULL;NULL;NULL;€;NULL
+33;7995623;Gasheizgerät Montage;Wand-Montage Gasheizgerät bis 25kW, ohne TW-Bereitung, konv./Brennw.;Aufmaß;49;1;piece;NULL;NULL;NULL;€;NULL
+34;7995624;Wand-Montage Gasheizgerät;Wand-Montage Gasheizgerät bis 25kW, Anschluß an TW-Speicher, Brennw.;Entleerung;319;1;piece;NULL;14;heizkörperanzahl_max_piece;€;NULL
+35;7995625;Gasheizgerät Montage;Wand-Montage Gasheizgerät bis 25kW, mit Trinkwasserbereitung,konv.;Befüllung;86;1;piece;NULL;10;heizkörperanzahl_max_piece;€;1
+36;7995626;Gasheizgerät Demontage;Demontage wandhängendes Gasheizgerät;Befüllung;299;1;piece;NULL;"120;true";"fußbodenheizung_max_qm;with_spülen";€;NULL
+37;7995628;Schornsteinsanierung;Schornsteinsanierung für Brennwert-Anlagen, Kusto Leistung bis max. 12m;Entleerung;692;1;piece;NULL;14;heizkörperanzahl_max_piece;€;NULL
+38;7995629;Verlegung Wärme-/TW-Verteilungsleitung;Verlegung Wärme-/TW-Verteilungsleitung mit Dämmung;Lieferung;49;1;piece;NULL;NULL;NULL;€;NULL
+39;7995630;Wärmedämmung vorhandener Wärme-/TW-Verteilungsleitung;Wärmedämmung vorhandener Wärme-/TW-Verteilungsleitung;Montage;104;1;piece;NULL;"90;100";"bauhöhe_max_cm;länge_max_cm";€;1
+40;7995662;Besondere Arbeiten / Zusatzleistungen;Beim Aufmaß festgestellte Leistungen, die keinen Festpreis unterliegen;Montage;357;1;piece;NULL;"25;false";"power_max_kw;with_tw-bereitung";€;2
+41;7995663;Kleinteile/Zusatzartikel, Deponiekosten, Entsogung, Gebühren;Pauschal nach Aufmaß;Montage;475;1;piece;NULL;"25;true";"power_max_kw;with_trinkwasserbereitung";€;2
+42;8593184;Lieferpauschale;Lieferpauschale;Montage;65;1;piece;NULL;NULL;NULL;€;NULL
+43;8637664;Demontage Bestandsheizkörper;Demontage Bestandsheizkörper, ohne Entsorgung <= 30kg/Stück;Montage;72;1;piece;NULL;TRUE;with_einbindung;€;NULL
+44;8637665;Heizkörpermontage;Montage Heizkörper Bauhöhe max. 90cm, Länge max. 100cm;Anfahrt;49;30;unit;01.Mai;NULL;NULL;€;NULL
+45;8637666;Heizkörpermontage;Montage Heizkörper Bauhöhe max. 90cm, Länge max.200cm;Anschluß/Einbindung;115;1;piece;NULL;FALSE;with-anlagen-entleerung;€;1
+46;8637667;Montage Heizkörper Übergröße;Montage Heizkörper Übergröße > 200cm oder dekoativer Badheizkörper;Montage;55;1;piece;NULL;NULL;NULL;€;NULL
+47;8637668;Entleerung Heizungsanlage neu;Für Neuanalgen bis zu 14 Heizkörpern;Montage;93;1;piece;NULL;"110;false";"capacity_max_l;with-anlagen-entleerung";€;1
+48;8637669;Entleerung Heizungsanalge alt;Für Altanlagen bis zu 14 Heizkörpern;Montage;475;1;piece;NULL;"25;true";"power_max_kw;with_anschluß_trinkwasserspeicher";€;NULL
+49;18834816;An und Abfahrt;Thermenwartung;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+50;18834817;An und Abfahrt;Reparatur;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+51;18834818;An und Abfahrt;Hydraulischer Abgleich;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+52;18834819;An und Abfahrt;Demontage;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+53;18834820;An und Abfahrt;Installation;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+54;18834821;An und Abfahrt;Individuelle Heizungsplanung;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+55;18834822;An und Abfahrt;Demontage;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+56;18834823;An und Abfahrt;Installation;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+57;18834824;An und Abfahrt;Individuelle Heizungsplanung;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+58;18834825;An und Abfahrt;Individuelle Fussbodenheizungsplanung;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+59;18834826;An und Abfahrt;Individuelle Heizungsplanung;Planung;49;40;unit;01.Apr;NULL;NULL;€;1
+60;8834815;An und Abfahrt;Anfahrt bis 40km Umkreis v. Markt, Mehrkilometer (Entfernung über 40km Umkreis v. Markt nach Straßenkilometer je Hin-u. Rückfahrt);Anfahrt;49;40;unit;01.Apr;NULL;NULL;€;1
+61;8834818;Inbetriebnahme Gasheizgerät wandhängend;Inbetriebnahme Gasheizgerät wandhängend gültig f.7995623/4/5. Für Geräte von Rotheigner u. Strebel erfolgt Inbetriebnahme entspr. Herstellerangaben;Demontage;132;1;piece;NULL;"true;true";"with_anlagen_entleerung;with_entsorgung";€;NULL

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="rewrite_url" class="RewriteUrl\Loop\RewriteUrlLoop" />
+        <loop name="list-notrewritenurls" class="RewriteUrl\Loop\NotRewritenUrlCategoryLoop"/>
+    </loops>
+
+    <forms>
+        <form name="rewriteurl.reassign.form" class="RewriteUrl\Form\ReassignForm" />
+        <form name="rewriteurl.add.form" class="RewriteUrl\Form\AddUrlForm" />
+        <form name="rewriteurl.setdefault.form" class="RewriteUrl\Form\SetDefaultForm"/>
+    </forms>
+
+    <services>
+        <service id="rewriteurl.action" class="RewriteUrl\EventListeners\RewriteUrlListener">
+            <argument type="service" id="event_dispatcher" />
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+
+    <hooks>
+        <hook id="notrewritenurls.hook.back" class="RewriteUrl\Hook\ConfigurationHook" scope="request">
+            <tag name="hook.event_listener" event="configuration.catalog-top" type="back" method="onConfigurationCatalogTop"/>
+        </hook>
+    </hooks>
+
+</config>

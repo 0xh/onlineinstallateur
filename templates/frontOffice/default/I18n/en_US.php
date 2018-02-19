@@ -245,7 +245,7 @@ return array(
     'Warning' => 'Warning',
     'We apologize but some of the ordered products are not available any more.' => 'We apologize but some of the ordered products are not available any more.',
     'We\'re sorry but an error occured. Please try to contact the site <a href=\'mailto:%mail\'>administrator</a>' => 'We\'re sorry but an error occured. Please try to contact the site <a href=\'mailto:%mail\'>administrator</a>',
-    'We\'re sorry, a problem occurred and your payment was not successful. Please contact Customer Support.' => 'We\'re sorry, a problem occurred and your payment was not successful. Please contact Customer Support.',
+    'We\'re sorry, a problem occured and your payment was not successful.' => 'We\'re sorry, a problem occured and your payment was not successful.',
     'You are here:' => 'You are here:',
     'You choose' => 'You choose',
     'You choose to pay by' => 'You choose to pay by',

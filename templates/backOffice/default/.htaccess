@@ -1,0 +1,5 @@
+AuthUserFile /home/.sites/142/site4416661/web/templates/backOffice/default/.htpasswd
+AuthName "Backoffice login"
+AuthType Basic
+require valid-user
+

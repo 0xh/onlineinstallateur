@@ -1,8 +1,8 @@
-<?php
-
-use Base\SetProducts as BaseSetProducts;
-
-class SetProducts extends BaseSetProducts
-{
-
-}
+<?php
+
+use Base\SetProducts as BaseSetProducts;
+
+class SetProducts extends BaseSetProducts
+{
+
+}

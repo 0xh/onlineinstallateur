@@ -43,4 +43,5 @@
     <route id="multiplefulfilmentcenters.setting.products.update" path="/admin/module/multiplefulfilmentcenters/update-quantity-products">
         <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::updateQuantityFullfilmentCenters</default>
     </route>
+
 </routes>

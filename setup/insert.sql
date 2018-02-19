@@ -7441,7 +7441,7 @@ INSERT INTO `order_status_i18n` (`id`, `locale`, `title`, `description`, `chapo`
     (3, 'de_DE', 'Bearbeitung', '', '', ''),
     (4, 'de_DE', 'Gesendet', '', '', ''),
     (5, 'de_DE', 'Storniert', '', '', ''),
-    (6, 'de_DE', 'Zurückerstattet', '', '', ''),
+    (6, 'de_DE', 'Zrückerstattet', '', '', ''),
     (1, 'en_US', 'Not paid', '', '', ''),
     (2, 'en_US', 'Paid', '', '', ''),
     (3, 'en_US', 'Processing', '', '', ''),

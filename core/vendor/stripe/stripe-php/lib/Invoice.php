@@ -21,8 +21,7 @@ class Invoice extends ApiResource
     }
 
     /**
-     * @param array|string $id The ID of the invoice to retrieve, or an options
-     *     array containing an `id` key.
+     * @param string $id The ID of the invoice to retrieve.
      * @param array|string|null $opts
      *
      * @return Invoice
@@ -83,10 +82,10 @@ class Invoice extends ApiResource
     /**
      * @return Invoice The paid invoice.
      */
-    public function pay($params = null, $opts = null)
+    public function pay($opts = null)
     {
         $url = $this->instanceUrl() . '/pay';
-        list($response, $opts) = $this->_request('post', $url, $params, $opts);
+        list($response, $opts) = $this->_request('post', $url, null, $opts);
         $this->refreshFrom($response, $opts);
         return $this;
     }
