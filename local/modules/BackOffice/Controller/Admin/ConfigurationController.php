@@ -10,7 +10,9 @@ class ConfigurationController extends BaseAdminController
     public function viewAction()
     {
     	$email = ConfigQuery::read('office_email');
-    
+
+
+    $done = false;
         return $this->render('config-email',
 		        		array(
 		        				"office_email" => $email
