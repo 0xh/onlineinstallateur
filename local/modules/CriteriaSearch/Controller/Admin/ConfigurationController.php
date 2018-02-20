@@ -25,7 +25,7 @@ class ConfigurationController extends BaseAdminController
         $params['new'] = CriteriaSearch::getConfigValue('new_filter');
         $params['promo'] = CriteriaSearch::getConfigValue('promo_filter');
         $params['stock'] = CriteriaSearch::getConfigValue('stock_filter');
-
+$empty = true;
         return $this->render(
             "criteria-search/configuration",
             $params
