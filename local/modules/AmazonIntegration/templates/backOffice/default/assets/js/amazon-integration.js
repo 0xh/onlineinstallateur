@@ -1,4 +1,3 @@
-
 function sortByDate() {
 	$( '.position_sorting' ).change(function() {
 	  	pos = 'tab=amazon-orders&sort=' + $('.position_sorting').val();
@@ -34,43 +33,46 @@ function filterSentAmazon() {
 }
 
 function getAndUpdateOrders() {
-
+	
 	$('#wait').show();
 
 	console.clear();
 	var datepickerCreatedAfter = $("#datepickerCreatedAfter").datepicker("getDate");
 	var datepickerLastUpdatedAfter = $("#datepickerLastUpdatedAfter").datepicker("getDate");
-
+	
 	var dateCreatedAfter = $.datepicker.formatDate("yy-mm-dd", datepickerCreatedAfter);
 	var dateLastUpdatedAfter = $.datepicker.formatDate("yy-mm-dd", datepickerLastUpdatedAfter);
-
+	
 	$.getJSON("amazonintegration/save-amazon-orders?dateCreatedAfter=" + dateCreatedAfter + "&dateLastUpdatedAfter=" + dateLastUpdatedAfter)
 	     .done(function (data) {
 	    	 console.log(data);
+	    	 alert(data);
 	    	 $('#wait').hide();
-	    	// location.reload();
+	    	 location.reload();
 	     })
 	     .fail(function (data) {
 	    	 console.log(data.responseText);
+	    	 alert(data.responseText);
 	    	 $('#wait').hide();
-	    	// location.reload();
-	     })
+	    	 location.reload();
+	     })     
 }
 
 function initDatepiker() {
 	$( function() {
-
+	    
 		$( "#datepickerCreatedAfter" ).datepicker({
 	    		onSelect: function(date) {
 	    			$( "#datepickerLastUpdatedAfter" ).val('');
 			     }});
-
+		
 		$('#datepickerCreatedAfter').datepicker('setDate', 'today');
-
+	   
 		$( "#datepickerLastUpdatedAfter" ).datepicker({
     		onSelect: function(date) {
     			$( "#datepickerCreatedAfter" ).val('');
 		     }});
 	  });
 }
+
 
