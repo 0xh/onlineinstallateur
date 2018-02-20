@@ -19,20 +19,4 @@
     <route id="admin.export.order.get.pdf" path="/admin/export-order-pdf-get-file">
         <default key="_controller">BackOffice\Controller\Admin\OrderController::getFile</default>
     </route>
-
-    <route id="admin.update.stock.mysht" path="/admin/update-stock-mysht">
-        <default key="_controller">BackOffice\Controller\Front\MyshtUpdateStockController::updateStockMysht</default>
-    </route>
-
-    <route id="admin.export.data.mysht" path="/admin/export-data-mysht">
-        <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::export</default>
-    </route>
-
-    <route id="admin.export.data.mysht.log.csv" path="/admin/export-data-mysht/log-csv">
-        <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::downloadCsv</default>
-    </route>
-
-    <route id="admin.export.data.mysht.log.images" path="/admin/export-data-mysht/log-images">
-        <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::downloadImages</default>
-    </route>
 </routes>
