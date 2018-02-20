@@ -94,12 +94,6 @@ span.criteria-pagination{
 
 /* configurator */
 
-.nav-tabs>li, .nav-tabs>li>a {
-  display: block;
-  position: relative;
-  padding: 10px 8px;
-}
-
 .category-container {
 	display: block;
     list-style-type: none;
@@ -124,6 +118,7 @@ span.criteria-pagination{
 .category-head{
     z-index: 3;
     background: #86AC34;
+   
     height: 45px;
     font-size: 14px;
     line-height: 1.2em;
@@ -144,6 +139,12 @@ span.criteria-pagination{
     width: 100%;
     overflow: hidden;
     text-align: left;
+}
+
+.category-head span.active{
+    display: table-cell;
+    vertical-align: middle;
+    padding-right: 60px;
 }
 
 .category-head span.active:after{
@@ -181,49 +182,7 @@ span.criteria-pagination{
 	background-size: 32px 32px;
     border-radius: 50%;
 }
-.mobileFilterItem button{
-  color: #86AC34;
-}
-.mobileFilterItem button:hover,
-.mobileFilterItem button:active,
-.mobileFilterItem button:focus,
-.mobileFilterItem button [aria-expanded="true"]{
-  color: #ffffff;
-}
-.mobileFilterItem button{
-  padding-top: 12px;
-  padding-bottom: 12px;
-  border-left: 1px solid #86ac34!important;
-}
-.mobileFilterItem button{
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
-}
-#mobileButtonKonfigurator{
-  color: white;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  background-color: #01758D;
-  width: 100%;
-  margin-right: 0px;
-  border-right-width: 0px;
-  margin-left: 0px;
-  min-height: 44px;
-  text-align: left;
-}
-#mobileButtonKonfigurator [aria-expanded="true"]{
-}
-.mobileFilterItem .tab-content{
-  margin-bottom: 0px;
-  border: 1px solid #86AC34;
-}
-.mobileFilterItem .tab-content .checkbox{
-  margin-bottom: 0px;
-  margin-top: 0px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
+
 .options-container {
 	display: none;
 	position: relative;
@@ -270,8 +229,7 @@ padding-left:0px;
     text-align: justify;
 	overflow-wrap: break-word;
 }
-.tab-pane .checkbox,
-.card .tab-content .checkbox{
+.tab-pane .checkbox{
 	margin-top: 0px;
 	min-height: 205px;
 }
@@ -341,8 +299,7 @@ ul.category-container:first-child {
   border-radius: 1px 0 0 1px;
 }
 
-.tab-content input[type="checkbox"]:focus:not(:checked) ~ label,
-.mobileFilterItem .tab-content .checkbox input[type="checkbox"]:focus:not(:checked) ~ label{
+.tab-content input[type="checkbox"]:focus:not(:checked) ~ label {
   color: #86AC34;
   border: 1px solid #86AC34;
 }
@@ -356,8 +313,7 @@ ul.category-container:first-child {
   color: #86AC34;
   font-weight: bold;
 }
-.tab-content .checkbox input[type="checkbox"]:checked ~ label:before,
-.card .tab-content .checkbox .tab-content .checkbox input[type="checkbox"]:checked ~ label:before{
+.tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
   content: '\2714';
   text-indent: .6em;
   background-color: #ccc;
@@ -373,8 +329,6 @@ ul.category-container:first-child {
 .tab-content .checkbox input[type="checkbox"]:not(:checked):focus ~ label{
   border: 1px solid #D1D3D4;
 }
-
-/*.card .tab-content .checkbox*/
 @media (-moz-touch-enabled: 0), (pointer:fine) {
     .tab-content .checkbox label:hover{
       border: 1px solid #86AC34;

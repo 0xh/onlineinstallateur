@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>CriteriaSearch\CriteriaSearch</fullnamespace>
     <descriptive locale="en_US">
-        <title>Kriteriensuche</title>
+        <title>Criteria search</title>
         <!--
         <subtitle></subtitle>
         <description></description>
@@ -14,13 +14,9 @@
     <descriptive locale="fr_FR">
         <title>Recherche par critéres</title>
     </descriptive>
-    <descriptive locale="de_DE">
-        <title>Kriteriensuche</title>
-    </descriptive>
     <!-- <logo></logo> -->
     <!--<images-folder>images</images-folder>-->
     <languages>
-    	<language>de_DE</language>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
