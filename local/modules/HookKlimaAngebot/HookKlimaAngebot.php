@@ -17,7 +17,7 @@ use Thelia\Module\BaseModule;
 class HookKlimaAngebot extends BaseModule
 {
     /** @var string */
-    const DOMAIN_NAME = 'hookklimaangebot_test';
+    const DOMAIN_NAME = 'hookklimaangebot';
 
     /*
      * You may now override BaseModuleInterface methods, such as:
