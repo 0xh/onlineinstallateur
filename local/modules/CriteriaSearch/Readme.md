@@ -17,7 +17,7 @@ Add it in your main thelia composer.json file
 ```
 composer thelia/criteria-search-module:~1.0
 ```
-
+stuff to check git
 ## Usage
 
 Simple filter :
