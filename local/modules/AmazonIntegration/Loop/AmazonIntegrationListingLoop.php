@@ -1,15 +1,16 @@
 <?php
 namespace AmazonIntegration\Loop;
 
-use AmazonIntegration\Model\AmazonOrdersQuery;
+use AmazonIntegration\Model\Base\AmazonOrdersQuery;
+use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
+use PDO;
+use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
-use Doctrine\Common\Collections\Criteria;
-use Map\AmazonOrdersTableMap;
 
 /**
  * AmazonIntegrationListing loop
@@ -77,7 +78,7 @@ class AmazonIntegrationListingLoop extends BaseI18nLoop implements PropelSearchL
     
     protected function sortByAmazonId($orderAmazonId, $sort){
         $query = AmazonOrdersQuery::create()
-            ->where(AmazonOrdersTableMap::ID.' =?', $orderAmazonId, \PDO::PARAM_STR)
+            ->where(AmazonOrdersTableMap::ID.' =?', $orderAmazonId, PDO::PARAM_STR)
             ->orderByPurchaseDate($sort);
         
         return $query;
