@@ -1,5 +1,58 @@
 jQuery(function($){
 
+///////////// KONFIGURATOR MOBILE ///////////////
+    if (window.jQuery) {
+        // jQuery is loaded  
+        function createMobileMenu(){
+            $( ".category-head" ).each(function( index ) {
+                $('<div class="mobileFilterItem">'+
+                    '<button class="btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" type="button" data-toggle="collapse" data-target="#mobile'+
+                        $( this ).attr('data-feature')+
+                        '" aria-expanded="false" aria-controls="mobile'+$( this ).attr('data-feature')+'">'+
+                        $( this ).text() +
+                    '</button>'+
+                    '<div class="collapse" id="mobile'+$( this ).attr('data-feature')+'">'+
+                        '<div class="card card-block">'+
+                            '<div class="tab-content col-md-12 options_collection">'+
+                                $('#'+$( this ).attr('data-feature')).html()+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>').appendTo('#mobileFilter');
+            });
+
+             $("#mobileFilter .mobileFilterItem .options_collection .filter-option .checkbox-box .checkbox :checkbox").each(function( index ) {
+                $( this).attr("id", "mobile-"+$( this).attr("id")); 
+            });
+
+            $("#mobileFilter .mobileFilterItem .options_collection .filter-option .checkbox-box .checkbox label").each(function( index ) {
+                $( this ).attr("for", "mobile-"+$( this).attr("for")); 
+            });
+        }
+
+        function checkWidth() {
+            var windowWidth = window.innerWidth;
+            if (windowWidth < 992) {
+                if( $( ".mobile_filter_row #mobileFilter" ).children().length == 0){
+                    createMobileMenu();
+                    if ($('.mobileFilterItem').length == 0) {
+                        $('#mobileButtonKonfigurator').hide();
+                    }
+                }
+                $(".filter_row").hide();
+                $(".mobile_filter_row").show();
+            } else {
+                $(".filter_row").show();
+                $(".mobile_filter_row").hide();
+            }
+        }
+
+        checkWidth();
+
+        $(window).resize(checkWidth);
+    }
+//////////// END KONFIGURATOR MOBILE ////////////
+
     if ( $("#price-filter").length ) {
         $("#price-filter").slider({}).on('slideStop', function(e) {
             $("input[name=price_min]").val(e.value[0]);
@@ -25,16 +78,19 @@ jQuery(function($){
     var searchTimer = null;
 
     $('.input-search').on('change', function(e) {
-    	
-    	if($(this).attr('id') != undefined) {
-			var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
-			
-       		if(check)
-       			$('.main-category.active span').addClass('active');
-       		else
-       			$('.main-category.active span').removeClass('active');
-    	}
-    			
+        if($(this).attr('id') != undefined) {
+            
+            //Old Event Listener parrent
+            //var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
+
+            //New Event Listener parrent
+            var check = $(this).parents('.checkbox-box').find('input[type=checkbox]:checked').length;
+            if(check)
+                $('.main-category.active span').addClass('active');
+            else
+                $('.main-category.active span').removeClass('active');
+        }
+                
         if (searchTimer !== null) {
             clearTimeout(searchTimer)
         }
@@ -63,7 +119,7 @@ jQuery(function($){
     }
 
     function fillForm(displayProduct) { 
-    	
+        
         $.ajax({
             url : "/criteria/page/info/search"+window.location.search,
             type: "GET"
@@ -83,12 +139,12 @@ jQuery(function($){
             });
 
             
-            $( ".options-container" ).each(function( ) { 
-	        	var check = $(this).find('input[type=checkbox]:checked').length;
-	    		
-	       		if(check)
-	       			$('.category-head.feature-'+$(this).attr('id')+' span').addClass('active');
-	    	});
+            $( ".checkbox-box" ).each(function( ) { 
+                var check = $(this).find('input[type=checkbox]:checked').length;
+                
+                if(check)
+                    $('.category-head.feature-'+$(this).attr('id')+' span').addClass('active');
+            });
             
             if (displayProduct) {
                 displaySearchProductList();
@@ -167,20 +223,17 @@ jQuery(function($){
     
     // configurator
     $('.nav-tabs li a').click(function() {
-		
-		if($(this).hasClass( "active" )) { 
-			 $(".tab-content " + $(this).attr('href')).removeClass('active').removeClass('in');
-			 $(this).removeClass('active').removeClass('in');
-		}
-		else {
-			  $(".tab-content .tab-pane").removeClass("active");
-			  $(".tab-content " + $(this).attr('href')).addClass("active").addClass("in");
-			  $('.main-category .category-head').removeClass('active');
-			  $(this).addClass('active')
-		}
-    	  
+        
+        if($(this).hasClass( "active" )) { 
+             $(".tab-content " + $(this).attr('href')).removeClass('active').removeClass('in');
+             $(this).removeClass('active').removeClass('in');
+        }
+        else {
+              $(".tab-content .tab-pane").removeClass("active");
+              $(".tab-content " + $(this).attr('href')).addClass("active").addClass("in");
+              $('.main-category .category-head').removeClass('active');
+              $(this).addClass('active')
+        }
+          
     });
-
 });
-
-
