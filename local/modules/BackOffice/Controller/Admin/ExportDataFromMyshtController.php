@@ -193,9 +193,9 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
         $imageFile = $this->imageLocation . $artnr . ".jpg";
 
-        $saveImage = fopen($imageFile, 'w');
-        fwrite($saveImage, $response);
-        fclose($saveImage);
+        $saveImage = @fopen($imageFile, 'w');
+        @fwrite($saveImage, $response);
+        @fclose($saveImage);
     }
 
     public function setLogger() {
