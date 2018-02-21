@@ -17,3 +17,5 @@ nbproject/project.xml
 web/index.php
 log/.htaccess
 .htaccess
+local/config/cookies/
+/local/media/documents/
