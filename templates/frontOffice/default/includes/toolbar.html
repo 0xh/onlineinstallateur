@@ -55,18 +55,17 @@
                     <li{if $PAGE eq $CURRENT} class="active"{/if}>
                         <a href="{url current="1" page=$PAGE }"> {$PAGE} </a>
                     </li>
-                    {if $PAGE eq $LAST}
-                        {if $CURRENT eq $LAST}
-                            <li class="disabled">
-                                <span class="next"><i class="fa fa-caret-right"></i></span>
-                            </li>
-                        {else}
-                            <li>
-                                <a href="{url current="1" page={$NEXT} }" title="{intl l="Next"}" class="next"><i class="fa fa-caret-right"></i></a>
-                            </li>
-                        {/if}
-                    {/if}
                 {/pageloop}
+                
+                {if $CURRENT eq $LAST}
+                    <li class="disabled">
+                        <span class="next"><i class="fa fa-caret-right"></i></span>
+                    </li>
+                {else}
+                    <li>
+                        <a href="{url current="1" page={$NEXT} }" title="{intl l="Next"}" class="next"><i class="fa fa-caret-right"></i></a>
+                    </li>
+                {/if}
             </ul>
         </div>
         {/if}
