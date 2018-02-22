@@ -81,14 +81,14 @@ jQuery(function($){
         if($(this).attr('id') != undefined) {
             
             //Old Event Listener parrent
-            //var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
+            var check = $(this).parents('.options-container').find('input[type=checkbox]:checked').length;
 
             //New Event Listener parrent
-            var check = $(this).parents('.checkbox-box').find('input[type=checkbox]:checked').length;
+            //var check = $(this).parents('.checkbox-box').find('input[type=checkbox]:checked').length;
             if(check)
-                $('.main-category.active span').addClass('active');
+                $("ul.category-container li.main-category a.category-head." + $(this).attr('mainitem') + " span").addClass('active');
             else
-                $('.main-category.active span').removeClass('active');
+                $("ul.category-container li.main-category a.category-head." + $(this).attr('mainitem') + " span").removeClass('active');
         }
                 
         if (searchTimer !== null) {
