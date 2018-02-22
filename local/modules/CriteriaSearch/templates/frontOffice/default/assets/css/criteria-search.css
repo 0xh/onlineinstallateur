@@ -134,7 +134,8 @@ span.criteria-pagination{
     transition: background-color .2s;
 }
 
-.category-head span{
+.category-head span,
+#mobileFilter .mobileFilterItem button>span {
   display: inline-block;
     vertical-align: middle;
     padding-left: 0px;
@@ -146,7 +147,8 @@ span.criteria-pagination{
     text-align: left;
 }
 
-.category-head span.active:after{
+.category-head span.active:after,
+#mobileFilter .mobileFilterItem button>span.active:after{
   position: absolute;
     width: 32px;
     height: 32px;
