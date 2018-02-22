@@ -161,26 +161,10 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
 
 <!-- End Cookie Consent plugin -->
-
-{literal}   		
-<!-- Google Tag Manager -->		
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':		
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],		
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=		
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);		
-})(window,document,'script','dataLayer','GTM-TJDVM5X');</script>		
-<!-- End Google Tag Manager -->		
-{/literal} 
    
     {hook name="main.head-bottom"}
 </head>
 <body class="{block name="body-class"}{/block}" itemscope itemtype="http://schema.org/WebPage">
-{literal} 		
-<!-- Google Tag Manager (noscript) -->		
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TJDVM5X"		
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>		
-<!-- End Google Tag Manager (noscript) -->		
-{/literal}
 
     {hook name="main.body-top"}
 
