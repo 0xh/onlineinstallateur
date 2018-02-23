@@ -38,17 +38,19 @@ class ExportDataFromMyshtController extends BaseAdminController {
     protected $csvFilename = "";
     protected $imageLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images" . DS;
     protected $imageZip = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images.zip";
+
     const MYSHT_CSV_FILE = 'exportCsvDataMysht';
+
     protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
-    
+
     public function export() {
-        
+
         if ($this->getRequest()->get("idartikels")) {
             /** @var Session $session */
             $session = $this->getRequest()->getSession();
             $date = date('m.d.Y.h.i.s.a', time());
-            $this->logFilePath = $this->logFilePath.$date.".txt";
-            $this->csvFilename = $this->csvFileLocation.self::MYSHT_CSV_FILE.$date.".csv";
+            $this->logFilePath = $this->logFilePath . $date . ".txt";
+            $this->csvFilename = $this->csvFileLocation . self::MYSHT_CSV_FILE . $date . ".csv";
             $session->set(self::MYSHT_CSV_FILE, $this->csvFilename);
             $this->initCsvFile($this->csvFilename);
             $this->logout();
@@ -82,7 +84,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
             }
             $zip->close();
 
-            
+
             $this->logout();
         }
 
@@ -161,7 +163,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                     "description" => $response["data"][0]["Zeile2"] . " " . $response["data"][0]["agzeile1"],
                     "stock" => $response["data"][0]["SAPLiefermenge"] ? $response["data"][0]["SAPLiefermenge"] : 0,
                     "price" => $response["data"][0]["aktpreis"]);
-                
+
                 $this->exportToCsv($this->csvFilename, $arrayData);
                 return $response["data"][0]["MegabildNr"];
             } else {
@@ -191,11 +193,14 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
         curl_close($curl);
 
-        $imageFile = $this->imageLocation . $artnr . ".jpg";
+        $artnr  = preg_replace('/[^a-zA-Z0-9_ -]/s','',$artnr);
+        if (strlen($response) > 43) {
+            $imageFile = $this->imageLocation . $artnr . ".jpg";
 
-        $saveImage = @fopen($imageFile, 'w');
-        @fwrite($saveImage, $response);
-        @fclose($saveImage);
+            $saveImage = @fopen($imageFile, 'w');
+            @fwrite($saveImage, $response);
+            @fclose($saveImage);
+        }
     }
 
     public function setLogger() {
@@ -214,13 +219,13 @@ class ExportDataFromMyshtController extends BaseAdminController {
         @unlink($this->cookiefile);
     }
 
-    function initCsvFile($file){
+    function initCsvFile($file) {
         $fp = fopen($file, 'w');
         $fields = array("idartikel", "MegabildNr", "Lieferantename", "title", "description", "stock", "price");
         fputcsv($fp, $fields);
         fclose($fp);
     }
-    
+
     function exportToCsv($csvFile, $arrayData) {
         $fp = fopen($csvFile, 'a');
         fputcsv($fp, $arrayData);
@@ -233,18 +238,17 @@ class ExportDataFromMyshtController extends BaseAdminController {
             return $response;
         }
         $session = $this->getRequest()->getSession();
-        if( $session->has(self::MYSHT_CSV_FILE) == true) {
+        if ($session->has(self::MYSHT_CSV_FILE) == true) {
             $file = $session->get(self::MYSHT_CSV_FILE);
-            $filePath = explode(DS,$file);
-            $filename = $filePath[sizeof($filePath)-1];
+            $filePath = explode(DS, $file);
+            $filename = $filePath[sizeof($filePath) - 1];
             return Response::create(@file_get_contents($file), 200, array(
-                'Content-type' => "text/plain",
-                'Content-Disposition' => sprintf("Attachment;filename=".$filename)
+                        'Content-type' => "text/plain",
+                        'Content-Disposition' => sprintf("Attachment;filename=" . $filename)
             ));
         } else {
             return $this->errorPage($this->getTranslator()->trans("No csv file has been found"), 403);
         }
-
     }
 
     function downloadImages() {
@@ -253,10 +257,14 @@ class ExportDataFromMyshtController extends BaseAdminController {
             return $response;
         }
 
-        return Response::create(@file_get_contents($this->imageZip), 200, array(
-                    'Content-type' => "text/plain",
-                    'Content-Disposition' => sprintf('Attachment;filename=imagesMysht.zip')
-        ));
+        if (@file_get_contents($this->imageZip)) {
+            return Response::create(@file_get_contents($this->imageZip), 200, array(
+                        'Content-type' => "text/plain",
+                        'Content-Disposition' => sprintf('Attachment;filename=imagesMysht.zip')
+            ));
+        } else {
+            return $this->errorPage($this->getTranslator()->trans("No images.zip file has been found"), 403);
+        }
     }
 
 }
