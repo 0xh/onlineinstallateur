@@ -23,6 +23,7 @@ use Thelia\Model\ProductSaleElementsQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
 
 /* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
@@ -83,6 +84,7 @@ class GenericProductImport extends AbstractImport {
         $meta_beschreibung = $this->rowHasField($row, "Meta_beschreibung");
         $meta_keywords = $this->rowHasField($row, "Meta_keywords");
         $menge = $this->rowHasField($row, "Menge");
+        $fulfilment_center = $this->rowHasField($row, "Fulfilment_center");
         $ist_in_Angebot = $this->rowHasField($row, "Ist_in_Angebot");
         $ist_neu = $this->rowHasField($row, "Ist_neu");
         $ist_online = $this->rowHasField($row, "Ist_online");
@@ -249,9 +251,19 @@ class GenericProductImport extends AbstractImport {
 
             $pse->setRef($ref);
 
-            if ($menge != null)
-                $pse->setQuantity($menge);
-
+            if ($menge != null) {
+            	if ($fulfilment_center != null) {
+            		$fcp = new FulfilmentCenterProducts();
+            		$fcp->setFulfilmentCenterId($fulfilment_center);
+            		$fcp->setProductId($productThelia->getId());
+            		$fcp->setProductStock($menge);
+            		$fcp->save();
+            	}
+            	else {
+                	$pse->setQuantity($menge);
+            	}
+            }
+            
             if ($ist_in_Angebot != null)
                 $pse->setPromo($ist_in_Angebot);
 
