@@ -35,11 +35,15 @@ class MyshtUpdateStockController extends BaseFrontController {
     protected $password = "My21Sht";
     protected $version = "2017";
     protected $cookiefile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "myshtcookie.txt";
+    protected $logFilePath = THELIA_LOG_DIR . DS . "update-stock-mysht_";
 
     public function updateStockMysht() {
 
+        $date = date('m.d.Y_H.i.s', time());        
+        $this->logFilePath = $this->logFilePath . $date . ".txt";
+
         $this->logout();
-        
+
         $prods = $this->getProductsExternId();
         $idCenter = $this->getIdFulfilmentCenterMysht();
 
@@ -58,7 +62,7 @@ class MyshtUpdateStockController extends BaseFrontController {
                 $stock = $this->getStock($artnr, $idartikel);
 
                 $this->setLogger()->error("stock =  $stock # ");
-                echo 'stock = ' . $stock;
+                echo 'stock = ' . $stock . " ";
             } else {
                 $this->setLogger()->error("error = # " . $artnr[0]);
             }
@@ -136,7 +140,7 @@ class MyshtUpdateStockController extends BaseFrontController {
             $this->setLogger()->error("getArtNr - cURL Error #: " . $err);
         } else {
             $response = json_decode($response, true);
-
+            
             if (isset($response["error"]) && $response["error"] == "nichtangemeldet") {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel 'nichtangemeldet' # " . json_encode($response));
                 return FALSE;
@@ -163,7 +167,7 @@ class MyshtUpdateStockController extends BaseFrontController {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version, "artnr" => $idartikel),
+            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version, "artnr" => $artnr),
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile,
         ));
@@ -199,11 +203,9 @@ class MyshtUpdateStockController extends BaseFrontController {
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
 
-            $logFilePath = THELIA_LOG_DIR . DS . "update-stock-mysht.txt";
-
             self::$logger->setPrefix("#DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
-            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $this->logFilePath);
             self::$logger->setLevel(Tlog::ERROR);
         }
         return self::$logger;
@@ -218,7 +220,7 @@ class MyshtUpdateStockController extends BaseFrontController {
                 ->where(ProductTableMap::EXTERN_ID . " IS NOT NULL and " . ProductTableMap::VISIBLE . " = 1");
         $arrayProds = array();
         foreach ($prods as $prod) {
-            array_push($arrayProds, array("idartikel" => $prod->getExternId(), "prodid" => $prod->getId()));
+            array_push($arrayProds, array("idartikel" => substr($prod->getRef(), 3), "prodid" => $prod->getId()));
         }
 
         return $arrayProds;
@@ -228,7 +230,11 @@ class MyshtUpdateStockController extends BaseFrontController {
         $id = FulfilmentCenterQuery::create()
                 ->findOneByName("mysht");
 
-        return $id->getId();
+        if ($id) {
+            return $id->getId();
+        } else {
+            die("FulfilmentCenterMysht not exist!");
+        }
     }
 
     function updateStockForMysht($idCenter, $prodId, $stock) {
