@@ -223,15 +223,6 @@
                         <p>{$POSTSCRIPTUM}</p>
                     </div>{/if}
                 </div>
-
-
-                
-               
-<!--                 <div id="services-appointments" {if $parent_category != #services_category_id#} style="display:none" {/if}>
-                     <script type="text/javascript" src="schedule/index.php?controller=pjFrontEnd&action=pjActionLoad&service_appointment={$service_for_appointment}"></script>
-                </div> -->
-                
-
             </section>
             
             <section class="price-block col-xs-12 col-sm-12 col-lg-3 col-xl-3">
@@ -326,16 +317,14 @@
                                     <tr>
                                     <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="/versandkosten.html">Versandkosten</a></small></td>
                                     </tr>
-                                    <tr>
-                                    <td ><small><!--Ab 300 € Warenwert versandkostenfrei<sup>1)--></sup></small></td>
-                                    </tr>
+
                                 </table>
                             {/if}
                            
                             </span>
                             <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
                             {if $SHOW_ORIGINAL_PRICE!=false}
-                                <!--span class="old-price"><span class="price-label">{intl l="Regular Price:"} </span><span id="pse-price-old" class="price">{format_money number=$TAXED_PRICE}</span></span-->
+                                
                             {/if}
                         </span>
                     </div>
@@ -526,7 +515,7 @@
             {strip}
                 {capture "brand_info"}
                     {loop name="brand_info" type="brand" product={$ID} limit="1"}
-                        <!--p><strong><a href="{$URL nofilter}">{$TITLE}</a></strong></p-->
+
 <div class="col-sm-3">
                         {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=218 height=146 resize_mode="borders"}
                             <p><a href="{$URL nofilter}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></a></p>
@@ -581,7 +570,7 @@
                     
 
                     
-                    {if $smarty.capture.additional ne ""}<!--li role="presentation"><a id="tab2" href="#additional" data-toggle="tab" role="tab">{intl l="Additional Info"}</a></li-->{/if}
+                    {if $smarty.capture.additional ne ""}{/if}
                     {if $smarty.capture.brand_info ne ""}<li role="presentation"><a id="tab3" href="#brand_info" data-toggle="tab" role="tab">{intl l="Brand information"}</a></li>{/if}
                     {if $smarty.capture.document ne ""}<li role="presentation"><a id="tab4" href="#document" data-toggle="tab" role="tab">{intl l="Documents"}</a></li>{/if}
                     {forhook rel="product.additional"}
@@ -696,39 +685,7 @@
     var PSE_COMBINATIONS_VALUE = {$combination_values|json_encode nofilter};
 </script>
 
-<script>
-/*$('.products-content').on('click', '.thumbnail', function (event) {
-    
-	if($(this).hasClass("selected")){
-   
-	$(this).removeClass("selected");
-    //now disable inputs
-     $(this).find($("[name^=service]")).prop('disabled',true);
-    //remove price
-	    $(this).find($("[name^=service]")).prop('disabled',false);
-	    //remove service price from product
-	    $serviceObject = $(this).find($("[name=price_service_o]"));
-	    $productid = $serviceObject.attr('product');
-	    $productObject = $("[name=price_product_"+$productid+"]");
-	    $productObject.text(parseInt($productObject.text())-parseInt($serviceObject.text()) );
-	}
-	else  {
-		$(this).addClass("selected");
-	    $(this).find($("[name^=service]")).prop('disabled',false);
-	    //add service price to product
-	    $serviceObject = $(this).find($("[name=price_service_o]"));
-	    $productid = $serviceObject.attr('product');
-	    $productObject = $("[name=price_product_"+$productid+"]");
-	    $productObject.text(parseInt($productObject.text())+parseInt($serviceObject.text()) );
-	    
-	   // alert($("[name=price_product_"+$productid+"]").text());
-	 //   alert($(this).find($("[name=price_product_o]")).text()+"   "+$(this).find($("[name=price_service_o]")).attr('product'));
-	}
-	
-//	if($(this).hasClass("selected")){
-	
-});*/
-</script>
+
         </article><!-- /#product -->
         
         <ul class="pager">
