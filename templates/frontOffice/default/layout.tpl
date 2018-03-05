@@ -52,6 +52,10 @@ web : http://www.hausfabrik.at
     {stylesheets file='assets/dist/css/thelia.min.css'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
+	
+	{stylesheets file='assets/dist/css/custom.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
  
     
     {stylesheets file='assets/dist/css/minnu.css'}

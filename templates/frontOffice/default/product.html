@@ -63,7 +63,10 @@
             
             {hook name="product.top" product={$ID}}
                        
-                            
+                    <h1 class="name">
+                    	<span itemprop="name">{$TITLE}</span>
+                    	<span id="pse-name" class="pse-name"></span>
+                    </h1>                
                        
             
 			{if $service_category == #services_category_id#}
@@ -74,7 +77,8 @@
             
             	{/ifhook}
             	{elsehook rel="product.gallery"}
-            	<section id="product-gallery" class="col-sm-6">
+
+            	<section id="product-gallery" class="col-xs-12 col-sm-6 col-lg-5 col-xl-5">
                     
                 	{ifloop rel="image.main"}
                 		<figure class="product-image">
@@ -127,41 +131,16 @@
             </section>
             {/elsehook}
 
-            <section id="product-details" class="col-sm-6">
+            <section id="product-details" class="col-xs-12 col-sm-6 col-lg-4 col-xl-4">
                 {hook name="product.details-top" product={$ID}}
 
                 <div class="product-info">
-                    <h1 class="name">
-                    	<span itemprop="name">{$TITLE}</span>
-                    	<span id="pse-name" class="pse-name"></span>
-                    </h1>
+                   
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
-                  
-                  <!-- Original Loop listing -->  
-                  <!--  <div>
-                   {assign var="attributes_limit" value=6}
-                    {loop name="attributes" type="feature" product=$product_id}
-                    
-                    	{if $TITLE != "badge"}
-                    		{ifloop rel="attributes_info"}
-                    			{assign var="feature_title" value=$TITLE}	
-                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
-                            		{if $TITLE != "highlight"}
-                                    <div class="row-fluid">
-                            		<div class="col-sm-4">{$feature_title}:</div> 
-                                	<div class="col-sm-8">{$TITLE}</div>
-                                    <div class="clearfix"></div>
-                                    </div>  
-                                	{/if}
-                            	{/loop}
-                    		{/ifloop}
-                    	{/if}
-                	{/loop}
-                	</div> -->
-                    
+
                     <div>
 	                   {assign var="attributes_limit" value=6}
-	                    {loop name="attributes" type="feature" product=$product_id}
+	                    {loop name="attributes" type="feature" product=$product_id limit="6"}
 	                    	{if $TITLE != "badge"}
 	                    		{ifloop rel="attributes_info"}
 	                    			{assign var="feature_title" value=$TITLE}	
@@ -176,17 +155,29 @@
 	           
                 		{foreach $sizearr as $value}
                 			 <div class="row-fluid">
-								<div class="col-sm-4">{$value@key}:</div>
-								<div class="col-sm-8">{$value|substr:2}</div>
+								<div class="col-xs-4 col-sm-4">{$value@key}:</div>
+								<div class="col-xs-8 col-sm-8">{$value|substr:2}</div>
 								<div class="clearfix"></div>
 							</div>
 						{/foreach}
                 
                 	</div>
                	                  
-<table class="price-table" style="font-size:12px; color:#7a7a7a">
-    <tr style="padding-top:10px;">
-        <td colspan="2" style="position:relative;padding-top:7px;">
+<table class="price-table">
+	<tr>
+
+        <td colspan="2">
+             {loop name="brand_info" type="brand" product={$ID} limit="1"}
+            
+                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
+                        
+                        <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
+                    {/loop}
+            {/loop}
+        </td>       
+    </tr>
+    <tr>
+        <td colspan="2">
         {loop name="badge_info" type="feature" product=$product_id}
                   
                 
@@ -203,18 +194,7 @@
                 {/loop}
         </td>
     </tr>
-    <tr style="padding-top:7px;">
-
-        <td colspan="2">
-             {loop name="brand_info" type="brand" product={$ID} limit="1"}
-            
-                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
-                        
-                        <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
-                    {/loop}
-            {/loop}
-        </td>       
-    </tr>
+   
     
      {if $WEIGHT}
         <tr>
@@ -244,7 +224,18 @@
                     </div>{/if}
                 </div>
 
-                {loop type="sale" name="product-sale-info" product={$ID} active="1"}
+
+                
+               
+<!--                 <div id="services-appointments" {if $parent_category != #services_category_id#} style="display:none" {/if}>
+                     <script type="text/javascript" src="schedule/index.php?controller=pjFrontEnd&action=pjActionLoad&service_appointment={$service_for_appointment}"></script>
+                </div> -->
+                
+
+            </section>
+            
+            <section class="price-block col-xs-12 col-sm-12 col-lg-3 col-xl-3">
+                    {loop type="sale" name="product-sale-info" product={$ID} active="1"}
                     <div class="product-promo">
                         <p class="sale-label">{$SALE_LABEL}</p>
                         <p class="sale-saving"> {intl l="Save %amount%sign on this product" amount={$PRICE_OFFSET_VALUE} sign={$PRICE_OFFSET_SYMBOL}}</p>
@@ -252,9 +243,10 @@
                             <p class="sale-period">{intl l="This offer is valid until %date" date={format_date date=$END_DATE output="date"}}</p>
                         {/if}
                     </div>
+
                  {/loop}
 
-                <div class="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <div class="product-price col-xs-12 col-sm-6 col-lg-12 col-xl-12" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <div class="availability">
 <span class="availibity-label sr-only">{intl l="Availability"}: </span>
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
@@ -283,56 +275,40 @@
                         <span id="pse-promo">
                             <span class="special-price">
                             {if $parent_category != #services_category_id# AND $LISTEN_PRICE!=0}
-                            <table class="price-table">
+                            <table class="price-table align-right" >
 
-                                <tr>
-                                    <td>Statt:</td>
-                                    <td>      
+                                <tr class="align-right">
+                                    <td>     
                                         <span class="price-label">{intl l="Special Price:"}</span>
                             	<span id="pse-price" style="display: none;" class="price">{format_money number=$TAXED_PROMO_PRICE symbol={currency attr="symbol"}}</span>
-                                <div> {format_money number=$LISTEN_PRICE}*</div>
-                                    </td>
+                                 <span  class="line-through">{format_money number=$LISTEN_PRICE}*</span>
+                                    <span class="listprice">
+                                {format_money number=$BEST_TAXED_PRICE}</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Jetzt:</td>
-                                    <td><div style="font-size:20px; font-weight:bold; color:#F00">
-                                {format_money number=$BEST_TAXED_PRICE}</div></td>
-                                </tr>
-                                <tr>
-                                    <td>Sie sparen:</td>
                                     <td>
                                     	<div>
-                                			{$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
+                                			<span>Sie sparen: {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
                                         		({if $LISTEN_PRICE!=0} 
                                         		{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%
-                                        		{/if})
+                                        		{/if})</span>
                                         </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style="height:20px" colspan="2"></td>
-                                </tr>
-
-                                <tr id="zwischensumme" style="display:none">
-                                     <td><div>Zwischensumme:</div></td>
-                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+								<tr>
+									<td class="table-height-space-sm"></td>
+								</tr>
+									
+                                <tr id="zwischensumme" style="display:none;">
+                                    <td ><span>Zwischensumme:</span> <span name="price_product_{$product_id}" class="highlighted-price">  {$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
                                <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
                                 </tr>
                                 <tr>
                                     <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="/versandkosten.html">Versandkosten</a></small></td>
                                 </tr>
-                                <tr>
-                                    <td ><small><!--Ab 300 € Warenwert versandkostenfrei<sup>1)--></small></td>
-                                </tr>
-
-                                
-                                <!--tr>
-                                    <td><br><em>Folgende Services sind mit diesem Produkt verfügbar:</em></td>
-                                </tr-->
                             </table>
                             {else}  
                                 <table class="price-table">
-                                    
                                     <tr>
                                         <td>
                                         <div style="font-size:20px; font-weight:bold;">
@@ -344,7 +320,7 @@
                                     </tr>
                                     <tr id="zwischensumme" style="display:none">
                                      <td><div>Zwischensumme:</div></td>
-                                    <td style="font-size:20px; font-weight:bold; color:#000;"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+                                    <td class="highlighted-price"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
                                <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
                                 </tr>
                                     <tr>
@@ -368,7 +344,23 @@
                         {intl l="Sorry but this combination does not exist."}
                     </div>
                 </div>
+                <div class="buying-options col-xs-12 col-sm-6 col-lg-12 col-xl-12">
+                    	<div class="order-online">
+                    	<input type="radio" name="buy_format" id=""  value="online" checked="checked"> 
+                    	<label class="c-input-button">
+                    	<span>
+                    	Online bestellen</span></label>
+                    	</div>
+                    	<div class="reserve">
+                    	<input type="radio" name="buy_format" id=""  value="online"> 
+                    	<label>Reservieren</label>
+                    	 <br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit in 2 Stunden
+                    	</div>
+                </div>
 {/if}
+
+                
+
                 {form name="thelia.cart.add" }
                 <form id="form-product-details" action="{url path="/konfigurator/add" }" method="post" class="form-product">
                     {form_hidden_fields}
@@ -412,25 +404,11 @@
                     
                     
 
-					{if $parent_category != #services_category_id#}
-						<div class="products-content services-checkbox">
-							<ul class="thumbnails image_picker_selector">
-								{loop type="service"  name="services_list" product_id=$product_id limit="8"}
-                               	{assign var="service_for_appointment" value = $SERVICE_ID} 
- 									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=false width="200" height="100"}
- 									<div class="product-service-calendar">
-										{*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
-									</div>	
-								{/loop}
- 							</ul>
- 						</div>
-					{/if}
+				
                     
 			         {assign var="service_title" value="{$TITLE}"}
 			         
-                     {if $service_category==#services_category_id#}
-                    <h2 style="margin-left:15px; margin-right:15px">{$TITLE}</h2>
-                    {/if}
+
                     {loop type="image" name="image.main" product={$ID} resize_mode="borders"  limit="1"}
                     	{assign var="service_image_url" value="{$IMAGE_URL}"}
                     {/loop}
@@ -461,7 +439,8 @@
                         {/if}
                     <fieldset class="product-cart form-inline">
                         {form_field field='quantity'}
-                        <div class="form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
+                        <br>
+                        <div class=" col-xs-12 col-sm-6 col-lg-12 col-xl-12 text-center form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
                              {if $service_category == #services_category_id#}  style="display:none"{/if}>
                             <label for="{$label_attr.for}">{$label}</label>
                             <input type="number" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
@@ -473,30 +452,40 @@
                         </div>
                         {/form_field}
 
-                        <div class="form-group group-btn" >
-                            <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-chevron-right"></i> {intl l="Add to cart"}</button>
+                        <div class="col-xs-12 col-sm-6 col-lg-12 col-xl-12 form-group group-btn  align-center" >
+                        <br>
+                            <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
                         </div>
                     </fieldset>
                             
                     {if $service_category == #services_category_id# }</div>{/if}
-                    </div>                            
+                    </div>    
 
-            {if $service_category == #services_category_id# }       
+					{if $parent_category != #services_category_id#}
+						<div class="products-content services-checkbox">
+							<ul class="thumbnails image_picker_selector">
+								{loop type="service"  name="services_list" product_id=$product_id limit="8"}
+                               	{assign var="service_for_appointment" value = $SERVICE_ID} 
+ 									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=false width="200" height="100"}
+ 									<div class="product-service-calendar">
+										{*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
+									</div>	
+								{/loop}
+ 							</ul>
+ 						</div>
+					
+					
+
+            {else}       
             <div class="product-service-calendar col-sm-12">
 				{hook name="productservice.bottom" service="{$ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product=true btn_booking="btn-service-booking"}
 			</div>
 			<div style="clearfix"></div>
+			
 			{/if}
 			        
                 </form>
                 {/form}
-                
-               
-<!--                 <div id="services-appointments" {if $parent_category != #services_category_id#} style="display:none" {/if}>
-                     <script type="text/javascript" src="schedule/index.php?controller=pjFrontEnd&action=pjActionLoad&service_appointment={$service_for_appointment}"></script>
-                </div> -->
-                
-
             </section>
 
             {strip}
