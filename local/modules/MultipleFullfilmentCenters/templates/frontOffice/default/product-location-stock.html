@@ -2,9 +2,11 @@
 	<select class='form-control location-product-stock' name="location_stock">
 	    <option disabled selected="selected">{intl l="Please choose a fulfilment center"}</option>
 		{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$productId quantity=$quantity hide_virtual_center=1}
-	   		<option value="{$CENTERID}" {if $CENTERID == $fulfimentCenterId}selected="selected"{/if}>
-				{$CENTERNAME}
-			</option>
+			{if $RESERVEDSTOCK + $quantity <= $PRODUCTSTOCK}
+		   		<option value="{$CENTERID}" {if $CENTERID == $fulfimentCenterId}selected="selected"{/if}>
+					{$CENTERNAME}
+				</option>
+			{/if} 
 		{/loop}
 	</select>
 	
