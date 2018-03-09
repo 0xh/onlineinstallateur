@@ -154,12 +154,13 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		$cartItem = $this->findCartItem($event);
 		
 		if($cartItem) {
+			Tlog::getInstance()->error('update quantity');
 			$this->updateItemIfExists($cartItem, $event);
 		}
 		else {
+			Tlog::getInstance()->error('buy format on product page - '.$this->request->getSession()->get('buy_format'));
+			
 			if($this->request->getSession()->get('buy_format')== 'reserve' ) {
-				
-				Tlog::getInstance()->error('buy format on product page - '.$this->request->getSession()->get('buy_format'));
 				
 				$cartProductLocation = OrderLocalPickupQuery::create()
 					->filterByProductId($event->getProduct())
