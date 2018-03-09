@@ -58,7 +58,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
@@ -101,6 +101,11 @@ class FulfilmentCenterProductsTableMap extends TableMap
     const OUTGOING_STOCK = 'fulfilment_center_products.OUTGOING_STOCK';
 
     /**
+     * the column name for the RESERVED_STOCK field
+     */
+    const RESERVED_STOCK = 'fulfilment_center_products.RESERVED_STOCK';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -112,12 +117,12 @@ class FulfilmentCenterProductsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'FulfilmentCenterId', 'ProductId', 'ProductStock', 'IncomingStock', 'OutgoingStock', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'fulfilmentCenterId', 'productId', 'productStock', 'incomingStock', 'outgoingStock', ),
-        self::TYPE_COLNAME       => array(FulfilmentCenterProductsTableMap::ID, FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterProductsTableMap::PRODUCT_ID, FulfilmentCenterProductsTableMap::PRODUCT_STOCK, FulfilmentCenterProductsTableMap::INCOMING_STOCK, FulfilmentCenterProductsTableMap::OUTGOING_STOCK, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'FULFILMENT_CENTER_ID', 'PRODUCT_ID', 'PRODUCT_STOCK', 'INCOMING_STOCK', 'OUTGOING_STOCK', ),
-        self::TYPE_FIELDNAME     => array('id', 'fulfilment_center_id', 'product_id', 'product_stock', 'incoming_stock', 'outgoing_stock', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'FulfilmentCenterId', 'ProductId', 'ProductStock', 'IncomingStock', 'OutgoingStock', 'ReservedStock', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'fulfilmentCenterId', 'productId', 'productStock', 'incomingStock', 'outgoingStock', 'reservedStock', ),
+        self::TYPE_COLNAME       => array(FulfilmentCenterProductsTableMap::ID, FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID, FulfilmentCenterProductsTableMap::PRODUCT_ID, FulfilmentCenterProductsTableMap::PRODUCT_STOCK, FulfilmentCenterProductsTableMap::INCOMING_STOCK, FulfilmentCenterProductsTableMap::OUTGOING_STOCK, FulfilmentCenterProductsTableMap::RESERVED_STOCK, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'FULFILMENT_CENTER_ID', 'PRODUCT_ID', 'PRODUCT_STOCK', 'INCOMING_STOCK', 'OUTGOING_STOCK', 'RESERVED_STOCK', ),
+        self::TYPE_FIELDNAME     => array('id', 'fulfilment_center_id', 'product_id', 'product_stock', 'incoming_stock', 'outgoing_stock', 'reserved_stock', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -127,12 +132,12 @@ class FulfilmentCenterProductsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'FulfilmentCenterId' => 1, 'ProductId' => 2, 'ProductStock' => 3, 'IncomingStock' => 4, 'OutgoingStock' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'fulfilmentCenterId' => 1, 'productId' => 2, 'productStock' => 3, 'incomingStock' => 4, 'outgoingStock' => 5, ),
-        self::TYPE_COLNAME       => array(FulfilmentCenterProductsTableMap::ID => 0, FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID => 1, FulfilmentCenterProductsTableMap::PRODUCT_ID => 2, FulfilmentCenterProductsTableMap::PRODUCT_STOCK => 3, FulfilmentCenterProductsTableMap::INCOMING_STOCK => 4, FulfilmentCenterProductsTableMap::OUTGOING_STOCK => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FULFILMENT_CENTER_ID' => 1, 'PRODUCT_ID' => 2, 'PRODUCT_STOCK' => 3, 'INCOMING_STOCK' => 4, 'OUTGOING_STOCK' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'fulfilment_center_id' => 1, 'product_id' => 2, 'product_stock' => 3, 'incoming_stock' => 4, 'outgoing_stock' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'FulfilmentCenterId' => 1, 'ProductId' => 2, 'ProductStock' => 3, 'IncomingStock' => 4, 'OutgoingStock' => 5, 'ReservedStock' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'fulfilmentCenterId' => 1, 'productId' => 2, 'productStock' => 3, 'incomingStock' => 4, 'outgoingStock' => 5, 'reservedStock' => 6, ),
+        self::TYPE_COLNAME       => array(FulfilmentCenterProductsTableMap::ID => 0, FulfilmentCenterProductsTableMap::FULFILMENT_CENTER_ID => 1, FulfilmentCenterProductsTableMap::PRODUCT_ID => 2, FulfilmentCenterProductsTableMap::PRODUCT_STOCK => 3, FulfilmentCenterProductsTableMap::INCOMING_STOCK => 4, FulfilmentCenterProductsTableMap::OUTGOING_STOCK => 5, FulfilmentCenterProductsTableMap::RESERVED_STOCK => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FULFILMENT_CENTER_ID' => 1, 'PRODUCT_ID' => 2, 'PRODUCT_STOCK' => 3, 'INCOMING_STOCK' => 4, 'OUTGOING_STOCK' => 5, 'RESERVED_STOCK' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'fulfilment_center_id' => 1, 'product_id' => 2, 'product_stock' => 3, 'incoming_stock' => 4, 'outgoing_stock' => 5, 'reserved_stock' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -157,6 +162,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
         $this->addColumn('PRODUCT_STOCK', 'ProductStock', 'INTEGER', false, null, null);
         $this->addColumn('INCOMING_STOCK', 'IncomingStock', 'INTEGER', false, null, null);
         $this->addColumn('OUTGOING_STOCK', 'OutgoingStock', 'INTEGER', false, null, null);
+        $this->addColumn('RESERVED_STOCK', 'ReservedStock', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -164,8 +170,8 @@ class FulfilmentCenterProductsTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('FulfilmentCenter', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenter', RelationMap::MANY_TO_ONE, array('fulfilment_center_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('FulfilmentCenter', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenter', RelationMap::MANY_TO_ONE, array('fulfilment_center_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -312,6 +318,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
             $criteria->addSelectColumn(FulfilmentCenterProductsTableMap::PRODUCT_STOCK);
             $criteria->addSelectColumn(FulfilmentCenterProductsTableMap::INCOMING_STOCK);
             $criteria->addSelectColumn(FulfilmentCenterProductsTableMap::OUTGOING_STOCK);
+            $criteria->addSelectColumn(FulfilmentCenterProductsTableMap::RESERVED_STOCK);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.FULFILMENT_CENTER_ID');
@@ -319,6 +326,7 @@ class FulfilmentCenterProductsTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.PRODUCT_STOCK');
             $criteria->addSelectColumn($alias . '.INCOMING_STOCK');
             $criteria->addSelectColumn($alias . '.OUTGOING_STOCK');
+            $criteria->addSelectColumn($alias . '.RESERVED_STOCK');
         }
     }
 

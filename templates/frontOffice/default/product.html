@@ -6,6 +6,7 @@
     {$product_virtual={product attr="virtual"}}
     {$check_availability={config key="check-available-stock" default="1"}}
     {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+    {$reserve_online = 0}
 {/block}
 
 {* Body Class *}
@@ -39,6 +40,17 @@
 {* Content *}
 {block name="main-content"}
     {if $product_id}
+    
+    
+    {if $fulfilment_center_active == 'true'}
+   		{ifloop rel="product_stock_fulfilment_center"} 
+			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=3}
+		   		{if $PRODUCTSTOCK > 0 && $PRODUCTSTOCK > $RESERVEDSTOCK}
+		   			{$reserve_online = 1}
+		   		{/if}
+			{/loop}
+		{/ifloop} 
+    {/if}
     
     <div class="main">
         {loop name="product.details" type="product" id=$product_id limit="1" with_prev_next_info="1" with_prev_next_visible="1"}
@@ -333,18 +345,21 @@
                         {intl l="Sorry but this combination does not exist."}
                     </div>
                 </div>
+                
                 <div class="buying-options col-xs-12 col-sm-6 col-lg-12 col-xl-12">
-                    	<div class="order-online">
-                    	<input type="radio" name="buy_format" id=""  value="online" checked="checked"> 
+                   	<div class="order-online">
+                    	<input type="radio" name="buy_format" id="order_online"  value="online" checked="checked"> 
                     	<label class="c-input-button">
-                    	<span>
-                    	Online bestellen</span></label>
-                    	</div>
+                    		<span>Online bestellen</span>
+                    	</label>
+                   	</div>
+                   	{if $reserve_online}
                     	<div class="reserve">
-                    	<input type="radio" name="buy_format" id=""  value="online"> 
-                    	<label>Reservieren</label>
-                    	 <br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit in 2 Stunden
+	                    	<input type="radio" name="buy_format" id="reserve_online"  value="reserve"> 
+	                    	<label>Reservieren</label>
+	                    	<br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit in 2 Stunden
                     	</div>
+                   	{/if}
                 </div>
 {/if}
 
@@ -352,6 +367,7 @@
 
                 {form name="thelia.cart.add" }
                 <form id="form-product-details" action="{url path="/konfigurator/add" }" method="post" class="form-product">
+              
                     {form_hidden_fields}
                     <input type="hidden" name="view" value="product">
                     <input type="hidden" name="product_id" value="{$ID}">
@@ -757,6 +773,18 @@ $('.products-content').on('click', '.thumbnail', function (event) {
 	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())+parseFloat($serviceObject.text()));
 	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())) );
 	}
+});
+
+$('input[type=radio][name=buy_format]').change(function() {
+    $.ajax({
+        url: '/choose-buy-format',
+        type: 'POST',
+        data: {
+            buyFormat:  $(this).val()
+        }
+    }).done(function(data){
+    	return data;
+    });	
 });
 
 </script>
