@@ -589,10 +589,13 @@ class OrderController extends BaseFrontController
                 $session->getOrder()->setChoosenDeliveryAddress($addressId);
             }
         }
-      
+        
         $deliveryAddressId = $session->getOrder()->getChoosenDeliveryAddress();
         if($session->getOrder()->getModuleRelatedByDeliveryModuleId())
         	$deliveryModuleId = $session->getOrder()->getModuleRelatedByDeliveryModuleId()->getId();
+        elseif($session->get('buy_format') == 'reserve' ) {
+        	$deliveryModuleId = 49;
+        }
         else 
         	$deliveryModuleId = 0;
         $address = AddressQuery::create()->findPk($deliveryAddressId);

@@ -43,4 +43,8 @@
     <route id="multiplefulfilmentcenters.setting.products.update" path="/admin/module/multiplefulfilmentcenters/update-quantity-products">
         <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\SettingProductsQuantityController::updateQuantityFullfilmentCenters</default>
     </route>
+    
+    <route id="multiplefulfilmentcenters.buy.format" path="/choose-buy-format">
+        <default key="_controller">MultipleFullfilmentCenters\Controller\Front\CartProductStockLocationController::setBuyFormat</default>
+    </route>
 </routes>

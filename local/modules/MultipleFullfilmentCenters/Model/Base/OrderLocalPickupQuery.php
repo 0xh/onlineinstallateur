@@ -15,6 +15,8 @@ use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
+use Thelia\Model\Order;
+use Thelia\Model\Product;
 
 /**
  * Base class that represents a query for the 'order_local_pickup' table.
@@ -539,16 +541,16 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \MultipleFullfilmentCenters\Model\Order object
+     * Filter the query by a related \Thelia\Model\Order object
      *
-     * @param \MultipleFullfilmentCenters\Model\Order|ObjectCollection $order The related object(s) to use as filter
+     * @param \Thelia\Model\Order|ObjectCollection $order The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildOrderLocalPickupQuery The current query, for fluid interface
      */
     public function filterByOrder($order, $comparison = null)
     {
-        if ($order instanceof \Propel\Model\Order) {
+        if ($order instanceof \Thelia\Model\Order) {
             return $this
                 ->addUsingAlias(OrderLocalPickupTableMap::ORDER_ID, $order->getId(), $comparison);
         } elseif ($order instanceof ObjectCollection) {
@@ -559,7 +561,7 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(OrderLocalPickupTableMap::ORDER_ID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByOrder() only accepts arguments of type \MultipleFullfilmentCenters\Model\Order or Collection');
+            throw new PropelException('filterByOrder() only accepts arguments of type \Thelia\Model\Order or Collection');
         }
     }
 
@@ -604,26 +606,26 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \MultipleFullfilmentCenters\Model\OrderQuery A secondary query class using the current class as primary query
+     * @return   \Thelia\Model\OrderQuery A secondary query class using the current class as primary query
      */
     public function useOrderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinOrder($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Order', '\MultipleFullfilmentCenters\Model\OrderQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Order', '\Thelia\Model\OrderQuery');
     }
 
     /**
-     * Filter the query by a related \MultipleFullfilmentCenters\Model\Product object
+     * Filter the query by a related \Thelia\Model\Product object
      *
-     * @param \MultipleFullfilmentCenters\Model\Product|ObjectCollection $product The related object(s) to use as filter
+     * @param \Thelia\Model\Product|ObjectCollection $product The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildOrderLocalPickupQuery The current query, for fluid interface
      */
     public function filterByProduct($product, $comparison = null)
     {
-        if ($product instanceof \MultipleFullfilmentCenters\Model\Product) {
+        if ($product instanceof \Thelia\Model\Product) {
             return $this
                 ->addUsingAlias(OrderLocalPickupTableMap::PRODUCT_ID, $product->getId(), $comparison);
         } elseif ($product instanceof ObjectCollection) {
@@ -634,7 +636,7 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
             return $this
                 ->addUsingAlias(OrderLocalPickupTableMap::PRODUCT_ID, $product->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByProduct() only accepts arguments of type \MultipleFullfilmentCenters\Model\Product or Collection');
+            throw new PropelException('filterByProduct() only accepts arguments of type \Thelia\Model\Product or Collection');
         }
     }
 
@@ -679,13 +681,13 @@ abstract class OrderLocalPickupQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \MultipleFullfilmentCenters\Model\ProductQuery A secondary query class using the current class as primary query
+     * @return   \Thelia\Model\ProductQuery A secondary query class using the current class as primary query
      */
     public function useProductQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinProduct($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Product', '\MultipleFullfilmentCenters\Model\ProductQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Product', '\Thelia\Model\ProductQuery');
     }
 
     /**

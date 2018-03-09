@@ -6,11 +6,7 @@ use \Exception;
 use \PDO;
 use MultipleFullfilmentCenters\Model\FulfilmentCenter as ChildFulfilmentCenter;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery as ChildFulfilmentCenterQuery;
-use MultipleFullfilmentCenters\Model\Propel\Model\Order as ChildOrder;
 use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery as ChildOrderLocalPickupQuery;
-use MultipleFullfilmentCenters\Model\Propel\Model\OrderQuery as ChildOrderQuery;
-use MultipleFullfilmentCenters\Model\Propel\Model\Product as ChildProduct;
-use MultipleFullfilmentCenters\Model\Propel\Model\ProductQuery as ChildProductQuery;
 use MultipleFullfilmentCenters\Model\Map\OrderLocalPickupTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -22,6 +18,10 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Thelia\Model\Order as ChildOrder;
+use Thelia\Model\Product as ChildProduct;
+use Thelia\Model\OrderQuery;
+use Thelia\Model\ProductQuery;
 
 abstract class OrderLocalPickup implements ActiveRecordInterface 
 {
@@ -1288,7 +1288,7 @@ abstract class OrderLocalPickup implements ActiveRecordInterface
     public function getOrder(ConnectionInterface $con = null)
     {
         if ($this->aOrder === null && ($this->order_id !== null)) {
-            $this->aOrder = ChildOrderQuery::create()->findPk($this->order_id, $con);
+            $this->aOrder = OrderQuery::create()->findPk($this->order_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
@@ -1339,7 +1339,7 @@ abstract class OrderLocalPickup implements ActiveRecordInterface
     public function getProduct(ConnectionInterface $con = null)
     {
         if ($this->aProduct === null && ($this->product_id !== null)) {
-            $this->aProduct = ChildProductQuery::create()->findPk($this->product_id, $con);
+            $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be

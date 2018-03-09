@@ -164,7 +164,8 @@ class FulfilmentCenterTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('FulfilmentCenterProducts', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenterProducts', RelationMap::ONE_TO_MANY, array('id' => 'fulfilment_center_id', ), 'CASCADE', 'CASCADE', 'FulfilmentCenterProductss');
+        $this->addRelation('FulfilmentCenterProducts', '\\MultipleFullfilmentCenters\\Model\\FulfilmentCenterProducts', RelationMap::ONE_TO_MANY, array('id' => 'fulfilment_center_id', ), 'CASCADE', null, 'FulfilmentCenterProductss');
+        $this->addRelation('OrderLocalPickup', '\\MultipleFullfilmentCenters\\Model\\OrderLocalPickup', RelationMap::ONE_TO_MANY, array('id' => 'fulfilment_center_id', ), 'CASCADE', null, 'OrderLocalPickups');
     } // buildRelations()
     /**
      * Method to invalidate the instance pool of all tables related to fulfilment_center     * by a foreign key with ON DELETE CASCADE
@@ -174,6 +175,7 @@ class FulfilmentCenterTableMap extends TableMap
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
                 FulfilmentCenterProductsTableMap::clearInstancePool();
+                OrderLocalPickupTableMap::clearInstancePool();
             }
 
     /**
