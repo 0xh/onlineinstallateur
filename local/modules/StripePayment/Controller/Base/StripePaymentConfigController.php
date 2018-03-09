@@ -7,8 +7,10 @@
 namespace StripePayment\Controller\Base;
 
 use StripePayment\StripePayment;
+use StripePayment\Classes\StripePaymentLog;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Form\Exception\FormValidationException;
+use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
 use StripePayment\Model\Config\StripePaymentConfigValue;
@@ -19,14 +21,44 @@ use StripePayment\Model\Config\StripePaymentConfigValue;
  * @author TheliaStudio
  */
 class StripePaymentConfigController extends BaseAdminController
-{
+{   
+
+    const MAX_TRACE_SIZE_IN_BYTES = 40000;
+
     public function defaultAction()
     {
         if (null !== $response = $this->checkAuth([AdminResources::MODULE], ["stripepayment"], AccessManager::VIEW)) {
             return $response;
         }
 
-        return $this->render("stripepayment-configuration");
+        $logFilePath = StripePaymentLog::getLogFilePath();
+
+        $traces = @file_get_contents($logFilePath);
+
+        if (false === $traces) {
+            $traces = $this->translator->trans("The log file doesn't exists yet.", [], StripePayment::MESSAGE_DOMAIN);
+        } elseif (empty($traces)) {
+            $traces = $this->translator->trans("The log file is empty.", [], StripePayment::MESSAGE_DOMAIN);
+        } else {
+            // Limiter la taille des traces à 1MO
+            if (strlen($traces) > self::MAX_TRACE_SIZE_IN_BYTES) {
+                $traces = substr($traces, strlen($traces) - self::MAX_TRACE_SIZE_IN_BYTES);
+                // Cut a first line break;
+                if (false !== $lineBreakPos = strpos($traces, "\n")) {
+                    $traces = substr($traces, $lineBreakPos+1);
+                }
+
+                $traces = $this->translator->trans(
+                    "(Previous log is in %file file.)\n",
+                    [ '%file' => sprintf("log".DS."%s.log", StripePayment::MESSAGE_DOMAIN) ],
+                    StripePayment::MESSAGE_DOMAIN
+                ) . $traces;
+            }
+        }
+
+        $vars = ['log_messages' => nl2br($traces)  ];
+
+        return $this->render("stripepayment-configuration", $vars);
     }
 
     public function saveAction()
@@ -70,5 +102,23 @@ class StripePaymentConfigController extends BaseAdminController
         }
 
         return $this->defaultAction();
+    }
+
+    public function downloadLog()
+    {
+        if (null !== $response = $this->checkAuth(AdminResources::MODULE, 'atos', AccessManager::UPDATE)) {
+            return $response;
+        }
+
+        $logFilePath = StripePaymentLog::getLogFilePath();
+
+        return Response::create(
+            @file_get_contents($logFilePath),
+            200,
+            array(
+                'Content-type' => "text/plain",
+                'Content-Disposition' => sprintf('Attachment;filename=log-stripe.txt')
+            )
+        );
     }
 }
