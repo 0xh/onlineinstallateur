@@ -33,4 +33,10 @@ class StripePaymentLog
         }
         return self::$logger;
     }
+
+    public static function getLogFilePath()
+    {
+        return THELIA_LOG_DIR . DS . "log-stripe.txt";
+    }
+    
 }

@@ -102,6 +102,29 @@
                     {/form}
                 </div>
             </div>
+            <div class="row" style="padding-top: 30px;">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                {intl l="Stripe responses history"}
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div id="log-container" style="font-family: monospace; font-size: 12px; max-height: 400px; overflow-y: scroll">
+                                {$log_messages nofilter}
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <a href="{url path='/admin/module/StripePayment/log'}" class="btn btn-sm btn-primary">
+                                <span class="glyphicon glyphicon-download-alt"></span>
+                                {intl l="Download full log"}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {/block}
