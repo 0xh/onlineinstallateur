@@ -109,8 +109,16 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 	
 	public function getItemLocalPickup(CartEvent $event, $fulfilment_center = null)
 	{	
+		$cart = $event->getCart();
+		
+		$productId = CartItemQuery::create()
+			->select('product_id')
+			->filterByCartId($cart->getId())
+			->filterById($event->getCartItemId())
+			->findOne();
+		
 		$productLocalPickup = OrderLocalPickupQuery::create()
-			->filterByProductId($event->getProduct())
+			->filterByProductId($productId)
 			->filterByCartId($event->getCart()->getId());
 		
 		if(isset($fulfilment_center) && $fulfilment_center == 3) {
@@ -124,12 +132,12 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 	public function updateQuantityOrderLocalPickup(CartEvent $event)
 	{ 
 		$productLocalPickup = $this->getItemLocalPickup($event);
-		
-		if($productLocalPickup)
+	
+		if($productLocalPickup) {
 			$productLocalPickup
 				->setQuantity($event->getQuantity())
 				->save();
-		
+		}
 	}
 	
 	// delete product from OrderLocalPickup tabel if it's deleted from cart
