@@ -86,6 +86,17 @@ class BMDOrderExport extends AbstractExport
         
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
+        
+        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
+            $processedData['gkto'] = "4200";
+            $processedData['mwst'] = "";
+            $processedData['steuer'] = "";
+        }
+        else {
+            $processedData['gkto'] = "4000";
+            $processedData['steuer'] = round(-$processedData['steuer'],2);
+        }
+        // 18168
         switch($orderSource){
         	case "ORD":{
         	    $processedData['konto']="201599";
@@ -121,7 +132,9 @@ class BMDOrderExport extends AbstractExport
         	case "ADE":{
         		$processedData['konto']="202699";
         		$processedData['belegnr']="2".substr($processedData['belegnr'],3);
-        		$processedData['mwst'] = "19";
+        		$processedData['gkto'] = "4200";
+        		$processedData['mwst'] = "";
+        		$processedData['steuer'] = "";
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
@@ -145,16 +158,10 @@ class BMDOrderExport extends AbstractExport
         	}break;
         }
       
-        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
-        	$processedData['gkto'] = "4200";
-        	$processedData['mwst'] = "19";
-        }
-        else 
-			$processedData['gkto'] = "4000";
+
         
 		$processedData['extbelegnr'] = "";
         
-		$processedData['steuer'] = round(-$processedData['steuer'],2);
 		$processedData['betrag'] = round($processedData['betrag'],2);//round($betrag + $processedData['steuer'],2);
 		//Tlog::getInstance()->error("steuer ".round(-(137.15/1.2)*0.2,2)." betrag ");
 		$status = $processedData['skontotage'];

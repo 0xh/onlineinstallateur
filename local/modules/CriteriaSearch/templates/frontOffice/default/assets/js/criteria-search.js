@@ -6,10 +6,12 @@ jQuery(function($){
         function createMobileMenu(){
             $( ".category-head" ).each(function( index ) {
                 $('<div class="mobileFilterItem">'+
-                    '<button class="btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" type="button" data-toggle="collapse" data-target="#mobile'+
+                    '<button class="btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12 feature-'+$( this ).attr('data-feature')+'" type="button" data-toggle="collapse" data-target="#mobile'+
                         $( this ).attr('data-feature')+
                         '" aria-expanded="false" aria-controls="mobile'+$( this ).attr('data-feature')+'">'+
-                        $( this ).text() +
+                        "<span>"+
+                            $( this ).text() +
+                        "</span>"+
                     '</button>'+
                     '<div class="collapse" id="mobile'+$( this ).attr('data-feature')+'">'+
                         '<div class="card card-block">'+
@@ -103,6 +105,29 @@ jQuery(function($){
         }, 500, this);
     });
 
+    $('.input-search').on('change', function(e) {
+        if($(this).attr('id') != undefined) {
+            
+            //Old Event Listener parrent
+            var check = $(this).parents('.mobileFilterItem .checkbox').find('input[type=checkbox]:checked').length;
+            if(check)
+                $(".mobileFilterItem button." + $( this ).attr("mainitem") +" span").addClass('active');
+            else
+                $(".mobileFilterItem button." + $( this ).attr("mainitem") +" span").removeClass('active');
+        }
+                
+        if (searchTimer !== null) {
+            clearTimeout(searchTimer)
+        }
+
+        searchTimer = setTimeout(function() {
+            $('input[name=page]').val(1);
+            updateUrl();
+
+            displaySearchProductList();
+        }, 500, this);
+    });
+
     $('.criteria-pagination').on('click', function(e) {
         $('input[name=page]').val($(this).data('page'));
         $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -139,11 +164,9 @@ jQuery(function($){
             });
 
             
-            $( ".checkbox-box" ).each(function( ) { 
-                var check = $(this).find('input[type=checkbox]:checked').length;
-                
-                if(check)
-                    $('.category-head.feature-'+$(this).attr('id')+' span').addClass('active');
+            $( ".checkbox input[type=checkbox]:checked" ).each(function( ) { 
+                $("ul.category-container li.main-category a." + $( this ).attr("mainitem") +" span").addClass('active');
+                $(".mobileFilterItem button." + $( this ).attr("mainitem") +" span").addClass('active');
             });
             
             if (displayProduct) {

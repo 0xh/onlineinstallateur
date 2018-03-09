@@ -38,6 +38,8 @@ class MyshtUpdateStockController extends BaseFrontController {
 
     public function updateStockMysht() {
 
+        $this->logout();
+        
         $prods = $this->getProductsExternId();
         $idCenter = $this->getIdFulfilmentCenterMysht();
 
@@ -208,7 +210,7 @@ class MyshtUpdateStockController extends BaseFrontController {
     }
 
     public function logout() {
-        unlink($this->cookiefile);
+        @unlink($this->cookiefile);
     }
 
     function getProductsExternId() {
