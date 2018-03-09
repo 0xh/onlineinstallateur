@@ -107,22 +107,17 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		}
 	}
 	
-	public function getItemLocalPickup($event)
-	{
-		$cart = $event->getCart();
-		
-		$productId = CartItemQuery::create()
-			->select('product_id')
-			->filterByCartId($cart->getId())
-			->filterById($event->getCartItemId())
-			->findOne();
-		
+	public function getItemLocalPickup(CartEvent $event, $fulfilment_center = null)
+	{	
 		$productLocalPickup = OrderLocalPickupQuery::create()
-			->filterByProductId($productId)
-			->filterByCartId($cart->getId())
-			->findOne();
+			->filterByProductId($event->getProduct())
+			->filterByCartId($event->getCart()->getId());
 		
-		return $productLocalPickup;
+		if(isset($fulfilment_center) && $fulfilment_center == 3) {
+			$productLocalPickup->filterByFulfilmentCenterId(3);
+		}
+		
+		return $productLocalPickup->findOne();
 	}
 	
 	// update product quantity in OrderLocalPickup tabel
@@ -153,7 +148,7 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		
 		$cartItem = $this->findCartItem($event);
 		
-		if($cartItem) {
+		if($this->getItemLocalPickup($event, 3)) {
 			Tlog::getInstance()->error('update quantity');
 			$this->updateItemIfExists($cartItem, $event);
 		}
