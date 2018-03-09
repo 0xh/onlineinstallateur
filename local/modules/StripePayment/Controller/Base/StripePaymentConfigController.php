@@ -36,9 +36,9 @@ class StripePaymentConfigController extends BaseAdminController
         $traces = @file_get_contents($logFilePath);
 
         if (false === $traces) {
-            $traces = $this->translator->trans("The log file doesn't exists yet.", [], StripePayment::MESSAGE_DOMAIN);
+            $traces = $this->getTranslator()->trans("The log file doesn't exists yet.", [], StripePayment::MESSAGE_DOMAIN);
         } elseif (empty($traces)) {
-            $traces = $this->translator->trans("The log file is empty.", [], StripePayment::MESSAGE_DOMAIN);
+            $traces = $this->getTranslator()->trans("The log file is empty.", [], StripePayment::MESSAGE_DOMAIN);
         } else {
             // Limiter la taille des traces à 1MO
             if (strlen($traces) > self::MAX_TRACE_SIZE_IN_BYTES) {
@@ -48,7 +48,7 @@ class StripePaymentConfigController extends BaseAdminController
                     $traces = substr($traces, $lineBreakPos+1);
                 }
 
-                $traces = $this->translator->trans(
+                $traces = $this->getTranslator()->trans(
                     "(Previous log is in %file file.)\n",
                     [ '%file' => sprintf("log".DS."%s.log", StripePayment::MESSAGE_DOMAIN) ],
                     StripePayment::MESSAGE_DOMAIN
