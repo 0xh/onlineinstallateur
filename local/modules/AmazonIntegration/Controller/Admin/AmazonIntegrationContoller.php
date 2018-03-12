@@ -192,7 +192,7 @@ class AmazonIntegrationContoller extends BaseAdminController
             if ($orders) {
                 foreach ($orders as $i => $order) {
                 	
-                	if(!isset($order->OrderTotal->Amount) || (isset($order->OrderTotal->Amount) && $order->OrderTotal->Amount == 0 )) {
+                	if($order->OrderStatus == 'Pending' || $order->OrderStatus == 'Unshipped') {
                 		$_SESSION['ordersWithTotalZero'] = true;
                 		break;
                 	}
@@ -338,9 +338,9 @@ class AmazonIntegrationContoller extends BaseAdminController
         }
         
         if ($_SESSION['ordersWithTotalZero']) {
-        	AmazonIntegrationResponse::logError("No orders were imported. There are orders with total amount zero.");
+        	AmazonIntegrationResponse::logError("Amazon imported stopped at amazon order id ".$order->AmazonOrderId." because has the status ".$order->OrderStatus);
         	unset($_SESSION['nxtToken']);
-        	die("No orders were imported. There are orders with total amount zero.");
+        	die("Amazon imported stopped at amazon order id ".$order->AmazonOrderId." because has the status ".$order->OrderStatus);
         }
         
         if ($_SESSION['finishedToGetOrders'])
