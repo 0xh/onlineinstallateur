@@ -304,13 +304,31 @@ class StripePaymentEventListener implements EventSubscriberInterface
             ]
         );
 
-        \Stripe\Charge::create(
+        $logResult = \Stripe\Charge::create(
             [
                 'customer' => $stripeApiCustomer,
                 'amount' => $order->getTotalAmount() * 100,
                 'currency' => $order->getCurrency()->getCode()
             ]
         );
+
+        try{
+            $data = $logResult->jsonSerialize();
+
+            $log_message = '';
+            isset($data["id"])? $log_message .= ' Charge ID: '.$data["id"] : $log_message .= '';
+            isset($data["balance_transaction"])? $log_message .= ' / Balance Transaction: '.$data["balance_transaction"] : $log_message .= '';
+            isset($data["customer"])? $log_message .= ' / Stripe Customer: '.$data["customer"] : $log_message .= '';
+            isset($data["outcome"]["seller_message"])? $log_message .= ' / Outcome- Seler message: '.$data["outcome"]["seller_message"] : $log_message .= '';
+            isset($data["source"])? $log_message .= ' / Card Info: _Card_ID_'.$data["source"]["id"].' /Card_Brand:'.$data["source"]["brand"].' /User Name:'.$data["source"]["name"] : $log_message .= '';
+            isset($data["status"])? $log_message .= ' / Status: '.$data["status"] : $log_message .= '';
+            $logger = new StripePaymentLog();
+            $logger->logTextInfo( $log_message );
+        }
+        catch (Exception $e){
+            //Can't log the outcome
+        }
+
     }
 
     /**
