@@ -20,6 +20,8 @@ class CartProductStockLocationController extends MultipleFullfilmentCentersContr
 		$cartProductLocation->setFulfilmentCenterId($_POST['locationId'])
 			->setQuantity($_POST['quantity'])
 			->save();  
+		
+		exit;
 	}
 	
 	// set session with the type of buying: delivery/reserve and pickup. 
@@ -30,5 +32,7 @@ class CartProductStockLocationController extends MultipleFullfilmentCentersContr
 				"buy_format",
 				$_POST['buyFormat']
 				);
+		
+		exit;
 	}
 }
