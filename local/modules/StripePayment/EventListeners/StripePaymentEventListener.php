@@ -309,7 +309,12 @@ class StripePaymentEventListener implements EventSubscriberInterface
             [
                 'customer' => $stripeApiCustomer,
                 'amount' => $order->getTotalAmount() * 100,
-                'currency' => $order->getCurrency()->getCode()
+                'currency' => $order->getCurrency()->getCode(),
+                'description' => "Order Reference:". $order->getRef(),
+                'metadata' => array(
+                    'order_id'  => $order->getId(),
+                    'stripeToken' => $this->request->getSession()->get('stripeToken')
+                )
             ]
         );
 
