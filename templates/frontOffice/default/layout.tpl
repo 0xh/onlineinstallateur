@@ -573,7 +573,9 @@ var ratingBadgeContainer = document.createElement("div");
 document.body.appendChild(ratingBadgeContainer);
 window.gapi.load('ratingbadge', function() {
 window.gapi.ratingbadge.render(ratingBadgeContainer,
-{"merchant_id": 113938678}
+{"merchant_id": 113938678,
+"position": "BOTTOM_LEFT"
+}
 );
 });
 }
