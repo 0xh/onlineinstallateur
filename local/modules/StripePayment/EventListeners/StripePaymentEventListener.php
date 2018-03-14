@@ -139,7 +139,8 @@ class StripePaymentEventListener implements EventSubscriberInterface
             $this->stripeCharge($order);
 
             // Save Stripe token into order transaction reference
-            $this->saveStripeToken($order);
+            // since http://jira2.sepa.at/browse/HFP-150, we deal with this link in stripeCharge($order) function
+            //$this->saveStripeToken($order);
 
             // Set 'paid' status to the order
             $this->changeOrderStatus($event);
@@ -324,6 +325,18 @@ class StripePaymentEventListener implements EventSubscriberInterface
             isset($data["status"])? $log_message .= ' / Status: '.$data["status"] : $log_message .= '';
             $logger = new StripePaymentLog();
             $logger->logTextInfo( $log_message );
+
+            if ( $data["status"] == "succeeded" ) {
+                if( isset($data["id"]) ){
+                    //charge id tocken starts with ch_
+                    $this->saveStripeChargeID($order, $data["id"]);
+                }
+                else
+                {
+                    //stripe token starts with tok_
+                    $this->saveStripeToken($order);
+                }
+            }
         }
         catch (Exception $e){
             //Can't log the outcome
@@ -339,6 +352,17 @@ class StripePaymentEventListener implements EventSubscriberInterface
     {
         $order
             ->setTransactionRef($this->request->getSession()->get('stripeToken'))
+            ->save();
+    }
+
+    /**
+     * Save Stripe charge ID as transaction reference
+     * @param OrderModel $order
+     * @param string chargeID --response data fron \Stripe\Charge::create()
+     */
+    public function saveStripeChargeID(OrderModel $order, $chargeID){
+        $order
+            ->setTransactionRef( $chargeID )
             ->save();
     }
 
