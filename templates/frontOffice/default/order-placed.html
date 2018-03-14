@@ -29,6 +29,22 @@
 
             {loop type="order" name="placed-order" id=$placed_order_id}
             
+                {loop type="order_address" name="order-invoice-address" id=$INVOICE_ADDRESS}
+                    {loop type="country" name="customer.country.info" id=$COUNTRY}
+                        {assign var="countryCode" value="$ISOALPHA2"}
+                    {/loop}
+                {/loop}
+                
+           		{assign var="orderId" value=$placed_order_id}
+
+                {loop type="order_product" name="order-products" order=$placed_order_id}
+                    {loop type="product" name="product" ref=$REF}
+                         {loop type="delivery_delay_product" name="delivery_delay_product" product_id=$ID}
+                            {assign var="maxDeliveryDate" value=$DATE_MAX}
+                        {/loop}
+                    {/loop}
+                {/loop}
+
             {loop type="module" name="module-payment" id="$DELIVERY_MODULE"}
             {assign var="deliverymodule" value="$CODE"} 
             {/loop}
@@ -90,6 +106,33 @@
         </article>
 
     </div>
+    
+<!-- BEGIN GCR Opt-in Module Code -->
+<script src="https://apis.google.com/js/platform.js?onload=renderOptIn"
+async defer>
+</script>
+
+<script>
+window.renderOptIn = function() { 
+	window.gapi.load('surveyoptin', function() {
+		window.gapi.surveyoptin.render(
+			{   "merchant_id": "113938678", 
+				"order_id": "{$orderId}", 
+				"email": "{customer attr='email'}", 
+				"delivery_country": "{$countryCode}", 
+				"estimated_delivery_date": "{$maxDeliveryDate}"
+			}
+		); 
+	});
+}
+</script>
+<!-- END GCR Opt-in Module Code -->
+<!-- BEGIN GCR Language Code -->
+<script>
+	window.___gcfg = { lang: 'de' };
+</script>
+<!-- END GCR Language Code -->
+
 {/block}
 
 
