@@ -64,63 +64,33 @@ class WebBrowserController extends BaseAdminController {
     public function test() {
 
         echo '<pre>';
-//        var_dump($this->logFile);
         $this->init();
-        $r = $this->getPage("https://ro.yahoo.com/?p=us");
-        $r = ' <div id="gigi" class="Pos(a) End(0) T(0) W(30px) Mstart(12px) Mend(2px) Ta(end)">
-<ul class="js-stream-side-buttons js-stream-actions js-stream-tumblr-actions js-stream-dislike-disabled">
-    
+//        $r = $this->getPage("https://ro.yahoo.com/?p=us");
+        $urlLogin = "https://www.mysht.at/21057_DE";
+        $fields = array("username" => "hausf", "password" => "My21Sht", "version" => "2017");
+        $this->login($urlLogin, $fields);
+        $r = $this->getPage("https://www.mysht.at/myprofishop/suchergebnis?meintensie=&q=30079000");
+        $r = $this->getPage("https://www.mysht.at/myprofishop/suchergebnis?meintensie=&q=G28794");
+//        $r = $this->getPage("https://www.mysht.at/21069_DE.json?q=G30079");
+//
 
-<li class="ActionLike D(ib) O(n) Mt(4px) Mstart(-1px) Lh(20px)">
-        
-<a class="js-stream-like-button rapid-noclick-resp rapidnofollow Td(n) O(n) C($c_icon)  P(14px)" role="button" tabindex="0"   data-ylk="cpos:7;cposy:7;bpos:1;pos:1;imgt:ss;g:22b21599-e250-36a8-8b1e-59cb974ac2ef;ct:1;pkgt:orphan_img;grpt:singlestory;r:P0f00000000D96618;ccode:p_ro_ro_lmo4uh;t4:ctrl;elm:btn;elmt:op;itc:1;rspns:op;slk:like;"><b aria-live="polite" class="ActionTooltip Pos(a) Whs(n) Bd($bdr) Bdc($bdr_darkgrey) Bdrs(3px) Bgc(#fff) Bxsh($menuShadow) Lh(14px) End(-40px) rtl_End(58px) Py(7px) js-stream-like-button>Start(50%) js-stream-like-button:h>Start(a)">Apreciați acest subiect</b><i class="Icon-Fp2 IconTumblrHeartOutline Fz(21px) "></i></a>
-        
-</li>
-';
-        var_dump($this->parse_selector($r));
-//        var_dump(html_entity_decode($r));
-        $this->close();
-//        self::setLogger()->error("Error response #: ");
-//        $this->setLogger()->error("Error response #: ");
-        die;
-    }
-    
-    protected function parse_selector($selector_string) {
-        // pattern of CSS selectors, modified from mootools
-        $pattern = "/([\w-:\*]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[@?(!?[\w-]+)(?:([!*^$]?=)[\"']?(.*?)[\"']?)?\])?([\/, ]+)/is";
-        $pattern = "/([\w-:\*]*)/is";
-        preg_match_all($pattern, trim($selector_string).' ', $matches, PREG_SET_ORDER);
-        $selectors = array();
-        $result = array();
-//        var_dump($matches);
-//die;
-        foreach ($matches as $m) {
-            $m[0] = trim($m[0]);
-            if ($m[0]==='' || $m[0]==='/' || $m[0]==='//') continue;
-            // for borwser grnreated xpath
-            if ($m[1]==='tbody') continue;
-
-            list($tag, $key, $val, $exp, $no_key) = array($m[1], null, null, '=', false);
-            if(!empty($m[2])) {$key='id'; $val=$m[2];}
-            if(!empty($m[3])) {$key='class'; $val=$m[3];}
-            if(!empty($m[4])) {$key=$m[4];}
-            if(!empty($m[5])) {$exp=$m[5];}
-            if(!empty($m[6])) {$val=$m[6];}
-
-            // convert to lowercase
-//            if ($this->dom->lowercase) {$tag=strtolower($tag); $key=strtolower($key);}
-            //elements that do NOT have the specified attribute
-            if (isset($key[0]) && $key[0]==='!') {$key=substr($key, 1); $no_key=true;}
-
-            $result[] = array($tag, $key, $val, $exp, $no_key);
-//            if (trim($m[7])===',') {
-//                $selectors[] = $result;
-//                $result = array();
+        $html = new SimpleHtmlDomController();
+        $html->load($r);
+//        var_dump($html);
+        $rows = $html->find('link');
+        foreach ($rows as $value) {
+            var_dump($value->attr);
+            var_dump($value->_);
+//            if ($value->attr["href"] == "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css") {
+//                var_dump($value);
 //            }
+            //nodes
+            //parent
+            //attr
         }
-        if (count($result)>0)
-            $selectors[] = $result;
-        return $selectors;
+        $this->close();
+        $this->logout();
+        die("end");
     }
 
     /*
@@ -128,7 +98,7 @@ class WebBrowserController extends BaseAdminController {
      * $fields: array with user, pass, version, .... params for login
      */
 
-    public function login($urlLogin, $fields) {
+    public function login($urlLogin, $fields, $typeRequest = "POST") {
 
         $this->cookiefile .= "cookie" . $this->date . ".txt";
 
@@ -140,8 +110,7 @@ class WebBrowserController extends BaseAdminController {
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => $typeRequest,
             CURLOPT_POSTFIELDS => $fields,
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile
@@ -150,8 +119,6 @@ class WebBrowserController extends BaseAdminController {
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
 
-        $this->close();
-
         if ($err) {
             $this->setLogger()->error("Error response #: " . $err);
         } else {
@@ -159,7 +126,7 @@ class WebBrowserController extends BaseAdminController {
         }
     }
 
-    public function getPage($url, $fields = null) {
+    public function getPage($url, $fields = null, $typeRequest = "POST") {
 
         curl_setopt_array($this->curl, array(
             CURLOPT_URL => $url,
@@ -169,8 +136,7 @@ class WebBrowserController extends BaseAdminController {
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => $typeRequest,
             CURLOPT_POSTFIELDS => $fields,
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile
@@ -179,19 +145,21 @@ class WebBrowserController extends BaseAdminController {
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
 
-        $this->close();
-
         if ($err) {
             $this->setLogger()->error("Error response #: " . $err);
         } else {
             $this->setLogger()->error("Success response #: " . $response);
         }
-        
+
         return $response;
     }
 
     public function logout() {
-        @unlink($this->cookiefile);
+        if (!unlink($this->cookiefile)) {
+            $this->setLogger()->error("Error deleting #: " . $this->cookiefile);
+        } else {
+            $this->setLogger()->error("Success deleted: " . $this->cookiefile);
+        }
     }
 
     public function init() {
