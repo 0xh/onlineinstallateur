@@ -347,20 +347,22 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                                 <div><strong>{intl l="VERSANDKOSTEN UND LIEFERBEDINGUNGEN"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos! Die Standartlieferung erfolgt innerhalb von 1-3 Werktagen. Abholung nach Bestellung möglich."}</small></div>
                                 </div>
                             </a>
-                            <div class="col col-sm-4">
-                                <span class="shopicon shop-bezahlung highlightcolor"></span>
-                                <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
-                                <div>
-                                    <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/sofort.png'}" alt="sofort"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="nachnahme"/>
+                            <a href="zahlungsarten.html">
+                                <div class="col col-sm-4">
+                                    <span class="shopicon shop-bezahlung highlightcolor"></span>
+                                    <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
+                                    <div>
+                                        <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
+                                        <img src="{image file='assets/dist/img/paymentsystems/sofort.png'}" alt="sofort"/>
+                                        <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="nachnahme"/>
+                                    </div>
+                                    <div>
+                                        <img src="{image file='assets/dist/img/paymentsystems/visa.png'}" alt="visa"/>
+                                        <img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="mastercard"/>
+                                        <img src="{image file='assets/dist/img/paymentsystems/amex.png'}" alt="amex"/>
+                                    </div>
                                 </div>
-                                <div>
-                                    <img src="{image file='assets/dist/img/paymentsystems/visa.png'}" alt="visa"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/mastercard.png'}" alt="mastercard"/>
-                                    <img src="{image file='assets/dist/img/paymentsystems/amex.png'}" alt="amex"/>
-                                </div>
-                            </div>
+                            </a>
                             <a href="/contact">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-kontakt highlightcolor"></span>
