@@ -29,7 +29,7 @@
 
             {loop type="order" name="placed-order" id=$placed_order_id}
             
-            	{loop type="order_address" name="order-invoice-address" id=$INVOICE_ADDRESS}
+                {loop type="order_address" name="order-invoice-address" id=$INVOICE_ADDRESS}
                     {loop type="country" name="customer.country.info" id=$COUNTRY}
                         {assign var="countryCode" value="$ISOALPHA2"}
                     {/loop}
@@ -44,7 +44,7 @@
                         {/loop}
                     {/loop}
                 {/loop}
-            
+
             {loop type="module" name="module-payment" id="$DELIVERY_MODULE"}
             {assign var="deliverymodule" value="$CODE"} 
             {/loop}
@@ -108,6 +108,7 @@
     </div>
     
 <!-- BEGIN GCR Opt-in Module Code -->
+
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer>
 </script>
 

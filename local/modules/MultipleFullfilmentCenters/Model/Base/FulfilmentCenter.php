@@ -8,6 +8,8 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenter as ChildFulfilmentCenter;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts as ChildFulfilmentCenterProducts;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery as ChildFulfilmentCenterProductsQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery as ChildFulfilmentCenterQuery;
+use MultipleFullfilmentCenters\Model\OrderLocalPickup as ChildOrderLocalPickup;
+use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery as ChildOrderLocalPickupQuery;
 use MultipleFullfilmentCenters\Model\Map\FulfilmentCenterTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -98,6 +100,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     protected $collFulfilmentCenterProductssPartial;
 
     /**
+     * @var        ObjectCollection|ChildOrderLocalPickup[] Collection to store aggregation of ChildOrderLocalPickup objects.
+     */
+    protected $collOrderLocalPickups;
+    protected $collOrderLocalPickupsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -110,6 +118,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
      * @var ObjectCollection
      */
     protected $fulfilmentCenterProductssScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $orderLocalPickupsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of MultipleFullfilmentCenters\Model\Base\FulfilmentCenter object.
@@ -686,6 +700,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
 
             $this->collFulfilmentCenterProductss = null;
 
+            $this->collOrderLocalPickups = null;
+
         } // if (deep)
     }
 
@@ -819,6 +835,23 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
 
                 if ($this->collFulfilmentCenterProductss !== null) {
             foreach ($this->collFulfilmentCenterProductss as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->orderLocalPickupsScheduledForDeletion !== null) {
+                if (!$this->orderLocalPickupsScheduledForDeletion->isEmpty()) {
+                    \MultipleFullfilmentCenters\Model\OrderLocalPickupQuery::create()
+                        ->filterByPrimaryKeys($this->orderLocalPickupsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->orderLocalPickupsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collOrderLocalPickups !== null) {
+            foreach ($this->collOrderLocalPickups as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1023,6 +1056,9 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
             if (null !== $this->collFulfilmentCenterProductss) {
                 $result['FulfilmentCenterProductss'] = $this->collFulfilmentCenterProductss->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collOrderLocalPickups) {
+                $result['OrderLocalPickups'] = $this->collOrderLocalPickups->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1202,6 +1238,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getOrderLocalPickups() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOrderLocalPickup($relObj->copy($deepCopy));
+                }
+            }
+
         } // if ($deepCopy)
 
         if ($makeNew) {
@@ -1245,6 +1287,9 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     {
         if ('FulfilmentCenterProducts' == $relationName) {
             return $this->initFulfilmentCenterProductss();
+        }
+        if ('OrderLocalPickup' == $relationName) {
+            return $this->initOrderLocalPickups();
         }
     }
 
@@ -1492,6 +1537,274 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collOrderLocalPickups collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addOrderLocalPickups()
+     */
+    public function clearOrderLocalPickups()
+    {
+        $this->collOrderLocalPickups = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collOrderLocalPickups collection loaded partially.
+     */
+    public function resetPartialOrderLocalPickups($v = true)
+    {
+        $this->collOrderLocalPickupsPartial = $v;
+    }
+
+    /**
+     * Initializes the collOrderLocalPickups collection.
+     *
+     * By default this just sets the collOrderLocalPickups collection to an empty array (like clearcollOrderLocalPickups());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOrderLocalPickups($overrideExisting = true)
+    {
+        if (null !== $this->collOrderLocalPickups && !$overrideExisting) {
+            return;
+        }
+        $this->collOrderLocalPickups = new ObjectCollection();
+        $this->collOrderLocalPickups->setModel('\MultipleFullfilmentCenters\Model\OrderLocalPickup');
+    }
+
+    /**
+     * Gets an array of ChildOrderLocalPickup objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildFulfilmentCenter is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildOrderLocalPickup[] List of ChildOrderLocalPickup objects
+     * @throws PropelException
+     */
+    public function getOrderLocalPickups($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderLocalPickupsPartial && !$this->isNew();
+        if (null === $this->collOrderLocalPickups || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOrderLocalPickups) {
+                // return empty collection
+                $this->initOrderLocalPickups();
+            } else {
+                $collOrderLocalPickups = ChildOrderLocalPickupQuery::create(null, $criteria)
+                    ->filterByFulfilmentCenter($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collOrderLocalPickupsPartial && count($collOrderLocalPickups)) {
+                        $this->initOrderLocalPickups(false);
+
+                        foreach ($collOrderLocalPickups as $obj) {
+                            if (false == $this->collOrderLocalPickups->contains($obj)) {
+                                $this->collOrderLocalPickups->append($obj);
+                            }
+                        }
+
+                        $this->collOrderLocalPickupsPartial = true;
+                    }
+
+                    reset($collOrderLocalPickups);
+
+                    return $collOrderLocalPickups;
+                }
+
+                if ($partial && $this->collOrderLocalPickups) {
+                    foreach ($this->collOrderLocalPickups as $obj) {
+                        if ($obj->isNew()) {
+                            $collOrderLocalPickups[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOrderLocalPickups = $collOrderLocalPickups;
+                $this->collOrderLocalPickupsPartial = false;
+            }
+        }
+
+        return $this->collOrderLocalPickups;
+    }
+
+    /**
+     * Sets a collection of OrderLocalPickup objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $orderLocalPickups A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildFulfilmentCenter The current object (for fluent API support)
+     */
+    public function setOrderLocalPickups(Collection $orderLocalPickups, ConnectionInterface $con = null)
+    {
+        $orderLocalPickupsToDelete = $this->getOrderLocalPickups(new Criteria(), $con)->diff($orderLocalPickups);
+
+        
+        $this->orderLocalPickupsScheduledForDeletion = $orderLocalPickupsToDelete;
+
+        foreach ($orderLocalPickupsToDelete as $orderLocalPickupRemoved) {
+            $orderLocalPickupRemoved->setFulfilmentCenter(null);
+        }
+
+        $this->collOrderLocalPickups = null;
+        foreach ($orderLocalPickups as $orderLocalPickup) {
+            $this->addOrderLocalPickup($orderLocalPickup);
+        }
+
+        $this->collOrderLocalPickups = $orderLocalPickups;
+        $this->collOrderLocalPickupsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related OrderLocalPickup objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related OrderLocalPickup objects.
+     * @throws PropelException
+     */
+    public function countOrderLocalPickups(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderLocalPickupsPartial && !$this->isNew();
+        if (null === $this->collOrderLocalPickups || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOrderLocalPickups) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getOrderLocalPickups());
+            }
+
+            $query = ChildOrderLocalPickupQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFulfilmentCenter($this)
+                ->count($con);
+        }
+
+        return count($this->collOrderLocalPickups);
+    }
+
+    /**
+     * Method called to associate a ChildOrderLocalPickup object to this object
+     * through the ChildOrderLocalPickup foreign key attribute.
+     *
+     * @param    ChildOrderLocalPickup $l ChildOrderLocalPickup
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenter The current object (for fluent API support)
+     */
+    public function addOrderLocalPickup(ChildOrderLocalPickup $l)
+    {
+        if ($this->collOrderLocalPickups === null) {
+            $this->initOrderLocalPickups();
+            $this->collOrderLocalPickupsPartial = true;
+        }
+
+        if (!in_array($l, $this->collOrderLocalPickups->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddOrderLocalPickup($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param OrderLocalPickup $orderLocalPickup The orderLocalPickup object to add.
+     */
+    protected function doAddOrderLocalPickup($orderLocalPickup)
+    {
+        $this->collOrderLocalPickups[]= $orderLocalPickup;
+        $orderLocalPickup->setFulfilmentCenter($this);
+    }
+
+    /**
+     * @param  OrderLocalPickup $orderLocalPickup The orderLocalPickup object to remove.
+     * @return ChildFulfilmentCenter The current object (for fluent API support)
+     */
+    public function removeOrderLocalPickup($orderLocalPickup)
+    {
+        if ($this->getOrderLocalPickups()->contains($orderLocalPickup)) {
+            $this->collOrderLocalPickups->remove($this->collOrderLocalPickups->search($orderLocalPickup));
+            if (null === $this->orderLocalPickupsScheduledForDeletion) {
+                $this->orderLocalPickupsScheduledForDeletion = clone $this->collOrderLocalPickups;
+                $this->orderLocalPickupsScheduledForDeletion->clear();
+            }
+            $this->orderLocalPickupsScheduledForDeletion[]= clone $orderLocalPickup;
+            $orderLocalPickup->setFulfilmentCenter(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FulfilmentCenter is new, it will return
+     * an empty collection; or if this FulfilmentCenter has previously
+     * been saved, it will retrieve related OrderLocalPickups from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FulfilmentCenter.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildOrderLocalPickup[] List of ChildOrderLocalPickup objects
+     */
+    public function getOrderLocalPickupsJoinOrder($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderLocalPickupQuery::create(null, $criteria);
+        $query->joinWith('Order', $joinBehavior);
+
+        return $this->getOrderLocalPickups($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FulfilmentCenter is new, it will return
+     * an empty collection; or if this FulfilmentCenter has previously
+     * been saved, it will retrieve related OrderLocalPickups from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FulfilmentCenter.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildOrderLocalPickup[] List of ChildOrderLocalPickup objects
+     */
+    public function getOrderLocalPickupsJoinProduct($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderLocalPickupQuery::create(null, $criteria);
+        $query->joinWith('Product', $joinBehavior);
+
+        return $this->getOrderLocalPickups($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1526,9 +1839,15 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collOrderLocalPickups) {
+                foreach ($this->collOrderLocalPickups as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collFulfilmentCenterProductss = null;
+        $this->collOrderLocalPickups = null;
     }
 
     /**

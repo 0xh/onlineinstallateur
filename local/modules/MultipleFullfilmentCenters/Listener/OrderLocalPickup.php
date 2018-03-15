@@ -12,11 +12,20 @@ use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\OrderStatusQuery;
 use Thelia\Core\Event\Cart\CartEvent;
 use Thelia\Model\CartItemQuery;
+use Thelia\Log\Tlog;
+use Thelia\Core\HttpFoundation\Request;
 
 /**
  */
 class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 {
+	protected $request;
+	
+	public function __construct(Request $request)
+	{
+		$this->request = $request;
+	}	
+	
 	/**
 	 * @param  OrderEvent $event
 	 */
@@ -38,12 +47,23 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 			if($cartProductLocation) {
 				$cartProductLocation->setOrderId($order->getId())
 					->save();
+				
+				if($cartProductLocation->getFulfilmentCenterId() == 3) {
+					
+					$productLocation = FulfilmentCenterProductsQuery::create()
+						->filterByProductId($productId)
+						->filterByFulfilmentCenterId(3)
+						->findOne();
+					
+					$productLocation->setReservedStock($productLocation->getReservedStock() + $cartProductLocation->getQuantity())
+						->save();
+				}
 			} 
 		}
 		
 	}
 	
-	// decrease stock for the specific fulfilment center
+	// decrease stock for the specific fulfilment center & decrease reserved stock 
 	public function updateQuantity(OrderEvent $event) 
 	{     
 		$paidStatus = OrderStatusQuery::getPaidStatus()->getId();
@@ -65,24 +85,29 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 				
 				if($cartProductLocation) {
 					
-					 $productLocation = FulfilmentCenterProductsQuery::create()
+					$productLocation = FulfilmentCenterProductsQuery::create()
 						 ->filterByProductId($productId)
 						 ->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
 						 ->findOne();
 					 
-					 if($productLocation) {
-						 $newStockLocation = $productLocation->getProductStock() - $orderProduct->getQuantity();
+					if($productLocation) {
+						$newStockLocation = $productLocation->getProductStock() - $orderProduct->getQuantity();
 						 
-						 $productLocation->setProductStock($newStockLocation)
-						 	->save();
+						$productLocation->setProductStock($newStockLocation);
+						 
+						if($productLocation->getFulfilmentCenterId() == 3) {
+							$productLocation->setReservedStock($productLocation->getReservedStock() - $orderProduct->getQuantity());
+						}
+						
+						$productLocation->save();
 					 } 
 				}
 			}
 		}
 	}
 	
-	public function getItemLocalPickup($event)
-	{
+	public function getItemLocalPickupForCart(CartEvent $event)
+	{	
 		$cart = $event->getCart();
 		
 		$productId = CartItemQuery::create()
@@ -90,10 +115,10 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 			->filterByCartId($cart->getId())
 			->filterById($event->getCartItemId())
 			->findOne();
-		
+			
 		$productLocalPickup = OrderLocalPickupQuery::create()
 			->filterByProductId($productId)
-			->filterByCartId($cart->getId())
+			->filterByCartId($event->getCart()->getId())
 			->findOne();
 		
 		return $productLocalPickup;
@@ -102,23 +127,77 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 	// update product quantity in OrderLocalPickup tabel
 	public function updateQuantityOrderLocalPickup(CartEvent $event)
 	{ 
-		$productLocalPickup = $this->getItemLocalPickup($event);
-		
-		if($productLocalPickup)
+		$productLocalPickup = $this->getItemLocalPickupForCart($event);
+	
+		if($productLocalPickup) {
 			$productLocalPickup
 				->setQuantity($event->getQuantity())
 				->save();
-		
+		}
 	}
 	
 	// delete product from OrderLocalPickup tabel if it's deleted from cart
 	public function deleteItemOrderLocalPickup(CartEvent $event)
 	{
-		$productLocalPickup = $this->getItemLocalPickup($event);
+		$productLocalPickup = $this->getItemLocalPickupForCart($event);
 		
 		if($productLocalPickup)
 			$productLocalPickup->delete();
 	}
+	
+	public function getItemLocalPickupForProductPage($cartItem, $fulfilment_center)
+	{
+		$productLocalPickup = OrderLocalPickupQuery::create()
+			->filterByProductId($cartItem->getProductId())
+			->filterByCartId($cartItem->getCartId())
+			->filterByFulfilmentCenterId(3)
+			->findOne();
+		
+		return $productLocalPickup;
+	}
+	
+	// fulfill order_local_pickup with product and pickup center
+	public function insertProductPickupLocation(CartEvent $event) 
+	{
+		Tlog::getInstance()->error('cart event - productid: '.$event->getProduct().'- cartId: '.$event->getCart()->getId().'- quantiy: '.$event->getQuantity());
+		
+		$cartItem = $this->findCartItem($event);
+		$itemLocalPickup = $this->getItemLocalPickupForProductPage($cartItem, 3);
+		
+		if($itemLocalPickup) {
+			Tlog::getInstance()->error('update quantity');
+			$itemLocalPickup->setQuantity($cartItem->getQuantity())
+				->save(); 
+		}
+		else {
+			Tlog::getInstance()->error('buy format on product page - '.$this->request->getSession()->get('buy_format'));
+			
+			if($this->request->getSession()->get('buy_format')== 'reserve' ) {
+				
+				$cartProductLocation = OrderLocalPickupQuery::create()
+					->filterByProductId($event->getProduct())
+					->filterByCartId($event->getCart()->getId())
+					->findOneOrCreate();
+				
+				$cartProductLocation->setFulfilmentCenterId(3)
+					->setQuantity($event->getQuantity())
+					->save(); 
+				
+				$this->request->getSession()->remove('buy_format');
+			} 
+		}
+	}
+	
+	public function findCartItem(CartEvent $event) {
+		
+		$productInCart = CartItemQuery::create()
+			->filterByCartId($event->getCart()->getId())
+			->filterByProductId($event->getProduct())
+			->filterByProductSaleElementsId($event->getProductSaleElementsId())
+			->findOne();
+		
+		return $productInCart;
+	}	
 	
 	/**
 	 * Returns an array of event names this subscriber wants to listen to.
@@ -146,7 +225,8 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 				TheliaEvents::ORDER_PAY =>array("createOrderWithFulfilmentCenter", 128),
 				TheliaEvents::ORDER_UPDATE_STATUS=>array("updateQuantity", 128),
 				TheliaEvents::CART_UPDATEITEM => array("updateQuantityOrderLocalPickup", 128),
-				TheliaEvents::CART_DELETEITEM => array("deleteItemOrderLocalPickup", 256)
+				TheliaEvents::CART_DELETEITEM => array("deleteItemOrderLocalPickup", 256),
+				TheliaEvents::CART_ADDITEM => array("insertProductPickupLocation", 128)
 		);
 	}
 }

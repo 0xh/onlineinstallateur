@@ -1,0 +1,79 @@
+/*!
+ * custom stylesheet
+*/
+
+.price-block{
+	border:1px solid #d2d2d2;
+	padding-bottom: .625rem;
+	padding-top: .625rem;
+	padding-left:0px;
+	padding-right:0px;
+}
+.price-block .buying-options{
+	background-color: #f0f0f0;
+}
+.price-block .buying-options .order-online,.price-block .buying-options .reserve{
+
+	border-top: 1px solid #d2d2d2;
+	padding:20px;
+
+}
+.align-right{
+	text-align:right;
+}
+.align-left{
+	text-align:left;
+}
+.align-center{
+	text-align:center;
+}
+.line-through{
+	text-decoration: line-through;
+}
+.w-100{
+	width:100%;
+}
+h1.name{
+	font-size:1.65rem!important;
+	font-weight: 600;
+    font-style: italic;
+}
+.price-block .btn_add_to_cart {
+	width:100%;
+	padding: .9375rem .75rem;
+	text-align:center;
+}
+.c-input-button  input[type=radio]:checked+label:before {
+    background-color: #00a3ba!important;
+}
+.services-checkbox{
+	  padding: .9375rem .85rem;
+  }
+  
+.price-table{
+    margin:10px;
+	font-size:14px; 
+	color:#7a7a7a
+}
+.services-checkbox .name{
+    font-size:15px!important;
+}
+#zwischensumme{
+    padding-top:20px;
+    border-top:1px solid #e5e5e5;
+	color:#000;
+}
+
+.highlighted-price{
+	font-size:30px;
+	font-weight:bold;
+	color:#000;
+}
+.listprice{
+	font-size:27px;
+	font-weight:bold;
+	color:#F00;
+}
+.table-height-space-sm{
+	height:15px;
+}

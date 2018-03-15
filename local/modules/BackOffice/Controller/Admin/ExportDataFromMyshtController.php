@@ -158,10 +158,15 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
             if (isset($response["data"]) && $response["data"]) {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
+
+                $resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
+
                 $arrayData = array("idartikel" => $idartikel, "MegabildNr" => $response["data"][0]["MegabildNr"], "Lieferantename" => $response["data"][0]["Lieferantename"],
                     "title" => $response["data"][0]["Zeile1"],
                     "description" => $response["data"][0]["Zeile2"] . " " . $response["data"][0]["agzeile1"],
                     "stock" => $response["data"][0]["SAPLiefermenge"] ? $response["data"][0]["SAPLiefermenge"] : 0,
+                    "rabatt" => $resNettoRabatt["rabatt"],
+                    "purchase_price" => $resNettoRabatt["netto"],
                     "price" => $response["data"][0]["aktpreis"]);
 
                 $this->exportToCsv($this->csvFilename, $arrayData);
@@ -170,6 +175,59 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
                 return array(0 => @$response["servererror"]);
             }
+        }
+    }
+
+    protected function getNettoRabatt($artnr, $idartikel) {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://www.mysht.at/21051_DE",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => array("username" => $this->username, "password" => $this->password, "version" => $this->version, "artnr" => $artnr),
+            CURLOPT_COOKIEFILE => $this->cookiefile,
+            CURLOPT_COOKIEJAR => $this->cookiefile,
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            $this->setLogger()->error("getRabatt - cURL Error #: " . $err);
+        } else {
+            $response = json_decode($response, true);
+
+            if ($response["status"] == "NOSESSION") {
+                $this->setLogger()->error("status = NOSESSION #: logout -> login ");
+                $this->logout();
+                $this->login();
+                $this->getStock($artnr, $idartikel);
+            }
+
+            $netto = 0;
+            $rabatt = 0;
+            if (isset($response["rabatt"])) {
+                $this->setLogger()->error("getRabatt - idartikel = $idartikel response #: rabatt = " . $response["rabatt"] . ". " . json_encode($response));
+                $rabatt = $response["rabatt"];
+            } else {
+                $this->setLogger()->error("getRabatt - idartikel = $idartikel #: rabatt = 0. " . json_encode($response));
+            }
+
+            if (isset($response["netto"])) {
+                $this->setLogger()->error("getnetto - idartikel = $idartikel response #: netto = " . $response["netto"] . ". " . json_encode($response));
+                $netto = $response["netto"];
+            } else {
+                $this->setLogger()->error("getnetto - idartikel = $idartikel #: netto = 0. " . json_encode($response));
+            }
+
+            return array("netto" => $netto, "rabatt" => $rabatt);
         }
     }
 
@@ -193,7 +251,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
         curl_close($curl);
 
-        $artnr  = preg_replace('/[^a-zA-Z0-9_ -]/s','',$artnr);
+        $artnr = preg_replace('/[^a-zA-Z0-9_ -]/s', '', $artnr);
         if (strlen($response) > 43) {
             $imageFile = $this->imageLocation . $artnr . ".jpg";
 
@@ -221,7 +279,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
     function initCsvFile($file) {
         $fp = fopen($file, 'w');
-        $fields = array("idartikel", "MegabildNr", "Lieferantename", "title", "description", "stock", "price");
+        $fields = array("idartikel", "MegabildNr", "Lieferantename", "title", "description", "stock", "discount", "purchase_price", "price");
         fputcsv($fp, $fields);
         fclose($fp);
     }

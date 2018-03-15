@@ -18,4 +18,7 @@ return array(
     'Your card has been declined.' => 'Your card has been declined.',
     'Your publishable key (test or live)' => 'Your publishable key (test or live)',
     'Your secret key' => 'Your secret key',
+    'The log file doesn\'t exists yet.' => 'The log file doesn\'t exists yet.',
+    'The log file is empty.' => 'The log file is empty.',
+    '(Previous log is in %file file.)\n' => '(Previous log is in %file file.)\n',
 );

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database defaultIdMethod="native" name="thelia" namespace="MultipleFullfilmentCenters\Model">
-	<table name="fulfilment_center" idMethod="native" phpName="FulfilmentCenter">
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+	<table name="fulfilment_center" namespace="MultipleFullfilmentCenters\Model">
     	<column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
 	    <column name="name" phpName="Name" type="VARCHAR" size="255" required="true"/>
 	    <column name="address" phpName="Address" type="VARCHAR" size="255"/>
@@ -11,17 +14,18 @@
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
 	</table>
-	<table name="fulfilment_center_products" idMethod="native" phpName="FulfilmentCenterProducts">
+	<table name="fulfilment_center_products" namespace="MultipleFullfilmentCenters\Model">
 	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
 	    <column name="fulfilment_center_id" phpName="FulfilmentCenterId" type="INTEGER"/>
 	    <column name="product_id" phpName="ProductId" type="INTEGER"/>
 	    <column name="product_stock" phpName="ProductStock" type="INTEGER"/>
 	    <column name="incoming_stock" phpName="IncomingStock" type="INTEGER"/>
 	    <column name="outgoing_stock" phpName="OutgoingStock" type="INTEGER"/>
-	    <foreign-key foreignTable="fulfilment_center" name="fk_fulfilment_center_products_fulfilment_center_id" onDelete="CASCADE" onUpdate="CASCADE">
+	    <column name="reserved_stock" phpName="ReservedStock" type="INTEGER"/>
+	    <foreign-key foreignTable="fulfilment_center" name="fk_fulfilment_center_products_fulfilment_center_id" onDelete="CASCADE">
 	      <reference local="fulfilment_center_id" foreign="id"/>
 	    </foreign-key>
-	    <foreign-key foreignTable="product" name="fk_fulfilment_center_products_product_id" onDelete="CASCADE" onUpdate="CASCADE">
+	    <foreign-key foreignTable="product" name="fk_fulfilment_center_products_product_id" onDelete="CASCADE">
 	      <reference local="product_id" foreign="id"/>
 	    </foreign-key>
 	    <index name="FI_fulfilment_center_products_fulfilment_center_id">
@@ -35,7 +39,7 @@
 	    </vendor>
 	</table>
      
-	<table name="order_local_pickup" idMethod="native" phpName="OrderLocalPickup">
+	<table name="order_local_pickup" namespace="MultipleFullfilmentCenters\Model">
 		<column name="order_id" phpName="OrderId" type="INTEGER"/>
 	    <column name="cart_id" phpName="CartId" type="INTEGER" primaryKey="true" required="true"/>
 	    <column name="product_id" phpName="ProductId" type="INTEGER" primaryKey="true" required="true"/>

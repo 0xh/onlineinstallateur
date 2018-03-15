@@ -18,6 +18,11 @@ class StripePaymentLog
     {
         self::setLogger()->error($message);
     }
+
+    public function logTextInfo($message)
+    {
+        self::setLoggerInfo()->log(200, $message);   
+    }   
     
     public function setLogger()
     {
@@ -33,4 +38,25 @@ class StripePaymentLog
         }
         return self::$logger;
     }
+
+    public function setLoggerInfo()
+    {
+        if (self::$logger == null) {
+            self::$logger = Tlog::getNewInstance();
+            
+            $logFilePath = THELIA_LOG_DIR . DS . "log-stripe.txt";
+            
+            self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+            self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setLevel(Tlog::INFO);
+        }
+        return self::$logger;
+    }
+
+    public static function getLogFilePath()
+    {
+        return THELIA_LOG_DIR . DS . "log-stripe.txt";
+    }
+    
 }

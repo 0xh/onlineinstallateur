@@ -9,10 +9,9 @@ use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 
 class CartProductStockLocationController extends MultipleFullfilmentCentersController
 {
+	// fulfill order_local_pickup with product and pickup center
 	public function addProductLocation()
 	{ 
-
-		// fulfill order_local_pickup with product and pickup center
 		$cartProductLocation = OrderLocalPickupQuery::create()
 			->filterByProductId($_POST['productId'])
 			->filterByCartId($_POST['cartId'])
@@ -21,5 +20,19 @@ class CartProductStockLocationController extends MultipleFullfilmentCentersContr
 		$cartProductLocation->setFulfilmentCenterId($_POST['locationId'])
 			->setQuantity($_POST['quantity'])
 			->save();  
+		
+		exit;
+	}
+	
+	// set session with the type of buying: delivery/reserve and pickup. 
+	// used to check method delivery
+	public function setBuyFormat()
+	{
+		$this->getRequest()->getSession()->set(
+				"buy_format",
+				$_POST['buyFormat']
+				);
+		
+		exit;
 	}
 }

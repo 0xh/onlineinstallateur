@@ -92,6 +92,12 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
     protected $outgoing_stock;
 
     /**
+     * The value for the reserved_stock field.
+     * @var        int
+     */
+    protected $reserved_stock;
+
+    /**
      * @var        FulfilmentCenter
      */
     protected $aFulfilmentCenter;
@@ -434,6 +440,17 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
     }
 
     /**
+     * Get the [reserved_stock] column value.
+     * 
+     * @return   int
+     */
+    public function getReservedStock()
+    {
+
+        return $this->reserved_stock;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -568,6 +585,27 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
     } // setOutgoingStock()
 
     /**
+     * Set the value of [reserved_stock] column.
+     * 
+     * @param      int $v new value
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts The current object (for fluent API support)
+     */
+    public function setReservedStock($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->reserved_stock !== $v) {
+            $this->reserved_stock = $v;
+            $this->modifiedColumns[FulfilmentCenterProductsTableMap::RESERVED_STOCK] = true;
+        }
+
+
+        return $this;
+    } // setReservedStock()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -621,6 +659,9 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FulfilmentCenterProductsTableMap::translateFieldName('OutgoingStock', TableMap::TYPE_PHPNAME, $indexType)];
             $this->outgoing_stock = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FulfilmentCenterProductsTableMap::translateFieldName('ReservedStock', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->reserved_stock = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -629,7 +670,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = FulfilmentCenterProductsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = FulfilmentCenterProductsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \MultipleFullfilmentCenters\Model\FulfilmentCenterProducts object", 0, $e);
@@ -883,6 +924,9 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
         if ($this->isColumnModified(FulfilmentCenterProductsTableMap::OUTGOING_STOCK)) {
             $modifiedColumns[':p' . $index++]  = 'OUTGOING_STOCK';
         }
+        if ($this->isColumnModified(FulfilmentCenterProductsTableMap::RESERVED_STOCK)) {
+            $modifiedColumns[':p' . $index++]  = 'RESERVED_STOCK';
+        }
 
         $sql = sprintf(
             'INSERT INTO fulfilment_center_products (%s) VALUES (%s)',
@@ -911,6 +955,9 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
                         break;
                     case 'OUTGOING_STOCK':                        
                         $stmt->bindValue($identifier, $this->outgoing_stock, PDO::PARAM_INT);
+                        break;
+                    case 'RESERVED_STOCK':                        
+                        $stmt->bindValue($identifier, $this->reserved_stock, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -992,6 +1039,9 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
             case 5:
                 return $this->getOutgoingStock();
                 break;
+            case 6:
+                return $this->getReservedStock();
+                break;
             default:
                 return null;
                 break;
@@ -1027,6 +1077,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
             $keys[3] => $this->getProductStock(),
             $keys[4] => $this->getIncomingStock(),
             $keys[5] => $this->getOutgoingStock(),
+            $keys[6] => $this->getReservedStock(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1092,6 +1143,9 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
             case 5:
                 $this->setOutgoingStock($value);
                 break;
+            case 6:
+                $this->setReservedStock($value);
+                break;
         } // switch()
     }
 
@@ -1122,6 +1176,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
         if (array_key_exists($keys[3], $arr)) $this->setProductStock($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setIncomingStock($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setOutgoingStock($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setReservedStock($arr[$keys[6]]);
     }
 
     /**
@@ -1139,6 +1194,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
         if ($this->isColumnModified(FulfilmentCenterProductsTableMap::PRODUCT_STOCK)) $criteria->add(FulfilmentCenterProductsTableMap::PRODUCT_STOCK, $this->product_stock);
         if ($this->isColumnModified(FulfilmentCenterProductsTableMap::INCOMING_STOCK)) $criteria->add(FulfilmentCenterProductsTableMap::INCOMING_STOCK, $this->incoming_stock);
         if ($this->isColumnModified(FulfilmentCenterProductsTableMap::OUTGOING_STOCK)) $criteria->add(FulfilmentCenterProductsTableMap::OUTGOING_STOCK, $this->outgoing_stock);
+        if ($this->isColumnModified(FulfilmentCenterProductsTableMap::RESERVED_STOCK)) $criteria->add(FulfilmentCenterProductsTableMap::RESERVED_STOCK, $this->reserved_stock);
 
         return $criteria;
     }
@@ -1207,6 +1263,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
         $copyObj->setProductStock($this->getProductStock());
         $copyObj->setIncomingStock($this->getIncomingStock());
         $copyObj->setOutgoingStock($this->getOutgoingStock());
+        $copyObj->setReservedStock($this->getReservedStock());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1348,6 +1405,7 @@ abstract class FulfilmentCenterProducts implements ActiveRecordInterface
         $this->product_stock = null;
         $this->incoming_stock = null;
         $this->outgoing_stock = null;
+        $this->reserved_stock = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

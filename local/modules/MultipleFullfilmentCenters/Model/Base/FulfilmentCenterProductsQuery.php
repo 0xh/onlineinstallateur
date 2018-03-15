@@ -28,6 +28,7 @@ use Thelia\Model\Product;
  * @method     ChildFulfilmentCenterProductsQuery orderByProductStock($order = Criteria::ASC) Order by the product_stock column
  * @method     ChildFulfilmentCenterProductsQuery orderByIncomingStock($order = Criteria::ASC) Order by the incoming_stock column
  * @method     ChildFulfilmentCenterProductsQuery orderByOutgoingStock($order = Criteria::ASC) Order by the outgoing_stock column
+ * @method     ChildFulfilmentCenterProductsQuery orderByReservedStock($order = Criteria::ASC) Order by the reserved_stock column
  *
  * @method     ChildFulfilmentCenterProductsQuery groupById() Group by the id column
  * @method     ChildFulfilmentCenterProductsQuery groupByFulfilmentCenterId() Group by the fulfilment_center_id column
@@ -35,6 +36,7 @@ use Thelia\Model\Product;
  * @method     ChildFulfilmentCenterProductsQuery groupByProductStock() Group by the product_stock column
  * @method     ChildFulfilmentCenterProductsQuery groupByIncomingStock() Group by the incoming_stock column
  * @method     ChildFulfilmentCenterProductsQuery groupByOutgoingStock() Group by the outgoing_stock column
+ * @method     ChildFulfilmentCenterProductsQuery groupByReservedStock() Group by the reserved_stock column
  *
  * @method     ChildFulfilmentCenterProductsQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildFulfilmentCenterProductsQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -57,6 +59,7 @@ use Thelia\Model\Product;
  * @method     ChildFulfilmentCenterProducts findOneByProductStock(int $product_stock) Return the first ChildFulfilmentCenterProducts filtered by the product_stock column
  * @method     ChildFulfilmentCenterProducts findOneByIncomingStock(int $incoming_stock) Return the first ChildFulfilmentCenterProducts filtered by the incoming_stock column
  * @method     ChildFulfilmentCenterProducts findOneByOutgoingStock(int $outgoing_stock) Return the first ChildFulfilmentCenterProducts filtered by the outgoing_stock column
+ * @method     ChildFulfilmentCenterProducts findOneByReservedStock(int $reserved_stock) Return the first ChildFulfilmentCenterProducts filtered by the reserved_stock column
  *
  * @method     array findById(int $id) Return ChildFulfilmentCenterProducts objects filtered by the id column
  * @method     array findByFulfilmentCenterId(int $fulfilment_center_id) Return ChildFulfilmentCenterProducts objects filtered by the fulfilment_center_id column
@@ -64,6 +67,7 @@ use Thelia\Model\Product;
  * @method     array findByProductStock(int $product_stock) Return ChildFulfilmentCenterProducts objects filtered by the product_stock column
  * @method     array findByIncomingStock(int $incoming_stock) Return ChildFulfilmentCenterProducts objects filtered by the incoming_stock column
  * @method     array findByOutgoingStock(int $outgoing_stock) Return ChildFulfilmentCenterProducts objects filtered by the outgoing_stock column
+ * @method     array findByReservedStock(int $reserved_stock) Return ChildFulfilmentCenterProducts objects filtered by the reserved_stock column
  *
  */
 abstract class FulfilmentCenterProductsQuery extends ModelCriteria
@@ -152,7 +156,7 @@ abstract class FulfilmentCenterProductsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, FULFILMENT_CENTER_ID, PRODUCT_ID, PRODUCT_STOCK, INCOMING_STOCK, OUTGOING_STOCK FROM fulfilment_center_products WHERE ID = :p0';
+        $sql = 'SELECT ID, FULFILMENT_CENTER_ID, PRODUCT_ID, PRODUCT_STOCK, INCOMING_STOCK, OUTGOING_STOCK, RESERVED_STOCK FROM fulfilment_center_products WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -489,6 +493,47 @@ abstract class FulfilmentCenterProductsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FulfilmentCenterProductsTableMap::OUTGOING_STOCK, $outgoingStock, $comparison);
+    }
+
+    /**
+     * Filter the query on the reserved_stock column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByReservedStock(1234); // WHERE reserved_stock = 1234
+     * $query->filterByReservedStock(array(12, 34)); // WHERE reserved_stock IN (12, 34)
+     * $query->filterByReservedStock(array('min' => 12)); // WHERE reserved_stock > 12
+     * </code>
+     *
+     * @param     mixed $reservedStock The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFulfilmentCenterProductsQuery The current query, for fluid interface
+     */
+    public function filterByReservedStock($reservedStock = null, $comparison = null)
+    {
+        if (is_array($reservedStock)) {
+            $useMinMax = false;
+            if (isset($reservedStock['min'])) {
+                $this->addUsingAlias(FulfilmentCenterProductsTableMap::RESERVED_STOCK, $reservedStock['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($reservedStock['max'])) {
+                $this->addUsingAlias(FulfilmentCenterProductsTableMap::RESERVED_STOCK, $reservedStock['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(FulfilmentCenterProductsTableMap::RESERVED_STOCK, $reservedStock, $comparison);
     }
 
     /**

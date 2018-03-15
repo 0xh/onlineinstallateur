@@ -13190,19 +13190,6 @@ display: none;
 /*CAROUSEL END*/
 
 
-.price-table{
-    margin:10px;
-}
-.services-checkbox{
-    max-width:250px;
-}
-.services-checkbox .name{
-    font-size:15px!important;
-}
-.zwischensumme{
-    padding-top:5px;
-    border-top:1px solid #e5e5e5;
-}
 
 #form-heizungangebot span label, #form-heizungangebot select{
     font-size:13px;
@@ -13213,9 +13200,7 @@ display: none;
     margin:10px 3px 10px 10px;
  }  
 
-.product-info .short-description p {
-    
-}
+
 
 /* SERVICES */
 

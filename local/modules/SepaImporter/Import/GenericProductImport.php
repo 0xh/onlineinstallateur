@@ -258,6 +258,8 @@ class GenericProductImport extends AbstractImport {
             		$fcp->setProductId($productThelia->getId());
             		$fcp->setProductStock($menge);
             		$fcp->save();
+
+                    $pse->setQuantity($menge);
             	}
             	else {
                 	$pse->setQuantity($menge);

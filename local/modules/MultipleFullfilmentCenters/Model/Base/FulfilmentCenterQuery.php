@@ -43,6 +43,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFulfilmentCenterQuery rightJoinFulfilmentCenterProducts($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FulfilmentCenterProducts relation
  * @method     ChildFulfilmentCenterQuery innerJoinFulfilmentCenterProducts($relationAlias = null) Adds a INNER JOIN clause to the query using the FulfilmentCenterProducts relation
  *
+ * @method     ChildFulfilmentCenterQuery leftJoinOrderLocalPickup($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrderLocalPickup relation
+ * @method     ChildFulfilmentCenterQuery rightJoinOrderLocalPickup($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrderLocalPickup relation
+ * @method     ChildFulfilmentCenterQuery innerJoinOrderLocalPickup($relationAlias = null) Adds a INNER JOIN clause to the query using the OrderLocalPickup relation
+ *
  * @method     ChildFulfilmentCenter findOne(ConnectionInterface $con = null) Return the first ChildFulfilmentCenter matching the query
  * @method     ChildFulfilmentCenter findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFulfilmentCenter matching the query, or a new ChildFulfilmentCenter object populated from the query conditions when no match is found
  *
@@ -529,6 +533,79 @@ abstract class FulfilmentCenterQuery extends ModelCriteria
         return $this
             ->joinFulfilmentCenterProducts($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'FulfilmentCenterProducts', '\MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery');
+    }
+
+    /**
+     * Filter the query by a related \MultipleFullfilmentCenters\Model\OrderLocalPickup object
+     *
+     * @param \MultipleFullfilmentCenters\Model\OrderLocalPickup|ObjectCollection $orderLocalPickup  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function filterByOrderLocalPickup($orderLocalPickup, $comparison = null)
+    {
+        if ($orderLocalPickup instanceof \MultipleFullfilmentCenters\Model\OrderLocalPickup) {
+            return $this
+                ->addUsingAlias(FulfilmentCenterTableMap::ID, $orderLocalPickup->getFulfilmentCenterId(), $comparison);
+        } elseif ($orderLocalPickup instanceof ObjectCollection) {
+            return $this
+                ->useOrderLocalPickupQuery()
+                ->filterByPrimaryKeys($orderLocalPickup->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByOrderLocalPickup() only accepts arguments of type \MultipleFullfilmentCenters\Model\OrderLocalPickup or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the OrderLocalPickup relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function joinOrderLocalPickup($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('OrderLocalPickup');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'OrderLocalPickup');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the OrderLocalPickup relation OrderLocalPickup object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \MultipleFullfilmentCenters\Model\OrderLocalPickupQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderLocalPickupQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinOrderLocalPickup($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'OrderLocalPickup', '\MultipleFullfilmentCenters\Model\OrderLocalPickupQuery');
     }
 
     /**

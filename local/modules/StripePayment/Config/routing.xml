@@ -3,6 +3,9 @@
   <route id="stripepayment.configuration.default" path="/admin/module/StripePayment" methods="get">
     <default key="_controller">StripePayment:StripePaymentConfig:default</default>
   </route>
+  <route id="stripepayment.download.log" path="/admin/module/StripePayment/log">
+      <default key="_controller">StripePayment\Controller\Base\StripePaymentConfigController::downloadLog</default>
+  </route>
   <route id="stripepayment.configuration.save" path="/admin/module/StripePayment" methods="post">
     <default key="_controller">StripePayment:StripePaymentConfig:save</default>
   </route>

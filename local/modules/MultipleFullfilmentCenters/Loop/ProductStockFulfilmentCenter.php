@@ -19,7 +19,9 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 		return new ArgumentCollection(
 				Argument::createIntTypeArgument("id"),
 				Argument::createIntTypeArgument("quantity"),
-				Argument::createIntTypeArgument("hide_virtual_center")
+				Argument::createIntTypeArgument("hide_virtual_center"),
+				Argument::createIntTypeArgument("center_id"),
+				Argument::createIntTypeArgument("reserved")
 				);
 	}
 	
@@ -44,7 +46,7 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 		}
 		
 		$handler = new LocationStockHandler();
-		$stockLocation = $handler->getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter);
+		$stockLocation = $handler->getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter, $this->getCenterId(), $this->getReserved());
 		return $stockLocation;
 	}	
 	
@@ -64,7 +66,8 @@ class ProductStockFulfilmentCenter extends BaseLoop implements ArraySearchLoopIn
 			->set("PRODUCTID", $stockProductFulfilmentCenter['productId'])
 			->set("PRODUCTSTOCK", $stockProductFulfilmentCenter['productStock'])
 			->set("INCOMINGSTOCK",$stockProductFulfilmentCenter['incomingStock'])
-			->set("OUTGOINGSTOCK", $stockProductFulfilmentCenter['outgoingStock']);
+			->set("OUTGOINGSTOCK", $stockProductFulfilmentCenter['outgoingStock'])
+			->set("RESERVEDSTOCK", $stockProductFulfilmentCenter['reservedStock']);
 			$loopResult->addRow($row);
 		}
 		return $loopResult;

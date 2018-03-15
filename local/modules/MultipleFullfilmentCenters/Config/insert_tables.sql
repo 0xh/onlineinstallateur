@@ -3,8 +3,11 @@
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- ---------------------------------------------------------------------
+-- fulfilment_center
+-- ---------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `fulfilment_center`
+CREATE TABLE if not exists `fulfilment_center`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
@@ -15,8 +18,11 @@ CREATE TABLE IF NOT EXISTS `fulfilment_center`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- fulfilment_center_products
+-- ---------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `fulfilment_center_products`
+CREATE TABLE if not exists `fulfilment_center_products`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fulfilment_center_id` INTEGER,
@@ -24,13 +30,13 @@ CREATE TABLE IF NOT EXISTS `fulfilment_center_products`
     `product_stock` INTEGER,
     `incoming_stock` INTEGER,
     `outgoing_stock` INTEGER,
+    `reserved_stock` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `FI_fulfilment_center_products_fulfilment_center_id` (`fulfilment_center_id`),
     INDEX `FI_fulfilment_center_products_product_id` (`product_id`),
     CONSTRAINT `fk_fulfilment_center_products_fulfilment_center_id`
         FOREIGN KEY (`fulfilment_center_id`)
         REFERENCES `fulfilment_center` (`id`)
-        ON UPDATE CASCADE
         ON DELETE CASCADE,
     CONSTRAINT `fk_fulfilment_center_products_product_id`
         FOREIGN KEY (`product_id`)
@@ -39,8 +45,11 @@ CREATE TABLE IF NOT EXISTS `fulfilment_center_products`
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- order_local_pickup
+-- ---------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `order_local_pickup`
+CREATE TABLE if not exists `order_local_pickup`
 (
     `order_id` INTEGER,
     `cart_id` INTEGER NOT NULL,
@@ -49,6 +58,12 @@ CREATE TABLE IF NOT EXISTS `order_local_pickup`
     `quantity` INTEGER NOT NULL,
     PRIMARY KEY (`cart_id`,`product_id`),
     INDEX `FI_order_local_pickup_order_id` (`order_id`),
+    INDEX `fk_order_local_pickup_product_id` (`product_id`),
+    INDEX `fk_order_local_pickup_fulfilment_center_id` (`fulfilment_center_id`),
+    CONSTRAINT `fk_order_local_pickup_fulfilment_center_id`
+        FOREIGN KEY (`fulfilment_center_id`)
+        REFERENCES `fulfilment_center` (`id`)
+        ON DELETE CASCADE,
     CONSTRAINT `fk_order_local_pickup_order_id`
         FOREIGN KEY (`order_id`)
         REFERENCES `order` (`id`)
@@ -56,13 +71,8 @@ CREATE TABLE IF NOT EXISTS `order_local_pickup`
     CONSTRAINT `fk_order_local_pickup_product_id`
         FOREIGN KEY (`product_id`)
         REFERENCES `product` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `fk_order_local_pickup_fulfilment_center_id`
-        FOREIGN KEY (`fulfilment_center_id`)
-        REFERENCES `fulfilment_center` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

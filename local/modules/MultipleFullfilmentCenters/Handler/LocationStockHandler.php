@@ -14,7 +14,7 @@ class LocationStockHandler
 	 * @param $productId, $quantityCart
 	 * @return array
 	 */
-	public function getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter)
+	public function getStockLocationsForProduct($productId, $quantityCart, $hideVirtualCenter, $centerId, $reserved)
 	 {  
 		$stock = FulfilmentCenterProductsQuery::create()
 			->addSelfSelectColumns()
@@ -23,6 +23,11 @@ class LocationStockHandler
 			->endUse()
 			->filterByProductId($productId);
 			
+			
+		if($centerId) {
+			$stock->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID = '. $centerId);
+		}
+		
 		if($hideVirtualCenter) {
 			$stock
 				->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart)
@@ -34,13 +39,29 @@ class LocationStockHandler
 		}
 		
 		foreach ($stock as $i => $value) {
-			$stockProduct[$i]["id"] = $value->getId();
-			$stockProduct[$i]["fulfilmentCenterId"] = $value->getFulfilmentCenterId();
-			$stockProduct[$i]["productId"] = $value->getProductId();
-			$stockProduct[$i]["productStock"] = $value->getProductStock();
-			$stockProduct[$i]["incomingStock"] = $value->getIncomingStock();
-			$stockProduct[$i]["outgoingStock"] = $value->getOutgoingStock();
-			$stockProduct[$i]["fulfilmentCenterName"] = $value->getVirtualColumn('CenterName');
+			
+			if($reserved) {
+				if($value->getReservedStock() + $quantityCart <= $value->getProductStock()) {
+					$stockProduct[$i]["id"] = $value->getId();
+					$stockProduct[$i]["fulfilmentCenterId"] = $value->getFulfilmentCenterId();
+					$stockProduct[$i]["productId"] = $value->getProductId();
+					$stockProduct[$i]["productStock"] = $value->getProductStock();
+					$stockProduct[$i]["incomingStock"] = $value->getIncomingStock();
+					$stockProduct[$i]["outgoingStock"] = $value->getOutgoingStock();
+					$stockProduct[$i]["reservedStock"] = $value->getReservedStock();
+					$stockProduct[$i]["fulfilmentCenterName"] = $value->getVirtualColumn('CenterName');
+				}
+			}
+			else {
+				$stockProduct[$i]["id"] = $value->getId();
+				$stockProduct[$i]["fulfilmentCenterId"] = $value->getFulfilmentCenterId();
+				$stockProduct[$i]["productId"] = $value->getProductId();
+				$stockProduct[$i]["productStock"] = $value->getProductStock();
+				$stockProduct[$i]["incomingStock"] = $value->getIncomingStock();
+				$stockProduct[$i]["outgoingStock"] = $value->getOutgoingStock();
+				$stockProduct[$i]["reservedStock"] = $value->getReservedStock();
+				$stockProduct[$i]["fulfilmentCenterName"] = $value->getVirtualColumn('CenterName');
+			} 
 		}
 		return $stockProduct;
 	}
