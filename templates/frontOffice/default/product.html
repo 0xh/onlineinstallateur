@@ -150,6 +150,51 @@
                    
                     {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
 
+					<table class="price-table">
+						<tr>
+					        <td colspan="2">
+					        	{loop name="brand_info" type="brand" product={$ID} limit="1"}
+					            	{loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
+					                	<p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
+					                {/loop}
+					            {/loop}
+					        </td>       
+					    </tr>
+					    <tr>
+					        <td colspan="2">
+						        {loop name="badge_info" type="feature" product=$product_id}
+						        	{if $TITLE=="badge"}   
+						                {ifloop rel="feature_value_info"} 
+						                	{loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+							                    <span class=" badge-hersteller" style="position:relative">{$TITLE}</span>
+							                {/loop}
+						                {/ifloop}
+						             {/if} 
+								{/loop}
+					        </td>
+					    </tr>
+					    
+					    {if $WEIGHT}
+					        <tr>
+					        	<td>
+					            	Gewicht:&nbsp; 
+					        	</td>
+						        <td>
+						        	{$WEIGHT}kg
+						        </td>
+						    </tr>
+					    {/if}
+					    <tr>
+						{if !$QUANTITY || $fulfilment_center_active == "false"}
+						    <td class="highlight" colspan="2">
+						       {hook name="product.details-bottom" product={$ID}}               
+									{if $service_category != #services_category_id#}
+					                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
+					                {/if} 
+						    </td> 
+						 {/if}
+					    </tr>   
+					</table>
                     <div>
 	                   {assign var="attributes_limit" value=6}
 	                    {loop name="attributes" type="feature" product=$product_id}
@@ -172,64 +217,7 @@
 								<div class="clearfix"></div>
 							</div>
 						{/foreach}
-                
                 	</div>
-               	                  
-<table class="price-table">
-	<tr>
-
-        <td colspan="2">
-             {loop name="brand_info" type="brand" product={$ID} limit="1"}
-            
-                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
-                        
-                        <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
-                    {/loop}
-            {/loop}
-        </td>       
-    </tr>
-    <tr>
-        <td colspan="2">
-        {loop name="badge_info" type="feature" product=$product_id}
-                  
-                
-                {if $TITLE=="badge"}   
-                {ifloop rel="feature_value_info"} 
-                            {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
-                               
-                                <span class=" badge-hersteller" style="position:relative">{$TITLE}</span>
-                              
-                            {/loop}
-                     {/ifloop}
-                    {/if} 
-
-                {/loop}
-        </td>
-    </tr>
-   
-    
-     {if $WEIGHT}
-        <tr>
-        	<td>
-            	Gewicht:&nbsp; 
-        	</td>
-        <td>
-              {$WEIGHT}kg
-        </td>
-    </tr>
-     {/if}
-    <tr>
-	{if !$QUANTITY || $fulfilment_center_active == "false"}
-	    <td class="highlight" colspan="2">
-	       {hook name="product.details-bottom" product={$ID}}               
-					{if $service_category != #services_category_id#}
-	                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
-	                {/if} 
-	    </td> 
-	 {/if}
-    </tr>   
-
-</table>
 
                     {if $POSTSCRIPTUM}<div class="short-description">
                         <p>{$POSTSCRIPTUM}</p>
