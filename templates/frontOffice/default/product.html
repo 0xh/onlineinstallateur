@@ -152,7 +152,7 @@
 
                     <div>
 	                   {assign var="attributes_limit" value=6}
-	                    {loop name="attributes" type="feature" product=$product_id limit="6"}
+	                    {loop name="attributes" type="feature" product=$product_id}
 	                    	{if $TITLE != "badge"}
 	                    		{ifloop rel="attributes_info"}
 	                    			{assign var="feature_title" value=$TITLE}	
