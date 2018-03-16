@@ -14,22 +14,24 @@
 namespace Front\Controller;
 
 use Doctrine\Common\Cache\FilesystemCache;
+use RuntimeException;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Thelia\Controller\Front\BaseFrontController;
+use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\Serializer\Serializer\CSVSerializer;
+use Thelia\Core\Serializer\SerializerInterface;
+use Thelia\Core\Serializer\SerializerManager;
+use Thelia\Handler\ExportHandler;
 use Thelia\Model\BrandQuery;
-use Thelia\Model\FolderQuery;
 use Thelia\Model\CategoryQuery;
 use Thelia\Model\ConfigQuery;
+use Thelia\Model\ExportQuery;
+use Thelia\Model\FolderQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
-use Thelia\Log\Tlog;
-use Thelia\Controller\Admin\ExportController;
-use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Thelia\Model\ExportQuery;
-use Faker\Test\Provider\TestableLorem;
+use function mb_convert_encoding;
 
 /**
  * Controller uses to generate RSS Feeds
@@ -60,7 +62,7 @@ class FeedController extends BaseFrontController {
      * @param $id string        The id of the parent element. The id of the main parent category for catalog context.
      *                          The id of the content folder for content context
      * @return Response
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     //TODO generate error pages and not only pageNotFound
     public function generateAction($context, $lang, $id)
@@ -87,9 +89,9 @@ class FeedController extends BaseFrontController {
             try{
                 $lang = Lang::getDefaultLanguage();
                 $lang = $lang->getLocale();
-            } catch (\RuntimeException $ex){
+            } catch (RuntimeException $ex){
                 // @todo generate error page
-                throw new \RuntimeException("No default language is defined. Please define one.");
+                throw new RuntimeException("No default language is defined. Please define one.");
             }
         }
         //find language in db
@@ -114,8 +116,8 @@ class FeedController extends BaseFrontController {
 
         $cacheDir = $this->getCacheDir();
         $cacheKey = "feeds" . $lang . $context . $id . $format . $platform;
-        $cacheExpire = 986400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
-        
+        $cacheExpire = ConfigQuery::read('product_feed_cache_expire'); //986400;//intval(ConfigQuery::read("feed_ttl", '7200')) ?: 7200;
+
         $cacheDriver = new FilesystemCache($cacheDir);
         // if admin is NOT logged in and the flush is NOT set then use cached version 
         if (!($this->checkAdmin() && "" !== $flush)){
@@ -123,10 +125,11 @@ class FeedController extends BaseFrontController {
         } else {
             $cacheDriver->delete($cacheKey);
         }
+        
        // $cacheContent = null;
         $response = new Response();
         
-    //    if (false === $cacheContent){
+        if (false === $cacheContent){
             $contentType = "";
             
             if ($format == "csv"){
@@ -139,16 +142,16 @@ class FeedController extends BaseFrontController {
                     $this->pageNotFound();
  
                 //get the service for the thelia export handler
-                /** @var \Thelia\Handler\ExportHandler $exportHandler */
+                /** @var ExportHandler $exportHandler */
                 $exportHandler = $this->container->get('thelia.export.handler');
                 $export = $exportHandler->getExport($exportDBObject->getId());//8 = catalog.idealo
                 
                 if ($export === null)
                     return $this->pageNotFound();
                 
-                /** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
+                /** @var SerializerManager $serializerManager */
                 $serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
-                /** @var \Thelia\Core\Serializer\Serializer\CSVSerializer $serializer */
+                /** @var CSVSerializer $serializer */
                 $serializer = $serializerManager->get("thelia.csv");//
                 if($platform == "preisroboterde")
                     $serializer->setDelimiter("|");
@@ -164,7 +167,7 @@ class FeedController extends BaseFrontController {
                     $fileExt = $exportEvent->getArchiver()->getExtension();
                 }
                 else {
-                    /** @var \Thelia\Core\Serializer\SerializerInterface $serializer */
+                    /** @var SerializerInterface $serializer */
                     $serializer = $exportEvent->getSerializer();
                     $contentType = $serializer->getMimeType();
                     $fileExt = $serializer->getExtension();
@@ -193,7 +196,7 @@ class FeedController extends BaseFrontController {
                 
             }
             $cacheDriver->save($cacheKey, $cacheContent, $cacheExpire);  
-    //    };
+        };
         
         if($format == "csv"){
             $contentType = 'application/rss+xml';
