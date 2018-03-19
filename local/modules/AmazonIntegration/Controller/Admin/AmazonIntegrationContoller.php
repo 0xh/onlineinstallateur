@@ -106,7 +106,7 @@ class AmazonIntegrationContoller extends BaseAdminController
         		echo ('error decoding json');
         	}
         	
-        	sleep(0.7);
+        	sleep(3);
         }
         
         ini_set('max_execution_time', $max_time);
@@ -193,7 +193,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                 foreach ($orders as $i => $order) {
                 	
                 	if($order->OrderStatus == 'Pending' || $order->OrderStatus == 'Unshipped') {
-                		$_SESSION['ordersWithTotalZero'] = true;
+                		//$_SESSION['ordersWithTotalZero'] = true;
                 		break;
                 	}
                 	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
@@ -859,7 +859,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    	include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
 	    	    	
 	    	$max_time = ini_get("max_execution_time");
-	    	ini_set('max_execution_time', 100);
+	    	ini_set('max_execution_time', 3000);
 	    	
 	    	// object or array of parameters
 	    	foreach ($refArray as $ref) {
@@ -953,7 +953,7 @@ class AmazonIntegrationContoller extends BaseAdminController
 	    			echo ('error decoding json');
 	    		}
 	    		
-	    		sleep(0.7);
+	    		sleep(3);
 	    	}
 	    	
 	    	ini_set('max_execution_time', $max_time);
