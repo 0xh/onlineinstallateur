@@ -3,19 +3,19 @@
 <div class="toolbar toolbar-top" role="toolbar">
     <div class="sorter-container clearfix">
         <span class="amount">{if ($product_total > 1)}{intl l="%nb Items" nb="{$product_total}"}{else}{intl l="%nb Item" nb="{$product_total}"}{/if}</span>
-            <span class="view-mode">
-                <span class="view-mode-label sr-only">View as:</span>
-                <span class="view-mode-btn">
-                    <a href="/?view=category&amp;locale=de_DE&amp;mode=grid" data-toggle="view" role="button" title="Grid" rel="nofollow" class="btn btn-default"><i class="fa fa-th"></i></a>
-                    <a href="/?view=category&amp;locale=de_DE&amp;mode=list" data-toggle="view" role="button" title="List" rel="nofollow" class="btn btn-default"><i class="fa fa-th-list"></i></a>
-                </span>
-            </span>
+            <!-- <span class="view-mode"> -->
+                <!-- <span class="view-mode-label sr-only">View as:</span> -->
+                <!-- <span class="view-mode-btn"> -->
+                    <!-- <a href="/?view=category&amp;locale=de_DE&amp;mode=grid" data-toggle="view" role="button" title="Grid" rel="nofollow" class="btn btn-default"><i class="fa fa-th"></i></a> -->
+                    <!-- <a href="/?view=category&amp;locale=de_DE&amp;mode=list" data-toggle="view" role="button" title="List" rel="nofollow" class="btn btn-default"><i class="fa fa-th-list"></i></a> -->
+                <!-- </span> -->
+            <!-- </span> -->
     </div>
 </div>
 
 <ul class="list-unstyled">
  {if !isset($limit)}
- {$limit=20}
+ {$limit=18}
  {$page={$smarty.get.page|default:1}}
 
  {loop name="category_children" type="category" category=$category_id need_count_child=1 not_empty="1"}
