@@ -13755,3 +13755,44 @@ figure.effect-marley:hover p {
 .row-fluid {
     margin-bottom: 5px;
 }
+
+.js-fa-plus {
+    margin-left: -4px;
+    height: 3.5rem;
+    border-radius: 0px;
+}
+
+.js-fa-minus {
+    margin-right: -4px;
+    height: 3.5rem;
+    border-radius: 0px;
+}
+
+.js-fa-minus, .js-fa-minus:hover, .js-fa-minus:focus, .js-fa-plus:hover, .js-fa-plus, .js-fa-plus:focus {
+    background-color: #d2d2d2;
+}
+
+#quantity {
+    margin-bottom: 1px;
+    width: 50px;
+    height: 3.5rem;
+    border-radius: 0px;
+}
+
+.plus-minus-div {
+    display: flex;
+    float: left;
+}
+
+.amount-text {
+    display: inline-block;
+    margin: auto;
+    height: 3.5rem;
+    vertical-align: bottom;
+    padding-top: 10px;
+    float: left;
+}
+
+.amount-plus-minus {
+    display: inline-flex;
+}

@@ -435,8 +435,20 @@
                         <br>
                         <div class=" col-xs-12 col-sm-6 col-lg-12 col-xl-12 text-center form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
                              {if $service_category == #services_category_id#}  style="display:none"{/if}>
-                            <label for="{$label_attr.for}">{$label}</label>
-                            <input type="number" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
+                             <div class="amount-plus-minus">
+                                <div class="amount-text">
+                                   <label for="{$label_attr.for}">{$label}</label>
+                                </div>
+                                <div class="plus-minus-div">
+                                   <button type="button" class="button js-fa-minus">
+                                       <i class="fa fa-minus"></i>
+                                   </button>
+                                   <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
+                                   <button type="button" class="button js-fa-plus">
+                                        <i class="fa fa-plus"></i>
+                                   </button>
+                               </div>
+                            </div>
                             {if $error }
                                 <span class="help-block">{$message}</span>
                             {elseif $value != "" && !$error}

@@ -43,6 +43,54 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
     protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
 
+    public function exportAllProducts(){
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 0);
+        /** @var Session $session */
+        $session = $this->getRequest()->getSession();
+        $date = date('m.d.Y.h.i.s.a', time());
+        $this->logFilePath = $this->logFilePath . $date . ".txt";
+        $this->csvFilename = $this->csvFileLocation . self::MYSHT_CSV_FILE . $date . ".csv";
+        $session->set(self::MYSHT_CSV_FILE, $this->csvFilename);
+        $this->initCsvFile($this->csvFilename);
+        $this->logout();
+        $idartikels = $this->getProductsRefWitoutBrand();
+        
+        $files = scandir($this->imageLocation);
+        foreach ($files as $file) {
+            @unlink($this->imageLocation . $file);
+        }
+        
+        foreach ($idartikels as $idartikel) {
+            $artnr = $this->getArtNr(trim($idartikel), true);
+            if ($artnr === FALSE) {
+                $this->logout();
+                $this->login();
+                $artnr = $this->getArtNr($idartikel, true);
+            }
+            if (!is_array($artnr)) {
+                $this->getImage($artnr);
+            }
+        }
+        
+        @unlink($this->imageZip);
+        $zip = new ZipArchive;
+        $zip->open($this->imageZip, ZipArchive::CREATE);
+        $files = scandir($this->imageLocation);
+        
+        foreach ($files as $file) {
+            if ($file != "." && $file != "..")
+                $zip->addFile($this->imageLocation . $file, $file);
+        }
+        $zip->close();
+        
+        
+        $this->logout();
+        
+        ini_set('max_execution_time', $max_time);
+        return $this->render("export-data-mysht");
+    }
+    
     public function export() {
 
         if ($this->getRequest()->get("idartikels")) {
@@ -62,11 +110,11 @@ class ExportDataFromMyshtController extends BaseAdminController {
             }
 
             foreach ($idartikels as $idartikel) {
-                $artnr = $this->getArtNr(trim($idartikel));
+                $artnr = $this->getArtNr(trim($idartikel), false);
                 if ($artnr === FALSE) {
                     $this->logout();
                     $this->login();
-                    $artnr = $this->getArtNr($idartikel);
+                    $artnr = $this->getArtNr($idartikel, false);
                 }
                 if (!is_array($artnr)) {
                     $this->getImage($artnr);
@@ -122,12 +170,15 @@ class ExportDataFromMyshtController extends BaseAdminController {
         }
     }
 
-    protected function getArtNr($idartikel) {
-
+    protected function getArtNr($idartikel,$removeBrand) {
+        
         $curl = curl_init();
+        $searchIdArtikel = $idartikel;
+        if ($removeBrand)
+            $searchIdArtikel = substr($idartikel,3);
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=$idartikel",
+            CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=$searchIdArtikel",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -208,7 +259,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 $this->setLogger()->error("status = NOSESSION #: logout -> login ");
                 $this->logout();
                 $this->login();
-                $this->getStock($artnr, $idartikel);
+                $this->getNettoRabatt($artnr, $idartikel);
             }
 
             $netto = 0;
