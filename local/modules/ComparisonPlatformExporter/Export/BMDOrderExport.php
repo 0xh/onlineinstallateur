@@ -147,14 +147,17 @@ class BMDOrderExport extends AbstractExport
         
         if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
         	$processedData['gkto'] = "4200";
-        	$processedData['mwst'] = "19";
+        	$processedData['mwst'] = "";
+        	$processedData['steuer'] = "";
         }
-        else
+        else {
         	$processedData['gkto'] = "4000";
+        	$processedData['steuer'] = round(-$processedData['steuer'],2);
+        }
         
 		$processedData['extbelegnr'] = "";
         
-		$processedData['steuer'] = round(-$processedData['steuer'],2);
+		
 		$processedData['betrag'] = round($processedData['betrag'],2);//round($betrag + $processedData['steuer'],2);
 		//Tlog::getInstance()->error("steuer ".round(-(137.15/1.2)*0.2,2)." betrag ");
 		$status = $processedData['skontotage'];
