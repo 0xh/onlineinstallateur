@@ -12,7 +12,14 @@
         <label for="usr">Id artikels (eg: 123456, 56789, 456789):</label>
         <input type="text" class="form-control" id="usr" name="idartikels">
     </div>
-    <button type="submit" class="btn btn-default">Export</button>
+    <button type="submit" class="btn btn-default">
+    	{intl d='amazonintegration.bo.default' l="Export the given Id list"}
+    </button>
+</form>
+<form action="/admin/export-all-hausfabrik-products-mysht" method="post">
+    <button type="submit" class="btn btn-default">
+    	{intl d='amazonintegration.bo.default' l="Export all Hausfabrik Products"}
+    </button>
 </form>
 <div class="panel-footer">
     <a href="{url path='/admin/export-data-mysht/log-csv'}" class="btn btn-sm btn-primary">

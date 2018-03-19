@@ -27,6 +27,10 @@
     <route id="admin.export.data.mysht" path="/admin/export-data-mysht">
         <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::export</default>
     </route>
+    
+    <route id="admin.export.allproducts.mysht" path="/admin/export-all-hausfabrik-products-mysht">
+        <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::exportAllProducts</default>
+    </route>
 
     <route id="admin.export.data.mysht.log.csv" path="/admin/export-data-mysht/log-csv">
         <default key="_controller">BackOffice\Controller\Admin\ExportDataFromMyshtController::downloadCsv</default>
