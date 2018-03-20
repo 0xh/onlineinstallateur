@@ -77,3 +77,58 @@ h1.name{
 .table-height-space-sm{
 	height:15px;
 }
+
+.wish-list-button a{
+	width: 100%;
+    padding: .9375rem .75rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.navbar .navbar-wish-list li a.wish {
+	padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 20px;
+}
+
+.navbar .navbar-wish-list .dropdown-menu {
+	margin: 0;
+    padding: 20px;
+}
+
+.navbar .navbar-wish-list .fa-heart-o {
+	font-size: 2em;
+}
+
+.navbar li.wish-not-empty>a.wish>.badge {
+    background-color: #fff;
+    color: #86AC34;
+}
+
+@media (min-width: 992px) {
+	.navbar .navbar-wish-list li a.wish {
+		line-height: 57px;
+		padding-top: 19px;
+	}
+	
+	.navbar li>a.wish:after {
+		padding-left: .3em;
+	    display: inline-block;
+	    font: normal normal normal 14px/1 FontAwesome;
+	    font-size: inherit;
+	    text-rendering: auto;
+	    -webkit-font-smoothing: antialiased;
+	    -moz-osx-font-smoothing: grayscale;
+	    -webkit-transform: translate(0, 0);
+	    -ms-transform: translate(0, 0);
+	    transform: translate(0, 0);
+	    content: "\f078";
+	    float: none;
+	}
+}
+
+@media (max-width: 992px) {
+	.navbar .navbar-wish-list {
+	    float: left;
+	}
+}

@@ -1,0 +1,37 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-wish-list{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [
+        ['title' => {intl l="Wish List"}, 'url'=>{url path="/wish-list"}]
+    ]}
+{/block}
+
+{* Content *}
+{block name="main-content"}
+	<div id="wishlist-box" class="col-main col-md-12 grid">
+        <h1 id="main-label" class="page-header">{intl l="Wish list"}</h1>
+        <div id="category-products">
+        	<div class="products-content">
+            	<ul class="list-unstyled row">
+                   	{ifloop rel="wishlist"}
+			       		{loop name="wishlist" type="wishlist"}
+				            {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
+				                {loop name="product.details" type="product" id=$ID limit="1"}
+				                	{include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
+				                     <a href="{url path="/wishlist/remove/$ID"}">{intl l="Remove from wish list"}</a> 
+				                {/loop}
+				            {/loop}
+				        {/loop}
+					{/ifloop}
+            		{elseloop rel="wishlist"}
+            			 <p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
+            		{/elseloop}	
+         		</ul>
+			</div>
+		</div>
+    </div>
+{/block}
