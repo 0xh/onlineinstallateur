@@ -33,6 +33,7 @@ if (false === in_array($request->getClientIp(), $trustedIp) && ConfigQuery::read
     $response = Response::create('Forbidden', 403)->send();
     $thelia->terminate($request, $response);
 } else {
+	var_dump("test"); die;
     $response = $thelia->handle($request)->prepare($request)->send();
     $thelia->terminate($request, $response);
 }
