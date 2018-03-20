@@ -179,7 +179,20 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 
         <div class="header-container" itemscope itemtype="http://schema.org/WPHeader">
             {hook name="main.header-top"}
-            <div class="navbar navbar-default navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
+			<div class="main-header-top-bar">
+			<div class="container">
+			<span>KOSTENLOSER VERSAND & RÜCKVERSAND</span>
+			 <div class="hotline" itemscope itemtype="http://schema.org/Store">
+			                   <span class="hotline-icon"> 
+					<span class="hotline-text" itemprop="telephone" content="0800/022573">0800/022573</span>
+  <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr,
+                        Fr:  8-17 Uhr</small>
+                    
+			</div>  
+			
+			</div>
+			</div>
+            <div class="navbar navbar-default navbar-secondary" id="navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
                 <!--div style="border-bottom:solid 0px; height:30px;background:#e8e8e8; color:#8D8D8D; text-align:center">
                     <div class="container">
                     <div class="col-sm-4"><span class="shopicon shop-lieferung  fa-flip-horizontal" style="font-size:25px; line-height:30px;vertical-align: middle; padding:3px 3px 3px 3px"></span>30 Tage Rückgabegarantie</div>
@@ -203,15 +216,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                             <img src="{image file='assets/dist/img/logo.png'}" style="max-width:150px;" alt="{$store_name}">
                             <h1 class="slogan">IHR ONLINE INSTALLATEUR</h1>
                         </a>
-                    <div class="hotline" itemscope itemtype="http://schema.org/Store">
-               
-                    <div class="hotline-icon"> <span></span></div>
-                    <div class="hotline-text">
-                    <h3 itemprop="telephone" content="0800/022573">0800/022573</h3>
-                    <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr,
-                        Fr:  8-17 Uhr</small>
-                    </div>               
-                </div>
+      
                         
                     </div>
      
@@ -232,50 +237,14 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                 </div>
             </div>
 			
-			<header class="container" role="banner">
+			<header  role="banner">
                
-                <!--h1 class="logo  hidden-xs col-sm-4" >
-                        <a href="{navigate to="index"}" title="{$store_name}">
-                            <img src="{image file='assets/dist/img/logo.png'}" style="max-width:155px" alt="{$store_name}">
-                             <h1 class="slogan">IHR ONLINE INSTALLATEUR</h1>
-                        </a> 
-                </h1-->
-                           
-                <!--div class="col-sm-4 zertifikat-logos">
-               <img src={image file='assets/dist/img/installateur_fachbetrieb-logo.png'} style="width:80px">
-                <img src={image file='assets/dist/img/shk_innung.png'}  style="width:80px">       
-                </div-->
+
+
                 
-                <!--div class="hotline" itemscope itemtype="http://schema.org/Store">
+
                
-                    <div class="hotline-icon"> <span></span></div>
-                    <div class="hotline-text">
-                    <h3 itemprop="telephone" content="0800/022573">0800/022573</h3>
-                    <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr<br>
-                        Fr:  8-17 Uhr</small>
-                    </div>               
-                </div>
-                <div style="clear:both"></div-->
-                <!--div class="events">
-                    <div class="col-sm-1">
-                    <h1 style="font-size:1.5em">BLACK FRIDAY</h1>
-                        <h5>Tolle Angebote<br>
-                       </h5>
-                    </div>
-                    <div class="col-sm-3">
-                        <a href="/hansgrohe-handbrause-croma-select-s-multi-weiss-chrom-m.3-strahlarten-26800400-1.html"><img src="{image file='assets/dist/img/blackfriday/duschkopf.png'}"  alt="Hansgrohe Handbrause Raindance Select E120"> </a>
-                    </div>
-                     <div class="col-sm-3">
-                       <a href="/Vaillant-Raumthermostat-calorMatic-250-0020170569-de.html"> <img src="{image file='assets/dist/img/blackfriday/thermostat.png'}"  alt="Vaillant Raumthermostat calorMatic 250"> </a>
-                    </div>
-                    <div class="col-sm-3">
-                       <a href="/danfoss-link-starterkit.html"> <img src="{image file='assets/dist/img/blackfriday/danfosslink.png'}"  alt="Danfoss Link Starterkit"> </a>
-                    </div>
-                    <div class="col-sm-2">
-                        <a href="/ap-brause-thermostat-grohtherm-2000-neu-o.-brausegarnitur-m.-rv-verchromt.html"><img src="{image file='assets/dist/img/blackfriday/brausengarnitur.png'}"  alt="AP-Brause-Thermostat Grohtherm 2000 NEU o. Brausegarnitur mit Halterungsbügel"> </a>
-                    </div>
-                </div-->
-                <div class="header">
+                <div class="header ">
 
                     
                     {hook name="main.navbar-primary"}
@@ -580,6 +549,27 @@ window.gapi.ratingbadge.render(ratingBadgeContainer,
 }
 );
 });
+}
+</script>
+
+
+{/literal}
+
+
+{literal}
+<script>
+
+window.onscroll = function() {myFunction()};
+
+var navbar = document.getElementById("navbar-secondary");
+var sticky = navbar.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
 }
 </script>
 {/literal}

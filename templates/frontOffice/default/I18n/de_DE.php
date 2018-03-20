@@ -40,6 +40,7 @@ return [
     'Brand information' => 'Marke Informationen',
     'Brands' => 'Marken',
 	'Can be picked up immediately' => 'Sofort abholbar',
+	'Can be shipped immediately' => 'Sofort lieferbar',
     'Cancel' => 'Abbrechen',
     'Cart' => 'Warenkorb',
     'Categories' => 'Kategorien',

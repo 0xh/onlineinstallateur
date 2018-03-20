@@ -1,4 +1,4 @@
-<li class="item {$colClass|default:" col-xs-12 col-sm-6 col-md-4 col-lg-3"}">
+<li class="item {$colClass|default:" col-xs-12 col-sm-6 col-md-4 col-lg-4"}">
     {if $PSE_COUNT > 1}
         {assign var="hasSubmit" value = false}
     {else}
@@ -10,7 +10,7 @@
 	{/if}
     <article class="row" itemscope itemtype="http://schema.org/Product">
 		{hook name="singleproduct.top" product="{$product_id}"}
-            <a href="{$URL nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}  col-sm-3">
+            <a href="{$URL nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}">
                 {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}" resize_mode="borders" limit="1"}
                     <div style="position:relative;" >
                         <img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}">
@@ -38,8 +38,9 @@
                 {/elseloop}
             </a>
 
-            <div class="product-info col-sm-6">
+            <div class="product-info">
                 <h2 class="name"><a href="{$URL nofilter}"><span itemprop="name">{$productTitle}</span></a></h2>
+				<hr class="separation-line separation-line-short">
                 {if $hasDescription}
                     <div class="description" itemprop="description">
                         <p>{$DESCRIPTION nofilter}</p>
@@ -57,7 +58,7 @@
                 {/if}
             {/if}
 
-            <div class="product-price col-sm-3">
+            <div class="product-price">
                 <div class="price-container row" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <meta itemprop="category" content="{category attr="title"}">
                     {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
@@ -82,18 +83,34 @@
                         {/if}
                     {else}
                         
-                    <div class=" col-xs-6" style="padding-right: 0;padding-left:0px">
-                        <span itemprop="price" class="listen-price">{if $LISTEN_PRICE!=0} Statt {format_money number=$LISTEN_PRICE}{/if} </span>
+                    <div class="col-xs-6" style="padding-right: 0;padding-left:0px">
+                        <span itemprop="price" class="listen-price">{if $LISTEN_PRICE!=0} Statt <em><strike>{format_money number=$LISTEN_PRICE}</strike></em>{/if} </span>
                     </div>
                         
                     <div class="regular-price col-xs-6" style="padding-left: 0;padding-right: 0">
                         <span itemprop="price"  class="{if $LISTEN_PRICE!=0}verkaufs-price{else}verkaufs-price-black{/if}">{format_money number=$BEST_TAXED_PRICE}</span>
                     </div>
                     {/if}
-                    <span class="regular-price col-xs-12">
-                    <small>Alle Preise inkl. 20% MwSt.</small>
-                    </span>   
+  
+                    <div class="vat-info"><small>Alle Preise inkl. 20% MwSt.</small></div>
                 </div>
+				<div class="availability">
+					<span class="availibity-label sr-only">{intl l="Availability"}: </span>
+
+                         <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
+                         
+                         {if $QUANTITY && $fulfilment_center_active != "false"}
+                             <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l='Can be shipped immediately'}</small></em></span>
+                        {else}
+							{if $QUANTITY }
+								<span class="in ">{intl l='In Stock'}</span> 
+							{else}
+								<span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$ID}}</small></em>
+							{/if}
+                       {/if}
+
+                         </span>
+				</div>
 
                 {if $hasBtn == true}
                     {if $hasSubmit == true && $current_stock_content == "in_stock"}
@@ -127,20 +144,12 @@
                                             {/if}
                                         </div>
                                     {/form_field}
-                                    <div>
-                                        <div class="product-btn">
-                                            <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="fo.default"}</button>
-                                        </div>
-                                    </div>
+  
                                 </fieldset>
                             </form>
                         {/form}
                     {else}
-                        <div>
-                            <div class="product-btn">
-                                <a href="{$URL nofilter}" class="btn btn-primary btn-block"><i class="fa fa-eye"></i> {intl l="View product" d="fo.default"}</a>
-                            </div>
-                        </div>
+                       
                     {/if}
                 {/if}
             </div>
