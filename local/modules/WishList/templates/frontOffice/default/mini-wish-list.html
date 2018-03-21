@@ -10,11 +10,16 @@
 	        <i class="fa fa-heart-o"></i> <span class="badge">{$products_in_wish_list}</span>
 	    </a>
 	    <div class="dropdown-menu wish-content">
-	    	{if $products_in_wish_list}
-	        	<p>{intl l="You have %number items in your wishlist." d="wishlist.fo.default" number=$products_in_wish_list}</p>
+	    	{if $products_in_wish_list == 1}
+	        	<p>{intl l="You have %nr item in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
+	        {elseif $products_in_wish_list > 1}
+	        	<p>{intl l="You have %nr items in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
 	        {else}
 	        	<p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
 	        {/if}
+	        <span class="wishlist_message_item hide">{intl l="You have %nr item in your wishlist." d="wishlist.fo.default"}</span>
+	        <span class="wishlist_message_items hide">{intl l="You have %nr items in your wishlist." d="wishlist.fo.default"}</span>
+	        <span class="wishlist_message_no_items hide">{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</span>
 	    </div>
 	</li>
 </ul>
