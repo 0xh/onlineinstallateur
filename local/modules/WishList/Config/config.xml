@@ -28,6 +28,7 @@
     <hooks>
         <hook id="hookwish.hook.front">
             <tag name="hook.event_listener" event="main.navbar-secondary" templates="mini-wish-list.html"/>
+            <tag name="hook.event_listener" event="wish-list.wish-button" templates="wish-button.html"/>
         </hook>
     </hooks>
 </config>

@@ -36,8 +36,13 @@ class WishList extends BaseModule
 
     public function postActivation(ConnectionInterface $con = null)
     {
-        $database = new Database($con->getWrappedConnection());
-        $database->insertSql(null, array(THELIA_ROOT . '/local/modules/WishList/Config/thelia.sql'));
+    	$database = new Database($con);
+		$database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
+    		
+		if (!self::getConfigValue('is_initialized', false)) {
+			$database->insertSql(null, [__DIR__ . "/Config/thelia.sql"]);
+			self::setConfigValue('is_initialized', true);
+		}
     }
 
 }

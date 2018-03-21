@@ -462,31 +462,10 @@
                             <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
                         </div>
                         
-                        <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-12 form-group group-btn align-center wish-list-button">
-							{if {in_wishlist product_id=$product_id}}
-							    <a class="btn btn-primary in-wish-list" href="{url path="/wishlist/remove/$product_id"}">
-							    	<i class="fa fa-heart"></i>
-							    	<span class="text">{intl l="Remove from wish list"}</span>
-							    </a>
-							    {loop type="auth" name="customer_info_block" role="CUSTOMER"}
-							        {if !{is_saved_in_wishlist product_id=$product_id}}
-							            <p>This product is not really in your wish list. To really add, click the button below.</p>
-							            <a class="btn btn-primary" href="{url path="/wishlist/add/$product_id"}">
-							            	<i class="fa fa-heart-o"></i>
-							            	<span class="text">{intl l="Add to wish list"}</span>
-							            </a>
-							        {/if}
-							    {/loop}
-							{else}
-							    <a class="btn btn-primary" href="{url path="/wishlist/add/$product_id"}">
-							    	<i class="fa fa-heart-o"></i>
-							    	<span class="text">{intl l="Add to wish list"}</span>
-							    </a>
-							{/if}
-							<input type="hidden" class="wish-list-product-id" value="{$product_id}">
-							<input type="hidden" class="wish-list-text-remove" value='{intl l="Remove from wish list"}'>
-							<input type="hidden" class="wish-list-text-add" value='{intl l="Add to wish list"}'>
-	                   	</div>
+                        {ifhook rel="wish-list.wish-button"}
+		               		{hook name="wish-list.wish-button" product_id={$product_id}}
+		            	{/ifhook}
+                        
                     </fieldset>
                      
                     {if $service_category == #services_category_id# }</div>{/if}
