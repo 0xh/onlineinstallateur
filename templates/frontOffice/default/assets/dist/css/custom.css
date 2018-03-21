@@ -80,7 +80,8 @@ h1.name{
 	height:15px;
 }
 
-.wish-list-button a{
+.wish-list-button a,
+.add-to-cart .btn {
 	width: 100%;
     padding: .9375rem .75rem;
     text-align: center;
@@ -110,6 +111,10 @@ h1.name{
 .navbar-toggle {
 	margin-right: 0px;
 	padding: 9px 0px;
+}
+
+.add-to-cart {
+	margin-bottom: 0px;	
 }
 
 @media (min-width: 992px) {

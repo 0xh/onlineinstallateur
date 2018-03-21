@@ -22,7 +22,6 @@
 				            {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
 				                {loop name="product.details" type="product" id=$ID limit="1"}
 				                	{include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
-				                     <a href="{url path="/wishlist/remove/$ID"}">{intl l="Remove from wish list"}</a> 
 				                {/loop}
 				            {/loop}
 				        {/loop}

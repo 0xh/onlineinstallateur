@@ -146,6 +146,11 @@
                                     {/form_field}
   
                                 </fieldset>
+                                {if $smarty.server.REQUEST_URI == '/wish-list'}
+	                          		<div class="product-btn add-to-cart col-xs-12 form-group group-btn align-center">
+                                		<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="fo.default"}</button>
+                                	</div>
+                                {/if}
                             </form>
                         {/form}
                     {else}
@@ -153,7 +158,11 @@
                     {/if}
                 {/if}
             </div>
-
+            {if $smarty.server.REQUEST_URI == '/wish-list'}
+				{ifhook rel="wish-list.wish-button"}
+	            	{hook name="wish-list.wish-button" product_id={$product_id}}
+	           	{/ifhook}
+	        {/if}
         {hook name="singleproduct.bottom" product={$product_id}}
 
     </article><!-- /product -->
