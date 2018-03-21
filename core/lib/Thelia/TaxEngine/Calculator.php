@@ -183,7 +183,7 @@ class Calculator
         }
 
         $taxedPrice += $currentTax;
-
+        $taxedPrice = round($taxedPrice,2);
         return $taxedPrice;
     }
 
