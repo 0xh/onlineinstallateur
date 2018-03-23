@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="http://thelia.net/schema/dic/module"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
+    <fullnamespace>ProductLabels\ProductLabels</fullnamespace>
+    <descriptive locale="en_US">
+        <title>This Module is creating product labels</title>
+        <!--
+        <subtitle></subtitle>
+        <description></description>
+        <postscriptum></postscriptum>
+        -->
+    </descriptive>
+    <descriptive locale="de_DE">
+        <title>This Module is creating product labels</title>
+    </descriptive>
+    <!-- <logo></logo> -->
+    <!--<images-folder>images</images-folder>-->
+    <languages>
+	    <language>de_DE</language>
+        <language>en_US</language>
+        <language>fr_FR</language>
+    </languages>
+    <version>0.1</version>
+    <authors>
+        <author>
+            <name>Ani Jalavyan</name>
+            <email>ani.jalavyan@sepa.at</email>
+        </author>
+    </authors>
+    <type>classic</type>
+    <!--
+    module dependencies
+    <required>
+        <module version="&gt;=0.1">Front</module>
+        <module version="~1.0">HookCart</module>
+        <module version="&gt;0.2">HookSearch</module>
+    </required>
+    -->
+    <thelia>2.2.0</thelia>
+    <stability>other</stability>
+</module>
