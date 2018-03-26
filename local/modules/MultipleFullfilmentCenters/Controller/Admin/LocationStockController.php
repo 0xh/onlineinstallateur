@@ -1,6 +1,5 @@
 <?php
 
-
 namespace MultipleFullfilmentCenters\Controller\Admin;
 
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
@@ -9,10 +8,9 @@ use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 
-class LocationStockController extends MultipleFullfilmentCentersController
-{
-	public function addLocationStock()
-    {
+class LocationStockController extends MultipleFullfilmentCentersController {
+
+    public function addLocationStock() {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('MultipleFullfilmentCenters'), AccessManager::UPDATE)) {
             return $response;
         }
@@ -22,30 +20,29 @@ class LocationStockController extends MultipleFullfilmentCentersController
         try {
             $data = $this->validateForm($form)->getData();
 
-            $locationStock=  new FulfilmentCenter();
+            $locationStock = new FulfilmentCenter();
 
             $locationStock
-            	->setName($data["name"])
-            	->setAddress($data["address"])
-            	->setGpsLat($data["gps_lat"])
-            	->setGpsLong($data["gps_long"])
-            	->setStockLimit($data["stock_limit"])
-            	->save();
+                    ->setName($data["name"])
+                    ->setAddress($data["address"])
+                    ->setGpsLat($data["gps_lat"])
+                    ->setGpsLong($data["gps_long"])
+                    ->setStockLimit($data["stock_limit"])
+                    ->setDeliveryCost($data["delivery_cost"])
+                    ->setDeliveryMethod($data["delivery_method"])
+                    ->save();
 
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on new location : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
-                $e->getMessage(),
-                $form
+                    $this->getTranslator()->trans("Error on new location : %message", ["message" => $e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME), $e->getMessage(), $form
             );
 
             return self::viewAction();
         }
     }
 
-    public function updateLocationStock()
-    {
+    public function updateLocationStock() {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('MultipleFullfilmentCenters'), AccessManager::UPDATE)) {
             return $response;
         }
@@ -56,34 +53,33 @@ class LocationStockController extends MultipleFullfilmentCentersController
             $data = $this->validateForm($form)->getData();
 
             $locationStock = FulfilmentCenterQuery::create()
-                ->findOneById($data["id"]);
+                    ->findOneById($data["id"]);
 
             if (null === $locationStock) {
                 throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), MultipleFullfilmentCenters::DOMAIN_NAME);
             }
 
             $locationStock
-                ->setName($data["name"])
-                ->setAddress($data["address"])
-                ->setGpsLat($data["gps_lat"])
-                ->setGpsLong($data["gps_long"])
-                ->setStockLimit($data["stock_limit"])
-                ->save();
+                    ->setName($data["name"])
+                    ->setAddress($data["address"])
+                    ->setGpsLat($data["gps_lat"])
+                    ->setGpsLong($data["gps_long"])
+                    ->setStockLimit($data["stock_limit"])
+                    ->setDeliveryCost($data["delivery_cost"])
+                    ->setDeliveryMethod($data["delivery_method"])
+                    ->save();
 
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error updating location : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
-                $e->getMessage(),
-                $form
+                    $this->getTranslator()->trans("Error updating location : %message", ["message" => $e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME), $e->getMessage(), $form
             );
 
             return self::viewAction();
         }
     }
 
-    public function deleteLocationStock()
-    {
+    public function deleteLocationStock() {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('MultipleFullfilmentCenters'), AccessManager::UPDATE)) {
             return $response;
         }
@@ -94,7 +90,7 @@ class LocationStockController extends MultipleFullfilmentCentersController
             $data = $this->validateForm($form)->getData();
 
             $locationStock = FulfilmentCenterQuery::create()
-                ->findOneById($data["id"]);
+                    ->findOneById($data["id"]);
 
             if (null === $locationStock) {
                 throw new \Exception($this->getTranslator()->trans("Location id doesn't exist"), array(), MultipleFullfilmentCenters::DOMAIN_NAME);
@@ -105,12 +101,11 @@ class LocationStockController extends MultipleFullfilmentCentersController
             return $this->generateSuccessRedirect($form);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Error on location deletion : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
-                $e->getMessage(),
-                $form
+                    $this->getTranslator()->trans("Error on location deletion : %message", ["message" => $e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME), $e->getMessage(), $form
             );
 
             return self::viewAction();
         }
     }
+
 }
