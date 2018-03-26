@@ -69,4 +69,14 @@
         </behavior>
     </table>
     
+    <table name="order_product_revenue" namespace="RevenueDashboard\Model">
+        <column name="order_id" phpName="OrderId" type="INTEGER"/>
+        <column name="product_ref" phpName="ProductRef" type="VARCHAR" size="255"/>
+        <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
 </database>

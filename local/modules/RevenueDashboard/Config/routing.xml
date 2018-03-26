@@ -45,7 +45,7 @@
         </default>
     </route>
     
-<!--    <route id="id.revenue.wholesale.partner.contact.get" path="/admin/module/revenue-wholesale-partner-contact/{contactId}" methods="get">
+    <!--    <route id="id.revenue.wholesale.partner.contact.get" path="/admin/module/revenue-wholesale-partner-contact/{contactId}" methods="get">
         <default key="_controller">RevenueDashboard\Controller\Admin\WholesalePartnerContactController::viewPartnerContactId</default>
         <requirement key="contactId">\d+</requirement>
     </route>-->
@@ -88,5 +88,11 @@
     <route id="id.revenue.wholesale.partner.product.getproducts" path="/admin/module/revenue-wholesale-partner-product-getproducts">
         <default key="_controller">RevenueDashboard\Controller\Admin\WholesalePartnerProductController::getProducts
         </default>
+    </route>
+        
+    <route id="id.revenue.update.products.mysht" path="/admin/module/revenue-update-products-mysht/{idPartner}">
+        <default key="_controller">RevenueDashboard\Controller\Front\UpdateProductsMyshtController::updateOrInsertProductsMysht
+        </default>
+        <requirement key="idPartner">\d+</requirement>
     </route>
 </routes>

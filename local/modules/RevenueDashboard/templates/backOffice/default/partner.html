@@ -138,10 +138,22 @@
                     </form>
                     {/form}
                 </td>
+                <td class="col-md-1">
+                    
+                    <form action="{url path='/admin/module/revenue-update-products-mysht/'}{$id}"
+                          method="post">
+                        <button type="submit" onclick="$('#wait-update-mysht').show();" name="save_mode" value="stay"
+                                class="form-submit-button btn btn-sm btn-default btn-success"
+                                title="{intl l="Update products"}">
+                                {intl l="Update products"} <span class="glyphicon"></span>
+                        </button>
+                    </form>
+                </td>
             </tr>
             {/loop}
             </tbody>
         </table>
     </div>
 </div>
+<div id="wait-update-mysht" class="modal-loading"></div>
 {/block}

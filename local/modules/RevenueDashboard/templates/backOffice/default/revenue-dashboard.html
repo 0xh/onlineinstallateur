@@ -7,7 +7,7 @@
 {block name="page-title"}{intl l='Revenue Dashboard'}{/block}
 
 {block name="main-content"} 
-
+{assign page {$smarty.get.page|default:1}}
 <div class="general-block-decorator dashboard">
     <ul class="breadcrumb">
         <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
@@ -17,12 +17,44 @@
         <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
     </ul>
 
-    as
-    d
-    asd
+    <table class="table table-striped">
+        <tr style="font-weight: bold; font-size: 15px;">
+            <td>Order id</td>
+            <td>Prod id</td>
+            <td>Was in promo</td>
+            <td>Quantity</td>
+            <td>Price</td>
+            <td>Purchase price</td>
+            <td>Advantage</td>
+        </tr>
+        {assign var="total" value="0"}
+        {loop name="revenue.dashboard.loop" type="revenue.dashboard.loop" page={$page} limit=100}
+        {$total = $total + $price - $purchase_price}
+            <tr>
+                <td>{$order_id}</td>
+                <td>{$prod_id}</td>
+                <td>{$was_in_promo}</td>
+                <td>{$quantity}</td>
+                <td>{$price}</td>
+                <td>{$purchase_price}</td>
+                <td style="color: red;">{$price - $purchase_price}</td>
+            </tr>
+        {/loop}
+    </table>
+    <b>Total: </b> <b style="color: blue;">{$total|number_format:2:".":","}</b>
+    <br><br>
 
-    a
-    sd
-
+    <tfoot>
+        <tr>
+            <td colspan="100">
+                {include
+                file = "includes/pagination.html"
+                loop_ref       = "revenue.dashboard.loop"
+                max_page_count = 100
+                page_url       = {url path="/admin/module/revenuedashboard" }
+                }
+            </td>
+        </tr>
+    </tfoot>
 </div>
 {/block}

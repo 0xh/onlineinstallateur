@@ -46,7 +46,7 @@ class PartnerProductLoop extends BaseI18nLoop implements PropelSearchLoopInterfa
                     ->set("position", $listing->getPosition())
                     ->set("department", $listing->getDepartment())
                     ->set("comment", $listing->getComment())
-                    ->set("valid_until", $listing->getValidUntil()->format('Y-m-d H:i:s'));
+                    ->set("valid_until", $listing->getValidUntil() ? $listing->getValidUntil()->format('Y-m-d H:i:s') : date("Y-m-d H:i:s"));
 
             $loopResult->addRow($loopResultRow);
         }

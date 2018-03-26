@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS wholesale_partner_version, wholesale_partner_contact_person_version, wholesale_partner_product_version, wholesale_partner, wholesale_partner_contact_person, wholesale_partner_product;
+-- DROP TABLE IF EXISTS wholesale_partner_version, wholesale_partner_contact_person_version, wholesale_partner_product_version, wholesale_partner, wholesale_partner_contact_person, wholesale_partner_product;
