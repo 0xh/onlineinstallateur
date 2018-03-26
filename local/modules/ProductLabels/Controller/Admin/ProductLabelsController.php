@@ -22,11 +22,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductLabelsController extends BaseAdminController
 {
     public function generateLabelsTabAction(){
-        return $this->render('product-labels',
-            array("small_template" => $this->render("small_template"),
-                "medium_template" => $this->render("medium_template"),
-                "large_template" => $this->render("large_template")
-            ));
+        $barcode = new Barcode(1349875921348, 4);
+         return $this->render('product-labels',array("product" => array("product_title"=>"title","product_price"=>"price"))
+//             ,array("small_template" => "small_template",
+//                 "medium_template" => $this->renderRaw("medium_template"),
+//                 "large_template" => $this->getParser()->render("large_template")
+//             )
+);
     }
     
     public function previewAsHtmlAction($messageId)
