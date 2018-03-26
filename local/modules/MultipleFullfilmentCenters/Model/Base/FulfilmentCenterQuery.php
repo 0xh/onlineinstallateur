@@ -27,6 +27,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFulfilmentCenterQuery orderByGpsLat($order = Criteria::ASC) Order by the gps_lat column
  * @method     ChildFulfilmentCenterQuery orderByGpsLong($order = Criteria::ASC) Order by the gps_long column
  * @method     ChildFulfilmentCenterQuery orderByStockLimit($order = Criteria::ASC) Order by the stock_limit column
+ * @method     ChildFulfilmentCenterQuery orderByDeliveryCost($order = Criteria::ASC) Order by the delivery_cost column
+ * @method     ChildFulfilmentCenterQuery orderByDeliveryMethod($order = Criteria::ASC) Order by the delivery_method column
  *
  * @method     ChildFulfilmentCenterQuery groupById() Group by the id column
  * @method     ChildFulfilmentCenterQuery groupByName() Group by the name column
@@ -34,6 +36,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFulfilmentCenterQuery groupByGpsLat() Group by the gps_lat column
  * @method     ChildFulfilmentCenterQuery groupByGpsLong() Group by the gps_long column
  * @method     ChildFulfilmentCenterQuery groupByStockLimit() Group by the stock_limit column
+ * @method     ChildFulfilmentCenterQuery groupByDeliveryCost() Group by the delivery_cost column
+ * @method     ChildFulfilmentCenterQuery groupByDeliveryMethod() Group by the delivery_method column
  *
  * @method     ChildFulfilmentCenterQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildFulfilmentCenterQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -56,6 +60,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildFulfilmentCenter findOneByGpsLat(string $gps_lat) Return the first ChildFulfilmentCenter filtered by the gps_lat column
  * @method     ChildFulfilmentCenter findOneByGpsLong(string $gps_long) Return the first ChildFulfilmentCenter filtered by the gps_long column
  * @method     ChildFulfilmentCenter findOneByStockLimit(int $stock_limit) Return the first ChildFulfilmentCenter filtered by the stock_limit column
+ * @method     ChildFulfilmentCenter findOneByDeliveryCost(string $delivery_cost) Return the first ChildFulfilmentCenter filtered by the delivery_cost column
+ * @method     ChildFulfilmentCenter findOneByDeliveryMethod(string $delivery_method) Return the first ChildFulfilmentCenter filtered by the delivery_method column
  *
  * @method     array findById(int $id) Return ChildFulfilmentCenter objects filtered by the id column
  * @method     array findByName(string $name) Return ChildFulfilmentCenter objects filtered by the name column
@@ -63,6 +69,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByGpsLat(string $gps_lat) Return ChildFulfilmentCenter objects filtered by the gps_lat column
  * @method     array findByGpsLong(string $gps_long) Return ChildFulfilmentCenter objects filtered by the gps_long column
  * @method     array findByStockLimit(int $stock_limit) Return ChildFulfilmentCenter objects filtered by the stock_limit column
+ * @method     array findByDeliveryCost(string $delivery_cost) Return ChildFulfilmentCenter objects filtered by the delivery_cost column
+ * @method     array findByDeliveryMethod(string $delivery_method) Return ChildFulfilmentCenter objects filtered by the delivery_method column
  *
  */
 abstract class FulfilmentCenterQuery extends ModelCriteria
@@ -151,7 +159,7 @@ abstract class FulfilmentCenterQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, NAME, ADDRESS, GPS_LAT, GPS_LONG, STOCK_LIMIT FROM fulfilment_center WHERE ID = :p0';
+        $sql = 'SELECT ID, NAME, ADDRESS, GPS_LAT, GPS_LONG, STOCK_LIMIT, DELIVERY_COST, DELIVERY_METHOD FROM fulfilment_center WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -460,6 +468,76 @@ abstract class FulfilmentCenterQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(FulfilmentCenterTableMap::STOCK_LIMIT, $stockLimit, $comparison);
+    }
+
+    /**
+     * Filter the query on the delivery_cost column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeliveryCost(1234); // WHERE delivery_cost = 1234
+     * $query->filterByDeliveryCost(array(12, 34)); // WHERE delivery_cost IN (12, 34)
+     * $query->filterByDeliveryCost(array('min' => 12)); // WHERE delivery_cost > 12
+     * </code>
+     *
+     * @param     mixed $deliveryCost The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function filterByDeliveryCost($deliveryCost = null, $comparison = null)
+    {
+        if (is_array($deliveryCost)) {
+            $useMinMax = false;
+            if (isset($deliveryCost['min'])) {
+                $this->addUsingAlias(FulfilmentCenterTableMap::DELIVERY_COST, $deliveryCost['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($deliveryCost['max'])) {
+                $this->addUsingAlias(FulfilmentCenterTableMap::DELIVERY_COST, $deliveryCost['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(FulfilmentCenterTableMap::DELIVERY_COST, $deliveryCost, $comparison);
+    }
+
+    /**
+     * Filter the query on the delivery_method column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDeliveryMethod('fooValue');   // WHERE delivery_method = 'fooValue'
+     * $query->filterByDeliveryMethod('%fooValue%'); // WHERE delivery_method LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $deliveryMethod The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFulfilmentCenterQuery The current query, for fluid interface
+     */
+    public function filterByDeliveryMethod($deliveryMethod = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($deliveryMethod)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $deliveryMethod)) {
+                $deliveryMethod = str_replace('*', '%', $deliveryMethod);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(FulfilmentCenterTableMap::DELIVERY_METHOD, $deliveryMethod, $comparison);
     }
 
     /**

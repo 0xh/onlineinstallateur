@@ -15,6 +15,8 @@ CREATE TABLE if not exists `fulfilment_center`
     `gps_lat` DECIMAL(18,14),
     `gps_long` DECIMAL(18,14),
     `stock_limit` INTEGER,
+    `delivery_cost` DECIMAL(16,2) DEFAULT 3.00,
+    `delivery_method` VARCHAR(255) DEFAULT 'triworx',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

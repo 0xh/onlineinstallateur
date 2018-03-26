@@ -10,6 +10,8 @@
 	    <column name="gps_lat" phpName="GpsLat" type="DECIMAL" size="18" scale="14"/>
 	    <column name="gps_long" phpName="GpsLong" type="DECIMAL" size="18" scale="14"/>
 	    <column name="stock_limit" phpName="StockLimit" type="INTEGER"/>
+            <column name="delivery_cost" phpName="DeliveryCost" type="DECIMAL" size="16" scale="2" defaultValue="3.00"/>
+            <column name="delivery_method" phpName="DeliveryMethod" type="VARCHAR" size="255" defaultValue="triworx"/>
 	    <vendor type="mysql">
 	      <parameter name="Engine" value="InnoDB"/>
 	    </vendor>
