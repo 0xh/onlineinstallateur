@@ -16,10 +16,15 @@ class BackHook extends BaseHook
 {
 
     
-    public function onProductTabContent(HookRenderBlockEvent $event)
+    public function onProductTab(HookRenderBlockEvent $event)
     {
-        $event->add($this->render(
-            'product-labels.html'
-        ));
+        $event->add(
+            [
+                'id' => 'catalog',
+                'title' =>  $this->trans("Labels", [], ProductLabels::DOMAIN_NAME),
+                'href' => URL::getInstance()->absoluteUrl('/admin/products/labels/tab'),
+                'content' => $this->render('product-labels.html')
+            ]
+            );
     }
 }

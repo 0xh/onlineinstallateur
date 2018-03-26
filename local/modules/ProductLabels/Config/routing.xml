@@ -4,6 +4,11 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
+
+    <route id="admin.products.labels.tab" path="/admin/products/labels/tab">
+        <default key="_controller">ProductLabels\Controller\Admin\ProductLabelsController::generateLabelsTabAction</default>
+    </route>
+
     <!--
 
     if a /admin/module/productlabels/ route is provided, a "Configuration" button will be displayed
