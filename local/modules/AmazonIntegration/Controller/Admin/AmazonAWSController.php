@@ -9,6 +9,8 @@ require __DIR__ . '/../../Config/config.php';
 
 class AmazonAWSController extends BaseAdminController
 {
+	protected static $logger;
+	
 	// function just for testing
 	public function getDescription($productId)
 	{
@@ -338,13 +340,15 @@ class AmazonAWSController extends BaseAdminController
 	
 	public function getLowestPrice($eanCode)
 	{
-		$log = Tlog::getInstance();
 		$price = array('lowestPrice' => '',
-				'listPrice' => '');
+					   'listPrice' => '');
+		
+		$this->getLogger()->error( "AMAZON price - getLowestPrice function - ".$eanCode);
 		
 		try{
 			$max_time = ini_get("max_execution_time");
-			ini_set('max_execution_time', 60);
+			ini_set('max_execution_time', 100);
+			sleep(2);
 			
 			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
 			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
@@ -359,52 +363,95 @@ class AmazonAWSController extends BaseAdminController
 			
 			$amazonRequest = $this->amazonSign($url,$secretAccessKey);
 			
-			$sxml = simplexml_load_file($amazonRequest);
+			$this->getLogger()->error( "AMAZON price - amazon request - ".$amazonRequest);
 			
-			$array = json_encode($sxml, TRUE);
-			$result = json_decode($array);
-			$images = array();
+			//libxml_use_internal_errors(true);
+			$temp = @file_get_contents($amazonRequest);
 			
-			if(isset($result->Items->Item)) {
-				if(isset($result->Items->Item->ItemAttributes->EANList->EANListElement) && is_array($result->Items->Item->ItemAttributes->EANList->EANListElement)){
-					$log->debug ( "AMAZON price - EANListElement is an array with more EAN codes for product ".$eanCode);
+			$this->getLogger()->error('AMAZON price - http_response_header ---- start ----');
+			$this->getLogger()->error($http_response_header);
+			$this->getLogger()->error('AMAZON price - http_response_header ---- end ----');
+			
+			if (strpos($http_response_header[0], "200")) {
+				$this->getLogger()->error('AMAZON price - success request');
+				
+				$sxml= simplexml_load_string($temp);
+				$array = json_encode($sxml, TRUE);
+				$result = json_decode($array);
+				$images = array();
+				
+				$this->getLogger()->error( "AMAZON price - request result for ean code - ".$eanCode);
+				$this->getLogger()->error($result);
+				
+				if(isset($result->Items->Item)) {
+					if(isset($result->Items->Item->ItemAttributes->EANList->EANListElement) && is_array($result->Items->Item->ItemAttributes->EANList->EANListElement)){
+						$this->getLogger()->error( "AMAZON price - EANListElement is an array with more EAN codes for product ".$eanCode);
+					}
+					
+					if(is_array($result->Items->Item))
+						$item = $result->Items->Item[0];
+						else
+							$item = $result->Items->Item;
+							
+							if(isset($item->ItemAttributes->ListPrice)) {
+								$this->getLogger()->error( "AMAZON price - This product has lowest price. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
+								
+								$lowestPrice = 0;
+								$listPrice = 0;
+								
+								if(isset($item->OfferSummary->LowestNewPrice->Amount)) {
+									if($item->OfferSummary->LowestNewPrice->Amount > 0) {
+										$nrChrLowestPrice = strlen($item->OfferSummary->LowestNewPrice->Amount);
+										
+										if($nrChrLowestPrice > 2) {
+											$splitLowestPrice = str_split($item->OfferSummary->LowestNewPrice->Amount, $nrChrLowestPrice-2);
+											$lowestPrice = $splitLowestPrice[0].'.'.$splitLowestPrice[1];
+										}
+										else {
+											$lowestPrice = $item->OfferSummary->LowestNewPrice->Amount;
+										}	
+									}
+								}
+								
+								if(isset($item->ItemAttributes->ListPrice->Amount)) {
+									if($item->ItemAttributes->ListPrice->Amount > 0) {
+										$nrChrListPrice = strlen($item->ItemAttributes->ListPrice->Amount);
+										
+										if($nrChrLowestPrice > 2) {
+											$splitListPrice = str_split($item->ItemAttributes->ListPrice->Amount, $nrChrListPrice-2);
+											$listPrice = $splitListPrice[0].'.'.$splitListPrice[1];
+										}
+										else {
+											$listPrice = $item->ItemAttributes->ListPrice->Amount;
+										}
+									}
+									
+								}
+								
+								$price = array('lowestPrice' => $lowestPrice,
+										'listPrice' => $listPrice);
+								
+								$this->getLogger()->error("AMAZON price - list price - ".$item->ItemAttributes->ListPrice->FormattedPrice);
+								$this->getLogger()->error("AMAZON price - lowest price - ".$item->OfferSummary->LowestNewPrice->FormattedPrice);
+							}
+							else {
+								$this->getLogger()->error( "AMAZON price - This product doesn't have lowest price ".$eanCode);
+							}
+							
 				}
 				
-				if(is_array($result->Items->Item))
-					$item = $result->Items->Item[0];
-				else
-					$item = $result->Items->Item;
-						
-				if(isset($item->ItemAttributes->ListPrice)) {
-					$log->debug ( "AMAZON price - This product has lowest price. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
-					
-					$nrChrLowestPrice = strlen($item->OfferSummary->LowestNewPrice->Amount);
-					$splitLowestPrice = str_split($item->OfferSummary->LowestNewPrice->Amount, $nrChrLowestPrice-2);
-					$lowestPrice = $splitLowestPrice[0].'.'.$splitLowestPrice[1];
-					
-					$nrChrListPrice = strlen($item->ItemAttributes->ListPrice->Amount);
-					$splitListPrice = str_split($item->ItemAttributes->ListPrice->Amount, $nrChrListPrice-2);
-					$listPrice = $splitListPrice[0].'.'.$splitListPrice[1];
-					
-					$price = array('lowestPrice' => $lowestPrice, 
-									'listPrice' => $listPrice);
-					
-					Tlog::getInstance()->info("AMAZON list price - ".$item->ItemAttributes->ListPrice->FormattedPrice);
-					Tlog::getInstance()->info("AMAZON lower price - ".$item->OfferSummary->LowestNewPrice->FormattedPrice);
-				}
-				else {
-					$log->debug ( "AMAZON price - This product doesn't have lowest price ".$eanCode);
-				}
+				ini_set('max_execution_time', $max_time);
 				
-			}
-			
-			ini_set('max_execution_time', $max_time);
-			sleep(0.7);
-			
-			return $price;
+				return $price;
+			} 
+			else {
+				sleep(2);
+				$this->getLogger()->error("AMAZON price - failed request");
+				return $this->getLowestPrice($eanCode);
+			} 
 		}
 		catch (\Exception $e) {
-			$log->debug ("AMAZON price - Error price from amazon:".$e->getMessage());
+			$this->getLogger()->error("AMAZON price - Error price from amazon:".$e->getMessage());
 			return $this->getLowestPrice($eanCode);
 		}
 	}
@@ -482,5 +529,19 @@ class AmazonAWSController extends BaseAdminController
 		$url .= "&Signature=".$this->amazonEncode($hmacBase64);
 		
 		return $url;
+	}
+	
+	public function getLogger() {
+		if (self::$logger == null) {
+			self::$logger = Tlog::getNewInstance();
+			
+			$logFilePath = THELIA_LOG_DIR . DS . "log-amazon-integration.txt";
+			
+			self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+			self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+			self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+			self::$logger->setLevel(Tlog::ERROR);
+		}
+		return self::$logger;
 	}
 }
