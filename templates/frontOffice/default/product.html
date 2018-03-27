@@ -74,12 +74,29 @@
             *}
             
             {hook name="product.top" product={$ID}}
-                       
-                    <h1 class="name">
+            <div class="row">           
+                    <h1 class="name col-xs-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
                     	<span itemprop="name">{$TITLE}</span>
                     	<span id="pse-name" class="pse-name"></span>
                     </h1>                
-                       
+                      
+	                {$rating={meta meta="COMMENT_RATING" key="product" id=$product_id}}
+	                {function name=comment_stars empty=1}
+	                    {$star='<span class="glyphicon glyphicon-star"></span>'}
+	                    {$star_empty='<span class="glyphicon glyphicon-star-empty"></span>'}
+	
+	                    {for $foo=0 to 4}
+	                        {if $value > $foo}
+	                            {$star nofilter}
+	                        {elseif $empty == 1}
+	                            {$star_empty nofilter}
+	                        {/if}
+	                    {/for}
+	                {/function}
+	                <p class="col-xs-2 rating">
+	                    <span class="text-primary">{comment_stars value=$rating}</span>
+	                </p> 
+	        </div> 
             
 			{if $service_category == #services_category_id#}
 

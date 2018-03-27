@@ -273,3 +273,8 @@ white-bg{
 #form-add-comment .radio-inline input {
 	position: relative;
 }
+
+.rating .text-primary{
+	margin: 10px 0px;
+	float: right;
+}
