@@ -74,12 +74,16 @@
             *}
             
             {hook name="product.top" product={$ID}}
-                       
-                    <h1 class="name">
+            <div class="row">           
+                    <h1 class="name col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
                     	<span itemprop="name">{$TITLE}</span>
                     	<span id="pse-name" class="pse-name"></span>
                     </h1>                
-                       
+                      
+                    {ifhook rel="comment.rating-stars"}
+	               		{hook name="comment.rating-stars" product_id={$product_id}}
+	            	{/ifhook}
+	        </div> 
             
 			{if $service_category == #services_category_id#}
 
