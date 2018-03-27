@@ -388,56 +388,66 @@ class AmazonAWSController extends BaseAdminController
 						$this->getLogger()->error( "AMAZON price - EANListElement is an array with more EAN codes for product ".$eanCode);
 					}
 					
-					if(is_array($result->Items->Item))
+					if(is_array($result->Items->Item)) {
 						$item = $result->Items->Item[0];
-						else
-							$item = $result->Items->Item;
-							
-							if(isset($item->ItemAttributes->ListPrice)) {
-								$this->getLogger()->error( "AMAZON price - This product has lowest price. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
-								
-								$lowestPrice = 0;
-								$listPrice = 0;
-								
-								if(isset($item->OfferSummary->LowestNewPrice->Amount)) {
-									if($item->OfferSummary->LowestNewPrice->Amount > 0) {
-										$nrChrLowestPrice = strlen($item->OfferSummary->LowestNewPrice->Amount);
+					}
+					else {
+						$item = $result->Items->Item;
+					}	
+					
+					$lowestPrice = 0;
+					$listPrice = 0;
+					
+					if(isset($item->ItemAttributes->ListPrice)) {
+						$this->getLogger()->error( "AMAZON price - This product has list price. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
 										
-										if($nrChrLowestPrice > 2) {
-											$splitLowestPrice = str_split($item->OfferSummary->LowestNewPrice->Amount, $nrChrLowestPrice-2);
-											$lowestPrice = $splitLowestPrice[0].'.'.$splitLowestPrice[1];
-										}
-										else {
-											$lowestPrice = $item->OfferSummary->LowestNewPrice->Amount;
-										}	
-									}
+						if(isset($item->ItemAttributes->ListPrice->Amount)) {
+							if($item->ItemAttributes->ListPrice->Amount > 0) {
+								$nrChrListPrice = strlen($item->ItemAttributes->ListPrice->Amount);
+								
+								if($nrChrListPrice> 2) {
+									$splitListPrice = str_split($item->ItemAttributes->ListPrice->Amount, $nrChrListPrice-2);
+									$listPrice = $splitListPrice[0].'.'.$splitListPrice[1];
 								}
-								
-								if(isset($item->ItemAttributes->ListPrice->Amount)) {
-									if($item->ItemAttributes->ListPrice->Amount > 0) {
-										$nrChrListPrice = strlen($item->ItemAttributes->ListPrice->Amount);
-										
-										if($nrChrLowestPrice > 2) {
-											$splitListPrice = str_split($item->ItemAttributes->ListPrice->Amount, $nrChrListPrice-2);
-											$listPrice = $splitListPrice[0].'.'.$splitListPrice[1];
-										}
-										else {
-											$listPrice = $item->ItemAttributes->ListPrice->Amount;
-										}
-									}
-									
+								else {
+									$listPrice = $item->ItemAttributes->ListPrice->Amount;
 								}
-								
-								$price = array('lowestPrice' => $lowestPrice,
-										'listPrice' => $listPrice);
-								
-								$this->getLogger()->error("AMAZON price - list price - ".$item->ItemAttributes->ListPrice->FormattedPrice);
-								$this->getLogger()->error("AMAZON price - lowest price - ".$item->OfferSummary->LowestNewPrice->FormattedPrice);
-							}
-							else {
-								$this->getLogger()->error( "AMAZON price - This product doesn't have lowest price ".$eanCode);
 							}
 							
+						}
+											
+						$this->getLogger()->error("AMAZON price - list price - ".$listPrice);
+					}
+					else {
+						$this->getLogger()->error( "AMAZON price - This product doesn't have list price ".$eanCode);
+					}
+					
+					if(isset($item->OfferSummary->LowestNewPrice)) {
+						$this->getLogger()->error( "AMAZON price - This product has lowest price. Amazon url for product ".$eanCode.": ".$item->DetailPageURL);
+						
+						if(isset($item->OfferSummary->LowestNewPrice->Amount)) {
+							if($item->OfferSummary->LowestNewPrice->Amount > 0) {
+								$nrChrLowestPrice = strlen($item->OfferSummary->LowestNewPrice->Amount);
+								
+								if($nrChrLowestPrice > 2) {
+									$splitLowestPrice = str_split($item->OfferSummary->LowestNewPrice->Amount, $nrChrLowestPrice-2);
+									$lowestPrice = $splitLowestPrice[0].'.'.$splitLowestPrice[1];
+								}
+								else {
+									$lowestPrice = $item->OfferSummary->LowestNewPrice->Amount;
+								}
+							}
+						}
+						
+						$this->getLogger()->error("AMAZON price - lowest price - ".$lowestPrice);
+					}
+					else {
+						$this->getLogger()->error( "AMAZON price - This product doesn't have lowest price ".$eanCode);
+					}
+					
+					
+					$price = array('lowestPrice' => $lowestPrice,
+							'listPrice' => $listPrice);
 				}
 				
 				ini_set('max_execution_time', $max_time);
