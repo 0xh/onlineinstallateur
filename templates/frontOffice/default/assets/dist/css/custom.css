@@ -118,6 +118,11 @@ h1.name{
 }
 
 @media (min-width: 992px) {
+	.rating .text-primary{
+		margin: 10px 0px;
+		float: right;
+	}
+
 	.navbar .navbar-wish-list li a.wish {
 		line-height: 57px;
 		padding-top: 19px;
@@ -272,9 +277,4 @@ white-bg{
 
 #form-add-comment .radio-inline input {
 	position: relative;
-}
-
-.rating .text-primary{
-	margin: 10px 0px;
-	float: right;
 }
