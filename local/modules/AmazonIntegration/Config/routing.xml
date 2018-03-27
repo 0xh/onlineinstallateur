@@ -54,6 +54,11 @@
 		</default>
 	</route>
 	
+	<route id="amazon.ranking.get.hf.products" path="/admin/module/amazonintegration/get-all-products-for-save-ranking">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::getAllProductsForRanking
+		</default>
+	</route>
+	
 	<route id="amazon.aws.description" path="/admin/module/amazonintegration/description/{productId}">
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonAWSController::getDescription</default>
 		<requirement key="productId">.*</requirement>
