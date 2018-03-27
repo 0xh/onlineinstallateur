@@ -9,13 +9,7 @@
     <descriptive locale="fr_FR">
         <title>Système de commentaire</title>
     </descriptive>
-    
-    <descriptive locale="de_DE">
-        <title>Kommentar System</title>
-    </descriptive>
-    
     <languages>
-    	<language>de_DE</language>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>

@@ -270,3 +270,6 @@ white-bg{
     padding:10px;
 }
 
+#form-add-comment .radio-inline input {
+	position: relative;
+}
