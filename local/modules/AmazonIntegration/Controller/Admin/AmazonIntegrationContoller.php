@@ -340,12 +340,18 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
     public function saveProducts($orderProduct, $lang, $con) {
 
+    	$currentDate = date("Y-m-d H:i:s");
+    	
         $newProduct = new Product();
         $newProduct
                 ->setRef($orderProduct->SellerSKU)
                 ->setVisible(0)
                 ->setVirtual(0)
                 ->setTaxRuleId(1)
+                ->setCreatedAt($currentDate)
+                ->setUpdatedAt($currentDate)
+                ->setVersion(1)
+                ->setVersionCreatedAt($currentDate)
                 ->setVersionCreatedBy('amazon_integration')
                 ->save($con);
 
@@ -354,6 +360,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
                 ->setProductId($newProduct->getId())
                 ->setRef($orderProduct->SellerSKU)
                 ->setQuantity(0)
+                ->setCreatedAt($currentDate)
+                ->setUpdatedAt($currentDate)
                 ->setIsDefault(1)
                 ->save($con);
 
@@ -371,6 +379,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
                 ->setPrice($unitPrice)
                 ->setFromDefaultCurrency(0)
                 ->setCurrencyId(1)
+                ->setCreatedAt($currentDate)
+                ->setUpdatedAt($currentDate)
                 ->save($con);
 
         if (isset($lang))

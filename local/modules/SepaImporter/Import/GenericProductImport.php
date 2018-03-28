@@ -24,6 +24,11 @@ use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
+use Thelia\Model\BrandQuery;
+use Thelia\Model\CategoryQuery;
+use Thelia\Model\TemplateQuery;
+use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
+use Thelia\Model\LangQuery;
 
 /* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
@@ -67,8 +72,14 @@ class GenericProductImport extends AbstractImport {
         $currentDate = date("Y-m-d H:i:s");
 
         $i = 0;
-
-        $log->debug(" generic_product_import input " . $i . implode(" ", $row));
+		
+        $log->debug("GENERIC PRODUCT IMPORT");
+		foreach($row as $key=>$value) {
+			if($value) {
+				$log->debug($key.': '.$value);
+			}
+		}
+		
         $this->checkMandatoryColumns($row);
 
         //$produkt_id = $this->rowHasField($row, "Produkt_id");
@@ -107,7 +118,111 @@ class GenericProductImport extends AbstractImport {
         $vergleich_ek = $this->rowHasField($row, "Vergleich_ek");
         $aufschlag = $this->rowHasField($row, "Aufschlag");
         $template_id = $this->rowHasField($row, "Template_id");
-
+        $help = $this->rowHasField($row, "Help");
+        
+        // check if price has the correct format
+        $decimals = LangQuery::create()
+	        ->select('decimals')
+	        ->filterByVisible(1)
+	        ->findOne();
+	    
+	    if($price != null) {
+	    	$this->isPriceFormat($price, $decimals, $ref);
+	    }
+	    
+	    if($promo_price != null) {
+	    	$this->isPriceFormat($promo_price, $decimals, $ref);
+	    }
+	    
+	    if($listen_price != null) {
+	    	$this->isPriceFormat($listen_price, $decimals, $ref);
+	    }
+	    
+	    if($ek_preis_sht != null) {
+	    	$this->isPriceFormat($ek_preis_sht, $decimals, $ref);
+	    }
+	    
+	    if($ek_preis_gc != null) {
+	    	$this->isPriceFormat($ek_preis_gc, $decimals, $ref);
+	    }
+	    
+	    if($ek_preis_oag != null) {
+	    	$this->isPriceFormat($ek_preis_oag, $decimals, $ref);
+	    }
+        
+	    if($ek_preis_holter != null) {
+	    	$this->isPriceFormat($ek_preis_holter, $decimals, $ref);
+	    }
+	    
+	    if($preis_reuter != null) {
+	    	$this->isPriceFormat($preis_reuter, $decimals, $ref);
+	    }
+	    
+	    // check if EAN has a correct format
+	    if ($EAN_code != null) {
+	    	if (!ctype_digit($EAN_code)) {
+	    		$log->debug('The ean code '.$EAN_code.' from the product '.$ref.' isn\'t correct.');
+	    		
+	    		throw new \Exception(
+	    				'The ean code '.$EAN_code.' from the product '.$ref.' isn\'t correct.'
+	    				);
+	    	}
+	    }
+	    
+        // check if brand id, category id, template id exists in DB
+        $brand = BrandQuery::create()->findOneById($marke_id);
+        
+       	if(!$brand) {
+       		$log->debug('The brand id '.$marke_id.' from the product '.$ref.' does not exist in database.');
+       		
+       		throw new \Exception(
+       				'The brand id '.$marke_id.' from the product '.$ref.' does not exist in database.'
+       				);
+       	}
+       	
+       	$category = CategoryQuery::create()->findOneById($kategorie_id);
+       	
+       	if(!$category) {
+       		$log->debug('The category id '.$kategorie_id.' from the product '.$ref.' does not exist in database.');
+       		
+       		throw new \Exception(
+       				'The category id '.$kategorie_id.' from the product '.$ref.' does not exist in database.'
+       				);
+       	}
+       	
+       	if ($template_id != null) {
+	       	$template = TemplateQuery::create()->findOneById($template_id);
+	       	
+	       	if(!$template) {
+	       		$log->debug('The template id '.$template_id.' from the product '.$ref.' does not exist in database.');
+	       		
+	       		throw new \Exception(
+	       				'The template id '.$template_id.' from the product '.$ref.' does not exist in database.'
+	       				);
+	       	}
+       	}
+       	
+       	if ($fulfilment_center != null) {
+       		$fulfilment_center_db = FulfilmentCenterQuery::create()->findOneById($fulfilment_center);
+       		
+       		if(!$fulfilment_center_db) {
+       			$log->debug('The fulfilment center with id '.$fulfilment_center.' does not exist in database.');
+       			
+       			throw new \Exception(
+       					'The fulfilment center with id '.$fulfilment_center.' does not exist in database.'
+       					);
+       		}
+       	}
+       	
+       	if(!file_exists(THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "importer" . DS . $bild_file)) {
+       		$log->debug('The image '.$bild_file.' from the product '.$ref.' is not in importer folder');
+       		
+       		throw new \Exception(
+       				'The image '.$bild_file.' from the product '.$ref.' is not in importer folder'
+       				);
+       	}
+      
+        			
         //check for existing services
         $productQuerry->clear();
         $productExists = count($productQuerry->findByRef($ref));
@@ -130,16 +245,19 @@ class GenericProductImport extends AbstractImport {
             $productThelia->setVersionCreatedAt($currentDate);
             $productThelia->setVersionCreatedBy("importer.4");
 
-            if ($template_id != null)
+            if ($template_id != null) {
                 $productThelia->setTemplateId($template_id);
-            else
-                $productThelia->setTemplateId(1);
-
+            }
+            else {
+            	$productThelia->setTemplateId(1);
+            }
+            
             if ($ist_online != null)
                 $productThelia->setVisible($ist_online);
-
+			
             $gewicht = isset($gewicht) ? $gewicht : 'NULL';
             $price = isset($price) ? $price : 'NULL';
+            
             $productThelia->create($kategorie_id, $price, 1, 1, $gewicht, 10);
             
             $mod = new Module();
@@ -196,7 +314,7 @@ class GenericProductImport extends AbstractImport {
             $productI18n->save();
             //$log->debug ( " product_i18n en_US is added ".$productI18n->__toString() );
             $productThelia->addProductI18n($productI18n);
-
+           
             // product description de_DE
             $productI18n = new ProductI18n ();
             $productI18n->setProduct($productThelia);
@@ -343,7 +461,7 @@ class GenericProductImport extends AbstractImport {
             if ($image_from_server) {
                 $log->debug(" generic_product_import image saved to " . $image_path);
                 file_put_contents($image_path . $image_name, $image_from_server);
-
+                
                 $product_image = new ProductImage ();
                 $product_image->setProduct($productThelia);
                 $product_image->setVisible(1);
@@ -362,7 +480,8 @@ class GenericProductImport extends AbstractImport {
                 $product_image_i18n->save();
 
                 $productThelia->addProductImage($product_image);
-            }
+               
+            }           
         } else {
             $errors .= "Product reference number " . $ref . " is already in the database ";
             $log->debug(" ref number already in the database '" . $ref . "'");
@@ -552,5 +671,34 @@ class GenericProductImport extends AbstractImport {
 
             $log->debug("AMAZON - product " . $EAN_code . " - saved width");
         }
+    }
+    
+    public function isPriceFormat($number, $decimals, $ref) {
+    	
+    	$log = $this->getLogger(); 
+    	
+    	if(!is_numeric($number)) {
+    		$log->debug('The price '.$number.' from the product '.$ref.' isn\'t numeric');
+    		
+    		throw new \Exception(
+    				'The price '.$number.' from the product '.$ref.' isn\'t numeric'
+    				);
+    	}
+    	else {
+    		
+	    	$parts = explode(".", $number);
+	    	$num_decimals = strlen($parts[1]);
+	    	
+	    	if ($num_decimals == $decimals) {
+	    		return true;
+		    } 
+		    else {
+		    	$log->debug('The price '.$number.' from the product '.$ref.' has no '.$decimals. ' decimals.');
+		    	
+		    	throw new \Exception(
+		    			'The price '.$number.' from the product '.$ref.' has no '.$decimals. ' decimals.'
+		    			);
+		    }
+    	}
     }
 }

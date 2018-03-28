@@ -73,7 +73,7 @@
                     Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurze_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
                     Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
 					Bild_kurz_beschreibung, Bild_postscriptum, Bild_file, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
 					
                     Indications:
                     <ul>
@@ -93,7 +93,7 @@
                     Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurz_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
                     Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
 					Bild_kurz_beschreibung, Bild_postscriptum, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
 					
 					Indications:
                     <ul>
