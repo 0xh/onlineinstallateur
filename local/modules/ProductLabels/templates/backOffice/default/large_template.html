@@ -4,16 +4,17 @@ body {
 
 }
 .page {
-
+border-top: 10px solid #AC1F81;
+border-right: 5px solid #AC1F81;
+border-bottom: 5px  solid #AC1F81;
+border-left: 5px  solid #AC1F81;
   display: block;
   margin: 0 auto;
-
   box-shadow: 0 0 18px rgba(0,0,0,0.5);
   color:#000;
   font-family:"Arial";
-  width:100%;
-    width: 793px;
-  height: 1122px;
+  width: 783px;/*793px*/
+  height: 1107px;/*1122px*/
   position:relative
 }
 .float-left{
@@ -50,7 +51,6 @@ padding-bottom:10px;
 background:#FFF;
 padding:25px;
 margin:10px;
-border-radius: 15px;
 height:780px;
 width:91%;
 
@@ -125,12 +125,13 @@ margin-top:10px;
 {loop name="product.details" type="product" id=$product.id limit="1"}
 
 <div class="page">
+	<div class="body">	
 <div class="header">
 	<div style="text-align:center">
 		<img src="{image file='assets/img/hausfabrik-outlet.png'}" style="height:230px">
 	</div>
 </div>
-<div class="body">
+
 	<div class="brand">
 		<h1><strong>{$product.brand}</strong></h1>
 	</div>
