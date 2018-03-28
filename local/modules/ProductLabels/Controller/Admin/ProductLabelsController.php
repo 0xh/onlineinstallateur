@@ -23,12 +23,16 @@ use Thelia\Model\ProductQuery;
 class ProductLabelsController extends BaseAdminController
 {
     public function generateLabelsTabAction($product_id){
-    	
-    	$barcode = new Barcode("1349875921348", 4);
-    	$image = imagepng($barcode->image(), THELIA_WEB_DIR . DS . "assets" . DS . "backOffice" . DS . "default" . DS . "template-assets" . DS . "assets" . DS . "img" . DS . "barcode.png");
-    	$product = ProductQuery::create()->findOneById($product_id);
-    	$price = $product->getProductSaleElementss () [0]->getProductPrices () [0]->getPrice ();
-    	
+        
+        $product = ProductQuery::create()->findOneById($product_id);
+        $pse = $product->getProductSaleElementss () [0];
+        $ean_code = $pse->getEanCode();
+        $barcode = new Barcode($ean_code, 4);
+        $save_path = THELIA_TEMPLATE_DIR . "backOffice" . DS . "default" . DS . "assets" . DS . "img" . DS . $ean_code.".png";
+        Tlog::getInstance()->error(" barcode_ean ".$ean_code. " " . $save_path);
+        $image = imagepng($barcode->image(), $save_path);
+    	$price = $pse->getProductPrices () [0]->getPrice ();
+    	$barcode_file = "assets/img/".$ean_code.".png";
     	$html = $this->render('product-labels',
     			array("product" =>
     					array("id"=>$product_id,
@@ -36,7 +40,9 @@ class ProductLabelsController extends BaseAdminController
     							"price" => $price,
     							"brand" => $product->getBrand()->getTitle(),
     							"listen_price" => "999",
-    							"ref" => $product->getRef()
+    							"ref" => $product->getRef(),
+    					        "ean" => $ean_code,
+    					        "barcode_file" => $barcode_file
     					))
     	
     					//             )
