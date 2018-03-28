@@ -9,6 +9,7 @@ use Thelia\Model\OrderQuery;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Thelia\Core\Event\PdfEvent;
 use Thelia\Core\Event\TheliaEvents;
+use Thelia\Log\Tlog;
 
 class OrderController extends BaseAdminController
 {	
@@ -50,6 +51,7 @@ class OrderController extends BaseAdminController
 
     private function generateBackOfficeOrderPdf( $orderIds, $fileName, $browser)
     {
+    	Tlog::getInstance()->error("theliaorders ".$fileName);
         if (null === $response = $this->generateOrderPdfByDate( $orderIds, $fileName, true, true, $browser)) {
             return $this->generateRedirectFromRoute(
                 "admin.order.update.view",

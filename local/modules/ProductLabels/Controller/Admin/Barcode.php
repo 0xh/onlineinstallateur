@@ -64,7 +64,7 @@ class Barcode
      * lower than 2 or greater than 12.
      */
     
-    public function __construct (string $number, $scale, $fontpath=null)
+    public function __construct ($number, $scale, $fontpath=null)
     {
         /* Get the parity key, which is based on the first digit. */
         $this->_key = self::$PARITY_KEY[substr($number,0,1)];

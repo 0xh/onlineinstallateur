@@ -22,7 +22,7 @@ class BackHook extends BaseHook
             [
                 'id' => 'catalog',
                 'title' =>  $this->trans("Labels", [], ProductLabels::DOMAIN_NAME),
-                'href' => URL::getInstance()->absoluteUrl('/admin/products/labels/tab'),
+                'href' => URL::getInstance()->absoluteUrl('/admin/products/labels/tab/'.$event->getArgument('id')),
                 'content' => $this->render('product-labels.html')
             ]
             );
