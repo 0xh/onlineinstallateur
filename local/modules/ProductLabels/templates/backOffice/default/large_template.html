@@ -4,7 +4,7 @@ body {
 
 }
 .page {
-border-top: 10px solid #AC1F81;
+border-top: 5px solid #AC1F81;
 border-right: 5px solid #AC1F81;
 border-bottom: 5px  solid #AC1F81;
 border-left: 5px  solid #AC1F81;
@@ -14,7 +14,7 @@ border-left: 5px  solid #AC1F81;
   color:#000;
   font-family:"Arial";
   width: 783px;/*793px*/
-  height: 1107px;/*1122px*/
+  height: 1112px;/*1122px*/
   position:relative
 }
 .float-left{
@@ -52,7 +52,7 @@ background:#FFF;
 padding:25px;
 margin:10px;
 height:780px;
-width:91%;
+width:90%;
 
 
 }
@@ -86,7 +86,7 @@ font-weight:900
 .label-price-block h1.outletprice-small{
 font-weight:900;
 color:#AC2181;
-font-size:200px;
+font-size:180px;
 }
 .label-price-block h1.outletprice-big{
 font-weight:900;
@@ -168,8 +168,8 @@ margin-top:10px;
 			
 			<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
 			<em>
-			
-			{$priceArray[0]}
+			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}
+		
 			{if !$priceArray[1]||($priceArray[1]=="00")} - 
 			{else}<sup><small> {$priceArray[1]}</small></sup>{/if}
 			</em>
@@ -178,13 +178,13 @@ margin-top:10px;
 
 		</div>
 		<div class="label-listenprice text-left">
-			<h2><em>Listenpreis  {$LISTEN_PRICE}<small>€</small></em></h2>
+			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
 		</div>
 	</div>
 
 	<div class="label-footer row">
 		<div class="col-6">Artikelnum. {$product.ref}</div>
-		<div class="col-6"><img src="{image file=$product.barcode_file}" style="height:100px"></div>
+		
 	</div>
 </div>
 </div>
