@@ -461,8 +461,13 @@
                         <br>
                             <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
                         </div>
+                        
+                        {ifhook rel="wish-list.wish-button"}
+		               		{hook name="wish-list.wish-button" product_id={$product_id}}
+		            	{/ifhook}
+                        
                     </fieldset>
-                            
+                     
                     {if $service_category == #services_category_id# }</div>{/if}
                     </div>    
 

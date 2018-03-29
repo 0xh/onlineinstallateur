@@ -1,0 +1,199 @@
+{literal}
+<style>
+body {
+
+}
+.page {
+border-top: 2px solid #CCC;
+border-right: 2px solid #CCC;
+border-bottom: 2px  solid #CCC;
+border-left: 2px  solid #CCC;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 0 18px rgba(0,0,0,0.5);
+  color:#000;
+  font-family:"Arial";
+  width: 555px;
+  height: 789px;
+
+  position:relative
+}
+.float-left{
+	float:left;
+}
+.col-4{
+	width:33.33333333%;
+}
+.col-6{
+	width:50%;
+}
+.col-8{
+	width:66.66666667%;
+}
+.col-4, .col-6, .col-8
+{
+float:left;
+}
+.product-titel h2{
+margin-bottom:20px
+}
+
+@media print {
+  body, page {
+    margin: 0;
+    box-shadow: 0;
+  }
+}
+.header{
+height:100px;
+padding-bottom:10px;
+}
+.body{
+background:#FFF;
+padding:25px;
+margin:10px;
+height:790px;
+width:555px;
+
+
+}
+h1, h2{
+margin-top:0;
+margin-bottom:0;
+margin-left:0;
+margin-right:0
+}
+h1{
+font-size:45px;
+}
+h2{
+font-size:32px;
+}
+.text-right{
+text-align:right
+}
+.text-left{
+text-align:left
+}
+.text-center{
+text-align:center
+}
+.label-price-block{
+margin-top:50px;
+}
+.label-price-block h2{
+font-weight:900
+}
+.label-price-block h1.outletprice-small{
+font-weight:900;
+color:#AC2181;
+font-size:100px;
+}
+.label-price-block h1.outletprice-big{
+font-weight:900;
+color:#AC2181;
+font-size:160px;
+}
+.label-footer{
+
+width:100%
+}
+.label-listenprice{
+margin-top:1cm;
+margin-bottom:1cm;
+}
+table.features{
+margin-top:10px;
+}
+{/literal}
+</style>
+
+	{loop name="attributes" type="feature" product=$product.id}
+      
+                      {if $TITLE != "badge"}
+                       {ifloop rel="attributes_info"}
+                        {assign var="feature_title" value=$TITLE} 
+                              {loop name="attributes_info" type="feature_value" feature={$ID} product=$product.id}
+                               {if $TITLE != "highlight"}
+                               {$sizearr[$feature_title] = $sizearr[$feature_title]|cat: ', '|cat: $TITLE}
+                                  {/if}
+                              {/loop}
+                       {/ifloop}
+                      {/if}
+    {/loop}
+	{assign var="priceArray" value="."|explode:$product.price}
+
+{loop name="product.details" type="product" id=$product.id limit="1"}
+
+<div class="page">
+	<div class="body">	
+<div class="header">
+	<div style="text-align:center">
+		<img src="{image file='assets/img/hausfabrik-outlet.png'}" style="height:150px">
+	</div>
+</div>
+
+	<div class="brand">
+		<h1><strong>{$product.brand}</strong></h1>
+	</div>
+	<div class="product-titel">
+		<h2><em>{$TITLE}</em></h2>
+	</div>
+	<div class="label-features">
+
+      
+                     
+
+    {foreach from=$sizearr key=i item=feature name=features}
+		{if $smarty.foreach.features.index == 5}
+			{break}
+		{/if}
+        <!--div class="row-fluid">
+			<div class="col-4">{$i}:</div>
+			<div class="col-8">{$feature|substr:2}</div>
+			<div class="clearfix"></div>
+			
+			
+       </div-->
+	   <table class="features">
+	   <tr>
+	   <td>{$i}:</td>
+	   <td>{$feature|substr:2}</td>
+	   </tr>
+	   </table>
+    {/foreach}
+	</div>
+	<div class="label-price-block ">
+		<div class="outletprice">
+			<h2 class="text-right"><em><strong>OUTLET PREIS</strong></em></h2>
+			
+			<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
+			<em>
+			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
+			</em>
+			</h1>
+			
+
+		</div>
+		<div class="label-listenprice text-left">
+			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
+		</div>
+	</div>
+
+	<div class="label-footer row">
+		<div class="col-6">Artikelnum. {$product.ref}</div>
+
+		<div class="col-6">
+			{if $product.barcode_file}
+			<img src="{image file=$product.barcode_file}" style="height:80px">
+			{/if}
+		</div>
+
+	</div>
+</div>
+</div>
+
+
+{/loop}
+
+
