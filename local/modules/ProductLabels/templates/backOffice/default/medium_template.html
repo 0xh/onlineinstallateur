@@ -4,16 +4,18 @@ body {
 
 }
 .page {
-
+border-top: 2px solid #CCC;
+border-right: 2px solid #CCC;
+border-bottom: 2px  solid #CCC;
+border-left: 2px  solid #CCC;
   display: block;
   margin: 0 auto;
-  border:3px solid #AC1F81
   box-shadow: 0 0 18px rgba(0,0,0,0.5);
   color:#000;
   font-family:"Arial";
-  width:100%;
-    width: 420px;
-  height: 595px;
+  width: 555px;
+  height: 789px;
+
   position:relative
 }
 .float-left{
@@ -43,16 +45,15 @@ margin-bottom:20px
   }
 }
 .header{
-height:150px;
+height:100px;
 padding-bottom:10px;
 }
 .body{
 background:#FFF;
 padding:25px;
 margin:10px;
-border-radius: 15px;
-height:780px;
-width:91%;
+height:790px;
+width:555px;
 
 
 }
@@ -63,10 +64,10 @@ margin-left:0;
 margin-right:0
 }
 h1{
-font-size:54px;
+font-size:45px;
 }
 h2{
-font-size:40px;
+font-size:32px;
 }
 .text-right{
 text-align:right
@@ -86,12 +87,12 @@ font-weight:900
 .label-price-block h1.outletprice-small{
 font-weight:900;
 color:#AC2181;
-font-size:200px;
+font-size:100px;
 }
 .label-price-block h1.outletprice-big{
 font-weight:900;
 color:#AC2181;
-font-size:250px;
+font-size:160px;
 }
 .label-footer{
 
@@ -125,12 +126,13 @@ margin-top:10px;
 {loop name="product.details" type="product" id=$product.id limit="1"}
 
 <div class="page">
+	<div class="body">	
 <div class="header">
 	<div style="text-align:center">
-		<img src="{image file='assets/img/hausfabrik-outlet.png'}" style="height:230px">
+		<img src="{image file='assets/img/hausfabrik-outlet.png'}" style="height:150px">
 	</div>
 </div>
-<div class="body">
+
 	<div class="brand">
 		<h1><strong>{$product.brand}</strong></h1>
 	</div>
@@ -167,24 +169,26 @@ margin-top:10px;
 			
 			<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
 			<em>
-			
-			{$priceArray[0]}
-			{if !$priceArray[1]||($priceArray[1]=="00")} - 
-			{else}<sup><small> {$priceArray[1]}</small></sup>{/if}
+			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
 			</em>
 			</h1>
 			
 
 		</div>
 		<div class="label-listenprice text-left">
-			<h2><em>Listenpreis  {$LISTEN_PRICE}<small>€</small></em></h2>
+			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
 		</div>
 	</div>
-	
 
 	<div class="label-footer row">
 		<div class="col-6">Artikelnum. {$product.ref}</div>
-		<div class="col-6"></div>
+
+		<div class="col-6">
+			{if $product.barcode_file}
+			<img src="{image file=$product.barcode_file}" style="height:80px">
+			{/if}
+		</div>
+
 	</div>
 </div>
 </div>
