@@ -184,7 +184,13 @@ margin-top:10px;
 
 	<div class="label-footer row">
 		<div class="col-6">Artikelnum. {$product.ref}</div>
-		
+
+		<div class="col-6">
+			{if $product.barcode_file}
+			<img src="{image file=$product.barcode_file}" style="height:100px">
+			{/if}
+		</div>
+
 	</div>
 </div>
 </div>

@@ -8,7 +8,9 @@
     <route id="admin.products.labels.tab" path="/admin/products/labels/tab/{product_id}">
         <default key="_controller">ProductLabels\Controller\Admin\ProductLabelsController::generateLabelsTabAction</default>
     </route>
-
+    <route id="admin.products.labels.tab.pdf" path="/admin/products/labels/tab/pdf/{product_id}/{size}">
+        <default key="_controller">ProductLabels\Controller\Admin\ProductLabelsController::generateLabelsPdf</default>
+    </route>
     <!--
 
     if a /admin/module/productlabels/ route is provided, a "Configuration" button will be displayed
