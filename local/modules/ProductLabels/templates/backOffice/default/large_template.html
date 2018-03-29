@@ -84,12 +84,12 @@ margin-top:50px;
 font-weight:900
 }
 .label-price-block h1.outletprice-small{
-font-weight:900;
+font-weight:bold;
 color:#AC2181;
 font-size:180px;
 }
 .label-price-block h1.outletprice-big{
-font-weight:900;
+font-weight:bold;
 color:#AC2181;
 font-size:230px;
 }
@@ -136,7 +136,7 @@ margin-top:10px;
 		<h1><strong>{$product.brand}</strong></h1>
 	</div>
 	<div class="product-titel">
-		<h2><em>{$TITLE}</em></h2>
+		<h2 style="font-size:25px;"><em>{$TITLE}</em></h2>
 	</div>
 	<div class="label-features">
 
@@ -162,6 +162,7 @@ margin-top:10px;
 	   </table>
     {/foreach}
 	</div>
+
 	<div class="label-price-block ">
 		<div class="outletprice">
 			<h2 class="text-right"><em><strong>OUTLET PREIS</strong></em></h2>
@@ -174,9 +175,12 @@ margin-top:10px;
 			
 
 		</div>
+		
+		{if $LISTEN_PRICE!="0,00"}
 		<div class="label-listenprice text-left">
 			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
 		</div>
+		{/if}
 	</div>
 
 	<div class="label-footer row">

@@ -13,8 +13,8 @@ border-left: 2px  solid #CCC;
   box-shadow: 0 0 18px rgba(0,0,0,0.5);
   color:#000;
   font-family:"Arial";
-  width: 555px;
-  height: 789px;
+  width: 416px ;/*420px*/
+  height: 591px/*595px*/
 
   position:relative
 }
@@ -52,8 +52,8 @@ padding-bottom:10px;
 background:#FFF;
 padding:25px;
 margin:10px;
-height:790px;
-width:555px;
+  width: 416px ;/*420px*/
+  height: 591px/*595px*/
 
 
 }
@@ -67,7 +67,7 @@ h1{
 font-size:45px;
 }
 h2{
-font-size:32px;
+
 }
 .text-right{
 text-align:right
@@ -85,12 +85,12 @@ margin-top:50px;
 font-weight:900
 }
 .label-price-block h1.outletprice-small{
-font-weight:900;
+font-weight:bold;
 color:#AC2181;
 font-size:100px;
 }
 .label-price-block h1.outletprice-big{
-font-weight:900;
+font-weight:bold;
 color:#AC2181;
 font-size:160px;
 }
@@ -137,7 +137,7 @@ margin-top:10px;
 		<h1><strong>{$product.brand}</strong></h1>
 	</div>
 	<div class="product-titel">
-		<h2><em>{$TITLE}</em></h2>
+		<h2 style="font-size:25px;"><em>{$TITLE}</em></h2>
 	</div>
 	<div class="label-features">
 
@@ -175,9 +175,11 @@ margin-top:10px;
 			
 
 		</div>
+		{if $LISTEN_PRICE!="0,00"}
 		<div class="label-listenprice text-left">
 			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
 		</div>
+		{/if}
 	</div>
 
 	<div class="label-footer row">
