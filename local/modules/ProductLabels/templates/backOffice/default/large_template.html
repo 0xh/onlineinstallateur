@@ -4,17 +4,17 @@ body {
 
 }
 .page {
-border-top: 5px solid #AC1F81;
-border-right: 5px solid #AC1F81;
-border-bottom: 5px  solid #AC1F81;
-border-left: 5px  solid #AC1F81;
+border-top: 2px solid #CCC;
+border-right: 2px solid #CCC;
+border-bottom: 2px  solid #CCC;
+border-left: 2px  solid #CCC;
   display: block;
   margin: 0 auto;
   box-shadow: 0 0 18px rgba(0,0,0,0.5);
   color:#000;
   font-family:"Arial";
-  width: 783px;/*793px*/
-  height: 1112px;/*1122px*/
+  width: 789px;/*793px*/
+  height: 1118px;/*1122px*/
   position:relative
 }
 .float-left{
@@ -91,7 +91,7 @@ font-size:180px;
 .label-price-block h1.outletprice-big{
 font-weight:900;
 color:#AC2181;
-font-size:250px;
+font-size:230px;
 }
 .label-footer{
 
@@ -168,10 +168,7 @@ margin-top:10px;
 			
 			<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
 			<em>
-			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}
-		
-			{if !$priceArray[1]||($priceArray[1]=="00")} - 
-			{else}<sup><small> {$priceArray[1]}</small></sup>{/if}
+			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
 			</em>
 			</h1>
 			
