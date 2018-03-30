@@ -8,6 +8,12 @@
             <title locale="en_US">Features</title>
             <title locale="de_DE">Features</title>
         </import_category>
+        
+        <import_category id="thelia.import.orders">
+            <title locale="fr_FR">Orders</title>
+            <title locale="en_US">Orders</title>
+            <title locale="de_DE">Orders</title>
+        </import_category>
     </import_categories>
     <imports>
         <import id="thelia.import.feature" class="SepaImporter\Import\FeatureImport"
@@ -165,5 +171,39 @@
                 </description>
             </import_descriptive>
         </import>
+        
+        
+        
+        <import id="thelia.import.tracking.orders.triworx" class="SepaImporter\Import\TriworxTrackingOrders"
+                category_id="thelia.import.orders">
+            <import_descriptive locale="de_DE">
+                <title>Triworx tracking orders</title>
+                <description>
+                    <![CDATA[
+                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email
+                    <ul>
+                        <li>id: product_feature id</li>
+                        <li>product id</li>
+                        <li>feature id</li>
+                        <li>feature_av_id</li>
+                        <li>free_text_value</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="en_US">
+                <title>Update stock product inventory</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Ref(megabildnr): The ref of your product </li>
+                        <li>Stock(verfuegbarkeit): The stock of your product </li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+        </import>
+        
     </imports>
 </config>
