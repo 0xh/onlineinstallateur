@@ -9592,7 +9592,7 @@ footer {
 }
 
 .radio-div {
-    width: max-content;
+    width: 200px;
     display: inline-block;
     float: left;
 }
