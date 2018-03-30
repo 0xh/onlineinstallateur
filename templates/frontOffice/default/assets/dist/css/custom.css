@@ -265,4 +265,7 @@ white-bg{
     background:#FFF;
     padding:10px;
 }
-
+#content{
+	background:#FFF;
+    padding:5px
+}
