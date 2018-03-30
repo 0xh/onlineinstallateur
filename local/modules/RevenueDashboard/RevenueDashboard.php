@@ -34,6 +34,9 @@ class RevenueDashboard extends BaseModule {
         $database->insertSql(null, [
             __DIR__ . "/Config/thelia.sql"
         ]);
+        $database->insertSql(null, [
+            __DIR__ . "/Config/hook.sql"
+        ]);
         return true;
     }
 
