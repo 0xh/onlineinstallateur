@@ -2,8 +2,11 @@
 
 namespace RevenueDashboard\Loop;
 
+use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use RevenueDashboard\Model\Map\OrderRevenueTableMap;
 use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
+use RevenueDashboard\Model\OrderRevenueQuery;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -35,12 +38,16 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
         /** @var \RevenueDashboard\Model\RevenueDashboardLoop $listing */
         foreach ($loopResult->getResultDataCollection() as $listing) {
             $loopResultRow = new LoopResultRow($listing);
-            $loopResultRow->set("prod_id", $listing->getVirtualColumn("prod_id"))
-                    ->set("order_id", $listing->getVirtualColumn("order_id"))
-                    ->set("was_in_promo", $listing->getVirtualColumn("was_in_promo"))
-                    ->set("quantity", $listing->getVirtualColumn("quantity"))
-                    ->set("price", $listing->getVirtualColumn("price"))
-                    ->set("purchase_price", $listing->getVirtualColumn("purchase_price"));
+            $loopResultRow->set("id", $listing->getId())
+                    ->set("order_id", $listing->getOrderId())
+                    ->set("delivery_cost", $listing->getDeliveryCost())
+                    ->set("delivery_method", $listing->getDeliveryMethod())
+                    ->set("partner_id", $listing->getPartnerId())
+                    ->set("payment_processor_cost", $listing->getPaymentProcessorCost())
+                    ->set("price", $listing->getPrice())
+                    ->set("purchase_price", $listing->getPurchasePrice())
+                    ->set("total_purchase_price", $listing->getTotalPurchasePrice())
+                    ->set("revenue", $listing->getRevenue());
                     
             $loopResult->addRow($loopResultRow);
         }
@@ -50,17 +57,9 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
 
     public function buildModelCriteria() {
 
-         $query = ProductQuery::create()
+         $query = OrderRevenueQuery::create()
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-                ->orderBy(ProductTableMap::ID)
-                ->addJoin(ProductTableMap::ID, WholesalePartnerProductTableMap::PRODUCT_ID)
-                ->addJoin(ProductTableMap::REF, OrderProductTableMap::PRODUCT_REF)
-                ->withColumn(OrderProductTableMap::ORDER_ID, 'order_id')
-                ->withColumn(OrderProductTableMap::WAS_IN_PROMO, 'was_in_promo')
-                ->withColumn(OrderProductTableMap::QUANTITY, 'quantity')
-                ->withColumn(OrderProductTableMap::PRICE, 'price')
-                ->withColumn(WholesalePartnerProductTableMap::PRICE, 'purchase_price')
-                ->withColumn(ProductTableMap::ID , 'prod_id');
+                ->orderBy(OrderRevenueTableMap::ID, Criteria::DESC);
         return $query;
     }
 

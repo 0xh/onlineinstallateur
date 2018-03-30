@@ -9579,3 +9579,20 @@ footer {
 .export-orders .btn:focus {
     background: #86AC34;
 }
+
+.partner-order {
+    float: left;
+    width: 96px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.col-sm-10-radio {
+    width: 0%;
+}
+
+.radio-div {
+    width: max-content;
+    display: inline-block;
+    float: left;
+}

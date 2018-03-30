@@ -240,7 +240,6 @@ class UpdateProductsMyshtController extends BaseFrontController {
 
     function getProductsExternId() {
         $prods = ProductQuery::create()
-                ->limit(50)
                 ->where(ProductTableMap::EXTERN_ID . " IS NOT NULL and " . ProductTableMap::VISIBLE . " = 1");
         $arrayProds = array();
         foreach ($prods as $prod) {

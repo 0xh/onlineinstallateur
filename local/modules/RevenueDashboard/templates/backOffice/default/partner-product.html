@@ -8,6 +8,7 @@
 
 {block name="main-content"} 
 {render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
+{assign page {$smarty.get.page|default:1}}
 
 <div class="general-block-decorator dashboard">
     <ul class="breadcrumb">
@@ -18,9 +19,7 @@
         <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
     </ul>
 
-
     <table class="table table-striped">
-        <tbody>
             <tr>
                 {form name="revenue.partner.product.form"}
         <form action="{url path='/admin/module/revenue-wholesale-partner-product-add'}" method="post">
@@ -87,7 +86,7 @@
                 <td class="col-md-1">Valid until</td>
                 <td class="col-md-1">Action</td>
             </tr>
-            {loop name="revenue.partner.product.loop" type="revenue.partner.product.loop" limit=50}
+            {loop name="revenue.partner.product.loop" type="revenue.partner.product.loop" page={$page} limit=25}
             <tr>
                 <td class="col-md-1">{$nr++}.</td>
                 <td class="col-md-1">{$product_id}</td>
@@ -154,8 +153,20 @@
                 </td>
             </tr>
             {/loop}
-            </tbody>
         </table>
     </div>
+    <tfoot>
+        <tr>
+            <td colspan="100">
+                {include
+                file = "includes/pagination.html"
+                loop_ref       = "revenue.partner.product.loop"
+                max_page_count = 25
+                page_url       = {url path="/admin/module/revenue-wholesale-partner-product" }
+                }
+            </td>
+        </tr>
+    </tfoot>
 </div>
+
 {/block}

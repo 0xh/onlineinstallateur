@@ -21,6 +21,18 @@ CREATE TABLE if not exists `fulfilment_center`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- fulfilment_center_order
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `fulfilment_center_order`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `center_id` INTEGER,
+    `order_id` INTEGER,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- fulfilment_center_products
 -- ---------------------------------------------------------------------
 

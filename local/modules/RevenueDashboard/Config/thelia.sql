@@ -78,6 +78,41 @@ CREATE TABLE if not exists `wholesale_partner_product`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- order_product_revenue
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `order_product_revenue`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `order_id` INTEGER,
+    `product_ref` VARCHAR(255),
+    `price` DECIMAL(16,2) DEFAULT 0.00,
+    `purchase_price` DECIMAL(16,2) DEFAULT 0.00,
+    `partner_id` INTEGER,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- order_revenue
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `order_revenue`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `order_id` INTEGER,
+    `delivery_cost` DECIMAL(16,2) DEFAULT 0.00,
+    `delivery_method` VARCHAR(255),
+    `partner_id` INTEGER,
+    `payment_processor_cost` DECIMAL(16,2) DEFAULT 0.00,
+    `price` DECIMAL(16,2) DEFAULT 0.00,
+    `purchase_price` DECIMAL(16,2) DEFAULT 0.00,
+    `total_purchase_price` DECIMAL(16,2) DEFAULT 0.00,
+    `revenue` DECIMAL(16,2) DEFAULT 0.00,
+    `comment` VARCHAR(255),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- wholesale_partner_version
 -- ---------------------------------------------------------------------
 

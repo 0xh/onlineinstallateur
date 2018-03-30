@@ -12,6 +12,9 @@
         <hook id="revenue.dashboard.configuration.hook" class="RevenueDashboard\Hook\HookManager" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
         </hook>
+        <hook id="revenue.dashboard.order.hook" class="RevenueDashboard\Hook\OrderHook" scope="request">
+            <tag name="hook.event_listener" event="order.revenue.hook" type="back" method="onModuleConfigure" />
+        </hook>
     </hooks>
 
     <forms>

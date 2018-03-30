@@ -90,6 +90,17 @@
         </default>
     </route>
         
+    <route id="id.revenue.order.update.product.revenue" path="/admin/module/update-order-product-revenue/{orderId}/{productRef}/{price}/{purchePrice}/{partnerId}/{prodId}">
+        <default key="_controller">RevenueDashboard\Controller\Admin\OrderProductRevenueController::updateOrderProductRevenue
+        </default>
+        <requirement key="orderId">\d+</requirement>
+        <requirement key="productRef">.*</requirement>
+        <requirement key="price">.*</requirement>
+        <requirement key="purchePrice">.*</requirement>
+        <requirement key="partnerId">\d+</requirement>
+        <requirement key="prodId">\d+</requirement>
+    </route>
+        
     <route id="id.revenue.update.products.mysht" path="/admin/module/revenue-update-products-mysht/{idPartner}">
         <default key="_controller">RevenueDashboard\Controller\Front\UpdateProductsMyshtController::updateOrInsertProductsMysht
         </default>
