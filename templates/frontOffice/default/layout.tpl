@@ -181,7 +181,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
             {hook name="main.header-top"}
 			<div class="main-header-top-bar">
 			<div class="container">
-			<span>KOSTENLOSER VERSAND & RÜCKVERSAND</span>
+			<span>KOSTENLOSER VERSAND</span>
 			 <div class="hotline" itemscope itemtype="http://schema.org/Store">
 			                   <span class="hotline-icon"> 
 					<span class="hotline-text" itemprop="telephone" content="0800/022573">0800/022573</span>
