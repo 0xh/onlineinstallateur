@@ -101,7 +101,7 @@
                          <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
                          
                          {if $QUANTITY && $fulfilment_center_active != "false"}
-                             <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l='Can be shipped immediately'}</small></em></span>
+                             <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l='Can be shipped immediately'  d="fo.default"}</small></em></span>
                         {else}
 							{if $QUANTITY }
 								<span class="in ">{intl l='In Stock'}</span> 
