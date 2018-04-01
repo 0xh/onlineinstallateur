@@ -45,6 +45,11 @@
             <argument type="service" id="request_stack"/>
             <tag name="thelia.parser.register_plugin"/>
         </service>
+        
+        <service id="smarty.plugin.sepafunctions" class="TheliaSmarty\Template\Plugins\SepaFunctions">
+            <argument type="service" id="request_stack"/>
+            <tag name="thelia.parser.register_plugin"/>
+        </service>
 
         <service id="smarty.plugin.thelialoop" class="TheliaSmarty\Template\Plugins\TheliaLoop">
             <tag name="thelia.parser.register_plugin"/>
