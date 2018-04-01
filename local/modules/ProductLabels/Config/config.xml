@@ -8,6 +8,11 @@
         <hook id="productlabels.hook" class="ProductLabels\Hook\Admin\BackHook" scope="request">
             <tag name="hook.event_listener" event="product.tab" type="back" method="onProductTab" />
         </hook>
+        <hook id="productlabels.hook.front" class="ProductLabels\Hook\Front\FrontHook">
+<!--         <tag name="hook.event_listener" event="main.head-bottom" templates="css:assets/css/styles.css"/> -->
+         <tag name="hook.event_listener" event="main.after-javascript-include" type="front" method="onAfterJavascriptInclude" />
+         
+        </hook>
     </hooks>
     
 </config>
