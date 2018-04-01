@@ -2,6 +2,14 @@
 
 <config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+        
+	<services>
+        <service id="importer.send.email.action" class="SepaImporter\Listener\ImportListener" scope="request">
+             <argument type="service" id="mailer"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+    
     <import_categories>
         <import_category id="thelia.import.features">
             <title locale="fr_FR">features</title>
@@ -180,26 +188,37 @@
                 <title>Triworx tracking orders</title>
                 <description>
                     <![CDATA[
-                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email
-                    <ul>
-                        <li>id: product_feature id</li>
-                        <li>product id</li>
-                        <li>feature id</li>
-                        <li>feature_av_id</li>
-                        <li>free_text_value</li>
-                    </ul>
+                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email <br/><br/>
+                   Triworx tracking orders supports the following structure:<br/>
+                   		Status, Versandart, Routingtyp, Nummer, Collianzahl, Ladestelle, Name, LoadingPointName2, LoadingPointName3, 
+                        LoadingPointName4, Ladestelle Land, Ladestelle PLZ, Ladestelle Stadt, Ladestelle Adresse, LoadingPointHouseNumber, 
+                        Entladestelle Name,	UnloadingPointName2, UnloadingPointName3, UnloadingPointName4, Entladestelle Land,	Entladestelle PLZ, 
+                        Entladestelle Stadt, Entladestelle Adresse,	UnloadingPointHouseNumber, PLCColloCodes, Absender Referenz 1, Absender Referenz 2, 
+                        Brutto Gewicht,	Erstellungsdatum<br/><br/>
+                   Indications:<br/>
+                   <ul>
+                   	<li>LoadingPointName3 -> Order ref (`ref` in `order` table)</li>
+                   	<li>PLCColloCodes -> Tracking number (`delivery_ref` in `order` table)</li>
+                   </ul>
                     ]]>
                 </description>
             </import_descriptive>
             <import_descriptive locale="en_US">
                 <title>Update stock product inventory</title>
                 <description>
-                    <![CDATA[
-                    Your file must have the following columns:
-                    <ul>
-                        <li>Ref(megabildnr): The ref of your product </li>
-                        <li>Stock(verfuegbarkeit): The stock of your product </li>
-                    </ul>
+                   <![CDATA[
+                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email <br/><br/>
+                   Triworx tracking orders supports the following structure:<br/>
+                   		Status, Versandart, Routingtyp, Nummer, Collianzahl, Ladestelle, Name, LoadingPointName2, LoadingPointName3, 
+                        LoadingPointName4, Ladestelle Land, Ladestelle PLZ, Ladestelle Stadt, Ladestelle Adresse, LoadingPointHouseNumber, 
+                        Entladestelle Name,	UnloadingPointName2, UnloadingPointName3, UnloadingPointName4, Entladestelle Land,	Entladestelle PLZ, 
+                        Entladestelle Stadt, Entladestelle Adresse,	UnloadingPointHouseNumber, PLCColloCodes, Absender Referenz 1, Absender Referenz 2, 
+                        Brutto Gewicht,	Erstellungsdatum<br/><br/>
+                   Indications:<br/>
+                   <ul>
+                   	<li>LoadingPointName3 -> Order ref (`ref` in `order` table)</li>
+                   	<li>PLCColloCodes -> Tracking number (`delivery_ref` in `order` table)</li>
+                   </ul>
                     ]]>
                 </description>
             </import_descriptive>

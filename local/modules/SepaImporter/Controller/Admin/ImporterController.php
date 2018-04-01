@@ -2,13 +2,13 @@
 
 namespace SepaImporter\Controller\Admin;
 
-use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
+use Thelia\Controller\Admin\BaseAdminController;
 
 class ImporterController extends BaseAdminController {
 
-    function downloadIncorrectProductsCsv() {
-    
+    public function downloadIncorrectProductsCsv() {
+    	
     	$csv_file = $this->getRequest()->getSession()->get('csvFileName');
     	
     	if(file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $csv_file)) {
@@ -21,5 +21,4 @@ class ImporterController extends BaseAdminController {
     		return $this->errorPage($this->getTranslator()->trans("No csv file %filename has been found", ['%filename' => $csv_file]), 403);
     	}
     }
-
 }
