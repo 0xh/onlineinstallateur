@@ -23,148 +23,172 @@
                 <li>{intl l="Fulfilment centers" d=""}</li>
             </ul>
 
-                <div class="col-md-12 general-block-decorator">
-                    <div class="col-md-12 title title-without-tabs">
-                        {intl l='Locations/ fulfilment centers'}
-                    </div>
-                    <table class="table table-striped">
-                        <thead>
+            <div class="col-md-12 general-block-decorator media-scroll">
+                <div class="col-md-12 title title-without-tabs">
+                    {intl l='Locations/ fulfilment centers'}
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>{intl l="Name"}</th>
+                        <th>{intl l="Address"}</th>
+                        <th>{intl l="Gps Lat"}</th>
+                        <th>{intl l="Gps Long"}</th>
+                        <th>{intl l="Stock Limit"}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                         <tr>
-                            <th>Id</th>
-                            <th>{intl l="Name"}</th>
-                            <th>{intl l="Address"}</th>
-                            <th>{intl l="Gps Lat"}</th>
-                            <th>{intl l="Gps Long"}</th>
-                            <th>{intl l="Stock Limit"}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                {form name="addlocation.form"}
-                                    <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/add'}" method="post">
-                                        {form_hidden_fields form=$form}
+                            {form name="addlocation.form"}
+                                <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/add'}" method="post">
+                                    {form_hidden_fields form=$form}
 
-                                        {if $form_error}
-                                            <div class="alert alert-danger">{$form_error_message}</div>
-                                        {/if}
+                                    {if $form_error}
+                                        <div class="alert alert-danger">{$form_error_message}</div>
+                                    {/if}
 
-                                        {form_field form=$form field='success_url'}
-                                            <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
-                                        {/form_field}
+                                    {form_field form=$form field='success_url'}
+                                        <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
+                                    {/form_field}
 
-                                       
-                                        {form_field form=$form field="name"}
-                                         	<td>#</td>
-                                            <td>
-                                                <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
-                                            </td>
-                                        {/form_field}
-                                         {form_field form=$form field="address"}
-                                            <td>
-                                                <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
-                                            </td>
-                                        {/form_field}
-                                        {form_field form=$form field="gps_lat"}
-                                            <td>
-                                                <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
-                                            </td>
-                                        {/form_field}
-                                        {form_field form=$form field="gps_long"}
-                                            <td>
-                                                <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
-                                            </td>
-                                        {/form_field}
-                                        {form_field form=$form field="stock_limit"}
-                                            <td>
-                                                <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
-                                            </td>
-                                        {/form_field}
+                                   
+                                    {form_field form=$form field="name"}
+                                     	<td>#</td>
                                         <td>
-                                            <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add fulfilment center'}" data-toggle="modal">
-                                                <span class="glyphicon glyphicon-plus-sign"></span>
-                                            </button>
+                                            <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
                                         </td>
+                                    {/form_field}
+                                     {form_field form=$form field="address"}
+                                        <td>
+                                            <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                                        </td>
+                                    {/form_field}
+                                    {form_field form=$form field="gps_lat"}
+                                        <td>
+                                            <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                                        </td>
+                                    {/form_field}
+                                    {form_field form=$form field="gps_long"}
+                                        <td>
+                                            <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                                        </td>
+                                    {/form_field}
+                                    {form_field form=$form field="stock_limit"}
+                                        <td>
+                                            <input type="text" name="{$name}" id="{$label_attr.for}" checked class="form-control"/>
+                                        </td>
+                                    {/form_field}
+                                    <td>
+                                        <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add fulfilment center'}" data-toggle="modal">
+                                            <span class="glyphicon glyphicon-plus-sign"></span>
+                                        </button>
+                                    </td>
+                                </form>
+                            {/form}
+                        </tr>
+                        {loop type="fulfilment_center" name="fulfilment_center"}
+                            <tr>
+                                <td>{$ID}</td>
+                               
+                                {form name="addlocation.form"}
+                                    <form action="{url path="/admin/module/multiplefulfilmentcenters/locations/update"}" method="post" id="update-exclude-date">
+                                        {form_hidden_fields form=$form}
+                                        
+                                        {form_field form=$form field='success_url'}
+			                                <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
+			                            {/form_field}
+                         
+                         				{form_field form=$form field="id"}
+                                            <input type="hidden" name="{$name}" value="{$ID}">
+                                        {/form_field}
+                    
+                                        {form_field form=$form field="name"}
+                                         <td>
+                                            <input type="text" name="{$name}" value="{$NAME}">
+                                         </td>
+                                        {/form_field}
+                                        
+                                        {form_field form=$form field="address"}
+                                         <td>
+                                            <input type="text" name="{$name}" value="{$ADDRESS}">
+                                        </td>
+                                        {/form_field}
+                                        
+                                        {form_field form=$form field="gps_lat"}
+                                        <td>
+                                            <input type="text" name="{$name}" value="{$GPSLAT}">
+                                        </td>
+                                        {/form_field}
+                                        
+                                        {form_field form=$form field="gps_long"}
+                                        <td>
+                                            <input type="text" name="{$name}" value="{$GPSLONG}">
+                                        </td>
+                                        {/form_field}
+                                        
+                                        {form_field form=$form field="stock_limit"}
+                                        <td>
+                                            <input type="text" name="{$name}" value="{$STOCKLIMIT}">
+                                        </td>
+                                        {/form_field}
+                                        
+                                        <td>
+                                        	<button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Update"}">{intl l="Update"} <span class="glyphicon glyphicon-ok"></span></button>
+                         				</td>
                                     </form>
                                 {/form}
+                               
+                                <td>
+                                    {form name="addlocation.form"}
+                                        <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/delete'}" method="post">
+                                            {form_hidden_fields form=$form}
+
+                                            {form_field form=$form field='success_url'}
+                                                <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
+                                            {/form_field}
+
+                                            {form_field form=$form field="id"}
+                                                <input type="hidden" name="{$name}" value="{$ID}"/>
+                                            {/form_field}
+
+                                            <button type="submit" class="btn btn-danger action-btn" title="{intl l='Delete fulfilment center'}" data-toggle="modal">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </form>
+                                    {/form}
+                                </td>
                             </tr>
-                            {loop type="fulfilment_center" name="fulfilment_center"}
-                                <tr>
-                                    <td>{$ID}</td>
-                                   
-                                        {form name="addlocation.form"}
-                                            <form action="{url path="/admin/module/multiplefulfilmentcenters/locations/update"}" method="post" id="update-exclude-date">
-                                                {form_hidden_fields form=$form}
-                                                
-                                                {form_field form=$form field='success_url'}
-					                                <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
-					                            {/form_field}
-					                            
-					                            {form_field form=$form field="id"}
-                                                    <input type="hidden" name="{$name}" value="{$ID}">
-                                                {/form_field}
-                            
-                                                {form_field form=$form field="name"}
-                                                  <td>
-                                                    <input type="text" name="{$name}" value="{$NAME}">
-                                                 </td>
-                                                {/form_field}
-                                                
-                                                {form_field form=$form field="address"}
-                                                  <td>
-                                                    <input type="text" name="{$name}" value="{$ADDRESS}">
-                                                </td>
-                                                {/form_field}
-                                                
-                                                {form_field form=$form field="gps_lat"}
-                                                  <td>
-                                                    <input type="text" name="{$name}" value="{$GPSLAT}">
-                                                </td>
-                                                {/form_field}
-                                                
-                                                {form_field form=$form field="gps_long"}
-                                                 <td>
-                                                    <input type="text" name="{$name}" value="{$GPSLONG}">
-                                                    </td>
-                                                {/form_field}
-                                                
-                                                {form_field form=$form field="stock_limit"}
-                                                <td>
-                                                    <input type="text" name="{$name}" value="{$STOCKLIMIT}">
-                                                </td>
-                                                {/form_field}
-                                                
-                                                <td>
-                                                
-					                                <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Update"}">{intl l="Update"} <span class="glyphicon glyphicon-ok"></span></button>
-					                            </td>
-                                            </form>
-                                        {/form}
-                                   
-                                    <td>
-                                        {form name="addlocation.form"}
-                                            <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/delete'}" method="post">
-                                                {form_hidden_fields form=$form}
-
-                                                {form_field form=$form field='success_url'}
-                                                    <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
-                                                {/form_field}
-
-                                                {form_field form=$form field="id"}
-                                                    <input type="hidden" name="{$name}" value="{$ID}"/>
-                                                {/form_field}
-
-                                                <button type="submit" class="btn btn-danger action-btn" title="{intl l='Delete fulfilment center'}" data-toggle="modal">
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                </button>
-                                            </form>
-                                        {/form}
-                                    </td>
-                                </tr>
-                            {/loop}
-                        </tbody>
-                    </table>
-                </div>
+                        {/loop}
+                    </tbody>
+                </table>
+                
+				<div class="col-md-6">
+					<div class="txt-div">
+	                    {form name="centers.config.form"}
+				           <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/config'}" method="post">
+				               	{form_hidden_fields form=$form}
+				
+				               	{if $form_error}
+				                   <div class="alert alert-danger">{$form_error_message}</div>
+				               	{/if}
+				
+				               	{form_field form=$form field='success_url'}
+				                   <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
+				               	{/form_field}
+				               	
+				                {render_form_field form=$form field="fulfilment_center_default" value=$fulfilment_center_default} 
+				                {render_form_field form=$form field="fulfilment_center_reserve" value=$fulfilment_center_reserve} 
+				               
+								<button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Save"}">{intl l="Save"} 
+			                     	<span class="glyphicon glyphicon-ok"></span>
+			                    </button>
+				        	</form>
+						{/form}
+					</div>
+				</div>
             </div>
+            
             {hook name="module.configuration" location="module_configuration"  modulecode="MultipleFullfilmentCenters"}
         </div>
     </div>

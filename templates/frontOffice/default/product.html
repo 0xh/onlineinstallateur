@@ -41,10 +41,12 @@
 {block name="main-content"}
     {if $product_id}
     
-    
+    {loop type="module-config" name="fulfilment_module_config" module="multiplefullfilmentcenters" variable="fulfilment_center_reserve" default_value="1"}
+    	{assign var="fulfilment_center_reserve_id" value={$VALUE}}
+    {/loop}
     {if $fulfilment_center_active == 'true'}
    		{ifloop rel="product_stock_fulfilment_center"} 
-			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=3}
+			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=$fulfilment_center_reserve_id}
 		   		{if $PRODUCTSTOCK > 0 && $PRODUCTSTOCK > $RESERVEDSTOCK}
 		   			{$reserve_online = 1}
 		   		{/if}

@@ -113,4 +113,30 @@ class LocationStockController extends MultipleFullfilmentCentersController
             return self::viewAction();
         }
     }
+    
+    public function addLocationsConfig()
+    {
+    	if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('MultipleFullfilmentCenters'), AccessManager::UPDATE)) {
+    		return $response;
+    	}
+    	
+    	$form = $this->createForm("centers.config.form");
+    	
+    	try {
+    		$data = $this->validateForm($form)->getData();
+    		
+    		MultipleFullfilmentCenters::setConfigValue('fulfilment_center_default', $data['fulfilment_center_default']);
+    		MultipleFullfilmentCenters::setConfigValue('fulfilment_center_reserve', $data['fulfilment_center_reserve']);
+    		
+    		return $this->generateSuccessRedirect($form);
+    	} catch (\Exception $e) {
+    		$this->setupFormErrorContext(
+    				$this->getTranslator()->trans("Error on saving in module config : %message", ["message"=>$e->getMessage()], MultipleFullfilmentCenters::DOMAIN_NAME),
+    				$e->getMessage(),
+    				$form
+    				);
+    		
+    		return self::viewAction();
+    	}
+    }
 }
