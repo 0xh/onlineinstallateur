@@ -106,4 +106,9 @@
         </default>
         <requirement key="idPartner">\d+</requirement>
     </route>
+        
+    <route id="id.revenue.update.products.gconline" path="/admin/module/revenue-update-products-gconline">
+        <default key="_controller">RevenueDashboard\Controller\Front\UpdateProductsGCOnlineController::updateOrInsertProductsGCOnline
+        </default>
+    </route>
 </routes>
