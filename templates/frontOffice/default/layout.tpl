@@ -187,6 +187,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 					<span class="hotline-text" itemprop="telephone" content="0800/022573">0800/022573</span>
   <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr,
                         Fr:  8-17 Uhr</small>
+                 </span>
                     
 			</div>  
 			
