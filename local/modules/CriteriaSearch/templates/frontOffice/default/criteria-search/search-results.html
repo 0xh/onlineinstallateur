@@ -31,13 +31,15 @@
  {$productIterator=1}
     {loop type="search_product" name="product_list"  feature_availability=$features attribute_availability=$attributes category=$category_id brand=$brands min_price=$price_min max_price=$price_max min_stock=$in_stock new=$new promo=$promo limit=$limit order=$order page=$page depth="100" min_price_ttc=$price_min max_price_ttc=$price_max category_id=$category_id}
         {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
-        {if $productIterator == $bannerAfterProducts && $lastProduct < $limit}
-		 {$productIterator = 1}
-        <div class="col-xs-12 col-sm-12 col-md-12 teaser-bar"><span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span><span class="teaser-text"><span>KOSTENLOSER VERSAND </span><small>IN ÖSTERREICH UND DEUTCHLAND </small> </span></div>
-        {else}
-        {$productIterator = $productIterator + 1}
-        {/if}
-		{$lastProduct = $lastProduct + 1}
+		{if $category_id ne #services_category_id#}
+			{if $productIterator == $bannerAfterProducts && $lastProduct < $limit}
+				{$productIterator = 1}
+					<div class="col-xs-12 col-sm-12 col-md-12 teaser-bar"><span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span><span class="teaser-text"><span>KOSTENLOSER VERSAND </span><small>IN ÖSTERREICH UND DEUTCHLAND </small> </span></div>
+			{else}
+				{$productIterator = $productIterator + 1}
+			{/if}
+			{$lastProduct = $lastProduct + 1}
+		{/if}
     {/loop}
 </ul>
 
