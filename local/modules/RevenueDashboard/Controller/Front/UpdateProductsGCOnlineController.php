@@ -11,6 +11,7 @@ namespace RevenueDashboard\Controller\Front;
 use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
 use RevenueDashboard\Model\WholesalePartnerProduct;
 use RevenueDashboard\Model\WholesalePartnerProductQuery;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Log\Tlog;
 use Thelia\Model\Map\ProductTableMap;
@@ -26,7 +27,7 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
 
 //"NWING14C5", strPassword: "budget07"
     protected static $logger;
-    protected $username = "NWING14C5";
+    protected $username = "nwing14c5";
     protected $password = "budget07";
     protected $version = "2017";
     protected $info = [];
@@ -115,10 +116,8 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
 //        curl_close($curl);
 //        var_dump($response);
 
-
-
         $curl = curl_init();
-
+        $f = tmpfile();
         $data = array("strUserName" => $this->username, "strPassword" => $this->password, "strLayout" => "GCAT", "strLanguage" => "EN", "rand" => "8349892", "crsfKey" => "377b74c41fd3f61d6e6cd9bf91a832da", "layout" => "GCAT");
         $data = array("strUserName" => $this->username, "strPassword" => $this->password, "strLayout" => "GCAT", "strLanguage" => "EN");
         $data_string = json_encode($data);
@@ -131,26 +130,32 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
 //            CURLOPT_ENCODING => "",
 //            CURLOPT_MAXREDIRS => 10,
 //            CURLOPT_TIMEOUT => 30,
-//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => true,
+            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3381.1 Safari/537.36",
+            'Content-Length: ' . strlen($data_string),
             CURLOPT_POSTFIELDS => $data_string, //"{\"strUserName\":\"NWING14C5\",\"strPassword\":\"budget07\",\"strLayout\":\"GCAT\",\"strLanguage\":\"EN\"}",
             CURLOPT_HTTPHEADER => array(
 //                "cache-control: no-cache",
-                "Content-Type: application/json",
+                "Content-Type: application/json; charset=utf-8",
 //                "postman-token: 87a92b89-4e43-184a-6324-7bab2c9ee53f"
             ),
+            CURLOPT_STDERR         => $f,
         ));
-
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         $response = curl_exec($curl);
+        
+        $information = curl_getinfo($curl);
+        
         $err = curl_error($curl);
 
         curl_close($curl);
 
         if ($err) {
-            echo "cURL Error #:" . $err;
+            echo "</br></br></br>cURL Error #:" . $err." ".$response;
         } else {
-            echo $response;
+            echo "response ".print_r($information)."</br></br></br>".$response;
         }
         die;
 
