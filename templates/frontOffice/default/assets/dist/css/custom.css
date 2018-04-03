@@ -232,6 +232,11 @@ h1.name{
   top: 0;
   width: 100%;
 }
+@media only screen and (max-width: 992px) {
+.sticky {
+  position: relative;
+}
+}
 
 .sticky + .content {
   padding-top: 60px;
@@ -261,7 +266,7 @@ article#product{
 	padding:10px
 	
 }
-white-bg{
+.white-bg{
     background:#FFF;
     padding:10px;
 }
@@ -271,4 +276,32 @@ white-bg{
 	border-radius: 5px;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 1px -1px rgba(0,0,0,.12);
 
+}
+
+.teaser-bar {
+    background: radial-gradient(circle,#85AC37 5%,#000 100%);
+	padding: 0 .625rem;
+	color:#FFF;
+	border-radius: 5px;
+	font-size: 2.125rem;
+	margin-left:15px;;
+    margin-right:15px;
+    margin-bottom:5px;
+	width:96.5%;
+    height:50px;
+    line-height:50px;
+
+}
+.teaser-bar .shopicon, .teaser-bar .teaser-text{
+    display: inline-block;
+    vertical-align: middle
+}
+.teaser-bar .shopicon{
+   font-size:2em
+}
+
+@media only screen and (max-width: 767px) {
+.teaser-bar .teaser-text{
+font-size:14px
+}
 }
