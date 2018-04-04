@@ -4,20 +4,10 @@ namespace ProductLabels\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Event\TheliaEvents;
-use OfferCreation\Model\OfferQuery;
-use OfferCreation\Model\OfferProductQuery;
-use OfferCreation\Model\OfferProductTaxQuery;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Thelia\Tools\URL;
 use Thelia\Core\Event\PdfEvent;
-use Thelia\Core\Security\AccessManager;
-use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Log\Tlog;
-use Thelia\Model\MessageQuery;
-use Thelia\Exception\TheliaProcessException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Thelia\Model\ProductQuery;
+use Exception;
 
 class ProductLabelsController extends BaseAdminController
 {
@@ -49,6 +39,18 @@ class ProductLabelsController extends BaseAdminController
                 $barcode = new Barcode($ean_code, 4);
                 $save_path = THELIA_TEMPLATE_DIR . "backOffice" . DS . "default" . DS . "assets" . DS . "img" . DS . $ean_code.".png";
                 Tlog::getInstance()->error(" productlabel image location ".$save_path);
+                try
+                {
+                $fp = fopen($save_path, 'w');
+                if ( !$fp ) {
+                    throw new Exception('File open failed.');
+                } 
+                fclose($fp);
+                }
+                catch ( Exception $e ) {
+                    var_dump($e);
+                };
+                
                 $isSaved = imagepng($barcode->image(), $save_path);
                 if( $isSaved ) {
                     $barcode_file = "assets" . DS ."img". DS .$ean_code.".png";
