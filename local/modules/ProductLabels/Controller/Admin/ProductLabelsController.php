@@ -48,9 +48,16 @@ class ProductLabelsController extends BaseAdminController
             if($ean_code != null) {
                 $barcode = new Barcode($ean_code, 4);
                 $save_path = THELIA_TEMPLATE_DIR . "backOffice" . DS . "default" . DS . "assets" . DS . "img" . DS . $ean_code.".png";
-                imagepng($barcode->image(), $save_path);
-                $barcode_file = "assets" . DS ."img". DS .$ean_code.".png";
-                $product_variables["barcode_file"] = $barcode_file;
+                Tlog::getInstance()->error(" productlabel image location ".$save_path);
+                $isSaved = imagepng($barcode->image(), $save_path);
+                if( $isSaved ) {
+                    $barcode_file = "assets" . DS ."img". DS .$ean_code.".png";
+                    $product_variables["barcode_file"] = $barcode_file;
+                }
+                else {
+                    Tlog::getInstance()->error(" productlabel image location ".$save_path);
+                }
+                
             }
             
             $price = $pse->getProductPrices () [0]->getPrice ();
