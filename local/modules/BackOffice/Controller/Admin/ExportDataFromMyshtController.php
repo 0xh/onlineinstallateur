@@ -42,6 +42,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
     const MYSHT_CSV_FILE = 'exportCsvDataMysht';
 
     protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
+    protected $logFilePathMyShtProductImport = THELIA_LOG_DIR . DS . "mysht-generic-product-import.txt";
 
     public function exportAllProducts(){
         $max_time = ini_get("max_execution_time");
@@ -140,7 +141,9 @@ class ExportDataFromMyshtController extends BaseAdminController {
     }
     
     public function exportMyshtProductsFromFile($idartikel) {
-    	
+    	$max_time = ini_get("max_execution_time");
+    	ini_set('max_execution_time', 300);
+    
     	$productInformations = '';
     	if ($idartikel) {
     		
@@ -148,7 +151,6 @@ class ExportDataFromMyshtController extends BaseAdminController {
     		
     		$imageLocation = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "importer" . DS;
     		
-    		//foreach ($idartikels as $idartikel) {
     		$productInformations = $this->getProductInformations(trim($idartikel), false);
 
     		if ($productInformations === FALSE) { 
@@ -156,15 +158,17 @@ class ExportDataFromMyshtController extends BaseAdminController {
     			$this->login();
     			$productInformations = $this->getProductInformations($idartikel, false);
     		}
-    		$this->setLogger()->error('MySHT export informations');
-    		$this->setLogger()->error($productInformations);
-    		if($productInformations["data"]) {
+    		
+    		if(isset($productInformations['product_not_found'])) {
+    			$this->setLoggerMySHT()->error("product ".$idartikel." not found");
+    			return $productInformations;
+    		}
+    		else {
 	    		$artnr = $productInformations["data"][0]["MegabildNr"];
 	    		
 	    		if (!is_array($artnr)) {
 	    			$this->getImage($artnr, $imageLocation);
 	    		}
-	    		
 	    		
 	    		@unlink($this->imageZip);
 	    		$zip = new ZipArchive;
@@ -182,6 +186,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
     		}
     	}
     	
+    	ini_set('max_execution_time', $max_time);
     	return $productInformations;
     }
 
@@ -244,25 +249,25 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
         curl_close($curl);
         if ($err) {
-            $this->setLogger()->error("getArtNr - cURL Error #: " . $err);
+        	$this->setLoggerMySHT()->error("getArtNr - cURL Error #: " . $err);
         } else {
             $response = json_decode($response, true);
             
             if (isset($response["error"]) && $response["error"] == "nichtangemeldet") {
-                $this->setLogger()->error("getArtNr - idartikel = $idartikel 'nichtangemeldet' # " . json_encode($response));
+            	$this->setLoggerMySHT()->error("getArtNr - idartikel = $idartikel 'nichtangemeldet' # " . json_encode($response));
                 return FALSE;
             }
 
             if (isset($response["data"]) && $response["data"]) {
-                $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
+            	$this->setLoggerMySHT()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
 
                 $resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
                 $response['resNettoRabatt'] = $resNettoRabatt;
                 
                 return $response;
             } else {
-                $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
-                return array(0 => @$response["servererror"]);
+            	$this->setLoggerMySHT()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
+                return array('product_not_found' => @$response["servererrortext"]);
             }
         }
     }
@@ -419,6 +424,18 @@ class ExportDataFromMyshtController extends BaseAdminController {
             self::$logger->setLevel(Tlog::ERROR);
         }
         return self::$logger;
+    }
+    
+    public function setLoggerMySHT() {
+    	if (self::$logger == null) {
+    		self::$logger = Tlog::getNewInstance();
+    		
+    		self::$logger->setPrefix("#DATE #HOUR: ");
+    		self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+    		self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $this->logFilePathMyShtProductImport);
+    		self::$logger->setLevel(Tlog::ERROR);
+    	}
+    	return self::$logger;
     }
 
     public function logout() {

@@ -6,6 +6,7 @@ use Thelia\ImportExport\Import\AbstractImport;
 use BackOffice\Controller\Admin\ExportDataFromMyshtController;
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
 use RevenueDashboard\Model\BrandMatchingPartnersQuery;
+use Thelia\Log\Tlog;
 
 class CreateMyshtProductImport extends AbstractImport {
 
@@ -15,16 +16,23 @@ class CreateMyshtProductImport extends AbstractImport {
         'Frei verw.',
         'Artikelbezeichnung'
     ];
+    protected static $logger;
 
     public function importData(array $data) {
     
        $errors = null;
-       
+       $log = $this->getLogger();
+       $log->debug("MYSHT PRODUCT IMPORT");
        if($data['Lief.Artnr']) {
+       	   $log->debug($data['Lief.Artnr']);
 	       $myshtExport = new ExportDataFromMyshtController();
 	       $infoProductMysht = $myshtExport->exportMyshtProductsFromFile($data['Lief.Artnr']);
 	       
-	       if($infoProductMysht["resNettoRabatt"]["netto"]) {
+	       if(isset($infoProductMysht['product_not_found'])) {
+	       		$log->debug('Product '.$data['Lief.Artnr'].' not found on mysht');
+	       		$errors .= 'Product '.$data['Lief.Artnr'].' not found on mysht';
+	       }
+	       else {
 		       $session = $this->container->get('request_stack')->getCurrentRequest()->getSession();
 		       
 		       if($this->importedRows) { 
@@ -90,9 +98,7 @@ class CreateMyshtProductImport extends AbstractImport {
 		       		$this->importedRows++;
 		       }
 	       }
-	       else {
-	       	$errors .= 'The product '.$data['Artikel'].' doesn\'t have price';
-	       }
+	       
        }
        else {
 		$errors .= 'The product '.$data['Artikel'].' has no Lief Artnr';
@@ -114,4 +120,17 @@ class CreateMyshtProductImport extends AbstractImport {
     	fclose($fp);
     }
 
+    public function getLogger() {
+    	if (self::$logger == null) {
+    		self::$logger = Tlog::getNewInstance();
+    		
+    		$logFilePath = THELIA_LOG_DIR . DS . "mysht-generic-product-import.txt";
+    		
+    		self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
+    		self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
+    		self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+    		self::$logger->setLevel(Tlog::DEBUG);
+    	}
+    	return self::$logger;
+    }
 }
