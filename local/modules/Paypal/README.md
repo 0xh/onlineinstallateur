@@ -1,76 +1,56 @@
-```
-  _____                        _                       _       _
- |  __ \                      | |                     | |     | |
- | |__) |_ _ _   _ _ __   __ _| |  _ __ ___   ___   __| |_   _| | ___
- |  ___/ _` | | | | '_ \ / _` | | | '_ ` _ \ / _ \ / _` | | | | |/ _ \
- | |  | (_| | |_| | |_) | (_| | | | | | | | | (_) | (_| | |_| | |  __/
- |_|   \__,_|\__, | .__/ \__,_|_| |_| |_| |_|\___/ \__,_|\__,_|_|\___|
-              __/ | |
-             |___/|_|
-                    _             _______ _          _ _
-                   | |           |__   __| |        | (_)
-                   | |__  _   _     | |  | |__   ___| |_  __ _
-                   | '_ \| | | |    | |  | '_ \ / _ \ | |/ _` |
-                   | |_) | |_| |    | |  | | | |  __/ | | (_| |
-                   |_.__/ \__, |    |_|  |_| |_|\___|_|_|\__,_|
-                           __/ |
-                          |___/               <info@thelia.net>
-```
+# PayPal
 
-
-# SUMMARY
-
-<a href="#-fr_fr-">fr_FR:</a>
-* I)   <a href="#i--installation">Installation</a>
-* II)  <a href="#ii-utilisation">Utilisation</a>
-* III) <a href="#iii-int%C3%A9gration">Intégration</a>
-
-<a href="#-en_us-">en_US:</a>
-* I)   <a href="#i--installation-1">Install notes</a>
-* II)  <a href="#ii-how-to-use">How to use</a>
-* III) <a href="#iii-integration">Integration</a>
-
-
-# === fr_FR ===
+* I)   Install notes
+* II)  Configure your PayPal account
+* III) Module options payments
 
 ## I)  Installation
 
-### Pour Thelia 2.0
+### Composer
 
-Pour installer le module paypal, téléchargez l'archive de la branche 2.0 et décompressez la dans <dossier de thelia>/local/modules
+> **WARNING** : A console access is required to update dependencies. If you don't have a console access, please get the latest 2.x version of the module here : https://github.com/thelia-modules/Paypal/tree/2.x
 
-### Pour Thelia 2.1 et suivants
+To install the module with Composer, open a console, navigate to the Thelia diorectory and type the following command to add the dependency to Thelia composer.json file.
 
-Pour installer le module paypal, téléchargez l'archive de la branche master et décompressez la dans <dossier de thelia>/local/modules
+```
+composer require thelia/paypal-module:~3.0.0
+```
 
-## II) Utilisation
+## II) Configure your PayPal account
 
-Pour utiliser le module paypal, allez dans le back-office, onglet Modules, et activez le module Paypal,
-puis cliquez sur "Configurer" sur la ligne de Paypal. Remplissez vos identifants et enregistrez.
-Le module vous permet d'effectuer des tests en mode sandbox avant de passer en production.
+- Log In on [developer.paypal.com] (https://developer.paypal.com "developer.paypal.com")
+- Create REST API apps [here] (https://developer.paypal.com/developer/applications/ "here")
+- Click on Create App
+- Fill the fields : App Name & Sandbox developer account
+- Click on Create App
+- Note the Client ID to use it later in the module configuration
+- Note the Client SECRET to use it later in the module configuration
 
-## III) Intégration
+#### In SANDBOX WEBHOOKS
+- To fill this part, go to your module configuration page to see the urls to implement
 
-Le module utilise les vues standards du template "default"
+#### In SANDBOX APP SETTINGS
+- To fill this part, go to your module configuration page to see the urls to implement
 
-# === en_US ===
 
-## I)  Installation
+## III) Module options payments
 
-### Thelia 2.0
+#### Classic PayPal payment
+![alt classic paypal payment](https://github.com/thelia-modules/Paypal/blob/master/images/payment_classic.png?raw=true)
+- This method will redirect to the PayPal platform to proceed payment
 
-To install the paypal module, download the archive from 2.0 branch uncompress it in <path to thelia>/local/modules
+#### InContext Classic PayPal payment
+![alt classic paypal payment](https://github.com/thelia-modules/Paypal/blob/master/images/payment_classic_incontext.png?raw=true)
+- This method will allow the customer to pay from a PayPal inContext popup directly from your website (no redirection to the PayPal plateform)
 
-### Thelia 2.1 or later
+#### Credit card
+![alt classic paypal payment](https://github.com/thelia-modules/Paypal/blob/master/images/payment_credit_card.png?raw=true)
+- This method allow the customer to pay directly by a credit card without a PayPal account. 'The merchant must have a Pro PayPal account UK and the website must be in HTTPS'
 
-To install the paypal module, download the archive from master branch uncompress it in <path to thelia>/local/modules
+#### Recursive payment
+![alt classic paypal payment](https://github.com/thelia-modules/Paypal/blob/master/images/payment_recursive.png?raw=true)
+- This method use the 'PayPal AGRREMENTS' and allow you to use recursive payments on your website. If you want to log all PayPal actions, you need to configure the PayPal webhooks and to have a wabsite in HTTPS
 
-## II) How to use
-
-To use the module, you first need to activate it in the back-office, tab Modules, and click on "Configure" on the line
-of paypal module. Enter your paypal login informations and save.
-Your cant perform tests in sandbox mode before using the module in production.
-
-## III) Integration
-
-The module uses the standard views of the "default" template.
+#### Express checkout
+![alt classic paypal payment](https://github.com/thelia-modules/Paypal/blob/master/images/payment_express_checkout.png?raw=true)
+- This method allow the customer to proceed the payment directly from the cart from a PayPal inContext popup.
