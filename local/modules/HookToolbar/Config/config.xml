@@ -17,6 +17,7 @@
         <hook id="hooktoolbar.hook.front" class="HookToolbar\Hook\FrontHook" scope="request">
             <argument>%kernel.debug%</argument>
             <tag name="hook.event_listener" event="main.body-top" />
+            <tag name="hook.event_listener" event="main.stylesheet" />
         </hook>
     </hooks>
 

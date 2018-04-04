@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
     'Thelia\\Composer' => array($vendorDir . '/thelia/installer/src'),
     'Symfony\\Component\\Icu\\' => array($vendorDir . '/symfony/icu'),
     'Stack' => array($vendorDir . '/stack/builder/src'),

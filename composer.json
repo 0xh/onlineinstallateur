@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.9",
         "ircmaxell/password-compat": "1.0.*",
         "psr/log": "1.0",
         "symfony/config": "2.8.*",
@@ -63,7 +63,8 @@
         "propel/propel": "dev-thelia-2.3",
         "commerceguys/addressing": "0.8.*",
         "stripe/stripe-php": "3.*",
-        "thelia/hook-toolbar-module": "~1.0"
+        "thelia/hook-toolbar-module": "~1.0",
+        "elasticsearch/elasticsearch": " ~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "1.5.*",
