@@ -17,20 +17,29 @@ class CreateMyshtProductImport extends AbstractImport {
         'Artikelbezeichnung'
     ];
     protected static $logger;
+    
+    public function rowHasField($row, $field) {
+    	if (isset($row[$field])) {
+    		return utf8_encode($row[$field]);
+    	}
+    	return null;
+    }
 
-    public function importData(array $data) {
+    public function importData(array $row) {
     
        $errors = null;
        $log = $this->getLogger();
        $log->debug("MYSHT PRODUCT IMPORT");
-       if($data['Lief.Artnr']) {
-       	   $log->debug($data['Lief.Artnr']);
+       $artNummer = $this->rowHasField($row,'Lief.Artnr');
+       
+       if($artNummer) {
+       	   $log->debug($artNummer);
 	       $myshtExport = new ExportDataFromMyshtController();
-	       $infoProductMysht = $myshtExport->exportMyshtProductsFromFile($data['Lief.Artnr']);
+	       $infoProductMysht = $myshtExport->exportMyshtProductsFromFile($artNummer);
 	       
 	       if(isset($infoProductMysht['product_not_found'])) {
-	       		$log->debug('Product '.$data['Lief.Artnr'].' not found on mysht');
-	       		$errors .= 'Product '.$data['Lief.Artnr'].' not found on mysht';
+	       		$log->debug('Product '.$artNummer.' not found on mysht');
+	       		$errors .= 'Product '.$artNummer.' not found on mysht';
 	       }
 	       else {
 		       $session = $this->container->get('request_stack')->getCurrentRequest()->getSession();
@@ -54,10 +63,12 @@ class CreateMyshtProductImport extends AbstractImport {
 		       $price = number_format($price, 2, '.', '');
 		       
 		       $listen_price = number_format($infoProductMysht["data"][0]["aktpreis"], 2, '.', '');
+		       $brand = $this->rowHasField($row,'Lief.Bezeichnung');
 		       
 		       $brandMatching = BrandMatchingPartnersQuery::create()
-		       		->findOneByBrandExtern($data['Lief.Bezeichnung']);
-		       	
+		       						->findOneByBrandExtern($brand);
+		       						
+		       		
 		       if($brandMatching) {
 		       		$brandInternId = $brandMatching->getBrandIntern();
 		       		$brandCode = $brandMatching->getBrandCode();
@@ -74,15 +85,15 @@ class CreateMyshtProductImport extends AbstractImport {
 		       }
 		       		
 		       $arrayData = array(
-		       		"Extern_id" => $data['Lief.Artnr'],
-		       		"Ref" => $brandCode.$data['Lief.Artnr'],
+		       		"Extern_id" => $artNummer,
+		       		"Ref" => $brandCode.$artNummer,
 		       		"Marke_id" => $brandInternId,
 		       		"Kategorie_id" => '179',
-		       		"Produkt_titel" => $data['Artikelbezeichnung'],
-		       		"Beschreibung" => $data['Artikelbezeichnung'] . " " . $data['Artikelbezeichnung-2'],
-		       		"Menge" => $data['Frei verw.'],
+		       		"Produkt_titel" => $this->rowHasField($row,'Artikelbezeichnung'),
+		       		"Beschreibung" => $this->rowHasField($row,'Artikelbezeichnung'). " " . $this->rowHasField($row,'Artikelbezeichnung-2'),
+		       		"Menge" => $this->rowHasField($row,'Frei verw.'),
 		       		"Fulfilment_center" => MultipleFullfilmentCenters::getConfigValue('fulfilment_center_default'),
-		       		"EAN_code" => $data['EAN'],
+		       		"EAN_code" =>  $this->rowHasField($row,'EAN'),
 		       		"Bild_file" => $file_name,
 		       		"Price" => $price,
 		       		"Listen_price" => $listen_price
@@ -101,7 +112,7 @@ class CreateMyshtProductImport extends AbstractImport {
 	       
        }
        else {
-		$errors .= 'The product '.$data['Artikel'].' has no Lief Artnr';
+       	$errors .= 'The product '.$this->rowHasField($row,'Artikel').' has no Lief Artnr';
        }
        
        return $errors;
