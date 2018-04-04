@@ -49,7 +49,7 @@ class ProductLabelsController extends BaseAdminController
                 $barcode = new Barcode($ean_code, 4);
                 $save_path = THELIA_TEMPLATE_DIR . "backOffice" . DS . "default" . DS . "assets" . DS . "img" . DS . $ean_code.".png";
                 imagepng($barcode->image(), $save_path);
-                $barcode_file = "assets/img/".$ean_code.".png";
+                $barcode_file = "assets" . DS ."img". DS .$ean_code.".png";
                 $product_variables["barcode_file"] = $barcode_file;
             }
             
