@@ -2,5 +2,20 @@
 <database defaultIdMethod="native" name="thelia"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+          
+    <table name="brand_matching_partners" namespace="RevenueDashboard\Model">
+    	<column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+	    <column name="brand_intern" phpName="BrandIntern" type="INTEGER" />
+	    <column name="brand_extern" phpName="BrandExtern" type="VARCHAR" size="45"/>
+	    <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+	    <column name="brand_code" phpName="BrandCode" type="VARCHAR" size="45"/>
+	    <foreign-key foreignTable="brand" name="fk_brand_intern" onDelete="CASCADE">
+	      <reference local="brand_intern" foreign="id"/>
+	    </foreign-key>
+	    <vendor type="mysql">
+	      <parameter name="Engine" value="InnoDB"/>
+	    </vendor>
+	</table>
+	
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

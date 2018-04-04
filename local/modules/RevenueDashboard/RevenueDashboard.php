@@ -13,16 +13,21 @@
 namespace RevenueDashboard;
 
 use Thelia\Module\BaseModule;
+use Propel\Runtime\Connection\ConnectionInterface;
+use Thelia\Install\Database;
 
 class RevenueDashboard extends BaseModule
 {
     /** @var string */
     const DOMAIN_NAME = 'revenuedashboard';
 
-    /*
-     * You may now override BaseModuleInterface methods, such as:
-     * install, destroy, preActivation, postActivation, preDeactivation, postDeactivation
-     *
-     * Have fun !
-     */
+    public function postActivation(ConnectionInterface $con = null)
+    {
+    	$database = new Database($con);
+    	
+    	if (!self::getConfigValue('is_initialized', false)) {
+    		$database->insertSql(null, [__DIR__ . "/Config/thelia.sql"]);
+    		self::setConfigValue('is_initialized', true);
+    	}
+    }
 }

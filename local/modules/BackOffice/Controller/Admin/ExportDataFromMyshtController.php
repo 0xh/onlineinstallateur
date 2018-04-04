@@ -69,7 +69,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 $artnr = $this->getArtNr($idartikel, true);
             }
             if (!is_array($artnr)) {
-                $this->getImage($artnr);
+            	$this->getImage($artnr, $this->imageLocation);
             }
         }
         
@@ -117,7 +117,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
                     $artnr = $this->getArtNr($idartikel, false);
                 }
                 if (!is_array($artnr)) {
-                    $this->getImage($artnr);
+                	$this->getImage($artnr, $this->imageLocation);
                 }
             }
 
@@ -137,6 +137,52 @@ class ExportDataFromMyshtController extends BaseAdminController {
         }
 
         return $this->render("export-data-mysht");
+    }
+    
+    public function exportMyshtProductsFromFile($idartikel) {
+    	
+    	$productInformations = '';
+    	if ($idartikel) {
+    		
+    		$this->logout();
+    		
+    		$imageLocation = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "importer" . DS;
+    		
+    		//foreach ($idartikels as $idartikel) {
+    		$productInformations = $this->getProductInformations(trim($idartikel), false);
+
+    		if ($productInformations === FALSE) { 
+    			$this->logout();
+    			$this->login();
+    			$productInformations = $this->getProductInformations($idartikel, false);
+    		}
+    		$this->setLogger()->error('MySHT export informations');
+    		$this->setLogger()->error($productInformations);
+    		if($productInformations["data"]) {
+	    		$artnr = $productInformations["data"][0]["MegabildNr"];
+	    		
+	    		if (!is_array($artnr)) {
+	    			$this->getImage($artnr, $imageLocation);
+	    		}
+	    		
+	    		
+	    		@unlink($this->imageZip);
+	    		$zip = new ZipArchive;
+	    		$zip->open($this->imageZip, ZipArchive::CREATE);
+	    		$files = scandir($imageLocation);
+	    		
+	    		foreach ($files as $file) {
+	    			if ($file != "." && $file != "..") {
+	    				$zip->addFile($imageLocation . $file, $file);
+	    			}
+	    		}
+	    		$zip->close();
+	    		
+	    		$this->logout();
+    		}
+    	}
+    	
+    	return $productInformations;
     }
 
     protected function login() {
@@ -170,7 +216,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
         }
     }
 
-    protected function getArtNr($idartikel,$removeBrand) {
+    protected function getProductInformations($idartikel, $removeBrand) {
         
         $curl = curl_init();
         $searchIdArtikel = $idartikel;
@@ -201,7 +247,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
             $this->setLogger()->error("getArtNr - cURL Error #: " . $err);
         } else {
             $response = json_decode($response, true);
-
+            
             if (isset($response["error"]) && $response["error"] == "nichtangemeldet") {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel 'nichtangemeldet' # " . json_encode($response));
                 return FALSE;
@@ -211,22 +257,73 @@ class ExportDataFromMyshtController extends BaseAdminController {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
 
                 $resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
-
-                $arrayData = array("idartikel" => $idartikel, "MegabildNr" => $response["data"][0]["MegabildNr"], "Lieferantename" => $response["data"][0]["Lieferantename"],
-                    "title" => $response["data"][0]["Zeile1"],
-                    "description" => $response["data"][0]["Zeile2"] . " " . $response["data"][0]["agzeile1"],
-                    "stock" => $response["data"][0]["SAPLiefermenge"] ? $response["data"][0]["SAPLiefermenge"] : 0,
-                    "rabatt" => $resNettoRabatt["rabatt"],
-                    "purchase_price" => $resNettoRabatt["netto"],
-                    "price" => $response["data"][0]["aktpreis"]);
-
-                $this->exportToCsv($this->csvFilename, $arrayData);
-                return $response["data"][0]["MegabildNr"];
+                $response['resNettoRabatt'] = $resNettoRabatt;
+                
+                return $response;
             } else {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
                 return array(0 => @$response["servererror"]);
             }
         }
+    }
+    
+    protected function getArtNr($idartikel,$removeBrand) {
+    	
+    	$curl = curl_init();
+    	$searchIdArtikel = $idartikel;
+    	if ($removeBrand)
+    		$searchIdArtikel = substr($idartikel,3);
+    		
+    		curl_setopt_array($curl, array(
+    				CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=$searchIdArtikel",
+    				CURLOPT_RETURNTRANSFER => true,
+    				CURLOPT_ENCODING => "",
+    				CURLOPT_MAXREDIRS => 10,
+    				CURLOPT_TIMEOUT => 30,
+    				CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    				CURLOPT_CUSTOMREQUEST => "POST",
+    				CURLOPT_HTTPHEADER => array(
+    						"cache-control: no-cache",
+    						"content-type: application/x-www-form-urlencoded",
+    				),
+    				CURLOPT_COOKIEFILE => $this->cookiefile,
+    				CURLOPT_COOKIEJAR => $this->cookiefile,
+    		));
+    		
+    		$response = curl_exec($curl);
+    		$err = curl_error($curl);
+    		
+    		curl_close($curl);
+    		if ($err) {
+    			$this->setLogger()->error("getArtNr - cURL Error #: " . $err);
+    		} else {
+    			$response = json_decode($response, true);
+    			
+    			if (isset($response["error"]) && $response["error"] == "nichtangemeldet") {
+    				$this->setLogger()->error("getArtNr - idartikel = $idartikel 'nichtangemeldet' # " . json_encode($response));
+    				return FALSE;
+    			}
+    			
+    			if (isset($response["data"]) && $response["data"]) {
+    				$this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
+    				
+    				$resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
+    				
+    				$arrayData = array("idartikel" => $idartikel, "MegabildNr" => $response["data"][0]["MegabildNr"], "Lieferantename" => $response["data"][0]["Lieferantename"],
+    						"title" => $response["data"][0]["Zeile1"],
+    						"description" => $response["data"][0]["Zeile2"] . " " . $response["data"][0]["agzeile1"],
+    						"stock" => $response["data"][0]["SAPLiefermenge"] ? $response["data"][0]["SAPLiefermenge"] : 0,
+    						"rabatt" => $resNettoRabatt["rabatt"],
+    						"purchase_price" => $resNettoRabatt["netto"],
+    						"price" => $response["data"][0]["aktpreis"]);
+    				
+    				$this->exportToCsv($this->csvFilename, $arrayData);
+    				return $response["data"][0]["MegabildNr"];
+    			} else {
+    				$this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
+    				return array(0 => @$response["servererror"]);
+    			}
+    		}
     }
 
     protected function getNettoRabatt($artnr, $idartikel) {
@@ -282,7 +379,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
         }
     }
 
-    protected function getImage($artnr) {
+    protected function getImage($artnr, $imageLocation) {
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -304,7 +401,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
 
         $artnr = preg_replace('/[^a-zA-Z0-9_ -]/s', '', $artnr);
         if (strlen($response) > 43) {
-            $imageFile = $this->imageLocation . $artnr . ".jpg";
+        	$imageFile = $imageLocation . $artnr . ".jpg";
 
             $saveImage = @fopen($imageFile, 'w');
             @fwrite($saveImage, $response);

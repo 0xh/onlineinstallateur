@@ -7,4 +7,8 @@
     <route id="admin.incorrect.import.product.csv" path="/admin/import/full-product-import/download-csv">
         <default key="_controller">SepaImporter\Controller\Admin\ImporterController::downloadIncorrectProductsCsv</default>
     </route>
+    
+    <route id="admin.generic.product.import.csv" path="/admin/import/generic-product-import/download-csv">
+        <default key="_controller">SepaImporter\Controller\Admin\ImporterController::downloadGenericProductImportCsv</default>
+    </route>
 </routes>

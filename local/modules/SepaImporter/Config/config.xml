@@ -179,9 +179,6 @@
                 </description>
             </import_descriptive>
         </import>
-        
-        
-        
         <import id="thelia.import.tracking.orders.triworx" class="SepaImporter\Import\TriworxTrackingOrders"
                 category_id="thelia.import.orders">
             <import_descriptive locale="de_DE">
@@ -223,6 +220,30 @@
                 </description>
             </import_descriptive>
         </import>
-        
+        <import id="thelia.import.mysht.products" class="SepaImporter\Import\CreateMyshtProductImport"
+                category_id="thelia.import.products">
+            <import_descriptive locale="de_DE">
+                <title>Create mysht product import</title>
+                <description>
+                    <![CDATA[
+                   Import mysht file with products, run mysht scraper to get more informations and images, create the CSV for genericProductImport <br/><br/>
+                   Mysht file with products supports the following structure:<br/>
+                   		Artikel,Lief.Artnr,Artikelbezeichnung,Artikelbezeichnung-2,MS,Warengruppe,Kreditor,Lief.Bezeichnung,Frei verw.,EAN,Betriebsbezeichnung<br/><br/>
+                 
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="en_US">
+                <title>Create mysht product import</title>
+                <description>
+                    <![CDATA[
+                   Import mysht file with products, run mysht scraper to get more informations and images, create the CSV for genericProductImport <br/><br/>
+                   Mysht file with products supports the following structure:<br/>
+                   		Artikel,Lief.Artnr,Artikelbezeichnung,Artikelbezeichnung-2,MS,Warengruppe,Kreditor,Lief.Bezeichnung,Frei verw.,EAN,Betriebsbezeichnung<br/><br/>
+                 
+                    ]]>
+                </description>
+            </import_descriptive>
+        </import>
     </imports>
 </config>
