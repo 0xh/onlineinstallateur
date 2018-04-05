@@ -484,6 +484,7 @@ class GenericProductImport extends AbstractImport {
             if ($beschreibung != null)
                 $productI18n->setDescription($beschreibung);
             
+
             if (Common::getActiveModule("AmazonIntegration") == 1)
             {
                 if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
@@ -527,6 +528,7 @@ class GenericProductImport extends AbstractImport {
                 {
                 	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
                 }
+
             }
 
             if ($kurze_beschreibung != null)
