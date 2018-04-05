@@ -165,5 +165,33 @@
                 </description>
             </import_descriptive>
         </import>
+        <import id="triworx.update.stock.real.center"
+                class="SepaImporter\Import\UpdateStockFromTriworxInRealCenter"
+                category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Triworx import in real fulfilment center (Wiener Neudorf)</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Artikelnummer: REF of the product </li>
+                        <li>Bestand: Stock of the product </li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+            	<title>Triworx import in real fulfilment center (Wiener Neudorf)</title>
+                <description>
+                    <![CDATA[
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Artikelnummer: REF of the product </li>
+                        <li>Bestand: Stock of the product </li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+        </import>
     </imports>
 </config>
