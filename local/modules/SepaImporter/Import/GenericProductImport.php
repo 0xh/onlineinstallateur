@@ -174,7 +174,7 @@ class GenericProductImport extends AbstractImport {
             {
                 if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
                 {
-                    $productI18n->setDescription($infoAmazon['description']);
+                	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
                 }
             }
 
@@ -211,7 +211,7 @@ class GenericProductImport extends AbstractImport {
             {
                 if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
                 {
-                    $productI18n->setDescription($infoAmazon['description']);
+                	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
                 }
             }
 
@@ -390,7 +390,8 @@ class GenericProductImport extends AbstractImport {
     public function saveImageFromAmazon($log, &$productThelia, $EAN_code, $infoAmazon)
     {
         $log->debug("AMAZON IMAGES - get images from Amazon in Generic product import");
-
+        $currentDate = date("Y-m-d H:i:s");
+        
         // save images from Amazon
         if ($infoAmazon['images']) {
 
