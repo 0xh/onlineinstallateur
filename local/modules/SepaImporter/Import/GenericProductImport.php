@@ -494,6 +494,84 @@ class GenericProductImport extends AbstractImport {
             if(file_exists($filepath)) {
             	$fp = fopen($filepath, 'a');
             	fputcsv($fp, $row);
+
+            if (Common::getActiveModule("AmazonIntegration") == 1)
+            {
+                if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
+                {
+                	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
+                }
+            }
+
+            if ($kurze_beschreibung != null)
+                $productI18n->setChapo($kurze_beschreibung);
+
+            if ($postscriptum != null)
+                $productI18n->setPostscriptum($postscriptum);
+
+            if ($meta_titel != null)
+                $productI18n->setMetaTitle($meta_titel);
+
+            if ($meta_beschreibung != null)
+                $productI18n->setMetaDescription($meta_beschreibung);
+
+            if ($meta_keywords != null)
+                $productI18n->setMetaKeywords($meta_keywords);
+
+            $productI18n->save();
+            //$log->debug ( " product_i18n en_US is added ".$productI18n->__toString() );
+            $productThelia->addProductI18n($productI18n);
+
+            // product description de_DE
+            $productI18n = new ProductI18n ();
+            $productI18n->setProduct($productThelia);
+            $productI18n->setLocale("de_DE");
+            if ($produkt_titel != null)
+                $productI18n->setTitle($produkt_titel);
+
+            if ($beschreibung != null)
+                $productI18n->setDescription($beschreibung);
+            
+            if (Common::getActiveModule("AmazonIntegration") == 1)
+            {
+                if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
+                {
+                	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
+                }
+            }
+
+            if ($kurze_beschreibung != null)
+                $productI18n->setChapo($kurze_beschreibung);
+
+            if ($postscriptum != null)
+                $productI18n->setPostscriptum($postscriptum);
+
+            if ($meta_titel != null)
+                $productI18n->setMetaTitle($meta_titel);
+
+            if ($meta_beschreibung != null)
+                $productI18n->setMetaDescription($meta_beschreibung);
+
+            if ($meta_keywords != null)
+                $productI18n->setMetaKeywords($meta_keywords);
+
+            $productI18n->save();
+            //	$log->debug ( " generic_product_import product_i18n de_DE is added ".$productI18n->__toString() );
+            $productThelia->addProductI18n($productI18n);
+
+            // find product sale element
+            $pse = ProductSaleElementsQuery::create()->findOneByProductId($productThelia->getId());
+
+            if ($pse != null) {
+
+                //$log->debug ( " generic_product_import pse found ".$pse->__toString() );
+                $currency = Currency::getDefaultCurrency();
+                $price = ProductPriceQuery::create()
+                        ->filterByProductSaleElementsId($pse->getId())
+                        ->findOneByCurrencyId($currency->getId());
+            } else {
+                $pse = new ProductSaleElements();
+                $pse->setProduct($productThelia);
             }
             else {
 	            $fp = fopen($filepath, 'w');
@@ -525,7 +603,8 @@ class GenericProductImport extends AbstractImport {
     public function saveImageFromAmazon($log, &$productThelia, $EAN_code, $infoAmazon)
     {
         $log->debug("AMAZON IMAGES - get images from Amazon in Generic product import");
-
+        $currentDate = date("Y-m-d H:i:s");
+        
         // save images from Amazon
         if ($infoAmazon['images']) {
 
