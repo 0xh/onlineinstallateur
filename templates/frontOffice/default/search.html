@@ -27,7 +27,7 @@
                 {ifloop rel="product_list"}
                     <ul class="list-unstyled row">
                         {loop type="product" name="product_list" search_term={$smarty.get.q} search_in="ref,title,description" search_mode="sentence" limit=$limit page=$product_page order=$product_order}
-                            {include file="includes/single-product.html" product_id=$ID hasBtn=true hasDescription=false width="369" height="247"}
+                            {include file="includes/single-product.html" product_id=$ID hasBtn=true hasDescription=true width="819" height="819"}
                         {/loop}
                     </ul>
                 {/ifloop}
