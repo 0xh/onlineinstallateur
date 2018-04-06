@@ -54,7 +54,7 @@ class ProductLabelsController extends BaseAdminController
                 $isSaved = imagepng($barcode->image(), $save_path);
                 if( $isSaved ) {
                     $barcode_file = "assets" . DS ."img". DS .$ean_code.".png";
-                   // $product_variables["barcode_file"] = $barcode_file;
+                    $product_variables["barcode_file"] = $barcode_file;
                 }
                 else {
                     Tlog::getInstance()->error(" productlabel image location not saved ".$save_path);
@@ -84,7 +84,7 @@ class ProductLabelsController extends BaseAdminController
             };break;
         }
         
-        $html = $this->render($labelTemplate,
+        return $this->render($labelTemplate,
             array("product" => $product_variables));
         
         try {
