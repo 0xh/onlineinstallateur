@@ -48,7 +48,6 @@ class ProductLabelsController extends BaseAdminController
                 fclose($fp);
                 }
                 catch ( Exception $e ) {
-                    var_dump($e);
                 };
                 
                 $isSaved = imagepng($barcode->image(), $save_path);
@@ -84,7 +83,7 @@ class ProductLabelsController extends BaseAdminController
             };break;
         }
         
-        return $this->render($labelTemplate,
+        $html = $this->render($labelTemplate,
             array("product" => $product_variables));
         
         try {
