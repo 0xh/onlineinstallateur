@@ -92,7 +92,7 @@ font-size:100px;
 .label-price-block h1.outletprice-big{
 font-weight:bold;
 color:#AC2181;
-font-size:160px;
+font-size:120px;
 }
 .label-footer{
 
@@ -169,15 +169,15 @@ margin-top:10px;
 			
 			<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
 			<em>
-			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
+			<small>€</small>{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}<small>,</small>{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
 			</em>
 			</h1>
-			
+			<div class="text-right">inkl. MwSt.</div>
 
 		</div>
 		{if $LISTEN_PRICE!="0,00"}
 		<div class="label-listenprice text-left">
-			<h2><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
+			<h2><em>Listenpreis  <small>€</small>{format_money number=$LISTEN_PRICE symbol=""}<small></small></em></h2>
 		</div>
 		{/if}
 	</div>

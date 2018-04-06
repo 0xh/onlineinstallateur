@@ -71,7 +71,7 @@ font-size:50px;
 .outletprice-big{
 font-weight:bold;
 color:#AC2181;
-font-size:110px;
+font-size:70px;
 
 }
 
@@ -88,7 +88,7 @@ font-size:110px;
 	
 <table class="body">
 	<tr>
-		<td style="width:266px;">
+		<td style="width:246px;">
 
 			<div class="brand">
 				<h1><strong>{$product.brand}</strong></h1>
@@ -123,11 +123,12 @@ font-size:110px;
 				<h2 class="text-right"><em><strong>OUTLET PREIS</strong></em></h2>
 				<h1 class="{if $priceArray[0]|count_characters>3}outletprice-small {else}outletprice-big{/if} text-right">
 			<em>
-			{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
+			<small>€</small>{format_number number=$priceArray[0] decimals="0" dec_point="," thousands_sep="."}<small>,</small>{if !$priceArray[1]||($priceArray[1]=="00")}-{else}<sup><small>{$priceArray[1]}</small></sup>{/if}
 			</em>
 			</h1>
+			<div class="text-right">inkl. MwSt.</div>
 			{if $LISTEN_PRICE!="0,00"}
-			<h2 class="text-right"><em>Listenpreis  {format_money number=$LISTEN_PRICE symbol={currency attr="symbol"}}<small></small></em></h2>
+			<h2 class="text-right"><em>Listenpreis  <small>€</small>{format_money number=$LISTEN_PRICE symbol=""}<small></small></em></h2>
 			{/if}
 			</div>
 			
