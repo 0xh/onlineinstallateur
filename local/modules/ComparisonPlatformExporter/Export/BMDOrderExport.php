@@ -84,6 +84,16 @@ class BMDOrderExport extends AbstractExport
         }
         $processedData['mwst'] = "20";
         
+        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
+            $processedData['gkto'] = "4200";
+            $processedData['mwst'] = "";
+            $processedData['steuer'] = "";
+        }
+        else {
+            $processedData['gkto'] = "4000";
+            $processedData['steuer'] = round(-$processedData['steuer'],2);
+        }
+        
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
         switch($orderSource){
@@ -121,7 +131,9 @@ class BMDOrderExport extends AbstractExport
         	case "ADE":{
         		$processedData['konto']="202699";
         		$processedData['belegnr']="2".substr($processedData['belegnr'],3);
-        		$processedData['mwst'] = "19";
+        		$processedData['gkto'] = "4200";
+        		$processedData['steuer'] = "";
+        		$processedData['mwst'] = "";
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
@@ -145,15 +157,7 @@ class BMDOrderExport extends AbstractExport
         	}break;
         }
         
-        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
-        	$processedData['gkto'] = "4200";
-        	$processedData['mwst'] = "";
-        	$processedData['steuer'] = "";
-        }
-        else {
-        	$processedData['gkto'] = "4000";
-        	$processedData['steuer'] = round(-$processedData['steuer'],2);
-        }
+
         
 		$processedData['extbelegnr'] = "";
         
