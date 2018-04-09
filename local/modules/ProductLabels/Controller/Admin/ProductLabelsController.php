@@ -61,7 +61,7 @@ class ProductLabelsController extends BaseAdminController
                 
             }
             
-            $price = $pse->getProductPrices () [0]->getPrice ();
+            $price = $pse->getProductPrices () [0]->getPrice() * 1.2;
             $product_variables["price"] = $price;
         }
         
