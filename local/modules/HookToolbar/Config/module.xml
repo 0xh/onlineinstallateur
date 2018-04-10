@@ -9,15 +9,11 @@
     <descriptive locale="fr_FR">
         <title>Barre d'outils d'administration sur le front-office</title>
     </descriptive>
-    <descriptive locale="de_DE">
-        <title>Admin-Symbolleiste im Front-Office</title>
-    </descriptive>
     <languages>
-    	<language>de_DE</language>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
-    <version>1.0.2</version>
+    <version>1.0.4</version>
     <author>
         <name>Michaël Espeche</name>
         <email>michael.espeche@gmail.com</email>
