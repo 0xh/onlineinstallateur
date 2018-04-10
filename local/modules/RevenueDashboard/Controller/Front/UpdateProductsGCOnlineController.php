@@ -92,105 +92,32 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
 
     protected function login() {
 
-//        $curl = curl_init();
-//
-//        curl_setopt_array($curl, array(
-//            CURLOPT_URL => "https://www.gconlineplus.at/4.0.542/www/submit.aspx",
-//            CURLOPT_RETURNTRANSFER => true,
-//            CURLOPT_ENCODING => "",
-//            CURLOPT_MAXREDIRS => 10,
-//            CURLOPT_TIMEOUT => 30,
-//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//            CURLOPT_CUSTOMREQUEST => "POST",
-//            CURLOPT_POSTFIELDS => "------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"a2_inputName\"\r\n\r\nNWING14C5\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW\r\nContent-Disposition: form-data; name=\"a2_inputPass\"\r\n\r\nbudget07\r\n------WebKitFormBoundary7MA4YWxkTrZu0gW--",
-//            CURLOPT_HTTPHEADER => array(
-//                "cache-control: no-cache",
-//                "content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
-//                "postman-token: 8ea589ce-c10f-471a-9c0c-0b1359ddb807"
-//            ),
-//        ));
-//
-//        $response = curl_exec($curl);
-//        $err = curl_error($curl);
-//
-//        curl_close($curl);
-//        var_dump($response);
-
         $curl = curl_init();
-        $f = tmpfile();
-        $data = array("strUserName" => $this->username, "strPassword" => $this->password, "strLayout" => "GCAT", "strLanguage" => "EN", "rand" => "8349892", "crsfKey" => "377b74c41fd3f61d6e6cd9bf91a832da", "layout" => "GCAT");
+
         $data = array("strUserName" => $this->username, "strPassword" => $this->password, "strLayout" => "GCAT", "strLanguage" => "EN");
         $data_string = json_encode($data);
-
-//        var_dump($data_string);
-
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://www.gconlineplus.at/4.0.542/services/Account.asmx/Login",
             CURLOPT_RETURNTRANSFER => true,
-//            CURLOPT_ENCODING => "",
-//            CURLOPT_MAXREDIRS => 10,
-//            CURLOPT_TIMEOUT => 30,
+            CURLOPT_ENCODING => "",
+            CURLOPT_NOBODY => FALSE,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => true,
-            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3381.1 Safari/537.36",
-            'Content-Length: ' . strlen($data_string),
-            CURLOPT_POSTFIELDS => $data_string, //"{\"strUserName\":\"NWING14C5\",\"strPassword\":\"budget07\",\"strLayout\":\"GCAT\",\"strLanguage\":\"EN\"}",
-            CURLOPT_HTTPHEADER => array(
-//                "cache-control: no-cache",
-                "Content-Type: application/json; charset=utf-8",
-//                "postman-token: 87a92b89-4e43-184a-6324-7bab2c9ee53f"
-            ),
-            CURLOPT_STDERR         => $f,
-        ));
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        $response = curl_exec($curl);
-        
-        $information = curl_getinfo($curl);
-        
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-            echo "</br></br></br>cURL Error #:" . $err." ".$response;
-        } else {
-            echo "response ".print_r($information)."</br></br></br>".$response;
-        }
-        die;
-
-
-
-
-
-
-
-
-        $curl = curl_init();
-
-        $data = array("strUserName" => $this->username, "strPassword" => $this->password, "strLayout" => "GCAT", "strLanguage" => "EN");
-        $data_string = json_encode($data);
-        var_dump($data_string);
-        die;
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.gconlineplus.at/4.0.542/services/Account.asmx/Login",
-            CURLOPT_RETURNTRANSFER => true,
-//            CURLOPT_ENCODING => "",
-//            CURLOPT_NOBODY => FALSE,
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-//            CURLOPT_POST => true,
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_string)
             ),
+            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3381.1 Safari/537.36",
+            'Content-Length: ' . strlen($data_string),
             CURLOPT_POSTFIELDS => $data_string,
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile
         ));
 //{strUserName: "NWING14C5", strPassword: "budget07", strLayout: "GCAT", strLanguage: "EN"}
+        //searchTerms: "003L7612"
+
         $response = curl_exec($curl);
         $err = curl_error($curl);
 
@@ -198,6 +125,7 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
 
         echo '<pre>';
         var_dump($response);
+        $this->getProductNumber();
         die;
         if ($err) {
             $this->setLogger()->error("login - cURL Error #: " . $err);
@@ -206,29 +134,52 @@ class UpdateProductsGCOnlineController extends BaseFrontController {
         }
     }
 
-    protected function getArtNr($idartikel, $idPartner, $prodId) {
+    protected function getProductNumber($searchTerms = "003L7612") {
 
         $curl = curl_init();
-        $searchIdArtikel = $idartikel;
+//        $data_string = "{\"lstProducts\":[{\"RunNumber\":58,\"Variant\":\"01\",\"Supplier\":\"DAOF01\",\"Productnumber\":\"DASVPV1620IG\"}],\"strStockId\":\"\",\"blnGetNetPrice\":true,\"blnGetGrosPrice\":true}";//json_encode(array("searchTerms" => $searchTerms));
+//
+//        curl_setopt_array($curl, array(
+//            CURLOPT_URL => "https://www.gconlineplus.at/4.0.542/services/Products.asmx/getNetPricesAndStocksByProductKeyWithProductnumber?layout=GCAT&rand=9366882",
+//            CURLOPT_RETURNTRANSFER => true,
+//            CURLOPT_ENCODING => "",
+//            CURLOPT_MAXREDIRS => 10,
+//            CURLOPT_TIMEOUT => 30,
+//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//            CURLOPT_CUSTOMREQUEST => "POST",
+//            CURLOPT_HTTPHEADER => array(
+//                'Content-Type: application/json',
+//            ),
+//            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3381.1 Safari/537.36",
+//            'Content-Length: ' . strlen($data_string),
+//            CURLOPT_POSTFIELDS => $data_string,
+//            CURLOPT_COOKIEFILE => $this->cookiefile,
+//            CURLOPT_COOKIEJAR => $this->cookiefile,
+//        ));
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=$searchIdArtikel",
+            CURLOPT_URL => "https://www.gconlineplus.at/4.0.542/services/Products.asmx/getNetPricesAndStocksByProductKeyWithProductnumber?layout=GCAT&rand=2471516&crsfKey=ba36cb5434fbfb9ae87cbd42e6aceaa5&u=96f766c447951414e20ea931a080841f",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "{\"lstProducts\":[{\"RunNumber\":\"58\",\"Variant\":\"01\",\"Supplier\":\"DAOF01\",\"Productnumber\":\"DASVPV1620IG\"}],\"strStockId\":\"\",\"blnGetNetPrice\":true,\"blnGetGrosPrice\":true}",
             CURLOPT_HTTPHEADER => array(
                 "cache-control: no-cache",
-                "content-type: application/x-www-form-urlencoded",
+                "content-type: application/json",
+                "postman-token: 4f079bc3-4860-c45f-2cd7-662c40cb3ae8"
             ),
-            CURLOPT_COOKIEFILE => $this->cookiefile,
-            CURLOPT_COOKIEJAR => $this->cookiefile,
+            CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3381.1 Safari/537.36",
         ));
-
         $response = curl_exec($curl);
         $err = curl_error($curl);
+
+        echo '<pre>';
+
+        var_dump($response);
+        die;
 
         curl_close($curl);
         if ($err) {
