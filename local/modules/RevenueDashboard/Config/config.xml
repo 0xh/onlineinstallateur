@@ -7,13 +7,28 @@
     <hooks>
         <hook id="revenue.dashboard.hook.back" class="RevenueDashboard\Hook\BackHook">
             <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+            <tag name="hook.event_listener" event="main.footer-js" type="back" method="onMainJs" />
         </hook>
         <hook id="revenue.dashboard.configuration.hook" class="RevenueDashboard\Hook\HookManager" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
+        </hook>
+        <hook id="revenue.dashboard.order.hook" class="RevenueDashboard\Hook\OrderHook" scope="request">
+            <tag name="hook.event_listener" event="order.revenue.hook" type="back" method="onModuleConfigure" />
         </hook>
     </hooks>
 
     <forms>
         <form name="revenue.dashboard.form.configure" class="RevenueDashboard\Form\ConfigurationForm" />
+        <form name="revenue.partner.form" class="RevenueDashboard\Form\PartnerForm" />
+        <form name="revenue.partner.contact.form" class="RevenueDashboard\Form\PartnerContactForm" />
+        <form name="revenue.partner.product.form" class="RevenueDashboard\Form\PartnerProductForm" />
     </forms>
+    
+    <loops>
+        <loop name="revenue.partner.loop" class="RevenueDashboard\Loop\PartnerLoop" />
+        <loop name="revenue.partner.contact.loop" class="RevenueDashboard\Loop\PartnerContactLoop" />
+        <loop name="revenue.customer.title.loop" class="RevenueDashboard\Loop\CustomerTitleInLoop" />
+        <loop name="revenue.partner.product.loop" class="RevenueDashboard\Loop\PartnerProductLoop" />
+        <loop name="revenue.dashboard.loop" class="RevenueDashboard\Loop\RevenueDashboardLoop" />
+    </loops>
 </config>

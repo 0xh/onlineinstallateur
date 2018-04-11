@@ -1,0 +1,159 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+{$admin_current_location = 'Partners'}
+{/block}
+
+{block name="page-title"}{intl l='Partners'}{/block}
+
+{block name="main-content"} 
+{render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
+<div class="general-block-decorator dashboard">
+    <ul class="breadcrumb">
+        <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+        <li><a href="{url path='/admin/module/revenuedashboard'}">{intl l="Revenue Dashboard"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner'}">{intl l="Partner"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner-contact'}">{intl l="Partner Contact"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
+    </ul>
+
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                {form name="revenue.partner.form"}
+        <form action="{url path='/admin/module/revenue-wholesale-partner-add'}" method="post">
+            {form_hidden_fields form=$form}
+            {if $form_error}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">{$form_error_message}</div>
+                </div>
+            </div>
+            {/if}
+            <td>#</td>
+            <td>{render_form_field form=$form field="partnerName" value=$partnerName}</td>
+            <td>{render_form_field form=$form field="description" value=$description}</td>
+            <td>{render_form_field form=$form field="comment" value=$comment}</td>
+            <td>{render_form_field form=$form field="priority" value=$priority}</td>
+            <td>{render_form_field form=$form field="address" value=$address}</td>
+            <td>{render_form_field form=$form field="deposit_address" value=$deposit_address}</td>
+            <td>
+                <div class="form-group ">
+                    <label for="" class="control-label">
+                        Contact person <span class="required">*</span>
+                    </label>
+                    <select class="filter contact-person form-control">
+                        <option value="">Select Contact</option>
+                        {loop name="revenue.partner.contact.loop" type="revenue.partner.contact.loop"}
+                        <option value="{$id};{$firstname} {$lastname}">{$firstname} {$lastname}</option>
+                        {/loop}
+                    </select>
+                </div>
+
+            </td>
+            <td style="display: none;">{render_form_field form=$form field="contact_person" value=$contact_person}</td>
+            <td>{render_form_field form=$form field="delivery_types" value=$delivery_types}</td>
+            <td>{render_form_field form=$form field="return_policy" value=$return_policy}</td>
+            <td>
+                <button type="submit" class="btn btn-primary action-btn"
+                        title="{intl l='Add'}" data-toggle="modal">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                </button>
+            </td>
+        </form>
+        {/form}
+        </tr>
+    </table>
+    <div class="txt-div" >
+        <table class="table table-striped">
+            {assign var="nr" value="1"}
+            <tr style="font-weight: bold">
+                <td class="col-md-1">No.</td>
+                <td class="col-md-1">Name</td>
+                <td class="col-md-2">Description</td>
+                <td class="col-md-1">Comment</td>
+                <td class="col-md-1">Priority</td>
+                <td class="col-md-1">Address</td>
+                <td class="col-md-1">Deposit address</td>
+                <td class="col-md-1">Contact person</td>
+                <td class="col-md-1">Delivery types</td>
+                <td class="col-md-1">Return policy</td>
+                <td class="col-md-1">Action</td>
+            </tr>
+            {loop name="revenue.partner.loop" type="revenue.partner.loop" limit=50}
+            <tr>
+                <td class="col-md-1">{$nr++}.</td>
+                <td class="col-md-1">{$partnerName}</td>
+                <td class="col-md-2">{$description}</td>
+                <td class="col-md-1">{$comment}</td>
+                <td class="col-md-1">{$priority}</td>
+                <td class="col-md-1">{$address}</td>
+                <td class="col-md-1">{$deposit_address}</td>
+                <td class="col-md-1"><a href="/admin/module/revenue-wholesale-partner-contact?id={$contact_person_explode[0]}">{$contact_person_explode[1]}</a></td>
+                <td class="col-md-1">{$delivery_types}</td>
+                <td class="col-md-1">{$return_policy}</td>
+                <td class="col-md-1">
+                    {form name="revenue.partner.form"}
+                    <form action="{url path='/admin/module/revenue-wholesale-partner-edit'}" method="post">
+                        <button type="submit" name="save_mode" value="stay"
+                                class="form-submit-button btn btn-sm btn-default btn-success"
+                                title="{intl l="Edit"}">
+                                {intl l="Edit"} <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        {form_hidden_fields form=$form}
+                        <td style="display: none;">{render_form_field form=$form field="id" value=$id}</td>
+                        <td style="display: none;">{render_form_field form=$form field="partnerName" value=$partnerName}</td>
+                        <td style="display: none;">{render_form_field form=$form field="description" value=$description}</td>
+                        <td style="display: none;">{render_form_field form=$form field="comment" value=$comment}</td>
+                        <td style="display: none;">{render_form_field form=$form field="priority" value=$priority}</td>
+                        <td style="display: none;">{render_form_field form=$form field="address" value=$address}</td>
+                        <td style="display: none;">{render_form_field form=$form field="deposit_address" value=$deposit_address}</td>
+                        <td style="display: none;">{render_form_field form=$form field="contact_person" value=$contact_person}</td>
+                        <td style="display: none;">{render_form_field form=$form field="delivery_types" value=$delivery_types}</td>
+                        <td style="display: none;">{render_form_field form=$form field="return_policy" value=$return_policy}</td>
+
+                    </form>
+                    {/form}
+                </td>
+                <td class="col-md-1">
+                    {form name="revenue.partner.form"}
+                    <form action="{url path='/admin/module/revenue-wholesale-partner-delete'}"
+                          method="post">
+                        {form_hidden_fields form=$form}
+                        <button type="submit" class="btn btn-danger action-btn"
+                                title="{intl l='Delete partner'}" data-toggle="modal">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <td style="display: none;">{render_form_field form=$form field="id" value=$id}</td>
+                        <td style="display: none;">{render_form_field form=$form field="partnerName" value=$partnerName}</td>
+                        <td style="display: none;">{render_form_field form=$form field="description" value=$description}</td>
+                        <td style="display: none;">{render_form_field form=$form field="comment" value=$comment}</td>
+                        <td style="display: none;">{render_form_field form=$form field="priority" value=$priority}</td>
+                        <td style="display: none;">{render_form_field form=$form field="address" value=$address}</td>
+                        <td style="display: none;">{render_form_field form=$form field="deposit_address" value=$deposit_address}</td>
+                        <td style="display: none;">{render_form_field form=$form field="contact_person" value=$contact_person}</td>
+                        <td style="display: none;">{render_form_field form=$form field="delivery_types" value=$delivery_types}</td>
+                        <td style="display: none;">{render_form_field form=$form field="return_policy" value=$return_policy}</td>
+                    </form>
+                    {/form}
+                </td>
+                <td class="col-md-1">
+                    
+                    <form action="{url path='/admin/module/revenue-update-products-mysht/'}{$id}"
+                          method="post">
+                        <button type="submit" onclick="$('#wait-update-mysht').show();" name="save_mode" disabled="disabled" value="stay"
+                                class="form-submit-button btn btn-sm btn-default btn-success"
+                                title="{intl l="Update products"}">
+                                {intl l="Update products"} <span class="glyphicon"></span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {/loop}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="wait-update-mysht" class="modal-loading"></div>
+{/block}

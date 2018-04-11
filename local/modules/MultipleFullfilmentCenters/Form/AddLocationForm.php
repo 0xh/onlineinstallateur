@@ -32,6 +32,14 @@ class AddLocationForm extends BaseForm
             	'label'=>Translator::getInstance()->trans("Long", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
             	'label_attr'=>array("for"=>"gps_long")
             ))
+            ->add("delivery_cost", "text", array(
+            	'label'=>Translator::getInstance()->trans("Delivery cost", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"delivery_cost")
+            ))
+            ->add("delivery_method", "text", array(
+            	'label'=>Translator::getInstance()->trans("Delivery method", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
+            	'label_attr'=>array("for"=>"delivery_method")
+            ))
             ->add("stock_limit", "text", array(
             	'label'=>Translator::getInstance()->trans("Stock", array(), MultipleFullfilmentCenters::DOMAIN_NAME),
             	'label_attr'=>array("for"=>"stock_limit")

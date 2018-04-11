@@ -99,6 +99,11 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 							$productLocation->setReservedStock($productLocation->getReservedStock() - $orderProduct->getQuantity());
 						}
 						
+                                                $fulfilmentCenterOrder = new \MultipleFullfilmentCenters\Model\FulfilmentCenterOrder();
+                                                $fulfilmentCenterOrder->setCenterId($productLocation->getFulfilmentCenterId());
+                                                $fulfilmentCenterOrder->setOrderId($order->getId());
+                                                $fulfilmentCenterOrder->save();
+                                                
 						$productLocation->save();
 					 } 
 				}

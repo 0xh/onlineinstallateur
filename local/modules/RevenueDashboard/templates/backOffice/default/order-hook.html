@@ -1,0 +1,34 @@
+{render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
+
+<div class="radio radio-div">
+    <input id="rev_input_ref_none_{$prodId}" class="partner-order" type="hidden" name="optradio" value="" readonly>
+    <input id="rev_input_partner_id_none_{$prodId}" class="partner-order" type="hidden" name="optradio" value="" readonly>
+    <input id="rev_input_order_id" class="partner-order" type="hidden" value="{$orderId}" readonly>
+    <input id="rev_input_price_{$prodId}" class="partner-order form-control" type="hidden" value="{$price}">
+    <div class="form-group">
+        <label style="float: left; padding-top: 6px;">
+            <input id="rev_input_partner_name_none_{$prodId}" {if $partner_selected == "0"} checked="true" {/if} noPartner="true" revenue="revenue" class="partner-order" style="width: 12px;" type="radio" value="{$prodId}" name="revenue_{$prodId}">Service
+        </label>
+        <label class="control-label col-sm-2" style="padding-top: 6px;" for="pwd">Price:</label>
+        <div class="col-sm-10 col-sm-10-radio">     
+          <input id="rev_input_price_none_{$prodId}" class="partner-order form-control" type="text" name="optradio" {if $partner_selected == "0"} value="{$service_price}" {else} value="0" {/if} >
+        </div>
+    </div>
+</div>
+<div id="wait" class="modal-loading"></div>
+{foreach from=$arrPartner item=i}
+<div class="radio radio-div">
+    <input id="rev_input_ref_{$i.prod_id}" class="partner-order" type="hidden" name="optradio" value="{$i.prod_ref}" readonly>
+    <input id="rev_input_partner_id_{$i.prod_id}" class="partner-order" type="hidden" name="optradio" value="{$i.partner_id}" readonly>
+    <div class="form-group">
+        <label style="float: left; padding-top: 6px; color: blue;">
+            <input id="rev_input_partner_name_{$i.prod_id}" {if $partner_selected == $i.partner_id} checked="true" {/if} class="partner-order" revenue="revenue" style="width: 12px;" type="radio" name="revenue_{$prodId}" value="{$i.prod_id}">{$i.partner_name}
+        </label>
+        <label class="control-label col-sm-2" style="padding-top: 6px;" for="pwd">Price:</label>
+        <div class="col-sm-10 col-sm-10-radio">     
+          <input id="rev_input_purchase_price_{$i.prod_id}" class="partner-order form-control" type="text" name="optradio" {if $partner_selected == $i.partner_id} value="{$service_price}" {else} value="{$i.purchase_price}" {/if} >
+        </div>
+    </div>
+</div>
+{/foreach}
+    

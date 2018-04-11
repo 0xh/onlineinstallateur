@@ -18,4 +18,100 @@
 	</table>
 	
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+    
+    <table name="wholesale_partner" namespace="RevenueDashboard\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="name" phpName="Name" type="VARCHAR" size="255"/>
+        <column name="description" phpName="Description" type="VARCHAR" size="255"/>
+        <column name="comment" phpName="Comment" type="VARCHAR" size="255"/>
+        <column name="priority" phpName="Priority" type="INTEGER"/>
+        <column name="address" phpName="Address" type="VARCHAR" size="255"/>
+        <column name="deposit_address" phpName="DepositAddress" type="VARCHAR" size="255"/>
+        <column name="contact_person" phpName="ContactPerson" type="VARCHAR" size="255"/>
+        <column name="delivery_types" phpName="DeliveryTypes" type="VARCHAR" size="255"/>
+        <column name="return_policy" phpName="ReturnPolicy"  type="VARCHAR" size="255"/>
+        <behavior name="timestampable" />
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+        <behavior name="versionable">
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+    </table>
+    
+    <table name="wholesale_partner_contact_person" namespace="RevenueDashboard\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="title" phpName="Title" type="INTEGER" required="true"/>
+        <column name="firstname" phpName="Firstname" type="VARCHAR" size="255"/>
+        <column name="lastname" phpName="Lastname" type="VARCHAR" size="255"/>
+        <column name="telefon" phpName="Telefon" type="VARCHAR" size="255"/>
+        <column name="email" phpName="Email" type="VARCHAR" size="255"/>
+        <column name="profile_website" phpName="ProfileWebsite" type="VARCHAR" size="255"/>
+        <column name="position" phpName="Position" type="VARCHAR" size="255"/>
+        <column name="department" phpName="Department"  type="VARCHAR" size="255"/>
+        <column name="comment" phpName="Comment"  type="VARCHAR" size="255"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+        <behavior name="versionable">
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+        <foreign-key foreignTable="customer_title" name="fk_wholesale_customer_title_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+            <reference foreign="id" local="title" />
+        </foreign-key>
+    </table>
+    
+    <table name="wholesale_partner_product" namespace="RevenueDashboard\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+        <column name="product_id" phpName="ProductId" type="INTEGER"/>
+        <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="package_size" phpName="PackageSize" type="INTEGER"/>
+        <column name="delivery_cost" phpName="DeliveryCost" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="discount" phpName="Discount" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="discount_description" phpName="DiscountDescription" type="VARCHAR" size="255"/>
+        <column name="profile_website" phpName="ProfileWebsite" type="VARCHAR" size="255"/>
+        <column name="position" phpName="Position" type="VARCHAR" size="255"/>
+        <column name="department" phpName="Department"  type="VARCHAR" size="255"/>
+        <column name="comment" phpName="Comment"  type="VARCHAR" size="255"/>
+        <column name="valid_until" type="TIMESTAMP" />
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+        <behavior name="versionable">
+            <parameter name="log_created_by" value="true" />
+            <parameter name="log_valid_until" value="valid_until" />
+        </behavior>
+    </table>
+    
+    <table name="order_product_revenue" namespace="RevenueDashboard\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="order_id" phpName="OrderId" type="INTEGER"/>
+        <column name="product_ref" phpName="ProductRef" type="VARCHAR" size="255"/>
+        <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    
+    <table name="order_revenue" namespace="RevenueDashboard\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="order_id" phpName="OrderId" type="INTEGER"/>
+        <column name="delivery_cost" phpName="DeliveryCost" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="delivery_method" phpName="DeliveryMethod" type="VARCHAR" size="255"/>
+        <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+        <column name="payment_processor_cost" phpName="PaymentProcessorCost" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="total_purchase_price" phpName="TotalPurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="revenue" phpName="Revenue" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="comment" phpName="Comment" type="VARCHAR" size="255"/>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    
+    
 </database>

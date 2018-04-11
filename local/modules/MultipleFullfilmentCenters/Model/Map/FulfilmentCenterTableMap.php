@@ -58,7 +58,7 @@ class FulfilmentCenterTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class FulfilmentCenterTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
      * the column name for the ID field
@@ -101,6 +101,16 @@ class FulfilmentCenterTableMap extends TableMap
     const STOCK_LIMIT = 'fulfilment_center.STOCK_LIMIT';
 
     /**
+     * the column name for the DELIVERY_COST field
+     */
+    const DELIVERY_COST = 'fulfilment_center.DELIVERY_COST';
+
+    /**
+     * the column name for the DELIVERY_METHOD field
+     */
+    const DELIVERY_METHOD = 'fulfilment_center.DELIVERY_METHOD';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -112,12 +122,12 @@ class FulfilmentCenterTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', 'Address', 'GpsLat', 'GpsLong', 'StockLimit', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'name', 'address', 'gpsLat', 'gpsLong', 'stockLimit', ),
-        self::TYPE_COLNAME       => array(FulfilmentCenterTableMap::ID, FulfilmentCenterTableMap::NAME, FulfilmentCenterTableMap::ADDRESS, FulfilmentCenterTableMap::GPS_LAT, FulfilmentCenterTableMap::GPS_LONG, FulfilmentCenterTableMap::STOCK_LIMIT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'NAME', 'ADDRESS', 'GPS_LAT', 'GPS_LONG', 'STOCK_LIMIT', ),
-        self::TYPE_FIELDNAME     => array('id', 'name', 'address', 'gps_lat', 'gps_long', 'stock_limit', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Address', 'GpsLat', 'GpsLong', 'StockLimit', 'DeliveryCost', 'DeliveryMethod', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'name', 'address', 'gpsLat', 'gpsLong', 'stockLimit', 'deliveryCost', 'deliveryMethod', ),
+        self::TYPE_COLNAME       => array(FulfilmentCenterTableMap::ID, FulfilmentCenterTableMap::NAME, FulfilmentCenterTableMap::ADDRESS, FulfilmentCenterTableMap::GPS_LAT, FulfilmentCenterTableMap::GPS_LONG, FulfilmentCenterTableMap::STOCK_LIMIT, FulfilmentCenterTableMap::DELIVERY_COST, FulfilmentCenterTableMap::DELIVERY_METHOD, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'NAME', 'ADDRESS', 'GPS_LAT', 'GPS_LONG', 'STOCK_LIMIT', 'DELIVERY_COST', 'DELIVERY_METHOD', ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'address', 'gps_lat', 'gps_long', 'stock_limit', 'delivery_cost', 'delivery_method', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -127,12 +137,12 @@ class FulfilmentCenterTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Address' => 2, 'GpsLat' => 3, 'GpsLong' => 4, 'StockLimit' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'name' => 1, 'address' => 2, 'gpsLat' => 3, 'gpsLong' => 4, 'stockLimit' => 5, ),
-        self::TYPE_COLNAME       => array(FulfilmentCenterTableMap::ID => 0, FulfilmentCenterTableMap::NAME => 1, FulfilmentCenterTableMap::ADDRESS => 2, FulfilmentCenterTableMap::GPS_LAT => 3, FulfilmentCenterTableMap::GPS_LONG => 4, FulfilmentCenterTableMap::STOCK_LIMIT => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'NAME' => 1, 'ADDRESS' => 2, 'GPS_LAT' => 3, 'GPS_LONG' => 4, 'STOCK_LIMIT' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'address' => 2, 'gps_lat' => 3, 'gps_long' => 4, 'stock_limit' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Address' => 2, 'GpsLat' => 3, 'GpsLong' => 4, 'StockLimit' => 5, 'DeliveryCost' => 6, 'DeliveryMethod' => 7, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'name' => 1, 'address' => 2, 'gpsLat' => 3, 'gpsLong' => 4, 'stockLimit' => 5, 'deliveryCost' => 6, 'deliveryMethod' => 7, ),
+        self::TYPE_COLNAME       => array(FulfilmentCenterTableMap::ID => 0, FulfilmentCenterTableMap::NAME => 1, FulfilmentCenterTableMap::ADDRESS => 2, FulfilmentCenterTableMap::GPS_LAT => 3, FulfilmentCenterTableMap::GPS_LONG => 4, FulfilmentCenterTableMap::STOCK_LIMIT => 5, FulfilmentCenterTableMap::DELIVERY_COST => 6, FulfilmentCenterTableMap::DELIVERY_METHOD => 7, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'NAME' => 1, 'ADDRESS' => 2, 'GPS_LAT' => 3, 'GPS_LONG' => 4, 'STOCK_LIMIT' => 5, 'DELIVERY_COST' => 6, 'DELIVERY_METHOD' => 7, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'address' => 2, 'gps_lat' => 3, 'gps_long' => 4, 'stock_limit' => 5, 'delivery_cost' => 6, 'delivery_method' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -157,6 +167,8 @@ class FulfilmentCenterTableMap extends TableMap
         $this->addColumn('GPS_LAT', 'GpsLat', 'DECIMAL', false, 18, null);
         $this->addColumn('GPS_LONG', 'GpsLong', 'DECIMAL', false, 18, null);
         $this->addColumn('STOCK_LIMIT', 'StockLimit', 'INTEGER', false, null, null);
+        $this->addColumn('DELIVERY_COST', 'DeliveryCost', 'DECIMAL', false, 16, 3);
+        $this->addColumn('DELIVERY_METHOD', 'DeliveryMethod', 'VARCHAR', false, 255, 'triworx');
     } // initialize()
 
     /**
@@ -322,6 +334,8 @@ class FulfilmentCenterTableMap extends TableMap
             $criteria->addSelectColumn(FulfilmentCenterTableMap::GPS_LAT);
             $criteria->addSelectColumn(FulfilmentCenterTableMap::GPS_LONG);
             $criteria->addSelectColumn(FulfilmentCenterTableMap::STOCK_LIMIT);
+            $criteria->addSelectColumn(FulfilmentCenterTableMap::DELIVERY_COST);
+            $criteria->addSelectColumn(FulfilmentCenterTableMap::DELIVERY_METHOD);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.NAME');
@@ -329,6 +343,8 @@ class FulfilmentCenterTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.GPS_LAT');
             $criteria->addSelectColumn($alias . '.GPS_LONG');
             $criteria->addSelectColumn($alias . '.STOCK_LIMIT');
+            $criteria->addSelectColumn($alias . '.DELIVERY_COST');
+            $criteria->addSelectColumn($alias . '.DELIVERY_METHOD');
         }
     }
 

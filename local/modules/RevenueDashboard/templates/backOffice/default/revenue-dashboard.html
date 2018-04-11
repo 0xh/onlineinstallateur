@@ -1,12 +1,77 @@
-{extends file="admin-layout.tpl"} {block name="main-content"} 
-<div class="general-block-decorator dashboard">
-    <div class="title title-without-tabs clearfix">{intl l='Revenue Dashboard' d='revenue.dashboard.bo.default'}</div>
-	as
-        d
-        asd
-        
-        a
-        sd
+{extends file="admin-layout.tpl"}
 
+{block name="no-return-functions"}
+{$admin_current_location = 'Revenue Dashboard'}
+{/block}
+
+{block name="page-title"}{intl l='Revenue Dashboard'}{/block}
+
+{block name="main-content"} 
+{assign page {$smarty.get.page|default:1}}
+
+<div class="general-block-decorator dashboard">
+    <ul class="breadcrumb">
+        <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+        <li><a href="{url path='/admin/module/revenuedashboard'}">{intl l="Revenue Dashboard"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner'}">{intl l="Partner"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner-contact'}">{intl l="Partner Contact"}</a></li>
+        <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
+    </ul>
+
+    <table class="table table-striped">
+        <tr style="font-weight: bold; font-size: 15px;">
+            <td>Id</td>
+            <td>Order id</td>
+            <td>Delivery cost</td>
+            <td>Delivery method</td>
+            <td>Partner id</td>
+            <td>Payment processor cost</td>
+            <td>Price</td>
+            <td>Purchase price</td>
+            <td>Total purchase price</td>
+            <td>Revenue</td>
+        </tr>
+        {assign var="total" value="0"}
+        {loop name="revenue.dashboard.loop" type="revenue.dashboard.loop" page={$page} limit=100}
+        {$total = $total + $revenue}
+        <tr>
+            <td>{$id}</td>
+            <td>{$order_id}</td>
+            <td>{$delivery_cost}</td>
+            <td>{$delivery_method}</td>
+            <td>{$partner_id}</td>
+            <td>{$payment_processor_cost}</td>
+            <td>{$price}</td>
+            <td>{$purchase_price}</td>
+            <td>{$total_purchase_price}</td>
+            <td>{$revenue}</td>
+        </tr>
+        {/loop}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><b>Total: </b></td>
+            <td><b style="color: blue;">{$total|number_format:2:".":","}</b></td>
+        </tr>
+    </table>
+
+    <tfoot>
+        <tr>
+            <td colspan="100">
+                {include
+                file = "includes/pagination.html"
+                loop_ref       = "revenue.dashboard.loop"
+                max_page_count = 100
+                page_url       = {url path="/admin/module/revenuedashboard" }
+                }
+            </td>
+        </tr>
+    </tfoot>
 </div>
 {/block}

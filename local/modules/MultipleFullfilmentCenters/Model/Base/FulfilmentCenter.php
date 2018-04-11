@@ -94,6 +94,20 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     protected $stock_limit;
 
     /**
+     * The value for the delivery_cost field.
+     * Note: this column has a database default value of: '3.00'
+     * @var        string
+     */
+    protected $delivery_cost;
+
+    /**
+     * The value for the delivery_method field.
+     * Note: this column has a database default value of: 'triworx'
+     * @var        string
+     */
+    protected $delivery_method;
+
+    /**
      * @var        ObjectCollection|ChildFulfilmentCenterProducts[] Collection to store aggregation of ChildFulfilmentCenterProducts objects.
      */
     protected $collFulfilmentCenterProductss;
@@ -126,10 +140,24 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     protected $orderLocalPickupsScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->delivery_cost = '3.00';
+        $this->delivery_method = 'triworx';
+    }
+
+    /**
      * Initializes internal state of MultipleFullfilmentCenters\Model\Base\FulfilmentCenter object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -450,6 +478,28 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     }
 
     /**
+     * Get the [delivery_cost] column value.
+     * 
+     * @return   string
+     */
+    public function getDeliveryCost()
+    {
+
+        return $this->delivery_cost;
+    }
+
+    /**
+     * Get the [delivery_method] column value.
+     * 
+     * @return   string
+     */
+    public function getDeliveryMethod()
+    {
+
+        return $this->delivery_method;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -576,6 +626,48 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
     } // setStockLimit()
 
     /**
+     * Set the value of [delivery_cost] column.
+     * 
+     * @param      string $v new value
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenter The current object (for fluent API support)
+     */
+    public function setDeliveryCost($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->delivery_cost !== $v) {
+            $this->delivery_cost = $v;
+            $this->modifiedColumns[FulfilmentCenterTableMap::DELIVERY_COST] = true;
+        }
+
+
+        return $this;
+    } // setDeliveryCost()
+
+    /**
+     * Set the value of [delivery_method] column.
+     * 
+     * @param      string $v new value
+     * @return   \MultipleFullfilmentCenters\Model\FulfilmentCenter The current object (for fluent API support)
+     */
+    public function setDeliveryMethod($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->delivery_method !== $v) {
+            $this->delivery_method = $v;
+            $this->modifiedColumns[FulfilmentCenterTableMap::DELIVERY_METHOD] = true;
+        }
+
+
+        return $this;
+    } // setDeliveryMethod()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -585,6 +677,14 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->delivery_cost !== '3.00') {
+                return false;
+            }
+
+            if ($this->delivery_method !== 'triworx') {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -629,6 +729,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FulfilmentCenterTableMap::translateFieldName('StockLimit', TableMap::TYPE_PHPNAME, $indexType)];
             $this->stock_limit = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FulfilmentCenterTableMap::translateFieldName('DeliveryCost', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->delivery_cost = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : FulfilmentCenterTableMap::translateFieldName('DeliveryMethod', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->delivery_method = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -637,7 +743,7 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = FulfilmentCenterTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = FulfilmentCenterTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \MultipleFullfilmentCenters\Model\FulfilmentCenter object", 0, $e);
@@ -902,6 +1008,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         if ($this->isColumnModified(FulfilmentCenterTableMap::STOCK_LIMIT)) {
             $modifiedColumns[':p' . $index++]  = 'STOCK_LIMIT';
         }
+        if ($this->isColumnModified(FulfilmentCenterTableMap::DELIVERY_COST)) {
+            $modifiedColumns[':p' . $index++]  = 'DELIVERY_COST';
+        }
+        if ($this->isColumnModified(FulfilmentCenterTableMap::DELIVERY_METHOD)) {
+            $modifiedColumns[':p' . $index++]  = 'DELIVERY_METHOD';
+        }
 
         $sql = sprintf(
             'INSERT INTO fulfilment_center (%s) VALUES (%s)',
@@ -930,6 +1042,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
                         break;
                     case 'STOCK_LIMIT':                        
                         $stmt->bindValue($identifier, $this->stock_limit, PDO::PARAM_INT);
+                        break;
+                    case 'DELIVERY_COST':                        
+                        $stmt->bindValue($identifier, $this->delivery_cost, PDO::PARAM_STR);
+                        break;
+                    case 'DELIVERY_METHOD':                        
+                        $stmt->bindValue($identifier, $this->delivery_method, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1011,6 +1129,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
             case 5:
                 return $this->getStockLimit();
                 break;
+            case 6:
+                return $this->getDeliveryCost();
+                break;
+            case 7:
+                return $this->getDeliveryMethod();
+                break;
             default:
                 return null;
                 break;
@@ -1046,6 +1170,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
             $keys[3] => $this->getGpsLat(),
             $keys[4] => $this->getGpsLong(),
             $keys[5] => $this->getStockLimit(),
+            $keys[6] => $this->getDeliveryCost(),
+            $keys[7] => $this->getDeliveryMethod(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1111,6 +1237,12 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
             case 5:
                 $this->setStockLimit($value);
                 break;
+            case 6:
+                $this->setDeliveryCost($value);
+                break;
+            case 7:
+                $this->setDeliveryMethod($value);
+                break;
         } // switch()
     }
 
@@ -1141,6 +1273,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         if (array_key_exists($keys[3], $arr)) $this->setGpsLat($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setGpsLong($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setStockLimit($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDeliveryCost($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDeliveryMethod($arr[$keys[7]]);
     }
 
     /**
@@ -1158,6 +1292,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         if ($this->isColumnModified(FulfilmentCenterTableMap::GPS_LAT)) $criteria->add(FulfilmentCenterTableMap::GPS_LAT, $this->gps_lat);
         if ($this->isColumnModified(FulfilmentCenterTableMap::GPS_LONG)) $criteria->add(FulfilmentCenterTableMap::GPS_LONG, $this->gps_long);
         if ($this->isColumnModified(FulfilmentCenterTableMap::STOCK_LIMIT)) $criteria->add(FulfilmentCenterTableMap::STOCK_LIMIT, $this->stock_limit);
+        if ($this->isColumnModified(FulfilmentCenterTableMap::DELIVERY_COST)) $criteria->add(FulfilmentCenterTableMap::DELIVERY_COST, $this->delivery_cost);
+        if ($this->isColumnModified(FulfilmentCenterTableMap::DELIVERY_METHOD)) $criteria->add(FulfilmentCenterTableMap::DELIVERY_METHOD, $this->delivery_method);
 
         return $criteria;
     }
@@ -1226,6 +1362,8 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         $copyObj->setGpsLat($this->getGpsLat());
         $copyObj->setGpsLong($this->getGpsLong());
         $copyObj->setStockLimit($this->getStockLimit());
+        $copyObj->setDeliveryCost($this->getDeliveryCost());
+        $copyObj->setDeliveryMethod($this->getDeliveryMethod());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1815,8 +1953,11 @@ abstract class FulfilmentCenter implements ActiveRecordInterface
         $this->gps_lat = null;
         $this->gps_long = null;
         $this->stock_limit = null;
+        $this->delivery_cost = null;
+        $this->delivery_method = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

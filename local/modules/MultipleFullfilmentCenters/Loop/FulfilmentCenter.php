@@ -39,6 +39,8 @@ class FulfilmentCenter extends BaseLoop implements PropelSearchLoopInterface
 			->set("ID", $fulfilmentCenter->getId())
 			->set("NAME", $fulfilmentCenter->getName())
 			->set("ADDRESS", $fulfilmentCenter->getAddress())
+			->set("delivery_cost", $fulfilmentCenter->getDeliveryCost())
+			->set("delivery_method", $fulfilmentCenter->getDeliveryMethod())
 			->set("GPSLAT", (float)$fulfilmentCenter->getGpsLat())
 			->set("GPSLONG", (float)$fulfilmentCenter->getGpsLong())
 			->set("STOCKLIMIT", $fulfilmentCenter->getStockLimit());

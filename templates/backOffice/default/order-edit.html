@@ -155,6 +155,7 @@
                                                     <tr>
                                                        <th class="col-md-6">{intl l="Product"}</th>
                                                        {hook name="order-edit.order-product-table-header" location="order_edit_table_header" }
+                                                       <th class="col-md-1 text-right">{intl l="Revenue"}</th>
                                                        <th class="col-md-1 text-right">{intl l="Unit. price"}</th>
                                                        <th class="col-md-1 text-right">{intl l="Tax"}</th>
                                                        <th class="col-md-1 text-right">{intl l="Unit taxed price"}</th>
@@ -198,6 +199,11 @@
                                                         	{hook name="order-edit.product-list" location="order-product-list" order_id=$order_id order_product_id=$ID}
                                                         </td>
                                                         {hook name="order-edit.order-product-table-row" location="order_edit_table_row" order_product_id={$ID} }
+                                                        {ifhook rel="order.revenue.hook"}
+                                                            <td class="text-right">
+                                                                {hook name="order.revenue.hook" order_id=$order_id order_product_id=$productId price=$realPrice}
+                                                            </td>
+                                                        {/ifhook}
                                                         <td class="text-right" data-field-class="js-product-price"  data-value="{number_format($realPrice, 2, '.', '')}">{format_money number=$realPrice currency_id=$CURRENCY}</td>
                                                         <td class="text-right">{format_money number=$realTax currency_id=$CURRENCY}</td>
                                                         <td class="text-right">{format_money number=$realTaxedPrice currency_id=$CURRENCY}</td>
