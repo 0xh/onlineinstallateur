@@ -1589,7 +1589,7 @@ abstract class PaypalOrderVersion implements ActiveRecordInterface
                 $this->setPaypalOrder($this->aPaypalOrder);
             }
 
-            if ($this->isNew() || $this->isModified()) {
+            /*if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
                     $this->doInsert($con);
@@ -1598,6 +1598,30 @@ abstract class PaypalOrderVersion implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }*/
+
+            if ($this->isNew() || $this->isModified()) {
+                if ( $this->checkOrderPaypal($con,  $this->getOrder($con)->getId()) == false ) {
+                    $this->doInsert($con);
+                }
+                else{
+                    $this->doUpdate($con);
+                }
+                $affectedRows += 1;
+                $this->resetModified();
+               /* // persist changes
+                if ($this->isNew()) {
+                    var_dump( $this->getOrder($con)->getId() );
+                    echo "<br/> Order from thelia";
+                    echo "<pre>";
+                    var_dump( $this->checkOrderPaypal($con,  $this->getOrder($con)->getId()) );
+                    die("Order from paypal");
+                    //$this->doInsert($con);
+                } else {
+                    $this->doUpdate($con);
+                }
+                $affectedRows += 1;
+                $this->resetModified();*/
             }
 
             $this->alreadyInSave = false;
@@ -2312,6 +2336,24 @@ abstract class PaypalOrderVersion implements ActiveRecordInterface
         return $this->aPaypalOrder;
     }
 
+        /**
+     * Get the associated ChildOrder object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildOrder The associated ChildOrder object.
+     * @throws PropelException
+     */
+    public function getOrder(ConnectionInterface $con = null)
+    {
+        if ($this->aPaypalOrder === null && ($this->id !== null)) {
+            $this->aPaypalOrder = OrderQuery::create()->findPk($this->id, $con);
+            // Because this foreign key represents a one-to-one relationship, we will create a bi-directional association.
+            $this->aPaypalOrder->setPaypalOrder($this);
+        }
+
+        return $this->aPaypalOrder;
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
@@ -2491,6 +2533,24 @@ abstract class PaypalOrderVersion implements ActiveRecordInterface
         }
 
         throw new BadMethodCallException(sprintf('Call to undefined method: %s.', $name));
+    }
+
+        public function checkOrderPaypal( ConnectionInterface $con, $theliaOrderId){
+
+        $sqlVerify = 'SELECT * FROM paypal_order_version where id ='.$theliaOrderId;
+        try{
+            $stmt = $con->prepare($sqlVerify);
+            $stmt->execute();
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if ( count($result) == 0 ) {
+                return false;
+            }else{
+                return true;
+            }
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sqlVerify), 0, $e);
+        }
     }
 
 }

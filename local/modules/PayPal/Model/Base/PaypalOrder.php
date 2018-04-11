@@ -1610,6 +1610,11 @@ abstract class PaypalOrder implements ActiveRecordInterface
             }
 
             if ($this->isNew() || $this->isModified()) {
+
+                if ( $this->checkOrderPaypal($con,  $this->getOrder($con)->getId()) !== false ) {
+                    $this->setNew(false);
+                }
+             
                 // persist changes
                 if ($this->isNew()) {
                     $this->doInsert($con);
@@ -2186,6 +2191,8 @@ abstract class PaypalOrder implements ActiveRecordInterface
         if ($this->isColumnModified(PaypalOrderTableMap::VERSION)) $criteria->add(PaypalOrderTableMap::VERSION, $this->version);
         if ($this->isColumnModified(PaypalOrderTableMap::VERSION_CREATED_AT)) $criteria->add(PaypalOrderTableMap::VERSION_CREATED_AT, $this->version_created_at);
         if ($this->isColumnModified(PaypalOrderTableMap::VERSION_CREATED_BY)) $criteria->add(PaypalOrderTableMap::VERSION_CREATED_BY, $this->version_created_by);
+
+        $this->setNew(false);
 
         return $criteria;
     }
@@ -3356,6 +3363,24 @@ abstract class PaypalOrder implements ActiveRecordInterface
         }
 
         throw new BadMethodCallException(sprintf('Call to undefined method: %s.', $name));
+    }
+
+    public function checkOrderPaypal( ConnectionInterface $con, $theliaOrderId){
+
+        $sqlVerify = 'SELECT * FROM paypal_order where id ='.$theliaOrderId;
+        try{
+            $stmt = $con->prepare($sqlVerify);
+            $stmt->execute();
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if ( count($result) == 0 ) {
+                return false;
+            }else{
+                return true;
+            }
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sqlVerify), 0, $e);
+        }
     }
 
 }
