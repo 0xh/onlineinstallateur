@@ -16,8 +16,6 @@ namespace RevenueDashboard;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
 use Thelia\Module\BaseModule;
-use Propel\Runtime\Connection\ConnectionInterface;
-use Thelia\Install\Database;
 
 class RevenueDashboard extends BaseModule {
 
