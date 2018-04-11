@@ -851,6 +851,27 @@ class PayPalResponseController extends OrderController
             Logger::INFO
         );
 
+        try{
+            $order = OrderQuery::create()->findOneById( $payPalOrder->getId() );
+            $order->setTransactionRef( $payment->transactions[0]->related_resources[0]->sale->id );
+            $order->save();
+        }
+        catch(Exception $e){
+            PayPalLoggerService::log(
+                Translator::getInstance()->trans(
+                    'Transaction reference could not be set for order paied with payment_method : %method',
+                    [
+                        '%method' => $method
+                    ],
+                    PayPal::DOMAIN_NAME
+                ),
+                [
+                    'order_id' => $payPalOrder->getId(),
+                    'customer_id' => $payPalOrder->getOrder()->getCustomerId()
+                ],
+                Logger::WARNING
+            );
+        }      
 
         return $response;
     }
