@@ -18,6 +18,7 @@
             <argument>%kernel.debug%</argument>
             <tag name="hook.event_listener" event="main.body-top" />
             <tag name="hook.event_listener" event="main.stylesheet" />
+            <tag name="hook.event_listener" event="singleproduct.top" />
         </hook>
     </hooks>
 

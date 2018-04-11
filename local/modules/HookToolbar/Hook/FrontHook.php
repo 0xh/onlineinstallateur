@@ -39,4 +39,12 @@ class FrontHook extends BaseHook
     {
         $event->add('<script src="https://use.fontawesome.com/fea8382d6c.js"></script>');
     }
+
+    public function onSingleProductTop(HookRenderEvent $event)
+    {
+        $product_id = $event->getArgument('product');
+        $content = $this->render("single-product-top.html", [ 'mode' => $this->mode, 'product_id' => $product_id ]);
+        $event->add($content);
+    }
+
 } 
