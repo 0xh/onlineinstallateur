@@ -228,8 +228,7 @@ class MyshtUpdateStockController extends BaseFrontController {
 
     function getIdFulfilmentCenterMysht() {
         $id = FulfilmentCenterQuery::create()
-                ->findOneById(3);
-//                ->findOneByName("mysht");
+                ->findOneByName("mysht");
 
         if ($id) {
             return $id->getId();
