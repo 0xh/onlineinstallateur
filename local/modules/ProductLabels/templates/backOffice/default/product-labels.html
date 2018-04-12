@@ -1,0 +1,20 @@
+ <div class=" general-block-decorator">
+                    <div class="title title-without-tabs" style="margin-bottom:30px">
+                        {intl l='Hier können Sie die Preisetiketten in verschiedenen Größen herunterladen'}
+                    </div>
+					
+					<div>
+<a class="btn btn-primary" title="{intl l='Download label as PDF'}" href="{url path="/admin/products/labels/tab/pdf/%id/%size" id=$product_id size='A4'}">
+	<span class="glyphicon glyphicon-cloud-download"></span> {intl l='PDF | Label A4'}
+</a>
+
+<a class="btn btn-primary" title="{intl l='Download label as PDF'}" href="{url path="/admin/products/labels/tab/pdf/%id/%size" id=$product_id size='A5'}">
+	<span class="glyphicon glyphicon-cloud-download"></span> {intl l='PDF | Label A5'}
+</a>
+
+<a class="btn btn-primary" title="{intl l='Download label as PDF'}" href="{url path="/admin/products/labels/tab/pdf/%id/%size" id=$product_id size='A6'}">
+	<span class="glyphicon glyphicon-cloud-download"></span> {intl l='PDF | Label A6'}
+</a>
+</div>
+
+</div>

@@ -28,7 +28,7 @@ class BackHook extends BaseHook
                 'id' => 'tools_menu_hookcrawler',
                 'class' => '',
                 'url' => URL::getInstance()->absoluteUrl('/admin/module/HookAdminCrawlerDashboard'),
-            		'title' => $this->trans('Crawler', [], HookAdminCrawlerDashboard::DOMAIN_NAME)
+            	'title' => $this->trans('Crawler', [], HookAdminCrawlerDashboard::DOMAIN_NAME)
             ]
         );
     }

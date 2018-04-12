@@ -36,10 +36,11 @@ class ExportDataFromMyshtController extends BaseAdminController {
     protected $cookiefile = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "myshtcookieexport.txt";
     protected $csvFileLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS;
     protected $csvFilename = "";
-    protected $imageLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images" . DS;
-    protected $imageZip = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS . "images.zip";
+    protected $imageLocation = THELIA_LOCAL_DIR . "config" . DS . "cookies" . DS . "temp" . DS;
+    protected $imageZip = "";
 
     const MYSHT_CSV_FILE = 'exportCsvDataMysht';
+    const MYSHT_IMAGES_FILE = 'exportImageDataMysht'; 
 
     protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
     protected $logFilePathMyShtProductImport = THELIA_LOG_DIR . DS . "mysht-generic-product-import.txt";
@@ -52,7 +53,15 @@ class ExportDataFromMyshtController extends BaseAdminController {
         $date = date('m.d.Y.h.i.s.a', time());
         $this->logFilePath = $this->logFilePath . $date . ".txt";
         $this->csvFilename = $this->csvFileLocation . self::MYSHT_CSV_FILE . $date . ".csv";
+        $this->imageLocation = $this->imageLocation . $date;
+        if (!file_exists($this->imageLocation)) {
+            mkdir($this->imageLocation, 0777, true);
+        }
+        
+        $this->imageZip = $this->imageLocation . self::MYSHT_IMAGES_FILE . $date . ".zip";
+        $this->imageLocation = $this->imageLocation . DS;
         $session->set(self::MYSHT_CSV_FILE, $this->csvFilename);
+        $session->set(self::MYSHT_IMAGES_FILE, $this->imageZip);
         $this->initCsvFile($this->csvFilename);
         $this->logout();
         $idartikels = $this->getProductsRefWitoutBrand();
@@ -100,7 +109,14 @@ class ExportDataFromMyshtController extends BaseAdminController {
             $date = date('m.d.Y.h.i.s.a', time());
             $this->logFilePath = $this->logFilePath . $date . ".txt";
             $this->csvFilename = $this->csvFileLocation . self::MYSHT_CSV_FILE . $date . ".csv";
+            $this->imageLocation = $this->imageLocation . $date;
+            if (!file_exists($this->imageLocation)) {
+                mkdir($this->imageLocation, 0777, true);
+            }
+            $this->imageLocation = $this->imageLocation . DS;
+            $this->imageZip = $this->imageLocation . self::MYSHT_IMAGES_FILE . $date . ".zip";
             $session->set(self::MYSHT_CSV_FILE, $this->csvFilename);
+            $session->set(self::MYSHT_IMAGES_FILE, $this->imageZip);
             $this->initCsvFile($this->csvFilename);
             $this->logout();
             $idartikels = explode(',', $this->getRequest()->get("idartikels"));
@@ -479,11 +495,14 @@ class ExportDataFromMyshtController extends BaseAdminController {
         if (null !== $response = $this->checkAuth(AdminResources::MODULE, 'atos', AccessManager::UPDATE)) {
             return $response;
         }
-
-        if (@file_get_contents($this->imageZip)) {
-            return Response::create(@file_get_contents($this->imageZip), 200, array(
+        $session = $this->getRequest()->getSession();
+        if ($session->has(self::MYSHT_IMAGES_FILE) == true) {
+            $file = $session->get(self::MYSHT_IMAGES_FILE);
+            $filePath = explode(DS, $file);
+            $filename = $filePath[sizeof($filePath) - 1];
+            return Response::create(@file_get_contents($file), 200, array(
                         'Content-type' => "text/plain",
-                        'Content-Disposition' => sprintf('Attachment;filename=imagesMysht.zip')
+                        'Content-Disposition' => sprintf('Attachment;filename='.$filename)
             ));
         } else {
             return $this->errorPage($this->getTranslator()->trans("No images.zip file has been found"), 403);
