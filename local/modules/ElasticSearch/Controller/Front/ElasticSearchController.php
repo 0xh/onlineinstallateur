@@ -140,7 +140,7 @@ class ElasticSearchController extends BaseFrontController
 
             $json = '{
                 "sort" : [
-                { "product_listen_price" : {"order" : "asc"}},
+                { "productprice" : {"order" : "asc"}},
                 "_score"
                 ],
                 "query" : {
@@ -163,7 +163,7 @@ class ElasticSearchController extends BaseFrontController
 
             $json = '{
                 "sort" : [
-                { "product_listen_price" : {"order" : "desc"}},
+                { "productprice" : {"order" : "desc"}},
                 "_score"
                 ],
                 "query" : {
