@@ -26,7 +26,6 @@ class ProductLabelsController extends BaseAdminController
         if($product == null) {
             return $this->errorPage("Couldn't find product for id ".$product_id);
         }
-        
         $product_variables = array("id"=>$product_id);
         $product_variables["title"] = $product->getTitle();
         $product_variables["ref"] = $product->getRef();
@@ -62,7 +61,9 @@ class ProductLabelsController extends BaseAdminController
             }
             
             $price = $pse->getProductPrices () [0]->getPrice();
-            $product_variables["price"] = $price * 1.2;
+            $price = round($price, 2);
+            $price =number_format((float)$price * 1.2, 2, '.', '');
+            $product_variables["price"] = $price;
         }
         
         $brand = $product->getBrand();
