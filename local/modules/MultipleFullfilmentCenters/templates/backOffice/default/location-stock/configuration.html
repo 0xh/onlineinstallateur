@@ -187,8 +187,33 @@
                             {/loop}
                         </tbody>
                     </table>
+                
+				<div class="col-md-6">
+					<div class="txt-div">
+	                    {form name="centers.config.form"}
+				           <form action="{url path='/admin/module/multiplefulfilmentcenters/locations/config'}" method="post">
+				               	{form_hidden_fields form=$form}
+				
+				               	{if $form_error}
+				                   <div class="alert alert-danger">{$form_error_message}</div>
+				               	{/if}
+				
+				               	{form_field form=$form field='success_url'}
+				                   <input type="hidden" name="{$name}" value="{url path='/admin/module/MultipleFullfilmentCenters'}" />
+				               	{/form_field}
+				               	
+				                {render_form_field form=$form field="fulfilment_center_default" value=$fulfilment_center_default} 
+				                {render_form_field form=$form field="fulfilment_center_reserve" value=$fulfilment_center_reserve} 
+				               
+								<button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l="Save"}">{intl l="Save"} 
+			                     	<span class="glyphicon glyphicon-ok"></span>
+			                    </button>
+				        	</form>
+						{/form}
                 </div>
             </div>
+            </div>
+            
             {hook name="module.configuration" location="module_configuration"  modulecode="MultipleFullfilmentCenters"}
         </div>
     </div>
