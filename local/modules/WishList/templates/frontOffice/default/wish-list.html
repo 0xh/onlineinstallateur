@@ -6,14 +6,14 @@
 {* Breadcrumb *}
 {block name='no-return-functions' append}
     {$breadcrumbs = [
-        ['title' => {intl l="Wish List"}, 'url'=>{url path="/wish-list"}]
+        ['title' => {intl l="Wish List" d="wishlist.fo.default"}, 'url'=>{url path="/wish-list"}]
     ]}
 {/block}
 
 {* Content *}
 {block name="main-content"}
 	<div id="wishlist-box" class="col-main col-md-12 grid">
-        <h1 id="main-label" class="page-header">{intl l="Wish list"}</h1>
+        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.default"}</h1>
         <div id="category-products">
         	<div class="products-content">
             	<ul class="list-unstyled row">
