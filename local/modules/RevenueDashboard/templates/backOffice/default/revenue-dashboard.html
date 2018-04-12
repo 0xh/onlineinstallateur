@@ -7,6 +7,7 @@
 {block name="page-title"}{intl l='Revenue Dashboard'}{/block}
 
 {block name="main-content"} 
+{render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
 {assign page {$smarty.get.page|default:1}}
 
 <div class="general-block-decorator dashboard">
@@ -18,6 +19,23 @@
         <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
     </ul>
 
+    <form action="{url path='/admin/module/revenuedashboard'}" method="get">
+        <div class="row" style="padding-bottom: 10px;">
+            <div class="col-sm-2">
+                <h5>{intl l="Start date:"}</h5>
+                <input type="text" id="datepickerStartDate" name="datepickerStartDate" class="form-control" value="{trim($smarty.get.datepickerStartDate)}">
+            </div>
+            <div class="col-sm-2">
+                <h5>{intl l="End date:"}</h5>
+                <input type="text" id="datepickerEndDate" name="datepickerEndDate" class="form-control" value="{trim($smarty.get.datepickerEndDate)}">
+            </div>
+            <div class="col-sm-2">
+                <h5>{intl l="Search:"}</h5>
+                <button type="submit" id="get_update_orders" class="btn btn-info form-control">Search</button>
+            </div>
+        </div>
+    </form>
+    
     <table class="table table-striped">
         <tr style="font-weight: bold; font-size: 15px;">
             <td>Id</td>
