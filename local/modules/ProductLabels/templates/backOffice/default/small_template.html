@@ -82,7 +82,7 @@ font-size:70px;
 	
 	{assign var="priceArray" value="."|explode:$product.price}
 
-{loop name="product.details" type="product" id=$product.id limit="1"}
+{loop name="product.details" type="product" id=$product.id limit="1" visible="*"}
 
 <div class="page">
 	
