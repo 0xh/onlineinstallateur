@@ -14,6 +14,7 @@ use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use Thelia\Model\Map\OrderProductTableMap;
+use Thelia\Model\Map\OrderTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\ProductQuery;
 
@@ -48,7 +49,7 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
                     ->set("purchase_price", $listing->getPurchasePrice())
                     ->set("total_purchase_price", $listing->getTotalPurchasePrice())
                     ->set("revenue", $listing->getRevenue());
-                    
+
             $loopResult->addRow($loopResultRow);
         }
 
@@ -57,9 +58,15 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
 
     public function buildModelCriteria() {
 
-         $query = OrderRevenueQuery::create()
+        $datepickerStartDate = $this->request->get("datepickerStartDate") ? $this->request->get("datepickerStartDate") : date('2001-01-01');
+        $datepickerEndDate = $this->request->get("datepickerEndDate") ? $this->request->get("datepickerEndDate") : date('Y-m-d');
+
+        $query = OrderRevenueQuery::create()
+                ->addJoin(OrderRevenueTableMap::ORDER_ID, OrderTableMap::ID)                
                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+                ->where(OrderTableMap::UPDATED_AT . " >= '$datepickerStartDate' AND " . OrderTableMap::UPDATED_AT . " <= '$datepickerEndDate' ")
                 ->orderBy(OrderRevenueTableMap::ID, Criteria::DESC);
+
         return $query;
     }
 
