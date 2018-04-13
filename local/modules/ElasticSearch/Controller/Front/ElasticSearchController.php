@@ -79,7 +79,7 @@ class ElasticSearchController extends BaseFrontController
         }   
         
         
-      public function searchByCategoryId( $name = null){
+      public function searchByCategoryName( $name = null){
             $objElasticConnection = new ElasticConnection();
             $objElasticSearchConnection = $objElasticConnection::getConnection();
             if (NULL !== $name) {
