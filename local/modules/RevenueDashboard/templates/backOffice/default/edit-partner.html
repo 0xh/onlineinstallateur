@@ -1,0 +1,65 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+{$admin_current_location = 'Partner edit'}
+{/block}
+
+{block name="page-title"}{intl l='Partner edit'}{/block}
+
+{block name="main-content"} 
+{render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
+<table class="table table-striped">
+    <tr>
+        {form name="revenue.partner.form"}
+    <form action="{url path='/admin/module/revenue-wholesale-partner-edit'}" method="post">
+
+        {form_hidden_fields form=$form}
+        <td style="display: none;">{render_form_field form=$form field="id" value=$id}</td>
+        <td>{render_form_field form=$form field="partnerName" value=$partnerName}</td>
+        <td>{render_form_field form=$form field="description" value=$description}</td>
+        <td>{render_form_field form=$form field="comment" value=$comment}</td>
+        <td>{render_form_field form=$form field="priority" value=$priority}</td>
+        <td>{render_form_field form=$form field="address" value=$address}</td>
+        <td>{render_form_field form=$form field="deposit_address" value=$deposit_address}</td>
+        <td>
+            <div class="form-group ">
+                <label for="" class="control-label">
+                    Contact person <span class="required">*</span>
+                </label>
+                <select class="filter contact-person form-control">
+                    <option value="">Select Contact</option>
+                    {loop name="revenue.partner.contact.loop" type="revenue.partner.contact.loop"}
+                    <option value="{$id};{$firstname} {$lastname}" {if "{$id};{$firstname} {$lastname}" == $contact_person }selected{/if}>{$firstname} {$lastname}</option>
+                    {/loop}
+                </select>
+            </div>
+        </td>
+        <td style="display: none;">{render_form_field form=$form field="contact_person" value=$contact_person}</td>
+        <td>{render_form_field form=$form field="delivery_types" value=$delivery_types}</td>
+        <td>{render_form_field form=$form field="return_policy" value=$return_policy}</td>
+        <td>
+            <button type="submit" name="save_mode" value="edit-partner"
+                    class="form-submit-button btn btn-sm btn-default btn-success"
+                    title="{intl l="Save"}">
+                    {intl l="Save"} <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </td>
+
+    </form>
+    {/form}
+
+    <form action="{url path='/admin/module/revenue-wholesale-partner'}" method="post">
+
+        <td>
+            <button type="submit" name="save_mode"
+                    class="form-submit-button btn btn-sm btn-default btn-success"
+                    title="{intl l="Close"}">
+                    {intl l="Close"} <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </td>
+
+    </form>
+
+</tr>
+</table>
+{/block}

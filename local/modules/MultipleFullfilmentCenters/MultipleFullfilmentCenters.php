@@ -34,10 +34,8 @@ class MultipleFullfilmentCenters extends BaseModule
         $database = new Database($con);
         $database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
         
-        if (!self::getConfigValue('is_initialized', false)) {
-        	$database->insertSql(null, [__DIR__ . "/Config/insert_tables.sql"]);
-        	self::setConfigValue('is_initialized', true);
-        }
+        $database->insertSql(null, [__DIR__ . "/Config/insert_tables.sql"]);
+        return TRUE;
     }
 
     public function getHooks()

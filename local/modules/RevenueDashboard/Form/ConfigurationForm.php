@@ -55,6 +55,19 @@ class ConfigurationForm extends BaseForm {
                         'label' => $this->translator->trans('Cost transaction for module ' . $module[1], [], RevenueDashboard::DOMAIN_NAME)
             ]);
         }
+        $this->formBuilder->add("delivery_cost", "text", [
+            'constraints' => [
+                new NotBlank()
+            ],
+            'label' => $this->translator->trans('Delivery cost ', [], RevenueDashboard::DOMAIN_NAME),
+        ]);
+        
+        $this->formBuilder->add("delivery_method", "text", [
+            'constraints' => [
+                new NotBlank()
+            ],
+            'label' => $this->translator->trans('Delivery method ', [], RevenueDashboard::DOMAIN_NAME),
+        ]);
     }
 
     /**

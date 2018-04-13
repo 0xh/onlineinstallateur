@@ -31,7 +31,7 @@ class LocationStockHandler
 		if($hideVirtualCenter) {
 			$stock
 				->where('`fulfilment_center_products`.PRODUCT_STOCK >= '. $quantityCart)
-				->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID > 1')
+				->where('`fulfilment_center_products`.FULFILMENT_CENTER_ID != '.MultipleFullfilmentCenters::getConfigValue('fulfilment_center_default'))
 				->find();
 		}
 		else {

@@ -40,8 +40,13 @@
             {flash type="thelia.import.error"}
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class=" alert alert-danger">
-                            {$MESSAGE nofilter}
+                        <div class="alert alert-danger"> 
+                        	{$MESSAGE|regex_replace:"#(<br */?>\s*)+#i":"<br />" nofilter}
+                        	{if strpos($HANDLE_CLASS, 'GenericProductImport') != false} 
+	                        	<br><br>
+	                        	<p>{intl l="Download the CSV with the products which were not imported"}</p>
+	                        	<input type="button" value="{intl l='Download'}" onclick="window.location = '/admin/import/full-product-import/download-csv';">
+	                        {/if}
                         </div>
                     </div>
                 </div>
@@ -52,6 +57,11 @@
                     <div class="col-xs-12">
                         <div class=" alert alert-success">
                             {$MESSAGE nofilter}
+                            {if strpos($HANDLE_CLASS, 'CreateMyshtProductImport') != false} 
+	                        	<br><br>
+	                        	<p>{intl l="Download the CSV for GenericProductImport"}</p>
+	                        	<input type="button" value="{intl l='Download'}" onclick="window.location = '/admin/import/generic-product-import/download-csv';">
+	                        {/if}
                         </div>
                     </div>
                 </div>

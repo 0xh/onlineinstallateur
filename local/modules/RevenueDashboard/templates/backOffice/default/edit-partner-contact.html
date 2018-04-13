@@ -1,0 +1,62 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+{$admin_current_location = 'Partners Contact Edit'}
+{/block}
+
+{block name="page-title"}{intl l='Partners Contact Edit'}{/block}
+
+{block name="main-content"} 
+{render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
+<table class="table table-striped">
+    <tr>
+        {form name="revenue.partner.contact.form"}
+    <form action="{url path='/admin/module/revenue-wholesale-partner-contact-edit'}" method="post">
+
+        {form_hidden_fields form=$form}
+        <td style="display: none;">{render_form_field form=$form field="id" value=$id}</td>
+        <td style="display: none;">{render_form_field form=$form field="title" value=$title}</td>
+        <td>
+            <div class="form-group ">
+                <label for="" class="control-label">
+                    Title  <span class="required">*</span>
+                </label>
+                <select class="filter customer-title form-control">
+                    <option value="">Select Title</option>
+                    {loop name="revenue.customer.title.loop" type="revenue.customer.title.loop"}
+                    <option value="{$id}" {if $id == $title }selected{/if}>{$long}</option>
+                    {/loop}
+                </select>
+            </div>
+        </td>
+        <td>{render_form_field form=$form field="firstname" value=$firstname}</td>
+        <td>{render_form_field form=$form field="lastname" value=$lastname}</td>
+        <td>{render_form_field form=$form field="telefon" value=$telefon}</td>
+        <td>{render_form_field form=$form field="email" value=$email}</td>
+        <td>{render_form_field form=$form field="profile_website" value=$profile_website}</td>
+        <td>{render_form_field form=$form field="position" value=$position}</td>
+        <td>{render_form_field form=$form field="department" value=$department}</td>
+        <td>{render_form_field form=$form field="comment" value=$comment}</td>
+        <td>
+            <button type="submit" name="save_mode" value="edit-partner-contact"
+                    class="form-submit-button btn btn-sm btn-default btn-success"
+                    title="{intl l="Save"}">
+                    {intl l="Save"} <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </td>
+
+    </form>
+    {/form}
+
+    <form action="{url path='/admin/module/revenue-wholesale-partner-contact'}" method="post">
+        <td>
+            <button type="submit" name="save_mode"
+                    class="form-submit-button btn btn-sm btn-default btn-success"
+                    title="{intl l="Close"}">
+                    {intl l="Close"} <span class="glyphicon glyphicon-ok"></span>
+            </button>
+        </td>
+    </form>
+</tr>
+</table>
+{/block}
