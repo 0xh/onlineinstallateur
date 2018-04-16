@@ -48,11 +48,11 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 				$cartProductLocation->setOrderId($order->getId())
 					->save();
 				
-				if($cartProductLocation->getFulfilmentCenterId() ==  MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve')) {
+				if($cartProductLocation->getFulfilmentCenterId() == 3) {
 					
 					$productLocation = FulfilmentCenterProductsQuery::create()
 						->filterByProductId($productId)
-						->filterByFulfilmentCenterId(MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve'))
+						->filterByFulfilmentCenterId(3)
 						->findOne();
 					
 					$productLocation->setReservedStock($productLocation->getReservedStock() + $cartProductLocation->getQuantity())
@@ -95,15 +95,10 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 						 
 						$productLocation->setProductStock($newStockLocation);
 						 
-						if($productLocation->getFulfilmentCenterId() == MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve')) {
+						if($productLocation->getFulfilmentCenterId() == 3) {
 							$productLocation->setReservedStock($productLocation->getReservedStock() - $orderProduct->getQuantity());
 						}
 						
-                                                $fulfilmentCenterOrder = new \MultipleFullfilmentCenters\Model\FulfilmentCenterOrder();
-                                                $fulfilmentCenterOrder->setCenterId($productLocation->getFulfilmentCenterId());
-                                                $fulfilmentCenterOrder->setOrderId($order->getId());
-                                                $fulfilmentCenterOrder->save();
-                                                
 						$productLocation->save();
 					 } 
 				}
@@ -155,7 +150,7 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		$productLocalPickup = OrderLocalPickupQuery::create()
 			->filterByProductId($cartItem->getProductId())
 			->filterByCartId($cartItem->getCartId())
-			->filterByFulfilmentCenterId(MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve'))
+			->filterByFulfilmentCenterId(3)
 			->findOne();
 		
 		return $productLocalPickup;
@@ -167,7 +162,7 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 		Tlog::getInstance()->error('cart event - productid: '.$event->getProduct().'- cartId: '.$event->getCart()->getId().'- quantiy: '.$event->getQuantity());
 		
 		$cartItem = $this->findCartItem($event);
-		$itemLocalPickup = $this->getItemLocalPickupForProductPage($cartItem, MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve'));
+		$itemLocalPickup = $this->getItemLocalPickupForProductPage($cartItem, 3);
 		
 		if($itemLocalPickup) {
 			Tlog::getInstance()->error('update quantity');
@@ -184,7 +179,7 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface
 					->filterByCartId($event->getCart()->getId())
 					->findOneOrCreate();
 				
-				$cartProductLocation->setFulfilmentCenterId(MultipleFullfilmentCenters::getConfigValue('fulfilment_center_reserve'))
+				$cartProductLocation->setFulfilmentCenterId(3)
 					->setQuantity($event->getQuantity())
 					->save(); 
 				

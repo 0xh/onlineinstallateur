@@ -31,11 +31,12 @@ class BackHook extends BaseHook {
         ]);
     }
 
-    public function onMainJs(HookRenderEvent $event)
-    {
-        $event->add($this->addJS('assets/js/typeahead.bundle.js'));
-    }
-    
+//    public function onMainJs(HookRenderEvent $event)
+//    {
+//        $event->add($this->addJS('assets/js/jquery-ui.js'));
+//        $event->add($this->addJS('assets/js/amazon-integration.js'));
+//    }
+//    
 //    public function onMainCss(HookRenderEvent $event)
 //    {
 //        $event->add($this->addCSS('assets/css/amazonintegration.css'));

@@ -47,8 +47,4 @@
     <route id="multiplefulfilmentcenters.buy.format" path="/choose-buy-format">
         <default key="_controller">MultipleFullfilmentCenters\Controller\Front\CartProductStockLocationController::setBuyFormat</default>
     </route>
-    
-    <route id="multiplefulfilmentcenters.locations.config" path="/admin/module/multiplefulfilmentcenters/locations/config">
-        <default key="_controller">MultipleFullfilmentCenters\Controller\Admin\LocationStockController::addLocationsConfig</default>
-    </route>
 </routes>
