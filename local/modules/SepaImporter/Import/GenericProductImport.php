@@ -416,71 +416,6 @@ class GenericProductImport extends AbstractImport {
             
             $mod = new Module();
             $mod->getActivate();
-<<<<<<< HEAD
-            
-            if (Common::getActiveModule("AmazonIntegration") == 1)
-            {
-                $log->debug("AMAZON IMAGES - BEFORE get images from Amazon in Generic product import");
-                // get info from amazon
-                $amazonAPI = new AmazonAWSController();
-                $infoAmazon = $amazonAPI->getProductInfoFromAmazon($EAN_code);
-
-                $this->saveImageFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
-                $this->saveFeaturesColorFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
-                $this->saveFeaturesHeightFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
-                $this->saveFeaturesLengthFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
-                $this->saveFeaturesWidthFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
-            }
-                      
-            // product description en_US
-            $productI18n = new ProductI18n ();
-            $productI18n->setProduct($productThelia);
-            $productI18n->setLocale("en_US");
-
-            if ($produkt_titel != null)
-                $productI18n->setTitle($produkt_titel);
-
-            if ($beschreibung != null)
-                $productI18n->setDescription($beschreibung);
-            
-            if (Common::getActiveModule("AmazonIntegration") == 1)
-            {
-                if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
-                {
-                	$productI18n->setDescription(utf8_encode($infoAmazon['description']));
-                }
-            }
-
-            if ($kurze_beschreibung != null)
-                $productI18n->setChapo($kurze_beschreibung);
-
-            if ($postscriptum != null)
-                $productI18n->setPostscriptum($postscriptum);
-
-            if ($meta_titel != null)
-                $productI18n->setMetaTitle($meta_titel);
-
-            if ($meta_beschreibung != null)
-                $productI18n->setMetaDescription($meta_beschreibung);
-
-            if ($meta_keywords != null)
-                $productI18n->setMetaKeywords($meta_keywords);
-
-            $productI18n->save();
-            //$log->debug ( " product_i18n en_US is added ".$productI18n->__toString() );
-            $productThelia->addProductI18n($productI18n);
-
-            // product description de_DE
-            $productI18n = new ProductI18n ();
-            $productI18n->setProduct($productThelia);
-            $productI18n->setLocale("de_DE");
-            if ($produkt_titel != null)
-                $productI18n->setTitle($produkt_titel);
-
-            if ($beschreibung != null)
-                $productI18n->setDescription($beschreibung);
-=======
->>>>>>> Revert "Merge branch 'dev'"
             
             if (Common::getActiveModule("AmazonIntegration") == 1)
             {
@@ -636,7 +571,6 @@ class GenericProductImport extends AbstractImport {
             	else {
                 	$pse->setQuantity($menge);
             	}
-<<<<<<< HEAD
             }
             
             if ($ist_in_Angebot != null)
@@ -656,27 +590,6 @@ class GenericProductImport extends AbstractImport {
                 }
             }
             
-=======
-            }
-            
-            if ($ist_in_Angebot != null)
-                $pse->setPromo($ist_in_Angebot);
-
-            if ($ist_neu != null)
-                $pse->setNewness($ist_neu);
-
-            if ($gewicht != null)
-                $pse->setWeight($gewicht);
-
-            if (Common::getActiveModule("AmazonIntegration") == 1)
-            {
-                if ($gewicht == null && $infoAmazon['weight'])
-                {
-                    $pse->setWeight($infoAmazon['weight']);
-                }
-            }
-            
->>>>>>> Revert "Merge branch 'dev'"
             if ($EAN_code != null)
                 $pse->setEanCode($EAN_code);
 
