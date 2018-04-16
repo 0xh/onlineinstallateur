@@ -59,6 +59,9 @@ class Comment extends BaseModule
 
     public function postActivation(ConnectionInterface $con = null)
     {
+    	$database = new Database($con);
+    	$database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
+    	
         // Config
         if (null === ConfigQuery::read('comment_activated')) {
             ConfigQuery::write('comment_activated', Comment::CONFIG_ACTIVATED);

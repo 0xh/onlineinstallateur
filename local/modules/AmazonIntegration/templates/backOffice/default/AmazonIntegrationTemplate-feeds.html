@@ -27,13 +27,22 @@
 				</button>
 	    	</form>
 		{/form}
+                
+                <div style="padding-top: 20px;">
+                    <form action="{url path='/admin/module/amazonintegration/get-all-products-for-save-ranking'}" method="post">
+                        <button type="submit" class="btn btn-primary action-btn" title="{intl l='Get ranking for all hausfabrik products'}" >
+                            <span>Get ranking for all hausfabrik products </span>
+                        </button>
+                    </form>
+                </div>
+                
 		<br><br>
 		{ifloop rel="amazon_ranking"}
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>Product id</th>
-						<th>Ref</th>
+						<th>EAN</th>
 						<th>Asin</th>
 						<th>Ranking</th>
 						<th>Lowest price</th>
