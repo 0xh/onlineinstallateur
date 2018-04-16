@@ -167,6 +167,7 @@
         </import>
         <import id="triworx.update.stock.real.center"
                 class="SepaImporter\Import\UpdateStockFromTriworxInRealCenter"
+<<<<<<< HEAD
                 category_id="thelia.import.products">
             <import_descriptive locale="en_US">
                 <title>Triworx import in real fulfilment center (Wiener Neudorf)</title>
@@ -195,6 +196,8 @@
         </import>
         <import id="triworx.update.stock.real.center"
                 class="SepaImporter\Import\UpdateStockFromTriworxInRealCenter"
+=======
+>>>>>>> Revert "Merge branch 'dev'"
                 category_id="thelia.import.products">
             <import_descriptive locale="en_US">
                 <title>Triworx import in real fulfilment center (Wiener Neudorf)</title>

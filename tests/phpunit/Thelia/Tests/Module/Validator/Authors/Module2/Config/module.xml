@@ -14,11 +14,15 @@
     </descriptive>
     <descriptive locale="fr_FR">
         <title>test authors</title>
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> Revert "Merge branch 'dev'"
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_1.xsd">
     <fullnamespace>Paypal\Paypal</fullnamespace>
     <descriptive locale="en_US">
         <title>Pay with Paypal</title>
+<<<<<<< HEAD
     </descriptive>
     <descriptive locale="fr_FR">
         <title>Paiement avec Paypal</title>
@@ -29,6 +33,11 @@
         <language>fr_FR</language>
     </languages>
 <<<<<<< HEAD:tests/phpunit/Thelia/Tests/Module/Validator/Authors/Module2/Config/module.xml
+=======
+    </descriptive>
+    <descriptive locale="fr_FR">
+        <title>Paiement avec Paypal</title>
+>>>>>>> Revert "Merge branch 'dev'"
     <version>0.1</version>
     <authors>
         <author>

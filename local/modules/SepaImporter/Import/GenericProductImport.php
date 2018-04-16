@@ -24,11 +24,6 @@ use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProducts;
-use Thelia\Model\BrandQuery;
-use Thelia\Model\CategoryQuery;
-use Thelia\Model\TemplateQuery;
-use MultipleFullfilmentCenters\Model\FulfilmentCenterQuery;
-use Thelia\Model\LangQuery;
 
 /* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
@@ -421,6 +416,7 @@ class GenericProductImport extends AbstractImport {
             
             $mod = new Module();
             $mod->getActivate();
+<<<<<<< HEAD
             
             if (Common::getActiveModule("AmazonIntegration") == 1)
             {
@@ -483,8 +479,34 @@ class GenericProductImport extends AbstractImport {
 
             if ($beschreibung != null)
                 $productI18n->setDescription($beschreibung);
+=======
+>>>>>>> Revert "Merge branch 'dev'"
             
+            if (Common::getActiveModule("AmazonIntegration") == 1)
+            {
+                $log->debug("AMAZON IMAGES - BEFORE get images from Amazon in Generic product import");
+                // get info from amazon
+                $amazonAPI = new AmazonAWSController();
+                $infoAmazon = $amazonAPI->getProductInfoFromAmazon($EAN_code);
 
+                $this->saveImageFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
+                $this->saveFeaturesColorFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
+                $this->saveFeaturesHeightFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
+                $this->saveFeaturesLengthFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
+                $this->saveFeaturesWidthFromAmazon($log, $productThelia, $EAN_code, $infoAmazon);
+            }
+                      
+            // product description en_US
+            $productI18n = new ProductI18n ();
+            $productI18n->setProduct($productThelia);
+            $productI18n->setLocale("en_US");
+
+            if ($produkt_titel != null)
+                $productI18n->setTitle($produkt_titel);
+
+            if ($beschreibung != null)
+                $productI18n->setDescription($beschreibung);
+            
             if (Common::getActiveModule("AmazonIntegration") == 1)
             {
                 if ($infoAmazon['description'] && (strlen($infoAmazon['description']) > strlen($beschreibung)))
@@ -614,6 +636,7 @@ class GenericProductImport extends AbstractImport {
             	else {
                 	$pse->setQuantity($menge);
             	}
+<<<<<<< HEAD
             }
             
             if ($ist_in_Angebot != null)
@@ -633,6 +656,27 @@ class GenericProductImport extends AbstractImport {
                 }
             }
             
+=======
+            }
+            
+            if ($ist_in_Angebot != null)
+                $pse->setPromo($ist_in_Angebot);
+
+            if ($ist_neu != null)
+                $pse->setNewness($ist_neu);
+
+            if ($gewicht != null)
+                $pse->setWeight($gewicht);
+
+            if (Common::getActiveModule("AmazonIntegration") == 1)
+            {
+                if ($gewicht == null && $infoAmazon['weight'])
+                {
+                    $pse->setWeight($infoAmazon['weight']);
+                }
+            }
+            
+>>>>>>> Revert "Merge branch 'dev'"
             if ($EAN_code != null)
                 $pse->setEanCode($EAN_code);
 
