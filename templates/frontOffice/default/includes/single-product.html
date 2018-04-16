@@ -106,6 +106,7 @@
 							{if $QUANTITY }
 								<span class="in ">{intl l='In Stock' d="fo.default"}</span> 
 							{else}
+
                              <span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$ID}}</small></em></span>
 							{/if}
                        {/if}
