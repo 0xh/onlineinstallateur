@@ -59,7 +59,7 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
     public function buildModelCriteria() {
 
         $datepickerStartDate = $this->request->get("datepickerStartDate") ? $this->request->get("datepickerStartDate") : date('2001-01-01');
-        $datepickerEndDate = $this->request->get("datepickerEndDate") ? $this->request->get("datepickerEndDate") : date('Y-m-d');
+        $datepickerEndDate = $this->request->get("datepickerEndDate") ? $this->request->get("datepickerEndDate") : date('Y-m-d', strtotime("+1 day"));
 
         $query = OrderRevenueQuery::create()
                 ->addJoin(OrderRevenueTableMap::ORDER_ID, OrderTableMap::ID)                
