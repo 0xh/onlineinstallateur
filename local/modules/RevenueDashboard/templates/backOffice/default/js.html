@@ -1,0 +1,77 @@
+<script>
+
+    window.onload = function () {
+
+        $(".customer-title").change(function () {
+            $('#partnercontactform-id-title').val($(".customer-title").val());
+        });
+
+        $(".contact-person").change(function () {
+            $('#partnerform-id-contact_person').val(
+                    $(".contact-person").val());
+        });
+
+        $(".partner-name").change(function () {
+            $('#partnerproductform-id-partner_id').val(
+                    $(".partner-name").val());
+        });
+
+        $(function () {
+
+            $("#partnerproductform-id-valid_until").datepicker({
+                onSelect: function (date) {
+                }});
+           
+            $("#datepickerStartDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (date) {
+                }});
+            
+            $("#datepickerEndDate").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (date) {
+                }});
+
+        });
+
+        $("#select-partner").change(function () {
+            $('#partner-id').val($("#partner_id_" + $("#select-partner").val()).attr("value"));
+            $('#prod-ref').val($("#partner_id_" + $("#select-partner").val()).attr("prodRef"));
+            $('#prod-price').val($("#partner_id_" + $("#select-partner").val()).attr("prodPrice"));
+        });
+
+        $("input[type=radio][revenue=revenue]").change(function () {
+
+            $('#wait').show();
+            prodId = $(this).val();
+            orderId = $("#rev_input_order_id").val();
+            productRef = $("#rev_input_ref_" + $(this).val()).val();
+            price = $("#rev_input_price_" + $(this).val()).val();
+
+            if ($(this).attr("noPartner")) {
+                partnerId = 0;
+                purchePrice = $("#rev_input_price_none_" + $(this).val()).val();
+            } else {
+                partnerId = $("#rev_input_partner_id_" + $(this).val()).val();
+                purchePrice = $("#rev_input_purchase_price_" + $(this).val()).val();
+            }
+
+            $.ajax({
+                url: "/admin/module/update-order-product-revenue/" + orderId + "/" + productRef + "/"
+                        + price + "/" + purchePrice + "/" + partnerId + "/" + prodId,
+                type: "post",
+                success: function (response) {
+                    console.log(response);
+                    $('#wait').hide();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    $('#wait').hide();
+                }
+
+
+            });
+        });
+
+    }
+</script>
