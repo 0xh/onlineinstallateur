@@ -42,7 +42,6 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface {
                 $prod = \Thelia\Model\ProductQuery::create()->findOneByRef($orderProduct->getProductRef());
                 $productId = $prod->getId();
             }
-            $productId = $orderProduct->getVirtualColumn('product_id');
 
             // fulfill order_local_pickup with orderId - for products that can be picked up from fulfilment centers
             $cartProductLocation = OrderLocalPickupQuery::create()
