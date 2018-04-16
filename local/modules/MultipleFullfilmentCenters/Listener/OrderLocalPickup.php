@@ -230,6 +230,4 @@ class OrderLocalPickup extends BaseAction implements EventSubscriberInterface {
             TheliaEvents::CART_ADDITEM => array("insertProductPickupLocation", 128)
         );
     }
-
->>>>>>> dev
 }
