@@ -51,7 +51,6 @@ use Thelia\Module\Exception\DeliveryException;
 use MultipleFullfilmentCenters\Model\OrderLocalPickupQuery;
 use MultipleFullfilmentCenters\Model\FulfilmentCenterProductsQuery;
 use Thelia\Mailer\MailerFactory;
-use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
 
 /**
  * Class OrderController
@@ -219,7 +218,7 @@ class OrderController extends BaseFrontController
             		->filterByCartId($cartItem->getCartId())
 	            	->findOneOrCreate();
             	
-	            $fulfilmentCenter = MultipleFullfilmentCenters::getConfigValue('fulfilment_center_default');
+	            $fulfilmentCenter = 1;
 	            
 	            if($cartProductLocation->getFulfilmentCenterId() && $deliveryModuleId == 49) {
 	            	
@@ -228,11 +227,10 @@ class OrderController extends BaseFrontController
 		            	->filterByFulfilmentCenterId($cartProductLocation->getFulfilmentCenterId())
 		            	->findOne();
 	            	
-		            if($productCenter) {
-			           	if($productCenter->getProductStock() >= $cartItem->getQuantity()) {
+		            if($productCenter)
+			           	if($productCenter->getProductStock() >= $cartItem->getQuantity())
 		            		$fulfilmentCenter = $cartProductLocation->getFulfilmentCenterId();
-			           	}
-		            }
+	            	
 	            }
 	            
 	            $cartProductLocation->setFulfilmentCenterId($fulfilmentCenter)

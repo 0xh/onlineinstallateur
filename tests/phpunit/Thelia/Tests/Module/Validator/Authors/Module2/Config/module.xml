@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module xmlns="http://thelia.net/schema/dic/module"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<<<<<<< HEAD:tests/phpunit/Thelia/Tests/Module/Validator/Authors/Module2/Config/module.xml
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>AuthorTest\AuthorTest</fullnamespace>
     <descriptive locale="en_US">
@@ -13,13 +14,21 @@
     </descriptive>
     <descriptive locale="fr_FR">
         <title>test authors</title>
+=======
+        xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_1.xsd">
+    <fullnamespace>Paypal\Paypal</fullnamespace>
+    <descriptive locale="en_US">
+        <title>Pay with Paypal</title>
     </descriptive>
-    <!-- <logo></logo> -->
-    <!--<images-folder>images</images-folder>-->
+    <descriptive locale="fr_FR">
+        <title>Paiement avec Paypal</title>
+>>>>>>> Revert "Merge branch 'dev'":local/modules/Paypal/Config/module.xml
+    </descriptive>
     <languages>
         <language>en_US</language>
         <language>fr_FR</language>
     </languages>
+<<<<<<< HEAD:tests/phpunit/Thelia/Tests/Module/Validator/Authors/Module2/Config/module.xml
     <version>0.1</version>
     <authors>
         <author>
@@ -39,3 +48,14 @@
     <thelia>2.2.0</thelia>
     <stability>other</stability>
 </module>
+=======
+    <version>2.0</version>
+    <author>
+        <name>Thelia</name>
+        <email>info@thelia.net</email>
+    </author>
+    <type>payment</type>
+    <thelia>2.1.0</thelia>
+    <stability>prod</stability>
+</module>
+>>>>>>> Revert "Merge branch 'dev'":local/modules/Paypal/Config/module.xml

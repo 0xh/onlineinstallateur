@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9298540e2ee2e75b1cb0e7cdf7ffeac",
+    "hash": "34243f7620775500e644522876abe4d4",
+    "content-hash": "28904b0d89062188cd4ce56fa788e3bc",
     "packages": [
         {
             "name": "commerceguys/addressing",
@@ -67,7 +68,7 @@
                 "localization",
                 "postal"
             ],
-            "time": "2015-12-24T23:07:20+00:00"
+            "time": "2015-12-24 23:07:20"
         },
         {
             "name": "commerceguys/enum",
@@ -105,7 +106,7 @@
                 }
             ],
             "description": "A PHP 5.4+ enumeration library.",
-            "time": "2015-02-27T21:36:56+00:00"
+            "time": "2015-02-27 21:36:56"
         },
         {
             "name": "doctrine/cache",
@@ -175,7 +176,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-19T05:03:47+00:00"
+            "time": "2015-12-19 05:03:47"
         },
         {
             "name": "doctrine/collections",
@@ -241,7 +242,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14T22:21:58+00:00"
+            "time": "2015-04-14 22:21:58"
         },
         {
             "name": "ensepar/html2pdf",
@@ -291,7 +292,7 @@
                 "pdf"
             ],
             "abandoned": "spipu/html2pdf",
-            "time": "2013-09-13T12:23:43+00:00"
+            "time": "2013-09-13 12:23:43"
         },
         {
             "name": "ensepar/tcpdf",
@@ -347,7 +348,7 @@
                 "pdf"
             ],
             "abandoned": "tecnickcom/tcpdf",
-            "time": "2013-09-12T17:00:40+00:00"
+            "time": "2013-09-12 17:00:40"
         },
         {
             "name": "imagine/imagine",
@@ -404,7 +405,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2015-09-19T16:54:05+00:00"
+            "time": "2015-09-19 16:54:05"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -446,7 +447,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20T16:49:30+00:00"
+            "time": "2014-11-20 16:49:30"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -523,7 +524,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2015-11-12T13:51:40+00:00"
+            "time": "2015-11-12 13:51:40"
         },
         {
             "name": "michelf/php-markdown",
@@ -574,85 +575,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2015-12-24T01:37:31+00:00"
-        },
-        {
-            "name": "monolog/monolog",
-            "version": "1.23.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
-                "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "~1.0",
-                "jakub-onderka/php-parallel-lint": "0.9",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpunit/phpunit": "~4.5",
-                "phpunit/phpunit-mock-objects": "2.3.0",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "sentry/sentry": "Allow sending log messages to a Sentry server"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "time": "2017-06-19T01:22:40+00:00"
+            "time": "2015-12-24 01:37:31"
         },
         {
             "name": "oyejorge/less.php",
@@ -714,7 +637,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2015-12-30T05:47:36+00:00"
+            "time": "2015-12-30 05:47:36"
         },
         {
             "name": "paragonie/random_compat",
@@ -762,56 +685,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-02-06T03:52:05+00:00"
-        },
-        {
-            "name": "paypal/rest-api-sdk-php",
-            "version": "v1.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paypal/PayPal-PHP-SDK.git",
-                "reference": "d2fac37f2cba3ccf2a23ce30d3d23f34d17d099b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paypal/PayPal-PHP-SDK/zipball/d2fac37f2cba3ccf2a23ce30d3d23f34d17d099b",
-                "reference": "d2fac37f2cba3ccf2a23ce30d3d23f34d17d099b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">=5.3.0",
-                "psr/log": "1.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PayPal": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache2"
-            ],
-            "authors": [
-                {
-                    "name": "PayPal",
-                    "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
-                }
-            ],
-            "description": "PayPal's PHP SDK for REST APIs",
-            "homepage": "http://paypal.github.io/PayPal-PHP-SDK/",
-            "keywords": [
-                "payments",
-                "paypal",
-                "rest",
-                "sdk"
-            ],
-            "time": "2016-04-22T03:29:29+00:00"
+            "time": "2016-02-06 03:52:05"
         },
         {
             "name": "propel/propel",
@@ -877,7 +751,7 @@
             "support": {
                 "source": "https://github.com/thelia/Propel2/tree/thelia-2.3"
             },
-            "time": "2016-01-26T14:41:16+00:00"
+            "time": "2016-01-26 14:41:16"
         },
         {
             "name": "psr/log",
@@ -915,7 +789,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21T11:40:51+00:00"
+            "time": "2012-12-21 11:40:51"
         },
         {
             "name": "ptachoire/cssembed",
@@ -956,7 +830,7 @@
                 "css",
                 "url"
             ],
-            "time": "2013-07-22T20:01:48+00:00"
+            "time": "2013-07-22 20:01:48"
         },
         {
             "name": "ramsey/array_column",
@@ -1001,7 +875,7 @@
                 "array_column",
                 "column"
             ],
-            "time": "2015-03-20T22:07:39+00:00"
+            "time": "2015-03-20 22:07:39"
         },
         {
             "name": "simplepie/simplepie",
@@ -1055,7 +929,7 @@
                 "feeds",
                 "rss"
             ],
-            "time": "2012-10-30T17:54:03+00:00"
+            "time": "2012-10-30 17:54:03"
         },
         {
             "name": "smarty/smarty",
@@ -1110,7 +984,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-31T04:12:39+00:00"
+            "time": "2014-10-31 04:12:39"
         },
         {
             "name": "stack/builder",
@@ -1159,7 +1033,7 @@
             "keywords": [
                 "stack"
             ],
-            "time": "2014-11-23T20:37:11+00:00"
+            "time": "2014-11-23 20:37:11"
         },
         {
             "name": "stripe/stripe-php",
@@ -1214,7 +1088,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2016-09-15T18:16:59+00:00"
+            "time": "2016-09-15 18:16:59"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1267,7 +1141,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06T14:19:39+00:00"
+            "time": "2015-06-06 14:19:39"
         },
         {
             "name": "symfony-cmf/routing",
@@ -1324,7 +1198,7 @@
                 "database",
                 "routing"
             ],
-            "time": "2014-10-20T20:55:17+00:00"
+            "time": "2014-10-20 20:55:17"
         },
         {
             "name": "symfony/browser-kit",
@@ -1381,7 +1255,7 @@
             ],
             "description": "Symfony BrowserKit Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-12T17:46:01+00:00"
+            "time": "2016-01-12 17:46:01"
         },
         {
             "name": "symfony/class-loader",
@@ -1433,7 +1307,7 @@
             ],
             "description": "Symfony ClassLoader Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/config",
@@ -1483,7 +1357,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/console",
@@ -1543,7 +1417,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14T08:33:16+00:00"
+            "time": "2016-01-14 08:33:16"
         },
         {
             "name": "symfony/debug",
@@ -1600,7 +1474,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "symfony/dependency-injection",
@@ -1662,7 +1536,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-12T17:46:01+00:00"
+            "time": "2016-01-12 17:46:01"
         },
         {
             "name": "symfony/dom-crawler",
@@ -1718,7 +1592,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1778,7 +1652,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "symfony/expression-language",
@@ -1827,7 +1701,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/filesystem",
@@ -1876,7 +1750,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "symfony/finder",
@@ -1925,7 +1799,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14T08:26:52+00:00"
+            "time": "2016-01-14 08:26:52"
         },
         {
             "name": "symfony/form",
@@ -1999,7 +1873,7 @@
             ],
             "description": "Symfony Form Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-12T17:46:01+00:00"
+            "time": "2016-01-12 17:46:01"
         },
         {
             "name": "symfony/http-foundation",
@@ -2053,7 +1927,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "symfony/http-kernel",
@@ -2135,7 +2009,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14T12:00:59+00:00"
+            "time": "2016-01-14 12:00:59"
         },
         {
             "name": "symfony/icu",
@@ -2183,7 +2057,7 @@
                 "intl"
             ],
             "abandoned": "symfony/intl",
-            "time": "2013-06-03T18:32:07+00:00"
+            "time": "2013-06-03 18:32:07"
         },
         {
             "name": "symfony/intl",
@@ -2259,7 +2133,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2016-01-06T09:59:23+00:00"
+            "time": "2016-01-06 09:59:23"
         },
         {
             "name": "symfony/options-resolver",
@@ -2313,7 +2187,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -2368,7 +2242,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2427,7 +2301,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-php54",
@@ -2485,7 +2359,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -2541,7 +2415,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-php56",
@@ -2597,7 +2471,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -2656,7 +2530,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-25T08:44:42+00:00"
+            "time": "2016-01-25 08:44:42"
         },
         {
             "name": "symfony/polyfill-util",
@@ -2708,7 +2582,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2016-01-20T09:13:37+00:00"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/process",
@@ -2757,7 +2631,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-06T09:59:23+00:00"
+            "time": "2016-01-06 09:59:23"
         },
         {
             "name": "symfony/property-access",
@@ -2817,7 +2691,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/routing",
@@ -2891,7 +2765,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2016-01-11T16:43:36+00:00"
+            "time": "2016-01-11 16:43:36"
         },
         {
             "name": "symfony/security",
@@ -2971,7 +2845,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-14T09:10:32+00:00"
+            "time": "2016-01-14 09:10:32"
         },
         {
             "name": "symfony/security-acl",
@@ -3032,7 +2906,7 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28T09:39:09+00:00"
+            "time": "2015-12-28 09:39:09"
         },
         {
             "name": "symfony/serializer",
@@ -3096,7 +2970,7 @@
             ],
             "description": "Symfony Serializer Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "symfony/translation",
@@ -3160,7 +3034,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-03T15:33:41+00:00"
+            "time": "2016-01-03 15:33:41"
         },
         {
             "name": "symfony/validator",
@@ -3232,7 +3106,7 @@
             ],
             "description": "Symfony Validator Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-12T17:46:01+00:00"
+            "time": "2016-01-12 17:46:01"
         },
         {
             "name": "symfony/yaml",
@@ -3281,7 +3155,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13T10:28:07+00:00"
+            "time": "2016-01-13 10:28:07"
         },
         {
             "name": "thelia/currency-converter",
@@ -3326,7 +3200,7 @@
                 }
             ],
             "description": "php 5.4 currency tools",
-            "time": "2015-11-05T16:15:32+00:00"
+            "time": "2015-11-05 16:15:32"
         },
         {
             "name": "thelia/hook-toolbar-module",
@@ -3353,7 +3227,7 @@
             "license": [
                 "LGPL-3.0+"
             ],
-            "time": "2015-03-14T19:32:44+00:00"
+            "time": "2015-03-14 19:32:44"
         },
         {
             "name": "thelia/installer",
@@ -3401,7 +3275,7 @@
                 "Thelia-module",
                 "Thelia-template"
             ],
-            "time": "2015-06-11T14:04:43+00:00"
+            "time": "2015-06-11 14:04:43"
         },
         {
             "name": "thelia/math-tools",
@@ -3442,80 +3316,7 @@
                 }
             ],
             "description": "Number management library",
-            "time": "2015-11-05T15:52:55+00:00"
-        },
-        {
-            "name": "thelia/paypal-module",
-            "version": "3.0.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thelia-modules/Paypal.git",
-                "reference": "f667fb47c351d2d33d5ae69dbf2aa45cbebd68b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thelia-modules/Paypal/zipball/f667fb47c351d2d33d5ae69dbf2aa45cbebd68b4",
-                "reference": "f667fb47c351d2d33d5ae69dbf2aa45cbebd68b4",
-                "shasum": ""
-            },
-            "require": {
-                "paypal/rest-api-sdk-php": "1.7.1",
-                "thelia/installer": "~1.1",
-                "wazaari/monolog-mysql": "1.0.3"
-            },
-            "type": "thelia-module",
-            "extra": {
-                "installer-name": "PayPal"
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "time": "2017-11-23T11:09:36+00:00"
-        },
-        {
-            "name": "wazaari/monolog-mysql",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/waza-ari/monolog-mysql.git",
-                "reference": "540c7b92245db3e54d6493056ba3a84da2d49b24"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/waza-ari/monolog-mysql/zipball/540c7b92245db3e54d6493056ba3a84da2d49b24",
-                "reference": "540c7b92245db3e54d6493056ba3a84da2d49b24",
-                "shasum": ""
-            },
-            "require": {
-                "monolog/monolog": ">1.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "MySQLHandler\\": "src/MySQLHandler"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Daniel Herrmann",
-                    "email": "daniel.herrmann1@gmail.com"
-                }
-            ],
-            "description": "A handler for Monolog that sends messages to MySQL",
-            "homepage": "https://github.com/waza-ari/monolog-mysql",
-            "keywords": [
-                "database",
-                "log",
-                "logging",
-                "monolog",
-                "mysql"
-            ],
-            "time": "2015-07-12T22:25:23+00:00"
+            "time": "2015-11-05 15:52:55"
         }
     ],
     "packages-dev": [
@@ -3571,7 +3372,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2015-06-14 21:17:01"
         },
         {
             "name": "fzaninotto/faker",
@@ -3623,7 +3424,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2015-05-29T06:29:14+00:00"
+            "time": "2015-05-29 06:29:14"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -3672,7 +3473,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2015-02-03T12:10:50+00:00"
+            "time": "2015-02-03 12:10:50"
         },
         {
             "name": "phpspec/prophecy",
@@ -3732,7 +3533,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2015-08-13T10:07:40+00:00"
+            "time": "2015-08-13 10:07:40"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3794,7 +3595,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06T15:47:00+00:00"
+            "time": "2015-10-06 15:47:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -3841,7 +3642,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2015-06-21T13:08:43+00:00"
+            "time": "2015-06-21 13:08:43"
         },
         {
             "name": "phpunit/php-text-template",
@@ -3882,7 +3683,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -3923,7 +3724,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2015-06-21T08:01:12+00:00"
+            "time": "2015-06-21 08:01:12"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -3972,7 +3773,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-09-15T10:49:45+00:00"
+            "time": "2015-09-15 10:49:45"
         },
         {
             "name": "phpunit/phpunit",
@@ -4044,7 +3845,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-11T14:56:33+00:00"
+            "time": "2016-02-11 14:56:33"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -4100,7 +3901,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02T06:51:40+00:00"
+            "time": "2015-10-02 06:51:40"
         },
         {
             "name": "sebastian/comparator",
@@ -4164,7 +3965,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2015-07-26T15:48:44+00:00"
+            "time": "2015-07-26 15:48:44"
         },
         {
             "name": "sebastian/diff",
@@ -4216,7 +4017,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08T07:14:41+00:00"
+            "time": "2015-12-08 07:14:41"
         },
         {
             "name": "sebastian/environment",
@@ -4266,7 +4067,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-12-02T08:37:27+00:00"
+            "time": "2015-12-02 08:37:27"
         },
         {
             "name": "sebastian/exporter",
@@ -4332,7 +4133,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2015-06-21T07:55:53+00:00"
+            "time": "2015-06-21 07:55:53"
         },
         {
             "name": "sebastian/global-state",
@@ -4383,7 +4184,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12T03:26:01+00:00"
+            "time": "2015-10-12 03:26:01"
         },
         {
             "name": "sebastian/recursion-context",
@@ -4436,7 +4237,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-11-11T19:50:13+00:00"
+            "time": "2015-11-11 19:50:13"
         },
         {
             "name": "sebastian/version",
@@ -4471,7 +4272,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21T13:59:46+00:00"
+            "time": "2015-06-21 13:59:46"
         },
         {
             "name": "thelia/hooktest-module",
@@ -4495,7 +4296,7 @@
                 "installer-name": "HookTest"
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2014-12-24T09:52:09+00:00"
+            "time": "2014-12-24 09:52:09"
         },
         {
             "name": "thelia/hooktest-template",
@@ -4519,7 +4320,7 @@
                 "installer-name": "hooktest"
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2014-12-24T09:51:48+00:00"
+            "time": "2014-12-24 09:51:48"
         }
     ],
     "aliases": [],

@@ -36,14 +36,4 @@ class SepaImporter extends BaseModule
         ]);
         return true;
     }  
-    
-    public function postActivation(ConnectionInterface $con = null)
-    {
-    	$database = new Database($con);
-    	
-    	if (!self::getConfigValue('is_initialized', false)) {
-    		$database->insertSql(null, [__DIR__ . "/Config/insert_email_message.sql"]);
-    		self::setConfigValue('is_initialized', true);
-    	}
-    }
 }

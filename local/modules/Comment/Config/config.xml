@@ -56,7 +56,6 @@
             <tag name="hook.event_listener" event="product.additional" method="onShowBlockComment" />
             <tag name="hook.event_listener" event="content.main-bottom" method="onShowComment" />
             <tag name="hook.event_listener" event="main.javascript-initialization" method="jsComment" />
-            <tag name="hook.event_listener" event="comment.rating-stars" templates="rating.html"/>
         </hook>
         <!-- back -->
         <hook id="comment.hook.back" class="Comment\Hook\BackHook" scope="request">

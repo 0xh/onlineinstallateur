@@ -231,11 +231,7 @@ class ImportController extends BaseAdminController
         } catch (FormValidationException $e) {
             $form->setErrorMessage($this->createStandardFormValidationErrorMessage($e));
         } catch (\Exception $e) {
-        	$errorPropel = '';
-        	if($e->getPrevious()) { 
-        		$errorPropel = '-'.$e->getPrevious()->getMessage(); 
-        	}
-        	$this->getParserContext()->setGeneralError($e->getMessage().$errorPropel);
+            $this->getParserContext()->setGeneralError($e->getMessage());
         }
 
         $this->getParserContext()

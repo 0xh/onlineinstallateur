@@ -41,12 +41,10 @@
 {block name="main-content"}
     {if $product_id}
     
-    {loop type="module-config" name="fulfilment_module_config" module="multiplefullfilmentcenters" variable="fulfilment_center_reserve" default_value="1"}
-    	{assign var="fulfilment_center_reserve_id" value={$VALUE}}
-    {/loop}
+    
     {if $fulfilment_center_active == 'true'}
    		{ifloop rel="product_stock_fulfilment_center"} 
-			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=$fulfilment_center_reserve_id}
+			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=3}
 		   		{if $PRODUCTSTOCK > 0 && $PRODUCTSTOCK > $RESERVEDSTOCK}
 		   			{$reserve_online = 1}
 		   		{/if}
@@ -76,16 +74,12 @@
             *}
             
             {hook name="product.top" product={$ID}}
-            <div class="row">           
-                    <h1 class="name col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                       
+                    <h1 class="name">
                     	<span itemprop="name">{$TITLE}</span>
                     	<span id="pse-name" class="pse-name"></span>
                     </h1>                
-                      
-                    {ifhook rel="comment.rating-stars"}
-	               		{hook name="comment.rating-stars" product_id={$product_id}}
-	            	{/ifhook}
-	        </div> 
+                       
             
 			{if $service_category == #services_category_id#}
 
@@ -463,7 +457,7 @@
                         </div>
                         {/form_field}
 
-                        <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-12 form-group group-btn  align-center" >
+                        <div class="col-xs-12 col-sm-6 col-lg-12 col-xl-12 form-group group-btn  align-center" >
                         <br>
                             <button id="pse-submit" type="submit" class="btn btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
                         </div>

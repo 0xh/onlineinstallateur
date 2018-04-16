@@ -13,7 +13,7 @@ class GetRankingsForm extends BaseForm
 	{
 		$this->formBuilder
 			->add("reference", "text", array(
-					'label'=>Translator::getInstance()->trans("Insert product EAN CODE separated by space", array(), AmazonIntegration::DOMAIN_NAME),
+					'label'=>Translator::getInstance()->trans("Insert product ref separated by space", array(), AmazonIntegration::DOMAIN_NAME),
 					'label_attr'=>array("for"=>"reference")
 			));
 	}

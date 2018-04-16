@@ -2,25 +2,11 @@
 
 <config xmlns="http://thelia.net/schema/dic/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
-        
-	<services>
-        <service id="importer.send.email.action" class="SepaImporter\Listener\ImportListener" scope="request">
-             <argument type="service" id="mailer"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-    </services>
-    
     <import_categories>
         <import_category id="thelia.import.features">
             <title locale="fr_FR">features</title>
             <title locale="en_US">Features</title>
             <title locale="de_DE">Features</title>
-        </import_category>
-        
-        <import_category id="thelia.import.orders">
-            <title locale="fr_FR">Orders</title>
-            <title locale="en_US">Orders</title>
-            <title locale="de_DE">Orders</title>
         </import_category>
     </import_categories>
     <imports>
@@ -87,7 +73,7 @@
                     Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurze_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
                     Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
 					Bild_kurz_beschreibung, Bild_postscriptum, Bild_file, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
 					
                     Indications:
                     <ul>
@@ -107,7 +93,7 @@
                     Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurz_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
                     Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
 					Bild_kurz_beschreibung, Bild_postscriptum, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
+					Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag</br>
 					
 					Indications:
                     <ul>
@@ -179,68 +165,30 @@
                 </description>
             </import_descriptive>
         </import>
-        <import id="thelia.import.tracking.orders.triworx" class="SepaImporter\Import\TriworxTrackingOrders"
-                category_id="thelia.import.orders">
-            <import_descriptive locale="de_DE">
-                <title>Triworx tracking orders</title>
-                <description>
-                    <![CDATA[
-                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email <br/><br/>
-                   Triworx tracking orders supports the following structure:<br/>
-                   		Status, Versandart, Routingtyp, Nummer, Collianzahl, Ladestelle, Name, LoadingPointName2, LoadingPointName3, 
-                        LoadingPointName4, Ladestelle Land, Ladestelle PLZ, Ladestelle Stadt, Ladestelle Adresse, LoadingPointHouseNumber, 
-                        Entladestelle Name,	UnloadingPointName2, UnloadingPointName3, UnloadingPointName4, Entladestelle Land,	Entladestelle PLZ, 
-                        Entladestelle Stadt, Entladestelle Adresse,	UnloadingPointHouseNumber, PLCColloCodes, Absender Referenz 1, Absender Referenz 2, 
-                        Brutto Gewicht,	Erstellungsdatum<br/><br/>
-                   Indications:<br/>
-                   <ul>
-                   	<li>LoadingPointName3 -> Order ref (`ref` in `order` table)</li>
-                   	<li>PLCColloCodes -> Tracking number (`delivery_ref` in `order` table)</li>
-                   </ul>
-                    ]]>
-                </description>
-            </import_descriptive>
-            <import_descriptive locale="en_US">
-                <title>Update stock product inventory</title>
-                <description>
-                   <![CDATA[
-                   Import CSV from Triworx, save tracking number for each order from CSV and send email to customer - Package tracking email <br/><br/>
-                   Triworx tracking orders supports the following structure:<br/>
-                   		Status, Versandart, Routingtyp, Nummer, Collianzahl, Ladestelle, Name, LoadingPointName2, LoadingPointName3, 
-                        LoadingPointName4, Ladestelle Land, Ladestelle PLZ, Ladestelle Stadt, Ladestelle Adresse, LoadingPointHouseNumber, 
-                        Entladestelle Name,	UnloadingPointName2, UnloadingPointName3, UnloadingPointName4, Entladestelle Land,	Entladestelle PLZ, 
-                        Entladestelle Stadt, Entladestelle Adresse,	UnloadingPointHouseNumber, PLCColloCodes, Absender Referenz 1, Absender Referenz 2, 
-                        Brutto Gewicht,	Erstellungsdatum<br/><br/>
-                   Indications:<br/>
-                   <ul>
-                   	<li>LoadingPointName3 -> Order ref (`ref` in `order` table)</li>
-                   	<li>PLCColloCodes -> Tracking number (`delivery_ref` in `order` table)</li>
-                   </ul>
-                    ]]>
-                </description>
-            </import_descriptive>
-        </import>
-        <import id="thelia.import.mysht.products" class="SepaImporter\Import\CreateMyshtProductImport"
+        <import id="triworx.update.stock.real.center"
+                class="SepaImporter\Import\UpdateStockFromTriworxInRealCenter"
                 category_id="thelia.import.products">
-            <import_descriptive locale="de_DE">
-                <title>Create mysht product import</title>
+            <import_descriptive locale="en_US">
+                <title>Triworx import in real fulfilment center (Wiener Neudorf)</title>
                 <description>
                     <![CDATA[
-                   Import mysht file with products, run mysht scraper to get more informations and images, create the CSV for genericProductImport <br/><br/>
-                   Mysht file with products supports the following structure:<br/>
-                   		Artikel,Lief.Artnr,Artikelbezeichnung,Artikelbezeichnung-2,MS,Warengruppe,Kreditor,Lief.Bezeichnung,Frei verw.,EAN,Betriebsbezeichnung<br/><br/>
-                 
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Artikelnummer: REF of the product </li>
+                        <li>Bestand: Stock of the product </li>
+                    </ul>
                     ]]>
                 </description>
             </import_descriptive>
-            <import_descriptive locale="en_US">
-                <title>Create mysht product import</title>
+            <import_descriptive locale="de_DE">
+            	<title>Triworx import in real fulfilment center (Wiener Neudorf)</title>
                 <description>
                     <![CDATA[
-                   Import mysht file with products, run mysht scraper to get more informations and images, create the CSV for genericProductImport <br/><br/>
-                   Mysht file with products supports the following structure:<br/>
-                   		Artikel,Lief.Artnr,Artikelbezeichnung,Artikelbezeichnung-2,MS,Warengruppe,Kreditor,Lief.Bezeichnung,Frei verw.,EAN,Betriebsbezeichnung<br/><br/>
-                 
+                    Your file must have the following columns:
+                    <ul>
+                        <li>Artikelnummer: REF of the product </li>
+                        <li>Bestand: Stock of the product </li>
+                    </ul>
                     ]]>
                 </description>
             </import_descriptive>
