@@ -31,11 +31,19 @@ class FrontHook extends BaseHook
 
     public function onMainBodyTop(HookRenderEvent $event)
     {
-        $css = $this->addCSS('assets/css/min.css');
-        $event->add($css);
-        
         $content = $this->render("main-body-top.html", [ 'mode' => $this->mode ]);
         $event->add($content);
     }
 
+    public function onMainStyleSheet(HookRenderEvent $event)
+    {
+        $event->add('<script src="https://use.fontawesome.com/fea8382d6c.js"></script>');
+    }
+
+    public function onSingleProductTop(HookRenderEvent $event)
+    {
+        $product_id = $event->getArgument('product');
+        $content = $this->render("single-product-top.html", [ 'mode' => $this->mode, 'product_id' => $product_id ]);
+        $event->add($content);
+    }
 } 
