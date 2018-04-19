@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
     <loops>
-        <loop class="ElasticSearch\Loop\ElasticSearchLoop" name="elastic_search_loop"/>
+        <loop name="elastic.loop" class="ElasticSearch\Loop\ElasticSearchLoop" />
     </loops>
 
     <forms>
