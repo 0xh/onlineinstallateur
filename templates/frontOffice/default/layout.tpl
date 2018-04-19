@@ -184,9 +184,9 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 			<span>KOSTENLOSER VERSAND</span>
 			 <div class="hotline" itemscope itemtype="http://schema.org/Store">
 			                   <span class="hotline-icon"> 
-					<span class="hotline-text" itemprop="telephone" content="0800/022573">0800/022573</span>
-  <small itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00"> Mo-Do:&nbsp; 8-20 Uhr,
-                        Fr:  8-17 Uhr</small>
+					<span class="hotline-text" itemprop="telephone" content="{config key="hotline"}">{config key="hotline"}</span>
+  <small itemprop="openingHours" content="Mo,Tu,We,Th {config key="support_time_mo_th"}, Fr:{config key="support_time_fr"}"> Mo-Do:&nbsp; {config key="support_time_mo_th"} Uhr,
+                        Fr:  {config key="support_time_fr"} Uhr</small>
                  </span>
                     
 			</div>  
@@ -340,10 +340,10 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                                     <strong>{intl l="SUPPORT"} </strong>
                                 </div>
                                 <div itemscope itemtype="http://schema.org/Store">
-                                    <h3 itemprop="telephone" content="0800/022573"><strong>{intl l="0800/022573"}</strong></h3>
-                                    <span itemprop="openingHours" content="Mo,Tu,We,Th 08:00-20:00, Fr:08:00-17:00">
-                                    <h5>Mo-Do: &nbsp;8-20 Uhr</h5>
-                                    <h5>Fr:&nbsp; 8-17 Uhr</h5>
+                                    <h3 itemprop="telephone" content="{config key="hotline"}"><strong>{intl l="{config key="hotline"}"}</strong></h3>
+                                    <span itemprop="openingHours" content="Mo,Tu,We,Th {config key="support_time_mo_th"}, Fr:{config key="support_time_mo_th"}">
+                                    <h5>Mo-Do: &nbsp;{config key="support_time_mo_th"} Uhr</h5>
+                                    <h5>Fr:&nbsp; {config key="support_time_fr"} Uhr</h5>
                                     </span>
                                 </div>
                             </div>
