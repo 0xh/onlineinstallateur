@@ -208,7 +208,7 @@ class  ElasticConnection {
                  "query": {
                     "multi_match" : {
                          "query":    "'.$text.'", 
-                         "fields": [ "product_title", "product_title" ,"brand_name","category_name","feature_title","feature_desc"] 
+                         "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
                           }
                        }
             }';
