@@ -96,16 +96,12 @@ class ElasticSearchLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
     public function parseResults(LoopResult $loopResult)
     {
         $search = new ElasticConnection();
-        /** @var \Thelia\Model\Product $product */
         foreach ($search->fullTextSearch($this->request->get("q")) as $product) {
             $loopResultRow = new LoopResultRow($product);
-            //TODO add prices to result
-            
             $price=$product["_source"]["product_price"];
             $promoPrice = 1;
             $taxedPrice= 0;
             $taxedPromoPrice =0 ;
-
             $loopResultRow
                 ->set("WEIGHT", $product["_source"]['weight'])
                 ->set("ID", $product["_source"]['id'])
@@ -124,12 +120,9 @@ class ElasticSearchLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
                 ->set("IS_NEW", $product["_source"]['is_new'])
                 ->set("PRODUCT_SALE_ELEMENT", $product["_source"]['pse_id'])
                 ->set("PSE_COUNT", $product["_source"]['pse_count'])
-                ->set("LISTEN_PRICE",$product["_source"]['listen_price'])
-                ->set("URL", $this->getReturnUrl())
-                ;
+                ->set("LISTEN_PRICE",$product["_source"]['listen_price']);
             $loopResult->addRow($loopResultRow);
         }
-
         return $loopResult;
     }
 

@@ -14,9 +14,7 @@
     </forms>
 
     <commands>
-        <!--
-        <command class="ElasticSearch\Command\MySuperCommand" />
-        -->
+        <command class="ElasticSearch\Commands\ReindexElasticSearch"/>
     </commands>
 
     <!--
