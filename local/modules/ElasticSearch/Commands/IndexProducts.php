@@ -13,147 +13,123 @@
 namespace ElasticSearch\Commands;
 
 use Thelia\Log\Tlog;
-use Thelia\Model\ProductQuery;
-use Propel\Runtime\ActiveQuery\ModelCriteria as MCriteria;
-use Propel\Runtime\ActiveQuery\Criteria;
-use Thelia\Core\Event\FeatureProduct\FeatureProductDeleteEvent;
-use Thelia\Core\Event\FeatureProduct\FeatureProductUpdateEvent;
-use Thelia\Core\Event\MetaData\MetaDataCreateOrUpdateEvent;
-use Thelia\Core\Event\MetaData\MetaDataDeleteEvent;
-use Thelia\Core\Event\Product\ProductAddAccessoryEvent;
-use Thelia\Core\Event\Product\ProductAddCategoryEvent;
-use Thelia\Core\Event\Product\ProductAddContentEvent;
-use Thelia\Core\Event\Product\ProductCloneEvent;
-use Thelia\Core\Event\Product\ProductCombinationGenerationEvent;
-use Thelia\Core\Event\Product\ProductCreateEvent;
-use Thelia\Core\Event\Product\ProductDeleteAccessoryEvent;
-use Thelia\Core\Event\Product\ProductDeleteCategoryEvent;
-use Thelia\Core\Event\Product\ProductDeleteContentEvent;
-use Thelia\Core\Event\Product\ProductDeleteEvent;
-use Thelia\Core\Event\Product\ProductEvent;
-use Thelia\Core\Event\Product\ProductSetTemplateEvent;
-use Thelia\Core\Event\Product\ProductToggleVisibilityEvent;
-use Thelia\Core\Event\Product\ProductUpdateEvent;
-use Thelia\Core\Event\ProductSaleElement\ProductSaleElementCreateEvent;
-use Thelia\Core\Event\ProductSaleElement\ProductSaleElementDeleteEvent;
-use Thelia\Core\Event\ProductSaleElement\ProductSaleElementUpdateEvent;
-use Thelia\Core\Event\TheliaEvents;
-use Thelia\Core\Event\UpdatePositionEvent;
-use Thelia\Core\HttpFoundation\JsonResponse;
-use Thelia\Core\HttpFoundation\Response;
-use Thelia\Core\Security\AccessManager;
-use Thelia\Core\Security\Resource\AdminResources;
-use Thelia\Core\Template\Loop\Document;
-use Thelia\Core\Template\Loop\Image;
-use Thelia\Form\BaseForm;
-use Thelia\Form\Definition\AdminForm;
-use Thelia\Form\Exception\FormValidationException;
-use Thelia\Form\ProductModificationForm;
-use Thelia\Model\AccessoryQuery;
-use Thelia\Model\AttributeAv;
-use Thelia\Model\AttributeAvQuery;
-use Thelia\Model\AttributeQuery;
-use Thelia\Model\CategoryQuery;
-use Thelia\Model\Content;
-use Thelia\Model\ContentQuery;
-use Thelia\Model\Country;
-use Thelia\Model\Currency;
-use Thelia\Model\CurrencyQuery;
-use Thelia\Model\Feature;
-use Thelia\Model\FeatureProductQuery;
-use Thelia\Model\FeatureQuery;
-use Thelia\Model\FeatureTemplateQuery;
-use Thelia\Model\FolderQuery;
-use Thelia\Model\MetaData;
-use Thelia\Model\MetaDataQuery;
-use Thelia\Model\Product;
-use Thelia\Model\ProductAssociatedContentQuery;
-use Thelia\Model\ProductDocument;
-use Thelia\Model\ProductDocumentQuery;
-use Thelia\Model\ProductImageQuery;
-use Thelia\Model\ProductPrice;
-use Thelia\Model\ProductPriceQuery;
-use Thelia\Model\ProductSaleElements as ProductSaleElementsModel;
-use Thelia\Model\ProductSaleElementsProductDocument;
-use Thelia\Model\ProductSaleElementsProductDocumentQuery;
-use Thelia\Model\ProductSaleElementsProductImage;
-use Thelia\Model\ProductSaleElementsProductImageQuery;
-use Thelia\Model\ProductSaleElementsQuery;
-use Thelia\Model\TaxRuleQuery;
-use Thelia\TaxEngine\Calculator;
-use Thelia\Type\BooleanOrBothType;
-use Thelia\Model\FeatureProduct;
+use Thelia\Model\Base\ProductQuery as ProductQuery;
+use Thelia\Model\Currency as CurrencyModel;
+use Thelia\Model\Map\BrandI18nTableMap;
+use Thelia\Model\Map\CategoryI18nTableMap;
+use Thelia\Model\Map\FeatureI18nTableMap;
+use Thelia\Model\Map\FeatureProductTableMap;
+use Thelia\Model\Map\ProductCategoryTableMap;
+use Thelia\Model\Map\ProductI18nTableMap;
+use Thelia\Model\Map\ProductImageTableMap;
+use Thelia\Model\Map\ProductPriceTableMap;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Thelia\Model\Map\ProductTableMap;
+use ElasticSearch\Controller\Front\ElasticConnection;
 
-
-/**
- *
- * Product loop
- *
- * Class Product
- * @package Thelia\Core\Template\Loop
- * @author Etienne Roudeix <eroudeix@openstudio.fr>
- *
- * {@inheritdoc}
- * @method int[] getId()
- * @method bool getComplex()
- * @method string[] getRef()
- * @method int[] getCategory()
- * @method int[] getBrand()
- * @method int[] getSale()
- * @method int[] getCategoryDefault()
- * @method int[] getContent()
- * @method bool getNew()
- * @method bool getPromo()
- * @method float getMinPrice()
- * @method float getMaxPrice()
- * @method int getMinStock()
- * @method float getMinWeight()
- * @method float getMaxWeight()
- * @method bool getWithPrevNextInfo()
- * @method bool|string getWithPrevNextVisible()
- * @method bool getCurrent()
- * @method bool getCurrentCategory()
- * @method bool getDepth()
- * @method bool|string getVirtual()
- * @method bool|string getVisible()
- * @method int getCurrency()
- * @method string getTitle()
- * @method bool hasEan()
- * @method string[] getOrder()
- * @method int[] getExclude()
- * @method int[] getExcludeCategory()
- * @method int[] getFeatureAvailability()
- * @method string[] getFeatureValues()
- * @method string[] getAttributeNonStrictMatch()
- */
 class IndexProducts extends ProductQuery
-// class IndexProducts  extends BaseI18nLoop
 {
-    
-      public function __construct($dbName = 'thelia', $modelName = '\\Thelia\\Model\\Product', $modelAlias = null)
-    {
-            parent::__construct($dbName, $modelName, $modelAlias);
-    }
-
-
-    public function getAllProducts() {
-
+    public function getAllProducts($locale = null) {
+        print_r("Reindex language: ".$locale."\n");
         $log = Tlog::getInstance();
 
+        $currency = CurrencyModel::getDefaultCurrency();
+        $defaultCurrencySuffix = '_default_currency';
+        $priceToCompareAsSQL = '';
+        $isPSELeftJoinList = [];
+        $isProductPriceFirstLeftJoin = [];
+        $joiningTable = "global";
+        $list = ProductQuery::create();
+        $list->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID)
+             
+             ->addJoin(ProductTableMap::ID, ProductSaleElementsTableMap::PRODUCT_ID)
+             
+             ->addJoin(ProductTableMap::ID, ProductCategoryTableMap::PRODUCT_ID)
+             ->addJoin(ProductCategoryTableMap::CATEGORY_ID, CategoryI18nTableMap::ID)
+             ->addJoin(ProductSaleElementsTableMap::ID, ProductPriceTableMap::PRODUCT_SALE_ELEMENTS_ID)
+             ->addJoin(ProductI18nTableMap::ID, ProductImageTableMap::PRODUCT_ID)
+             ->addJoin(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID)                
+             // ->addJoin(ProductTableMap::ID, RewritingUrlTableMap::VIEW_ID, Criteria::LEFT_JOIN)
+             ->addJoin(ProductTableMap::ID, FeatureProductTableMap::PRODUCT_ID)                
+             ->addJoin(FeatureProductTableMap::FEATURE_ID, FeatureI18nTableMap::ID)
+             ->where(ProductI18nTableMap::LOCALE . "='de_DE'".
+                     " and " .   CategoryI18nTableMap::LOCALE ."='de_DE'" .
+                     " and " .  BrandI18nTableMap::LOCALE ."='de_DE'" .
+                     " and " .  FeatureI18nTableMap::LOCALE ."='de_DE'" .
+                     " and " .  ProductImageTableMap::POSITION ." = 1 ")
+            ->withColumn ( 'product.id' , 'product_id' )
+             ->withColumn ( '`product`.`extern_id`' , 'external_id')
+             ->withColumn ( '`product_sale_elements`.`ean_code`' , 'ean_code')
+            ->withColumn ( '`product`.`ref`' ,"ref")
+             ->withColumn ( '`product`.`brand_id`' ,"brand_id")
+             ->withColumn ( '`brand_i18n`.`title`' ,"brand_name")
+             ->withColumn ( '`product_category`.`category_id`','category_id')
+             ->withColumn ( '`category_i18n`.`title`' ,"category_name")
+             ->withColumn ( '`product_i18n`.`title`' ,"product_title")
+            ->withColumn ( '`product_i18n`.`description`' ,"product_description")
+             ->withColumn ( '`product_price`.`price`' ,"product_price")
+             ->withColumn ( '`product_price`.`promo_price`' ,"product_promo_price")
+             ->withColumn ( '`product_price`.`listen_price`' ,"product_listen_price")
+             ->withColumn ( '`product_image`.`file`' ,"image")
+             ->withColumn ( '`product`.`created_at`' ,"created_at")
+             ->withColumn ( '`product`.`updated_at`' ,"update_at")
+             ->withColumn ( '`feature_i18n`.`title`' ,"feature_title")
+             ->withColumn ( '`feature_i18n`.`description`' ,"feature_desc")            
+              ;
 
-        $list = ProductQuery::create()
-               ->setFormatter(MCriteria::FORMAT_ON_DEMAND)
-               ->find();
 
             if ($list !== null) {
-                               foreach ($list as $item) {
-                    $result[] = array('id' => $item->getId(), 'title' => $item->getTitle());
+
+                $elasticsearch =  new Elasticsearch();
+                foreach ($list as $item) {
+                 $result = array(
+                                'id' => $item->getId(), 
+                                'product_title' => $item->getTitle() ,
+                                'product_description'=> $item->getDescription(),
+                                'categories' => array(
+                                    'category_name'=> $item->getVirtualColumns("category_name"),
+                                    'category_id'=> $item->getVirtualColumns("category_id")
+                                ),
+                                "brands"=> array(
+                                    'brand_name'=> $item->getVirtualColumns("brand_name"),
+                                    'brand_id'=> $item->getVirtualColumns("brand_id")
+                                ),
+                                "product_price" =>  $item->getVirtualColumns("product_price"),
+                                "product_promo_price"=> $item->getVirtualColumns("product_promo_price"),
+                                "product_listen_price"=> $item->getVirtualColumns("product_listen_price"),
+                                "image"=> $item->getVirtualColumns("image"),
+                                "created_at"=> $item->getVirtualColumns("created_at"),
+                                "update_at" =>  $item->getVirtualColumns("update_at"),
+                                "feature_title"=>  $item->getVirtualColumns("feature_title"),
+                                "feature_desc"=>  $item->getVirtualColumns("feature_desc")
+                            );
+
+                        $json = json_encode($result);
+
+                        $respones =   $elasticsearch->index($json_encode);
+
+                        print_r($respones); die;
+
                 }
             }
+
+            var_dump($result[1]);
             var_dump(count($result));die;
         
     }
     
+    protected function getDefaultCategoryId($product)
+    {
+        $defaultCategoryId = null;
+        if ((bool) $product->getVirtualColumn('is_default_category')) {
+            $defaultCategoryId = $product->getVirtualColumn('default_category_id');
+        } else {
+            $defaultCategoryId = $product->getDefaultCategoryId();
+        }
+        return $defaultCategoryId;
+    }
+    
+
 
 }
 

@@ -137,7 +137,7 @@ class  ElasticConnection {
          $json = $this->matchAll();
       }
           $params = [
-              'index' => 'product',
+              'index' => 'product_de',
               'type' => 'default',
               'body' => $json
           ];
@@ -164,7 +164,7 @@ class  ElasticConnection {
 
 
           $params = [
-              'index' => 'product',
+              'index' => 'product_de',
               'type' => 'default',
               'body' => $json
           ];
@@ -191,7 +191,7 @@ class  ElasticConnection {
             }
             
             $params = [
-                'index' => 'product',
+                'index' => 'product_de',
                 'type' => 'default',
                 'body' => $json
             ];
@@ -213,10 +213,11 @@ class  ElasticConnection {
                        }
             }';
           $params = [
-              'index' => 'product',
+              'index' => 'product_de',
               'type' => 'default',
               'body' => $json
           ];
+          
           $result = $objElasticSearchConnection->search($params);
           return  $result['hits']['hits'];
           
@@ -236,7 +237,7 @@ class  ElasticConnection {
               }
             }';
              $params = [
-              'index' => 'product',
+              'index' => 'product_de',
               'type' => 'default',
               'body' => $json
           ];
@@ -259,7 +260,7 @@ class  ElasticConnection {
               }
             }';
              $params = [
-              'index' => 'product',
+              'index' => 'product_de',
               'type' => 'default',
               'body' => $json
           ];

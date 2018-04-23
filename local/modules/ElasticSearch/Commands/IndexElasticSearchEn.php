@@ -7,12 +7,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use ElasticSearch\Commands\IndexProducts;
 use Thelia\Command\ContainerAwareCommand;
 
-class ReindexElasticSearch extends ContainerAwareCommand
+class IndexElasticSearchEn extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName("ReindexElasticSearch")
+            ->setName("IndexElasticSearchEn")
             ->setDescription("Process to reindex elasticsearch index");
     }
 
@@ -20,6 +20,6 @@ class ReindexElasticSearch extends ContainerAwareCommand
     {
         $output->writeln("Process Start");
         $qObject = new IndexProducts();
-        $qObject->getAllProducts();
+        $qObject->getAllProducts("en_US");
     }
 }
