@@ -18,7 +18,6 @@
     {$product_order={$smarty.get.order|default:'alpha'}}
 
     <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
-
         <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
         {assign var="amount" value={count type="product" search_term={$smarty.get.q} search_in="ref,title,description" search_mode="sentence"}}
         {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}}

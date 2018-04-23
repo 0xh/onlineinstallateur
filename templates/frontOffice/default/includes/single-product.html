@@ -10,8 +10,11 @@
 	   {assign var="product_id" value=$ID}
 	{/if}
     <article class="row" itemscope itemtype="http://schema.org/Product">
-		{hook name="singleproduct.top" product="{$product_id}"}
-            <a href="{$URL nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}">
+        {hook name="singleproduct.top" product="{$product_id}"}
+            {loop type="product" name="elasticloop" id={$product_id} }
+                {assign var="URLE" value={$URL}}
+            {/loop}
+            <a href="{$URLE nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}">
                 {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}" resize_mode="borders" limit="1"}
                     <div style="position:relative;" >
                         <img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}">
