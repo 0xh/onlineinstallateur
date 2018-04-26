@@ -1,15 +1,16 @@
-
-{loop name="product_admin" type="product" visible="*" id=$product_id backend_context="1"}
-
-Category:{$DEFAULT_CATEGORY} Position:
-{admin_position_block
-   resource="admin.product"
-   access="UPDATE"
-   path={url path='/admin/products/update-position' product_id=$ID category_id=$DEFAULT_CATEGORY}
-   url_parameter="product_id"
-   in_place_edit_class="productPositionChange"
-   position=$POSITION
-   id=$ID
-}
- 
+{loop type="auth" name="is.admin" role="ADMIN"}
+	{loop name="product_admin" type="product" visible="*" id=$product_id backend_context="1"}
+	
+	Category:{$DEFAULT_CATEGORY} Position:
+	{admin_position_block
+	   resource="admin.product"
+	   access="UPDATE"
+	   path={url path='/admin/products/update-position' product_id=$ID category_id=$DEFAULT_CATEGORY}
+	   url_parameter="product_id"
+	   in_place_edit_class="productPositionChange"
+	   position=$POSITION
+	   id=$ID
+	}
+	 
+	{/loop}
 {/loop}
