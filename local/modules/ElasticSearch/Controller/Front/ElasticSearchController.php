@@ -24,22 +24,22 @@ class ElasticSearchController extends BaseFrontController
 
     public function showResults(){
 
-            // echo "<pre>";var_dump($this->getRequest()->get('q'));die("debug");
         $start = 0;
-        $end = 10;
-        $limit= 10;
+        $end = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;
+        $limit= $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit'): 4 ;   
+        $order= $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order'): 4 ;    
         $search = new ElasticConnection();
-        $results= $search->fullTextSearch($this->getRequest()->get('q'),$start,$end,$limit);
-
-         if ($results == NULL) {
+        $results= $search->fullTextSearch($this->getRequest()->get('q'),$start,$end,$limit,$order);
+         if ($results == NULL || count($results) == 1) {
              $results[]="no results where found!!";
          }else {
             $results['start'] = $start;
             $results['end'] = $end;
             $results['limit'] = $limit;
+            $results['order'] = $order;
+            
 
          }
-
        return $this->render("search_results_page",array("RESULTS"=>$results));
     }
 

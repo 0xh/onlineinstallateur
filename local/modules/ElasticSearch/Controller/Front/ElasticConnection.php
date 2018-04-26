@@ -201,12 +201,18 @@ class  ElasticConnection {
         }
         
     
-    public function fullTextSearch($text = null,$start,$end,$limit){
+    public function fullTextSearch($text = null,$start,$end,$limit, $order = null){
+
        $objElasticConnection = new ElasticConnection();
-       $objElasticSearchConnection = $objElasticConnection::getConnection();          
-            $json = '{
+       $objElasticSearchConnection = $objElasticConnection::getConnection();         
+
+            switch ($order) {
+              case 'alpha':
+                $field = "title";
+                $order_by = "asc";
+                $json = '{
                 "sort" : [
-                    {"created_at": {"order":"desc"}}, 
+                    {"'.$field.'": {"order":"'.$order_by.'"}}, 
                     "_score"
                 ],
                  "from" : "'.$start.'","size":"'.$limit.'",
@@ -216,14 +222,84 @@ class  ElasticConnection {
                          "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
                           }
                        }
-            }';
+                }';
+              break;
+              case 'alpha_reverse':
+                $field = "tile";
+                $order_by = "desc";
+                $json = '{
+                    "sort" : [
+                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
+                        "_score"
+                    ],
+                     "from" : "'.$start.'","size":"'.$limit.'",
+                     "query": {
+                        "multi_match" : {
+                             "query":    "'.$text.'", 
+                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
+                              }
+                           }
+                }';
+              break;
+              case 'min_price':
+                $field = "product_taxed_price";
+                $order_by = "desc";
+                $json = '{
+                    "sort" : [
+                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
+                        "_score"
+                    ],
+                     "from" : "'.$start.'","size":"'.$limit.'",
+                     "query": {
+                        "multi_match" : {
+                             "query":    "'.$text.'", 
+                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
+                              }
+                           }
+                 }';
+              break;
+              case 'max_price':
+                $field = "product_taxed_price";
+                $order_by = "asc";
+                $json = '{
+                    "sort" : [
+                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
+                        "_score"
+                    ],
+                     "from" : "'.$start.'","size":"'.$limit.'",
+                     "query": {
+                        "multi_match" : {
+                             "query":    "'.$text.'", 
+                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
+                              }
+                           }
+                }';
+              break;
+              default:
+                $json = '{
+                    "sort" : [
+                        {"created_at": {"order":"desc"}}, 
+                        "_score"
+                    ],
+                     "from" : "'.$start.'","size":"'.$limit.'",
+                     "query": {
+                        "multi_match" : {
+                             "query":    "'.$text.'", 
+                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
+                              }
+                           }
+                }';
+              break;
+            }
+
           $params = [
               'index' => 'product_de',
               'type' => 'default',
-              'body' => $json
+              'body' => ($text == NULL || $text == "") ? $this->matchAll($field,$order_by) : $json
           ];
           
           $result = $objElasticSearchConnection->search($params);
+           $result['hits']['hits']['total'] =  $result['hits']['total'];
           return  $result['hits']['hits'];
           
         } 
@@ -231,55 +307,37 @@ class  ElasticConnection {
 
     public function orderByPriceAsc() {
 
-            $json = '{
+            $json = '
                 "sort" : [
-                { "productprice" : {"order" : "asc"}},
+                { "product_taxed_price" : {"order" : "asc"}},
                 "_score"
-                ],
-                "query" : {
-                          "match_all" : {}
-              
-              }
-            }';
-             $params = [
-              'index' => 'product_de',
-              'type' => 'default',
-              'body' => $json
-          ];
-           $result = $objElasticSearchConnection->search($params);
-           return $result;
+                ]';
+           return $json;
     }
-
-
 
     public function orderByPriceDesc() {
 
-            $json = '{
+            $json = '
                 "sort" : [
-                { "productprice" : {"order" : "desc"}},
+                { "product_taxed_price" : {"order" : "desc"}},
                 "_score"
-                ],
-                "query" : {
-                          "match_all" : {}
-              
-              }
-            }';
-             $params = [
-              'index' => 'product_de',
-              'type' => 'default',
-              'body' => $json
-          ];
-           $result = $objElasticSearchConnection->search($params);
-           return $result;
+                ]';
+                
+           return $json;
     }
     
     
-    public function matchAll() {
+    public function matchAll($field,$order_by) {
         
-        $json ='
+        $json ='{
+          "sort" : [
+                    {"'.$field.'": {"order":"'.$order_by.'"}}, 
+                    "_score"
+                ],
         "query" : {
                   "match_all" : {}
-         }';
+         }
+       }';
         
         return $json;
         
