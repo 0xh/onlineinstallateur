@@ -75,13 +75,13 @@ class TheliaLoop extends AbstractSmartyPlugin
      */
     public static function getPagination($loopName)
     {
-        if (array_key_exists($loopName, self::$pagination)) {
-            return self::$pagination[$loopName];
-        } else {
-            throw new \InvalidArgumentException(
-                Translator::getInstance()->trans("No pagination currently defined for loop name '%name'", ['%name' => $loopName ])
-            );
-        }
+        // if (array_key_exists($loopName, self::$pagination)) {
+        //     return self::$pagination[$loopName];
+        // } else {
+        //     throw new \InvalidArgumentException(
+        //         Translator::getInstance()->trans("No pagination currently defined for loop name '%name'", ['%name' => $loopName ])
+        //     );
+        // }
     }
 
     /**

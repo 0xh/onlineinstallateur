@@ -5,19 +5,21 @@
     {else}
         {assign var="hasSubmit" value = true}
     {/if}
-    {assign var="productTitle" value="{$TITLE}"}
-	{if not $product_id}
-	   {assign var="product_id" value=$ID}
-	{/if}
+    {assign var="productTitle" value="$product_title"}
+    {assign var="LISTEN_PRICE" value="{$product_listen_price}"}
+    {assign var="BEST_TAXED_PRICE" value="{$product_taxed_price}"}
+    
+    
     <article class="row" itemscope itemtype="http://schema.org/Product">
         {hook name="singleproduct.top" product="{$product_id}"}
             {loop type="product" name="elasticloop" id={$product_id} }
                 {assign var="URLE" value={$URL}}
             {/loop}
+
             <a href="{$URLE nofilter}" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if}">
-                {loop name="product_thumbnail" type="image" product=$product_id width="{$width}" height="{$height}" resize_mode="borders" limit="1"}
+                {loop name="product_thumbnail" type="image" product={$product_id} width="{$width}" height="{$height}" resize_mode="borders" limit="1"}
                     <div style="position:relative;" >
-                        <!-- <img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}"> -->
+                        <img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive" alt="{$productTitle}">
                         {if $LISTEN_PRICE!=0}
                              <div class="badge-container ">
                                 {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}
@@ -44,7 +46,7 @@
 
             <div class="product-info">
                 <h2 class="name"><a href="{$URL nofilter}"><span itemprop="name">{$productTitle}</span></a></h2>
-				<hr class="separation-line separation-line-short">
+                <hr class="separation-line separation-line-short">
                 {if $hasDescription}
                     <div class="description" itemprop="description">
                         <p>{$DESCRIPTION nofilter}</p>
@@ -73,14 +75,14 @@
                     {if $IS_PROMO }
                         {assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
                         <span class="special-price col-xs-6" >
-                        	<meta itemprop="price" content="{$BEST_TAXED_PRICE}">
-                        	<span class="price-label">{intl l="Special Price:" d="fo.default"} </span><span class="price">
+                            <meta itemprop="price" content="{$BEST_TAXED_PRICE}">
+                            <span class="price-label">{intl l="Special Price:" d="fo.default"} </span><span class="price">
                             {if $combination_count > 1}
                                 {intl l="From %price" d="fo.default" price={format_money number=$BEST_TAXED_PRICE}}
                             {else}
                                 {format_money number=$BEST_TAXED_PRICE}
                             {/if}
-                        	</span>
+                            </span>
                         </span>
                         {if $SHOW_ORIGINAL_PRICE}
                         <span class="old-price col-xs-6"><span class="price-label">{intl l="Regular Price:" d="fo.default"} </span><span class="price">{format_money number=$TAXED_PRICE}</span></span>
@@ -98,23 +100,23 @@
   
                     <div class="vat-info"><small>Alle Preise inkl. 20% MwSt.</small></div>
                 </div>
-				<div class="availability">
-					<span class="availibity-label sr-only">{intl l="Availability"}: </span>
+                <div class="availability">
+                    <span class="availibity-label sr-only">{intl l="Availability"}: </span>
 
                          <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
                          
                          {if $QUANTITY && $fulfilment_center_active != "false"}
                              <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l='Can be shipped immediately'}</small></em></span>
                         {else}
-							{if $QUANTITY }
-								<span class="in ">{intl l='In Stock'}</span> 
-							{else}
-								<span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$product_id}}</small></em>
-							{/if}
+                            {if $QUANTITY }
+                                <span class="in ">{intl l='In Stock'}</span> 
+                            {else}
+                                <span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$product_id}}</small></em>
+                            {/if}
                        {/if}
 
                          </span>
-				</div>
+                </div>
 
                 {if $hasBtn == true}
                     {if $hasSubmit == true && $current_stock_content == "in_stock"}
@@ -151,9 +153,9 @@
   
                                 </fieldset>
                                 {if $smarty.server.REQUEST_URI == '/wish-list'}
-	                          		<div class="product-btn add-to-cart col-xs-12 form-group group-btn align-center">
-                                		<button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="fo.default"}</button>
-                                	</div>
+                                    <div class="product-btn add-to-cart col-xs-12 form-group group-btn align-center">
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="fo.default"}</button>
+                                    </div>
                                 {/if}
                             </form>
                         {/form}
@@ -163,10 +165,10 @@
                 {/if}
             </div>
             {if $smarty.server.REQUEST_URI == '/wish-list'}
-				{ifhook rel="wish-list.wish-button"}
-	            	{hook name="wish-list.wish-button" product_id={$product_id}}
-	           	{/ifhook}
-	        {/if}
+                {ifhook rel="wish-list.wish-button"}
+                    {hook name="wish-list.wish-button" product_id={$product_id}}
+                {/ifhook}
+            {/if}
         {hook name="singleproduct.bottom" product={$product_id}}
 
     </article><!-- /product -->

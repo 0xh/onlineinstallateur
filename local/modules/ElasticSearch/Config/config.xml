@@ -14,9 +14,7 @@
     </forms>
 
     <commands>
-        <command class="ElasticSearch\Commands\IndexElasticSearchDe"/>
-        <command class="ElasticSearch\Commands\IndexElasticSearchEn"/>
-        <command class="ElasticSearch\Commands\IndexElasticSearchRo"/>
+        <command class="ElasticSearch\Commands\IndexElasticSearch"/>
     </commands>
 
     <!--

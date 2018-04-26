@@ -201,10 +201,15 @@ class  ElasticConnection {
         }
         
     
-    public function fullTextSearch($text = null){
+    public function fullTextSearch($text = null,$start,$end,$limit){
        $objElasticConnection = new ElasticConnection();
-       $objElasticSearchConnection = $objElasticConnection::getConnection();
+       $objElasticSearchConnection = $objElasticConnection::getConnection();          
             $json = '{
+                "sort" : [
+                    {"created_at": {"order":"desc"}}, 
+                    "_score"
+                ],
+                 "from" : "'.$start.'","size":"'.$limit.'",
                  "query": {
                     "multi_match" : {
                          "query":    "'.$text.'", 

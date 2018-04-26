@@ -1,5 +1,72 @@
+{extends file="layout.tpl"}
 
 
-<h1> RESULTS PAGE </h1>
+{block name="body-class"}page-search{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+{$breadcrumbs = [
+['title' => {intl l="Search"}, 'url'=>{url path="/search"}]
+]}
+{/block}
+
+{block name="main-content"}
+<div class="main">
+
+    {* {$limit={$smarty.get.limit|default:100}} *}
+
+    {$limit={$RESULT['limit']}}
+    {$end={$RESULT['end']}}
+    {$start={$RESULT['start']}}
+    {$product_page={$smarty.get.page|default:1}}
+    {$product_order={$smarty.get.order|default:'alpha'}}
+    {$RESULTS['start']}
+    {$RESULTS['end']}
+    {$RESULTS['limit']}
 
 
+    <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
+        <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
+        {assign var="amount" value={count type="product" search_term={$smarty.get.q} search_in="ref,title,description" search_mode="sentence"}}
+        {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}}
+        <div id="category-products">
+            <div class="products-content">
+                       <ul class="list-unstyled row">
+                       {foreach from=$RESULTS item=PRODUCT}
+                          {if $PRODUCT["_source"]|@count <> 0 }
+                              {include file="single-product.html" 
+                              product_price={$PRODUCT["_source"]["product_price"]} 
+                              product_listen_price = {$PRODUCT["_source"]["product_listen_price"]} 
+                              product_taxed_price={$PRODUCT["_source"]["product_taxed_price"]} 
+                              product_promo_price={$PRODUCT["_source"]["taxedPrice"]} 
+                              <!-- product_promo_taxed_price = {$PRODUCT["_source"]["product_promo_taxed_price"]} -->
+                              product_id={$PRODUCT["_source"]["product_id"]} 
+                              product_title={$PRODUCT["_source"]["product_title"]} 
+                              hasBtn=true hasDescription=true width="819" height="819"}                            
+                          {/if}
+                       {foreachelse}
+                            <h2 class="text-center">{intl l="No results found"} </h2>                            
+                       {/foreach}
+
+
+
+            </div>
+        </div><!-- /#category-products -->
+        
+    </article>
+
+</div><!-- /.layout -->
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="search.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+{hook name="search.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="search.javascript-initialization"}
+{/block}

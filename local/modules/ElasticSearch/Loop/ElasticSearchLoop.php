@@ -96,34 +96,42 @@ class ElasticSearchLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
     public function parseResults(LoopResult $loopResult)
     {
         $search = new ElasticConnection();
-        foreach ($search->fullTextSearch($this->request->get("q")) as $product) {
-            $loopResultRow = new LoopResultRow($product);
+    // echo "<pre>";var_dump($loopResult);die("debug");
+        foreach ($search->fullTextSearch($this->request->get("q"), 0, 10, 10) as $product) {
+
             $price=$product["_source"]["product_price"];
-            $promoPrice = 1;
-            $taxedPrice= 0;
-            $taxedPromoPrice =0 ;
-            $loopResultRow
-                ->set("WEIGHT", $product["_source"]['weight'])
-                ->set("ID", $product["_source"]['id'])
-                ->set("QUANTITY", $product["_source"]['quantity'])
-                ->set("EAN_CODE", $product["_source"]['ean_code'])
-                ->set("BEST_PRICE", $product["_source"]['is_promo'] ? $promoPrice : $price)
-                ->set("BEST_PRICE_TAX", $taxedPrice - $product["_source"]['is_promo'] ? $taxedPromoPrice - $promoPrice : $taxedPrice - $price)
-                ->set("BEST_TAXED_PRICE", $product["_source"]['is_promo'] ? $taxedPromoPrice : $taxedPric)
-                ->set("PRICE", $price)
-                ->set("PRICE_TAX", $taxedPrice - $price)
-                ->set("TAXED_PRICE", $taxedPrice)
-                ->set("PROMO_PRICE", $promoPrice)
-                ->set("PROMO_PRICE_TAX", $taxedPromoPrice - $promoPrice)
-                ->set("TAXED_PROMO_PRICE", $taxedPromoPrice)
-                ->set("IS_PROMO", $product["_source"]['is_promo'])
-                ->set("IS_NEW", $product["_source"]['is_new'])
-                ->set("PRODUCT_SALE_ELEMENT", $product["_source"]['pse_id'])
-                ->set("PSE_COUNT", $product["_source"]['pse_count'])
-                ->set("LISTEN_PRICE",$product["_source"]['listen_price']);
+        //     $promoPrice = 1;
+        //     $taxedPrice= 0;
+        //     $taxedPromoPrice =0 ;
+                $loopResultRow = new LoopResult();
+                    echo "<pre>";var_dump($loopResultRow);die("debug");
+
+
+        //     $loopResultRows
+        //         ->set("WEIGHT", $product["_source"]['weight'])
+        //         ->set("ID", $product["_source"]['id'])
+        //         ->set("QUANTITY", $product["_source"]['quantity'])
+        //         ->set("EAN_CODE", $product["_source"]['ean_code'])
+        //         ->set("BEST_PRICE", $product["_source"]['is_promo'] ? $promoPrice : $price)
+        //         ->set("BEST_PRICE_TAX", $taxedPrice - $product["_source"]['is_promo'] ? $taxedPromoPrice - $promoPrice : $taxedPrice - $price)
+        //         ->set("BEST_TAXED_PRICE", $product["_source"]['is_promo'] ? $taxedPromoPrice : $taxedPric)
+        //         ->set("PRICE", $price)
+        //         ->set("PRICE_TAX", $taxedPrice - $price)
+        //         ->set("TAXED_PRICE", $taxedPrice)
+        //         ->set("PROMO_PRICE", $promoPrice)
+        //         ->set("PROMO_PRICE_TAX", $taxedPromoPrice - $promoPrice)
+        //         ->set("TAXED_PROMO_PRICE", $taxedPromoPrice)
+        //         ->set("IS_PROMO", $product["_source"]['is_promo'])
+        //         ->set("IS_NEW", $product["_source"]['is_new'])
+        //         ->set("PRODUCT_SALE_ELEMENT", $product["_source"]['pse_id'])
+        //         ->set("PSE_COUNT", $product["_source"]['pse_count'])
+        //         ->set("LISTEN_PRICE",$product["_source"]['listen_price']);
             $loopResult->addRow($loopResultRow);
+            $results[] = $product["_source"];
         }
-        return $loopResult;
+
+        // echo "<pre>";var_dump($loopResult);die("debug");
+        return $results;
     }
 
    
