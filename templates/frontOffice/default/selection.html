@@ -1,34 +1,40 @@
 {extends file="layout.tpl"}
 
 {* Body Class *}
-{block name="body-class"}page-konfigurator{/block}
+{block name="body-class"}page-category{/block}
 
 {* Breadcrumb *}
 {block name='no-return-functions' append}
-    {$breadcrumbs = [['title' => {intl l="So funktioniert es" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/sofunktionierts"}]]}
+    {$breadcrumbs = [['title' => {intl l="Selection" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/selection"}]]}
 {/block}
 
 {block name="main-content"}
 
-
+<article class="col-main col-md-9  {$smarty.get.mode|default:"grid"}" role="main">
       {loop name="selection_list" type="selection_list" visible=true id='1'}
-        This selection id           : {$SELECTION_ID}
-        This selection title        : {$SELECTION_TITLE}
-        This selection status       : {$SELECTION_VISIBLE}
-        This selection description  : {$SELECTION_DESCRIPTION}
-        This selection chapo        : {$SELECTION_CHAPO}
-        This selection url          : {$SELECTION_URL}
-        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}
-        This selection position     : {$SELECTION_POSITION}
+        This selection id           : {$SELECTION_ID}</br>
+        This selection title        : {$SELECTION_TITLE}</br>
+        This selection status       : {$SELECTION_VISIBLE}</br>
+        This selection description  : {$SELECTION_DESCRIPTION}</br>
+        This selection chapo        : {$SELECTION_CHAPO}</br>
+        This selection url          : {$SELECTION_URL}</br>
+        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}</br>
+        This selection position     : {$SELECTION_POSITION}</br>
     {/loop}
-    <div class="products-content">
-        <ul class="list-unstyled products-grid row">
-	    {loop name="selection_product" type="selection_product_related" selection_id='1'}
-	        {loop name="product.details" type="product" id=$PRODUCT_ID}
-	        {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
-	    {/loop}
-	    {/loop}
-	    
-	    {/block}
-	    </ul>
+    <div id="category-products">
+	    <div class="products-content">
+	        <ul class="list-unstyled row">
+		        <ul class="list-unstyled">
+				    {loop name="selection_product" type="selection_product_related" selection_id='1'}
+				        {loop name="product.details" type="product" id=$PRODUCT_ID}
+				        	{include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
+				    	{/loop}
+				    {/loop}
+				    
+				    {/block}
+		   		</ul>
+		    </ul>
+		</div>
 	</div>
+	</article>
+	{/block}
