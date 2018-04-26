@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <services>
+        <service id="bosearch.services" class="BoSearch\EventListeners\BoSearchEventListener">
+            <argument id="request" type="service"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+
+    <forms>
+        <form name="customer-search-form" class="BoSearch\Form\CustomerSearchForm" />
+        <form name="order-search-form" class="BoSearch\Form\OrderSearchForm" />
+        <form name="product-search-form" class="BoSearch\Form\ProductSearchForm" />
+    </forms>
+
+    <hooks>
+        <hook id="bosearch.hook">
+            <tag name="hook.event_listener" event="customer.top" type="back" templates="render:customer-search.html" />
+            <tag name="hook.event_listener" event="customers.js" type="back" templates="render:assets/js/bo-search.html" />
+            <tag name="hook.event_listener" event="orders.top" type="back" templates="render:order-search.html" />
+            <tag name="hook.event_listener" event="orders.js" type="back" templates="render:assets/js/bo-search.html" />
+        </hook>
+        <hook id="bosearch.product.hook" class="BoSearch\Hook\BoSearchHook">
+            <tag name="hook.event_listener" event="main.in-top-menu-items" type="back" method="onMainTopMenuTools"/>
+            <tag name="hook.event_listener" event="bosearch.customer-search.form" type="back" method="onBoSearchCustomerForm"/>
+            <argument type="service" id="router.bosearch"/>
+            <argument type="service" id="thelia.securityContext"/>
+        </hook>
+    </hooks>
+
+</config>

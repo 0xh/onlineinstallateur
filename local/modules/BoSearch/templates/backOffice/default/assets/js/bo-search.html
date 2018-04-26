@@ -1,0 +1,44 @@
+{javascripts file='assets/js/moment-with-locales.min.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+{javascripts file='assets/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+{javascripts file='assets/js/bootstrap-select/bootstrap-select.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+
+
+<script type="text/javascript">
+
+    {$langcode = {lang attr="code"}|substr:0:2}
+
+    jQuery(function($){
+        // Calendar inputs
+        $('.is-calendar-input').datetimepicker( {
+            locale: "{$langcode}",
+            viewMode: 'days',
+            format: 'DD/MM/YYYY'
+        });
+
+        // Multiselect inputs
+        var $selectpickers = $('.selectpicker');
+        $selectpickers.selectpicker({
+            noneSelectedText: "{intl l='Nothing selected' d='bosearch.bo.default'}"
+        });
+
+        // Remove 'icon-ok' class
+        $('div.bootstrap-select div ul li a i.icon-ok').removeClass('icon-ok');
+
+        // Clean inputs
+        $("#clear-selection").click(function(ev) {
+            ev.preventDefault();
+            $('input').val('');
+            $('select').val('all');
+            $selectpickers.selectpicker('deselectAll');
+        });
+    });
+
+</script>
