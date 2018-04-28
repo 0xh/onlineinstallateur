@@ -8,20 +8,17 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\Event\Image\ImageEvent;
 use Thelia\ImportExport\Export\AbstractExport;
 use Thelia\Model\ConfigQuery;
-use Thelia\Model\Product;
 use Thelia\Model\ProductSaleElementsQuery;
-use Thelia\Model\Map\AttributeAvI18nTableMap;
-use Thelia\Model\Map\AttributeAvTableMap;
+use Thelia\Model\RewritingUrlQuery;
 use Thelia\Model\Map\BrandI18nTableMap;
 use Thelia\Model\Map\CategoryI18nTableMap;
-use Thelia\Model\Map\CurrencyTableMap;
 use Thelia\Model\Map\ProductCategoryTableMap;
 use Thelia\Model\Map\ProductI18nTableMap;
 use Thelia\Model\Map\ProductImageTableMap;
 use Thelia\Model\Map\ProductPriceTableMap;
 use Thelia\Model\Map\ProductSaleElementsTableMap;
 use Thelia\Model\Map\ProductTableMap;
-use Thelia\Model\Map\RewritingUrlTableMap;
+use PDO;
 
 /**
  * Class PreisRoboterProductExport
@@ -34,14 +31,15 @@ class PreisRoboterProductExport extends AbstractExport
     const FILE_NAME = 'catalog_preisroboter';
 
     private $url_site;
-
+    private $locale;
+    
     protected $orderAndAliases = [
         'productID' => 'Artikelnummer',
         'product_i18nTITLE' => 'Artikelname',
         'product_i18nDescription' => 'Produktbeschreibung',
         'product_pricePRICE' => 'Preis',
         'product_imageFILE' => 'Bildlink',
-        'rewriting_urlURL' => 'Deeplink',
+        ProductTableMap::VISIBLE => 'Deeplink',
         ProductSaleElementsTableMap::PROMO => 'Verfügbarkeit',
         ProductPriceTableMap::VERGLEICH_EK => 'Versandkosten',
         'brand_i18nTITLE' => 'Hersteller',
@@ -96,9 +94,17 @@ class PreisRoboterProductExport extends AbstractExport
         
         if ($this->url_site == null)
             $this->url_site = ConfigQuery::read('url_site');
-        $processedData['Deeplink'] = $this->url_site . "/" . $processedData['Deeplink'];
-        $processedData['Bildlink'] = $this->url_site . "/cache/images/product/" . $processedData['Bildlink'];
         
+        $rewriteUrl = RewritingUrlQuery::create()
+            ->filterByView('product')
+            ->filterByViewId($data['productID'])
+            ->filterByViewLocale($this->locale)
+            ->filterByRedirected(null)
+            ->findOne();
+
+        $processedData['Deeplink'] = $this->url_site . "/" . $rewriteUrl->getUrl();
+        $processedData['Bildlink'] = $this->url_site . "/cache/images/product/" . $processedData['Bildlink'];
+
         // set delivery time
         $allCentersProduct = null;
         // check if fulfilmentCenterProductsQuery exists
@@ -148,74 +154,50 @@ class PreisRoboterProductExport extends AbstractExport
 
     protected function getData()
     {
-        $locale = $this->language->getLocale();
+        $this->locale = $this->language->getLocale();
         
-        $urlJoin = new Join(ProductTableMap::ID, RewritingUrlTableMap::VIEW_ID, Criteria::LEFT_JOIN);
         $productJoin = new Join(ProductTableMap::ID, ProductI18nTableMap::ID, Criteria::LEFT_JOIN);
-        $attributeAvJoin = new Join(AttributeAvTableMap::ID, AttributeAvI18nTableMap::ID, Criteria::LEFT_JOIN);
         $brandJoin = new Join(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID, Criteria::LEFT_JOIN);
-        // $categoryJoin = new Join(ProductTableMap::ID, ProductCategoryTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
         $categoryJoin = new Join(ProductCategoryTableMap::CATEGORY_ID, CategoryI18nTableMap::ID, Criteria::LEFT_JOIN);
         $imageJoin = new Join(ProductTableMap::ID, ProductImageTableMap::PRODUCT_ID, Criteria::LEFT_JOIN);
         
         $query = ProductSaleElementsQuery::create()->addSelfSelectColumns()
             ->useProductPriceQuery()
-            ->useCurrencyQuery()
-            ->withColumn(CurrencyTableMap::CODE)
-            ->endUse()
-            ->withColumn(ProductPriceTableMap::PRICE)
-            ->withColumn(ProductPriceTableMap::PROMO_PRICE)
-            ->withColumn(ProductPriceTableMap::LISTEN_PRICE)
-            ->withColumn(ProductPriceTableMap::VERGLEICH_EK)
-            ->withColumn(ProductPriceTableMap::EK_PREIS_OAG)
-            ->withColumn(ProductPriceTableMap::EK_PREIS_GC)
-            ->withColumn(ProductPriceTableMap::EK_PREIS_ODORFER)
-            ->withColumn(ProductPriceTableMap::EK_PREIS_HOLTER)
-            ->withColumn(ProductPriceTableMap::PREIS_REUTER)
+                ->withColumn(ProductPriceTableMap::PRICE)
+                ->withColumn(ProductPriceTableMap::PROMO_PRICE)
+                ->withColumn(ProductPriceTableMap::LISTEN_PRICE)
+                ->withColumn(ProductPriceTableMap::VERGLEICH_EK)
+                ->withColumn(ProductPriceTableMap::EK_PREIS_OAG)
+                ->withColumn(ProductPriceTableMap::EK_PREIS_GC)
+                ->withColumn(ProductPriceTableMap::EK_PREIS_ODORFER)
+                ->withColumn(ProductPriceTableMap::EK_PREIS_HOLTER)
+                ->withColumn(ProductPriceTableMap::PREIS_REUTER)
             ->endUse()
             ->useProductQuery()
-            ->where(ProductTableMap::VISIBLE." = ?","1")
-            ->useProductCategoryQuery()
-            ->addJoinObject($categoryJoin, 'category_join')
-            ->addJoinCondition('category_join', CategoryI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->withColumn(CategoryI18nTableMap::TITLE)
-            ->endUse()
-            ->addJoinObject($productJoin, 'product_join')
-            ->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->withColumn(ProductI18nTableMap::TITLE)
-            ->withColumn(ProductTableMap::ID)
-            ->withColumn(ProductTableMap::REF)
-            ->withColumn(ProductTableMap::VISIBLE)
-            ->addJoinObject($urlJoin, 'rewriting_url_join')
-            ->addJoinCondition('rewriting_url_join', RewritingUrlTableMap::VIEW_LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->withColumn(RewritingUrlTableMap::URL)
-            ->addJoinCondition('rewriting_url_join', RewritingUrlTableMap::VIEW . ' = ?', (new Product())->getRewrittenUrlViewName(), null, \PDO::PARAM_STR)
-            ->addJoinCondition('rewriting_url_join', 'ISNULL(' . RewritingUrlTableMap::REDIRECTED . ')')
-            ->addJoinObject($productJoin, 'product_join')
-            ->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->
-        addJoinObject($imageJoin, 'product_image_join')
-            ->addJoinCondition('product_image_join', ProductImageTableMap::POSITION . '= ?', "1", null, \PDO::PARAM_INT)
-            ->withColumn(ProductImageTableMap::FILE)
-            ->
-        // ->addJoinCondition('product_image_join,')
-        
-        addJoinObject($brandJoin, 'brand_join')
-            ->addJoinCondition('brand_join', BrandI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->withColumn(BrandI18nTableMap::TITLE)
-            ->endUse()
-            ->
-        useAttributeCombinationQuery(null, Criteria::LEFT_JOIN)
-            ->useAttributeAvQuery(null, Criteria::LEFT_JOIN)
-            ->addJoinObject($attributeAvJoin, 'attribute_av_join')
-            ->addJoinCondition('attribute_av_join', AttributeAvI18nTableMap::LOCALE . ' = ?', $locale, null, \PDO::PARAM_STR)
-            ->addAsColumn('attribute_av_i18n_ATTRIBUTES', 'GROUP_CONCAT(DISTINCT ' . AttributeAvI18nTableMap::TITLE . ')')
-            ->endUse()
+                ->where(ProductTableMap::VISIBLE." = ?","1")
+                ->useProductCategoryQuery()
+                    ->addJoinObject($categoryJoin, 'category_join')
+                    ->addJoinCondition('category_join', CategoryI18nTableMap::LOCALE . ' = ?', $this->locale, null, PDO::PARAM_STR)
+                    ->withColumn(CategoryI18nTableMap::TITLE)
+                ->endUse()
+                ->addJoinObject($productJoin, 'product_join')
+                ->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $this->locale, null, PDO::PARAM_STR)
+                ->withColumn(ProductI18nTableMap::TITLE)
+                ->withColumn(ProductTableMap::ID)
+                ->withColumn(ProductTableMap::REF)
+                ->withColumn(ProductTableMap::VISIBLE)
+                ->addJoinObject($productJoin, 'product_join')
+                ->addJoinCondition('product_join', ProductI18nTableMap::LOCALE . ' = ?', $this->locale, null, PDO::PARAM_STR)
+                ->addJoinObject($imageJoin, 'product_image_join')
+                ->addJoinCondition('product_image_join', ProductImageTableMap::POSITION . '= ?', "1", null, PDO::PARAM_INT)
+                ->withColumn(ProductImageTableMap::FILE)
+                ->addJoinObject($brandJoin, 'brand_join')
+                ->addJoinCondition('brand_join', BrandI18nTableMap::LOCALE . ' = ?', $this->locale, null, PDO::PARAM_STR)
+                ->withColumn(BrandI18nTableMap::TITLE)
             ->endUse()
             ->orderBy(ProductSaleElementsTableMap::ID)
             ->groupBy(ProductSaleElementsTableMap::ID)
-            ->
-        where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
+            ->where('`product_sale_elements`.EAN_CODE ', Criteria::ISNOTNULL);
         
         return $query;
     }
