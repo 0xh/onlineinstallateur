@@ -160,7 +160,7 @@ class KonfiguratorController extends BaseFrontController {
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         
         $storeName="Hausfabrik";
-        $contactEmail="office@hausfabrik.at";
+        $contactEmail=ConfigQuery::read('configurator_email');
         $instance = \Swift_Message::newInstance()
         ->addTo($emailTest, $storeName)
         ->addFrom($contactEmail, $storeName)
