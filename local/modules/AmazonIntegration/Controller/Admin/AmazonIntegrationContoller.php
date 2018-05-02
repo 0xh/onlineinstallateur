@@ -103,7 +103,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
         		echo ('error decoding json');
         	}
         	
-        	sleep(3);
+        	sleep(2);
         }
 
         ini_set('max_execution_time', $max_time);
@@ -272,7 +272,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
                         $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
-                        sleep(4);
+                        sleep(2);
 
                         if (isset($order->FulfillmentChannel))
                             $fulfillmentChannel = $order->FulfillmentChannel;
@@ -970,18 +970,23 @@ class AmazonIntegrationContoller extends BaseAdminController {
                                 }                                
                             }
                             else {
-                                $this->saveRanking($eanCode, $productId, $ref, $asin, '', '', $priceAmazon);
+                                
                                 $this->getLogger()->error($ref . " doesn't have SalesRankings");
                             }
                         }
                     } else {
+                        
+                        if(ProductAmazonQuery::create()->findOneByEanCode($ref) != null)
+                            $this->saveRanking($ref, null, $ref, null, '', '', null);
                         $this->getLogger()->error($ref . " is an invalid EAN for the marketplace ");
                     }
                 } else {
+                    if(ProductAmazonQuery::create()->findOneByEanCode($ref) != null)
+                        $this->saveRanking($ref, null, $ref, null, '', '', null);
                     echo ('error decoding json');
                 }
                 
-                sleep(3);
+                sleep(2);
             }
 
             ini_set('max_execution_time', $max_time);
