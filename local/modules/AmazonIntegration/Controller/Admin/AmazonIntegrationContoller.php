@@ -970,18 +970,16 @@ class AmazonIntegrationContoller extends BaseAdminController {
                                 }                                
                             }
                             else {
-                                
                                 $this->getLogger()->error($ref . " doesn't have SalesRankings");
                             }
                         }
                     } else {
-                        
-                        if(ProductAmazonQuery::create()->findOneByEanCode($ref) != null)
+                        if(ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
                             $this->saveRanking($ref, null, $ref, null, '', '', null);
                         $this->getLogger()->error($ref . " is an invalid EAN for the marketplace ");
                     }
                 } else {
-                    if(ProductAmazonQuery::create()->findOneByEanCode($ref) != null)
+                    if(ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
                         $this->saveRanking($ref, null, $ref, null, '', '', null);
                     echo ('error decoding json');
                 }
