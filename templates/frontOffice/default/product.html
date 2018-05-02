@@ -6,6 +6,7 @@
     {$product_virtual={product attr="virtual"}}
     {$check_availability={config key="check-available-stock" default="1"}}
     {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+    {$reserve_online_active = {config key="reserve_online_active" default="false"}}
     {$reserve_online = 0}
 {/block}
 
@@ -347,12 +348,15 @@
                     		<span>Online bestellen</span>
                     	</label>
                    	</div>
-                   	{if $reserve_online}
-                    	<div class="reserve">
-	                    	<input type="radio" name="buy_format" id="reserve_online"  value="reserve"> 
-	                    	<label>Reservieren</label>
-	                    	<br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit in 2 Stunden
-                    	</div>
+                   	
+                   	{if $reserve_online_active == 'true'}
+                   		{if $reserve_online}
+                    		<div class="reserve">
+	                    		<input type="radio" name="buy_format" id="reserve_online"  value="reserve"> 
+	                    		<label>Reservieren</label>
+	                    		<br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit ab nächsten Werktag
+                    		</div>
+                   		{/if}
                    	{/if}
                 </div>
 {/if}
@@ -707,6 +711,7 @@
         var PSE_CHECK_AVAILABILITY = true;
     {/if}
     var PSE_DEFAULT_AVAILABLE_STOCK = {config key="default_available_stock" default="100"};
+    
     var PSE = {$pse|json_encode nofilter};
     var PSE_COMBINATIONS = {$combination_label|json_encode nofilter};
     var PSE_COMBINATIONS_VALUE = {$combination_values|json_encode nofilter};
