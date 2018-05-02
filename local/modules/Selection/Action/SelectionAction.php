@@ -77,8 +77,12 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
                 $model->setChapo($chapo);
             }
 
-            if (null !== $description = $event->getDescription()) {
-                $model->setDescription($description);
+            if (null !== $header = $event->getHeader()) {
+                $model->setHeader($header);
+            }
+
+            if (null !== $footer = $event->getFooter()) {
+                $model->setFooter($footer);
             }
 
             if (null !== $postscriptum = $event->getPostscriptum()) {

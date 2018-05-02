@@ -28,20 +28,28 @@ class SelectionCreateForm extends BaseForm
                 TextareaType::class,
                 array(
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
                     "label"         =>'Summary',
                 )
             )
             ->add(
-                'selection_description',
+                'selection_header',
                 TextareaType::class,
                 array(
                     'attr'          => array('class' => 'tinymce'),
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
-                    "label"         =>'Description',
+                    "label"         =>'Header',
+                )
+            )
+            ->add(
+                'selection_footer',
+                TextareaType::class,
+                array(
+                    'attr'          => array('class' => 'tinymce'),
+                    "constraints"   => array(
+                    ),
+                    "label"         =>'Footer',
                 )
             )
             ->add(
@@ -49,7 +57,6 @@ class SelectionCreateForm extends BaseForm
                 TextareaType::class,
                 array(
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
                     "label"         =>'Conclusion',
                 )

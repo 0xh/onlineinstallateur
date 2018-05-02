@@ -7,9 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- selection
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection`;
-
-CREATE TABLE `selection`
+CREATE TABLE if not exists `selection`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `visible` TINYINT NOT NULL,
@@ -23,9 +21,7 @@ CREATE TABLE `selection`
 -- selection_product
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection_product`;
-
-CREATE TABLE `selection_product`
+CREATE TABLE if not exists `selection_product`
 (
     `selection_id` INTEGER NOT NULL,
     `product_id` INTEGER NOT NULL,
@@ -50,9 +46,7 @@ CREATE TABLE `selection_product`
 -- selection_content
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection_content`;
-
-CREATE TABLE `selection_content`
+CREATE TABLE if not exists `selection_content`
 (
     `selection_id` INTEGER NOT NULL,
     `content_id` INTEGER NOT NULL,
@@ -77,9 +71,7 @@ CREATE TABLE `selection_content`
 -- selection_image
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection_image`;
-
-CREATE TABLE `selection_image`
+CREATE TABLE if not exists `selection_image`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `selection_id` INTEGER NOT NULL,
@@ -101,14 +93,13 @@ CREATE TABLE `selection_image`
 -- selection_i18n
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection_i18n`;
-
-CREATE TABLE `selection_i18n`
+CREATE TABLE if not exists `selection_i18n`
 (
     `id` INTEGER NOT NULL,
     `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,
     `title` VARCHAR(255),
-    `description` VARCHAR(255),
+    `header` VARCHAR(255),
+    `footer` VARCHAR(255),
     `chapo` VARCHAR(255),
     `postscriptum` VARCHAR(255),
     `meta_title` VARCHAR(255),
@@ -125,9 +116,7 @@ CREATE TABLE `selection_i18n`
 -- selection_image_i18n
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `selection_image_i18n`;
-
-CREATE TABLE `selection_image_i18n`
+CREATE TABLE if not exists `selection_image_i18n`
 (
     `id` INTEGER NOT NULL,
     `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,

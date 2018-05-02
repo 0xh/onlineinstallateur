@@ -45,21 +45,30 @@ class SelectionUpdateForm extends BaseForm
                 array(
                     'attr'          => array('class' => 'tinymce'),
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
                 "label"         =>Translator::getInstance()->trans('Summary'),
                 "required"      => false,
                 )
             )
             ->add(
-                'selection_description',
+                'selection_header',
                 TextareaType::class,
                 array(
                     'attr'          => array('class' => 'tinymce'),
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
-                "label"         =>Translator::getInstance()->trans('Description'),
+                "label"         =>Translator::getInstance()->trans('Header'),
+                "required"      => false,
+                )
+            )
+            ->add(
+                'selection_footer',
+                TextareaType::class,
+                array(
+                    'attr'          => array('class' => 'tinymce'),
+                    "constraints"   => array(
+                    ),
+                "label"         =>Translator::getInstance()->trans('Footer'),
                 "required"      => false,
                 )
             )
@@ -69,7 +78,6 @@ class SelectionUpdateForm extends BaseForm
                 array(
                     'attr'          => array('class' => 'tinymce'),
                     "constraints"   => array(
-                        new Constraints\NotBlank()
                     ),
                 "label"         => Translator::getInstance()->trans('Conclusion'),
                 "required"      => false,

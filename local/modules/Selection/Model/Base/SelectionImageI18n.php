@@ -19,7 +19,7 @@ use Selection\Model\SelectionImageI18nQuery as ChildSelectionImageI18nQuery;
 use Selection\Model\SelectionImageQuery as ChildSelectionImageQuery;
 use Selection\Model\Map\SelectionImageI18nTableMap;
 
-abstract class SelectionImageI18n implements ActiveRecordInterface
+abstract class SelectionImageI18n implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -376,7 +376,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -387,7 +387,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [locale] column value.
-     *
+     * 
      * @return   string
      */
     public function getLocale()
@@ -398,7 +398,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [title] column value.
-     *
+     * 
      * @return   string
      */
     public function getTitle()
@@ -409,7 +409,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [description] column value.
-     *
+     * 
      * @return   string
      */
     public function getDescription()
@@ -420,7 +420,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [chapo] column value.
-     *
+     * 
      * @return   string
      */
     public function getChapo()
@@ -431,7 +431,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Get the [postscriptum] column value.
-     *
+     * 
      * @return   string
      */
     public function getPostscriptum()
@@ -442,7 +442,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -467,7 +467,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [locale] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -488,7 +488,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [title] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -509,7 +509,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [description] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -530,7 +530,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [chapo] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -551,7 +551,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
 
     /**
      * Set the value of [postscriptum] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionImageI18n The current object (for fluent API support)
      */
@@ -886,22 +886,22 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'LOCALE':
+                    case 'LOCALE':                        
                         $stmt->bindValue($identifier, $this->locale, PDO::PARAM_STR);
                         break;
-                    case 'TITLE':
+                    case 'TITLE':                        
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'DESCRIPTION':
+                    case 'DESCRIPTION':                        
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'CHAPO':
+                    case 'CHAPO':                        
                         $stmt->bindValue($identifier, $this->chapo, PDO::PARAM_STR);
                         break;
-                    case 'POSTSCRIPTUM':
+                    case 'POSTSCRIPTUM':                        
                         $stmt->bindValue($identifier, $this->postscriptum, PDO::PARAM_STR);
                         break;
                 }
@@ -1017,7 +1017,7 @@ abstract class SelectionImageI18n implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->aSelectionImage) {
                 $result['SelectionImage'] = $this->aSelectionImage->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

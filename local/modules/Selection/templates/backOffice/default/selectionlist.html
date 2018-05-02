@@ -143,11 +143,20 @@
                                             </div>
                                         {/form_field}
 
-                                        {form_field form=$form field='selection_description'}
+                                        {form_field form=$form field='selection_header'}
                                             <div class="form-group">
-                                                <label for="{$label_attr.for}" class="control-label">{intl l='Description'}</label>
+                                                <label for="{$label_attr.for}" class="control-label">{intl l='Header'}</label>
                                                 <div class="control-input">
-                                                    <textarea name="{$name}" id="{$label_attr.for}" class="form-control wysiwyg" rows="3">{$description}</textarea>
+                                                    <textarea name="{$name}" id="{$label_attr.for}" class="form-control wysiwyg" rows="3">{$header}</textarea>
+                                                </div>
+                                            </div>
+                                        {/form_field}
+
+                                        {form_field form=$form field='selection_footer'}
+                                            <div class="form-group">
+                                                <label for="{$label_attr.for}" class="control-label">{intl l='Footer'}</label>
+                                                <div class="control-input">
+                                                    <textarea name="{$name}" id="{$label_attr.for}" class="form-control wysiwyg" rows="3">{$footer}</textarea>
                                                 </div>
                                             </div>
                                         {/form_field}

@@ -20,7 +20,7 @@ use Selection\Model\Map\SelectionTableMap;
 /**
  * Base class that represents a query for the 'selection' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionQuery orderByVisible($order = Criteria::ASC) Order by the visible column
@@ -72,7 +72,7 @@ use Selection\Model\Map\SelectionTableMap;
  */
 abstract class SelectionQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionQuery object.
      *
@@ -158,7 +158,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM selection WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -822,10 +822,10 @@ abstract class SelectionQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -838,7 +838,7 @@ abstract class SelectionQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -850,7 +850,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -862,7 +862,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -872,7 +872,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -882,7 +882,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -892,7 +892,7 @@ abstract class SelectionQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *
@@ -904,7 +904,7 @@ abstract class SelectionQuery extends ModelCriteria
     }
 
     // i18n behavior
-
+    
     /**
      * Adds a JOIN clause to the query using the i18n relation
      *
@@ -917,12 +917,12 @@ abstract class SelectionQuery extends ModelCriteria
     public function joinI18n($locale = 'en_US', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $relationName = $relationAlias ? $relationAlias : 'SelectionI18n';
-
+    
         return $this
             ->joinSelectionI18n($relationAlias, $joinType)
             ->addJoinCondition($relationName, $relationName . '.Locale = ?', $locale);
     }
-
+    
     /**
      * Adds a JOIN clause to the query and hydrates the related I18n object.
      * Shortcut for $c->joinI18n($locale)->with()
@@ -938,10 +938,10 @@ abstract class SelectionQuery extends ModelCriteria
             ->joinI18n($locale, null, $joinType)
             ->with('SelectionI18n');
         $this->with['SelectionI18n']->setIsWithOneToMany(false);
-
+    
         return $this;
     }
-
+    
     /**
      * Use the I18n relation query object
      *

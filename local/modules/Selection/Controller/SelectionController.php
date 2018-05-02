@@ -34,7 +34,8 @@ class SelectionController extends BaseAdminController
                 $id          = $selection->getId();
                 $title       = $selection->getTitle();
                 $summary     = $selection->getChapo();
-                $description = $selection->getDescription();
+                $header = $selection->getHeader();
+                $footer = $selection->getFooter();
                 $conclusion  = $selection->getPostscriptum();
                 $locale = $this->getRequest()->getSession()->get('thelia.current.lang')->getLocale();
 
@@ -42,7 +43,8 @@ class SelectionController extends BaseAdminController
                     'id'          => $id,
                     'title'       => $title,
                     'summary'     => $summary,
-                    'description' => $description,
+                    'header' => $header,
+                    'footer' => $footer,
                     'conclusion'  => $conclusion,
                 ];
                 $selectionSeo = new SelectionUpdateController();

@@ -19,12 +19,13 @@ use Selection\Model\Map\SelectionI18nTableMap;
 /**
  * Base class that represents a query for the 'selection_i18n' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionI18nQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
  * @method     ChildSelectionI18nQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildSelectionI18nQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildSelectionI18nQuery orderByHeader($order = Criteria::ASC) Order by the header column
+ * @method     ChildSelectionI18nQuery orderByFooter($order = Criteria::ASC) Order by the footer column
  * @method     ChildSelectionI18nQuery orderByChapo($order = Criteria::ASC) Order by the chapo column
  * @method     ChildSelectionI18nQuery orderByPostscriptum($order = Criteria::ASC) Order by the postscriptum column
  * @method     ChildSelectionI18nQuery orderByMetaTitle($order = Criteria::ASC) Order by the meta_title column
@@ -34,7 +35,8 @@ use Selection\Model\Map\SelectionI18nTableMap;
  * @method     ChildSelectionI18nQuery groupById() Group by the id column
  * @method     ChildSelectionI18nQuery groupByLocale() Group by the locale column
  * @method     ChildSelectionI18nQuery groupByTitle() Group by the title column
- * @method     ChildSelectionI18nQuery groupByDescription() Group by the description column
+ * @method     ChildSelectionI18nQuery groupByHeader() Group by the header column
+ * @method     ChildSelectionI18nQuery groupByFooter() Group by the footer column
  * @method     ChildSelectionI18nQuery groupByChapo() Group by the chapo column
  * @method     ChildSelectionI18nQuery groupByPostscriptum() Group by the postscriptum column
  * @method     ChildSelectionI18nQuery groupByMetaTitle() Group by the meta_title column
@@ -55,7 +57,8 @@ use Selection\Model\Map\SelectionI18nTableMap;
  * @method     ChildSelectionI18n findOneById(int $id) Return the first ChildSelectionI18n filtered by the id column
  * @method     ChildSelectionI18n findOneByLocale(string $locale) Return the first ChildSelectionI18n filtered by the locale column
  * @method     ChildSelectionI18n findOneByTitle(string $title) Return the first ChildSelectionI18n filtered by the title column
- * @method     ChildSelectionI18n findOneByDescription(string $description) Return the first ChildSelectionI18n filtered by the description column
+ * @method     ChildSelectionI18n findOneByHeader(string $header) Return the first ChildSelectionI18n filtered by the header column
+ * @method     ChildSelectionI18n findOneByFooter(string $footer) Return the first ChildSelectionI18n filtered by the footer column
  * @method     ChildSelectionI18n findOneByChapo(string $chapo) Return the first ChildSelectionI18n filtered by the chapo column
  * @method     ChildSelectionI18n findOneByPostscriptum(string $postscriptum) Return the first ChildSelectionI18n filtered by the postscriptum column
  * @method     ChildSelectionI18n findOneByMetaTitle(string $meta_title) Return the first ChildSelectionI18n filtered by the meta_title column
@@ -65,7 +68,8 @@ use Selection\Model\Map\SelectionI18nTableMap;
  * @method     array findById(int $id) Return ChildSelectionI18n objects filtered by the id column
  * @method     array findByLocale(string $locale) Return ChildSelectionI18n objects filtered by the locale column
  * @method     array findByTitle(string $title) Return ChildSelectionI18n objects filtered by the title column
- * @method     array findByDescription(string $description) Return ChildSelectionI18n objects filtered by the description column
+ * @method     array findByHeader(string $header) Return ChildSelectionI18n objects filtered by the header column
+ * @method     array findByFooter(string $footer) Return ChildSelectionI18n objects filtered by the footer column
  * @method     array findByChapo(string $chapo) Return ChildSelectionI18n objects filtered by the chapo column
  * @method     array findByPostscriptum(string $postscriptum) Return ChildSelectionI18n objects filtered by the postscriptum column
  * @method     array findByMetaTitle(string $meta_title) Return ChildSelectionI18n objects filtered by the meta_title column
@@ -75,7 +79,7 @@ use Selection\Model\Map\SelectionI18nTableMap;
  */
 abstract class SelectionI18nQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionI18nQuery object.
      *
@@ -159,10 +163,10 @@ abstract class SelectionI18nQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM, META_TITLE, META_DESCRIPTION, META_KEYWORDS FROM selection_i18n WHERE ID = :p0 AND LOCALE = :p1';
+        $sql = 'SELECT ID, LOCALE, TITLE, HEADER, FOOTER, CHAPO, POSTSCRIPTUM, META_TITLE, META_DESCRIPTION, META_KEYWORDS FROM selection_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);            
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -362,32 +366,61 @@ abstract class SelectionI18nQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the description column
+     * Filter the query on the header column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
-     * $query->filterByDescription('%fooValue%'); // WHERE description LIKE '%fooValue%'
+     * $query->filterByHeader('fooValue');   // WHERE header = 'fooValue'
+     * $query->filterByHeader('%fooValue%'); // WHERE header LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $description The value to use as filter.
+     * @param     string $header The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSelectionI18nQuery The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByHeader($header = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($description)) {
+            if (is_array($header)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $description)) {
-                $description = str_replace('*', '%', $description);
+            } elseif (preg_match('/[\%\*]/', $header)) {
+                $header = str_replace('*', '%', $header);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SelectionI18nTableMap::DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(SelectionI18nTableMap::HEADER, $header, $comparison);
+    }
+
+    /**
+     * Filter the query on the footer column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFooter('fooValue');   // WHERE footer = 'fooValue'
+     * $query->filterByFooter('%fooValue%'); // WHERE footer LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $footer The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSelectionI18nQuery The current query, for fluid interface
+     */
+    public function filterByFooter($footer = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($footer)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $footer)) {
+                $footer = str_replace('*', '%', $footer);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SelectionI18nTableMap::FOOTER, $footer, $comparison);
     }
 
     /**
@@ -688,10 +721,10 @@ abstract class SelectionI18nQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionI18nTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionI18nTableMap::clearRelatedInstancePool();
             $con->commit();

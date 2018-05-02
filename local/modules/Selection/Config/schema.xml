@@ -7,7 +7,8 @@
         <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER"/>
         <column name="visible" required="true" type="TINYINT"/>
         <column name="title" type="VARCHAR" size="255" />
-        <column name="description" type="VARCHAR" size="255" />
+        <column name="header" type="VARCHAR" size="255" />
+        <column name="footer" type="VARCHAR" size="255" />
         <column name="chapo" type="VARCHAR" size="255" />
         <column name="postscriptum" type="VARCHAR" size="255" />
         <column name="position" type="INTEGER" />
@@ -18,7 +19,7 @@
         <!-- end add seo column -->
         <behavior name="timestampable" />
         <behavior name="i18n">
-            <parameter name="i18n_columns" value="title, description, chapo, postscriptum, meta_title, meta_description, meta_keywords" />
+            <parameter name="i18n_columns" value="title, header, footer, chapo, postscriptum, meta_title, meta_description, meta_keywords" />
         </behavior>
     </table>
 

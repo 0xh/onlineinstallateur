@@ -12,7 +12,8 @@ class SelectionEvent extends ActionEvent
     protected $id;
     protected $title;
     protected $chapo;
-    protected $description;
+    protected $header;
+    protected $footer;
     protected $postscriptum;
 
     /*---- SEO parts */
@@ -66,14 +67,26 @@ class SelectionEvent extends ActionEvent
         return $this;
     }
 
-    public function getDescription()
+    public function getHeader()
     {
-        return $this->description;
+        return $this->header;
     }
 
-    public function setDescription($description)
+    public function setHeader($header)
     {
-        $this->description = $description;
+        $this->header = $header;
+
+        return $this;
+    }
+
+    public function getFooter()
+    {
+        return $this->footer;
+    }
+
+    public function setFooter($footer)
+    {
+        $this->footer = $footer;
 
         return $this;
     }
