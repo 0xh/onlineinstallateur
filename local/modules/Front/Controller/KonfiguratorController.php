@@ -118,7 +118,7 @@ class KonfiguratorController extends BaseFrontController {
    //     $form = $this->validateForm($contactForm);
      //  $contactForm
         $subject = "Heizungskonfigurator neue Anfrage ";
-        $emailTest = "angebote@hausfabrik.at";
+        $emailTest = ConfigQuery::read('offer_email');
         
         $currentCustomer = $this->getSecurityContext()->getCustomerUser();
         if($currentCustomer == null){

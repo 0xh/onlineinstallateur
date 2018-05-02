@@ -44,7 +44,7 @@ class KlimaAngebotController extends BaseFrontController
         $contactForm = $this->createForm("klima.angebot");
         $form = $this->validateForm($contactForm);
         $subject = "Klima Individuelles Angebot";
-        $emailTest = "angebote@hausfabrik.at";
+        $emailTest = ConfigQuery::read('offer_email');
         $firstname = $this->getRequest()->get('klimaangebot')['firstname'];
         $lastname =  $this->getRequest()->get('klimaangebot')['lastname'];
         $phone =  $this->getRequest()->get('klimaangebot')['phone'];
@@ -64,7 +64,7 @@ class KlimaAngebotController extends BaseFrontController
         
         
         $storeName="Hausfabrik";
-        $contactEmail="angebote@hausfabrik.at";
+        $contactEmail=ConfigQuery::read('offer_email');
         $instance = \Swift_Message::newInstance()
         
         ->addTo($emailTest, $storeName)
