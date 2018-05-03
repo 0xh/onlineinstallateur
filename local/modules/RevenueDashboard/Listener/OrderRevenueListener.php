@@ -15,6 +15,8 @@ use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Model\OrderQuery;
+use Thelia\Core\Template\Loop\OrderProduct;
+use Thelia\Model\OrderProductQuery;
 
 /**
  * Description of OrderRevenueListener
@@ -51,18 +53,26 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
     }
 
     protected function addNewOrderRevenue($orderProdRevenue, $paymentProcessorCost, $totalPaymentProcessorCost, $deliveryCostMethod) {
+        $orderProduct = OrderProductQuery::create()
+        ->filterByOrderId($orderProdRevenue->getOrderId())
+        ->findOneByProductRef($orderProdRevenue->getProductRef());
+        
+        $orderQuantity = $orderProduct->getQuantity();
+        $sellPrice = $orderProdRevenue->getPrice()*$orderQuantity;
+        $purchasePrice = $orderProdRevenue->getPurchasePrice()*$orderQuantity;
+        
         $newOrderRevenue = new OrderRevenue();
         $newOrderRevenue->setDeliveryCost($deliveryCostMethod["delivery_cost"]);
         $newOrderRevenue->setOrderId($orderProdRevenue->getOrderId());
         $newOrderRevenue->setDeliveryMethod($deliveryCostMethod["delivery_method"]);
         $newOrderRevenue->setPartnerId($orderProdRevenue->getPartnerId());
         $newOrderRevenue->setPaymentProcessorCost($totalPaymentProcessorCost);
-        $newOrderRevenue->setPrice($orderProdRevenue->getPrice());
-        $newOrderRevenue->setPurchasePrice($orderProdRevenue->getPurchasePrice());
-        $totalPurchasePrice = $orderProdRevenue->getPurchasePrice() + $deliveryCostMethod["delivery_cost"] + $totalPaymentProcessorCost;
+        $newOrderRevenue->setPrice($sellPrice);
+        $newOrderRevenue->setPurchasePrice($purchasePrice);
+        $totalPurchasePrice = $purchasePrice + $deliveryCostMethod["delivery_cost"] + $totalPaymentProcessorCost;
 
         $newOrderRevenue->setTotalPurchasePrice($totalPurchasePrice);
-        $newOrderRevenue->setRevenue($orderProdRevenue->getPrice() - $totalPurchasePrice);
+        $newOrderRevenue->setRevenue($sellPrice - $totalPurchasePrice);
         $newOrderRevenue->save();
     }
 
