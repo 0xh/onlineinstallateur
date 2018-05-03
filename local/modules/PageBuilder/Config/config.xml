@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+    <loops>
+        <loop name="page_builder_list" class="PageBuilder\Loop\PageBuilderLoop"/>
+        <loop name="page_builder_category" class="PageBuilder\Loop\PageBuilderLoopCategory"/>
+        <loop name="page_builder_folder" class="PageBuilder\Loop\PageBuilderLoopFolder"/>
+        <loop name="page_builder_image" class="PageBuilder\Loop\PageBuilderImage"/>
+        <loop name="page_builder_content_related" class="PageBuilder\Loop\PageBuilderContentRelated"/>
+        <loop name="page_builder_product_related" class="PageBuilder\Loop\PageBuilderProductRelated"/>
+    </loops>
+
+    <forms>
+        <form name="admin.page_builder.update" class="PageBuilder\Form\PageBuilderUpdateForm"/>
+        <form name="admin.page_builder.create" class="PageBuilder\Form\PageBuilderCreateForm"/>
+        <form name="admin.page_builder.seo" class="Thelia\Form\PageBuilderCreateForm"/>
+        <form name="admin.page_builder.image.modification" class="PageBuilder\Form\PageBuilderImageModification"/>
+    </forms>
+
+    <services>
+        <service id="page_builder.action.customer" class="PageBuilder\Action\PageBuilderAction">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+        <service id="thelia.file_manager" class="Thelia\Files\FileManager">
+            <argument>%file_model.classes%</argument>
+        </service>
+    </services>
+
+    <hooks>
+        <hook id="page_builder.hook">
+        </hook>
+        <hook id="PageBuilder.hook.back" class="PageBuilder\Hook\BackHook">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back"/>
+        </hook>
+    </hooks>
+</config>

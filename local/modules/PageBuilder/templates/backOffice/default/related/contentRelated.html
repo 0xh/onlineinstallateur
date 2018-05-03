@@ -1,0 +1,16 @@
+{loop name="page_builder_content_related" type="page_builder_content_related" page_builder_id=$page_builder_id}
+    <tr id="contentValue">
+        <td>{$CONTENT_ID}</td>
+        <td>{$CONTENT_TITLE}</td>
+        <td class="text-center">
+            {$POSITION}
+        </td>
+        <td class="text-center">
+            {loop type="auth" name="can_delete" role="ADMIN" resource="admin.page_builder" access="DELETE"}
+                <a class="btn btn-default btn-xs value-delete" title="{intl l='Delete this value'}" href="{url path="admin/page-builder/delete/relatedContent/%pageBuilderId/%productId" productId=$CONTENT_ID pageBuilderId=$page_builder_id}">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            {/loop}
+        </td>
+    </tr>
+{/loop}

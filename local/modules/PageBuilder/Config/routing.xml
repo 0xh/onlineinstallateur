@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <!-- ******************************* Root link to page_builder list ******************************* -->
+    <route id="page-builder.list" path="/admin/PageBuilder">
+        <default key="_controller">PageBuilder\Controller\PageBuilderController::viewAction</default>
+    </route>
+
+    <!-- ******************************* Root link to update management ******************************* -->
+
+    <!-- ***** Default page of management update-->
+    <route id="page-builder.update" path="/admin/page-builder/update/{pageBuilderId}" methods="get">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::updateAction</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which return value in select-->
+    <route id="page-builder.update.getProductRelated" path="admin/page-builder/update/getProductRelated/{categoryID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedProductController::getProductRelated</default>
+        <requirement key="categoryID">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which add value-->
+    <route id="page-builder.update.getContentRelated" path="/admin/page-builder/update/getContentRelated/{folderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedContentController::getContentRelated</default>
+        <requirement key="folderID">\d+</requirement>
+    </route>
+
+    <route id="page-builder.update.addProductRelated" path="admin/page-builder/update/addProductRelated/{productID}{pageBuilderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedProductController::addProductRelated</default>
+        <requirement key="productID">\d+</requirement>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <route id="page-builder.update.addContentRelated" path="/admin/page-builder/update/addContentRelated/{contentID}{pageBuilderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedContentController::addContentRelated</default>
+        <requirement key="contentID">\d+</requirement>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which return value to show in table-->
+    <route id="page-builder.show.productInTable" path="/admin/page-builder/update/showProduct/{pageBuilderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedProductController::showProduct</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <route id="page-builder.show.contentInTable" path="/admin/page-builder/update/showContent/{pageBuilderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderRelatedContentController::showContent</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which save the page_builder-->
+    <route id="page-builder.update.savePageBuilder" path="/admin/page-builder/save">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::processUpdateAction</default>
+    </route>
+
+    <!-- ***** Root to function which create and save a new page_builder-->
+    <route id="page-builder.create.createPageBuilder" path="/admin/page-builder/create">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::createPageBuilder</default>
+    </route>
+
+    <!-- ***** Root to function which delete a page_builder from the list-->
+    <route id="admin.delete.page_builder" path="/admin/page-builder/delete/{page_builder_ID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::deletePageBuilder</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which save SEO content-->
+
+    <route id="admin.page-builder.seo.save" path="/admin/page-builder/seo/save">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::processUpdateSeoAction</default>
+    </route>
+
+    <!-- ***** Root to function which modify a related product position-->
+    <route id="page-builder.productRelated.update-position" path="/admin/page-builder/product-related/update-position">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::updatePositionAction</default>
+    </route>
+
+    <!-- ******************************* Root link to picture edit ******************************* -->
+
+    <route id="page-builder.image.form-ajax" path="/page-builder/image/type/{parentType}/{parentId}/form-ajax">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::getImageFormAjaxAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.list-ajax" path="/page-builder/image/type/{parentType}/{parentId}/list-ajax">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::getImageListAjaxAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.save-ajax" path="/page-builder/image/type/{parentType}/{parentId}/save-ajax">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::saveImageAjaxAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.update.title" path="/page-builder/image/type/{parentType}/{imageId}/{parentId}/update/title" methods="post">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::updateImageTitleAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="imageId">\d+</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.update.view" path="/page-builder/image/type/{parentType}/{imageId}/update" methods="get">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::viewImageAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="imageId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.toggle.process" path="admin/page-builder/image/type/{parentType}/{documentId}/{parentId}/toggle">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::toggleVisibilityImageAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="documentId">\d+</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="page-builder.image.delete" path="/admin/page-builder/image/type/{parentType}/delete/{parentId}/{documentId}">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::deleteDocumentAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="documentId">\d+</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+    <route id="admin.image.update-position" path="/admin/page-builder/image/type/{parentType}/{parentId}/update-position">
+        <default key="_controller">PageBuilder\Controller\ImageUploadController::updateImagePositionAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="parentId">\d+</requirement>
+    </route>
+
+
+    <!-- Related to a page_builder root -->
+
+    <!-- Delete -->
+    <route id="admin.delete.page-builder.product" path="admin/page-builder/delete/relatedProduct/{pageBuilderID}/{productID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::deleteRelatedProduct</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+        <requirement key="productID">\d+</requirement>
+    </route>
+   <route id="admin.delete.page-builder.content" path="admin/page-builder/delete/relatedContent/{pageBuilderID}/{contentID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::deleteRelatedContent</default>
+        <requirement key="pageBuilderID">\d+</requirement>
+        <requirement key="contentID">\d+</requirement>
+    </route>
+
+
+    <!-- Visiblity of a page_builder-->
+    <route id="admin.page-builder.set-default" path="/admin/page-builder/toggle-online">
+        <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::setToggleVisibilityAction</default>
+    </route>
+
+
+</routes>
+
+
+
