@@ -1,7 +1,8 @@
 <?php
 namespace PageBuilder\Controller;
 
-use Propel\Runtime\ActiveQuery\Criteria;
+use DateTime;
+use Exception;
 use PageBuilder\Event\PageBuilderEvent;
 use PageBuilder\Event\PageBuilderEvents;
 use PageBuilder\Form\PageBuilderCreateForm;
@@ -12,9 +13,13 @@ use PageBuilder\Model\PageBuilderI18nQuery;
 use PageBuilder\Model\PageBuilderProductQuery;
 use PageBuilder\Model\PageBuilderQuery;
 use PageBuilder\PageBuilder;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\Exception\PropelException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response as Response2;
 use Thelia\Controller\Admin\AbstractSeoCrudController;
 use Thelia\Core\Event\UpdatePositionEvent;
+use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Tools\URL;
@@ -26,8 +31,8 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
     /**
      * Save content of the pageBuilder
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Thelia\Core\HttpFoundation\Response
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @return Response2|Response
+     * @throws PropelException
      */
     public function savePageBuilder()
     {
@@ -88,7 +93,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
         $pageBuilder  = new PageBuilderModel();
         $lastPageBuilder   = PageBuilderQuery::create()->orderByPosition(Criteria::DESC)->findOne();
 
-        $date       = new \DateTime();
+        $date       = new DateTime();
 
         if (null !== $lastPageBuilder) {
             $position =  $lastPageBuilder->getPosition() + 1;
@@ -115,7 +120,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
                 'message' => 'PageBuilder : '.$pageBuilderTitle.' has been created and has #'
                     .$pageBuilder->getId().' as reference'
                 ];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $m = ['message' => $e->getMessage()];
         }
 
@@ -137,7 +142,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
             } else {
                 $m = ['message' => "PageBuilder #".$pageBuilderID." doesn't exists so we can't delete it."];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $m = ['message' => $e->getMessage()];
         }
 
@@ -160,7 +165,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
                 $m = ['message' => "Product #".$productID." related to #"
                     .$pageBuilderID." doesn't exists so we can't delete it."];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $m = ['message' => $e->getMessage()];
         }
 
@@ -183,7 +188,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
                 $m = ['message' => "Product #".$contentID." related to #"
                     .$pageBuilderID." doesn't exists so we can't delete it."];
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $m = ['message' => $e->getMessage()];
         }
 
@@ -237,9 +242,6 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
             'current_id'            => $object->getId(),
         );
 
-//        echo '<pre>';
-//        var_dump($data);
-//        die;
         return $this->getUpdateForm($data);
     }
 
@@ -334,7 +336,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
 
     protected function redirectToEditionTemplate()
     {
-        $id = $this->getRequest()->get('page_builder_id');
+        $id = $this->getRequest()->get('pageBuilder_id');
 
         return new RedirectResponse(
             URL::getInstance()->absoluteUrl(
@@ -364,7 +366,7 @@ class PageBuilderUpdateController extends AbstractSeoCrudController
 
         try {
             $this->dispatch(PageBuilderEvents::PAGE_BUILDER_TOGGLE_VISIBILITY, $event);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             // Any error
             return $this->errorPage($ex);
         }

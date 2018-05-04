@@ -104,13 +104,9 @@ class PageBuilderLoop extends BaseI18nLoop implements PropelSearchLoopInterface 
 
             /** @var PageBuilder $pageBuilder */
             $loopResultRow = new LoopResultRow($pageBuilder);
-//            echo '<pre>';
-//            var_dump($pageBuilder->getUrl("de_DE"));
-            $pageBuilder->getUrl();
-//            die;
+
             $loopResultRow
                     ->set("PAGE_BUILDER_ID", $pageBuilder->getId())
-//                ->set("PAGE_BUILDER_URL", "en_US") // $this->getReturnUrl() ? $pageBuilder->getUrl($this->locale) : null)
                     ->set("PAGE_BUILDER_URL", $this->getReturnUrl() ? $pageBuilder->getUrl($this->locale) : null)
                     ->set("PAGE_BUILDER_TITLE", $pageBuilder->geti18n_TITLE())
                     ->set("PAGE_BUILDER_POSITION", $pageBuilder->getPosition())
