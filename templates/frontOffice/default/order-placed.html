@@ -114,36 +114,36 @@
         </article>
 
     </div>
+    
 <!-- Google DataLayer START -->
-<script type="text/javascript">
+        {loop type='order_product' name='order-products' order=$placed_order_id}
+            {assign var='gdl_sku' value=$REF}
+            {assign var='gdl_quantity' value=$QUANTITY} 
+            {assign var='gdl_price' value=$TAXED_PRICE} 
+            {loop type='product' name='product' id=$PRODUCT_ID}
+                {loop type="category" name='category' id=$DEFAULT_CATEGORY}
+                    {assign var="gdl_category" value=$TITLE}
+                {/loop}
+            {/loop}
+        {/loop}
+
+<script>
 
     var dataLayer= window.dataLayer = window.dataLayer || [];
 
     dataLayer.push({
-        'event':'transactionComplete',
-        'transactionId':{$transactionId},
-        'transactionAffiliation': {customer attr="email"},
-        'transactionTotal': {$transactionTotal},
-        'transactionTax' : {$transactionTax},
-        'transactionShipping' : 4,
-        'transactionProducts' : [
-        {loop type="order_product" name="order-products" order=$placed_order_id}
-            {assign var="sku" value=$REF}
-            {assign var="quantity" value=$QUANTITY} 
-            {assign var="price" value=$TAXED_PRICE} 
-            {loop type="product" name="product" id=$PRODUCT_ID}
-                {loop type="category" name="category" id=$DEFAULT_CATEGORY}
-                    {assign var="category" value=$TITLE}
-                    {
-                        'sku':{$sku}
-                        'category': {$category}
-                        'price': {$price}
-                        'quantity': {$quantity}
-                    },
-                {/loop}
-            {/loop}
-        {/loop}
-        ]
+        "event":"transactionComplete",
+        "transactionId":"{$transactionId}",
+        "transactionAffiliation": "{customer attr='email'}",
+        "transactionTotal": "{$transactionTotal}",
+        "transactionTax" : "{$transactionTax}",
+        "transactionShipping" :"4",
+        "transactionProducts" : [{
+                "sku":"{$gdl_sku}",
+                "category": "{$gdl_category}",
+                "price": "{$gdl_price}",
+                "quantity": "{$gdl_quantity}",
+            }]
     });
 </script> 
 
