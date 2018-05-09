@@ -8,6 +8,8 @@ use \PDO;
 use PageBuilder\Model\PageBuilder as ChildPageBuilder;
 use PageBuilder\Model\PageBuilderContent as ChildPageBuilderContent;
 use PageBuilder\Model\PageBuilderContentQuery as ChildPageBuilderContentQuery;
+use PageBuilder\Model\PageBuilderElement as ChildPageBuilderElement;
+use PageBuilder\Model\PageBuilderElementQuery as ChildPageBuilderElementQuery;
 use PageBuilder\Model\PageBuilderI18n as ChildPageBuilderI18n;
 use PageBuilder\Model\PageBuilderI18nQuery as ChildPageBuilderI18nQuery;
 use PageBuilder\Model\PageBuilderImage as ChildPageBuilderImage;
@@ -112,6 +114,12 @@ abstract class PageBuilder implements ActiveRecordInterface
     protected $collPageBuilderImagesPartial;
 
     /**
+     * @var        ObjectCollection|ChildPageBuilderElement[] Collection to store aggregation of ChildPageBuilderElement objects.
+     */
+    protected $collPageBuilderElements;
+    protected $collPageBuilderElementsPartial;
+
+    /**
      * @var        ObjectCollection|ChildPageBuilderI18n[] Collection to store aggregation of ChildPageBuilderI18n objects.
      */
     protected $collPageBuilderI18ns;
@@ -156,6 +164,12 @@ abstract class PageBuilder implements ActiveRecordInterface
      * @var ObjectCollection
      */
     protected $pageBuilderImagesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $pageBuilderElementsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -731,6 +745,8 @@ abstract class PageBuilder implements ActiveRecordInterface
 
             $this->collPageBuilderImages = null;
 
+            $this->collPageBuilderElements = null;
+
             $this->collPageBuilderI18ns = null;
 
         } // if (deep)
@@ -911,6 +927,23 @@ abstract class PageBuilder implements ActiveRecordInterface
 
                 if ($this->collPageBuilderImages !== null) {
             foreach ($this->collPageBuilderImages as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->pageBuilderElementsScheduledForDeletion !== null) {
+                if (!$this->pageBuilderElementsScheduledForDeletion->isEmpty()) {
+                    \PageBuilder\Model\PageBuilderElementQuery::create()
+                        ->filterByPrimaryKeys($this->pageBuilderElementsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->pageBuilderElementsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collPageBuilderElements !== null) {
+            foreach ($this->collPageBuilderElements as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1128,6 +1161,9 @@ abstract class PageBuilder implements ActiveRecordInterface
             if (null !== $this->collPageBuilderImages) {
                 $result['PageBuilderImages'] = $this->collPageBuilderImages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collPageBuilderElements) {
+                $result['PageBuilderElements'] = $this->collPageBuilderElements->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collPageBuilderI18ns) {
                 $result['PageBuilderI18ns'] = $this->collPageBuilderI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1316,6 +1352,12 @@ abstract class PageBuilder implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getPageBuilderElements() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addPageBuilderElement($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getPageBuilderI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPageBuilderI18n($relObj->copy($deepCopy));
@@ -1371,6 +1413,9 @@ abstract class PageBuilder implements ActiveRecordInterface
         }
         if ('PageBuilderImage' == $relationName) {
             return $this->initPageBuilderImages();
+        }
+        if ('PageBuilderElement' == $relationName) {
+            return $this->initPageBuilderElements();
         }
         if ('PageBuilderI18n' == $relationName) {
             return $this->initPageBuilderI18ns();
@@ -2088,6 +2133,224 @@ abstract class PageBuilder implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collPageBuilderElements collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addPageBuilderElements()
+     */
+    public function clearPageBuilderElements()
+    {
+        $this->collPageBuilderElements = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collPageBuilderElements collection loaded partially.
+     */
+    public function resetPartialPageBuilderElements($v = true)
+    {
+        $this->collPageBuilderElementsPartial = $v;
+    }
+
+    /**
+     * Initializes the collPageBuilderElements collection.
+     *
+     * By default this just sets the collPageBuilderElements collection to an empty array (like clearcollPageBuilderElements());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initPageBuilderElements($overrideExisting = true)
+    {
+        if (null !== $this->collPageBuilderElements && !$overrideExisting) {
+            return;
+        }
+        $this->collPageBuilderElements = new ObjectCollection();
+        $this->collPageBuilderElements->setModel('\PageBuilder\Model\PageBuilderElement');
+    }
+
+    /**
+     * Gets an array of ChildPageBuilderElement objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildPageBuilder is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildPageBuilderElement[] List of ChildPageBuilderElement objects
+     * @throws PropelException
+     */
+    public function getPageBuilderElements($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPageBuilderElementsPartial && !$this->isNew();
+        if (null === $this->collPageBuilderElements || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collPageBuilderElements) {
+                // return empty collection
+                $this->initPageBuilderElements();
+            } else {
+                $collPageBuilderElements = ChildPageBuilderElementQuery::create(null, $criteria)
+                    ->filterByPageBuilder($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collPageBuilderElementsPartial && count($collPageBuilderElements)) {
+                        $this->initPageBuilderElements(false);
+
+                        foreach ($collPageBuilderElements as $obj) {
+                            if (false == $this->collPageBuilderElements->contains($obj)) {
+                                $this->collPageBuilderElements->append($obj);
+                            }
+                        }
+
+                        $this->collPageBuilderElementsPartial = true;
+                    }
+
+                    reset($collPageBuilderElements);
+
+                    return $collPageBuilderElements;
+                }
+
+                if ($partial && $this->collPageBuilderElements) {
+                    foreach ($this->collPageBuilderElements as $obj) {
+                        if ($obj->isNew()) {
+                            $collPageBuilderElements[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collPageBuilderElements = $collPageBuilderElements;
+                $this->collPageBuilderElementsPartial = false;
+            }
+        }
+
+        return $this->collPageBuilderElements;
+    }
+
+    /**
+     * Sets a collection of PageBuilderElement objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $pageBuilderElements A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildPageBuilder The current object (for fluent API support)
+     */
+    public function setPageBuilderElements(Collection $pageBuilderElements, ConnectionInterface $con = null)
+    {
+        $pageBuilderElementsToDelete = $this->getPageBuilderElements(new Criteria(), $con)->diff($pageBuilderElements);
+
+        
+        $this->pageBuilderElementsScheduledForDeletion = $pageBuilderElementsToDelete;
+
+        foreach ($pageBuilderElementsToDelete as $pageBuilderElementRemoved) {
+            $pageBuilderElementRemoved->setPageBuilder(null);
+        }
+
+        $this->collPageBuilderElements = null;
+        foreach ($pageBuilderElements as $pageBuilderElement) {
+            $this->addPageBuilderElement($pageBuilderElement);
+        }
+
+        $this->collPageBuilderElements = $pageBuilderElements;
+        $this->collPageBuilderElementsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related PageBuilderElement objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related PageBuilderElement objects.
+     * @throws PropelException
+     */
+    public function countPageBuilderElements(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collPageBuilderElementsPartial && !$this->isNew();
+        if (null === $this->collPageBuilderElements || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collPageBuilderElements) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getPageBuilderElements());
+            }
+
+            $query = ChildPageBuilderElementQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPageBuilder($this)
+                ->count($con);
+        }
+
+        return count($this->collPageBuilderElements);
+    }
+
+    /**
+     * Method called to associate a ChildPageBuilderElement object to this object
+     * through the ChildPageBuilderElement foreign key attribute.
+     *
+     * @param    ChildPageBuilderElement $l ChildPageBuilderElement
+     * @return   \PageBuilder\Model\PageBuilder The current object (for fluent API support)
+     */
+    public function addPageBuilderElement(ChildPageBuilderElement $l)
+    {
+        if ($this->collPageBuilderElements === null) {
+            $this->initPageBuilderElements();
+            $this->collPageBuilderElementsPartial = true;
+        }
+
+        if (!in_array($l, $this->collPageBuilderElements->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddPageBuilderElement($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param PageBuilderElement $pageBuilderElement The pageBuilderElement object to add.
+     */
+    protected function doAddPageBuilderElement($pageBuilderElement)
+    {
+        $this->collPageBuilderElements[]= $pageBuilderElement;
+        $pageBuilderElement->setPageBuilder($this);
+    }
+
+    /**
+     * @param  PageBuilderElement $pageBuilderElement The pageBuilderElement object to remove.
+     * @return ChildPageBuilder The current object (for fluent API support)
+     */
+    public function removePageBuilderElement($pageBuilderElement)
+    {
+        if ($this->getPageBuilderElements()->contains($pageBuilderElement)) {
+            $this->collPageBuilderElements->remove($this->collPageBuilderElements->search($pageBuilderElement));
+            if (null === $this->pageBuilderElementsScheduledForDeletion) {
+                $this->pageBuilderElementsScheduledForDeletion = clone $this->collPageBuilderElements;
+                $this->pageBuilderElementsScheduledForDeletion->clear();
+            }
+            $this->pageBuilderElementsScheduledForDeletion[]= clone $pageBuilderElement;
+            $pageBuilderElement->setPageBuilder(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears out the collPageBuilderI18ns collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
@@ -2356,6 +2619,11 @@ abstract class PageBuilder implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collPageBuilderElements) {
+                foreach ($this->collPageBuilderElements as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collPageBuilderI18ns) {
                 foreach ($this->collPageBuilderI18ns as $o) {
                     $o->clearAllReferences($deep);
@@ -2370,6 +2638,7 @@ abstract class PageBuilder implements ActiveRecordInterface
         $this->collPageBuilderProducts = null;
         $this->collPageBuilderContents = null;
         $this->collPageBuilderImages = null;
+        $this->collPageBuilderElements = null;
         $this->collPageBuilderI18ns = null;
     }
 

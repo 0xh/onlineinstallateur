@@ -90,6 +90,31 @@ CREATE TABLE if not exists `page_builder_image`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- page_builder_element
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `page_builder_element`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `page_builder_id` INTEGER NOT NULL,
+    `visible` TINYINT NOT NULL,
+    `position` INTEGER,
+    `template_name` VARCHAR(255),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `version` INTEGER DEFAULT 0,
+    `version_created_at` DATETIME,
+    `version_created_by` VARCHAR(100),
+    PRIMARY KEY (`id`),
+    INDEX `FI_page_builder_element_page_builder_id` (`page_builder_id`),
+    CONSTRAINT `fk_page_builder_element_page_builder_id`
+        FOREIGN KEY (`page_builder_id`)
+        REFERENCES `page_builder` (`id`)
+        ON UPDATE RESTRICT
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- page_builder_i18n
 -- ---------------------------------------------------------------------
 
@@ -128,6 +153,45 @@ CREATE TABLE if not exists `page_builder_image_i18n`
     CONSTRAINT `page_builder_image_i18n_FK_1`
         FOREIGN KEY (`id`)
         REFERENCES `page_builder_image` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- page_builder_element_i18n
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `page_builder_element_i18n`
+(
+    `id` INTEGER NOT NULL,
+    `locale` VARCHAR(5) DEFAULT 'en_US' NOT NULL,
+    `variables` TEXT,
+    PRIMARY KEY (`id`,`locale`),
+    CONSTRAINT `page_builder_element_i18n_FK_1`
+        FOREIGN KEY (`id`)
+        REFERENCES `page_builder_element` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- page_builder_element_version
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `page_builder_element_version`
+(
+    `id` INTEGER NOT NULL,
+    `page_builder_id` INTEGER NOT NULL,
+    `visible` TINYINT NOT NULL,
+    `position` INTEGER,
+    `template_name` VARCHAR(255),
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    `version` INTEGER DEFAULT 0 NOT NULL,
+    `version_created_at` DATETIME,
+    `version_created_by` VARCHAR(100),
+    PRIMARY KEY (`id`,`version`),
+    CONSTRAINT `page_builder_element_version_FK_1`
+        FOREIGN KEY (`id`)
+        REFERENCES `page_builder_element` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

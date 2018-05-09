@@ -50,7 +50,7 @@ class PageBuilderProductRelated extends BaseLoop implements PropelSearchLoopInte
     {
         $search = PageBuilderProductQuery::create();
 
-
+        
         if (null !== $product_id = $this->getProductID()) {
             $search->filterByProductId($product_id, Criteria::IN);
         }

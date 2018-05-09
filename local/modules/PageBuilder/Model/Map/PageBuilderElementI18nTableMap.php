@@ -2,8 +2,8 @@
 
 namespace PageBuilder\Model\Map;
 
-use PageBuilder\Model\PageBuilder;
-use PageBuilder\Model\PageBuilderQuery;
+use PageBuilder\Model\PageBuilderElementI18n;
+use PageBuilder\Model\PageBuilderElementI18nQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'page_builder' table.
+ * This class defines the structure of the 'page_builder_element_i18n' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class PageBuilderTableMap extends TableMap
+class PageBuilderElementI18nTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'PageBuilder.Model.Map.PageBuilderTableMap';
+    const CLASS_NAME = 'PageBuilder.Model.Map.PageBuilderElementI18nTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class PageBuilderTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'page_builder';
+    const TABLE_NAME = 'page_builder_element_i18n';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\PageBuilder\\Model\\PageBuilder';
+    const OM_CLASS = '\\PageBuilder\\Model\\PageBuilderElementI18n';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'PageBuilder.Model.PageBuilder';
+    const CLASS_DEFAULT = 'PageBuilder.Model.PageBuilderElementI18n';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,46 +68,27 @@ class PageBuilderTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'page_builder.ID';
+    const ID = 'page_builder_element_i18n.ID';
 
     /**
-     * the column name for the VISIBLE field
+     * the column name for the LOCALE field
      */
-    const VISIBLE = 'page_builder.VISIBLE';
+    const LOCALE = 'page_builder_element_i18n.LOCALE';
 
     /**
-     * the column name for the POSITION field
+     * the column name for the VARIABLES field
      */
-    const POSITION = 'page_builder.POSITION';
-
-    /**
-     * the column name for the CREATED_AT field
-     */
-    const CREATED_AT = 'page_builder.CREATED_AT';
-
-    /**
-     * the column name for the UPDATED_AT field
-     */
-    const UPDATED_AT = 'page_builder.UPDATED_AT';
+    const VARIABLES = 'page_builder_element_i18n.VARIABLES';
 
     /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
-
-    // i18n behavior
-    
-    /**
-     * The default locale to use for translations.
-     *
-     * @var string
-     */
-    const DEFAULT_LOCALE = 'en_US';
 
     /**
      * holds an array of fieldnames
@@ -116,12 +97,12 @@ class PageBuilderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(PageBuilderTableMap::ID, PageBuilderTableMap::VISIBLE, PageBuilderTableMap::POSITION, PageBuilderTableMap::CREATED_AT, PageBuilderTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'visible', 'position', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'Locale', 'Variables', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'locale', 'variables', ),
+        self::TYPE_COLNAME       => array(PageBuilderElementI18nTableMap::ID, PageBuilderElementI18nTableMap::LOCALE, PageBuilderElementI18nTableMap::VARIABLES, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'LOCALE', 'VARIABLES', ),
+        self::TYPE_FIELDNAME     => array('id', 'locale', 'variables', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -131,12 +112,12 @@ class PageBuilderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Position' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'position' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        self::TYPE_COLNAME       => array(PageBuilderTableMap::ID => 0, PageBuilderTableMap::VISIBLE => 1, PageBuilderTableMap::POSITION => 2, PageBuilderTableMap::CREATED_AT => 3, PageBuilderTableMap::UPDATED_AT => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'POSITION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'position' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Locale' => 1, 'Variables' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'locale' => 1, 'variables' => 2, ),
+        self::TYPE_COLNAME       => array(PageBuilderElementI18nTableMap::ID => 0, PageBuilderElementI18nTableMap::LOCALE => 1, PageBuilderElementI18nTableMap::VARIABLES => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'LOCALE' => 1, 'VARIABLES' => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'locale' => 1, 'variables' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -149,17 +130,15 @@ class PageBuilderTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('page_builder');
-        $this->setPhpName('PageBuilder');
-        $this->setClassName('\\PageBuilder\\Model\\PageBuilder');
+        $this->setName('page_builder_element_i18n');
+        $this->setPhpName('PageBuilderElementI18n');
+        $this->setClassName('\\PageBuilder\\Model\\PageBuilderElementI18n');
         $this->setPackage('PageBuilder.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, null);
-        $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'page_builder_element', 'ID', true, null, null);
+        $this->addPrimaryKey('LOCALE', 'Locale', 'VARCHAR', true, 5, 'en_US');
+        $this->addColumn('VARIABLES', 'Variables', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -167,39 +146,61 @@ class PageBuilderTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PageBuilderProduct', '\\PageBuilder\\Model\\PageBuilderProduct', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderProducts');
-        $this->addRelation('PageBuilderContent', '\\PageBuilder\\Model\\PageBuilderContent', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderContents');
-        $this->addRelation('PageBuilderImage', '\\PageBuilder\\Model\\PageBuilderImage', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderImages');
-        $this->addRelation('PageBuilderElement', '\\PageBuilder\\Model\\PageBuilderElement', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderElements');
-        $this->addRelation('PageBuilderI18n', '\\PageBuilder\\Model\\PageBuilderI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderI18ns');
+        $this->addRelation('PageBuilderElement', '\\PageBuilder\\Model\\PageBuilderElement', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
+     * Adds an object to the instance pool.
      *
-     * Gets the list of behaviors registered for this table
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database. In some cases you may need to explicitly add objects
+     * to the cache in order to ensure that the same objects are always returned by find*()
+     * and findPk*() calls.
      *
-     * @return array Associative array (name => parameters) of behaviors
+     * @param \PageBuilder\Model\PageBuilderElementI18n $obj A \PageBuilder\Model\PageBuilderElementI18n object.
+     * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
-    public function getBehaviors()
+    public static function addInstanceToPool($obj, $key = null)
     {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'title, header, footer, chapo, postscriptum, meta_title, meta_description, meta_keywords', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
-        );
-    } // getBehaviors()
+        if (Propel::isInstancePoolingEnabled()) {
+            if (null === $key) {
+                $key = serialize(array((string) $obj->getId(), (string) $obj->getLocale()));
+            } // if key === null
+            self::$instances[$key] = $obj;
+        }
+    }
+
     /**
-     * Method to invalidate the instance pool of all tables related to page_builder     * by a foreign key with ON DELETE CASCADE
+     * Removes an object from the instance pool.
+     *
+     * Propel keeps cached copies of objects in an instance pool when they are retrieved
+     * from the database.  In some cases -- especially when you override doDelete
+     * methods in your stub classes -- you may need to explicitly remove objects
+     * from the cache in order to prevent returning objects that no longer exist.
+     *
+     * @param mixed $value A \PageBuilder\Model\PageBuilderElementI18n object or a primary key value.
      */
-    public static function clearRelatedInstancePool()
+    public static function removeInstanceFromPool($value)
     {
-        // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                PageBuilderProductTableMap::clearInstancePool();
-                PageBuilderContentTableMap::clearInstancePool();
-                PageBuilderImageTableMap::clearInstancePool();
-                PageBuilderElementTableMap::clearInstancePool();
-                PageBuilderI18nTableMap::clearInstancePool();
+        if (Propel::isInstancePoolingEnabled() && null !== $value) {
+            if (is_object($value) && $value instanceof \PageBuilder\Model\PageBuilderElementI18n) {
+                $key = serialize(array((string) $value->getId(), (string) $value->getLocale()));
+
+            } elseif (is_array($value) && count($value) === 2) {
+                // assume we've been passed a primary key";
+                $key = serialize(array((string) $value[0], (string) $value[1]));
+            } elseif ($value instanceof Criteria) {
+                self::$instances = [];
+
+                return;
+            } else {
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \PageBuilder\Model\PageBuilderElementI18n object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
+                throw $e;
             }
+
+            unset(self::$instances[$key]);
+        }
+    }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -215,11 +216,11 @@ class PageBuilderTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Locale', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('Locale', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -237,11 +238,7 @@ class PageBuilderTableMap extends TableMap
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
 
-            return (int) $row[
-                            $indexType == TableMap::TYPE_NUM
-                            ? 0 + $offset
-                            : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
-                        ];
+            return $pks;
     }
     
     /**
@@ -257,7 +254,7 @@ class PageBuilderTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? PageBuilderTableMap::CLASS_DEFAULT : PageBuilderTableMap::OM_CLASS;
+        return $withPrefix ? PageBuilderElementI18nTableMap::CLASS_DEFAULT : PageBuilderElementI18nTableMap::OM_CLASS;
     }
 
     /**
@@ -271,21 +268,21 @@ class PageBuilderTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (PageBuilder object, last column rank)
+     * @return array (PageBuilderElementI18n object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = PageBuilderTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = PageBuilderTableMap::getInstanceFromPool($key))) {
+        $key = PageBuilderElementI18nTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = PageBuilderElementI18nTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + PageBuilderTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + PageBuilderElementI18nTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PageBuilderTableMap::OM_CLASS;
+            $cls = PageBuilderElementI18nTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            PageBuilderTableMap::addInstanceToPool($obj, $key);
+            PageBuilderElementI18nTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -308,8 +305,8 @@ class PageBuilderTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = PageBuilderTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = PageBuilderTableMap::getInstanceFromPool($key))) {
+            $key = PageBuilderElementI18nTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = PageBuilderElementI18nTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -318,7 +315,7 @@ class PageBuilderTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PageBuilderTableMap::addInstanceToPool($obj, $key);
+                PageBuilderElementI18nTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -339,17 +336,13 @@ class PageBuilderTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PageBuilderTableMap::ID);
-            $criteria->addSelectColumn(PageBuilderTableMap::VISIBLE);
-            $criteria->addSelectColumn(PageBuilderTableMap::POSITION);
-            $criteria->addSelectColumn(PageBuilderTableMap::CREATED_AT);
-            $criteria->addSelectColumn(PageBuilderTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(PageBuilderElementI18nTableMap::ID);
+            $criteria->addSelectColumn(PageBuilderElementI18nTableMap::LOCALE);
+            $criteria->addSelectColumn(PageBuilderElementI18nTableMap::VARIABLES);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
-            $criteria->addSelectColumn($alias . '.POSITION');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.LOCALE');
+            $criteria->addSelectColumn($alias . '.VARIABLES');
         }
     }
 
@@ -362,7 +355,7 @@ class PageBuilderTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(PageBuilderTableMap::DATABASE_NAME)->getTable(PageBuilderTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(PageBuilderElementI18nTableMap::DATABASE_NAME)->getTable(PageBuilderElementI18nTableMap::TABLE_NAME);
     }
 
     /**
@@ -370,16 +363,16 @@ class PageBuilderTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PageBuilderTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(PageBuilderTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new PageBuilderTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PageBuilderElementI18nTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(PageBuilderElementI18nTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new PageBuilderElementI18nTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a PageBuilder or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PageBuilderElementI18n or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or PageBuilder object or primary key or array of primary keys
+     * @param mixed               $values Criteria or PageBuilderElementI18n object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -390,25 +383,35 @@ class PageBuilderTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderElementI18nTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \PageBuilder\Model\PageBuilder) { // it's a model object
+        } elseif ($values instanceof \PageBuilder\Model\PageBuilderElementI18n) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PageBuilderTableMap::DATABASE_NAME);
-            $criteria->add(PageBuilderTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PageBuilderElementI18nTableMap::DATABASE_NAME);
+            // primary key is composite; we therefore, expect
+            // the primary key passed to be an array of pkey values
+            if (count($values) == count($values, COUNT_RECURSIVE)) {
+                // array is not multi-dimensional
+                $values = array($values);
+            }
+            foreach ($values as $value) {
+                $criterion = $criteria->getNewCriterion(PageBuilderElementI18nTableMap::ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(PageBuilderElementI18nTableMap::LOCALE, $value[1]));
+                $criteria->addOr($criterion);
+            }
         }
 
-        $query = PageBuilderQuery::create()->mergeWith($criteria);
+        $query = PageBuilderElementI18nQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { PageBuilderTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { PageBuilderElementI18nTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { PageBuilderTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { PageBuilderElementI18nTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -416,20 +419,20 @@ class PageBuilderTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the page_builder table.
+     * Deletes all rows from the page_builder_element_i18n table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return PageBuilderQuery::create()->doDeleteAll($con);
+        return PageBuilderElementI18nQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a PageBuilder or Criteria object.
+     * Performs an INSERT on the database, given a PageBuilderElementI18n or Criteria object.
      *
-     * @param mixed               $criteria Criteria or PageBuilder object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or PageBuilderElementI18n object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -438,22 +441,18 @@ class PageBuilderTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderElementI18nTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from PageBuilder object
-        }
-
-        if ($criteria->containsKey(PageBuilderTableMap::ID) && $criteria->keyContainsValue(PageBuilderTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PageBuilderTableMap::ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from PageBuilderElementI18n object
         }
 
 
         // Set the correct dbName
-        $query = PageBuilderQuery::create()->mergeWith($criteria);
+        $query = PageBuilderElementI18nQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -469,7 +468,7 @@ class PageBuilderTableMap extends TableMap
         return $pk;
     }
 
-} // PageBuilderTableMap
+} // PageBuilderElementI18nTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-PageBuilderTableMap::buildTableMap();
+PageBuilderElementI18nTableMap::buildTableMap();

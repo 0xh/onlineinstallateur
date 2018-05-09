@@ -13,7 +13,7 @@
     <!-- ******************************* Root link to update management ******************************* -->
 
     <!-- ***** Default page of management update-->
-    <route id="page-builder.update" path="/admin/page-builder/update/{pageBuilderId}" methods="get">
+    <route id="page_builder.update" path="/admin/page-builder/update/{pageBuilderId}" methods="get">
         <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::updateAction</default>
         <requirement key="pageBuilderID">\d+</requirement>
     </route>
@@ -30,7 +30,7 @@
         <requirement key="folderID">\d+</requirement>
     </route>
 
-    <route id="page-builder.update.addProductRelated" path="admin/page-builder/update/addProductRelated/{productID}{pageBuilderID}">
+    <route id="page-builder.update.addProductRelated" path="admin/page-builder/update/addProductRelated/{productID}/{pageBuilderID}">
         <default key="_controller">PageBuilder\Controller\PageBuilderRelatedProductController::addProductRelated</default>
         <requirement key="productID">\d+</requirement>
         <requirement key="pageBuilderID">\d+</requirement>
@@ -154,7 +154,9 @@
         <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::setToggleVisibilityAction</default>
     </route>
 
-
+    <route id="admin.page-builder.add.new.element" path="/admin/page-builder/add-new-element">
+        <default key="_controller">PageBuilder\Controller\PageBuilderController::addNewElement</default>
+    </route>
 </routes>
 
 

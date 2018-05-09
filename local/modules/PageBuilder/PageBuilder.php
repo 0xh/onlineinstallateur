@@ -36,17 +36,17 @@ class PageBuilder extends BaseModule
     {
         $injectSql = false;
 
-        try {
-            $item = PageBuilderQuery::create()->findOne();
-        } catch (\Exception $ex) {
-            // The table does not exist
-            $injectSql = true;
-        }
-
-        if (true === $injectSql) {
+//        try {
+//            $item = PageBuilderQuery::create()->findOne();
+//        } catch (\Exception $ex) {
+//            // The table does not exist
+//            $injectSql = true;
+//        }
+//
+//        if (true === $injectSql) {
             $database = new Database($con);
             $database->insertSql(null, [__DIR__ . '/Config/thelia.sql']);
-        }
+//        }
 
 
         return true;

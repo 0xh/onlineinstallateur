@@ -1,6 +1,7 @@
 {extends file="admin-layout.tpl"}
+
 {block name="no-return-functions"}
-    {$admin_current_location = 'tools'}
+{$admin_current_location = 'tools'}
 {/block}
 
 {block name="check-resource"}admin.page_builder{/block}
@@ -8,331 +9,328 @@
 
 {block name="page-title"}{intl l='Edit pageBuilder'}{/block}
 {block name="after-bootstrap-css"}
-    {stylesheets source="PageBuilder" file="assets/style/page-builder-image.css"}
-        <link href="{$asset_url}" rel="stylesheet" type="text/css" />
-    {/stylesheets}
+{stylesheets source="PageBuilder" file="assets/style/page-builder-image.css"}
+<link href="{$asset_url}" rel="stylesheet" type="text/css" />
+{/stylesheets}
 {/block}
 
 {block name="main-content"}
 
-    {loop name="page_builder_list" type="page_builder_list" limit="1" visible="*" id=$page_builder_id}
-        <ul class="breadcrumb">
-            <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
-            <li><a href="{url path='/admin/tools'}">{intl l="Tools"}</a></li>
-            <li><a href="{url path='/admin/PageBuilder'}">{intl l="PageBuilder"}</a></li>
-            <li><a href="{url path='/admin/page-builder/update/%pageBuilder' pageBuilder=$page_builder_id }">{intl l="PageBuilder edit :"} {$PAGE_BUILDER_TITLE}</a></li>
-        </ul>
-        <div class="col-md-12 general-block-decorator">
-            <div class="row">
-                <div class="col-md-7 title">
-                    Edit pageBuilder #{$page_builder_id} : {$PAGE_BUILDER_TITLE} </div>
-                <div class="col-md-5 actions">
+{loop name="page_builder_list" type="page_builder_list" limit="1" visible="*" id=$page_builder_id}
+<ul class="breadcrumb">
+    <li><a href="{url path='/admin/home'}">{intl l="Home"}</a></li>
+    <li><a href="{url path='/admin/tools'}">{intl l="Tools"}</a></li>
+    <li><a href="{url path='/admin/PageBuilder'}">{intl l="PageBuilder"}</a></li>
+    <li><a href="{url path='/admin/page-builder/update/%pageBuilder' pageBuilder=$page_builder_id }">{intl l="PageBuilder edit :"} {$PAGE_BUILDER_TITLE}</a></li>
+</ul>
+<div class="col-md-12 general-block-decorator">
+    <div class="row">
+        <div class="col-md-7 title">
+            Edit pageBuilder #{$page_builder_id} : {$PAGE_BUILDER_TITLE} </div>
+        <div class="col-md-5 actions">
+        </div>
+    </div>
+    {if $message != ""}
+    <div class="row">
+        <div class="alert-block">
+            <div class="col-md-12">
+                <div class="alert alert-warning" role="alert">
+                    {$message}
                 </div>
             </div>
-            {if $message != ""}
-                <div class="row">
-                    <div class="alert-block">
-                        <div class="col-md-12">
-                            <div class="alert alert-warning" role="alert">
-                                {$message}
-                            </div>
+        </div>
+    </div>
+    {/if}
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" id="tabbed-menu">
+                <li class="active">
+                    <a href="#general" data-toggle="tab" data-trigger="#virtual_field::change">Général</a>
+                </li>
+                <li class="">
+                    <a href="#seo" data-toggle="tab" data-trigger="#virtual_field::change">SEO</a>
+                </li>
+                <li class="">
+                    <a href="#images" data-toggle="tab" data-trigger="#virtual_field::change">Image</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="general"></br>
+
+                <div class="form-container">
+                    <div class="row inner-toolbar">
+                        <!-- Example split danger button -->
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle btn-primary" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Add new element
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="#">Banner</a></li>
+                                <li><a href="#">Description</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Product</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            {/if}
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="nav nav-tabs" id="tabbed-menu">
-                        <li class="active">
-                            <a href="#general" data-toggle="tab" data-trigger="#virtual_field::change">Général</a>
-                        </li>
-                        <li class="">
-                            <a href="#seo" data-toggle="tab" data-trigger="#virtual_field::change">SEO</a>
-                        </li>
-                        <li class="">
-                            <a href="#images" data-toggle="tab" data-trigger="#virtual_field::change">Image</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="general">
 
-                        <div class="form-container">
+
+                <div class="form-container">
+                    <div class="row">
+
+                            {include
+                            file = "includes/inner-form-toolbar.html"
+                            hide_submit_buttons = true
+                            hide_flags = true
+
+                            pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
+                            closeUrl    = $close_url
+                            current_id  = $page_builder_id
+                            success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id=$page_builder_id}"
+
+                            current_tab = "general"
+                            }
+
                             <div class="row">
-                                {form name="admin.page_builder.update"}
-                                    <form method="post" action="{url path='/admin/page-builder/save'}" >
-                                        {form_hidden_fields form=$form}
-                                        {render_form_field form=$form field="success_url" value="{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"}
+                                <div class="col-md-5 col-md-offset-1">
+                                    <div class="row">
+                                        {*include file='elements/products-tpl.html'*}
+                                        
+                                        <form name="test_form" action="{url path='/admin/page-builder/add-new-element'}" method="post">
+                                            First name: <input type="text" name="fname"><br>
+                                            Last name: <input type="text" name="lname"><br>
+                                            <input type="submit" value="Submit">
+                                        </form>
+                                        
+                                        <form name="test_form1" action="{url path='/admin/page-builder/add-new-element'}" method="post">
+                                            First name: <input type="text" name="fname"><br>
+                                            Last name: <input type="text" name="lname"><br>
+                                            <input type="submit" value="Submit">
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>    
 
-                                        {include
-                                        file = "includes/inner-form-toolbar.html"
-                                        hide_submit_buttons = true
-
-                                        pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
-                                        closeUrl    = $close_url
-                                        current_id  = $page_builder_id
-                                        success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id=$page_builder_id}"
-
-                                        current_tab = "general"
-                                        }
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-
-                                                {render_form_field field="page_builder_id"}
-                                                {render_form_field field="page_builder_title"}
-                                                {render_form_field field="page_builder_chapo"}
-                                                {render_form_field field="page_builder_header" extra_class="wysiwyg"}
-                                                {render_form_field field="page_builder_footer" extra_class="wysiwyg"}
-                                                {render_form_field field="page_builder_postscriptum"}
-
-                                            </div>
-                                            <div class="col-md-5 col-md-offset-1">
-                                                <div class="row">
-                                                    {include file='pageBuilderProductRelated.html'}
-                                                </div>
-
-                                                <div class="row">
-                                                    {include file='pageBuilderContentRelated.html'}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="margin: 0;">
-                                            <div class="row inner-toolbar">
-
-                                                <div class="col-md-12 inner-actions text-right">
-
-                                                    {form_field form=$form field='save_mode'}
-                                                        <button type="{$type}" value="stay" name="{$name}" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l='Save'}" id="{$label_attr.for}"> {intl l='Save'} <span class="glyphicon glyphicon-ok"></span></button>
-                                                    {/form_field}
-
-                                                    <a onclick="location.href='../../PageBuilder'" class="page-close-button btn btn-sm btn-default" id="close">{intl l='Close'}<span class="glyphicon glyphicon-remove"></span></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                {/form}
-                            </div>
-                        </div>
                     </div>
-                    <div class="tab-pane fade" id="seo">
+                </div>
+            </div>
+            <div class="tab-pane fade" id="seo">
 
-                        {include file="includes/seo-tab.html"
-                        formAction  = "{url path='/admin/page-builder/seo/save/'}"
-                        pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
-                        closeUrl    = $close_url
-                        current_id  = $page_builder_id
-                        success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
-                        seoType     = 'pageBuilder'
+                {include file="includes/seo-tab.html"
+                formAction  = "{url path='/admin/page-builder/seo/save/'}"
+                pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
+                closeUrl    = $close_url
+                current_id  = $page_builder_id
+                success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
+                seoType     = 'pageBuilder'
+                }
+
+            </div>
+            <div class="tab-pane fade" id="images">
+                <div class="image-manager form-container" >
+                    <div class="row">
+                        {include file="pageBuilderImageUpdate.html"
+                        imageType='pageBuilder'
+                        parentId=$page_builder_id
                         }
-
-                    </div>
-                    <div class="tab-pane fade" id="images">
-                        <div class="image-manager form-container" >
-                            <div class="row">
-                                {include file="pageBuilderImageUpdate.html"
-                                imageType='pageBuilder'
-                                parentId=$page_builder_id
-                                }
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    {/loop}
+    </div>
+</div>
+{/loop}
 
 {/block}
 
 
 {block name="javascript-last-call"}
-    {hook name="wysiwyg.js"}
-    <script>
-        var pageBuilderID = {$page_builder_id};
+{hook name="wysiwyg.js"}
+<script>
+    var pageBuilderID = {$page_builder_id};
 
-        $(function () {
-            /*--------------------------------  Load values in related product
-             *--------------------------------  and content table in start of the page
-             */
+    $(function () {
+        /*--------------------------------  Load values in related product
+         *--------------------------------  and content table in start of the page
+         */
 
-            window.onload = function (){
+        window.onload = function () {
+            $.ajax({
+                url: '{url path="/admin/page-builder/update/showProduct/"}' + pageBuilderID,
+                type: 'get',
+                dataType: 'html',
+                success: function (data) {
+                    $('#tableProduct tr td').remove();
+                    $('#product').html(data);
+
+                }
+            });
+
+            $.ajax({
+                url: '{url path="/admin/page-builder/update/showContent/"}' + pageBuilderID,
+                type: 'get',
+                dataType: 'html',
+                success: function (data) {
+                    $('#tableContent tr td').remove();
+                    $('#content').html(data);
+                }
+            });
+
+        };
+
+        /*--------------------------------  Load values in select which it put in option product related
+         *--------------------------------  to the category selected.
+         */
+
+        $('#category_id').change(function (event) {
+            var categoryID = document.getElementById('category_id').value;
+
+            if (categoryID != "") {
+                $('#product_selector').addClass('hide');
+
                 $.ajax({
-                    url: '{url path="/admin/page-builder/update/showProduct/"}' + pageBuilderID,
+                    url: '{url path="/admin/page-builder/update/getProductRelated/"}' + categoryID,
                     type: 'get',
-                    dataType : 'html',
+                    dataType: 'json',
+                    success: function (json) {
+                        $('#product_id :not(:first-child)').remove();
+
+                        var have_content = false;
+
+                        $.each(json, function (idx, value) {
+                            $('#product_id').append($('<option>').text(value.title).attr('value', value.id));
+
+                            have_content = true;
+                        });
+
+                        if (have_content) {
+                            $('#product_selector_empty').addClass('hide');
+                            $('#product_selector').removeClass('hide');
+                        } else {
+                            $('#product_selector_empty').removeClass('hide');
+                            $('#product_selector').addClass('hide');
+                        }
+                    }
+                });
+            } else {
+                $('#product_selector_empty').addClass('hide');
+                $('#product_selector').addClass('hide');
+            }
+        });
+
+        /*--------------------------------  Add values in the page_builder_product table in the database
+         *--------------------------------  related to the current pageBuilder  when click on add button.
+         */
+        $('#addProduct').click(function (event) {
+            var productID = document.getElementById('product_id').value;
+
+            if (productID != "") {
+                $.ajax({
+                    url: '{url path="/admin/page-builder/update/addProductRelated/"}' + productID + '/' + pageBuilderID,
+                    type: 'get',
+                    dataType: 'html',
                     success: function (data) {
                         $('#tableProduct tr td').remove();
+
                         $('#product').html(data);
 
                     }
-                });
+                })
+            }
+
+
+        });
+
+        /*--------------------------------  Load values in select which it put in option content related
+         *--------------------------------  to the folder selected.
+         */
+        $('#folder_id').change(function (event) {
+            var folder_ID = document.getElementById('folder_id').value;
+
+            if (folder_ID != "") {
+                $('#content_selector').addClass('hide');
 
                 $.ajax({
-                    url: '{url path="/admin/page-builder/update/showContent/"}' + pageBuilderID,
+                    url: '{url path="/admin/page-builder/update/getContentRelated/"}' + folder_ID,
                     type: 'get',
-                    dataType : 'html',
-                    success: function (data) {
-                        $('#tableContent tr td').remove();
-                        $('#content').html(data);
+                    datatype: 'json',
+                    success: function (json) {
+                        $('#content_id :not(:first-child)').remove();
+
+                        var have_content = false;
+
+                        $.each(json, function (idx, value) {
+                            $('#content_id').append($('<option>').text(value.title).attr('value', value.id));
+
+                            have_content = true;
+                        });
+
+                        if (have_content) {
+                            $('#content_selector_empty').addClass('hide');
+                            $('#content_selector').removeClass('hide');
+                        } else {
+                            $('#content_selector_empty').removeClass('hide');
+                            $('#content_selector').addClass('hide');
+                        }
                     }
                 });
 
-            };
+            } else {
+                $('#content_selector_empty').removeClass('hide');
+                $('#content_selector').addClass('hide');
 
-            /*--------------------------------  Load values in select which it put in option product related
-             *--------------------------------  to the category selected.
-             */
+            }
+        });
+        /*--------------------------------  Add values in the page_builder_content table in the database
+         *--------------------------------  related to the current pageBuilder when click on add button.
+         */
+        $('#addContent').click(function (event) {
+            var contentID = document.getElementById('content_id').value;
 
-            $('#category_id').change(function(event) {
-                var categoryID = document.getElementById('category_id').value;
+            if (contentID != "") {
+                $.ajax({
+                    url: '{url path="/admin/page-builder/update/addContentRelated/"}' + contentID + pageBuilderID,
+                    type: 'get',
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#tableContent tr td').remove();
 
-                if (categoryID != "") {
-                    $('#product_selector').addClass('hide');
+                        $('#content').html(data);
 
-                    $.ajax({
-                        url      : '{url path="/admin/page-builder/update/getProductRelated/"}' + categoryID,
-                        type     : 'get',
-                        dataType : 'json',
-                        success  : function (json) {
-                            $('#product_id :not(:first-child)').remove();
-
-                            var have_content = false;
-
-                            $.each(json, function (idx, value) {
-                                $('#product_id').append($('<option>').text(value.title).attr('value', value.id));
-
-                                have_content = true;
-                            });
-
-                            if (have_content) {
-                                $('#product_selector_empty').addClass('hide');
-                                $('#product_selector').removeClass('hide');
-                            }
-                            else {
-                                $('#product_selector_empty').removeClass('hide');
-                                $('#product_selector').addClass('hide');
-                            }
-                        }
-                    });
-                }
-                else {
-                    $('#product_selector_empty').addClass('hide');
-                    $('#product_selector').addClass('hide');
-                }
-            });
-
-            /*--------------------------------  Add values in the page_builder_product table in the database
-             *--------------------------------  related to the current pageBuilder  when click on add button.
-             */
-            $('#addProduct').click(function (event) {
-                var productID = document.getElementById('product_id').value;
-
-                if (productID != "") {
-                    $.ajax({
-                        url: '{url path="/admin/page-builder/update/addProductRelated/"}' + productID + pageBuilderID,
-                        type: 'get',
-                        dataType: 'html',
-                        success: function (data) {
-                            $('#tableProduct tr td').remove();
-
-                            $('#product').html(data);
-
-                        }
-                    })
-                }
+                    }
+                })
+            }
 
 
-            });
+        });
 
-            /*--------------------------------  Load values in select which it put in option content related
-             *--------------------------------  to the folder selected.
-             */
-            $('#folder_id').change(function(event) {
-                var folder_ID = document.getElementById('folder_id').value;
-
-                if (folder_ID != "") {
-                    $('#content_selector').addClass('hide');
-
-                    $.ajax({
-                        url         : '{url path="/admin/page-builder/update/getContentRelated/"}' + folder_ID,
-                        type        : 'get',
-                        datatype    : 'json',
-                        success     : function (json) {
-                            $('#content_id :not(:first-child)').remove();
-
-                            var have_content = false;
-
-                            $.each(json, function (idx, value) {
-                                $('#content_id').append($('<option>').text(value.title).attr('value', value.id));
-
-                                have_content = true;
-                            });
-
-                            if (have_content) {
-                                $('#content_selector_empty').addClass('hide');
-                                $('#content_selector').removeClass('hide');
-                            }
-                            else {
-                                $('#content_selector_empty').removeClass('hide');
-                                $('#content_selector').addClass('hide');
-                            }
-                        }
-                    });
-
-                }
-                else{
-                    $('#content_selector_empty').removeClass('hide');
-                    $('#content_selector').addClass('hide');
-
-                }
-            });
-            /*--------------------------------  Add values in the page_builder_content table in the database
-             *--------------------------------  related to the current pageBuilder when click on add button.
-             */
-            $('#addContent').click(function (event) {
-                var contentID = document.getElementById('content_id').value;
-
-                if (contentID != "") {
-                    $.ajax({
-                        url: '{url path="/admin/page-builder/update/addContentRelated/"}' + contentID + pageBuilderID,
-                        type: 'get',
-                        dataType: 'html',
-                        success: function (data) {
-                            $('#tableContent tr td').remove();
-
-                            $('#content').html(data);
-
-                        }
-                    })
-                }
-
-
-            });
-
-        })
-    </script>
+    })
+</script>
 {/block}
 
 {block name="javascript-initialization"}
-    {javascripts file='assets/js/dropzone.js'}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
-    {javascripts file='assets/js/image-upload.js'}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
+{javascripts file='assets/js/dropzone.js'}
+<script src="{$asset_url}"></script>
+{/javascripts}
+{javascripts file='assets/js/image-upload.js'}
+<script src="{$asset_url}"></script>
+{/javascripts}
 
-    {javascripts file='assets/js/jquery-ui-1.10.3.custom.min.js'}
-        <script src="{$asset_url}"></script>
-    {/javascripts}
+{javascripts file='assets/js/jquery-ui-1.10.3.custom.min.js'}
+<script src="{$asset_url}"></script>
+{/javascripts}
 
-    <script>
-        $(function() {
-            $.imageUploadManager.initImageDropZone();
-        });
-    </script>
+<script>
+    $(function () {
+        $.imageUploadManager.initImageDropZone();
+    });
+</script>
 {/block}
 
 {block name="javascript-last-call"}
-    {hook name="page_builder.edit-js" location="page-builder-edit-js" page_builder_id={$page_builder_id} }
-    {hook name="wysiwyg.js" location="wysiwyg-page-builder-edit-js" }
+{hook name="page_builder.edit-js" location="page-builder-edit-js" page_builder_id={$page_builder_id} }
+{hook name="wysiwyg.js" location="wysiwyg-page-builder-edit-js" }
 {/block}

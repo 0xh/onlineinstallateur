@@ -2,13 +2,15 @@
 
 namespace PageBuilder\Controller;
 
-use Propel\Runtime\ActiveQuery\Criteria;
-use Propel\Runtime\ActiveQuery\Join;
 use PageBuilder\Model\Map\PageBuilderProductTableMap;
 use PageBuilder\Model\PageBuilderProduct;
 use PageBuilder\Model\PageBuilderProductQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\ActiveQuery\Join;
+use Propel\Runtime\Exception\PropelException;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Event\Loop\LoopExtendsBuildModelCriteriaEvent;
+use Thelia\Core\HttpFoundation\Response;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Product;
 use Thelia\Model\ProductCategory;
@@ -21,10 +23,11 @@ class PageBuilderRelatedProductController extends BaseAdminController
     /**
      * Return product which they are related to a category id in a select.
      *
-     * @return \Thelia\Core\HttpFoundation\Response
+     * @return Response
      */
     public function getProductRelated()
     {
+        
         $categoryID = $this->getRequest()->get('categoryID');
 
         $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
@@ -57,8 +60,8 @@ class PageBuilderRelatedProductController extends BaseAdminController
     /**
      * Add product to the current pageBuilder
      *
-     * @return \Thelia\Core\HttpFoundation\Response
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @return Response
+     * @throws PropelException
      */
     public function addProductRelated()
     {
@@ -67,7 +70,6 @@ class PageBuilderRelatedProductController extends BaseAdminController
         $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
 
         $productRelated = new PageBuilderProduct();
-
 
         if ($productID !== null) {
             $PageBuilderProduit = PageBuilderProductQuery::create()
@@ -93,7 +95,7 @@ class PageBuilderRelatedProductController extends BaseAdminController
                 }
                 $productRelated->save();
             }
-            /** @var  \Thelia\Model\Product $search */
+            /** @var  Product $search */
             /** @var  LoopExtendsBuildModelCriteriaEvent $event */
             $search = ProductQuery::create();
             $pageBuilderProductRelated = new Join(
@@ -123,23 +125,24 @@ class PageBuilderRelatedProductController extends BaseAdminController
                 ];
             }
         }
-        return $this->render('related/productRelated', ['pageBuilder_id' => $pageBuilderID]);
+        
+        return $this->render('related/productRelated', ['page_builder_id' => $pageBuilderID]);
     }
 
     /**
      * Show product related to a pageBuilder
      *
      * @param null $p
-     * @return array|\Thelia\Core\HttpFoundation\Response
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @return array|Response
+     * @throws PropelException
      */
     public function showProduct($p = null)
     {
 
         $pageBuilderID = $this->getRequest()->get('pageBuilderID');
         $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
-
-        /** @var  \Thelia\Model\Product $search */
+        
+        /** @var  Product $search */
         /** @var  LoopExtendsBuildModelCriteriaEvent $event */
         $search = ProductQuery::create();
         $pageBuilderProductRelated = new Join(
@@ -170,7 +173,7 @@ class PageBuilderRelatedProductController extends BaseAdminController
         }
 
         if ($p === null) {
-            return $this->render('related/productRelated', ['pageBuilder_id' => $pageBuilderID]);
+            return $this->render('related/productRelated', ['page_builder_id' => $pageBuilderID]);
         } else {
             return $result;
         }

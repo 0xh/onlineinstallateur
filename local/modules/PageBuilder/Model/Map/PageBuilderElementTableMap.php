@@ -2,8 +2,8 @@
 
 namespace PageBuilder\Model\Map;
 
-use PageBuilder\Model\PageBuilder;
-use PageBuilder\Model\PageBuilderQuery;
+use PageBuilder\Model\PageBuilderElement;
+use PageBuilder\Model\PageBuilderElementQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'page_builder' table.
+ * This class defines the structure of the 'page_builder_element' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class PageBuilderTableMap extends TableMap
+class PageBuilderElementTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'PageBuilder.Model.Map.PageBuilderTableMap';
+    const CLASS_NAME = 'PageBuilder.Model.Map.PageBuilderElementTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class PageBuilderTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'page_builder';
+    const TABLE_NAME = 'page_builder_element';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\PageBuilder\\Model\\PageBuilder';
+    const OM_CLASS = '\\PageBuilder\\Model\\PageBuilderElement';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'PageBuilder.Model.PageBuilder';
+    const CLASS_DEFAULT = 'PageBuilder.Model.PageBuilderElement';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 10;
 
     /**
      * The number of lazy-loaded columns
@@ -68,32 +68,57 @@ class PageBuilderTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 10;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'page_builder.ID';
+    const ID = 'page_builder_element.ID';
+
+    /**
+     * the column name for the PAGE_BUILDER_ID field
+     */
+    const PAGE_BUILDER_ID = 'page_builder_element.PAGE_BUILDER_ID';
 
     /**
      * the column name for the VISIBLE field
      */
-    const VISIBLE = 'page_builder.VISIBLE';
+    const VISIBLE = 'page_builder_element.VISIBLE';
 
     /**
      * the column name for the POSITION field
      */
-    const POSITION = 'page_builder.POSITION';
+    const POSITION = 'page_builder_element.POSITION';
+
+    /**
+     * the column name for the TEMPLATE_NAME field
+     */
+    const TEMPLATE_NAME = 'page_builder_element.TEMPLATE_NAME';
 
     /**
      * the column name for the CREATED_AT field
      */
-    const CREATED_AT = 'page_builder.CREATED_AT';
+    const CREATED_AT = 'page_builder_element.CREATED_AT';
 
     /**
      * the column name for the UPDATED_AT field
      */
-    const UPDATED_AT = 'page_builder.UPDATED_AT';
+    const UPDATED_AT = 'page_builder_element.UPDATED_AT';
+
+    /**
+     * the column name for the VERSION field
+     */
+    const VERSION = 'page_builder_element.VERSION';
+
+    /**
+     * the column name for the VERSION_CREATED_AT field
+     */
+    const VERSION_CREATED_AT = 'page_builder_element.VERSION_CREATED_AT';
+
+    /**
+     * the column name for the VERSION_CREATED_BY field
+     */
+    const VERSION_CREATED_BY = 'page_builder_element.VERSION_CREATED_BY';
 
     /**
      * The default string format for model objects of the related table
@@ -116,12 +141,12 @@ class PageBuilderTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(PageBuilderTableMap::ID, PageBuilderTableMap::VISIBLE, PageBuilderTableMap::POSITION, PageBuilderTableMap::CREATED_AT, PageBuilderTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'visible', 'position', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'PageBuilderId', 'Visible', 'Position', 'TemplateName', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'pageBuilderId', 'visible', 'position', 'templateName', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
+        self::TYPE_COLNAME       => array(PageBuilderElementTableMap::ID, PageBuilderElementTableMap::PAGE_BUILDER_ID, PageBuilderElementTableMap::VISIBLE, PageBuilderElementTableMap::POSITION, PageBuilderElementTableMap::TEMPLATE_NAME, PageBuilderElementTableMap::CREATED_AT, PageBuilderElementTableMap::UPDATED_AT, PageBuilderElementTableMap::VERSION, PageBuilderElementTableMap::VERSION_CREATED_AT, PageBuilderElementTableMap::VERSION_CREATED_BY, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'PAGE_BUILDER_ID', 'VISIBLE', 'POSITION', 'TEMPLATE_NAME', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
+        self::TYPE_FIELDNAME     => array('id', 'page_builder_id', 'visible', 'position', 'template_name', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -131,12 +156,12 @@ class PageBuilderTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Position' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'position' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
-        self::TYPE_COLNAME       => array(PageBuilderTableMap::ID => 0, PageBuilderTableMap::VISIBLE => 1, PageBuilderTableMap::POSITION => 2, PageBuilderTableMap::CREATED_AT => 3, PageBuilderTableMap::UPDATED_AT => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'POSITION' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'position' => 2, 'created_at' => 3, 'updated_at' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'PageBuilderId' => 1, 'Visible' => 2, 'Position' => 3, 'TemplateName' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, 'Version' => 7, 'VersionCreatedAt' => 8, 'VersionCreatedBy' => 9, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'pageBuilderId' => 1, 'visible' => 2, 'position' => 3, 'templateName' => 4, 'createdAt' => 5, 'updatedAt' => 6, 'version' => 7, 'versionCreatedAt' => 8, 'versionCreatedBy' => 9, ),
+        self::TYPE_COLNAME       => array(PageBuilderElementTableMap::ID => 0, PageBuilderElementTableMap::PAGE_BUILDER_ID => 1, PageBuilderElementTableMap::VISIBLE => 2, PageBuilderElementTableMap::POSITION => 3, PageBuilderElementTableMap::TEMPLATE_NAME => 4, PageBuilderElementTableMap::CREATED_AT => 5, PageBuilderElementTableMap::UPDATED_AT => 6, PageBuilderElementTableMap::VERSION => 7, PageBuilderElementTableMap::VERSION_CREATED_AT => 8, PageBuilderElementTableMap::VERSION_CREATED_BY => 9, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PAGE_BUILDER_ID' => 1, 'VISIBLE' => 2, 'POSITION' => 3, 'TEMPLATE_NAME' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, 'VERSION' => 7, 'VERSION_CREATED_AT' => 8, 'VERSION_CREATED_BY' => 9, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'page_builder_id' => 1, 'visible' => 2, 'position' => 3, 'template_name' => 4, 'created_at' => 5, 'updated_at' => 6, 'version' => 7, 'version_created_at' => 8, 'version_created_by' => 9, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
     /**
@@ -149,17 +174,22 @@ class PageBuilderTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('page_builder');
-        $this->setPhpName('PageBuilder');
-        $this->setClassName('\\PageBuilder\\Model\\PageBuilder');
+        $this->setName('page_builder_element');
+        $this->setPhpName('PageBuilderElement');
+        $this->setClassName('\\PageBuilder\\Model\\PageBuilderElement');
         $this->setPackage('PageBuilder.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('PAGE_BUILDER_ID', 'PageBuilderId', 'INTEGER', 'page_builder', 'ID', true, null, null);
         $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, null);
         $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
+        $this->addColumn('TEMPLATE_NAME', 'TemplateName', 'VARCHAR', false, 255, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
+        $this->addColumn('VERSION_CREATED_AT', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('VERSION_CREATED_BY', 'VersionCreatedBy', 'VARCHAR', false, 100, null);
     } // initialize()
 
     /**
@@ -167,11 +197,9 @@ class PageBuilderTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PageBuilderProduct', '\\PageBuilder\\Model\\PageBuilderProduct', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderProducts');
-        $this->addRelation('PageBuilderContent', '\\PageBuilder\\Model\\PageBuilderContent', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderContents');
-        $this->addRelation('PageBuilderImage', '\\PageBuilder\\Model\\PageBuilderImage', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderImages');
-        $this->addRelation('PageBuilderElement', '\\PageBuilder\\Model\\PageBuilderElement', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderElements');
-        $this->addRelation('PageBuilderI18n', '\\PageBuilder\\Model\\PageBuilderI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderI18ns');
+        $this->addRelation('PageBuilder', '\\PageBuilder\\Model\\PageBuilder', RelationMap::MANY_TO_ONE, array('page_builder_id' => 'id', ), 'CASCADE', 'RESTRICT');
+        $this->addRelation('PageBuilderElementI18n', '\\PageBuilder\\Model\\PageBuilderElementI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderElementI18ns');
+        $this->addRelation('PageBuilderElementVersion', '\\PageBuilder\\Model\\PageBuilderElementVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderElementVersions');
     } // buildRelations()
 
     /**
@@ -184,21 +212,19 @@ class PageBuilderTableMap extends TableMap
     {
         return array(
             'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'title, header, footer, chapo, postscriptum, meta_title, meta_description, meta_keywords', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
+            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'variables', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
+            'versionable' => array('version_column' => 'version', 'version_table' => '', 'log_created_at' => 'true', 'log_created_by' => 'true', 'log_comment' => 'false', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', ),
         );
     } // getBehaviors()
     /**
-     * Method to invalidate the instance pool of all tables related to page_builder     * by a foreign key with ON DELETE CASCADE
+     * Method to invalidate the instance pool of all tables related to page_builder_element     * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                PageBuilderProductTableMap::clearInstancePool();
-                PageBuilderContentTableMap::clearInstancePool();
-                PageBuilderImageTableMap::clearInstancePool();
-                PageBuilderElementTableMap::clearInstancePool();
-                PageBuilderI18nTableMap::clearInstancePool();
+                PageBuilderElementI18nTableMap::clearInstancePool();
+                PageBuilderElementVersionTableMap::clearInstancePool();
             }
 
     /**
@@ -257,7 +283,7 @@ class PageBuilderTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? PageBuilderTableMap::CLASS_DEFAULT : PageBuilderTableMap::OM_CLASS;
+        return $withPrefix ? PageBuilderElementTableMap::CLASS_DEFAULT : PageBuilderElementTableMap::OM_CLASS;
     }
 
     /**
@@ -271,21 +297,21 @@ class PageBuilderTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (PageBuilder object, last column rank)
+     * @return array (PageBuilderElement object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = PageBuilderTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = PageBuilderTableMap::getInstanceFromPool($key))) {
+        $key = PageBuilderElementTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = PageBuilderElementTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + PageBuilderTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + PageBuilderElementTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = PageBuilderTableMap::OM_CLASS;
+            $cls = PageBuilderElementTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            PageBuilderTableMap::addInstanceToPool($obj, $key);
+            PageBuilderElementTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -308,8 +334,8 @@ class PageBuilderTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = PageBuilderTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = PageBuilderTableMap::getInstanceFromPool($key))) {
+            $key = PageBuilderElementTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = PageBuilderElementTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -318,7 +344,7 @@ class PageBuilderTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                PageBuilderTableMap::addInstanceToPool($obj, $key);
+                PageBuilderElementTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -339,17 +365,27 @@ class PageBuilderTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PageBuilderTableMap::ID);
-            $criteria->addSelectColumn(PageBuilderTableMap::VISIBLE);
-            $criteria->addSelectColumn(PageBuilderTableMap::POSITION);
-            $criteria->addSelectColumn(PageBuilderTableMap::CREATED_AT);
-            $criteria->addSelectColumn(PageBuilderTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::ID);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::PAGE_BUILDER_ID);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::VISIBLE);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::POSITION);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::TEMPLATE_NAME);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::CREATED_AT);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::VERSION);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::VERSION_CREATED_AT);
+            $criteria->addSelectColumn(PageBuilderElementTableMap::VERSION_CREATED_BY);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.PAGE_BUILDER_ID');
             $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.POSITION');
+            $criteria->addSelectColumn($alias . '.TEMPLATE_NAME');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.VERSION');
+            $criteria->addSelectColumn($alias . '.VERSION_CREATED_AT');
+            $criteria->addSelectColumn($alias . '.VERSION_CREATED_BY');
         }
     }
 
@@ -362,7 +398,7 @@ class PageBuilderTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(PageBuilderTableMap::DATABASE_NAME)->getTable(PageBuilderTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(PageBuilderElementTableMap::DATABASE_NAME)->getTable(PageBuilderElementTableMap::TABLE_NAME);
     }
 
     /**
@@ -370,16 +406,16 @@ class PageBuilderTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PageBuilderTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(PageBuilderTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new PageBuilderTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(PageBuilderElementTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(PageBuilderElementTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new PageBuilderElementTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a PageBuilder or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a PageBuilderElement or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or PageBuilder object or primary key or array of primary keys
+     * @param mixed               $values Criteria or PageBuilderElement object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -390,25 +426,25 @@ class PageBuilderTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderElementTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \PageBuilder\Model\PageBuilder) { // it's a model object
+        } elseif ($values instanceof \PageBuilder\Model\PageBuilderElement) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PageBuilderTableMap::DATABASE_NAME);
-            $criteria->add(PageBuilderTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(PageBuilderElementTableMap::DATABASE_NAME);
+            $criteria->add(PageBuilderElementTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = PageBuilderQuery::create()->mergeWith($criteria);
+        $query = PageBuilderElementQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { PageBuilderTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { PageBuilderElementTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { PageBuilderTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { PageBuilderElementTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -416,20 +452,20 @@ class PageBuilderTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the page_builder table.
+     * Deletes all rows from the page_builder_element table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return PageBuilderQuery::create()->doDeleteAll($con);
+        return PageBuilderElementQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a PageBuilder or Criteria object.
+     * Performs an INSERT on the database, given a PageBuilderElement or Criteria object.
      *
-     * @param mixed               $criteria Criteria or PageBuilder object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or PageBuilderElement object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -438,22 +474,22 @@ class PageBuilderTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PageBuilderElementTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from PageBuilder object
+            $criteria = $criteria->buildCriteria(); // build Criteria from PageBuilderElement object
         }
 
-        if ($criteria->containsKey(PageBuilderTableMap::ID) && $criteria->keyContainsValue(PageBuilderTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PageBuilderTableMap::ID.')');
+        if ($criteria->containsKey(PageBuilderElementTableMap::ID) && $criteria->keyContainsValue(PageBuilderElementTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PageBuilderElementTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = PageBuilderQuery::create()->mergeWith($criteria);
+        $query = PageBuilderElementQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -469,7 +505,7 @@ class PageBuilderTableMap extends TableMap
         return $pk;
     }
 
-} // PageBuilderTableMap
+} // PageBuilderElementTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-PageBuilderTableMap::buildTableMap();
+PageBuilderElementTableMap::buildTableMap();

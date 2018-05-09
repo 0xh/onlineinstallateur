@@ -69,5 +69,25 @@
         </behavior>
     </table>
 
+    <table name="page_builder_element" namespace="PageBuilder\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER"/>
+        <column name="page_builder_id" type="INTEGER" required="true"/>
+        <column name="visible" required="true" type="TINYINT"/>        
+        <column name="position" type="INTEGER" />
+        <column name="template_name" type="VARCHAR" size="255" />
+        <column name="variables" type="LONGVARCHAR" />
+        <foreign-key foreignTable="page_builder" name="fk_page_builder_element_page_builder_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="page_builder_id" />
+        </foreign-key>
+        <behavior name="timestampable" />
+        <behavior name="i18n">
+            <parameter name="i18n_columns" value="variables" />
+        </behavior>
+        <behavior name="versionable">
+            <parameter name="log_created_at" value="true" />
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+    </table>
+    
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>
