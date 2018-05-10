@@ -84,6 +84,19 @@ class BMDOrderExport extends AbstractExport
         }
         $processedData['mwst'] = "20";
         
+        $fromDBVAT = round($processedData['steuer'],2,PHP_ROUND_HALF_UP);
+        $computedVAT = round($processedData['betrag']/1.19*0.19,2,PHP_ROUND_HALF_UP);
+        Tlog::getInstance()->error(" bmd export ".abs($computedVAT - $fromDBVAT)." ".$processedData['text']);
+        if(abs(round($computedVAT - $fromDBVAT,2)) <= 0.01 ) {
+            $processedData['gkto'] = "4200";
+            $processedData['mwst'] = "";
+            $processedData['steuer'] = "";
+        }
+        else {
+            $processedData['gkto'] = "4000";
+            $processedData['steuer'] = round(-$processedData['steuer'],2);
+        }
+        
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
         switch($orderSource){
@@ -145,15 +158,7 @@ class BMDOrderExport extends AbstractExport
         	}break;
         }
         
-        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
-        	$processedData['gkto'] = "4200";
-        	$processedData['mwst'] = "";
-        	$processedData['steuer'] = "";
-        }
-        else {
-        	$processedData['gkto'] = "4000";
-        	$processedData['steuer'] = round(-$processedData['steuer'],2);
-        }
+
         
 		$processedData['extbelegnr'] = "";
         

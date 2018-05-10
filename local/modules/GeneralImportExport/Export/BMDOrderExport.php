@@ -87,7 +87,9 @@ class BMDOrderExport extends AbstractExport
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
         
-        if(round($processedData['betrag']/1.19*0.19,2) == round($processedData['steuer'],2)) {
+        
+        
+        if(round($processedData['betrag']/1.19*0.19,2,PHP_ROUND_HALF_UP) == round($processedData['steuer'],2,PHP_ROUND_HALF_UP)) {
             $processedData['gkto'] = "4200";
             $processedData['mwst'] = "";
             $processedData['steuer'] = "";
@@ -135,6 +137,14 @@ class BMDOrderExport extends AbstractExport
         		$processedData['gkto'] = "4200";
         		$processedData['mwst'] = "";
         		$processedData['steuer'] = "";
+        		
+        		Tlog::getInstance()->error(" bmd export1 ".$processedData['text']." ".
+        		    
+        		    " ".($processedData['betrag']).
+        		    " ".($processedData['betrag']/1.19).
+        		    " ".($processedData['betrag']/1.19*0.19).
+        		    " betrag19 ".round($processedData['betrag']/1.19*0.19,2,PHP_ROUND_HALF_UP).
+        		    " steuer ".round($processedData['steuer'],2,PHP_ROUND_HALF_UP));
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
