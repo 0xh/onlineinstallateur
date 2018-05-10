@@ -61,16 +61,4 @@ class PageBuilderController extends BaseAdminController {
         return $this->render("pageBuilder-edit", $response);
     }
 
-    public function addNewElement() {
-        echo '<pre>';
-        $test = $this->getRequest()->request;
-        var_dump($test);
-
-        foreach ($test as $t) {
-            var_dump($t);
-        }
-        var_dump($this->getRequest()->get("fname"));
-        die;
-    }
-
 }

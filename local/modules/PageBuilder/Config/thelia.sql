@@ -110,7 +110,6 @@ CREATE TABLE if not exists `page_builder_element`
     CONSTRAINT `fk_page_builder_element_page_builder_id`
         FOREIGN KEY (`page_builder_id`)
         REFERENCES `page_builder` (`id`)
-        ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

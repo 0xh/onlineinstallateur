@@ -197,7 +197,7 @@ class PageBuilderElementTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('PageBuilder', '\\PageBuilder\\Model\\PageBuilder', RelationMap::MANY_TO_ONE, array('page_builder_id' => 'id', ), 'CASCADE', 'RESTRICT');
+        $this->addRelation('PageBuilder', '\\PageBuilder\\Model\\PageBuilder', RelationMap::MANY_TO_ONE, array('page_builder_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('PageBuilderElementI18n', '\\PageBuilder\\Model\\PageBuilderElementI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderElementI18ns');
         $this->addRelation('PageBuilderElementVersion', '\\PageBuilder\\Model\\PageBuilderElementVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderElementVersions');
     } // buildRelations()

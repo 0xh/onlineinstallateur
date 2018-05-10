@@ -76,7 +76,7 @@
         <column name="position" type="INTEGER" />
         <column name="template_name" type="VARCHAR" size="255" />
         <column name="variables" type="LONGVARCHAR" />
-        <foreign-key foreignTable="page_builder" name="fk_page_builder_element_page_builder_id" onDelete="CASCADE" onUpdate="RESTRICT">
+        <foreign-key foreignTable="page_builder" name="fk_page_builder_element_page_builder_id" onDelete="CASCADE">
             <reference foreign="id" local="page_builder_id" />
         </foreign-key>
         <behavior name="timestampable" />

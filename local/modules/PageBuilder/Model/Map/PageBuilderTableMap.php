@@ -170,7 +170,7 @@ class PageBuilderTableMap extends TableMap
         $this->addRelation('PageBuilderProduct', '\\PageBuilder\\Model\\PageBuilderProduct', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderProducts');
         $this->addRelation('PageBuilderContent', '\\PageBuilder\\Model\\PageBuilderContent', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderContents');
         $this->addRelation('PageBuilderImage', '\\PageBuilder\\Model\\PageBuilderImage', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderImages');
-        $this->addRelation('PageBuilderElement', '\\PageBuilder\\Model\\PageBuilderElement', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', 'RESTRICT', 'PageBuilderElements');
+        $this->addRelation('PageBuilderElement', '\\PageBuilder\\Model\\PageBuilderElement', RelationMap::ONE_TO_MANY, array('id' => 'page_builder_id', ), 'CASCADE', null, 'PageBuilderElements');
         $this->addRelation('PageBuilderI18n', '\\PageBuilder\\Model\\PageBuilderI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'PageBuilderI18ns');
     } // buildRelations()
 

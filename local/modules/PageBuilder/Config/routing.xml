@@ -154,8 +154,22 @@
         <default key="_controller">PageBuilder\Controller\PageBuilderUpdateController::setToggleVisibilityAction</default>
     </route>
 
-    <route id="admin.page-builder.add.new.element" path="/admin/page-builder/add-new-element">
-        <default key="_controller">PageBuilder\Controller\PageBuilderController::addNewElement</default>
+    <route id="admin.page-builder.add.new.element" path="/admin/page-builder/add-new-element/{tplType}/{pageBuilderID}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderElementController::addNewElement</default>
+        <requirement key="tplType">.*</requirement>
+        <requirement key="pageBuilderID">\d+</requirement>        
+    </route>
+
+    <route id="admin.page-builder.update.element" path="/admin/page-builder/update-element/{pageBuilderID}/{elementId}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderElementController::updateElement</default>
+        <requirement key="pageBuilderID">\d+</requirement>        
+        <requirement key="elementId">\d+</requirement>        
+    </route>
+
+    <route id="admin.page-builder.delete.element" path="/admin/page-builder/delete-element/{pageBuilderID}/{elementId}">
+        <default key="_controller">PageBuilder\Controller\PageBuilderElementController::deleteElement</default>
+        <requirement key="pageBuilderID">\d+</requirement>        
+        <requirement key="elementId">\d+</requirement>        
     </route>
 </routes>
 

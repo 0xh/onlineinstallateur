@@ -60,60 +60,155 @@
 
                 <div class="form-container">
                     <div class="row inner-toolbar">
-                        <!-- Example split danger button -->
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle btn-primary" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Add new element
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li><a href="#">Banner</a></li>
-                                <li><a href="#">Description</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Product</a></li>
-                            </ul>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#elementModal">
+                            Add new element
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="elementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Input element</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h3 class="modal-title" id="exampleModalLabel">Select type template</h3>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <select id="selectTypeTemplate" class="form-control">
+                                            <option value="banner.html">Banner</option>
+                                            <option value="html">Html / text</option>
+                                            <option value="product">Product</option>
+                                        </select></br></br>
+                                    </div><!-- /.col-lg-6 -->
+                                </div><!-- /.row -->
+                                <h3 class="modal-title" id="exampleModalLabel">Select input for element</h3>
+                                <form id="addNewElement" action="/admin/page-builder/add-new-element/banner/{$page_builder_id}" method="post">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="banner_URL" type="checkbox" aria-label="...">
+                                                    <input id="banner_URL_in" name="banner_URL" type="hidden" aria-label="...">
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Banner URL" readonly="" aria-label="...">
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                    </div><!-- /.row -->
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="html_text" type="checkbox" aria-label="...">
+                                                    <input id="html_text_in" name="html_text" type="hidden" aria-label="...">
+                                                </span>
+                                                <input type="text" class="form-control" readonly="" placeholder="Html code / text" aria-label="...">
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                    </div><!-- /.row -->
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="button_name" type="checkbox" aria-label="...">
+                                                    <input id="button_name_in" name="button_name" type="hidden" aria-label="...">
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Button name" readonly="" aria-label="...">
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                    </div><!-- /.row -->
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <input id="button_url" type="checkbox" aria-label="...">
+                                                    <input id="button_url_in" name="button_url" type="hidden" aria-label="...">
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Button URL" readonly="" aria-label="...">
+                                            </div><!-- /input-group -->
+                                        </div><!-- /.col-lg-6 -->
+                                    </div><!-- /.row -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save element</button>
+                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
 
-
                 <div class="form-container">
                     <div class="row">
 
-                            {include
-                            file = "includes/inner-form-toolbar.html"
-                            hide_submit_buttons = true
-                            hide_flags = true
+                        {include
+                        file = "includes/inner-form-toolbar.html"
+                        hide_submit_buttons = true
+                        hide_flags = true
 
-                            pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
-                            closeUrl    = $close_url
-                            current_id  = $page_builder_id
-                            success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id=$page_builder_id}"
+                        pageUrl     = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id = $page_builder_id}"
+                        closeUrl    = $close_url
+                        current_id  = $page_builder_id
+                        success_url = "{url path='/admin/page-builder/update/%page_builder_id' page_builder_id=$page_builder_id}"
 
-                            current_tab = "general"
-                            }
+                        current_tab = "general"
+                        }
 
-                            <div class="row">
-                                <div class="col-md-5 col-md-offset-1">
-                                    <div class="row">
-                                        {*include file='elements/products-tpl.html'*}
-                                        
-                                        <form name="test_form" action="{url path='/admin/page-builder/add-new-element'}" method="post">
-                                            First name: <input type="text" name="fname"><br>
-                                            Last name: <input type="text" name="lname"><br>
-                                            <input type="submit" value="Submit">
-                                        </form>
-                                        
-                                        <form name="test_form1" action="{url path='/admin/page-builder/add-new-element'}" method="post">
-                                            First name: <input type="text" name="fname"><br>
-                                            Last name: <input type="text" name="lname"><br>
-                                            <input type="submit" value="Submit">
-                                        </form>
-                                        
+
+                        {loop name="page_builder_element" type="page_builder_element" page_builder_id=$page_builder_id }
+                        
+                            {assign var=myArray value=$VARIABLES|json_decode:true}
+                            
+                                <!--start element-->
+                                <div class="row" style="border: 2px solid #86AC34; padding: 15px;">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon" id="sizing-addon3" style="width: 15px;">{$POSITION}</span>
+                                        <a href="/admin/page-builder/delete-element/{$PAGE_BUILDER_ID}/{$ELEMENT_ID}">
+                                            <button type="button" class="btn btn-danger">Delete</button>
+                                        </a>
                                     </div>
-                                </div>
-                            </div>    
-
+                                    <div class="col-md-5 col-md-offset-1">
+                                        <div class="row" >
+                                            <form action="/admin/page-builder/update-element/{$PAGE_BUILDER_ID}/{$ELEMENT_ID}" method="post">
+                                            {foreach from=$myArray key=k item=foo}
+                                                {if $k == 'banner_URL'} 
+                                                    <label for="basic-url">Banner URL</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="basic-addon3">https://example.com/banner/</span>
+                                                        <input type="text" name="banner_URL" value="{$foo}" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                                    </div><br> 
+                                                {elseif $k == 'html_text'} 
+                                                    <label for="basic-url">Html code / text</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="html_text" value="{$foo}" class="form-control wysiwyg" id="basic-url" aria-describedby="basic-addon3">
+                                                    </div><br>
+                                                {elseif $k == 'button_name'} 
+                                                    <label for="basic-url">Button name</label>
+                                                    <div class="input-group">
+                                                        <input type="text" name="button_name" value="{$foo}" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                                    </div><br>
+                                                {elseif $k == 'button_url'} 
+                                                    <label for="basic-url">Button URL</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" id="basic-addon3">https://www.button.url/button</span>
+                                                        <input type="text" name="button_url" value="{$foo}" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                                    </div><br>
+                                                {/if}
+                                            {/foreach}
+                                                <input type="submit" class="btn btn-default" value="Save">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <!--end element-->
+                                <br>
+                        {/loop}
                     </div>
                 </div>
             </div>
@@ -305,6 +400,50 @@
             }
 
 
+        });
+
+        $('#selectTypeTemplate').click(function (event) {
+            $('#addNewElement').attr("action", "/admin/page-builder/add-new-element/" + $('#selectTypeTemplate').val() + "/" + pageBuilderID);
+        });
+
+        $('#banner_URL').click(function () {
+            if ($("#banner_URL").prop("checked"))
+            {
+                $("#banner_URL_in").val(1);
+            } else
+            {
+                $("#banner_URL_in").val(0);
+            }
+        });
+
+        $('#html_text').click(function () {
+            if ($("#html_text").prop("checked"))
+            {
+                $("#html_text_in").val(1);
+            } else
+            {
+                $("#html_text_in").val(0);
+            }
+        });
+
+        $('#button_name').click(function () {
+            if ($("#button_name").prop("checked"))
+            {
+                $("#button_name_in").val(1);
+            } else
+            {
+                $("#button_name_in").val(0);
+            }
+        });
+
+        $('#button_url').click(function () {
+            if ($("#button_url").prop("checked"))
+            {
+                $("#button_url_in").val(1);
+            } else
+            {
+                $("#button_url_in").val(0);
+            }
         });
 
     })

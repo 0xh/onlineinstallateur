@@ -10,6 +10,7 @@
         <loop name="page_builder_image" class="PageBuilder\Loop\PageBuilderImage"/>
         <loop name="page_builder_content_related" class="PageBuilder\Loop\PageBuilderContentRelated"/>
         <loop name="page_builder_product_related" class="PageBuilder\Loop\PageBuilderProductRelated"/>
+        <loop name="page_builder_element" class="PageBuilder\Loop\PageBuilderElementLoop"/>
     </loops>
 
     <forms>
