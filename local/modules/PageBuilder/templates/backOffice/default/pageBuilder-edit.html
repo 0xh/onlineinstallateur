@@ -82,14 +82,15 @@
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <select id="selectTypeTemplate" class="form-control">
-                                            <option value="banner.html">Banner</option>
-                                            <option value="html">Html / text</option>
-                                            <option value="product">Product</option>
+                                            <option value="">Select template</option>
+                                            {foreach from=$html_files item=f}
+                                                <option value="{$f}">{$f|rtrim:'.html'|ucfirst}</option>
+                                            {/foreach}
                                         </select></br></br>
                                     </div><!-- /.col-lg-6 -->
                                 </div><!-- /.row -->
                                 <h3 class="modal-title" id="exampleModalLabel">Select input for element</h3>
-                                <form id="addNewElement" action="/admin/page-builder/add-new-element/banner/{$page_builder_id}" method="post">
+                                <form id="addNewElement" action="" method="post">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="input-group">

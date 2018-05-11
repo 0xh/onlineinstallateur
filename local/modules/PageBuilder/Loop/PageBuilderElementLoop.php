@@ -18,6 +18,7 @@ use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Model\Map\RewritingUrlTableMap;
+use Thelia\Model\RewritingUrlQuery;
 use Thelia\Type\BooleanOrBothType;
 
 /**
@@ -44,7 +45,7 @@ class PageBuilderElementLoop extends BaseI18nLoop implements PropelSearchLoopInt
 
     protected function getArgDefinitions() {
         return new ArgumentCollection(
-                Argument::createIntTypeArgument('page_builder_id')
+                Argument::createIntTypeArgument('page_builder_id'), Argument::createAnyTypeArgument('tpl_name')
         );
     }
 
@@ -54,11 +55,21 @@ class PageBuilderElementLoop extends BaseI18nLoop implements PropelSearchLoopInt
      */
     public function buildModelCriteria() {
 
+        $pageBuilderId = 0;
+
+        if ($this->getPageBuilderId()) {
+            $pageBuilderId = $this->getPageBuilderId();
+        } else {
+            if ($this->getTplName()) {
+                $pageBuilderId = $this->getViewIdFromUrl($this->getTplName());
+            }
+        }
+
         $search = PageBuilderElementQuery::create()
                 ->orderByPosition()
                 ->addJoin(\PageBuilder\Model\Map\PageBuilderElementTableMap::ID, \PageBuilder\Model\Map\PageBuilderElementI18nTableMap::ID)
-                ->withColumn(\PageBuilder\Model\Map\PageBuilderElementI18nTableMap::VARIABLES, 'variables' )
-                ->where(\PageBuilder\Model\Map\PageBuilderElementTableMap::PAGE_BUILDER_ID . "=" . $this->getPageBuilderId());
+                ->withColumn(\PageBuilder\Model\Map\PageBuilderElementI18nTableMap::VARIABLES, 'variables')
+                ->where(\PageBuilder\Model\Map\PageBuilderElementTableMap::PAGE_BUILDER_ID . "=" . $pageBuilderId);
 
         return $search;
     }
@@ -82,8 +93,15 @@ class PageBuilderElementLoop extends BaseI18nLoop implements PropelSearchLoopInt
                     ->set("VARIABLES", $pageBuilderElement->getVirtualColumn("variables"));
             $loopResult->addRow($loopResultRow);
         }
-        
+
         return $loopResult;
+    }
+
+    protected function getViewIdFromUrl($url) {
+        $query = RewritingUrlQuery::create()
+                ->findOneByUrl($url);
+
+        return $query->getViewId();
     }
 
 }

@@ -1,0 +1,18 @@
+{extends file="layout.tpl"}
+{block name="main-content"}
+
+<div class="main">
+    <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+        {assign var="tplName" value=$smarty.server.REQUEST_URI|ltrim:'/'}             
+        <div id="category-products">
+             <div id="category-products">
+                  <div class="products-content">
+                    {loop name="page_builder_element" type="page_builder_element" tpl_name=$tplName}
+                        {include file="page-builder/$TEMPLATE_NAME" variables=$VARIABLES}
+                    {/loop}
+                </div>               
+            </div>
+        </div>
+    </article>
+</div>   
+{/block}
