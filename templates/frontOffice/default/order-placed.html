@@ -20,6 +20,8 @@
 
 
 {block name="main-content" }
+
+
     <div class="main">
         <article class="col-main clearfix" role="main" aria-labelledby="main-label">
 
@@ -44,6 +46,12 @@
                         {/loop}
                     {/loop}
                 {/loop}
+
+                {assign var="transactionId" value=$REF} 
+                {assign var="transactionTotal" value=$TOTAL_TAXED_AMOUNT} 
+                {assign var="transactionTax" value=$TOTAL_TAX}
+
+
 
             {loop type="module" name="module-payment" id="$DELIVERY_MODULE"}
             {assign var="deliverymodule" value="$CODE"} 
@@ -107,6 +115,57 @@
 
     </div>
     
+<!-- Google DataLayer START -->
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+
+dataLayer.push({
+'event':'transaction',
+   'transactionId': '{$transactionId}',
+   'transactionAffiliation': "{customer attr='email'}",
+   'transactionTotal': "{$transactionTotal}",
+   'transactionTax': "{$transactionTax}",
+   'transactionShipping': 4,
+   'transactionProducts': [
+    {loop type="order_product" name="order-products" order=$placed_order_id}
+      {assign var="sku" value=$REF}
+             {assign var="quantity" value=$QUANTITY} 
+             {assign var="price" value=$TAXED_PRICE} 
+             {loop type="product" name="product" id=$PRODUCT_ID}
+                 {loop type="category" name="category" id=$DEFAULT_CATEGORY}
+                    {assign var="category" value=$TITLE}
+                        {loop name="brandloop" type="brand" product=$PRODUCT_ID}
+                                  {assign var="brand" value=$TITLE}
+                         {
+                             'sku':'{$sku}',
+                             'name': '{$sku}',
+                             'category': '{$category}',
+                             'price': "{$price}",
+                             'quantity': "{$quantity}",
+                             'brand' : "{$brand}"
+
+                         },
+                         {/loop}
+                 {/loop}
+             {/loop}
+         {/loop}
+     ]
+});
+
+</script>
+
+<!-- Google DataLayer END-->
+
+
+
+<!-- Google DataLayer END-->
+
+
+
+
+
 <!-- BEGIN GCR Opt-in Module Code -->
 
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer>
