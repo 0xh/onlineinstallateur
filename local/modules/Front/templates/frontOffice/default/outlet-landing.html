@@ -1,24 +1,351 @@
 {extends file="layout.tpl"}
 
+{block name="stylesheet"}
+	{stylesheets file='assets/dist/css/animate.css' source='Front'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{stylesheets file='assets/dist/css/magnific-popup.css' source='Front'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{stylesheets file='assets/dist/css/owl.carousel.css' source='Front'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{stylesheets file='assets/dist/css/ion-range-slider.css' source='Front'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{stylesheets file='assets/dist/css/theme.css' source='Front'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{stylesheets file='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' source='Front'}
+       <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	
+{/block}
+
 {block name="main-content"}
 
-<div class="main">
+    
 
-    <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
-        <div id="category-products">
-            <div class="products-content">
-                <img class="img-top-banner" src="assets/frontOffice/default/Front/assets/dist/img/top-banner.png" alt="top-banner.png"/>
-                {ifloop rel="product_list"}
-                    <ul class="list-unstyled row">
-                        {loop type="product" name="product_list" id="11050, 4805, 16307, 11081, 11139, 5024" limit=6}
-                            {include file="includes/single-product.html" product_id=$ID hasBtn=true hasDescription=true width="819" height="819"}
-                        {/loop}
-                    </ul>
-                {/ifloop}
-            </div>
-            <img class="img-f-banner" src="assets/frontOffice/default/Front/assets/dist/img/f-banner.png" alt="f-banner.png"/>
-        </div><!-- /#category-products -->
-    </article>
+<div>
+<img src="{image file='assets/dist/img/banner1.png' source='Front'}" class="" alt="badkeramik"/>
+</div>
+<div class="page-loader"></div>
+        <!-- ========================  Icons slider ======================== -->
 
-</div><!-- /.layout -->
+      
+		
+		
+		               <!--======= Carousel icons -->
+<div class="landing-page">
+                        <div class="" id="carousel-icons" >
+                            <div class="">
+
+                                <div class="owl-icons-wrapper">
+
+                                    <!-- === header === -->
+
+                
+
+                                    <div style="">
+
+                                        <div class="owl-icons">
+										{loop name="parent_category" type="category" parent=190}
+                    
+{loop name="category.image" type="image" source="category" source_id=190 resize_mode="borders"}
+                    <p><a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                
+                    {/loop}
+					
+                {/loop}
+                                            <!-- === icon item === -->
+
+                                            <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badkeramik.png' source='Front'}" class="" alt="badkeramik"/>
+                                                    <figcaption>Badkeramik</figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <!-- === icon item === -->
+
+                                            <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badarmatur.png' source='Front'}" class="" alt="badarmatur"/>
+                                                    <figcaption>Badarmaturen</figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <!-- === icon item === -->
+
+                                            <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badewanne.png' source='Front'}" class="" alt="badewanne"/>
+                                                    <figcaption>Badewannen</figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <!-- === icon item === -->
+
+                                            <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/kuechenarmaturen.png' source='Front'}" class="" alt="kuechenarmaturen"/>
+                                                    <figcaption>Küchenarmaturen</figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <!-- === icon item === -->
+
+                                            <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badaccessoires.png' source='Front'}" class="" alt="badaccessoires"/>
+                                                    <figcaption>Badaccessoires</figcaption>
+                                                </figure>
+                                            </a>
+
+                                            <!-- === icon item === -->
+
+                                           <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/pumpen.png' source='Front'}" class="" alt="pumpen"/>
+                                                    <figcaption>Pumpen</figcaption>
+                                                </figure>
+                                            </a>
+
+
+                                            <!-- === icon item === -->
+
+                                             <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/heizung.png' source='Front'}" class="" alt="heizung"/>
+                                                    <figcaption>Heizung</figcaption>
+                                                </figure>
+                                            </a>
+                                            <!-- === icon item === -->
+
+                                             <a href="#">
+                                                <figure>
+                                                    <img src="{image file='assets/dist/img/kategorie-bilder/klima.png' source='Front'}" class="" alt="klima"/>
+                                                    <figcaption>Klima</figcaption>
+                                                </figure>
+                                            </a>
+                                            <!-- === icon item === -->
+
+                                        </div> <!--/owl-icons-->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+						
+						
+						
+						
+						<!--======= Carousel icons -->
+
+                        <div class="panel panel-default" id="carousel-icons">
+                            <div><h2 class="title">Die besten Schnäppchen ★</h2></div>
+                            <div class="panel-body">
+                                <div class="owl-icons-wrapper">
+                                    <!-- === header === -->
+                                    <header class="hidden">
+                                        <h2>Die besten Schnäppchen ★</h2>
+                                    </header>
+                                    <div class="">
+									<div class="product-slider">
+									 {loop name="selection_product" type="selection_product_related" selection_id=1}
+									 
+								  <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+								  <div id="category-products">
+									<div class="products-content">
+                           
+                                {loop name="product.details" type="product" id=$PRODUCT_ID}
+                                        {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819" colClass="slider-spacing"}
+                                {/loop}
+									</div>
+									</div>
+									</article>
+								 {/loop}
+									</div>
+                              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<div class="panel">
+						 <div><h2 class="title">Wochen-Knaller</h2></div>
+							<img src="{image file='assets/dist/img/top-angebot.png' source='Front'}" class="" alt="top-angebot"/>
+						</div>
+						
+						<div class="panel panel-default" id="carousel-icons">
+                            <div><h2 class="title">Unsere Bestseller</h2></div>
+                            <div class="panel-body">
+                                <div class="owl-icons-wrapper">
+                                    <!-- === header === -->
+                                    <header class="hidden">
+                                        <h2>Top Hersteller</h2>
+                                    </header>
+                                    <div class="">
+									<div class="product-slider">
+									 {loop name="selection_product" type="selection_product_related" selection_id=1}
+									 
+								  <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+								  <div id="category-products">
+									<div class="products-content">
+                           
+                                {loop name="product.details" type="product" id=$PRODUCT_ID}
+                                        {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819" colClass="slider-spacing"}
+                                {/loop}
+									</div>
+									</div>
+									</article>
+								 {/loop}
+									</div>
+                              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						
+						
+						 <!-- ========================  Stretcher widget ======================== -->
+
+        <section class="stretcher-wrapper">
+
+            <!-- === stretcher header === -->
+
+            <header class="hidden">
+                <!--remove class 'hidden'' to show section header -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-8 text-center">
+                            <h1 class="h2 title">Popular categories</h1>
+                            <div class="text">
+                                <p>
+                                    Whether you are changing your home, or moving into a new one, you will find a huge selection of quality living room furniture,
+                                    bedroom furniture, dining room furniture and the best value at Furniture factory
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- === stretcher === -->
+
+            <ul class="stretcher">
+
+                <!-- === stretcher item === -->
+
+                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/kueche.png' source='Front'});">
+				
+				
+                    <!--logo-item-->
+                    <div class="stretcher-logo">
+                        <div class="text">
+                           <span class="kategorie-kueche"></span>
+                            <span class="text-intro">Küche</span>
+                        </div>
+                    </div>
+                    <!--main text-->
+                    <figure>
+                        <h4>Marken Armaturen zum Top-Preis</h4>
+                       
+                    </figure>
+
+                </li>
+                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/bad.png' source='Front'});">
+                    <!--logo-item-->
+                    <div class="stretcher-logo">
+                        <div class="text">
+                             <span class="kategorie-bad"></span>
+                            <span class="text-intro">Badezimmer</span>
+                        </div>
+                    </div>
+                    <!--main text-->
+                    <figure>
+                        <h4>Badarmaturen, Badkeramik, Badmöbel..</h4>
+                        <figcaption>stark verbilligt</figcaption>
+                    </figure>
+
+                </li>
+                <!-- === stretcher item === -->
+
+                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/klima.png' source='Front'});">
+                    <!--logo-item-->
+                    <div class="stretcher-logo">
+                        <div class="text">
+                           <span class="kategorie-klima"></span>
+                            <span class="text-intro">Klima</span>
+                        </div>
+                    </div>
+                    <!--main text-->
+                    <figure>
+                        <h4>Innengeräte, Aussengeräte, Zubehör...</h4>
+                        
+                    </figure>
+
+                </li>
+
+                <!-- === stretcher item === -->
+
+                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/heizung.png' source='Front'});">
+                    <!--logo-item-->
+                    <div class="stretcher-logo">
+                        <div class="text">
+                            <span class="kategorie-heizung"></span>
+							<span class="text-intro">Heizung</span>
+                        </div>
+                    </div>
+                    <!--main text-->
+                    <figure>
+                        <h4>Kleinspeicher, Heizkörper, Heizgeräte..</h4>
+
+                    </figure>
+
+                </li>
+
+                <!-- === stretcher item === -->
+
+
+
+
+            </ul>
+        </section>
+		
+		 <!-- ========================  Banner ======================== -->
+
+        <section class="parallax-banner">
+		
+                            <!--footer showroom-->
+                <div class="footer-showroom">
+                    <div class="row">
+                        <div class="col-sm-7">
+                            <h2>Besuchen Sie unser Outlet</h2>
+							<p><strong>800m2 - 1500 Artikeln - bis zu 80% Rabatt und nur Markenware.</strong>
+							
+<p><small>Auf einer Fläche  800m2 stehen dem Endkunden mehr 1500 Artikeln bis zu 80% reduziert zur Verfügung.</small></p>
+<br>
+                            <p><span class="contact-address"></span>Wienerstraße 111-115, 
+2700 Wiener Neustadt, Österreich</p>
+                            <p>Mo-Fr: 11-18 Uhr&nbsp; &nbsp; | &nbsp; &nbsp;Sa: 10-14 Uhr</p>
+							
+                        </div>
+						<div class="col-sm-5">
+						<img src="{image file='assets/dist/img/outlet.png' source='Front'}" class="img-responsive" alt="outlet"/>
+						</div>
+                        
+                    </div>
+                </div>
+
+        </section>
+	</div>	
+{/block}
+
+{block name="after-javascript-include"}
+
+<script src="{javascript file='assets/dist/js/jquery.owl.carousel.min.js' source='Front'}"></script>
+<script src="{javascript file='assets/dist/js/jquery.magnific-popup.js' source='Front'}"></script>
+<script src="{javascript file='assets/dist/js/jquery.ion.rangeSlider.js' source='Front'}"></script>
+<script src="{javascript file='assets/dist/js/jquery.isotope.pkgd.js' source='Front'}"></script>
+<script src="{javascript file='assets/dist/js/main.js' source='Front'}"></script>
 {/block}
