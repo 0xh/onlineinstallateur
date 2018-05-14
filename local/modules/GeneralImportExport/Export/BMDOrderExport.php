@@ -47,7 +47,7 @@ class BMDOrderExport extends AbstractExport
     		'order_status_TITLE' => 'skontotage',
     		'delivery_address_TITLE' => 'steucod',
     		'delivery_address_COMPANY' => 'ebkennz',
-    		'delivery_address_FIRSTNAME' => 'symbol',
+    		'delivery_address_COUNTRY' => 'symbol',
     ];
 
     /**
@@ -198,7 +198,7 @@ class BMDOrderExport extends AbstractExport
 		$processedData['skontotage'] = "";
 		$processedData['steucod'] = "3";
 		$processedData['ebkennz'] = "";
-		$processedData['symbol'] = "AR";
+	//	$processedData['symbol'] = "AR";
         
         return $processedData;
     }
@@ -279,6 +279,7 @@ class BMDOrderExport extends AbstractExport
     					->addAsColumn('delivery_module_TITLE', '`delivery_module`.CODE')
     					->endUse()
     					->useOrderAddressRelatedByDeliveryOrderAddressIdQuery('delivery_address_join')
+    					->AddAsColumn('delivery_address_COUNTRY','`delivery_address_join`.COUNTRY_ID')
     					->useCustomerTitleQuery('delivery_address_customer_title_join')
     					->useCustomerTitleI18nQuery('delivery_address_customer_title_i18n_join')
     					->addAsColumn('delivery_address_TITLE', '`delivery_address_customer_title_i18n_join`.SHORT')
@@ -346,6 +347,7 @@ class BMDOrderExport extends AbstractExport
     							OrderTableMap::INVOICE_REF,
     							OrderTableMap::DELIVERY_REF,
     							'delivery_module_TITLE',
+    					        'delivery_address_COUNTRY',
     							'delivery_address_TITLE',
     							'delivery_address_COMPANY',
     							'delivery_address_FIRSTNAME',

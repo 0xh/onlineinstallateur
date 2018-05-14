@@ -47,7 +47,7 @@ class BMDOrderExport extends AbstractExport
     		'order_status_TITLE' => 'skontotage',
     		'delivery_address_TITLE' => 'steucod',
     		'delivery_address_COMPANY' => 'ebkennz',
-    		'delivery_address_FIRSTNAME' => 'symbol',
+    		'delivery_address_COUNTRY' => 'symbol',
     ];
 
     /**
@@ -86,7 +86,7 @@ class BMDOrderExport extends AbstractExport
         
         $fromDBVAT = round($processedData['steuer'],2,PHP_ROUND_HALF_UP);
         $computedVAT = round($processedData['betrag']/1.19*0.19,2,PHP_ROUND_HALF_UP);
-        Tlog::getInstance()->error(" bmd export ".abs($computedVAT - $fromDBVAT)." ".$processedData['text']);
+        
         if(abs(round($computedVAT - $fromDBVAT,2)) <= 0.01 ) {
             $processedData['gkto'] = "4200";
             $processedData['mwst'] = "";
@@ -96,7 +96,7 @@ class BMDOrderExport extends AbstractExport
             $processedData['gkto'] = "4000";
             $processedData['steuer'] = round(-$processedData['steuer'],2);
         }
-        
+        Tlog::getInstance()->error(" bmd export ".abs(round($computedVAT - $fromDBVAT,2))." ".$processedData['text']." ".$processedData['gkto']);
         $orderSource = substr($processedData['belegnr'],0,3);
         $orderKonto = substr($processedData['text'],0,1);
         switch($orderSource){
@@ -134,7 +134,7 @@ class BMDOrderExport extends AbstractExport
         	case "ADE":{
         		$processedData['konto']="202699";
         		$processedData['belegnr']="2".substr($processedData['belegnr'],3);
-        		$processedData['mwst'] = "19";
+        		//$processedData['mwst'] = "19";
         	}break;
         	case "AIT":{
         		$processedData['konto']="202799";
@@ -270,6 +270,7 @@ class BMDOrderExport extends AbstractExport
     					->addAsColumn('delivery_module_TITLE', '`delivery_module`.CODE')
     					->endUse()
     					->useOrderAddressRelatedByDeliveryOrderAddressIdQuery('delivery_address_join')
+    					->AddAsColumn('delivery_address_COUNTRY','`delivery_address_join`.COUNTRY_ID')
     					->useCustomerTitleQuery('delivery_address_customer_title_join')
     					->useCustomerTitleI18nQuery('delivery_address_customer_title_i18n_join')
     					->addAsColumn('delivery_address_TITLE', '`delivery_address_customer_title_i18n_join`.SHORT')
@@ -337,6 +338,7 @@ class BMDOrderExport extends AbstractExport
     							OrderTableMap::INVOICE_REF,
     							OrderTableMap::DELIVERY_REF,
     							'delivery_module_TITLE',
+    					        'delivery_address_COUNTRY',
     							'delivery_address_TITLE',
     							'delivery_address_COMPANY',
     							'delivery_address_FIRSTNAME',
