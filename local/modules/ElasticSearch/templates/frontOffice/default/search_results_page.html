@@ -33,11 +33,11 @@
               <span class="limiter">
                   <label for="limit-top">{intl l="Show"}</label>
                   <select id="limit-top" name="limit">
-                      <option value="{url current="1" limit="6"}" {if $limit==6}selected{/if}>6</option>
-                      <option value="{url current="1" limit="12"}" {if $limit==12}selected{/if}>12</option>
-                      <option value="{url current="1" limit="24"}" {if $limit==24}selected{/if}>24</option>
-                      <option value="{url current="1" limit="48"}"{if $limit==48}selected{/if}>48</option>                     
-                      <option value="{url current="1" limit="96"}"{if $limit==96}selected{/if}>96</option>                     
+                      <option value="{url current="1" limit="6"  page=1}" {if $limit==6}selected{/if}>6</option>
+                      <option value="{url current="1" limit="12"  page=1}" {if $limit==12}selected{/if}>12</option>
+                      <option value="{url current="1" limit="24"  page=1 }" {if $limit==24}selected{/if}>24</option>
+                      <option value="{url current="1" limit="48"  page=1 }"{if $limit==48}selected{/if}>48</option>                     
+                      <option value="{url current="1" limit="96" page=1}"{if $limit==96}selected{/if}>96</option>                     
                       
                   </select>
                   <span class="per-page">{intl l="per page"}</span>
@@ -100,7 +100,7 @@
                 {/if}                
 
                 <li{if $page eq $current_page} class="active"{/if}>
-                        <a href="{url current="1" page=$page limit=$limit order=$order start=$start}">{$page}</a>
+                        <a href="{url current="1" page=$page limit=$limit order=$order}">{$page}</a>
                  </li>
                 {if  $page eq 11  }
                 {continue}
