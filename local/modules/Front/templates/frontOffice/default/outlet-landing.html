@@ -1,25 +1,15 @@
 {extends file="layout.tpl"}
 
 {block name="stylesheet"}
-	{stylesheets file='assets/dist/css/animate.css' source='Front'}
+
+	{stylesheets file='assets/dist/css/owl.carousel.min.css' source='Front'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
-	{stylesheets file='assets/dist/css/magnific-popup.css' source='Front'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-	{stylesheets file='assets/dist/css/owl.carousel.css' source='Front'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-	{stylesheets file='assets/dist/css/ion-range-slider.css' source='Front'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
+
 	{stylesheets file='assets/dist/css/theme.css' source='Front'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
-	{stylesheets file='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' source='Front'}
-       <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-	
+
 {/block}
 
 {block name="main-content"}
@@ -42,7 +32,7 @@
 
                 
 
-                                    <div style="">
+                                    <div >
 
                                         <div class="owl-icons">
 
@@ -153,9 +143,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
-                        <div class="panel col-xs-12 col-sm-12 col-md-12 col-lg-12">
-						<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-centered" style="float: none;margin: 0 auto;">
+
+                        <div class="panel row">
+						<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8" style="float: none;margin: 0 auto;">
 						 <div><h2 class="title">Wochen-Knaller</h2></div>
 						 <a href="/Grohe-AP-Bade-Thermostat-Grohtherm-1000-C-o.-Brausegarnitur-m.-RV-verchromt-34215002-de.html">
 							<img src="{image file='assets/dist/img/top-angebot.png' source='Front'}" class="img-responsive" alt="top-angebot"/>
@@ -197,24 +187,7 @@
 
         <section class="stretcher-wrapper">
 
-            <!-- === stretcher header === -->
-
-            <header class="hidden">
-                <!--remove class 'hidden'' to show section header -->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-offset-2 col-md-8 text-center">
-                            <h1 class="h2 title">Popular categories</h1>
-                            <div class="text">
-                                <p>
-                                    Whether you are changing your home, or moving into a new one, you will find a huge selection of quality living room furniture,
-                                    bedroom furniture, dining room furniture and the best value at Furniture factory
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+  
 
             <!-- === stretcher === -->
 
@@ -313,7 +286,7 @@
 <br>
                             <p><span class="contact-address"></span>Wienerstraße 111-115, 
 2700 Wiener Neustadt, Österreich</p>
-                            <p>Mo-Fr: 11-18 Uhr&nbsp; &nbsp; | &nbsp; &nbsp;Sa: 10-14 Uhr</p>
+                            <p>Mo-Fr: 11-18 Uhr | Sa: 10-14 Uhr</p>
 							
                         </div>
 						<div class="col-sm-5">
@@ -330,8 +303,5 @@
 {block name="after-javascript-include"}
 
 <script src="{javascript file='assets/dist/js/jquery.owl.carousel.min.js' source='Front'}"></script>
-<script src="{javascript file='assets/dist/js/jquery.magnific-popup.js' source='Front'}"></script>
-<script src="{javascript file='assets/dist/js/jquery.ion.rangeSlider.js' source='Front'}"></script>
-<script src="{javascript file='assets/dist/js/jquery.isotope.pkgd.js' source='Front'}"></script>
 <script src="{javascript file='assets/dist/js/main.js' source='Front'}"></script>
 {/block}
