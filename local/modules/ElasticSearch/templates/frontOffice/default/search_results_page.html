@@ -19,14 +19,53 @@
     {$end={$RESULTS['end']}}
     {$start={$RESULTS['start']}}
     {$order={$RESULTS['order']}}
-    {$amount={$RESULTS['total']}}
-    
- {$product_page={$smarty.get.page|default:1}}
-{$product_order=$order}    
+    {$amount={$RESULTS['total']}} 
+    {$current_page={$RESULTS['current_page']}}    
+    {$product_order=$order}    
 
     <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
         <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
-        {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}}
+        {* {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}} *}
+        <div class="toolbar toolbar-{$toolbar}" role="toolbar">
+          <div class="sorter-container clearfix">
+          <span class="amount">{if ($amount > 1)}{intl l="%nb Items" nb="{$amount}"}{else}{intl l="%nb Item" nb="{$amount}"}{/if}</span>
+
+              <span class="limiter">
+                  <label for="limit-top">{intl l="Show"}</label>
+                  <select id="limit-top" name="limit">
+                      <option value="{url current="1" limit="6"}" {if $limit==6}selected{/if}>6</option>
+                      <option value="{url current="1" limit="12"}" {if $limit==12}selected{/if}>12</option>
+                      <option value="{url current="1" limit="24"}" {if $limit==24}selected{/if}>24</option>
+                      <option value="{url current="1" limit="48"}"{if $limit==48}selected{/if}>48</option>                     
+                      <option value="{url current="1" limit="96"}"{if $limit==96}selected{/if}>96</option>                     
+                      
+                  </select>
+                  <span class="per-page">{intl l="per page"}</span>
+              </span><!-- /.limiter -->
+
+              <span class="sort-by">
+                  <label for="sortby-top">{intl l="Sort By"}</label>
+                  <select id="sortby-top" name="sortby">
+                      {*<option value="{url path="{category attr="url"}" order="manual"}">{intl l="Position"}</option>*}
+                      <option value="{url current="1" limit=$limit order="alpha"}" {if $order=="alpha"}selected{/if}>{intl l="Name ascending"}</option>
+                      <option value="{url current="1" limit=$limit order="alpha_reverse"}" {if $order=="alpha_reverse"}selected{/if}>{intl l="Name descending"}</option>
+                      <option value="{url current="1" limit=$limit order="min_price"}" {if $order=="min_price"}selected{/if}>{intl l="Price ascending"}</option>
+                      <option value="{url current="1" limit=$limit order="max_price"}" {if $order=="max_price"}selected{/if}>{intl l="Price descending"}</option>
+                      {*<option value="{url path="{category attr="url"}" order="rating"}">{intl l="Rating"}</option>*}
+                  </select>
+              </span><!-- /.sort-by -->
+
+              <span class="view-mode">
+                  <span class="view-mode-label sr-only">{intl l="View as"}:</span>
+                  <span class="view-mode-btn">
+                      <a href="{url current="1" mode="grid"}" data-toggle="view" role="button" title="{intl l="Grid"}" rel="nofollow" class="btn btn-default btn-grid"><i class="fa fa-th"></i></a>
+                      <a href="{url current="1" mode="list"}" data-toggle="view" role="button" title="{intl l="List"}" rel="nofollow" class="btn btn-default btn-list"><i class="fa fa-th-list"></i></a>
+                  </span>
+              </span><!-- /.view-mode -->
+
+             </div><!-- /.sorter -->
+          </div>
+
         <div id="category-products">
             <div class="products-content">
                        <ul class="list-unstyled row">
@@ -45,13 +84,39 @@
                        {foreachelse}
                             <h2 class="text-center">{intl l="No results found"} </h2>                            
                        {/foreach}
-
-
-
             </div>
         </div><!-- /#category-products -->
+       
+       <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}">
+            <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
+            <ul class="pagination pagination-sm">
+              {for $page=1 to $PAGES} 
+
+
+               {if $page eq 1}
+                    <li class="disabled">
+                        <span class="prev"><i class="fa fa-caret-left"></i></span>
+                    </li>
+                {/if}                
+
+                <li{if $page eq $current_page} class="active"{/if}>
+                        <a href="{url current="1" page=$page limit=$limit order=$order start=$start}">{$page}</a>
+                 </li>
+                {if  $page eq 11  }
+                {continue}
+                {/if}
+
+              {if $page eq $PAGES}
+                    <li class="disabled">
+                        <span class="next"><i class="fa fa-caret-right"></i></span>
+                    </li>                       
+              {/if}           
+              {/for}
+            </ul>
+        </div>
         
     </article>
+      
 
 </div><!-- /.layout -->
 {/block}

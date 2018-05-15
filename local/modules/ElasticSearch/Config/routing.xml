@@ -15,7 +15,7 @@
 
 -->
 
-    <route id="elastic_search" path="/el_search">
+    <route id="elastic_search" path="/search">
         <default key="_controller">ElasticSearch\Controller\Front\ElasticSearchController::showResults</default>
     </route>
 <!--

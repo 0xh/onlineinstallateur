@@ -23,24 +23,28 @@ class ElasticSearchController extends BaseFrontController
 {
 
     public function showResults(){
-
-        $start = 0;
+        $start = $this->getRequest()->get('start') <> NULL ? $this->getRequest()->get('start'): 0 ;
         $end = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;
-        $limit= $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit'): 4 ;   
-        $order= $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order'): 4 ;    
+        $limit= $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit'): 6 ;   
+        $order= $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order'): "alpha" ;    
+        $page= $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;    
+
+
+        $start = $page > 1 ? ($page*$limit) : 0;
         $search = new ElasticConnection();
         $results= $search->fullTextSearch($this->getRequest()->get('q'),$start,$end,$limit,$order);
          if ($results == NULL || count($results) == 1) {
              $results[]="no results where found!!";
          }else {
+
             $results['start'] = $start;
             $results['end'] = $end;
             $results['limit'] = $limit;
-            $results['order'] = $order;
-            
-
+            $results['order'] = $order;      
+            $results['current_page'] = $page;            
          }
-       return $this->render("search_results_page",array("RESULTS"=>$results));
+
+       return $this->render("search_results_page",array("RESULTS"=>$results,"PAGES"=>ceil($results['total'] / $limit)));
     }
 
     protected function getDefaultCategoryId($product)

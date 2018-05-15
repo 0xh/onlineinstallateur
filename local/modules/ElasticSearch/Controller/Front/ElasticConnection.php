@@ -201,53 +201,50 @@ class  ElasticConnection {
         }
         
     
-    public function fullTextSearch($text = null,$start,$end,$limit, $order = null){
-
+    public function fullTextSearch($text = null, $start , $end,$limit, $order = null){
        $objElasticConnection = new ElasticConnection();
        $objElasticSearchConnection = $objElasticConnection::getConnection();         
-
             switch ($order) {
               case 'alpha':
-                $field = "title";
                 $order_by = "asc";
                 $json = '{
                 "sort" : [
-                    {"'.$field.'": {"order":"'.$order_by.'"}}, 
+                    {"product_title": {"order":"'.$order_by.'"}}, 
                     "_score"
                 ],
                  "from" : "'.$start.'","size":"'.$limit.'",
+
                  "query": {
                     "multi_match" : {
                          "query":    "'.$text.'", 
-                         "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
+                         "fields": [ "product_title"] 
                           }
                        }
                 }';
               break;
               case 'alpha_reverse':
-                $field = "tile";
-                $order_by = "desc";
+              $order_by = "desc";
                 $json = '{
-                    "sort" : [
-                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
-                        "_score"
-                    ],
-                     "from" : "'.$start.'","size":"'.$limit.'",
-                     "query": {
-                        "multi_match" : {
-                             "query":    "'.$text.'", 
-                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"] 
-                              }
-                           }
+                "sort" : [
+                    {"product_title": {"order":"'.$order_by.'"}}, 
+                    "_score"
+                ],
+                 "from" : "'.$start.'","size":"'.$limit.'",
+
+                 "query": {
+                    "multi_match" : {
+                         "query":    "'.$text.'", 
+                         "fields": [ "product_title"] 
+                          }
+                       }
                 }';
               break;
               case 'min_price':
-                $field = "product_taxed_price";
-                $order_by = "desc";
+                $field = "product_promo_taxed_price";
+                $order_by = "asc";
                 $json = '{
                     "sort" : [
-                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
-                        "_score"
+                        {"'.$field.'": {"order":"'.$order_by.'"}}
                     ],
                      "from" : "'.$start.'","size":"'.$limit.'",
                      "query": {
@@ -259,12 +256,11 @@ class  ElasticConnection {
                  }';
               break;
               case 'max_price':
-                $field = "product_taxed_price";
-                $order_by = "asc";
+                $field = "product_promo_taxed_price";
+                $order_by = "desc";
                 $json = '{
                     "sort" : [
-                        {"'.$field.'": {"order":"'.$order_by.'"}}, 
-                        "_score"
+                        {"'.$field.'": {"order":"'.$order_by.'"}} 
                     ],
                      "from" : "'.$start.'","size":"'.$limit.'",
                      "query": {
