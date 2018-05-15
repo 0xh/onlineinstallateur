@@ -272,7 +272,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
                         $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
-                        sleep(2);
+                        sleep(4);
 
                         if (isset($order->FulfillmentChannel))
                             $fulfillmentChannel = $order->FulfillmentChannel;
@@ -291,18 +291,18 @@ class AmazonIntegrationContoller extends BaseAdminController {
                                     if (isset($orderProduct->ShippingPrice->Amount))
                                         $totalPostage += $orderProduct->ShippingPrice->Amount;
 
-                                    $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+                                    $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
                                 }
                             }
                             else {
                                 if (isset($orderProduct->ShippingPrice->Amount))
                                     $totalPostage = $orderProduct->ShippingPrice->Amount;
 
-                                $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $fulfillmentChannel);
+                                $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
                             }
                         }
 
-                        if ($fulfillmentChannel == 'AFN') {
+                        if ($countryId == '5') {
                             $taxPostage = round(($totalPostage / 1.19) * 0.19, 2);
                         } else {
                             $taxPostage = round(($totalPostage / 1.2) * 0.2, 2);
@@ -658,7 +658,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
         $amazonOrder->save($con);
     }
 
-    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $fulfillmentChannel) {
+    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId) {
 
         $productId = ProductAmazonQuery::create()
                 ->select('product_id')
@@ -716,7 +716,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
             $unitPrice = 1;
         }
 
-        if ($fulfillmentChannel == 'AFN') {
+        if ($countryId == '5') {
             $tax = round(($unitPrice / 1.19) * 0.19, 2);
             $priceWithoutTax = $unitPrice - $tax;
             $taxTitle = '19%  VAT';
@@ -984,7 +984,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
                     echo ('error decoding json');
                 }
                 
-                sleep(2);
+                sleep(4);
             }
 
             ini_set('max_execution_time', $max_time);
