@@ -23,7 +23,6 @@ class ElasticSearchController extends BaseFrontController
 {
 
     public function showResults(){
-        $start = $this->getRequest()->get('start') <> NULL ? $this->getRequest()->get('start'): 0 ;
         $end = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;
         $limit= $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit'): 6 ;   
         $order= $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order'): "alpha" ;    
