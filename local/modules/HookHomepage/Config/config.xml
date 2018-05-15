@@ -37,8 +37,9 @@
         <hook id="hookhomepage.bestsellercategory.hook.front">
             <tag name="hook.event_listener" event="category.bottom" templates="render:home-body.html" />
         </hook>
-    
-  
+		<hook id="hookhomepage.js.hook.front">
+			<tag name="hook.event_listener" event="main.after-javascript-include" type="front" active="1" templates="js:assets/dist/js/jquery.owl.carousel.min.js;js:assets/dist/js/main.js" />
+        </hook>
     </hooks>
    
 
