@@ -11,6 +11,9 @@
 	   position=$POSITION
 	   id=$ID
 	}
-	 
+	</br>
+	{loop type="category" name="the-loop-name" id=$DEFAULT_CATEGORY}
+	{$TITLE|truncate:25}
+	{/loop} 
 	{/loop}
 {/loop}

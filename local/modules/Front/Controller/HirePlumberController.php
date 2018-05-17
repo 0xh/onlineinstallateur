@@ -44,7 +44,7 @@ class HirePlumberController extends BaseFrontController
         $contactForm = $this->createForm("services");
         //$form = $this->validateForm($contactForm);
         $subject = "Hire a Plumber";
-        $emailTest = "angebote@hausfabrik.at";
+        $emailTest = ConfigQuery::read('offer_email');
        
         $anmerkungen = $this->getRequest()->get('services')['anmerkungen'];
         $firstname =  $this->getRequest()->get('services')['firstname'];
@@ -156,7 +156,7 @@ class HirePlumberController extends BaseFrontController
         
         
         $storeName="Hausfabrik";
-        $contactEmail="angebote@hausfabrik.at";
+        $contactEmail=ConfigQuery::read('offer_email');
         $kundenEmail = $email;
         $kundenEmailSubject = "Vielen Dank für Ihre Anfrage";
         $instance = \Swift_Message::newInstance()

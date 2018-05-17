@@ -38,9 +38,6 @@ class OrderProductRevenueController extends BaseAdminController {
         } else {
             $this->addNewOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId);
         }
-
-        echo 'It was saved.';
-        die;
     }
 
     protected function addNewOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId) {

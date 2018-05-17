@@ -25,7 +25,7 @@ class CustomServicesController extends BaseFrontController
         $form = $this->validateForm($contactForm);
         
         $subject = "Individuelle Services Anfrage";
-        $emailTest = "angebote@hausfabrik.at";
+        $emailTest = ConfigQuery::read('offer_email');
         $project_art = $this->getRequest()->get('customservices')['projekt-art'];
         $marke =  $this->getRequest()->get('customservices')['marke'];
         $oel_gas =  $this->getRequest()->get('customservices')['oel-gas'];
@@ -64,7 +64,7 @@ class CustomServicesController extends BaseFrontController
 $log->error(sprintf('message : %s', $message));
             $htmlMessage = "<p>$message</p>";
 $storeName="Hausfabrik";
-$contactEmail="angebote@hausfabrik.at";
+$contactEmail=ConfigQuery::read('offer_email');
             $instance = \Swift_Message::newInstance()
             
                 ->addTo($emailTest, $storeName)

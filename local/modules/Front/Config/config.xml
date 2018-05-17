@@ -5,11 +5,7 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
     <forms>
-        <!--
-        <form name="MyFormName" class="MyModule\Form\MySuperForm" />
-        -->
     </forms>
-
 
     <services>
         <service id="router.front" class="%router.class%">

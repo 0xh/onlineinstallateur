@@ -54,10 +54,10 @@
         {$total = $total + $revenue}
         <tr>
             <td>{$id}</td>
-            <td>{$order_id}</td>
+            <td><a href="{url path='/admin/order/update/'}{$order_id}">{$order_id}</a></td>
             <td>{$delivery_cost}</td>
             <td>{$delivery_method}</td>
-            <td>{$partner_id}</td>
+            <td><a href="{url path='/admin/module/revenue-wholesale-partner/'}">{$partner_id}</a></td>
             <td>{$payment_processor_cost}</td>
             <td>{$price}</td>
             <td>{$purchase_price}</td>

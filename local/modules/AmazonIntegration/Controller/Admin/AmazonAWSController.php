@@ -348,7 +348,7 @@ class AmazonAWSController extends BaseAdminController
 		try{
 			$max_time = ini_get("max_execution_time");
 			ini_set('max_execution_time', 100);
-			sleep(2);
+			sleep(1);
 			
 			$secretAccessKey = PRODUCT_ADVERTISING_AWS_SECRET_ACCESS_KEY;
 			$url = 'http://webservices.'.PRODUCT_ADVERTISING_AWS_MARKETPLACE.'/onca/xml?'.
@@ -455,7 +455,7 @@ class AmazonAWSController extends BaseAdminController
 				return $price;
 			} 
 			else {
-				sleep(2);
+				sleep(1);
 				$this->getLogger()->error("AMAZON price - failed request");
 				return $this->getLowestPrice($eanCode);
 			} 
