@@ -47,6 +47,7 @@
             orderId = $("#rev_input_order_id").val();
             productRef = $("#rev_input_ref_" + $(this).val()).val();
             price = $("#rev_input_price_" + $(this).val()).val();
+            quantity = $("#rev_input_quantity_" + $(this).val()).val();
 
             if ($(this).attr("noPartner")) {
                 partnerId = 0;
@@ -58,7 +59,7 @@
 
             $.ajax({
                 url: "/admin/module/update-order-product-revenue/" + orderId + "/" + productRef + "/"
-                        + price + "/" + purchePrice + "/" + partnerId + "/" + prodId,
+                        + price + "/" + quantity + "/" + purchePrice + "/" + partnerId + "/" + prodId,
                 type: "post",
                 success: function (response) {
                     console.log(response);

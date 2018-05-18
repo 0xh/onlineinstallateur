@@ -26,6 +26,7 @@ use Thelia\Model\OrderProductQuery;
 class OrderRevenueListener extends BaseAction implements EventSubscriberInterface {
 
     protected $request;
+    protected $totalProdForOrder;
 
     public function __construct(Request $request) {
         $this->request = $request;
@@ -47,6 +48,17 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
                 $orderRev->delete();
             }
         }
+
+        $this->totalProdForOrder = 0;
+        foreach ($orderProdRevenue as $value) {
+            $orderProduct = OrderProductQuery::create()
+                    ->filterByOrderId($value->getOrderId())
+                    ->findOneByProductRef($value->getProductRef());
+
+            $orderQuantity = $orderProduct->getQuantity();
+            $this->totalProdForOrder += $orderQuantity;
+        }
+
         foreach ($orderProdRevenue as $value) {
             $this->addNewOrderRevenue($value, $paymentProcessorCost, $totalPaymentProcessorCost, $deliveryCostMethod);
         }
@@ -54,13 +66,13 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
 
     protected function addNewOrderRevenue($orderProdRevenue, $paymentProcessorCost, $totalPaymentProcessorCost, $deliveryCostMethod) {
         $orderProduct = OrderProductQuery::create()
-        ->filterByOrderId($orderProdRevenue->getOrderId())
-        ->findOneByProductRef($orderProdRevenue->getProductRef());
-        
+                ->filterByOrderId($orderProdRevenue->getOrderId())
+                ->findOneByProductRef($orderProdRevenue->getProductRef());
+
         $orderQuantity = $orderProduct->getQuantity();
-        $sellPrice = $orderProdRevenue->getPrice()*$orderQuantity;
-        $purchasePrice = $orderProdRevenue->getPurchasePrice()*$orderQuantity;
-        
+        $sellPrice = $orderProdRevenue->getPrice();
+        $purchasePrice = $orderProdRevenue->getPurchasePrice();
+
         $newOrderRevenue = new OrderRevenue();
         $newOrderRevenue->setDeliveryCost($deliveryCostMethod["delivery_cost"]);
         $newOrderRevenue->setOrderId($orderProdRevenue->getOrderId());
@@ -68,11 +80,15 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
         $newOrderRevenue->setPartnerId($orderProdRevenue->getPartnerId());
         $newOrderRevenue->setPaymentProcessorCost($totalPaymentProcessorCost);
         $newOrderRevenue->setPrice($sellPrice);
+        $newOrderRevenue->setQuantity($orderQuantity);
         $newOrderRevenue->setPurchasePrice($purchasePrice);
-        $totalPurchasePrice = $purchasePrice + $deliveryCostMethod["delivery_cost"] + $totalPaymentProcessorCost;
+
+        $costOrder = ($deliveryCostMethod["delivery_cost"] + $totalPaymentProcessorCost) / $this->totalProdForOrder;
+
+        $totalPurchasePrice = $purchasePrice + $costOrder;
 
         $newOrderRevenue->setTotalPurchasePrice($totalPurchasePrice);
-        $newOrderRevenue->setRevenue($sellPrice - $totalPurchasePrice);
+        $newOrderRevenue->setRevenue(($sellPrice - $totalPurchasePrice) * $orderQuantity);
         $newOrderRevenue->save();
     }
 
@@ -121,7 +137,6 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
             $this->updateOrderRevenue($order->getId());
         }
     }
-
 
     /**
      * Returns an array of event names this subscriber wants to listen to.

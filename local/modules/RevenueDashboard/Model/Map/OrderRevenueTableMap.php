@@ -58,7 +58,7 @@ class OrderRevenueTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 12;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class OrderRevenueTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /**
      * the column name for the ID field
@@ -106,6 +106,11 @@ class OrderRevenueTableMap extends TableMap
     const PRICE = 'order_revenue.PRICE';
 
     /**
+     * the column name for the QUANTITY field
+     */
+    const QUANTITY = 'order_revenue.QUANTITY';
+
+    /**
      * the column name for the PURCHASE_PRICE field
      */
     const PURCHASE_PRICE = 'order_revenue.PURCHASE_PRICE';
@@ -137,12 +142,12 @@ class OrderRevenueTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'DeliveryCost', 'DeliveryMethod', 'PartnerId', 'PaymentProcessorCost', 'Price', 'PurchasePrice', 'TotalPurchasePrice', 'Revenue', 'Comment', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'deliveryCost', 'deliveryMethod', 'partnerId', 'paymentProcessorCost', 'price', 'purchasePrice', 'totalPurchasePrice', 'revenue', 'comment', ),
-        self::TYPE_COLNAME       => array(OrderRevenueTableMap::ID, OrderRevenueTableMap::ORDER_ID, OrderRevenueTableMap::DELIVERY_COST, OrderRevenueTableMap::DELIVERY_METHOD, OrderRevenueTableMap::PARTNER_ID, OrderRevenueTableMap::PAYMENT_PROCESSOR_COST, OrderRevenueTableMap::PRICE, OrderRevenueTableMap::PURCHASE_PRICE, OrderRevenueTableMap::TOTAL_PURCHASE_PRICE, OrderRevenueTableMap::REVENUE, OrderRevenueTableMap::COMMENT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'DELIVERY_COST', 'DELIVERY_METHOD', 'PARTNER_ID', 'PAYMENT_PROCESSOR_COST', 'PRICE', 'PURCHASE_PRICE', 'TOTAL_PURCHASE_PRICE', 'REVENUE', 'COMMENT', ),
-        self::TYPE_FIELDNAME     => array('id', 'order_id', 'delivery_cost', 'delivery_method', 'partner_id', 'payment_processor_cost', 'price', 'purchase_price', 'total_purchase_price', 'revenue', 'comment', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'DeliveryCost', 'DeliveryMethod', 'PartnerId', 'PaymentProcessorCost', 'Price', 'Quantity', 'PurchasePrice', 'TotalPurchasePrice', 'Revenue', 'Comment', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'deliveryCost', 'deliveryMethod', 'partnerId', 'paymentProcessorCost', 'price', 'quantity', 'purchasePrice', 'totalPurchasePrice', 'revenue', 'comment', ),
+        self::TYPE_COLNAME       => array(OrderRevenueTableMap::ID, OrderRevenueTableMap::ORDER_ID, OrderRevenueTableMap::DELIVERY_COST, OrderRevenueTableMap::DELIVERY_METHOD, OrderRevenueTableMap::PARTNER_ID, OrderRevenueTableMap::PAYMENT_PROCESSOR_COST, OrderRevenueTableMap::PRICE, OrderRevenueTableMap::QUANTITY, OrderRevenueTableMap::PURCHASE_PRICE, OrderRevenueTableMap::TOTAL_PURCHASE_PRICE, OrderRevenueTableMap::REVENUE, OrderRevenueTableMap::COMMENT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'DELIVERY_COST', 'DELIVERY_METHOD', 'PARTNER_ID', 'PAYMENT_PROCESSOR_COST', 'PRICE', 'QUANTITY', 'PURCHASE_PRICE', 'TOTAL_PURCHASE_PRICE', 'REVENUE', 'COMMENT', ),
+        self::TYPE_FIELDNAME     => array('id', 'order_id', 'delivery_cost', 'delivery_method', 'partner_id', 'payment_processor_cost', 'price', 'quantity', 'purchase_price', 'total_purchase_price', 'revenue', 'comment', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -152,12 +157,12 @@ class OrderRevenueTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'DeliveryCost' => 2, 'DeliveryMethod' => 3, 'PartnerId' => 4, 'PaymentProcessorCost' => 5, 'Price' => 6, 'PurchasePrice' => 7, 'TotalPurchasePrice' => 8, 'Revenue' => 9, 'Comment' => 10, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'deliveryCost' => 2, 'deliveryMethod' => 3, 'partnerId' => 4, 'paymentProcessorCost' => 5, 'price' => 6, 'purchasePrice' => 7, 'totalPurchasePrice' => 8, 'revenue' => 9, 'comment' => 10, ),
-        self::TYPE_COLNAME       => array(OrderRevenueTableMap::ID => 0, OrderRevenueTableMap::ORDER_ID => 1, OrderRevenueTableMap::DELIVERY_COST => 2, OrderRevenueTableMap::DELIVERY_METHOD => 3, OrderRevenueTableMap::PARTNER_ID => 4, OrderRevenueTableMap::PAYMENT_PROCESSOR_COST => 5, OrderRevenueTableMap::PRICE => 6, OrderRevenueTableMap::PURCHASE_PRICE => 7, OrderRevenueTableMap::TOTAL_PURCHASE_PRICE => 8, OrderRevenueTableMap::REVENUE => 9, OrderRevenueTableMap::COMMENT => 10, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'DELIVERY_COST' => 2, 'DELIVERY_METHOD' => 3, 'PARTNER_ID' => 4, 'PAYMENT_PROCESSOR_COST' => 5, 'PRICE' => 6, 'PURCHASE_PRICE' => 7, 'TOTAL_PURCHASE_PRICE' => 8, 'REVENUE' => 9, 'COMMENT' => 10, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'delivery_cost' => 2, 'delivery_method' => 3, 'partner_id' => 4, 'payment_processor_cost' => 5, 'price' => 6, 'purchase_price' => 7, 'total_purchase_price' => 8, 'revenue' => 9, 'comment' => 10, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'DeliveryCost' => 2, 'DeliveryMethod' => 3, 'PartnerId' => 4, 'PaymentProcessorCost' => 5, 'Price' => 6, 'Quantity' => 7, 'PurchasePrice' => 8, 'TotalPurchasePrice' => 9, 'Revenue' => 10, 'Comment' => 11, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'deliveryCost' => 2, 'deliveryMethod' => 3, 'partnerId' => 4, 'paymentProcessorCost' => 5, 'price' => 6, 'quantity' => 7, 'purchasePrice' => 8, 'totalPurchasePrice' => 9, 'revenue' => 10, 'comment' => 11, ),
+        self::TYPE_COLNAME       => array(OrderRevenueTableMap::ID => 0, OrderRevenueTableMap::ORDER_ID => 1, OrderRevenueTableMap::DELIVERY_COST => 2, OrderRevenueTableMap::DELIVERY_METHOD => 3, OrderRevenueTableMap::PARTNER_ID => 4, OrderRevenueTableMap::PAYMENT_PROCESSOR_COST => 5, OrderRevenueTableMap::PRICE => 6, OrderRevenueTableMap::QUANTITY => 7, OrderRevenueTableMap::PURCHASE_PRICE => 8, OrderRevenueTableMap::TOTAL_PURCHASE_PRICE => 9, OrderRevenueTableMap::REVENUE => 10, OrderRevenueTableMap::COMMENT => 11, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'DELIVERY_COST' => 2, 'DELIVERY_METHOD' => 3, 'PARTNER_ID' => 4, 'PAYMENT_PROCESSOR_COST' => 5, 'PRICE' => 6, 'QUANTITY' => 7, 'PURCHASE_PRICE' => 8, 'TOTAL_PURCHASE_PRICE' => 9, 'REVENUE' => 10, 'COMMENT' => 11, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'delivery_cost' => 2, 'delivery_method' => 3, 'partner_id' => 4, 'payment_processor_cost' => 5, 'price' => 6, 'quantity' => 7, 'purchase_price' => 8, 'total_purchase_price' => 9, 'revenue' => 10, 'comment' => 11, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -183,6 +188,7 @@ class OrderRevenueTableMap extends TableMap
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
         $this->addColumn('PAYMENT_PROCESSOR_COST', 'PaymentProcessorCost', 'DECIMAL', false, 16, 0);
         $this->addColumn('PRICE', 'Price', 'DECIMAL', false, 16, 0);
+        $this->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null, null);
         $this->addColumn('PURCHASE_PRICE', 'PurchasePrice', 'DECIMAL', false, 16, 0);
         $this->addColumn('TOTAL_PURCHASE_PRICE', 'TotalPurchasePrice', 'DECIMAL', false, 16, 0);
         $this->addColumn('REVENUE', 'Revenue', 'DECIMAL', false, 16, 0);
@@ -341,6 +347,7 @@ class OrderRevenueTableMap extends TableMap
             $criteria->addSelectColumn(OrderRevenueTableMap::PARTNER_ID);
             $criteria->addSelectColumn(OrderRevenueTableMap::PAYMENT_PROCESSOR_COST);
             $criteria->addSelectColumn(OrderRevenueTableMap::PRICE);
+            $criteria->addSelectColumn(OrderRevenueTableMap::QUANTITY);
             $criteria->addSelectColumn(OrderRevenueTableMap::PURCHASE_PRICE);
             $criteria->addSelectColumn(OrderRevenueTableMap::TOTAL_PURCHASE_PRICE);
             $criteria->addSelectColumn(OrderRevenueTableMap::REVENUE);
@@ -353,6 +360,7 @@ class OrderRevenueTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.PARTNER_ID');
             $criteria->addSelectColumn($alias . '.PAYMENT_PROCESSOR_COST');
             $criteria->addSelectColumn($alias . '.PRICE');
+            $criteria->addSelectColumn($alias . '.QUANTITY');
             $criteria->addSelectColumn($alias . '.PURCHASE_PRICE');
             $criteria->addSelectColumn($alias . '.TOTAL_PURCHASE_PRICE');
             $criteria->addSelectColumn($alias . '.REVENUE');

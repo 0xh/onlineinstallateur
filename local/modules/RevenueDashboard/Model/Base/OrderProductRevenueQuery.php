@@ -22,6 +22,7 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
  * @method     ChildOrderProductRevenueQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
  * @method     ChildOrderProductRevenueQuery orderByProductRef($order = Criteria::ASC) Order by the product_ref column
  * @method     ChildOrderProductRevenueQuery orderByPrice($order = Criteria::ASC) Order by the price column
+ * @method     ChildOrderProductRevenueQuery orderByQuantity($order = Criteria::ASC) Order by the quantity column
  * @method     ChildOrderProductRevenueQuery orderByPurchasePrice($order = Criteria::ASC) Order by the purchase_price column
  * @method     ChildOrderProductRevenueQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
  *
@@ -29,6 +30,7 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
  * @method     ChildOrderProductRevenueQuery groupByOrderId() Group by the order_id column
  * @method     ChildOrderProductRevenueQuery groupByProductRef() Group by the product_ref column
  * @method     ChildOrderProductRevenueQuery groupByPrice() Group by the price column
+ * @method     ChildOrderProductRevenueQuery groupByQuantity() Group by the quantity column
  * @method     ChildOrderProductRevenueQuery groupByPurchasePrice() Group by the purchase_price column
  * @method     ChildOrderProductRevenueQuery groupByPartnerId() Group by the partner_id column
  *
@@ -43,6 +45,7 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
  * @method     ChildOrderProductRevenue findOneByOrderId(int $order_id) Return the first ChildOrderProductRevenue filtered by the order_id column
  * @method     ChildOrderProductRevenue findOneByProductRef(string $product_ref) Return the first ChildOrderProductRevenue filtered by the product_ref column
  * @method     ChildOrderProductRevenue findOneByPrice(string $price) Return the first ChildOrderProductRevenue filtered by the price column
+ * @method     ChildOrderProductRevenue findOneByQuantity(int $quantity) Return the first ChildOrderProductRevenue filtered by the quantity column
  * @method     ChildOrderProductRevenue findOneByPurchasePrice(string $purchase_price) Return the first ChildOrderProductRevenue filtered by the purchase_price column
  * @method     ChildOrderProductRevenue findOneByPartnerId(int $partner_id) Return the first ChildOrderProductRevenue filtered by the partner_id column
  *
@@ -50,6 +53,7 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
  * @method     array findByOrderId(int $order_id) Return ChildOrderProductRevenue objects filtered by the order_id column
  * @method     array findByProductRef(string $product_ref) Return ChildOrderProductRevenue objects filtered by the product_ref column
  * @method     array findByPrice(string $price) Return ChildOrderProductRevenue objects filtered by the price column
+ * @method     array findByQuantity(int $quantity) Return ChildOrderProductRevenue objects filtered by the quantity column
  * @method     array findByPurchasePrice(string $purchase_price) Return ChildOrderProductRevenue objects filtered by the purchase_price column
  * @method     array findByPartnerId(int $partner_id) Return ChildOrderProductRevenue objects filtered by the partner_id column
  *
@@ -140,7 +144,7 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, ORDER_ID, PRODUCT_REF, PRICE, PURCHASE_PRICE, PARTNER_ID FROM order_product_revenue WHERE ID = :p0';
+        $sql = 'SELECT ID, ORDER_ID, PRODUCT_REF, PRICE, QUANTITY, PURCHASE_PRICE, PARTNER_ID FROM order_product_revenue WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -379,6 +383,47 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderProductRevenueTableMap::PRICE, $price, $comparison);
+    }
+
+    /**
+     * Filter the query on the quantity column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByQuantity(1234); // WHERE quantity = 1234
+     * $query->filterByQuantity(array(12, 34)); // WHERE quantity IN (12, 34)
+     * $query->filterByQuantity(array('min' => 12)); // WHERE quantity > 12
+     * </code>
+     *
+     * @param     mixed $quantity The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
+     */
+    public function filterByQuantity($quantity = null, $comparison = null)
+    {
+        if (is_array($quantity)) {
+            $useMinMax = false;
+            if (isset($quantity['min'])) {
+                $this->addUsingAlias(OrderProductRevenueTableMap::QUANTITY, $quantity['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($quantity['max'])) {
+                $this->addUsingAlias(OrderProductRevenueTableMap::QUANTITY, $quantity['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrderProductRevenueTableMap::QUANTITY, $quantity, $comparison);
     }
 
     /**

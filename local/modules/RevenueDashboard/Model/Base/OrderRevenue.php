@@ -97,6 +97,12 @@ abstract class OrderRevenue implements ActiveRecordInterface
     protected $price;
 
     /**
+     * The value for the quantity field.
+     * @var        int
+     */
+    protected $quantity;
+
+    /**
      * The value for the purchase_price field.
      * Note: this column has a database default value of: '0.00'
      * @var        string
@@ -485,6 +491,17 @@ abstract class OrderRevenue implements ActiveRecordInterface
     }
 
     /**
+     * Get the [quantity] column value.
+     * 
+     * @return   int
+     */
+    public function getQuantity()
+    {
+
+        return $this->quantity;
+    }
+
+    /**
      * Get the [purchase_price] column value.
      * 
      * @return   string
@@ -676,6 +693,27 @@ abstract class OrderRevenue implements ActiveRecordInterface
     } // setPrice()
 
     /**
+     * Set the value of [quantity] column.
+     * 
+     * @param      int $v new value
+     * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
+     */
+    public function setQuantity($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->quantity !== $v) {
+            $this->quantity = $v;
+            $this->modifiedColumns[OrderRevenueTableMap::QUANTITY] = true;
+        }
+
+
+        return $this;
+    } // setQuantity()
+
+    /**
      * Set the value of [purchase_price] column.
      * 
      * @param      string $v new value
@@ -841,16 +879,19 @@ abstract class OrderRevenue implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : OrderRevenueTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : OrderRevenueTableMap::translateFieldName('PurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : OrderRevenueTableMap::translateFieldName('Quantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->quantity = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : OrderRevenueTableMap::translateFieldName('PurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
             $this->purchase_price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : OrderRevenueTableMap::translateFieldName('TotalPurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : OrderRevenueTableMap::translateFieldName('TotalPurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
             $this->total_purchase_price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : OrderRevenueTableMap::translateFieldName('Revenue', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : OrderRevenueTableMap::translateFieldName('Revenue', TableMap::TYPE_PHPNAME, $indexType)];
             $this->revenue = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : OrderRevenueTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : OrderRevenueTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->comment = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -860,7 +901,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 11; // 11 = OrderRevenueTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = OrderRevenueTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \RevenueDashboard\Model\OrderRevenue object", 0, $e);
@@ -1090,6 +1131,9 @@ abstract class OrderRevenue implements ActiveRecordInterface
         if ($this->isColumnModified(OrderRevenueTableMap::PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PRICE';
         }
+        if ($this->isColumnModified(OrderRevenueTableMap::QUANTITY)) {
+            $modifiedColumns[':p' . $index++]  = 'QUANTITY';
+        }
         if ($this->isColumnModified(OrderRevenueTableMap::PURCHASE_PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PURCHASE_PRICE';
         }
@@ -1133,6 +1177,9 @@ abstract class OrderRevenue implements ActiveRecordInterface
                         break;
                     case 'PRICE':                        
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                        break;
+                    case 'QUANTITY':                        
+                        $stmt->bindValue($identifier, $this->quantity, PDO::PARAM_INT);
                         break;
                     case 'PURCHASE_PRICE':                        
                         $stmt->bindValue($identifier, $this->purchase_price, PDO::PARAM_STR);
@@ -1230,15 +1277,18 @@ abstract class OrderRevenue implements ActiveRecordInterface
                 return $this->getPrice();
                 break;
             case 7:
-                return $this->getPurchasePrice();
+                return $this->getQuantity();
                 break;
             case 8:
-                return $this->getTotalPurchasePrice();
+                return $this->getPurchasePrice();
                 break;
             case 9:
-                return $this->getRevenue();
+                return $this->getTotalPurchasePrice();
                 break;
             case 10:
+                return $this->getRevenue();
+                break;
+            case 11:
                 return $this->getComment();
                 break;
             default:
@@ -1276,10 +1326,11 @@ abstract class OrderRevenue implements ActiveRecordInterface
             $keys[4] => $this->getPartnerId(),
             $keys[5] => $this->getPaymentProcessorCost(),
             $keys[6] => $this->getPrice(),
-            $keys[7] => $this->getPurchasePrice(),
-            $keys[8] => $this->getTotalPurchasePrice(),
-            $keys[9] => $this->getRevenue(),
-            $keys[10] => $this->getComment(),
+            $keys[7] => $this->getQuantity(),
+            $keys[8] => $this->getPurchasePrice(),
+            $keys[9] => $this->getTotalPurchasePrice(),
+            $keys[10] => $this->getRevenue(),
+            $keys[11] => $this->getComment(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1341,15 +1392,18 @@ abstract class OrderRevenue implements ActiveRecordInterface
                 $this->setPrice($value);
                 break;
             case 7:
-                $this->setPurchasePrice($value);
+                $this->setQuantity($value);
                 break;
             case 8:
-                $this->setTotalPurchasePrice($value);
+                $this->setPurchasePrice($value);
                 break;
             case 9:
-                $this->setRevenue($value);
+                $this->setTotalPurchasePrice($value);
                 break;
             case 10:
+                $this->setRevenue($value);
+                break;
+            case 11:
                 $this->setComment($value);
                 break;
         } // switch()
@@ -1383,10 +1437,11 @@ abstract class OrderRevenue implements ActiveRecordInterface
         if (array_key_exists($keys[4], $arr)) $this->setPartnerId($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setPaymentProcessorCost($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setPrice($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setPurchasePrice($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setTotalPurchasePrice($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setRevenue($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setComment($arr[$keys[10]]);
+        if (array_key_exists($keys[7], $arr)) $this->setQuantity($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPurchasePrice($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setTotalPurchasePrice($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setRevenue($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setComment($arr[$keys[11]]);
     }
 
     /**
@@ -1405,6 +1460,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
         if ($this->isColumnModified(OrderRevenueTableMap::PARTNER_ID)) $criteria->add(OrderRevenueTableMap::PARTNER_ID, $this->partner_id);
         if ($this->isColumnModified(OrderRevenueTableMap::PAYMENT_PROCESSOR_COST)) $criteria->add(OrderRevenueTableMap::PAYMENT_PROCESSOR_COST, $this->payment_processor_cost);
         if ($this->isColumnModified(OrderRevenueTableMap::PRICE)) $criteria->add(OrderRevenueTableMap::PRICE, $this->price);
+        if ($this->isColumnModified(OrderRevenueTableMap::QUANTITY)) $criteria->add(OrderRevenueTableMap::QUANTITY, $this->quantity);
         if ($this->isColumnModified(OrderRevenueTableMap::PURCHASE_PRICE)) $criteria->add(OrderRevenueTableMap::PURCHASE_PRICE, $this->purchase_price);
         if ($this->isColumnModified(OrderRevenueTableMap::TOTAL_PURCHASE_PRICE)) $criteria->add(OrderRevenueTableMap::TOTAL_PURCHASE_PRICE, $this->total_purchase_price);
         if ($this->isColumnModified(OrderRevenueTableMap::REVENUE)) $criteria->add(OrderRevenueTableMap::REVENUE, $this->revenue);
@@ -1478,6 +1534,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
         $copyObj->setPartnerId($this->getPartnerId());
         $copyObj->setPaymentProcessorCost($this->getPaymentProcessorCost());
         $copyObj->setPrice($this->getPrice());
+        $copyObj->setQuantity($this->getQuantity());
         $copyObj->setPurchasePrice($this->getPurchasePrice());
         $copyObj->setTotalPurchasePrice($this->getTotalPurchasePrice());
         $copyObj->setRevenue($this->getRevenue());
@@ -1522,6 +1579,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
         $this->partner_id = null;
         $this->payment_processor_cost = null;
         $this->price = null;
+        $this->quantity = null;
         $this->purchase_price = null;
         $this->total_purchase_price = null;
         $this->revenue = null;

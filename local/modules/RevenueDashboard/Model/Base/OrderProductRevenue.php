@@ -77,6 +77,12 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
     protected $price;
 
     /**
+     * The value for the quantity field.
+     * @var        int
+     */
+    protected $quantity;
+
+    /**
      * The value for the purchase_price field.
      * Note: this column has a database default value of: '0.00'
      * @var        string
@@ -414,6 +420,17 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
     }
 
     /**
+     * Get the [quantity] column value.
+     * 
+     * @return   int
+     */
+    public function getQuantity()
+    {
+
+        return $this->quantity;
+    }
+
+    /**
      * Get the [purchase_price] column value.
      * 
      * @return   string
@@ -520,6 +537,27 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
     } // setPrice()
 
     /**
+     * Set the value of [quantity] column.
+     * 
+     * @param      int $v new value
+     * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
+     */
+    public function setQuantity($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->quantity !== $v) {
+            $this->quantity = $v;
+            $this->modifiedColumns[OrderProductRevenueTableMap::QUANTITY] = true;
+        }
+
+
+        return $this;
+    } // setQuantity()
+
+    /**
      * Set the value of [purchase_price] column.
      * 
      * @param      string $v new value
@@ -618,10 +656,13 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : OrderProductRevenueTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrderProductRevenueTableMap::translateFieldName('PurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : OrderProductRevenueTableMap::translateFieldName('Quantity', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->quantity = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : OrderProductRevenueTableMap::translateFieldName('PurchasePrice', TableMap::TYPE_PHPNAME, $indexType)];
             $this->purchase_price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : OrderProductRevenueTableMap::translateFieldName('PartnerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : OrderProductRevenueTableMap::translateFieldName('PartnerId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->partner_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -631,7 +672,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = OrderProductRevenueTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = OrderProductRevenueTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \RevenueDashboard\Model\OrderProductRevenue object", 0, $e);
@@ -852,6 +893,9 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($this->isColumnModified(OrderProductRevenueTableMap::PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PRICE';
         }
+        if ($this->isColumnModified(OrderProductRevenueTableMap::QUANTITY)) {
+            $modifiedColumns[':p' . $index++]  = 'QUANTITY';
+        }
         if ($this->isColumnModified(OrderProductRevenueTableMap::PURCHASE_PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PURCHASE_PRICE';
         }
@@ -880,6 +924,9 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
                         break;
                     case 'PRICE':                        
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                        break;
+                    case 'QUANTITY':                        
+                        $stmt->bindValue($identifier, $this->quantity, PDO::PARAM_INT);
                         break;
                     case 'PURCHASE_PRICE':                        
                         $stmt->bindValue($identifier, $this->purchase_price, PDO::PARAM_STR);
@@ -962,9 +1009,12 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
                 return $this->getPrice();
                 break;
             case 4:
-                return $this->getPurchasePrice();
+                return $this->getQuantity();
                 break;
             case 5:
+                return $this->getPurchasePrice();
+                break;
+            case 6:
                 return $this->getPartnerId();
                 break;
             default:
@@ -999,8 +1049,9 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $keys[1] => $this->getOrderId(),
             $keys[2] => $this->getProductRef(),
             $keys[3] => $this->getPrice(),
-            $keys[4] => $this->getPurchasePrice(),
-            $keys[5] => $this->getPartnerId(),
+            $keys[4] => $this->getQuantity(),
+            $keys[5] => $this->getPurchasePrice(),
+            $keys[6] => $this->getPartnerId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1053,9 +1104,12 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
                 $this->setPrice($value);
                 break;
             case 4:
-                $this->setPurchasePrice($value);
+                $this->setQuantity($value);
                 break;
             case 5:
+                $this->setPurchasePrice($value);
+                break;
+            case 6:
                 $this->setPartnerId($value);
                 break;
         } // switch()
@@ -1086,8 +1140,9 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if (array_key_exists($keys[1], $arr)) $this->setOrderId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setProductRef($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPrice($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPurchasePrice($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPartnerId($arr[$keys[5]]);
+        if (array_key_exists($keys[4], $arr)) $this->setQuantity($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPurchasePrice($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setPartnerId($arr[$keys[6]]);
     }
 
     /**
@@ -1103,6 +1158,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($this->isColumnModified(OrderProductRevenueTableMap::ORDER_ID)) $criteria->add(OrderProductRevenueTableMap::ORDER_ID, $this->order_id);
         if ($this->isColumnModified(OrderProductRevenueTableMap::PRODUCT_REF)) $criteria->add(OrderProductRevenueTableMap::PRODUCT_REF, $this->product_ref);
         if ($this->isColumnModified(OrderProductRevenueTableMap::PRICE)) $criteria->add(OrderProductRevenueTableMap::PRICE, $this->price);
+        if ($this->isColumnModified(OrderProductRevenueTableMap::QUANTITY)) $criteria->add(OrderProductRevenueTableMap::QUANTITY, $this->quantity);
         if ($this->isColumnModified(OrderProductRevenueTableMap::PURCHASE_PRICE)) $criteria->add(OrderProductRevenueTableMap::PURCHASE_PRICE, $this->purchase_price);
         if ($this->isColumnModified(OrderProductRevenueTableMap::PARTNER_ID)) $criteria->add(OrderProductRevenueTableMap::PARTNER_ID, $this->partner_id);
 
@@ -1171,6 +1227,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         $copyObj->setOrderId($this->getOrderId());
         $copyObj->setProductRef($this->getProductRef());
         $copyObj->setPrice($this->getPrice());
+        $copyObj->setQuantity($this->getQuantity());
         $copyObj->setPurchasePrice($this->getPurchasePrice());
         $copyObj->setPartnerId($this->getPartnerId());
         if ($makeNew) {
@@ -1210,6 +1267,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         $this->order_id = null;
         $this->product_ref = null;
         $this->price = null;
+        $this->quantity = null;
         $this->purchase_price = null;
         $this->partner_id = null;
         $this->alreadyInSave = false;

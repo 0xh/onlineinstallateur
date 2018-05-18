@@ -7,10 +7,12 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
 use RevenueDashboard\Model\Map\OrderRevenueTableMap;
 use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
 use RevenueDashboard\Model\Map\WholesalePartnerTableMap;
+use RevenueDashboard\Model\OrderProductRevenueQuery;
 use RevenueDashboard\Model\WholesalePartnerProductQuery;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Model\Map\ProductTableMap;
+use Thelia\Model\ProductQuery;
 
 /**
  * Class OrderHook
@@ -23,11 +25,12 @@ class OrderHook extends BaseHook {
 
         $orderId = $event->getArgument('order_id');
         $prodId = $event->getArgument('order_product_id');
+        $productQuantity = $event->getArgument('product_quantity');
         $price = number_format($event->getArgument('price'), 2, '.', '');
 
         $arrPartner = $this->getPriceForPartner($prodId, $orderId);
         $event->add(
-                $this->render('order-hook.html', array("arrPartner" => $arrPartner, "prodId" => $prodId,
+                $this->render('order-hook.html', array("arrPartner" => $arrPartner, "prodId" => $prodId, "productQuantity" => $productQuantity,
                     "partner_selected" => $arrPartner[0]["partner_selected"], "service_price" => $arrPartner[0]["service_price"], "orderId" => $orderId, "price" => $price))
         );
     }
@@ -80,7 +83,29 @@ class OrderHook extends BaseHook {
             ));
         }
 
+        if (!$arrPartner) {
+            array_push($arrPartner, array(
+                "partner_name" => "Service",
+                "service_price" => $this->getPriceService($orderId, $prodId)
+            ));
+        }
+
         return $arrPartner;
+    }
+
+    protected function getPriceService($orderId, $prodId) {
+        $prod = ProductQuery::create()
+                ->findOneById($prodId);
+
+        $query = OrderProductRevenueQuery::create();
+        $query->where(OrderProductRevenueTableMap::PRODUCT_REF . "='" . $prod->getRef()
+                . "' and " . OrderProductRevenueTableMap::ORDER_ID . "=" . $orderId);
+
+        foreach ($query as $q) {
+            return $q->getPurchasePrice();
+        }
+
+        return 0;
     }
 
 }

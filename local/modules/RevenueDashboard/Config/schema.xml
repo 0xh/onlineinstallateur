@@ -89,6 +89,7 @@
         <column name="order_id" phpName="OrderId" type="INTEGER"/>
         <column name="product_ref" phpName="ProductRef" type="VARCHAR" size="255"/>
         <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="quantity" phpName="Quantity" type="INTEGER"/>
         <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
         <vendor type="mysql">
@@ -104,6 +105,7 @@
         <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
         <column name="payment_processor_cost" phpName="PaymentProcessorCost" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="quantity" phpName="Quantity" type="INTEGER"/>
         <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="total_purchase_price" phpName="TotalPurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="revenue" phpName="Revenue" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>

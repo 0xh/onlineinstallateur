@@ -46,6 +46,7 @@ class RevenueDashboardLoop extends BaseI18nLoop implements PropelSearchLoopInter
                     ->set("partner_id", $listing->getPartnerId())
                     ->set("payment_processor_cost", $listing->getPaymentProcessorCost())
                     ->set("price", $listing->getPrice())
+                    ->set("qunatity", $listing->getQuantity())
                     ->set("purchase_price", $listing->getPurchasePrice())
                     ->set("total_purchase_price", $listing->getTotalPurchasePrice())
                     ->set("revenue", $listing->getRevenue());

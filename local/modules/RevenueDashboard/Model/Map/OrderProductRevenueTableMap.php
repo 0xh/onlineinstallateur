@@ -58,7 +58,7 @@ class OrderProductRevenueTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class OrderProductRevenueTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
@@ -89,6 +89,11 @@ class OrderProductRevenueTableMap extends TableMap
      * the column name for the PRICE field
      */
     const PRICE = 'order_product_revenue.PRICE';
+
+    /**
+     * the column name for the QUANTITY field
+     */
+    const QUANTITY = 'order_product_revenue.QUANTITY';
 
     /**
      * the column name for the PURCHASE_PRICE field
@@ -112,12 +117,12 @@ class OrderProductRevenueTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'ProductRef', 'Price', 'PurchasePrice', 'PartnerId', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'productRef', 'price', 'purchasePrice', 'partnerId', ),
-        self::TYPE_COLNAME       => array(OrderProductRevenueTableMap::ID, OrderProductRevenueTableMap::ORDER_ID, OrderProductRevenueTableMap::PRODUCT_REF, OrderProductRevenueTableMap::PRICE, OrderProductRevenueTableMap::PURCHASE_PRICE, OrderProductRevenueTableMap::PARTNER_ID, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'PRODUCT_REF', 'PRICE', 'PURCHASE_PRICE', 'PARTNER_ID', ),
-        self::TYPE_FIELDNAME     => array('id', 'order_id', 'product_ref', 'price', 'purchase_price', 'partner_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'OrderId', 'ProductRef', 'Price', 'Quantity', 'PurchasePrice', 'PartnerId', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'orderId', 'productRef', 'price', 'quantity', 'purchasePrice', 'partnerId', ),
+        self::TYPE_COLNAME       => array(OrderProductRevenueTableMap::ID, OrderProductRevenueTableMap::ORDER_ID, OrderProductRevenueTableMap::PRODUCT_REF, OrderProductRevenueTableMap::PRICE, OrderProductRevenueTableMap::QUANTITY, OrderProductRevenueTableMap::PURCHASE_PRICE, OrderProductRevenueTableMap::PARTNER_ID, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'ORDER_ID', 'PRODUCT_REF', 'PRICE', 'QUANTITY', 'PURCHASE_PRICE', 'PARTNER_ID', ),
+        self::TYPE_FIELDNAME     => array('id', 'order_id', 'product_ref', 'price', 'quantity', 'purchase_price', 'partner_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -127,12 +132,12 @@ class OrderProductRevenueTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'ProductRef' => 2, 'Price' => 3, 'PurchasePrice' => 4, 'PartnerId' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'productRef' => 2, 'price' => 3, 'purchasePrice' => 4, 'partnerId' => 5, ),
-        self::TYPE_COLNAME       => array(OrderProductRevenueTableMap::ID => 0, OrderProductRevenueTableMap::ORDER_ID => 1, OrderProductRevenueTableMap::PRODUCT_REF => 2, OrderProductRevenueTableMap::PRICE => 3, OrderProductRevenueTableMap::PURCHASE_PRICE => 4, OrderProductRevenueTableMap::PARTNER_ID => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'PRODUCT_REF' => 2, 'PRICE' => 3, 'PURCHASE_PRICE' => 4, 'PARTNER_ID' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'product_ref' => 2, 'price' => 3, 'purchase_price' => 4, 'partner_id' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'OrderId' => 1, 'ProductRef' => 2, 'Price' => 3, 'Quantity' => 4, 'PurchasePrice' => 5, 'PartnerId' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'orderId' => 1, 'productRef' => 2, 'price' => 3, 'quantity' => 4, 'purchasePrice' => 5, 'partnerId' => 6, ),
+        self::TYPE_COLNAME       => array(OrderProductRevenueTableMap::ID => 0, OrderProductRevenueTableMap::ORDER_ID => 1, OrderProductRevenueTableMap::PRODUCT_REF => 2, OrderProductRevenueTableMap::PRICE => 3, OrderProductRevenueTableMap::QUANTITY => 4, OrderProductRevenueTableMap::PURCHASE_PRICE => 5, OrderProductRevenueTableMap::PARTNER_ID => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ORDER_ID' => 1, 'PRODUCT_REF' => 2, 'PRICE' => 3, 'QUANTITY' => 4, 'PURCHASE_PRICE' => 5, 'PARTNER_ID' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'order_id' => 1, 'product_ref' => 2, 'price' => 3, 'quantity' => 4, 'purchase_price' => 5, 'partner_id' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -155,6 +160,7 @@ class OrderProductRevenueTableMap extends TableMap
         $this->addColumn('ORDER_ID', 'OrderId', 'INTEGER', false, null, null);
         $this->addColumn('PRODUCT_REF', 'ProductRef', 'VARCHAR', false, 255, null);
         $this->addColumn('PRICE', 'Price', 'DECIMAL', false, 16, 0);
+        $this->addColumn('QUANTITY', 'Quantity', 'INTEGER', false, null, null);
         $this->addColumn('PURCHASE_PRICE', 'PurchasePrice', 'DECIMAL', false, 16, 0);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
     } // initialize()
@@ -308,6 +314,7 @@ class OrderProductRevenueTableMap extends TableMap
             $criteria->addSelectColumn(OrderProductRevenueTableMap::ORDER_ID);
             $criteria->addSelectColumn(OrderProductRevenueTableMap::PRODUCT_REF);
             $criteria->addSelectColumn(OrderProductRevenueTableMap::PRICE);
+            $criteria->addSelectColumn(OrderProductRevenueTableMap::QUANTITY);
             $criteria->addSelectColumn(OrderProductRevenueTableMap::PURCHASE_PRICE);
             $criteria->addSelectColumn(OrderProductRevenueTableMap::PARTNER_ID);
         } else {
@@ -315,6 +322,7 @@ class OrderProductRevenueTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.ORDER_ID');
             $criteria->addSelectColumn($alias . '.PRODUCT_REF');
             $criteria->addSelectColumn($alias . '.PRICE');
+            $criteria->addSelectColumn($alias . '.QUANTITY');
             $criteria->addSelectColumn($alias . '.PURCHASE_PRICE');
             $criteria->addSelectColumn($alias . '.PARTNER_ID');
         }

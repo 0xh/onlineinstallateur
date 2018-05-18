@@ -201,7 +201,7 @@
                                                         {hook name="order-edit.order-product-table-row" location="order_edit_table_row" order_product_id={$ID} }
                                                         {ifhook rel="order.revenue.hook"}
                                                             <td class="text-right">
-                                                                {hook name="order.revenue.hook" order_id=$order_id order_product_id=$productId price=$realPrice}
+                                                                {hook name="order.revenue.hook" order_id=$order_id order_product_id=$productId price=$realPrice product_quantity=$QUANTITY}
                                                             </td>
                                                         {/ifhook}
                                                         <td class="text-right" data-field-class="js-product-price"  data-value="{number_format($realPrice, 2, '.', '')}">{format_money number=$realPrice currency_id=$CURRENCY}</td>

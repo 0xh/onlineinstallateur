@@ -90,12 +90,13 @@
         </default>
     </route>
         
-    <route id="id.revenue.order.update.product.revenue" path="/admin/module/update-order-product-revenue/{orderId}/{productRef}/{price}/{purchePrice}/{partnerId}/{prodId}">
+    <route id="id.revenue.order.update.product.revenue" path="/admin/module/update-order-product-revenue/{orderId}/{productRef}/{price}/{quantity}/{purchePrice}/{partnerId}/{prodId}">
         <default key="_controller">RevenueDashboard\Controller\Admin\OrderProductRevenueController::updateOrderProductRevenue
         </default>
         <requirement key="orderId">\d+</requirement>
         <requirement key="productRef">.*</requirement>
         <requirement key="price">.*</requirement>
+        <requirement key="quantity">\d+</requirement>
         <requirement key="purchePrice">.*</requirement>
         <requirement key="partnerId">\d+</requirement>
         <requirement key="prodId">\d+</requirement>

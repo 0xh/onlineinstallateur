@@ -19,8 +19,10 @@ CREATE TABLE if not exists `brand_matching_partners`
     CONSTRAINT `fk_brand_intern`
         FOREIGN KEY (`brand_intern`)
         REFERENCES `brand` (`id`)
-)ENGINE=InnoDB;
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
 -- wholesale_partner
 -- ---------------------------------------------------------------------
 
@@ -104,6 +106,7 @@ CREATE TABLE if not exists `order_product_revenue`
     `order_id` INTEGER,
     `product_ref` VARCHAR(255),
     `price` DECIMAL(16,2) DEFAULT 0.00,
+    `quantity` INTEGER,
     `purchase_price` DECIMAL(16,2) DEFAULT 0.00,
     `partner_id` INTEGER,
     PRIMARY KEY (`id`)
@@ -122,6 +125,7 @@ CREATE TABLE if not exists `order_revenue`
     `partner_id` INTEGER,
     `payment_processor_cost` DECIMAL(16,2) DEFAULT 0.00,
     `price` DECIMAL(16,2) DEFAULT 0.00,
+    `quantity` INTEGER,
     `purchase_price` DECIMAL(16,2) DEFAULT 0.00,
     `total_purchase_price` DECIMAL(16,2) DEFAULT 0.00,
     `revenue` DECIMAL(16,2) DEFAULT 0.00,

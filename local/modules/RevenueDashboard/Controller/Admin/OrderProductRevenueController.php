@@ -21,7 +21,7 @@ use Thelia\Model\ProductQuery;
  */
 class OrderProductRevenueController extends BaseAdminController {
 
-    function updateOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId) {
+    function updateOrderProductRevenue($orderId, $productRef, $price, $quantity, $purchePrice, $partnerId, $prodId) {
 
         $prod = ProductQuery::create()
                 ->findOneById($prodId);
@@ -34,18 +34,20 @@ class OrderProductRevenueController extends BaseAdminController {
         if ($orderProductRevenue) {
             $orderProductRevenue->setPurchasePrice($purchePrice);
             $orderProductRevenue->setPartnerId($partnerId);
+            $orderProductRevenue->setQuantity($quantity);
             $orderProductRevenue->save();
         } else {
-            $this->addNewOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId);
+            $this->addNewOrderProductRevenue($orderId, $productRef, $price, $quantity, $purchePrice, $partnerId, $prodId);
         }
     }
 
-    protected function addNewOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId) {
+    protected function addNewOrderProductRevenue($orderId, $productRef, $price, $quantity, $purchePrice, $partnerId, $prodId) {
 
         $orderProductRevenue = new OrderProductRevenue();
         $orderProductRevenue->setOrderId($orderId);
         $orderProductRevenue->setProductRef($productRef);
         $orderProductRevenue->setPrice($price);
+        $orderProductRevenue->setQuantity($quantity);
         $orderProductRevenue->setPurchasePrice($purchePrice);
         $orderProductRevenue->setPartnerId($partnerId);
         $orderProductRevenue->save();

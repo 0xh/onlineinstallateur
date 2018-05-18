@@ -25,6 +25,7 @@ use RevenueDashboard\Model\Map\OrderRevenueTableMap;
  * @method     ChildOrderRevenueQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
  * @method     ChildOrderRevenueQuery orderByPaymentProcessorCost($order = Criteria::ASC) Order by the payment_processor_cost column
  * @method     ChildOrderRevenueQuery orderByPrice($order = Criteria::ASC) Order by the price column
+ * @method     ChildOrderRevenueQuery orderByQuantity($order = Criteria::ASC) Order by the quantity column
  * @method     ChildOrderRevenueQuery orderByPurchasePrice($order = Criteria::ASC) Order by the purchase_price column
  * @method     ChildOrderRevenueQuery orderByTotalPurchasePrice($order = Criteria::ASC) Order by the total_purchase_price column
  * @method     ChildOrderRevenueQuery orderByRevenue($order = Criteria::ASC) Order by the revenue column
@@ -37,6 +38,7 @@ use RevenueDashboard\Model\Map\OrderRevenueTableMap;
  * @method     ChildOrderRevenueQuery groupByPartnerId() Group by the partner_id column
  * @method     ChildOrderRevenueQuery groupByPaymentProcessorCost() Group by the payment_processor_cost column
  * @method     ChildOrderRevenueQuery groupByPrice() Group by the price column
+ * @method     ChildOrderRevenueQuery groupByQuantity() Group by the quantity column
  * @method     ChildOrderRevenueQuery groupByPurchasePrice() Group by the purchase_price column
  * @method     ChildOrderRevenueQuery groupByTotalPurchasePrice() Group by the total_purchase_price column
  * @method     ChildOrderRevenueQuery groupByRevenue() Group by the revenue column
@@ -56,6 +58,7 @@ use RevenueDashboard\Model\Map\OrderRevenueTableMap;
  * @method     ChildOrderRevenue findOneByPartnerId(int $partner_id) Return the first ChildOrderRevenue filtered by the partner_id column
  * @method     ChildOrderRevenue findOneByPaymentProcessorCost(string $payment_processor_cost) Return the first ChildOrderRevenue filtered by the payment_processor_cost column
  * @method     ChildOrderRevenue findOneByPrice(string $price) Return the first ChildOrderRevenue filtered by the price column
+ * @method     ChildOrderRevenue findOneByQuantity(int $quantity) Return the first ChildOrderRevenue filtered by the quantity column
  * @method     ChildOrderRevenue findOneByPurchasePrice(string $purchase_price) Return the first ChildOrderRevenue filtered by the purchase_price column
  * @method     ChildOrderRevenue findOneByTotalPurchasePrice(string $total_purchase_price) Return the first ChildOrderRevenue filtered by the total_purchase_price column
  * @method     ChildOrderRevenue findOneByRevenue(string $revenue) Return the first ChildOrderRevenue filtered by the revenue column
@@ -68,6 +71,7 @@ use RevenueDashboard\Model\Map\OrderRevenueTableMap;
  * @method     array findByPartnerId(int $partner_id) Return ChildOrderRevenue objects filtered by the partner_id column
  * @method     array findByPaymentProcessorCost(string $payment_processor_cost) Return ChildOrderRevenue objects filtered by the payment_processor_cost column
  * @method     array findByPrice(string $price) Return ChildOrderRevenue objects filtered by the price column
+ * @method     array findByQuantity(int $quantity) Return ChildOrderRevenue objects filtered by the quantity column
  * @method     array findByPurchasePrice(string $purchase_price) Return ChildOrderRevenue objects filtered by the purchase_price column
  * @method     array findByTotalPurchasePrice(string $total_purchase_price) Return ChildOrderRevenue objects filtered by the total_purchase_price column
  * @method     array findByRevenue(string $revenue) Return ChildOrderRevenue objects filtered by the revenue column
@@ -160,7 +164,7 @@ abstract class OrderRevenueQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, ORDER_ID, DELIVERY_COST, DELIVERY_METHOD, PARTNER_ID, PAYMENT_PROCESSOR_COST, PRICE, PURCHASE_PRICE, TOTAL_PURCHASE_PRICE, REVENUE, COMMENT FROM order_revenue WHERE ID = :p0';
+        $sql = 'SELECT ID, ORDER_ID, DELIVERY_COST, DELIVERY_METHOD, PARTNER_ID, PAYMENT_PROCESSOR_COST, PRICE, QUANTITY, PURCHASE_PRICE, TOTAL_PURCHASE_PRICE, REVENUE, COMMENT FROM order_revenue WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -522,6 +526,47 @@ abstract class OrderRevenueQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderRevenueTableMap::PRICE, $price, $comparison);
+    }
+
+    /**
+     * Filter the query on the quantity column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByQuantity(1234); // WHERE quantity = 1234
+     * $query->filterByQuantity(array(12, 34)); // WHERE quantity IN (12, 34)
+     * $query->filterByQuantity(array('min' => 12)); // WHERE quantity > 12
+     * </code>
+     *
+     * @param     mixed $quantity The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderRevenueQuery The current query, for fluid interface
+     */
+    public function filterByQuantity($quantity = null, $comparison = null)
+    {
+        if (is_array($quantity)) {
+            $useMinMax = false;
+            if (isset($quantity['min'])) {
+                $this->addUsingAlias(OrderRevenueTableMap::QUANTITY, $quantity['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($quantity['max'])) {
+                $this->addUsingAlias(OrderRevenueTableMap::QUANTITY, $quantity['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(OrderRevenueTableMap::QUANTITY, $quantity, $comparison);
     }
 
     /**
