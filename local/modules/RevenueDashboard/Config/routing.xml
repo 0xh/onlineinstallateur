@@ -4,8 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="id.revenue.dashboard" path="/admin/module/revenuedashboard">
+    <route id="id.revenue.dashboard" path="/admin/module/revenue-products">
         <default key="_controller">RevenueDashboard\Controller\Admin\RevenueDashboardContoller::viewAction
+        </default>
+    </route>
+
+    <route id="id.revenue.dashboard.orders" path="/admin/module/revenue-orders">
+        <default key="_controller">RevenueDashboard\Controller\Admin\RevenueDashboardContoller::viewOrdersAction
         </default>
     </route>
     

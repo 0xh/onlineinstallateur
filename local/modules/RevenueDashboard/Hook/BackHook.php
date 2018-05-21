@@ -26,7 +26,7 @@ class BackHook extends BaseHook {
         $event->add([
             'id' => 'tools_menu_hook_revenue_dashboard',
             'class' => '',
-            'url' => URL::getInstance()->absoluteUrl('/admin/module/revenuedashboard'),
+            'url' => URL::getInstance()->absoluteUrl('/admin/module/revenue-products'),
             'title' => $this->trans('Revenue Dashboard', [], RevenueDashboard::DOMAIN_NAME)
         ]);
     }

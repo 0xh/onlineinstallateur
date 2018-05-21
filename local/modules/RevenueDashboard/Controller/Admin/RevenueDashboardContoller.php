@@ -21,4 +21,8 @@ class RevenueDashboardContoller extends BaseAdminController {
         return $this->render("revenue-dashboard");
     }
 
+    public function viewOrdersAction() {
+        return $this->render("revenue-orders");
+    }
+
 }
