@@ -180,7 +180,12 @@
 								{/loop}
 					        </td>
 					    </tr>
-					    
+						{if $POSTSCRIPTUM}
+	                    <div class="short-description">
+	                        <p>{$POSTSCRIPTUM nofilter}</p>
+	                    </div>
+	                    {/if}
+                    
 					    {if $WEIGHT}
 					        <tr>
 					        	<td>
@@ -226,9 +231,6 @@
 						{/foreach}
                 	</div>
 
-                    {if $POSTSCRIPTUM}<div class="short-description">
-                        <p>{$POSTSCRIPTUM nofilter}</p>
-                    </div>{/if}
                 </div>
             </section>
             
