@@ -17,6 +17,7 @@ use Thelia\Model\Map\OrderStatusI18nTableMap;
 use Thelia\Model\Map\OrderStatusTableMap;
 use Thelia\Model\Map\OrderTableMap;
 use Thelia\Tools\I18n;
+use AmazonIntegration\Model\AmazonOrdersQuery;
 
 /**
  * Class BilligerProductExport
@@ -47,7 +48,9 @@ class BMDOrderExport extends AbstractExport
     		'order_status_TITLE' => 'skontotage',
     		'delivery_address_TITLE' => 'steucod',
     		'delivery_address_COMPANY' => 'ebkennz',
-    		'delivery_address_COUNTRY' => 'symbol',
+    		'delivery_address_COUNTRY' => 'delivery_country',
+			OrderTableMap::ID => 'order_id',
+			OrderTableMap::CREATED_AT => 'amazon_id'
     ];
 
     /**
@@ -189,8 +192,12 @@ class BMDOrderExport extends AbstractExport
 		$processedData['skontotage'] = "";
 		$processedData['steucod'] = "3";
 		$processedData['ebkennz'] = "";
-		$processedData['symbol'] = "AR";
-        
+		//$processedData['symbol'] = "AR";
+		$amazonOrder = AmazonOrdersQuery::create()->findOneByOrderId($processedData['order_id']);
+		if($amazonOrder != null)
+		    $processedData['amazon_id'] = $amazonOrder->getId();
+        else 
+            $processedData['amazon_id'] = "NotAnAmazonOrder";
         return $processedData;
     }
     
@@ -318,6 +325,7 @@ class BMDOrderExport extends AbstractExport
     					->endUse()
     					->endUse()
     					->select([
+						OrderTableMap::ID,
     							OrderTableMap::REF,
     							OrderTableMap::INVOICE_DATE,
     							'customer_REF',
