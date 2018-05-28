@@ -83,7 +83,7 @@ class CustomerCreateForm extends AddressCreateForm
                 "label_attr" => array(
                     "for" => "newsletter",
                 ),
-            	"data" => true,
+            	"data" => false,
                 "required" => false,
             ));
 
