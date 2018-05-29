@@ -128,7 +128,13 @@
                            		{else if $DELIVERY_MODULE_ID == '49'}
                            			{hook name="product.fulfilment-center" cart={$ID} product={$PRODUCT_ID} quantity={$QUANTITY} center={$FULFILMENT_CENTER_ID}}
                                 {else}
+                                {loop type="product" name="the-loop-name" id={$PRODUCT_ID}}
+                                	{if $QUANTITY > 0}
+                                	<p>{intl l='Can be shipped immediately'  d="fo.default"}</p>
+                                	{else}
                                 	<p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
+                                	{/if}
+                                {/loop}
                                 {/if} 
                             </div>
                            
