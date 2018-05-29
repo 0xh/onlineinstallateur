@@ -224,6 +224,10 @@
     <route id="homepage.outlet.landing" path="/outlet">
         <default key="_controller">Front\Controller\HomepageController::viewOutletLandingAction</default>
     </route>
+    
+        <route id="homepage.outlet.landing" path="/klimasets">
+        <default key="_controller">Front\Controller\HomepageController::viewKlimaanlageLandingAction</default>
+    </route>
 
     <route id="homepage.outlet.landing.long" path="/outlet-landing">
         <default key="_controller">Front\Controller\HomepageController::viewOutletLandingAction</default>
