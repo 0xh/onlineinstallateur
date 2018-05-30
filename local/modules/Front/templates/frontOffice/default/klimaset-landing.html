@@ -1,15 +1,13 @@
 {extends file="layout.tpl"}
 
 {block name="stylesheet"}
-
 	{stylesheets file='assets/dist/css/owl.carousel.min.css' source='Front'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
-
 	{stylesheets file='assets/dist/css/theme.css' source='Front'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
-{hook name="criteria-search.search-css"}
+	{hook name="criteria-search.search-css"}
 {/block}
 
 {block name="main-content"}
@@ -19,7 +17,8 @@
 <div>
 <img src="{image file='assets/dist/img/banner1.png' source='Front'}" class="img-responsive" alt="badkeramik"/>
 </div>
-{$category_id = 26}
+{assign var="category_id" value="26"}
+
 		               <!--======= Carousel icons -->
 <div class="landing-page">
 
@@ -37,12 +36,12 @@
             {assign var="search_page" value=$smarty.get.page}
             {assign var="search_order" value=$smarty.get.order}
 
-            {hook name="criteria-search.search-page" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+            {hook name="criteria-search.search-page" category_id=$category_id criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
             
             <div id="category-products">
                 <div class="products-content">
                     <ul class="list-unstyled row"> 
-                                {include file="criteria-search/search-results.html" search_attribute_loop=true criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+                                {include file="criteria-search/search-results.html" category_id=$category_id search_attribute_loop=true criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
                     </ul>
                 </div>
             </div><!-- /#category-products -->

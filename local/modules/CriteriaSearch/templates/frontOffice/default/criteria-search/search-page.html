@@ -3,9 +3,11 @@
     <input type="hidden" name="category_id" value="{$category_id}">
     <input type="hidden" name="page">
     {$categories[] = $category_id}
+
     {loop type="category" name="categories" parent=$category_id}
-        {$categories[] = $ID}
+        {*$categories[] = $ID*}
     {/loop}
+
 
 	{ifhook rel="configurator.filters"}
 		{hook name="configurator.filters" category_id=$category_id categories=$categories}
