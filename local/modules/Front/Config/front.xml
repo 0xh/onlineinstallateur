@@ -232,10 +232,6 @@
     <route id="homepage.outlet.landing.long" path="/outlet-landing">
         <default key="_controller">Front\Controller\HomepageController::viewOutletLandingAction</default>
     </route>
-        
-     <route id="homepage.klimasets" path="/klimasets">
-        <default key="_controller">Front\Controller\HomepageController::klimaSetsAction</default>
-    </route>
 	
 	<!-- end homepage routes -->
 

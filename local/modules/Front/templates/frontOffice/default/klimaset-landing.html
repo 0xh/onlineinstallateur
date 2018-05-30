@@ -9,7 +9,7 @@
 	{stylesheets file='assets/dist/css/theme.css' source='Front'}
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
-
+{hook name="criteria-search.search-css"}
 {/block}
 
 {block name="main-content"}
@@ -19,100 +19,34 @@
 <div>
 <img src="{image file='assets/dist/img/banner1.png' source='Front'}" class="img-responsive" alt="badkeramik"/>
 </div>
-<div class="page-loader"></div>
-
+{$category_id = 26}
 		               <!--======= Carousel icons -->
 <div class="landing-page">
-                        <div class="" id="carousel-icons" >
-                            <div class="">
-
-                                <div class="owl-icons-wrapper">
-
-                                    <!-- === header === -->
-
-                
-
-                                    <div >
-
-                                        <div class="owl-icons">
-
-                                            <!-- === icon item === -->
-
-                                            <a href="/badkeramik-2.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badkeramik.png' source='Front'}" class="" alt="badkeramik"/>
-                                                    <figcaption>Badkeramik</figcaption>
-                                                </figure>
-                                            </a>
-                                            <!-- === icon item === -->
-
-                                            <a href="/badearmaturen.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badarmatur.png' source='Front'}" class="" alt="badarmatur"/>
-                                                    <figcaption>Badarmaturen</figcaption>
-                                                </figure>
-                                            </a>
-
-                                            <!-- === icon item === -->
-
-                                            <a href="/badewannen.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badewanne.png' source='Front'}" class="" alt="badewanne"/>
-                                                    <figcaption>Badewannen</figcaption>
-                                                </figure>
-                                            </a>
-
-                                            <!-- === icon item === -->
-
-                                            <a href="/kuechenarmatur.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/kuechenarmaturen.png' source='Front'}" class="" alt="kuechenarmaturen"/>
-                                                    <figcaption>Küchenarmaturen</figcaption>
-                                                </figure>
-                                            </a>
-
-                                            <!-- === icon item === -->
-
-                                            <a href="/bad-accessoires.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/badaccessoires.png' source='Front'}" class="" alt="badaccessoires"/>
-                                                    <figcaption>Badaccessoires</figcaption>
-                                                </figure>
-                                            </a>
-
-                                            <!-- === icon item === -->
-
-                                           <a href="/pumpen-1.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/pumpen.png' source='Front'}" class="" alt="pumpen"/>
-                                                    <figcaption>Pumpen</figcaption>
-                                                </figure>
-                                            </a>
 
 
-                                            <!-- === icon item === -->
+         {loop name="category.description" type="category" id={$category_id} limit="1"}
+         
+			{assign var="search_criteria" value=$smarty.get.criteria}
+            {assign var="search_category" value=$smarty.get.category_id|default:{$category_id}}
+            {assign var="search_brands" value=$smarty.get.brands}
+            {assign var="search_price_min" value=$smarty.get.price_min}
+            {assign var="search_price_max" value=$smarty.get.price_max}
+            {assign var="search_new" value=$smarty.get.new}
+            {assign var="search_promo" value=$smarty.get.promo} 
+            {assign var="search_limit" value=$smarty.get.limit}
+            {assign var="search_page" value=$smarty.get.page}
+            {assign var="search_order" value=$smarty.get.order}
 
-                                             <a href="/heizung-1.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/heizung.png' source='Front'}" class="" alt="heizung"/>
-                                                    <figcaption>Heizung</figcaption>
-                                                </figure>
-                                            </a>
-                                            <!-- === icon item === -->
-
-                                             <a href="/klima-2.html">
-                                                <figure>
-                                                    <img src="{image file='assets/dist/img/kategorie-bilder/klima.png' source='Front'}" class="" alt="klima"/>
-                                                    <figcaption>Klima</figcaption>
-                                                </figure>
-                                            </a>
-
-                                        </div> <!--/owl-icons-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+            {hook name="criteria-search.search-page" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+            
+            <div id="category-products">
+                <div class="products-content">
+                    <ul class="list-unstyled row"> 
+                                {include file="criteria-search/search-results.html" search_attribute_loop=true criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+                    </ul>
+                </div>
+            </div><!-- /#category-products -->
+			{/loop}
 						<!--======= Carousel icons -->
 
                         <div class="panel panel-default" id="carousel-icons">
@@ -300,8 +234,9 @@
 	</div>	
 {/block}
 
-{block name="after-javascript-include"}
 
+{block name="after-javascript-include"}
+{hook name="criteria-search.search-js"}
 <script src="{javascript file='assets/dist/js/jquery.owl.carousel.min.js' source='Front'}"></script>
 <script src="{javascript file='assets/dist/js/main.js' source='Front'}"></script>
 {/block}

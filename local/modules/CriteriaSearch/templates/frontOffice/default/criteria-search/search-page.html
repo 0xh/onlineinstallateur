@@ -6,26 +6,11 @@
     {loop type="category" name="categories" parent=$category_id}
         {$categories[] = $ID}
     {/loop}
+
 	{ifhook rel="configurator.filters"}
 		{hook name="configurator.filters" category_id=$category_id categories=$categories}
 	{/ifhook}
-	<!--  
-     {loop type="search_feature" name="search_feature_loop" category=$category_id}
-     {if $SEARCHABLE}
-            {$featureId = $ID}
-            {ifloop rel="search_feature_av_loop"}
-                <div id="search-feature" class="block block-nav col-md-3 text-left" role="navigation" aria-labelledby="categories-label">
-                    <h5  id="categories-label">{$TITLE}</h5>
-                    <select class="select-search" id="feature-{$featureId}" name="features[{$featureId}][]" multiple="multiple">
-                        {loop type="search_feature_av" name="search_feature_av_loop" feature=$featureId category={', '|implode:$categories} return_empty=false force_return=true}
-                            <option class="input-search" value="{$ID}">{$TITLE}</option>
-                        {/loop}
-                    </select>
-                </div>
-            {/ifloop}
-        {/if}	
-   
-    {/loop}   -->
+
     {loop type="search_attribute" name="search_attribute_loop" category=$category_id}
         {if $SEARCHABLE}
             {$attributeId = $ID}
@@ -88,34 +73,7 @@
             <input type="hidden" name="price_max">
         </div>
     {/if}
-
-        <!--div class="block block-nav col-md-2" role="navigation" aria-labelledby="search-label">
-            <label for="search-limit">{intl l="Limit" d="criteriasearch.fo.default"}</label>
-            <select  class="input-search form-control col-md-3" id="search-limit" name="limit">
-                <option value="4" {if $limit==4}selected{/if}>4</option>
-                <option value="8" {if $limit==8}selected{/if}>8</option>
-                <option value="12" {if $limit==12}selected{/if}>12</option>
-                <option value="50" {if $limit==50}selected{/if}>50</option>
-                <option value="10000" {if $limit==100000}selected{/if}>{intl l="All"}</option>
-            </select>
-        </div>
-
-        <div class="block block-nav col-md-3" role="navigation" aria-labelledby="search-label">
-            <label for="search-sort">{intl l="Sort" d="criteriasearch.fo.default"}</label>
-            <select  class="input-search form-control col-md-3" id="search-sort" name="order">
-            <option value="alpha" {if $product_order=="alpha"}selected{/if}>{intl l="Name ascending"}</option>
-                <option value="alpha_reverse" {if $product_order=="alpha_reverse"}selected{/if}>{intl l="Name descending"}</option>
-                <option value="min_price" {if $product_order=="min_price"}selected{/if}>{intl l="Price ascending"}</option>
-                <option value="max_price" {if $product_order=="max_price"}selected{/if}>{intl l="Price descending"}</option>
-            </select>
-        </div-->
 </form>
 </section>
-
-<!--div id="category-products">
-    <div class="products-content">
-        {*include file="criteria-search/search-results.html"*}
-    </div>
-</div-->
 
 
