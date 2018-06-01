@@ -1,12 +1,6 @@
 {extends file="layout.tpl"}
 
 {block name="stylesheet"}
-	{stylesheets file='assets/dist/css/owl.carousel.min.css' source='Front'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-	{stylesheets file='assets/dist/css/theme.css' source='Front'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
 	{hook name="criteria-search.search-css"}
 {/block}
 
@@ -15,14 +9,14 @@
     
 
 <div>
-<img src="{image file='assets/dist/img/banner1.png' source='Front'}" class="img-responsive" alt="badkeramik"/>
+<img src="{image file='assets/dist/img/klimaset/banner.png' source='Front'}" class="img-responsive" alt="klimasets"/>
 </div>
 {assign var="category_id" value="26"}
 
 		               <!--======= Carousel icons -->
 <div class="landing-page">
 
-
+	<article class="col-main   {$smarty.get.mode|default:"grid"}" role="main">
          {loop name="category.description" type="category" id={$category_id} limit="1"}
          
 			{assign var="search_criteria" value=$smarty.get.criteria}
@@ -38,7 +32,8 @@
 
             {hook name="criteria-search.search-page" category_id=$category_id criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
             
-            <div id="category-products">
+            <div id="category-products" class="">
+			<h2 class="title">Klimaanlage Sets Angebote ★</h2>
                 <div class="products-content">
                     <ul class="list-unstyled row"> 
                                 {include file="criteria-search/search-results.html" category_id=$category_id search_attribute_loop=true criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
@@ -46,196 +41,14 @@
                 </div>
             </div><!-- /#category-products -->
 			{/loop}
-						<!--======= Carousel icons -->
-
-                        <div class="panel panel-default" id="carousel-icons">
-                            <div><h2 class="title">Die besten Schnäppchen ★</h2></div>
-                            <div class="panel-body">
-                                <div class="owl-icons-wrapper">
-                                    <!-- === header === -->
-                                    <header class="hidden">
-                                        <h2>Die besten Schnäppchen ★</h2>
-                                    </header>
-                                    <div class="">
-									<div class="product-slider">
-									 {loop name="selection_product" type="selection_product_related" selection_id=2}
-									 
-								  <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
-								  <div id="category-products">
-									<div class="products-content">
-                           
-                                {loop name="product.details" type="product" id=$PRODUCT_ID}
-                                        {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819" colClass="slider-spacing"}
-                                {/loop}
-									</div>
-									</div>
-									</article>
-								 {/loop}
-									</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel row">
-						<div class="col-xs-12 col-sm-12 col-md-10 col-lg-8" style="float: none;margin: 0 auto;">
-						 <div><h2 class="title">Wochen-Knaller</h2></div>
-						 <a href="/grohe-ges.m.b.h.-27737000-1.html">
-							<img src="{image file='assets/dist/img/top-angebot.png' source='Front'}" class="img-responsive" alt="top-angebot"/>
-						</a>
-						</div>
-						</div>
-						<div class="panel panel-default" id="carousel-icons">
-                            <div><h2 class="title">Unsere Bestseller</h2></div>
-                            <div class="panel-body">
-                                <div class="owl-icons-wrapper">
-                                    <!-- === header === -->
-                                    <header class="hidden">
-                                        <h2>Top Hersteller</h2>
-                                    </header>
-                                    <div class="">
-									<div class="product-slider">
-									 {loop name="selection_product" type="selection_product_related" selection_id=1}
-									 
-								  <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
-								  <div id="category-products">
-									<div class="products-content">
-                           
-                                {loop name="product.details" type="product" id=$PRODUCT_ID}
-                                        {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819" colClass="slider-spacing"}
-                                {/loop}
-									</div>
-									</div>
-									</article>
-								 {/loop}
-									</div>
-                              
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 						
 						
-						 <!-- ========================  Stretcher widget ======================== -->
-
-        <section class="stretcher-wrapper">
-
-  
-
-            <!-- === stretcher === -->
-
-            <ul class="stretcher">
-
-                <!-- === stretcher item === -->
-				<a href="/kueche.html">
-                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/kueche.png' source='Front'});">
-				
-				
-                    <!--logo-item-->
-                    <div class="stretcher-logo">
-                        <div class="text">
-                           <span class="kategorie-kueche"></span>
-                            <span class="text-intro">Küche</span>
-                        </div>
-                    </div>
-                    <!--main text-->
-                    <figure>
-                        <h4>Marken Armaturen zum Top-Preis</h4>
-                    </figure>
-                </li>
-                </a>
-                
-                <a href="/sanitaer.html">
-                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/bad.png' source='Front'});">
-                    <!--logo-item-->
-                    <div class="stretcher-logo">
-                        <div class="text">
-                             <span class="kategorie-bad"></span>
-                            <span class="text-intro">Badezimmer</span>
-                        </div>
-                    </div>
-                    <!--main text-->
-                    <figure>
-                        <h4>Badarmaturen, Badkeramik, Badmöbel..</h4>
-                        <figcaption>stark verbilligt</figcaption>
-                    </figure>
-                </li>
-                </a>
-                <!-- === stretcher item === -->
-
-				<a href="/klima.html">
-                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/klima.png' source='Front'});">
-                    <!--logo-item-->
-                    <div class="stretcher-logo">
-                        <div class="text">
-                           <span class="kategorie-klima"></span>
-                            <span class="text-intro">Klima</span>
-                        </div>
-                    </div>
-                    <!--main text-->
-                    <figure>
-                        <h4>Innengeräte, Aussengeräte, Zubehör...</h4>    
-                    </figure>
-                </li>
-                </a>
-
-                <!-- === stretcher item === -->
-				<a href="/heizung-2.html">
-                <li class="stretcher-item" style="background-image:url({image file='assets/dist/img/heizung.png' source='Front'});">
-                    <!--logo-item-->
-                    <div class="stretcher-logo">
-                        <div class="text">
-                            <span class="kategorie-heizung"></span>
-							<span class="text-intro">Heizung</span>
-                        </div>
-                    </div>
-                    <!--main text-->
-                    <figure>
-                        <h4>Kleinspeicher, Heizkörper..</h4>
-
-                    </figure>
-                </li>
-				</a>
-                <!-- === stretcher item === -->
-
-
-
-
-            </ul>
-        </section>
-		
-		 <!-- ========================  Banner ======================== -->
-
-        <section class="parallax-banner">
-		
-                            <!--footer showroom-->
-                <div class="footer-showroom">
-                    <div class="row">
-                        <div class="col-sm-7">
-                            <h2>Besuchen Sie unser Outlet</h2>
-							<p><strong>800m2 - 1500 Artikeln - bis zu 80% Rabatt und nur Markenware.</strong>
-							
-<p><small>Auf einer Fläche  800m2 stehen dem Endkunden mehr 1500 Artikeln bis zu 80% reduziert zur Verfügung.</small></p>
-<br>
-                            <p><span class="contact-address"></span>Wienerstraße 111-115, 
-2700 Wiener Neustadt, Österreich</p>
-                            <p>Mo-Fr: 11-18 Uhr | Sa: 10-14 Uhr</p>
-							
-                        </div>
-						<div class="col-sm-5">
-						<img src="{image file='assets/dist/img/outlet.png' source='Front'}" class="img-responsive" alt="outlet"/>
-						</div>
-                        
-                    </div>
-                </div>
-
-        </section>
+	</article>			
 	</div>	
 {/block}
 
 
 {block name="after-javascript-include"}
 {hook name="criteria-search.search-js"}
-<script src="{javascript file='assets/dist/js/jquery.owl.carousel.min.js' source='Front'}"></script>
 <script src="{javascript file='assets/dist/js/main.js' source='Front'}"></script>
 {/block}
