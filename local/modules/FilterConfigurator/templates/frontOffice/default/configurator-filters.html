@@ -10,7 +10,7 @@
 	          			{append var='featureCollection' value=$ID index=$elements}
 	          			<li class = "col-md-3 main-category test" class="select-search">
 	          				<a class="category-head feature-{$ID}" a data-toggle="tab" href="#{$ID}" data-feature="{$ID}">
-	          					<span>{$TITLE}</span>
+	          					<span>{$TITLE} <i class="fa fa-angle-down"></i></span>
 	          				</a>
 	          			</li>
 	          			{if $elements%4==0 && $elements>0 }
