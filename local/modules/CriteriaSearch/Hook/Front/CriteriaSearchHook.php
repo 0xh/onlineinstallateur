@@ -38,7 +38,7 @@ class CriteriaSearchHook extends BaseHook
         $request = $this->getRequest();
 
         $params['category_id'] = $event->getArgument('category_id');
-
+        
         $categorieTaxeRule = CriteriaSearchCategoryTaxRuleQuery::create()
             ->findOneByCategoryId($params['category_id']);
 
@@ -54,8 +54,9 @@ class CriteriaSearchHook extends BaseHook
 
         $this->criteriaSearchHandler->getLoopParamsFromQuery($params, $request);
         
-       
-
+        if($params['category_id'] == null )
+            $params['category_id'] = $event->getArgument('category_id');
+        
         if (null !== $params['category_id']) {
         	
         	$subcategories = CategoryQuery::create()->findAllChild($params['category_id'],99);
@@ -67,9 +68,7 @@ class CriteriaSearchHook extends BaseHook
         		
         		foreach ($subcategories as $subcategory)
         			array_push($categories_array,$subcategory->getId());
-        			
-        		
-        	$log->info("criteriasearch categories ".implode(" ",$categories_array));
+
         	}
         	
             $categoryProductMaxPrice = ProductPriceQuery::create()
@@ -104,9 +103,6 @@ class CriteriaSearchHook extends BaseHook
             
             $params['max_price_filter'] = ceil($categoryProductMaxPrice/10)*10;
             $params['min_price_filter'] = floor($categoryProductMinPrice/10)*10;
-            
-            $log->error("criteriasearch max_price_filter ".$categoryProductMaxPrice);
-            $log->error("criteriasearch main_price_filter ".$categoryProductMinPrice);
 
             if ( $params['max_price_filter']>0) {
             	
