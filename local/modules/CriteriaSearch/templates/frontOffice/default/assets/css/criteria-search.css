@@ -139,7 +139,6 @@ span.criteria-pagination{
   display: inline-block;
     vertical-align: middle;
     padding-left: 0px;
-    font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
@@ -281,7 +280,7 @@ ul.category-container:first-child {
 
 .category-container.nav-tabs li a,
 .category-container.nav-tabs li.active a:not(.active) {
-  color: #86AC34;
+  color: #222;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0px;
@@ -289,11 +288,11 @@ ul.category-container:first-child {
 
 .category-container.nav-tabs li.active a:hover,
 .category-container.nav-tabs li a:hover {
-  background-color: #86AC34;
+  background-color: #D1D3D4;
 }
 
 .category-container.nav-tabs li.active a.active{
-  background-color: #86AC34;
+  background-color:#D1D3D4;
   color: #fff;
 }
 
@@ -304,7 +303,6 @@ ul.category-container:first-child {
 .category-container li{
     padding-left: 0px;
     border-left-width: 0px;
-    margin-bottom: 10px;
 }
 .match-filter ul.nav-tabs{
   background-color: #fff;
@@ -353,8 +351,7 @@ ul.category-container:first-child {
 }
 .tab-content .checkbox input[type="checkbox"]:checked ~ label {
   border: 1px solid #86AC34;
-  color: #86AC34;
-  font-weight: bold;
+  color: #222;
 }
 .tab-content .checkbox input[type="checkbox"]:checked ~ label:before,
 .card .tab-content .checkbox .tab-content .checkbox input[type="checkbox"]:checked ~ label:before{
