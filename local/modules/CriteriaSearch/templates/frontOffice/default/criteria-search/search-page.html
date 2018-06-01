@@ -5,7 +5,7 @@
     {$categories[] = $category_id}
 
     {loop type="category" name="categories" parent=$category_id}
-        {*$categories[] = $ID*}
+        {*append var="categories" value=$ID*}
     {/loop}
 
 
