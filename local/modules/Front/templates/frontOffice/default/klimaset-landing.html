@@ -1,0 +1,54 @@
+{extends file="layout.tpl"}
+
+{block name="stylesheet"}
+	{hook name="criteria-search.search-css"}
+{/block}
+
+{block name="main-content"}
+
+    
+
+<div>
+<img src="{image file='assets/dist/img/klimaset/banner.png' source='Front'}" class="img-responsive" alt="klimasets"/>
+</div>
+{assign var="category_id" value="26"}
+
+		               <!--======= Carousel icons -->
+<div class="landing-page">
+
+	<article class="col-main   {$smarty.get.mode|default:"grid"}" role="main">
+         {loop name="category.description" type="category" id={$category_id} limit="1"}
+         
+			{assign var="search_criteria" value=$smarty.get.criteria}
+            {assign var="search_category" value=$smarty.get.category_id|default:{$category_id}}
+            {assign var="search_brands" value=$smarty.get.brands}
+            {assign var="search_price_min" value=$smarty.get.price_min}
+            {assign var="search_price_max" value=$smarty.get.price_max}
+            {assign var="search_new" value=$smarty.get.new}
+            {assign var="search_promo" value=$smarty.get.promo} 
+            {assign var="search_limit" value=$smarty.get.limit}
+            {assign var="search_page" value=$smarty.get.page}
+            {assign var="search_order" value=$smarty.get.order}
+
+            {hook name="criteria-search.search-page" category_id=$category_id criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+            
+            <div id="category-products" class="">
+			<h2 class="title">Klimaanlage Sets Angebote ★</h2>
+                <div class="products-content">
+                    <ul class="list-unstyled row"> 
+                                {include file="criteria-search/search-results.html" category_id=$category_id search_attribute_loop=true criteria=$search_criteria brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+                    </ul>
+                </div>
+            </div><!-- /#category-products -->
+			{/loop}
+						
+						
+	</article>			
+	</div>	
+{/block}
+
+
+{block name="after-javascript-include"}
+{hook name="criteria-search.search-js"}
+<script src="{javascript file='assets/dist/js/main.js' source='Front'}"></script>
+{/block}

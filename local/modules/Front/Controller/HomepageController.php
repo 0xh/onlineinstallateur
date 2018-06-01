@@ -20,8 +20,8 @@ class HomepageController extends BaseFrontController {
         return $this->render("sofunktionierts");
     }
 
-    public function klimaSetsAction(Request $request) {
-        return $this->render("klimasets");
+    public function viewKlimaanlageLandingAction(Request $request) {
+        return $this->render("klimaset-landing");
     }
 
     public function blackfridayAction(Request $request) {
