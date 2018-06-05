@@ -14,13 +14,14 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
-abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
+abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -356,7 +357,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -367,7 +368,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Get the [category_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getCategoryId()
@@ -378,7 +379,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Get the [feature_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getFeatureId()
@@ -389,7 +390,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Get the [searchable] column value.
-     *
+     * 
      * @return   boolean
      */
     public function getSearchable()
@@ -400,7 +401,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \CriteriaSearch\Model\CriteriaSearchCategoryFeature The current object (for fluent API support)
      */
@@ -421,7 +422,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Set the value of [category_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \CriteriaSearch\Model\CriteriaSearchCategoryFeature The current object (for fluent API support)
      */
@@ -446,7 +447,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
 
     /**
      * Set the value of [feature_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \CriteriaSearch\Model\CriteriaSearchCategoryFeature The current object (for fluent API support)
      */
@@ -475,7 +476,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
+     * 
      * @param      boolean|integer|string $v The new value
      * @return   \CriteriaSearch\Model\CriteriaSearchCategoryFeature The current object (for fluent API support)
      */
@@ -813,13 +814,13 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'CATEGORY_ID':
+                    case 'CATEGORY_ID':                        
                         $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
                         break;
-                    case 'FEATURE_ID':
+                    case 'FEATURE_ID':                        
                         $stmt->bindValue($identifier, $this->feature_id, PDO::PARAM_INT);
                         break;
                     case 'SEARCHABLE':
@@ -937,7 +938,7 @@ abstract class CriteriaSearchCategoryFeature implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->aCategory) {
                 $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

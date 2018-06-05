@@ -21,7 +21,7 @@ use Propel\Runtime\Exception\PropelException;
 /**
  * Base class that represents a query for the 'criteria_search_category_feature' table.
  *
- *
+ * 
  *
  * @method     ChildCriteriaSearchCategoryFeatureQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCriteriaSearchCategoryFeatureQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
@@ -61,7 +61,7 @@ use Propel\Runtime\Exception\PropelException;
  */
 abstract class CriteriaSearchCategoryFeatureQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \CriteriaSearch\Model\Base\CriteriaSearchCategoryFeatureQuery object.
      *
@@ -147,7 +147,7 @@ abstract class CriteriaSearchCategoryFeatureQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, CATEGORY_ID, FEATURE_ID, SEARCHABLE FROM criteria_search_category_feature WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -614,10 +614,10 @@ abstract class CriteriaSearchCategoryFeatureQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         CriteriaSearchCategoryFeatureTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             CriteriaSearchCategoryFeatureTableMap::clearRelatedInstancePool();
             $con->commit();

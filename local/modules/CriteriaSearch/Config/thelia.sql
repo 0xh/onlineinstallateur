@@ -58,6 +58,27 @@ CREATE TABLE `criteria_search_category_attribute`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- criteria_search_category_option
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `criteria_search_category_option`;
+
+CREATE TABLE `criteria_search_category_options`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `category_id` INTEGER,
+    `option` INTEGER,
+    `searchable` TINYINT(1),
+    PRIMARY KEY (`id`),
+    INDEX `FI_criteria_search_category_option_category_id` (`category_id`),
+    CONSTRAINT `fk_criteria_search_category_option_category_id`
+        FOREIGN KEY (`category_id`)
+        REFERENCES `category` (`id`)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- criteria_search_category_tax_rule
 -- ---------------------------------------------------------------------
 

@@ -13,6 +13,16 @@
         </foreign-key>
     </table>
 
+    <table name="criteria_search_category_options">
+        <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
+        <column name="category_id" type="INTEGER" />
+        <column name="option" type="INTEGER" />
+        <column name="searchable" type="BOOLEAN"/>
+        <foreign-key foreignTable="category" name="fk_criteria_search_category_feature_category_id" onDelete="CASCADE" onUpdate="CASCADE">
+            <reference foreign="id" local="category_id" />
+        </foreign-key>
+    </table>
+
     <table name="criteria_search_category_attribute">
         <column autoIncrement="true" name="id" primaryKey="true" type="INTEGER" required="true" />
         <column name="category_id" type="INTEGER" />

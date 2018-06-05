@@ -11,19 +11,8 @@
         <loop name="search_attribute_av" class="CriteriaSearch\Loop\CriteriaSearchAttributeAvLoop" />
         <loop name="search_product" class="CriteriaSearch\Loop\CriteriaSearchProductLoop" />
         <loop name="search_brand" class="CriteriaSearch\Loop\CriteriaSearchBrandLoop" />
+        <loop name="search_option" class="CriteriaSearch\Loop\CriteriaSearchOptionLoop" />
     </loops>
-
-    <forms>
-        <!--
-        <form name="MyFormName" class="CriteriaSearch\Form\MySuperForm" />
-        -->
-    </forms>
-
-    <commands>
-        <!--
-        <command class="CriteriaSearch\Command\MySuperCommand" />
-        -->
-    </commands>
 
     <services>
         <service id="criteriasearch.handler" class="CriteriaSearch\Handler\CriteriaSearchHandler" scope="request">
@@ -45,15 +34,4 @@
         </hook>
     </hooks>
 
-    <!--
-    <exports>
-
-    </exports>
-    -->
-
-    <!--
-    <imports>
-
-    </imports>
-    -->
 </config>
