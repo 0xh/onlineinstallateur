@@ -21,15 +21,24 @@
                                 <span> -{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%</span>
                             </div>
                         {/if}
-                        {loop name="badge_info" type="feature" product=$product_id}
+                     {loop name="badge_info" type="feature" product=$product_id}
+					 
                             {if $TITLE=="badge"}  
                                 {ifloop rel="feature_value_info"}
                                     {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
                                         <span class="badge badge-hersteller">{$TITLE}</span>
                                     {/loop}
+								{/ifloop}
+							{/if} 
+							{if $TITLE=="bildbadge"}  
+                                {ifloop rel="feature_value_info"}
+                                    {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+                                        <span class="bildbadge ">{$DESCRIPTION nofilter}</span>
+                                    {/loop}
                                 {/ifloop}
                             {/if} 
                         {/loop}
+                        
                     </div>
                 {/loop}
                 {elseloop rel="product_thumbnail"}
