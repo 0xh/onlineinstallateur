@@ -104,8 +104,17 @@
                     		{loop type="image" name="image.main" product={$ID} width="560" height="445" resize_mode="borders" limit="1"}
                   
                         		<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive" itemprop="image" data-toggle="magnify">
+								{loop name="badge_info" type="feature" product=$product_id}
+
+								{if $TITLE=="bildbadge"}  
+									{ifloop rel="feature_value_info"}
+										{loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+											<span class="bildbadge">{$DESCRIPTION nofilter}</span>
+										{/loop}
+									{/ifloop}
+								{/if} 
+								{/loop}
                             {/loop}
-                    		
                 		</figure>
                 	{/ifloop}
 
@@ -120,6 +129,7 @@
                                         	{loop type="image" name="image.thumbs" id={$ID} product="$OBJECT_ID" width="118" height="85" resize_mode="borders"}
                                            		<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
                                         	{/loop}
+											
                                     	</a>
                                 	</li>
                                 	{/loop}
@@ -210,7 +220,7 @@
                     <div>
 	                   {assign var="attributes_limit" value=6}
 	                    {loop name="attributes" type="feature" product=$product_id}
-	                    	{if $TITLE != "badge"}
+	                    	{if $TITLE != "badge" && $TITLE != "bildbadge"}
 	                    		{ifloop rel="attributes_info"}
 	                    			{assign var="feature_title" value=$TITLE}	
 	                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
