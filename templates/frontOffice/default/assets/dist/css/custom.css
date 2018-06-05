@@ -336,5 +336,6 @@ media screen and (min-width: 768px)
     top: 20px;
     z-index: 10;
     color: #000;
-    /* text-align: right; */
+    text-align: left;
+	padding-left:15px
 }
