@@ -67,14 +67,8 @@
                                             <i class="glyphicon glyphicon-trash"></i> {intl d='carousel.bo.default' l='Remove this image'}
                                         </a>
                                     </div>
-                        {form_field field="position{$ID}"}
-                        <p>Position</p>
-                            <input name="{$name}" value={$POSITION}>
-                        {/form_field}
-						{form_field field="visible{$ID}"}
-						<p>Visible</p>
-                            <input name="{$name}" value={$VISIBLE}>
-                        {/form_field}
+                        			{render_form_field field="position{$ID}" value=$POSITION}
+                        			{render_form_field field="visible{$ID}" value=$VISIBLE}
                                 </div>
 
                                 <div class="col-md-6">
