@@ -20,12 +20,13 @@ use Propel\Runtime\Exception\PropelException;
 /**
  * Base class that represents a query for the 'carousel' table.
  *
- *
+ * 
  *
  * @method     ChildCarouselQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCarouselQuery orderByFile($order = Criteria::ASC) Order by the file column
  * @method     ChildCarouselQuery orderByPosition($order = Criteria::ASC) Order by the position column
  * @method     ChildCarouselQuery orderByUrl($order = Criteria::ASC) Order by the url column
+ * @method     ChildCarouselQuery orderByVisible($order = Criteria::ASC) Order by the visible column
  * @method     ChildCarouselQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildCarouselQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
@@ -33,6 +34,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCarouselQuery groupByFile() Group by the file column
  * @method     ChildCarouselQuery groupByPosition() Group by the position column
  * @method     ChildCarouselQuery groupByUrl() Group by the url column
+ * @method     ChildCarouselQuery groupByVisible() Group by the visible column
  * @method     ChildCarouselQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildCarouselQuery groupByUpdatedAt() Group by the updated_at column
  *
@@ -51,6 +53,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCarousel findOneByFile(string $file) Return the first ChildCarousel filtered by the file column
  * @method     ChildCarousel findOneByPosition(int $position) Return the first ChildCarousel filtered by the position column
  * @method     ChildCarousel findOneByUrl(string $url) Return the first ChildCarousel filtered by the url column
+ * @method     ChildCarousel findOneByVisible(int $visible) Return the first ChildCarousel filtered by the visible column
  * @method     ChildCarousel findOneByCreatedAt(string $created_at) Return the first ChildCarousel filtered by the created_at column
  * @method     ChildCarousel findOneByUpdatedAt(string $updated_at) Return the first ChildCarousel filtered by the updated_at column
  *
@@ -58,13 +61,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByFile(string $file) Return ChildCarousel objects filtered by the file column
  * @method     array findByPosition(int $position) Return ChildCarousel objects filtered by the position column
  * @method     array findByUrl(string $url) Return ChildCarousel objects filtered by the url column
+ * @method     array findByVisible(int $visible) Return ChildCarousel objects filtered by the visible column
  * @method     array findByCreatedAt(string $created_at) Return ChildCarousel objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildCarousel objects filtered by the updated_at column
  *
  */
 abstract class CarouselQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Carousel\Model\Base\CarouselQuery object.
      *
@@ -148,9 +152,9 @@ abstract class CarouselQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, FILE, POSITION, URL, CREATED_AT, UPDATED_AT FROM carousel WHERE ID = :p0';
+        $sql = 'SELECT ID, FILE, POSITION, URL, VISIBLE, CREATED_AT, UPDATED_AT FROM carousel WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -375,6 +379,47 @@ abstract class CarouselQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CarouselTableMap::URL, $url, $comparison);
+    }
+
+    /**
+     * Filter the query on the visible column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisible(1234); // WHERE visible = 1234
+     * $query->filterByVisible(array(12, 34)); // WHERE visible IN (12, 34)
+     * $query->filterByVisible(array('min' => 12)); // WHERE visible > 12
+     * </code>
+     *
+     * @param     mixed $visible The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByVisible($visible = null, $comparison = null)
+    {
+        if (is_array($visible)) {
+            $useMinMax = false;
+            if (isset($visible['min'])) {
+                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visible['max'])) {
+                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible, $comparison);
     }
 
     /**
@@ -612,10 +657,10 @@ abstract class CarouselQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         CarouselTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             CarouselTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -628,7 +673,7 @@ abstract class CarouselQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -640,7 +685,7 @@ abstract class CarouselQuery extends ModelCriteria
     {
         return $this->addUsingAlias(CarouselTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -652,7 +697,7 @@ abstract class CarouselQuery extends ModelCriteria
     {
         return $this->addUsingAlias(CarouselTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -662,7 +707,7 @@ abstract class CarouselQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(CarouselTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -672,7 +717,7 @@ abstract class CarouselQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(CarouselTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -682,7 +727,7 @@ abstract class CarouselQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(CarouselTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *
@@ -694,7 +739,7 @@ abstract class CarouselQuery extends ModelCriteria
     }
 
     // i18n behavior
-
+    
     /**
      * Adds a JOIN clause to the query using the i18n relation
      *
@@ -707,12 +752,12 @@ abstract class CarouselQuery extends ModelCriteria
     public function joinI18n($locale = 'en_US', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $relationName = $relationAlias ? $relationAlias : 'CarouselI18n';
-
+    
         return $this
             ->joinCarouselI18n($relationAlias, $joinType)
             ->addJoinCondition($relationName, $relationName . '.Locale = ?', $locale);
     }
-
+    
     /**
      * Adds a JOIN clause to the query and hydrates the related I18n object.
      * Shortcut for $c->joinI18n($locale)->with()
@@ -728,10 +773,10 @@ abstract class CarouselQuery extends ModelCriteria
             ->joinI18n($locale, null, $joinType)
             ->with('CarouselI18n');
         $this->with['CarouselI18n']->setIsWithOneToMany(false);
-
+    
         return $this;
     }
-
+    
     /**
      * Use the I18n relation query object
      *

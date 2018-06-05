@@ -131,6 +131,7 @@ class ConfigurationController extends BaseAdminController
                     ->setUrl($this->getFormFieldValue($updateForm, 'url', $id))
                     ->setLocale($locale)
                     ->setTitle($this->getFormFieldValue($updateForm, 'title', $id))
+                    ->setVisible($this->getFormFieldValue($updateForm, 'visible', $id))
                     ->setAlt($this->getFormFieldValue($updateForm, 'alt', $id))
                     ->setChapo($this->getFormFieldValue($updateForm, 'chapo', $id))
                     ->setDescription($this->getFormFieldValue($updateForm, 'description', $id))

@@ -24,6 +24,8 @@ use Thelia\Core\Template\Loop\Image;
 use Thelia\Type\EnumListType;
 use Thelia\Type\EnumType;
 use Thelia\Type\TypeCollection;
+use Carousel\Model\Map\CarouselTableMap;
+use Thelia\Log\Tlog;
 
 /**
  * Class CarouselLoop
@@ -45,6 +47,7 @@ class CarouselLoop extends Image
             Argument::createIntTypeArgument('rotation', 0),
             Argument::createAnyTypeArgument('background_color'),
             Argument::createIntTypeArgument('quality'),
+            Argument::createBooleanTypeArgument('visible'),
             new Argument(
                 'resize_mode',
                 new TypeCollection(
@@ -129,6 +132,7 @@ class CarouselLoop extends Image
 
             $loopResultRow
                 ->set('ID', $carousel->getId())
+                ->set('VISIBLE',$carousel->getVisible())
                 ->set("LOCALE", $this->locale)
                 ->set("IMAGE_URL", $event->getFileUrl())
                 ->set("ORIGINAL_IMAGE_URL", $event->getOriginalFileUrl())
@@ -157,8 +161,10 @@ class CarouselLoop extends Image
     public function buildModelCriteria()
     {
         $search = CarouselQuery::create();
-
+        $visible = $this->getVisible();
         $this->configureI18nProcessing($search, [ 'ALT', 'TITLE', 'CHAPO', 'DESCRIPTION', 'POSTSCRIPTUM' ]);
+        
+
 
         $orders  = $this->getOrder();
 
@@ -184,7 +190,10 @@ class CarouselLoop extends Image
                     break;
             }
         }
-
+        
+        if($visible != null)
+            $search->where(CarouselTableMap::VISIBLE." = ?", $visible, \PDO::PARAM_INT);
+        
         return $search;
     }
 }
