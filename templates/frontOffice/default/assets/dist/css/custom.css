@@ -321,3 +321,20 @@ font-size:14px
     width: 100%;
     padding-bottom: 2%;
 }
+
+media screen and (min-width: 768px)
+.category-caption {
+    left: 5%;
+    padding-bottom: 30px;
+    top: 2%;
+    text-align: left;
+}
+}
+.category-caption {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 10;
+    color: #000;
+    /* text-align: right; */
+}
