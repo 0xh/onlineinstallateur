@@ -57,6 +57,33 @@
                 </tbody>
             </table>
         </div>
+        <div class="table-responsive col-md-4">
+            <table class="table table-striped">
+                <caption class="clearfix">
+                    {intl l="Options list" d='criteriasearch.bo.default'}
+                </caption>
+                <thead>
+                    <tr>
+                        <th>{intl l="ID" d='criteriasearch.bo.default'}</th>
+                        <th>{intl l="Option" d='criteriasearch.bo.default'}</th>
+                        <th>{intl l="Searchable" d='criteriasearch.bo.default'}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loop type="search_option" name="search_option_loop" category=$category_id}
+                        <tr>
+                            <td>{$ID}</td>
+                            <td>{$OPTION}</td>
+                            <td>
+                                <div class="switch-small search_switch" data-categoryid="{$category_id}" data-id="{$ID}" data-type="option" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok-circle'></i>" data-off-label="<i class='glyphicon glyphicon-remove-circle'></i>">
+                                    <input type="checkbox" name="search_option" {if $SEARCHABLE}checked{/if} />
+                                </div>
+                            </td>
+                        </tr>
+                    {/loop}
+                </tbody>
+            </table>
+        </div>
         <div class="col-md-4">
             <h4>{intl l='Choose taxe rule for price filter :'}</h4>
             <form id="category_tax_rule" class="form-inline" action="{url path='/admin/module/config/CriteriaSearch/category/tax'}">

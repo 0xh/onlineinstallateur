@@ -28,19 +28,7 @@
             {/ifloop}
         {/if}
     {/loop}
-    
-    {if $brand_filter === "true"}
-        {ifloop rel="brand-filter"}
-            <div id="search-brand" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
-                <h5  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h5>
-                <select class="select-search" id="brand-{$ID}" name="brands[]" multiple="multiple">
-                    {loop type="search_brand" name="brand-filter" category={', '|implode:$categories}}
-                        <option class="input-search" value="{$ID}" {if $brands|strstr:"$ID"}selected{/if}>{$TITLE}</option>
-                    {/loop}
-                </select>
-            </div>
-        {/ifloop}
-    {/if}
+
     {if $new_filter === "true" || $promo_filter === "true"}
     <div id="search-others" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label" >
          
@@ -66,7 +54,22 @@
         
     </div>
     {/if}
-    {if $price_filter != "true"}
+
+    {loop type="search_option" name="search_option_loop" category=$category_id}
+    |{$OPTION}|{$SEARCHABLE}|
+    {if $OPTION == 1 and $SEARCHABLE == 1}
+        {ifloop rel="brand-filter"}
+            <div id="search-brand" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
+                <h5  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h5>
+                <select class="select-search" id="brand-{$ID}" name="brands[]" multiple="multiple">
+                    {loop type="search_brand" name="brand-filter" category={', '|implode:$categories}}
+                        <option class="input-search" value="{$ID}" {if $brands|strstr:"$ID"}selected{/if}>{$TITLE}</option>
+                    {/loop}
+                </select>
+            </div>
+        {/ifloop}
+    {/if}
+    {if $OPTION == 2 and $SEARCHABLE == 1}
         <div id="search-price" class="block block-nav col-md-4 text-left" role="navigation" aria-labelledby="search-label">
         <h5  id="search-label">{intl l="Price filter" d="criteriasearch.fo.default"}</h5>
             <label for="price-filter"></label>
@@ -75,6 +78,7 @@
             <input type="hidden" name="price_max">
         </div>
     {/if}
+    {/loop}
 </form>
 </section>
 

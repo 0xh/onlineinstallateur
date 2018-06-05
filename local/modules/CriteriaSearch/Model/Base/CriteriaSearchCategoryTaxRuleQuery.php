@@ -21,7 +21,7 @@ use Propel\Runtime\Exception\PropelException;
 /**
  * Base class that represents a query for the 'criteria_search_category_tax_rule' table.
  *
- *
+ * 
  *
  * @method     ChildCriteriaSearchCategoryTaxRuleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCriteriaSearchCategoryTaxRuleQuery orderByCategoryId($order = Criteria::ASC) Order by the category_id column
@@ -57,7 +57,7 @@ use Propel\Runtime\Exception\PropelException;
  */
 abstract class CriteriaSearchCategoryTaxRuleQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \CriteriaSearch\Model\Base\CriteriaSearchCategoryTaxRuleQuery object.
      *
@@ -143,7 +143,7 @@ abstract class CriteriaSearchCategoryTaxRuleQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, CATEGORY_ID, TAX_RULE_ID FROM criteria_search_category_tax_rule WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -583,10 +583,10 @@ abstract class CriteriaSearchCategoryTaxRuleQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         CriteriaSearchCategoryTaxRuleTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             CriteriaSearchCategoryTaxRuleTableMap::clearRelatedInstancePool();
             $con->commit();

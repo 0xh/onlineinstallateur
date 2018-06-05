@@ -2,8 +2,8 @@
 
 namespace CriteriaSearch\Model\Map;
 
-use CriteriaSearch\Model\CriteriaSearchCategoryTaxRule;
-use CriteriaSearch\Model\CriteriaSearchCategoryTaxRuleQuery;
+use CriteriaSearch\Model\CriteriaSearchCategoryOptions;
+use CriteriaSearch\Model\CriteriaSearchCategoryOptionsQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'criteria_search_category_tax_rule' table.
+ * This class defines the structure of the 'criteria_search_category_options' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
+class CriteriaSearchCategoryOptionsTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'CriteriaSearch.Model.Map.CriteriaSearchCategoryTaxRuleTableMap';
+    const CLASS_NAME = 'CriteriaSearch.Model.Map.CriteriaSearchCategoryOptionsTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'criteria_search_category_tax_rule';
+    const TABLE_NAME = 'criteria_search_category_options';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\CriteriaSearch\\Model\\CriteriaSearchCategoryTaxRule';
+    const OM_CLASS = '\\CriteriaSearch\\Model\\CriteriaSearchCategoryOptions';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'CriteriaSearch.Model.CriteriaSearchCategoryTaxRule';
+    const CLASS_DEFAULT = 'CriteriaSearch.Model.CriteriaSearchCategoryOptions';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,22 +68,27 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'criteria_search_category_tax_rule.ID';
+    const ID = 'criteria_search_category_options.ID';
 
     /**
      * the column name for the CATEGORY_ID field
      */
-    const CATEGORY_ID = 'criteria_search_category_tax_rule.CATEGORY_ID';
+    const CATEGORY_ID = 'criteria_search_category_options.CATEGORY_ID';
 
     /**
-     * the column name for the TAX_RULE_ID field
+     * the column name for the OPTION field
      */
-    const TAX_RULE_ID = 'criteria_search_category_tax_rule.TAX_RULE_ID';
+    const OPTION = 'criteria_search_category_options.OPTION';
+
+    /**
+     * the column name for the SEARCHABLE field
+     */
+    const SEARCHABLE = 'criteria_search_category_options.SEARCHABLE';
 
     /**
      * The default string format for model objects of the related table
@@ -97,12 +102,12 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'CategoryId', 'TaxRuleId', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'categoryId', 'taxRuleId', ),
-        self::TYPE_COLNAME       => array(CriteriaSearchCategoryTaxRuleTableMap::ID, CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID, CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'CATEGORY_ID', 'TAX_RULE_ID', ),
-        self::TYPE_FIELDNAME     => array('id', 'category_id', 'tax_rule_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id', 'CategoryId', 'Option', 'Searchable', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'categoryId', 'option', 'searchable', ),
+        self::TYPE_COLNAME       => array(CriteriaSearchCategoryOptionsTableMap::ID, CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID, CriteriaSearchCategoryOptionsTableMap::OPTION, CriteriaSearchCategoryOptionsTableMap::SEARCHABLE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CATEGORY_ID', 'OPTION', 'SEARCHABLE', ),
+        self::TYPE_FIELDNAME     => array('id', 'category_id', 'option', 'searchable', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -112,12 +117,12 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'CategoryId' => 1, 'TaxRuleId' => 2, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'categoryId' => 1, 'taxRuleId' => 2, ),
-        self::TYPE_COLNAME       => array(CriteriaSearchCategoryTaxRuleTableMap::ID => 0, CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID => 1, CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID => 2, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CATEGORY_ID' => 1, 'TAX_RULE_ID' => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'category_id' => 1, 'tax_rule_id' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'CategoryId' => 1, 'Option' => 2, 'Searchable' => 3, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'categoryId' => 1, 'option' => 2, 'searchable' => 3, ),
+        self::TYPE_COLNAME       => array(CriteriaSearchCategoryOptionsTableMap::ID => 0, CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID => 1, CriteriaSearchCategoryOptionsTableMap::OPTION => 2, CriteriaSearchCategoryOptionsTableMap::SEARCHABLE => 3, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CATEGORY_ID' => 1, 'OPTION' => 2, 'SEARCHABLE' => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'category_id' => 1, 'option' => 2, 'searchable' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -130,15 +135,16 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('criteria_search_category_tax_rule');
-        $this->setPhpName('CriteriaSearchCategoryTaxRule');
-        $this->setClassName('\\CriteriaSearch\\Model\\CriteriaSearchCategoryTaxRule');
+        $this->setName('criteria_search_category_options');
+        $this->setPhpName('CriteriaSearchCategoryOptions');
+        $this->setClassName('\\CriteriaSearch\\Model\\CriteriaSearchCategoryOptions');
         $this->setPackage('CriteriaSearch.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('CATEGORY_ID', 'CategoryId', 'INTEGER', 'category', 'ID', false, null, null);
-        $this->addForeignKey('TAX_RULE_ID', 'TaxRuleId', 'INTEGER', 'tax_rule', 'ID', false, null, null);
+        $this->addColumn('OPTION', 'Option', 'INTEGER', false, null, null);
+        $this->addColumn('SEARCHABLE', 'Searchable', 'BOOLEAN', false, 1, null);
     } // initialize()
 
     /**
@@ -147,7 +153,6 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Category', '\\CriteriaSearch\\Model\\Thelia\\Model\\Category', RelationMap::MANY_TO_ONE, array('category_id' => 'id', ), 'CASCADE', 'CASCADE');
-        $this->addRelation('TaxRule', '\\CriteriaSearch\\Model\\Thelia\\Model\\TaxRule', RelationMap::MANY_TO_ONE, array('tax_rule_id' => 'id', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
     /**
@@ -206,7 +211,7 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? CriteriaSearchCategoryTaxRuleTableMap::CLASS_DEFAULT : CriteriaSearchCategoryTaxRuleTableMap::OM_CLASS;
+        return $withPrefix ? CriteriaSearchCategoryOptionsTableMap::CLASS_DEFAULT : CriteriaSearchCategoryOptionsTableMap::OM_CLASS;
     }
 
     /**
@@ -220,21 +225,21 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (CriteriaSearchCategoryTaxRule object, last column rank)
+     * @return array (CriteriaSearchCategoryOptions object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = CriteriaSearchCategoryTaxRuleTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = CriteriaSearchCategoryTaxRuleTableMap::getInstanceFromPool($key))) {
+        $key = CriteriaSearchCategoryOptionsTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = CriteriaSearchCategoryOptionsTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + CriteriaSearchCategoryTaxRuleTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + CriteriaSearchCategoryOptionsTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = CriteriaSearchCategoryTaxRuleTableMap::OM_CLASS;
+            $cls = CriteriaSearchCategoryOptionsTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            CriteriaSearchCategoryTaxRuleTableMap::addInstanceToPool($obj, $key);
+            CriteriaSearchCategoryOptionsTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -257,8 +262,8 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = CriteriaSearchCategoryTaxRuleTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = CriteriaSearchCategoryTaxRuleTableMap::getInstanceFromPool($key))) {
+            $key = CriteriaSearchCategoryOptionsTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = CriteriaSearchCategoryOptionsTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -267,7 +272,7 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                CriteriaSearchCategoryTaxRuleTableMap::addInstanceToPool($obj, $key);
+                CriteriaSearchCategoryOptionsTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -288,13 +293,15 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(CriteriaSearchCategoryTaxRuleTableMap::ID);
-            $criteria->addSelectColumn(CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID);
-            $criteria->addSelectColumn(CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID);
+            $criteria->addSelectColumn(CriteriaSearchCategoryOptionsTableMap::ID);
+            $criteria->addSelectColumn(CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID);
+            $criteria->addSelectColumn(CriteriaSearchCategoryOptionsTableMap::OPTION);
+            $criteria->addSelectColumn(CriteriaSearchCategoryOptionsTableMap::SEARCHABLE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CATEGORY_ID');
-            $criteria->addSelectColumn($alias . '.TAX_RULE_ID');
+            $criteria->addSelectColumn($alias . '.OPTION');
+            $criteria->addSelectColumn($alias . '.SEARCHABLE');
         }
     }
 
@@ -307,7 +314,7 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME)->getTable(CriteriaSearchCategoryTaxRuleTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME)->getTable(CriteriaSearchCategoryOptionsTableMap::TABLE_NAME);
     }
 
     /**
@@ -315,16 +322,16 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(CriteriaSearchCategoryTaxRuleTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new CriteriaSearchCategoryTaxRuleTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(CriteriaSearchCategoryOptionsTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new CriteriaSearchCategoryOptionsTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a CriteriaSearchCategoryTaxRule or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a CriteriaSearchCategoryOptions or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or CriteriaSearchCategoryTaxRule object or primary key or array of primary keys
+     * @param mixed               $values Criteria or CriteriaSearchCategoryOptions object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -335,25 +342,25 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule) { // it's a model object
+        } elseif ($values instanceof \CriteriaSearch\Model\CriteriaSearchCategoryOptions) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
-            $criteria->add(CriteriaSearchCategoryTaxRuleTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
+            $criteria->add(CriteriaSearchCategoryOptionsTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = CriteriaSearchCategoryTaxRuleQuery::create()->mergeWith($criteria);
+        $query = CriteriaSearchCategoryOptionsQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { CriteriaSearchCategoryTaxRuleTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { CriteriaSearchCategoryOptionsTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { CriteriaSearchCategoryTaxRuleTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { CriteriaSearchCategoryOptionsTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -361,20 +368,20 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the criteria_search_category_tax_rule table.
+     * Deletes all rows from the criteria_search_category_options table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return CriteriaSearchCategoryTaxRuleQuery::create()->doDeleteAll($con);
+        return CriteriaSearchCategoryOptionsQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a CriteriaSearchCategoryTaxRule or Criteria object.
+     * Performs an INSERT on the database, given a CriteriaSearchCategoryOptions or Criteria object.
      *
-     * @param mixed               $criteria Criteria or CriteriaSearchCategoryTaxRule object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or CriteriaSearchCategoryOptions object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -383,22 +390,22 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from CriteriaSearchCategoryTaxRule object
+            $criteria = $criteria->buildCriteria(); // build Criteria from CriteriaSearchCategoryOptions object
         }
 
-        if ($criteria->containsKey(CriteriaSearchCategoryTaxRuleTableMap::ID) && $criteria->keyContainsValue(CriteriaSearchCategoryTaxRuleTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CriteriaSearchCategoryTaxRuleTableMap::ID.')');
+        if ($criteria->containsKey(CriteriaSearchCategoryOptionsTableMap::ID) && $criteria->keyContainsValue(CriteriaSearchCategoryOptionsTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CriteriaSearchCategoryOptionsTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = CriteriaSearchCategoryTaxRuleQuery::create()->mergeWith($criteria);
+        $query = CriteriaSearchCategoryOptionsQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -414,7 +421,7 @@ class CriteriaSearchCategoryTaxRuleTableMap extends TableMap
         return $pk;
     }
 
-} // CriteriaSearchCategoryTaxRuleTableMap
+} // CriteriaSearchCategoryOptionsTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-CriteriaSearchCategoryTaxRuleTableMap::buildTableMap();
+CriteriaSearchCategoryOptionsTableMap::buildTableMap();

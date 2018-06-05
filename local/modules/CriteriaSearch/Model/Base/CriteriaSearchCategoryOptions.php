@@ -4,12 +4,10 @@ namespace CriteriaSearch\Model\Base;
 
 use \Exception;
 use \PDO;
-use CriteriaSearch\Model\CriteriaSearchCategoryTaxRuleQuery as ChildCriteriaSearchCategoryTaxRuleQuery;
-use CriteriaSearch\Model\Map\CriteriaSearchCategoryTaxRuleTableMap;
+use CriteriaSearch\Model\CriteriaSearchCategoryOptionsQuery as ChildCriteriaSearchCategoryOptionsQuery;
+use CriteriaSearch\Model\Map\CriteriaSearchCategoryOptionsTableMap;
 use CriteriaSearch\Model\Thelia\Model\CategoryQuery;
 use CriteriaSearch\Model\Thelia\Model\Category as ChildCategory;
-use CriteriaSearch\Model\Thelia\Model\TaxRule as ChildTaxRule;
-use CriteriaSearch\Model\Thelia\Model\TaxRuleQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,12 +19,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 
-abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface 
+abstract class CriteriaSearchCategoryOptions implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\CriteriaSearch\\Model\\Map\\CriteriaSearchCategoryTaxRuleTableMap';
+    const TABLE_MAP = '\\CriteriaSearch\\Model\\Map\\CriteriaSearchCategoryOptionsTableMap';
 
 
     /**
@@ -68,20 +66,21 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     protected $category_id;
 
     /**
-     * The value for the tax_rule_id field.
+     * The value for the option field.
      * @var        int
      */
-    protected $tax_rule_id;
+    protected $option;
+
+    /**
+     * The value for the searchable field.
+     * @var        boolean
+     */
+    protected $searchable;
 
     /**
      * @var        Category
      */
     protected $aCategory;
-
-    /**
-     * @var        TaxRule
-     */
-    protected $aTaxRule;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -92,7 +91,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of CriteriaSearch\Model\Base\CriteriaSearchCategoryTaxRule object.
+     * Initializes internal state of CriteriaSearch\Model\Base\CriteriaSearchCategoryOptions object.
      */
     public function __construct()
     {
@@ -187,9 +186,9 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>CriteriaSearchCategoryTaxRule</code> instance.  If
-     * <code>obj</code> is an instance of <code>CriteriaSearchCategoryTaxRule</code>, delegates to
-     * <code>equals(CriteriaSearchCategoryTaxRule)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>CriteriaSearchCategoryOptions</code> instance.  If
+     * <code>obj</code> is an instance of <code>CriteriaSearchCategoryOptions</code>, delegates to
+     * <code>equals(CriteriaSearchCategoryOptions)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -272,7 +271,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return CriteriaSearchCategoryTaxRule The current object, for fluid interface
+     * @return CriteriaSearchCategoryOptions The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -304,7 +303,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return CriteriaSearchCategoryTaxRule The current object, for fluid interface
+     * @return CriteriaSearchCategoryOptions The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -372,21 +371,32 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     }
 
     /**
-     * Get the [tax_rule_id] column value.
+     * Get the [option] column value.
      * 
      * @return   int
      */
-    public function getTaxRuleId()
+    public function getOption()
     {
 
-        return $this->tax_rule_id;
+        return $this->option;
+    }
+
+    /**
+     * Get the [searchable] column value.
+     * 
+     * @return   boolean
+     */
+    public function getSearchable()
+    {
+
+        return $this->searchable;
     }
 
     /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule The current object (for fluent API support)
+     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryOptions The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -396,7 +406,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[CriteriaSearchCategoryTaxRuleTableMap::ID] = true;
+            $this->modifiedColumns[CriteriaSearchCategoryOptionsTableMap::ID] = true;
         }
 
 
@@ -407,7 +417,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * Set the value of [category_id] column.
      * 
      * @param      int $v new value
-     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule The current object (for fluent API support)
+     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryOptions The current object (for fluent API support)
      */
     public function setCategoryId($v)
     {
@@ -417,7 +427,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
 
         if ($this->category_id !== $v) {
             $this->category_id = $v;
-            $this->modifiedColumns[CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID] = true;
+            $this->modifiedColumns[CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID] = true;
         }
 
         if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
@@ -429,29 +439,54 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     } // setCategoryId()
 
     /**
-     * Set the value of [tax_rule_id] column.
+     * Set the value of [option] column.
      * 
      * @param      int $v new value
-     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule The current object (for fluent API support)
+     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryOptions The current object (for fluent API support)
      */
-    public function setTaxRuleId($v)
+    public function setOption($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->tax_rule_id !== $v) {
-            $this->tax_rule_id = $v;
-            $this->modifiedColumns[CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID] = true;
-        }
-
-        if ($this->aTaxRule !== null && $this->aTaxRule->getId() !== $v) {
-            $this->aTaxRule = null;
+        if ($this->option !== $v) {
+            $this->option = $v;
+            $this->modifiedColumns[CriteriaSearchCategoryOptionsTableMap::OPTION] = true;
         }
 
 
         return $this;
-    } // setTaxRuleId()
+    } // setOption()
+
+    /**
+     * Sets the value of the [searchable] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * 
+     * @param      boolean|integer|string $v The new value
+     * @return   \CriteriaSearch\Model\CriteriaSearchCategoryOptions The current object (for fluent API support)
+     */
+    public function setSearchable($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->searchable !== $v) {
+            $this->searchable = $v;
+            $this->modifiedColumns[CriteriaSearchCategoryOptionsTableMap::SEARCHABLE] = true;
+        }
+
+
+        return $this;
+    } // setSearchable()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -490,14 +525,17 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CriteriaSearchCategoryTaxRuleTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CriteriaSearchCategoryOptionsTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CriteriaSearchCategoryTaxRuleTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CriteriaSearchCategoryOptionsTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->category_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CriteriaSearchCategoryTaxRuleTableMap::translateFieldName('TaxRuleId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->tax_rule_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CriteriaSearchCategoryOptionsTableMap::translateFieldName('Option', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->option = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CriteriaSearchCategoryOptionsTableMap::translateFieldName('Searchable', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->searchable = (null !== $col) ? (boolean) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -506,10 +544,10 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = CriteriaSearchCategoryTaxRuleTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = CriteriaSearchCategoryOptionsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule object", 0, $e);
+            throw new PropelException("Error populating \CriteriaSearch\Model\CriteriaSearchCategoryOptions object", 0, $e);
         }
     }
 
@@ -530,9 +568,6 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     {
         if ($this->aCategory !== null && $this->category_id !== $this->aCategory->getId()) {
             $this->aCategory = null;
-        }
-        if ($this->aTaxRule !== null && $this->tax_rule_id !== $this->aTaxRule->getId()) {
-            $this->aTaxRule = null;
         }
     } // ensureConsistency
 
@@ -557,13 +592,13 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildCriteriaSearchCategoryTaxRuleQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildCriteriaSearchCategoryOptionsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -574,7 +609,6 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCategory = null;
-            $this->aTaxRule = null;
         } // if (deep)
     }
 
@@ -584,8 +618,8 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see CriteriaSearchCategoryTaxRule::setDeleted()
-     * @see CriteriaSearchCategoryTaxRule::isDeleted()
+     * @see CriteriaSearchCategoryOptions::setDeleted()
+     * @see CriteriaSearchCategoryOptions::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -594,12 +628,12 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildCriteriaSearchCategoryTaxRuleQuery::create()
+            $deleteQuery = ChildCriteriaSearchCategoryOptionsQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -636,7 +670,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -656,7 +690,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                CriteriaSearchCategoryTaxRuleTableMap::addInstanceToPool($this);
+                CriteriaSearchCategoryOptionsTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -698,13 +732,6 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                 $this->setCategory($this->aCategory);
             }
 
-            if ($this->aTaxRule !== null) {
-                if ($this->aTaxRule->isModified() || $this->aTaxRule->isNew()) {
-                    $affectedRows += $this->aTaxRule->save($con);
-                }
-                $this->setTaxRule($this->aTaxRule);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -736,24 +763,27 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[CriteriaSearchCategoryTaxRuleTableMap::ID] = true;
+        $this->modifiedColumns[CriteriaSearchCategoryOptionsTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CriteriaSearchCategoryTaxRuleTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CriteriaSearchCategoryOptionsTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::ID)) {
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID)) {
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID)) {
             $modifiedColumns[':p' . $index++]  = 'CATEGORY_ID';
         }
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'TAX_RULE_ID';
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::OPTION)) {
+            $modifiedColumns[':p' . $index++]  = 'OPTION';
+        }
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::SEARCHABLE)) {
+            $modifiedColumns[':p' . $index++]  = 'SEARCHABLE';
         }
 
         $sql = sprintf(
-            'INSERT INTO criteria_search_category_tax_rule (%s) VALUES (%s)',
+            'INSERT INTO criteria_search_category_options (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -768,8 +798,11 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                     case 'CATEGORY_ID':                        
                         $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_INT);
                         break;
-                    case 'TAX_RULE_ID':                        
-                        $stmt->bindValue($identifier, $this->tax_rule_id, PDO::PARAM_INT);
+                    case 'OPTION':                        
+                        $stmt->bindValue($identifier, $this->option, PDO::PARAM_INT);
+                        break;
+                    case 'SEARCHABLE':
+                        $stmt->bindValue($identifier, (int) $this->searchable, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -817,7 +850,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = CriteriaSearchCategoryTaxRuleTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CriteriaSearchCategoryOptionsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -840,7 +873,10 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                 return $this->getCategoryId();
                 break;
             case 2:
-                return $this->getTaxRuleId();
+                return $this->getOption();
+                break;
+            case 3:
+                return $this->getSearchable();
                 break;
             default:
                 return null;
@@ -865,15 +901,16 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['CriteriaSearchCategoryTaxRule'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['CriteriaSearchCategoryOptions'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['CriteriaSearchCategoryTaxRule'][$this->getPrimaryKey()] = true;
-        $keys = CriteriaSearchCategoryTaxRuleTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['CriteriaSearchCategoryOptions'][$this->getPrimaryKey()] = true;
+        $keys = CriteriaSearchCategoryOptionsTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCategoryId(),
-            $keys[2] => $this->getTaxRuleId(),
+            $keys[2] => $this->getOption(),
+            $keys[3] => $this->getSearchable(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -883,9 +920,6 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         if ($includeForeignObjects) {
             if (null !== $this->aCategory) {
                 $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aTaxRule) {
-                $result['TaxRule'] = $this->aTaxRule->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -905,7 +939,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = CriteriaSearchCategoryTaxRuleTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CriteriaSearchCategoryOptionsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -928,7 +962,10 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                 $this->setCategoryId($value);
                 break;
             case 2:
-                $this->setTaxRuleId($value);
+                $this->setOption($value);
+                break;
+            case 3:
+                $this->setSearchable($value);
                 break;
         } // switch()
     }
@@ -952,11 +989,12 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = CriteriaSearchCategoryTaxRuleTableMap::getFieldNames($keyType);
+        $keys = CriteriaSearchCategoryOptionsTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCategoryId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTaxRuleId($arr[$keys[2]]);
+        if (array_key_exists($keys[2], $arr)) $this->setOption($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setSearchable($arr[$keys[3]]);
     }
 
     /**
@@ -966,11 +1004,12 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
+        $criteria = new Criteria(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::ID)) $criteria->add(CriteriaSearchCategoryTaxRuleTableMap::ID, $this->id);
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID)) $criteria->add(CriteriaSearchCategoryTaxRuleTableMap::CATEGORY_ID, $this->category_id);
-        if ($this->isColumnModified(CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID)) $criteria->add(CriteriaSearchCategoryTaxRuleTableMap::TAX_RULE_ID, $this->tax_rule_id);
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::ID)) $criteria->add(CriteriaSearchCategoryOptionsTableMap::ID, $this->id);
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID)) $criteria->add(CriteriaSearchCategoryOptionsTableMap::CATEGORY_ID, $this->category_id);
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::OPTION)) $criteria->add(CriteriaSearchCategoryOptionsTableMap::OPTION, $this->option);
+        if ($this->isColumnModified(CriteriaSearchCategoryOptionsTableMap::SEARCHABLE)) $criteria->add(CriteriaSearchCategoryOptionsTableMap::SEARCHABLE, $this->searchable);
 
         return $criteria;
     }
@@ -985,8 +1024,8 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(CriteriaSearchCategoryTaxRuleTableMap::DATABASE_NAME);
-        $criteria->add(CriteriaSearchCategoryTaxRuleTableMap::ID, $this->id);
+        $criteria = new Criteria(CriteriaSearchCategoryOptionsTableMap::DATABASE_NAME);
+        $criteria->add(CriteriaSearchCategoryOptionsTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1027,7 +1066,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule (or compatible) type.
+     * @param      object $copyObj An object of \CriteriaSearch\Model\CriteriaSearchCategoryOptions (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1035,7 +1074,8 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setCategoryId($this->getCategoryId());
-        $copyObj->setTaxRuleId($this->getTaxRuleId());
+        $copyObj->setOption($this->getOption());
+        $copyObj->setSearchable($this->getSearchable());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1051,7 +1091,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule Clone of current object.
+     * @return                 \CriteriaSearch\Model\CriteriaSearchCategoryOptions Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1068,7 +1108,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      * Declares an association between this object and a ChildCategory object.
      *
      * @param                  ChildCategory $v
-     * @return                 \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule The current object (for fluent API support)
+     * @return                 \CriteriaSearch\Model\CriteriaSearchCategoryOptions The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCategory(ChildCategory $v = null)
@@ -1084,7 +1124,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildCategory object, it will not be re-added.
         if ($v !== null) {
-            $v->addCriteriaSearchCategoryTaxRule($this);
+            $v->addCriteriaSearchCategoryOptions($this);
         }
 
 
@@ -1108,62 +1148,11 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aCategory->addCriteriaSearchCategoryTaxRules($this);
+                $this->aCategory->addCriteriaSearchCategoryOptionss($this);
              */
         }
 
         return $this->aCategory;
-    }
-
-    /**
-     * Declares an association between this object and a ChildTaxRule object.
-     *
-     * @param                  ChildTaxRule $v
-     * @return                 \CriteriaSearch\Model\CriteriaSearchCategoryTaxRule The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setTaxRule(ChildTaxRule $v = null)
-    {
-        if ($v === null) {
-            $this->setTaxRuleId(NULL);
-        } else {
-            $this->setTaxRuleId($v->getId());
-        }
-
-        $this->aTaxRule = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildTaxRule object, it will not be re-added.
-        if ($v !== null) {
-            $v->addCriteriaSearchCategoryTaxRule($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildTaxRule object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildTaxRule The associated ChildTaxRule object.
-     * @throws PropelException
-     */
-    public function getTaxRule(ConnectionInterface $con = null)
-    {
-        if ($this->aTaxRule === null && ($this->tax_rule_id !== null)) {
-            $this->aTaxRule = TaxRuleQuery::create()->findPk($this->tax_rule_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aTaxRule->addCriteriaSearchCategoryTaxRules($this);
-             */
-        }
-
-        return $this->aTaxRule;
     }
 
     /**
@@ -1173,7 +1162,8 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
     {
         $this->id = null;
         $this->category_id = null;
-        $this->tax_rule_id = null;
+        $this->option = null;
+        $this->searchable = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1196,7 +1186,6 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
         } // if ($deep)
 
         $this->aCategory = null;
-        $this->aTaxRule = null;
     }
 
     /**
@@ -1206,7 +1195,7 @@ abstract class CriteriaSearchCategoryTaxRule implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(CriteriaSearchCategoryTaxRuleTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(CriteriaSearchCategoryOptionsTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**
