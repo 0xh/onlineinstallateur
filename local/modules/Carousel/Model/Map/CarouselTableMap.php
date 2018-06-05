@@ -58,7 +58,7 @@ class CarouselTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class CarouselTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
@@ -91,6 +91,11 @@ class CarouselTableMap extends TableMap
     const URL = 'carousel.URL';
 
     /**
+     * the column name for the VISIBLE field
+     */
+    const VISIBLE = 'carousel.VISIBLE';
+
+    /**
      * the column name for the CREATED_AT field
      */
     const CREATED_AT = 'carousel.CREATED_AT';
@@ -106,7 +111,7 @@ class CarouselTableMap extends TableMap
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     // i18n behavior
-
+    
     /**
      * The default locale to use for translations.
      *
@@ -121,12 +126,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'File', 'Position', 'Url', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'file', 'position', 'url', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID, CarouselTableMap::FILE, CarouselTableMap::POSITION, CarouselTableMap::URL, CarouselTableMap::CREATED_AT, CarouselTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'FILE', 'POSITION', 'URL', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'file', 'position', 'url', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'File', 'Position', 'Url', 'Visible', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'file', 'position', 'url', 'visible', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(CarouselTableMap::ID, CarouselTableMap::FILE, CarouselTableMap::POSITION, CarouselTableMap::URL, CarouselTableMap::VISIBLE, CarouselTableMap::CREATED_AT, CarouselTableMap::UPDATED_AT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'FILE', 'POSITION', 'URL', 'VISIBLE', 'CREATED_AT', 'UPDATED_AT', ),
+        self::TYPE_FIELDNAME     => array('id', 'file', 'position', 'url', 'visible', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -136,12 +141,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'File' => 1, 'Position' => 2, 'Url' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID => 0, CarouselTableMap::FILE => 1, CarouselTableMap::POSITION => 2, CarouselTableMap::URL => 3, CarouselTableMap::CREATED_AT => 4, CarouselTableMap::UPDATED_AT => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FILE' => 1, 'POSITION' => 2, 'URL' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'File' => 1, 'Position' => 2, 'Url' => 3, 'Visible' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'visible' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        self::TYPE_COLNAME       => array(CarouselTableMap::ID => 0, CarouselTableMap::FILE => 1, CarouselTableMap::POSITION => 2, CarouselTableMap::URL => 3, CarouselTableMap::VISIBLE => 4, CarouselTableMap::CREATED_AT => 5, CarouselTableMap::UPDATED_AT => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FILE' => 1, 'POSITION' => 2, 'URL' => 3, 'VISIBLE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'visible' => 4, 'created_at' => 5, 'updated_at' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -164,6 +169,7 @@ class CarouselTableMap extends TableMap
         $this->addColumn('FILE', 'File', 'VARCHAR', false, 255, null);
         $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
         $this->addColumn('URL', 'Url', 'VARCHAR', false, 255, null);
+        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -241,7 +247,7 @@ class CarouselTableMap extends TableMap
                             : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
-
+    
     /**
      * The class that the tableMap will make instances of.
      *
@@ -301,7 +307,7 @@ class CarouselTableMap extends TableMap
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
         // populate the object(s)
@@ -341,6 +347,7 @@ class CarouselTableMap extends TableMap
             $criteria->addSelectColumn(CarouselTableMap::FILE);
             $criteria->addSelectColumn(CarouselTableMap::POSITION);
             $criteria->addSelectColumn(CarouselTableMap::URL);
+            $criteria->addSelectColumn(CarouselTableMap::VISIBLE);
             $criteria->addSelectColumn(CarouselTableMap::CREATED_AT);
             $criteria->addSelectColumn(CarouselTableMap::UPDATED_AT);
         } else {
@@ -348,6 +355,7 @@ class CarouselTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.FILE');
             $criteria->addSelectColumn($alias . '.POSITION');
             $criteria->addSelectColumn($alias . '.URL');
+            $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }

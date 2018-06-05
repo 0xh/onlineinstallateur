@@ -23,7 +23,7 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
-abstract class Carousel implements ActiveRecordInterface
+abstract class Carousel implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -82,6 +82,12 @@ abstract class Carousel implements ActiveRecordInterface
     protected $url;
 
     /**
+     * The value for the visible field.
+     * @var        int
+     */
+    protected $visible;
+
+    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -108,13 +114,13 @@ abstract class Carousel implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     // i18n behavior
-
+    
     /**
      * Current locale
      * @var        string
      */
     protected $currentLocale = 'en_US';
-
+    
     /**
      * Current translation objects
      * @var        array[ChildCarouselI18n]
@@ -387,7 +393,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -398,7 +404,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Get the [file] column value.
-     *
+     * 
      * @return   string
      */
     public function getFile()
@@ -409,7 +415,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     *
+     * 
      * @return   int
      */
     public function getPosition()
@@ -420,7 +426,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Get the [url] column value.
-     *
+     * 
      * @return   string
      */
     public function getUrl()
@@ -430,8 +436,19 @@ abstract class Carousel implements ActiveRecordInterface
     }
 
     /**
+     * Get the [visible] column value.
+     * 
+     * @return   int
+     */
+    public function getVisible()
+    {
+
+        return $this->visible;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -451,7 +468,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -471,7 +488,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
      */
@@ -492,7 +509,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Set the value of [file] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
      */
@@ -513,7 +530,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
      */
@@ -534,7 +551,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Set the value of [url] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
      */
@@ -554,8 +571,29 @@ abstract class Carousel implements ActiveRecordInterface
     } // setUrl()
 
     /**
+     * Set the value of [visible] column.
+     * 
+     * @param      int $v new value
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setVisible($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->visible !== $v) {
+            $this->visible = $v;
+            $this->modifiedColumns[CarouselTableMap::VISIBLE] = true;
+        }
+
+
+        return $this;
+    } // setVisible()
+
+    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
@@ -576,7 +614,7 @@ abstract class Carousel implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Carousel\Model\Carousel The current object (for fluent API support)
@@ -644,13 +682,16 @@ abstract class Carousel implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CarouselTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
             $this->url = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CarouselTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CarouselTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->visible = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CarouselTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CarouselTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CarouselTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -663,7 +704,7 @@ abstract class Carousel implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = CarouselTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = CarouselTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \Carousel\Model\Carousel object", 0, $e);
@@ -914,6 +955,9 @@ abstract class Carousel implements ActiveRecordInterface
         if ($this->isColumnModified(CarouselTableMap::URL)) {
             $modifiedColumns[':p' . $index++]  = 'URL';
         }
+        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) {
+            $modifiedColumns[':p' . $index++]  = 'VISIBLE';
+        }
         if ($this->isColumnModified(CarouselTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
@@ -931,22 +975,25 @@ abstract class Carousel implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'FILE':
+                    case 'FILE':                        
                         $stmt->bindValue($identifier, $this->file, PDO::PARAM_STR);
                         break;
-                    case 'POSITION':
+                    case 'POSITION':                        
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'URL':
+                    case 'URL':                        
                         $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
-                    case 'CREATED_AT':
+                    case 'VISIBLE':                        
+                        $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
+                        break;
+                    case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
+                    case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1024,9 +1071,12 @@ abstract class Carousel implements ActiveRecordInterface
                 return $this->getUrl();
                 break;
             case 4:
-                return $this->getCreatedAt();
+                return $this->getVisible();
                 break;
             case 5:
+                return $this->getCreatedAt();
+                break;
+            case 6:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1062,14 +1112,15 @@ abstract class Carousel implements ActiveRecordInterface
             $keys[1] => $this->getFile(),
             $keys[2] => $this->getPosition(),
             $keys[3] => $this->getUrl(),
-            $keys[4] => $this->getCreatedAt(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[4] => $this->getVisible(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->collCarouselI18ns) {
                 $result['CarouselI18ns'] = $this->collCarouselI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1121,9 +1172,12 @@ abstract class Carousel implements ActiveRecordInterface
                 $this->setUrl($value);
                 break;
             case 4:
-                $this->setCreatedAt($value);
+                $this->setVisible($value);
                 break;
             case 5:
+                $this->setCreatedAt($value);
+                break;
+            case 6:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1154,8 +1208,9 @@ abstract class Carousel implements ActiveRecordInterface
         if (array_key_exists($keys[1], $arr)) $this->setFile($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setPosition($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setUrl($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[4], $arr)) $this->setVisible($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
     }
 
     /**
@@ -1171,6 +1226,7 @@ abstract class Carousel implements ActiveRecordInterface
         if ($this->isColumnModified(CarouselTableMap::FILE)) $criteria->add(CarouselTableMap::FILE, $this->file);
         if ($this->isColumnModified(CarouselTableMap::POSITION)) $criteria->add(CarouselTableMap::POSITION, $this->position);
         if ($this->isColumnModified(CarouselTableMap::URL)) $criteria->add(CarouselTableMap::URL, $this->url);
+        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) $criteria->add(CarouselTableMap::VISIBLE, $this->visible);
         if ($this->isColumnModified(CarouselTableMap::CREATED_AT)) $criteria->add(CarouselTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(CarouselTableMap::UPDATED_AT)) $criteria->add(CarouselTableMap::UPDATED_AT, $this->updated_at);
 
@@ -1239,6 +1295,7 @@ abstract class Carousel implements ActiveRecordInterface
         $copyObj->setFile($this->getFile());
         $copyObj->setPosition($this->getPosition());
         $copyObj->setUrl($this->getUrl());
+        $copyObj->setVisible($this->getVisible());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
@@ -1416,7 +1473,7 @@ abstract class Carousel implements ActiveRecordInterface
     {
         $carouselI18nsToDelete = $this->getCarouselI18ns(new Criteria(), $con)->diff($carouselI18ns);
 
-
+        
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -1533,6 +1590,7 @@ abstract class Carousel implements ActiveRecordInterface
         $this->file = null;
         $this->position = null;
         $this->url = null;
+        $this->visible = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1579,7 +1637,7 @@ abstract class Carousel implements ActiveRecordInterface
     }
 
     // timestampable behavior
-
+    
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -1588,12 +1646,12 @@ abstract class Carousel implements ActiveRecordInterface
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[CarouselTableMap::UPDATED_AT] = true;
-
+    
         return $this;
     }
 
     // i18n behavior
-
+    
     /**
      * Sets the locale for translations
      *
@@ -1604,10 +1662,10 @@ abstract class Carousel implements ActiveRecordInterface
     public function setLocale($locale = 'en_US')
     {
         $this->currentLocale = $locale;
-
+    
         return $this;
     }
-
+    
     /**
      * Gets the locale for translations
      *
@@ -1617,7 +1675,7 @@ abstract class Carousel implements ActiveRecordInterface
     {
         return $this->currentLocale;
     }
-
+    
     /**
      * Returns the current translation for a given locale
      *
@@ -1632,7 +1690,7 @@ abstract class Carousel implements ActiveRecordInterface
                 foreach ($this->collCarouselI18ns as $translation) {
                     if ($translation->getLocale() == $locale) {
                         $this->currentTranslations[$locale] = $translation;
-
+    
                         return $translation;
                     }
                 }
@@ -1648,10 +1706,10 @@ abstract class Carousel implements ActiveRecordInterface
             }
             $this->addCarouselI18n($translation);
         }
-
+    
         return $this->currentTranslations[$locale];
     }
-
+    
     /**
      * Remove the translation for a given locale
      *
@@ -1676,10 +1734,10 @@ abstract class Carousel implements ActiveRecordInterface
                 break;
             }
         }
-
+    
         return $this;
     }
-
+    
     /**
      * Returns the current translation
      *
@@ -1690,124 +1748,124 @@ abstract class Carousel implements ActiveRecordInterface
     {
         return $this->getTranslation($this->getLocale(), $con);
     }
-
-
+    
+    
         /**
          * Get the [alt] column value.
-         *
+         * 
          * @return   string
          */
         public function getAlt()
         {
         return $this->getCurrentTranslation()->getAlt();
     }
-
-
+    
+    
         /**
          * Set the value of [alt] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Carousel\Model\CarouselI18n The current object (for fluent API support)
          */
         public function setAlt($v)
         {    $this->getCurrentTranslation()->setAlt($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [title] column value.
-         *
+         * 
          * @return   string
          */
         public function getTitle()
         {
         return $this->getCurrentTranslation()->getTitle();
     }
-
-
+    
+    
         /**
          * Set the value of [title] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Carousel\Model\CarouselI18n The current object (for fluent API support)
          */
         public function setTitle($v)
         {    $this->getCurrentTranslation()->setTitle($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [description] column value.
-         *
+         * 
          * @return   string
          */
         public function getDescription()
         {
         return $this->getCurrentTranslation()->getDescription();
     }
-
-
+    
+    
         /**
          * Set the value of [description] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Carousel\Model\CarouselI18n The current object (for fluent API support)
          */
         public function setDescription($v)
         {    $this->getCurrentTranslation()->setDescription($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [chapo] column value.
-         *
+         * 
          * @return   string
          */
         public function getChapo()
         {
         return $this->getCurrentTranslation()->getChapo();
     }
-
-
+    
+    
         /**
          * Set the value of [chapo] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Carousel\Model\CarouselI18n The current object (for fluent API support)
          */
         public function setChapo($v)
         {    $this->getCurrentTranslation()->setChapo($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [postscriptum] column value.
-         *
+         * 
          * @return   string
          */
         public function getPostscriptum()
         {
         return $this->getCurrentTranslation()->getPostscriptum();
     }
-
-
+    
+    
         /**
          * Set the value of [postscriptum] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Carousel\Model\CarouselI18n The current object (for fluent API support)
          */
         public function setPostscriptum($v)
         {    $this->getCurrentTranslation()->setPostscriptum($v);
-
+    
         return $this;
     }
 

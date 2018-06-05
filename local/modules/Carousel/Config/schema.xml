@@ -13,6 +13,7 @@
         <column name="title" size="255" type="VARCHAR" />
         <column name="description" type="CLOB" />
         <column name="chapo" type="LONGVARCHAR" />
+        <column name="visible" required="true" type="TINYINT" />
         <column name="postscriptum" type="LONGVARCHAR" />
         <behavior name="timestampable" />
         <behavior name="i18n">

@@ -98,14 +98,4 @@ class Carousel extends BaseCarousel implements FileModelInterface
         return CarouselQuery::create();
     }
 
-    /**
-     * @param  bool $visible true if the file is visible, false otherwise
-     * @return FileModelInterface
-     */
-    public function setVisible($visible)
-    {
-        // Not implemented
-
-        return $this;
-    }
 }
