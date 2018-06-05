@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `carousel`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `file` VARCHAR(255),
     `position` INTEGER,
+    `visible` TINYINT(4),
     `url` VARCHAR(255),
     `created_at` DATETIME,
     `updated_at` DATETIME,

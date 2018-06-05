@@ -19,7 +19,7 @@ use Propel\Runtime\Exception\PropelException;
 /**
  * Base class that represents a query for the 'carousel_i18n' table.
  *
- *
+ * 
  *
  * @method     ChildCarouselI18nQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCarouselI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
@@ -67,7 +67,7 @@ use Propel\Runtime\Exception\PropelException;
  */
 abstract class CarouselI18nQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Carousel\Model\Base\CarouselI18nQuery object.
      *
@@ -153,8 +153,8 @@ abstract class CarouselI18nQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, LOCALE, ALT, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM carousel_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);            
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -622,10 +622,10 @@ abstract class CarouselI18nQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         CarouselI18nTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             CarouselI18nTableMap::clearRelatedInstancePool();
             $con->commit();

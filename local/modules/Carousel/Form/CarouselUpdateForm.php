@@ -53,7 +53,25 @@ class CarouselUpdateForm extends BaseForm
                         )
                     ]
                 ]
-            )->add(
+                )->add(
+                    'visible' . $id,
+                    'text',
+                    [
+                        'label' => $this->translator->trans('Image visibility in carousel', [], Carousel::DOMAIN_NAME),
+                        'label_attr' => [
+                            'for' => 'visible' . $id
+                        ],
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => $this->translator->trans(
+                                'Image visibility in carousel',
+                                [],
+                                Carousel::DOMAIN_NAME
+                                )
+                        ]
+                    ]
+                    )
+            ->add(
                 'alt' . $id,
                 'text',
                 [

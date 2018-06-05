@@ -53,11 +53,6 @@
 
                         {loop name="carousel.image" type="carousel" width="550" height="200" resize_mode="borders" backend_context="1" lang="$edit_language_id"}
 
-                        {* Not yet implemented *}
-                        {form_field field="position{$ID}"}
-                            <input name="{$name}" value={$POSITION}>
-                        {/form_field}
-
                         <div class="well well-sm">
                             <div class="row">
                                 <div class="col-md-6">
@@ -72,6 +67,14 @@
                                             <i class="glyphicon glyphicon-trash"></i> {intl d='carousel.bo.default' l='Remove this image'}
                                         </a>
                                     </div>
+                        {form_field field="position{$ID}"}
+                        <p>Position</p>
+                            <input name="{$name}" value={$POSITION}>
+                        {/form_field}
+						{form_field field="visible{$ID}"}
+						<p>Visible</p>
+                            <input name="{$name}" value={$VISIBLE}>
+                        {/form_field}
                                 </div>
 
                                 <div class="col-md-6">
