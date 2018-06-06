@@ -311,13 +311,13 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                     <div class="container">
 
                         <div class="banner row banner-col-3">
-                            <a href="versandkosten.html">
+                            <a href="{url path="/versandkosten.html"}">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span>
                                 <div><strong>{intl l="VERSANDKOSTEN UND LIEFERBEDINGUNGEN"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos! Die Standartlieferung erfolgt innerhalb von 1-3 Werktagen. Abholung nach Bestellung möglich."}</small></div>
                                 </div>
                             </a>
-                            <a href="zahlungsarten.html">
+                            <a href="{url path="/zahlungsarten.html"}">
                                 <div class="col col-sm-4">
                                     <span class="shopicon shop-bezahlung highlightcolor"></span>
                                     <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
