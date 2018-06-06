@@ -207,7 +207,7 @@
 						    </tr>
 					    {/if}
 					    <tr>
-						{if !$QUANTITY || $fulfilment_center_active == "false"}
+						{if $QUANTITY <= 0 || $fulfilment_center_active == "false"}
 						    <td class="highlight" colspan="2">
 						       {hook name="product.details-bottom" product={$ID}}               
 									{if $service_category != #services_category_id#}
@@ -261,7 +261,7 @@
 <span class="availibity-label sr-only">{intl l="Availability"}: </span>
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 	                        
-	                        {if $QUANTITY && $fulfilment_center_active != "false"}
+	                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
                     				<span>{intl l='Can be shipped immediately'}</span>
                     				{else}
                           
