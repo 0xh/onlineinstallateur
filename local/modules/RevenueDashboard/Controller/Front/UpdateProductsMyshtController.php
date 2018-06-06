@@ -157,7 +157,8 @@ class UpdateProductsMyshtController extends BaseFrontController {
 
                 $resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
 
-                $price = $response["data"][0]["aktpreis"];
+//                $price = $response["data"][0]["aktpreis"];
+                $price = $resNettoRabatt["netto"];
                 $discount = $resNettoRabatt["rabatt"];
                 
                 $this->updateStockForMysht($idPartner, $prodId, $price, $discount);
