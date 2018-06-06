@@ -37,6 +37,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
     const MYSHT_IMAGES_FILE = 'exportImageDataMysht';
     protected $logFilePath = THELIA_LOG_DIR . DS . "export-data-from-mysht";
     protected $logFilePathMyShtProductImport = THELIA_LOG_DIR . DS . "mysht-generic-product-import.txt";
+    
     public function exportAllProducts() {
         $max_time = ini_get("max_execution_time");
         ini_set('max_execution_time', 0);
@@ -84,6 +85,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
         ini_set('max_execution_time', $max_time);
         return $this->render("export-data-mysht");
     }
+    
     public function export() {
         if ($this->getRequest()->get("idartikels")) {
             /** @var Session $session */
