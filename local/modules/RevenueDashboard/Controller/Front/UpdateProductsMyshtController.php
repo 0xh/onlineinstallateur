@@ -50,7 +50,7 @@ class UpdateProductsMyshtController extends BaseFrontController {
         }
 
         $this->logout();
-        
+
         return $this->generateRedirect('/admin/module/revenue-wholesale-partner');
     }
 
@@ -121,9 +121,9 @@ class UpdateProductsMyshtController extends BaseFrontController {
 
         $curl = curl_init();
         $searchIdArtikel = $idartikel;
-
+        
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=$searchIdArtikel",
+            CURLOPT_URL => "https://www.mysht.at/21069_DE.json?q=".$searchIdArtikel,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -137,7 +137,7 @@ class UpdateProductsMyshtController extends BaseFrontController {
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile,
         ));
-
+        
         $response = curl_exec($curl);
         $err = curl_error($curl);
 
@@ -153,6 +153,7 @@ class UpdateProductsMyshtController extends BaseFrontController {
             }
 
             if (isset($response["data"]) && $response["data"]) {
+                if($this->checkResult($searchIdArtikel, $response["data"][0]["MegabildNr"])){
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel response: " . json_encode($response));
 
                 $resNettoRabatt = $this->getNettoRabatt($response["data"][0]["MegabildNr"], $idartikel);
@@ -163,13 +164,62 @@ class UpdateProductsMyshtController extends BaseFrontController {
                 
                 $this->updateStockForMysht($idPartner, $prodId, $price, $discount);
                 return $response["data"][0]["MegabildNr"];
-            } else {
+                } else {
+                    $this->setLogger()->error("getArtNr - idartikel = ".$idartikel." and megabildnr ".$response["data"][0]["MegabildNr"]." was not found in the first response ");
+                    return array(0 => @$response["servererror"]);
+                }
+            }else {
                 $this->setLogger()->error("getArtNr - idartikel = $idartikel servererror: " . json_encode($response));
                 return array(0 => @$response["servererror"]);
             }
         }
     }
 
+    protected function checkResult($artikelnr,$megabildnr){
+      //  $this->logout();
+      //  $this->login();
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://www.mysht.at/21065_DE?megabildnr=".$megabildnr,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+                "content-type: application/x-www-form-urlencoded",
+            ),
+            CURLOPT_COOKIEFILE => $this->cookiefile,
+            CURLOPT_COOKIEJAR => $this->cookiefile,
+        ));
+        $this->setLogger()->error(" checking megabildnr ".$megabildnr);
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        //var_dump($response);
+        $response = json_decode($response, true);
+       
+        
+      //  var_dump(htmlspecialchars($response));
+    //    var_dump($response["detaildaten"][0]["WerkNr"]);
+        
+        $this->setLogger()->error("artikelnr " . $artikelnr. " and werknr ".$response["detaildaten"][0]["WerkNr"]." must be the same");
+        if ($err) {
+            $this->setLogger()->error("getArtNr - cURL Error #: " . $err);
+        } else {
+            if($response["detaildaten"][0]["WerkNr"] == $artikelnr){
+                $this->setLogger()->error("ArtikelNr ".$artikelnr." found in megabild site ".$megabildnr);
+                return true;
+            }
+            
+        }
+        
+        return false;
+    }
+    
     protected function getNettoRabatt($artnr, $idartikel) {
         $curl = curl_init();
 
