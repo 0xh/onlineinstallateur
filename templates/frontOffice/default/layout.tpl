@@ -417,15 +417,15 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
                             </div>
                             <nav class="nav-footer col-lg-9" role="navigation">
                                 <ul class="list-unstyled list-inline">
-                                	<li><a href="/presse.html">Presse</a></li>
-                                	<li><a href="/faq">Häufig gestellte Fragen (FAQ)</a></li>
-                                    <li><a href="/agb.html">AGB</a></li>
-                                    <li><a href="/datenschutz.html">Datenschutz</a></li>
-                                    <li><a href="/impressum">Impressum</a></li>
-                                    <li><a href="/widerrufsrecht.html">Widerrufsrecht</a></li>
-                                    <li><a href="/wir-ueber-uns.html">Über uns</a></li>
-                               		<!--li><a href="/widerruf">Widerrufsrerklärung</a></li--> 
-                                    <!--li><a href="/faq">Häufig gestellte Fragen (FAQ)</a></li-->
+                                	<li><a href="{url path="/presse.html"}">Presse</a></li>
+                                	<li><a href="{url path="/faq"}">Häufig gestellte Fragen (FAQ)</a></li>
+                                    <li><a href="{url path="/agb.html"}">AGB</a></li>
+                                    <li><a href="{url path="/datenschutz.html"}">Datenschutz</a></li>
+                                    <li><a href="{url path="/impressum"}">Impressum</a></li>
+                                    <li><a href="{url path="/widerrufsrecht.html"}">Widerrufsrecht</a></li>
+                                    <li><a href="{url path="/wir-ueber-uns.html"}">Über uns</a></li>
+                               		<!--li><a href="{url path="/widerruf"}">Widerrufsrerklärung</a></li--> 
+                                    <!--li><a href="{url path="/faq"}">Häufig gestellte Fragen (FAQ)</a></li-->
                                 </ul>
                                 <!--ul class="list-unstyled list-inline">
                                     {$folder_information={config key="information_folder_id"}}
