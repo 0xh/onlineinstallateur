@@ -1,0 +1,127 @@
+
+{javascripts file='assets/js/libs/underscore-min.js'}
+<script src="{$asset_url}"></script>
+{/javascripts}
+
+<script type="text/javascript">
+
+(function ($) {
+
+    var config = {
+        'urlAdd': '{url path="/admin/module/customdelivery/save"}',
+        'urlDelete': '{url path="/admin/module/customdelivery/delete"}',
+        'urlSave': '{url path="/admin/module/customdelivery/save"}'
+    };
+
+    {literal}
+    $(document).ready(function () {
+
+        var tpl = _.template($("#tpl-slice").html());
+
+        var showMessage = function showMessage(message) {
+            $('#custom_delivery_dialog')
+                .find('.modal-body')
+                    .html(message)
+                .end()
+                .modal("show");
+        };
+
+        var getSliceData = function getSliceData($slice) {
+            var data = {
+                id: $slice.data("id"),
+                area: $slice.data("area"),
+                price: $slice.find(".js-slice-price").first().val(),
+                priceMax: $slice.find(".js-slice-price-max").first().val(),
+                weightMax: $slice.find(".js-slice-weight-max").first().val()
+            };
+
+            return data;
+        };
+
+        // add new slice
+        $('.js-slice-add').on('click', function(){
+            var $slice = $(this).parents('tr').first();
+            var data = getSliceData($slice);
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: data,
+                url: config.urlAdd
+            }).done(function(data, textStatus, jqXHR){
+                var sliceHtml = '';
+                if (data.success) {
+                    // reset form
+                    $slice.find('input').val('');
+                    // add slice
+                    sliceHtml = tpl(data.slice);
+
+                    $(sliceHtml).insertBefore($slice);
+                } else {
+                    showMessage(data.message.join('<br>'));
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                showMessage(textStatus);
+            });
+        });
+
+        // save new slice
+        $('#slices').on('click', '.js-slice-save', function(){
+            var $slice = $(this).parents('tr').first();
+            var data = getSliceData($slice);
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: data,
+                url: config.urlAdd
+            }).done(function(data, textStatus, jqXHR){
+                if (!data.success) {
+                    showMessage(data.message.join('<br>'));
+                } else {
+                    var sliceHtml = tpl(data.slice);
+                    $(sliceHtml).insertBefore($slice);
+                    $slice.remove();
+                    // $slice.find('.js-slice-save').removeClass('btn-success');
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                showMessage(textStatus);
+            });
+        });
+
+        $('#slices').on('change', '.js-slice input', function() {
+            $(this).parents('tr').first().find('.js-slice-save').addClass('btn-success');
+        });
+
+            // delete new slice
+        $('#slices').on('click', '.js-slice-delete', function(){
+            var $slice = $(this).parents('tr').first();
+            var data = getSliceData($slice);
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: data,
+                url: config.urlDelete
+            }).done(function(data, textStatus, jqXHR){
+                var sliceHtml = '';
+                if (data.success) {
+                    $slice.remove();
+                } else {
+                    showMessage(data.message);
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                showMessage(textStatus);
+            });
+        });
+
+        // add new slice
+        $('.js-slice input').on('change', function(){
+
+        });
+
+    });
+    {/literal}
+})(jQuery);
+
+</script>
