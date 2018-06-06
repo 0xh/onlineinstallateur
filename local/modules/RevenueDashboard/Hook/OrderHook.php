@@ -23,7 +23,7 @@ class OrderHook extends BaseHook {
 
         $orderId = $event->getArgument('order_id');
         $prodId = $event->getArgument('order_product_id');
-        $price = number_format($event->getArgument('price'), 2, '.', '');
+        $price = number_format($event->getArgument('price')*10, 2, '.', '');
 
         $arrPartner = $this->getPriceForPartner($prodId, $orderId);
         $event->add(
@@ -76,7 +76,7 @@ class OrderHook extends BaseHook {
                 "partner_selected" => $partner_selected === -1 ? $partner_selected : $value->getVirtualColumn("partner_selected"),
                 "service_price" => $value->getVirtualColumn("service_price"),
                 "discount" => $value->getVirtualColumn("discount"),
-                "purchase_price" => $value->getPrice() - ($value->getPrice() * $value->getVirtualColumn("discount") / 100)
+                "purchase_price" => $value->getPrice()
             ));
         }
 
