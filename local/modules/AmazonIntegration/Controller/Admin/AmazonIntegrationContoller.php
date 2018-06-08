@@ -268,7 +268,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
                         // Get products for each order from amazon
                         $amazonOrderId = $order->AmazonOrderId;
-                        // $amazonOrderId = '305-3292380-9658727';
+                        /*$amazonOrderId = '405-7252141-0044339';*/
 
                         $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
@@ -283,6 +283,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
                         if (isset($productsOrderItem->OrderItem)) {
                             $orderProduct = $productsOrderItem->OrderItem;
+                            
+                            $amazonShippingTax = 0;
                             // More items for an order
                             if (is_array($orderProduct)) {
                                 $orderProducts = $orderProduct;
@@ -291,14 +293,31 @@ class AmazonIntegrationContoller extends BaseAdminController {
                                     if (isset($orderProduct->ShippingPrice->Amount))
                                         $totalPostage += $orderProduct->ShippingPrice->Amount;
 
-                                    $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
+                                    if ( isset($orderProduct->ItemTax) && $orderProduct->ItemTax->Amount != 0 ) {
+                                        $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId, $orderProduct->ItemTax->Amount);
+                                    }
+                                     else{
+                                        $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);  
+                                    }
+
+                                    if( isset( $orderProduct->ShippingTax ) && $orderProduct->ShippingTax->Amount != 0 )
+                                        $amazonShippingTax += $orderProduct->ShippingTax->Amount;
                                 }
                             }
                             else {
                                 if (isset($orderProduct->ShippingPrice->Amount))
                                     $totalPostage = $orderProduct->ShippingPrice->Amount;
 
-                                $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
+                                if ( isset($productsOrderItem->OrderItem->ItemTax) && $productsOrderItem->OrderItem->ItemTax->Amount != 0 ) {
+                                    $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId, $productsOrderItem->OrderItem->ItemTax->Amount);
+
+                                }else{
+                                    $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
+                                }
+
+                                if ( isset( $orderProduct->ShippingTax )  && $orderProduct->ShippingTax->Amount != 0 ) {
+                                    $amazonShippingTax = $orderProduct->ShippingTax->Amount;   
+                                }
                             }
                         }
 
@@ -308,9 +327,18 @@ class AmazonIntegrationContoller extends BaseAdminController {
                             $taxPostage = round(($totalPostage / 1.2) * 0.2, 2);
                         }
 
-                        $newOrder->setPostage($totalPostage)
+                        if ( $amazonShippingTax != 0 ) {
+                            
+                            $newOrder->setPostage($totalPostage)
+                                ->setPostageTax($amazonShippingTax)
+                                ->save($con);
+                        }
+                        else
+                        {   
+                            $newOrder->setPostage($totalPostage)
                                 ->setPostageTax($taxPostage)
                                 ->save($con);
+                        }
                     }
                 }
 
@@ -658,7 +686,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
         $amazonOrder->save($con);
     }
 
-    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId) {
+    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId, $amazonAmount = null) {
 
         $productId = ProductAmazonQuery::create()
                 ->select('product_id')
@@ -716,14 +744,27 @@ class AmazonIntegrationContoller extends BaseAdminController {
             $unitPrice = 1;
         }
 
-        if ($countryId == '5') {
-            $tax = round(($unitPrice / 1.19) * 0.19, 2);
-            $priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '19%  VAT';
-        } else {
-            $tax = round(($unitPrice / 1.2) * 0.2, 2);
-            $priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '20%  VAT';
+        if( isset( $amazonAmount ) ){
+            $tax = $amazonAmount;
+            if ($countryId == '5') {
+                $priceWithoutTax = $unitPrice - $tax;
+                $taxTitle = '19%  VAT';
+            } else {
+                $priceWithoutTax = $unitPrice - $tax;
+                $taxTitle = '20%  VAT';
+            }
+            /*echo "Din Amazon";*/
+        }
+        else{
+            if ($countryId == '5') {
+                $tax = round(($unitPrice / 1.19) * 0.19, 2);
+                $priceWithoutTax = $unitPrice - $tax;
+                $taxTitle = '19%  VAT';
+            } else {
+                $tax = round(($unitPrice / 1.2) * 0.2, 2);
+                $priceWithoutTax = $unitPrice - $tax;
+                $taxTitle = '20%  VAT';
+            }
         }
 
         $newOrderProduct = new OrderProduct();
