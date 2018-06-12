@@ -10,9 +10,12 @@ namespace BackOffice\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\HttpFoundation\Session\Session;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Log\Tlog;
+use Thelia\Model\Map\ProductTableMap;
+use Thelia\Model\ProductQuery;
 use ZipArchive;
 use const DS;
 use const THELIA_LOCAL_DIR;
@@ -63,7 +66,7 @@ class ExportDataFromMyshtController extends BaseAdminController {
         $session->set(self::MYSHT_IMAGES_FILE, $this->imageZip);
         $this->initCsvFile($this->csvFilename);
         $this->logout();
-        $idartikels = $this->getProductsRefWitoutBrand();
+        $idartikels = $this->getAllProductsByRef();
         $files = scandir($this->imageLocation);
         foreach ($files as $file) {
             @unlink($this->imageLocation . $file);
@@ -91,6 +94,17 @@ class ExportDataFromMyshtController extends BaseAdminController {
         $this->logout();
         ini_set('max_execution_time', $max_time);
         return $this->render("export-data-mysht");
+    }
+
+    private function getAllProductsByRef() {
+        $prods = ProductQuery::create()
+                ->where(ProductTableMap::EXTERN_ID . " IS NOT NULL and " . ProductTableMap::VISIBLE . " = 1");
+        $arrayProds = array();
+        foreach ($prods as $prod) {
+            array_push($arrayProds, substr($prod->getRef(), 3));
+        }
+
+        return $arrayProds;
     }
 
     public function export() {
