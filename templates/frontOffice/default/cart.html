@@ -108,7 +108,7 @@
 	                                        </dt>
 	                                         <dd>
 	                                         {loop type="product" name="the-loop-name" id={$PRODUCT_ID}}
-	                                         	{if $STOCK}
+	                                         	{if $QUANTITY > 0}
 	                                         		{intl l='Can be shipped immediately'}
 	                                         	{else}
 	                                    			{hook name="product.delivery-delay" product={$PRODUCT_ID}}
