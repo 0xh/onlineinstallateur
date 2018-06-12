@@ -107,11 +107,13 @@
                             <div class="product-options">
                                 <dl class="dl-horizontal">
                                     <dt>{intl l="Available"} :</dt>
-                                    {if $STOCK > 0}
+                                    {loop type="product" name="the-loop-name" id={$PRODUCT_ID}}
+                                    {if $QUANTITY > 0}
                                         <dd>{intl l="In Stock"}</dd>
                                     {else}
                                         <dd>{intl l="Out of Stock"}</dd>
                                     {/if}
+                                    {/loop}
                                     <dt>{intl l="No."}</dt>
                                     <dd>{$REF}</dd>
                                     {loop type="attribute_combination" name="product_options" product_sale_elements="$PRODUCT_SALE_ELEMENTS_ID"}
