@@ -337,13 +337,13 @@ class BackController extends BaseAdminController
     	$pseQuery = ProductSaleElementsQuery::create();
     	$pseQuery
     	->useProductQuery()
-    	->filterByBrandId(93)
+    	//->filterByBrandId(93)
     	->filterByVisible(1)
     	->endUse()
     	;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    	->limit(5)
+    	//->limit(5)
     	->find();
     	$this->getLogger()->error("starting crawl-job for amazon");
     	
@@ -366,13 +366,13 @@ class BackController extends BaseAdminController
     	$pseQuery = ProductSaleElementsQuery::create();
     	$pseQuery
     		->useProductQuery()
-    		->filterByBrandId(93)
+    		//->filterByBrandId(93)
     		->filterByVisible(1)
     		->endUse()
     		;
     	$pseResults = $pseQuery->where('`product_sale_elements`.EAN_CODE ',Criteria::ISNOTNULL)
     	
-    	->limit(5)
+  //  	->limit(5)
     	->find();
     	$this->getLogger()->error("starting crawl-job for ");
     	$final = "\n";
@@ -387,7 +387,8 @@ class BackController extends BaseAdminController
     	//Tlog::getInstance()->error($final);
     	$final.= $this->crawlGoogleShoppingProduct($pseResult->getEanCode())."\n";
     	$final.= $this->crawlGeizhalsProduct($pseResult->getEanCode())."\n";
-    	//$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
+    	$final.= $this->crawlIdealoProduct($pseResult->getEanCode())."\n";
+    	//sleep(rand(100,500));
     	//usleep(250000)sleep(rand(100,500));
     	}
     	$this->getLogger()->error($final);
