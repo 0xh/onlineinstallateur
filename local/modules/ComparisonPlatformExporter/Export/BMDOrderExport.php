@@ -17,6 +17,8 @@ use Thelia\Model\Map\OrderStatusI18nTableMap;
 use Thelia\Model\Map\OrderStatusTableMap;
 use Thelia\Model\Map\OrderTableMap;
 use Thelia\Tools\I18n;
+use AmazonIntegration\Model\AmazonOrdersQuery;
+use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
 
 /**
  * Class BilligerProductExport
@@ -48,6 +50,8 @@ class BMDOrderExport extends AbstractExport
     		'delivery_address_TITLE' => 'steucod',
     		'delivery_address_COMPANY' => 'ebkennz',
     		'delivery_address_COUNTRY' => 'symbol',
+            'delivery_address_PHONE' => 'logistik',
+            'delivery_address_ADDRESS3' => 'amazon_id'
     ];
 
     /**
@@ -82,6 +86,27 @@ class BMDOrderExport extends AbstractExport
                 $processedData[$fieldAlias] = $data[$fieldName];
             }
         }
+        
+        $amazon_order = AmazonOrdersQuery::create()
+        ->addSelfSelectColumns()
+            ->useOrderQuery()
+            ->addAsColumn('`order_REF`','REF')
+            ->endUse()
+            ->where('REF'." = ?", $processedData['belegnr'],\PDO::PARAM_STR)
+        
+            ->findOne();
+            if($amazon_order != null){
+                if($amazon_order->getFulfillmentChannel() == "AFN")
+                    $processedData['logistik'] = "versand_deutschland";
+                else
+                    $processedData['logistik'] = "versand_oesterreich";
+            $processedData['amazon_id'] = $amazon_order->getId();
+            }
+            else {
+                $processedData['logistik'] = "versand_oesterreich";
+                $processedData['amazon_id'] = "keine_amazon_bestellung";
+            }
+        
         $processedData['mwst'] = "20";
         
         $fromDBVAT = round($processedData['steuer'],2,PHP_ROUND_HALF_UP);
@@ -189,7 +214,8 @@ class BMDOrderExport extends AbstractExport
 		$processedData['skontotage'] = "";
 		$processedData['steucod'] = "3";
 		$processedData['ebkennz'] = "";
-		$processedData['symbol'] = "AR";
+		//$processedData['symbol'] = "AR";
+
         
         return $processedData;
     }
