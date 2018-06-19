@@ -23,7 +23,7 @@ class OrderHook extends BaseHook {
 
         $orderId = $event->getArgument('order_id');
         $prodId = $event->getArgument('order_product_id');
-        $price = number_format($event->getArgument('price')*10, 2, '.', '');
+        $price = number_format($event->getArgument('price'), 2, '.', '');
 
         $arrPartner = $this->getPriceForPartner($prodId, $orderId);
         $event->add(
