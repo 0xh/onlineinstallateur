@@ -189,6 +189,27 @@ CREATE TABLE if not exists `amazon_product_category`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- amazon_financial_event_group
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `amazon_financial_event_group`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `financialEventGroupId` VARCHAR(45),
+    `processingStatus` VARCHAR(45),
+    `fundTransferStatus` VARCHAR(45),
+    `originalTotal` DECIMAL(16,2) DEFAULT 0.00,
+    `convertedTotal` DECIMAL(16,2) DEFAULT 0.00,
+    `fundTransferDate` DATETIME,
+    `traceId` VARCHAR(45),
+    `accountTail` VARCHAR(45),
+    `beginningBalance` DECIMAL(16,2) DEFAULT 0.00,
+    `financialEventGroupStart` DATETIME,
+    `financialEventGroupEnd` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- amazon_orders_version
 -- ---------------------------------------------------------------------
 

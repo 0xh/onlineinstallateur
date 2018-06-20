@@ -79,5 +79,10 @@
     <route id="send.products.to.amazon" path="/admin/module/amazonintegration/send-to-amazon">
         <default key="_controller">AmazonIntegration\Controller\Admin\SendProductToAmazonContoller::addProductsToAmazon</default>
     </route>
-
+    <route id="amazon.statements.save" path="/admin/module/amazonintegration/save-amazon-statemets">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationStatementsContoller::saveAmazonStatements</default>
+	</route>
+	<route id="amazon.financialeventsgroup.save" path="/admin/module/amazonintegration/save-amazon-financial-events">
+		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationStatementsContoller::saveAmazonListFinancialEventGroups</default>
+	</route>
 </routes>

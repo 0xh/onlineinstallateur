@@ -180,5 +180,19 @@
 	    </vendor>
     </table>
     
+    <table name="amazon_financial_event_group" namespace="AmazonIntegration\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="financialEventGroupId" phpName="FinancialEventGroupId" type="VARCHAR" size="45"/>
+        <column name="processingStatus" phpName="ProcessingStatus" type="VARCHAR" size="45"/>
+        <column name="fundTransferStatus" phpName="FundTransferStatus" type="VARCHAR" size="45"/>
+        <column name="originalTotal" phpName="OriginalTotal" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="convertedTotal" phpName="ConvertedTotal" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="fundTransferDate" phpName="FundTransferDate" type="TIMESTAMP"/>
+        <column name="traceId" phpName="TraceId" type="VARCHAR" size="45"/>
+        <column name="accountTail" phpName="AccountTail" type="VARCHAR" size="45"/>
+        <column name="beginningBalance" phpName="BeginningBalance" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
+        <column name="financialEventGroupStart" phpName="FinancialEventGroupStart" type="TIMESTAMP"/>
+        <column name="financialEventGroupEnd" phpName="FinancialEventGroupEnd" type="TIMESTAMP"/>
+    </table>
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>
