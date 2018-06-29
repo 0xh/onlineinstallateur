@@ -351,4 +351,12 @@ media screen and (min-width: 768px){
 	padding-left:15px
 
 }
+.btn-1{
+	background:#85ac37!important;
+	color:#000!important;
+}
+.btn-1:hover{
+	background:#85ac37!important;
+	color:#000!important;
+}
 
