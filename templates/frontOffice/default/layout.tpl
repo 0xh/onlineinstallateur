@@ -181,7 +181,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
             {hook name="main.header-top"}
 			<div class="main-header-top-bar">
 			<div class="container">
-			<span>KOSTENLOSER VERSAND</span>
+			<span>KOSTENLOSER VERSAND ab 50€</span>
 			 <div class="hotline" itemscope itemtype="http://schema.org/Store">
 			                   <span class="hotline-icon"> 
 					<span class="hotline-text" itemprop="telephone" content="{config key="hotline"}">{config key="hotline"}</span>
@@ -277,7 +277,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                     <div class="container">
                         <div class="col col-sm-12 lieferungbedienungen">
                                 <h6><strong>Alle Preise inkl. 20% MwSt.,<a href="{url path="/versandkosten.html"}"> zzgl. Versandkosten</a></strong></h6>  *Unverbindliche Preisangabe der Hersteller<br>
-                               <small><sup>1)</sup>Alle Lieferungen innerhalb Österreichs werden Versandkostenfrei geliefert  <!--Ab 300 EUR Warenwert versenden wir generell in einer Lieferung versandkostenfrei in folgende Länder : Österreich--> </small><br>
+                               <small><sup>1)</sup>Alle Lieferungen innerhalb Österreichs werden Versandkostenfrei ab 50€ geliefert</small><br>
                             	<small><sup>2)</sup>Produkte welche nicht von uns bezogen wurden, können nur nach Rücksprache montiert werden.</small><br>
                             	<small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                         	<small>Produktabbildung kann abweichen</small><br>
@@ -314,7 +314,7 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                             <a href="{url path="/versandkosten.html"}">
                                 <div class="col col-sm-4">
                                 <span class="shopicon shop-lieferung highlightcolor fa-flip-horizontal"></span>
-                                <div><strong>{intl l="VERSANDKOSTEN UND LIEFERBEDINGUNGEN"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos! Die Standartlieferung erfolgt innerhalb von 1-3 Werktagen. Abholung nach Bestellung möglich."}</small></div>
+                                <div><strong>{intl l="VERSANDKOSTEN UND LIEFERBEDINGUNGEN"}</strong></div> <div><br><small>{intl l="Der Versand der Ware ist innerhalb Österreichs Kostenlos ab 50€! Die Standartlieferung erfolgt innerhalb von 1-3 Werktagen. Abholung nach Bestellung möglich."}</small></div>
                                 </div>
                             </a>
                             <a href="{url path="/zahlungsarten.html"}">
