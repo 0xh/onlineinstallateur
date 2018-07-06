@@ -80,7 +80,9 @@ class ConfigureController extends BaseAdminController
             Tinymce::setConfigValue('custom_css', $data['custom_css']);
 
             // Save Custom CSS in default assets
-            $customCss = __DIR__ .DS.'..'.DS.'templates'.DS.'backOffice'.DS.'default'.DS.'assets'.DS.'css'.DS.'custom-css.less';
+            // $customCss = __DIR__ .DS.'..'.DS.'templates'.DS.'backOffice'.DS.'default'.DS.'assets'.DS.'css'.DS.'custom-css.less';
+
+            $customCss = THELIA_TEMPLATE_DIR.'frontOffice'.DS.'default'.DS.'assets'.DS.'dist'.DS.'css'.DS.'custom-tinymce.css';
 
             if (1 || false === file_put_contents($customCss, $data['custom_css'])) {
                 throw new TheliaProcessException(
