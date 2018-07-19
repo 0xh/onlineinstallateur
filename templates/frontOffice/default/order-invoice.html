@@ -128,7 +128,7 @@
                                 {else}
                                 {loop type="product" name="the-loop-name" id={$PRODUCT_ID}}
                                 	{if $QUANTITY > 0}
-                                	<p>{intl l='Can be shipped immediately'  d="fo.default"}</p>
+                                	<p>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"  d="fo.default"}</p>
                                 	{else}
                                 	<p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
                                 	{/if}
