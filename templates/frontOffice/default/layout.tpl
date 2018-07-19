@@ -62,6 +62,10 @@ web : http://www.hausfabrik.at
         <link rel="stylesheet" href="{$asset_url}">
     {/stylesheets}
 
+    {stylesheets file="assets/dist/css/custom-tinymce.css"}
+        <link href="{$asset_url}" rel="stylesheet" type="text/css" />
+    {/stylesheets}
+
     {*
      If you want to generate the CSS assets on the fly, just replace the stylesheet inclusion above by the following.
      Then, in your back-office, go to Configuration -> System Variables and set process_assets to 1.

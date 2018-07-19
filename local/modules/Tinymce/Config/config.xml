@@ -11,6 +11,10 @@
         </service>
     </services>
 
+    <commands>
+        <command class="Tinymce\Commands\TinymceImportCss"/>
+    </commands>
+
     <hooks>
         <hook id="tinymce.hook" class="Tinymce\Hook\HookManager">
             <tag name="hook.event_listener" event="module.configuration" type="back" templates="render:module_configuration.html" />

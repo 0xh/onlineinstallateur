@@ -41,6 +41,8 @@ return [
     'Brands' => 'Marken',
 	'Can be picked up immediately' => 'Sofort abholbar',
 	'Can be shipped immediately' => 'Sofort lieferbar',
+    'Can be picked up shortly' => 'Kurzfristig abholbar',
+    'Can be shipped shortly' => 'Kurzfristig lieferbar',
     'Cancel' => 'Abbrechen',
     'Cart' => 'Warenkorb',
     'Categories' => 'Kategorien',

@@ -61,7 +61,7 @@
                             {/loop}
                          {else}
                          	{if $STOCK}
-                         		<p><strong>{intl l='Can be shipped immediately'}</strong></p>
+                         		<p><strong>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}</strong></p>
                          	{else}
                          		<p><small><strong>Lieferung: </strong>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</small></p>
                          	{/if}
