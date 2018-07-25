@@ -325,7 +325,12 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
                                 <div class="col col-sm-4">
                                     <span class="shopicon shop-bezahlung highlightcolor"></span>
                                     <div><strong>{intl l="BEZAHLUNG"} </strong></div><div><br><small>{intl l="Folgende Zahlungsmethoden stehen Ihnen zur Auswahl:"}</small></div>
-                                    <div>
+                                    <div class="contact-bank-information" style="font-size:14px;">
+										<p>{intl l="{config key="BANKNAME"}" }</p>
+										<p>{intl l="{config key="BIC"}" }</p>
+										<p>{intl l="{config key="IBAN"}"}</p>
+									</div>
+									<div>
                                         <img src="{image file='assets/dist/img/paymentsystems/paypal.png'}" alt="paypal"/>
                                         <img src="{image file='assets/dist/img/paymentsystems/sofort.png'}" alt="sofort"/>
                                         <img src="{image file='assets/dist/img/paymentsystems/nachnahme.jpg'}" alt="nachnahme"/>
