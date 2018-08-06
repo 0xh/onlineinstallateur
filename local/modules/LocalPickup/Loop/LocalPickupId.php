@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*                                                                                   */
 /*      Thelia	                                                                     */
 /*                                                                                   */
@@ -17,11 +18,12 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/* 	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup\Loop;
+
 use LocalPickup\LocalPickup;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Element\BaseLoop;
@@ -34,15 +36,14 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
  * @package SoColissimo\Loop
  * @author Thelia <info@thelia.net>
  */
-class LocalPickupId extends BaseLoop implements ArraySearchLoopInterface
-{
+class LocalPickupId extends BaseLoop implements ArraySearchLoopInterface {
+
     /**
      * this method returns an array
      *
      * @return array
      */
-    public function buildArray()
-    {
+    public function buildArray() {
         return array(LocalPickup::getModCode());
     }
 
@@ -51,20 +52,18 @@ class LocalPickupId extends BaseLoop implements ArraySearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
-    {
+    public function parseResults(LoopResult $loopResult) {
         foreach ($loopResult->getResultDataCollection() as $id) {
             $loopResultRow = new LoopResultRow();
             $loopResult->addRow(
-                $loopResultRow->set('MODULE_ID', $id)
+                    $loopResultRow->set('MODULE_ID', $id)
             );
         }
 
         return $loopResult;
     }
 
-    protected function getArgDefinitions()
-    {
+    protected function getArgDefinitions() {
         return new ArgumentCollection();
     }
 

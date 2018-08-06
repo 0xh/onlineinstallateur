@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*                                                                                   */
 /*      Thelia	                                                                     */
 /*                                                                                   */
@@ -17,11 +18,12 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/* 	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup\Loop;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Element\BaseLoop;
@@ -37,22 +39,21 @@ use Thelia\Model\ConfigQuery;
  * @package LocalPickup\Loop
  * @author Thelia <info@thelia.net>
  */
-class LocalAddress extends BaseLoop implements ArraySearchLoopInterface
-{
+class LocalAddress extends BaseLoop implements ArraySearchLoopInterface {
+
     /**
      * this method returns an array
      *
      * @return array
      */
-    public function buildArray()
-    {
+    public function buildArray() {
         $id = $this->getId();
         /** @var \Thelia\Core\HttpFoundation\Session\Session $session */
         $session = $this->container->get('request')->getSession();
 
         $address = AddressQuery::create()
-            ->filterByCustomerId($session->getCustomerUser()->getId())
-            ->findPk($id);
+                ->filterByCustomerId($session->getCustomerUser()->getId())
+                ->findPk($id);
 
         if ($address === null) {
             throw new Exception("The requested address doesn't exist");
@@ -61,24 +62,24 @@ class LocalAddress extends BaseLoop implements ArraySearchLoopInterface
         /** @var \Thelia\Model\Customer $customer */
         $customer = $session->getCustomerUser();
 
-       return array(
-           'Id'=>'0',
-           'Label'=>$address->getLabel(),
-           'CustomerId'=>$address->getCustomerId(),
-           'TitleId'=>$address->getTitleId(),
-           'Company'=>ConfigQuery::read('store_name'),
-           'Firstname'=>$customer->getFirstname(),
-           'Lastname'=>$customer->getLastname(),
-           'Address1'=>ConfigQuery::read('store_address1'),
-           'Address2'=>ConfigQuery::read('store_address2'),
-           'Address3'=>ConfigQuery::read('store_address3'),
-           'Zipcode'=>ConfigQuery::read('store_zipcode'),
-           'City'=>ConfigQuery::read('store_city'),
-           'CountryId'=>ConfigQuery::read('store_country'),
-           'Phone'=>$address->getPhone(),
-           'Cellphone'=>$address->getCellphone(),
-           'IsDefault'=>'0'
-       );
+        return array(
+            'Id' => '0',
+            'Label' => $address->getLabel(),
+            'CustomerId' => $address->getCustomerId(),
+            'TitleId' => $address->getTitleId(),
+            'Company' => ConfigQuery::read('store_name'),
+            'Firstname' => $customer->getFirstname(),
+            'Lastname' => $customer->getLastname(),
+            'Address1' => ConfigQuery::read('store_address1'),
+            'Address2' => ConfigQuery::read('store_address2'),
+            'Address3' => ConfigQuery::read('store_address3'),
+            'Zipcode' => ConfigQuery::read('store_zipcode'),
+            'City' => ConfigQuery::read('store_city'),
+            'CountryId' => ConfigQuery::read('store_country'),
+            'Phone' => $address->getPhone(),
+            'Cellphone' => $address->getCellphone(),
+            'IsDefault' => '0'
+        );
     }
 
     /**
@@ -86,27 +87,26 @@ class LocalAddress extends BaseLoop implements ArraySearchLoopInterface
      *
      * @return LoopResult
      */
-    public function parseResults(LoopResult $loopResult)
-    {
+    public function parseResults(LoopResult $loopResult) {
         $address = $loopResult->getResultDataCollection();
         $loopResultRow = new LoopResultRow($address);
         $loopResultRow
-            ->set("ID", $address['Id'])
-            ->set("LABEL", $address['Label'])
-            ->set("CUSTOMER", $address['CustomerId'])
-            ->set("TITLE", $address['TitleId'])
-            ->set("COMPANY", $address['Company'])
-            ->set("FIRSTNAME", $address['Firstname'])
-            ->set("LASTNAME", $address['Lastname'])
-            ->set("ADDRESS1", $address['Address1'])
-            ->set("ADDRESS2", $address['Address2'])
-            ->set("ADDRESS3", $address['Address3'])
-            ->set("ZIPCODE", $address['Zipcode'])
-            ->set("CITY", $address['City'])
-            ->set("COUNTRY", $address['CountryId'])
-            ->set("PHONE", $address['Phone'])
-            ->set("CELLPHONE", $address['Cellphone'])
-            ->set("DEFAULT", $address['IsDefault'])
+                ->set("ID", $address['Id'])
+                ->set("LABEL", $address['Label'])
+                ->set("CUSTOMER", $address['CustomerId'])
+                ->set("TITLE", $address['TitleId'])
+                ->set("COMPANY", $address['Company'])
+                ->set("FIRSTNAME", $address['Firstname'])
+                ->set("LASTNAME", $address['Lastname'])
+                ->set("ADDRESS1", $address['Address1'])
+                ->set("ADDRESS2", $address['Address2'])
+                ->set("ADDRESS3", $address['Address3'])
+                ->set("ZIPCODE", $address['Zipcode'])
+                ->set("CITY", $address['City'])
+                ->set("COUNTRY", $address['CountryId'])
+                ->set("PHONE", $address['Phone'])
+                ->set("CELLPHONE", $address['Cellphone'])
+                ->set("DEFAULT", $address['IsDefault'])
         ;
         $loopResult->addRow($loopResultRow);
 
@@ -145,10 +145,9 @@ class LocalAddress extends BaseLoop implements ArraySearchLoopInterface
      *
      * @return \Thelia\Core\Template\Loop\Argument\ArgumentCollection
      */
-    protected function getArgDefinitions()
-    {
+    protected function getArgDefinitions() {
         return new ArgumentCollection(
-            Argument::createIntTypeArgument('id',null,true)
+                Argument::createIntTypeArgument('id', null, true)
         );
     }
 

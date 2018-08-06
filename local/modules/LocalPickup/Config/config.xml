@@ -3,13 +3,15 @@
 <config xmlns="http://thelia.net/schema/dic/config"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+    
     <forms>
-        <form name="localpickup.form" class="LocalPickup\Form\SetDeliveryPrice" />
+        <form name="add_local_pickup_location_form" class="LocalPickup\Form\AddPickupLocationForm" />
     </forms>
 
     <loops>
         <loop class="LocalPickup\Loop\LocalAddress" name="address.local" />
         <loop class="LocalPickup\Loop\LocalPickupId" name="localpickupid" />
+        <loop name="local_pickup" class="LocalPickup\Loop\LocalPickupLoop" />
     </loops>
 
     <hooks>

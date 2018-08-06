@@ -2,6 +2,7 @@
 
 
 namespace MultipleFullfilmentCenters\Form;
+
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;

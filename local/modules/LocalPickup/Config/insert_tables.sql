@@ -4,19 +4,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
--- local_pickup_shipping
--- ---------------------------------------------------------------------
-
-CREATE TABLE if not exists `local_pickup_shipping`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `price` DOUBLE NOT NULL,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- local_pickup
 -- ---------------------------------------------------------------------
 
@@ -26,9 +13,7 @@ CREATE TABLE if not exists `local_pickup`
     `address` VARCHAR(255),
     `gps_lat` DECIMAL(18,14),
     `gps_long` DECIMAL(18,14),
-    `hint` LONGTEXT,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
+    `hint` CLOB,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 

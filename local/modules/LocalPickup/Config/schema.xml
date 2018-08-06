@@ -6,5 +6,17 @@
         <column name="price" required="true" type="DOUBLE" />
         <behavior name="timestampable" />
     </table>
+    <table name="local_pickup">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="address" phpName="Address" type="VARCHAR" size="255"/>
+        <column name="gps_lat" phpName="GpsLat" type="DECIMAL" size="18" scale="14"/>
+        <column name="gps_long" phpName="GpsLong" type="DECIMAL" size="18" scale="14"/>
+        <column name="hint" phpName="hint" type="CLOB"/>
+        <behavior name="timestampable" />
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

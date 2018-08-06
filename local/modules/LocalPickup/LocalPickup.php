@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*                                                                                   */
 /*      Thelia	                                                                     */
 /*                                                                                   */
@@ -17,9 +18,9 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/* 	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup;
 
@@ -38,8 +39,11 @@ use Thelia\Log\Tlog;
  * @package LocalPickup
  * @author Thelia <info@thelia.net>
  */
-class LocalPickup extends AbstractDeliveryModule
-{
+class LocalPickup extends AbstractDeliveryModule {
+
+    /** @var string */
+    const DOMAIN_NAME = 'localpickup';
+
     /**
      * calculate and return delivery price
      *
@@ -47,33 +51,31 @@ class LocalPickup extends AbstractDeliveryModule
      *
      * @return double
      */
-    public function getPostage(Country $country)
-    {
+    public function getPostage(Country $country) {
+        var_dump($country);
+        die(22222);
         return LocalPickupShippingQuery::create()->getPrice();
     }
 
     /**
      * @param ConnectionInterface $con
      */
-    public function postActivation(ConnectionInterface $con = null)
-    {
+    public function postActivation(ConnectionInterface $con = null) {
         $database = new Database($con);
 
-        $database->insertSql(null, array(__DIR__."/Config/thelia.sql"));
+        $database->insertSql(null, array(__DIR__ . "/Config/thelia.sql"));
     }
 
     /**
      * @return string
      */
-    public function getCode()
-    {
+    public function getCode() {
         return "LocalPickup";
     }
 
-    public static function getModCode()
-    {
+    public static function getModCode() {
         return ModuleQuery::create()
-            ->findOneByCode("LocalPickup")->getId();
+                        ->findOneByCode("LocalPickup")->getId();
     }
 
     /**
@@ -87,15 +89,33 @@ class LocalPickup extends AbstractDeliveryModule
      *
      * @return boolean
      */
-    public function isValidDelivery(Country $country)
-    {
-    	//if($countr)
-    	$areaDeliveryModules = AreaDeliveryModuleQuery::create()->findByAreaId($country->getAreaId());
-    	foreach($areaDeliveryModules as $areaModule){
-    		Tlog::getInstance()->err("localpickup ".$areaModule->getDeliveryModuleId());
-    	if($areaModule->getDeliveryModuleId() == ModuleQuery::create()->findOneByCode("LocalPickup")->getId())
-    		return true;
-    	}
+    public function isValidDelivery(Country $country) {
+        //if($countr)
+        $areaDeliveryModules = AreaDeliveryModuleQuery::create()->findByAreaId($country->getAreaId());
+        foreach ($areaDeliveryModules as $areaModule) {
+            Tlog::getInstance()->err("localpickup " . $areaModule->getDeliveryModuleId());
+            if ($areaModule->getDeliveryModuleId() == ModuleQuery::create()->findOneByCode("LocalPickup")->getId())
+                return true;
+        }
         return false;
     }
+
+    public function getHooks() {
+        return array(
+            array(
+                "type" => TemplateDefinition::FRONT_OFFICE,
+                "code" => "product.fulfilment-center",
+                "title" => array(
+                    "fr_FR" => "Hook Produit DeliveryDelay",
+                    "en_US" => "Multiple Fulfilment Center",
+                ),
+                "description" => array(
+                    "fr_FR" => "Hook pour délais de livraison d'un produit",
+                    "en_US" => "Hook for multiple fulfilment center",
+                ),
+                "active" => true
+            )
+        );
+    }
+
 }
