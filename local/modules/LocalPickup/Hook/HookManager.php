@@ -26,4 +26,8 @@ class HookManager extends BaseHook
     {
         $event->add($this->render("module_configuration.html"));
     }
+    
+     public function onModuleDisplay(HookRenderEvent $event){
+         $event->add($this->render("order-invoice.html"));
+     }
 }

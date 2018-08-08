@@ -52,9 +52,7 @@ class LocalPickup extends AbstractDeliveryModule {
      * @return double
      */
     public function getPostage(Country $country) {
-        var_dump($country);
-        die(22222);
-        return LocalPickupShippingQuery::create()->getPrice();
+//        return LocalPickupShippingQuery::create()->getPrice();
     }
 
     /**
