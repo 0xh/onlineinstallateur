@@ -18,7 +18,7 @@
         <hook id="local.pickup.hook" class="LocalPickup\Hook\HookManager" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfiguration" />
         </hook>
-        <hook id="hookmanager" class="LocalPickup\Hook\HookManager" scope="request">
+        <hook id="local.orderdelivery.helpblock" class="LocalPickup\Hook\HookManager">
              <tag name="hook.event_listener" event="order-delivery.method.help-block" type="front" method="onModuleDisplay" />
         </hook>
     </hooks>

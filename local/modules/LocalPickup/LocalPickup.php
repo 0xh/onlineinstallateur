@@ -32,7 +32,7 @@ use Thelia\Model\ModuleQuery;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Model\AreaDeliveryModule;
 use Thelia\Model\AreaDeliveryModuleQuery;
-use Thelia\Log\Tlog;
+use Thelia\Core\Template\TemplateDefinition;
 
 /**
  * Class LocalPickup
@@ -88,10 +88,9 @@ class LocalPickup extends AbstractDeliveryModule {
      * @return boolean
      */
     public function isValidDelivery(Country $country) {
-        //if($countr)
+
         $areaDeliveryModules = AreaDeliveryModuleQuery::create()->findByAreaId($country->getAreaId());
         foreach ($areaDeliveryModules as $areaModule) {
-            Tlog::getInstance()->err("localpickup " . $areaModule->getDeliveryModuleId());
             if ($areaModule->getDeliveryModuleId() == ModuleQuery::create()->findOneByCode("LocalPickup")->getId())
                 return true;
         }
@@ -104,14 +103,19 @@ class LocalPickup extends AbstractDeliveryModule {
                 "type" => TemplateDefinition::FRONT_OFFICE,
                 "code" => "order-delivery.method.help-block",
                 "title" => array(
+                    "fr_FR" => "Order Delivery Help Block",
                     "en_US" => "Order Delivery Help Block",
+                    "de_DE" => "Order Delivery Help Block",
                 ),
                 "description" => array(
+                    "fr_FR" => "Hook for displaying help information to order delivery elements",
                     "en_US" => "Hook for displaying help information to order delivery elements",
+                    "de_DE" => "Hook for displaying help information to order delivery elements",
                 ),
                 "active" => true
             )
         );
     }
+    
 
 }
