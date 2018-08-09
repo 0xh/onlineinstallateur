@@ -14,6 +14,7 @@ namespace LocalPickup\Hook;
 
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
+use Thelia\Log\Tlog;
 
 /**
  * Class HookManager
@@ -27,7 +28,9 @@ class HookManager extends BaseHook
         $event->add($this->render("module_configuration.html"));
     }
     
-     public function onModuleDisplay(HookRenderEvent $event){
-         $event->add($this->render("order-invoice.html"));
+     public function onOrderDeliveryMethodHelpBlock(HookRenderEvent $event)       
+     {
+         Tlog::getInstance()->error("trying to render order-invoice");
+         $event->add($this->render("order-delivery.method.help-block.html"));
      }
 }
