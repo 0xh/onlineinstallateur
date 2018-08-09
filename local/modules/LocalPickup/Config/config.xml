@@ -9,9 +9,9 @@
     </forms>
 
     <loops>
-        <loop class="LocalPickup\Loop\LocalAddress" name="address.local" />
-        <loop class="LocalPickup\Loop\LocalPickupId" name="localpickupid" />
-        <loop name="local_pickup" class="LocalPickup\Loop\LocalPickupLoop" />
+        <loop class="LocalPickup\Loop\LocalAddress"     name="address.local" />
+        <loop class="LocalPickup\Loop\LocalPickupId"    name="localpickupid" />
+        <loop class="LocalPickup\Loop\LocalPickupLoop"  name="local_pickup" />
     </loops>
 
     <hooks>

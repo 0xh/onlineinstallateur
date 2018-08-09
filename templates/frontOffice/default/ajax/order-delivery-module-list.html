@@ -2,11 +2,6 @@
 {default_translation_domain domain='fo.default'}
 
 {form name="thelia.order.delivery"}
-            {loop type="local_pickup" name="local_pickup" active="1"}
-                    {assign var="localPickupAddress" value=$ADDRESS} 
-            {/loop}
-
-
 {ifloop rel="deliveries"}
 <table class="table table-condensed table-delivery">
     <tbody>
@@ -41,7 +36,11 @@
                                 {/if}
                             </p>
                         </label>
-                    {hook name="order-delivery.method.help-block" module="$ID"}
+                    
+                    {ifhook rel="order-delivery.method.help-block"}
+                            {hook name="order-delivery.method.help-block" module="$ID"}
+                    {/ifhook}
+
                     {/form_field}
                 </div>
             </td>

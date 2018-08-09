@@ -102,14 +102,12 @@ class LocalPickup extends AbstractDeliveryModule {
         return array(
             array(
                 "type" => TemplateDefinition::FRONT_OFFICE,
-                "code" => "product.fulfilment-center",
+                "code" => "order-delivery.method.help-block",
                 "title" => array(
-                    "fr_FR" => "Hook Produit DeliveryDelay",
-                    "en_US" => "Multiple Fulfilment Center",
+                    "en_US" => "Order Delivery Help Block",
                 ),
                 "description" => array(
-                    "fr_FR" => "Hook pour délais de livraison d'un produit",
-                    "en_US" => "Hook for multiple fulfilment center",
+                    "en_US" => "Hook for displaying help information to order delivery elements",
                 ),
                 "active" => true
             )
