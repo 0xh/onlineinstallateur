@@ -1,12 +1,12 @@
-123123
-//javascript
-//block 
+<div id="local-pickup-locations" hidden>
+        <select>
+                {loop type="local_pickup" name="local_pickup"}
+                        {assign var="lp_address" value="$ADDRESS"}
+                        {assign var="lp_hint" value="$HINT"}
+                        <option id ="localpickup-locations" value="{$ADDRESS}">{$lp_address}</option> 
+                {/loop}
+        </select>
+</div>
 
-//getModeCode cu Javascript- hidden si daca =getModeCode=49, show.
 
-<select>
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="opel">Opel</option>
-  <option value="audi">Audi</option>
-</select>
+

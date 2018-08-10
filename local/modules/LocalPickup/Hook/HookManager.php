@@ -36,4 +36,10 @@ public function onOrderDeliveryMethodHelpBlock(HookRenderEvent $event)
             $event->add($this->render("order-delivery.method.help-block.html")); 
          }
      }
+     
+public function onOrderDeliveryjavascriptInitialization(HookRenderEvent $event) 
+{
+   Tlog::getInstance()->error("hookmanager javascript include" );
+    $event->add($this->render("order-delivery.javascript-initialization.html"));
+}
 }
