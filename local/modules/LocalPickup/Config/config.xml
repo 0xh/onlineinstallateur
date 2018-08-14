@@ -21,6 +21,10 @@
         <hook id="local.orderdelivery.helpblock" class="LocalPickup\Hook\HookManager"  scope="request">
              <tag name="hook.event_listener" event="order-delivery.method.help-block" type="front" method="onOrderDeliveryMethodHelpBlock" />
         </hook>
+        <hook id="local.orderdelivery.javascript" class="LocalPickup\Hook\HookManager"  scope="request">
+             <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front" method="onOrderDeliveryjavascriptInitialization" />
+        </hook>
+        
     </hooks>
 
     <services>

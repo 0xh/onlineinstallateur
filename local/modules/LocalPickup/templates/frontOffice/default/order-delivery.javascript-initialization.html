@@ -1,20 +1,15 @@
 {literal}
 <script type="text/javascript">
 $(document).ready(function () {
-//nu ai rapsuns pe skype - face in pereche de 2 ori :D fiind ca ai pe mai multe delivery action pe acelasi method 49
     $('[id*=delivery-method]').click(function(){
         $ckbox = $('#delivery-method_49');
         $pickup= $('#local-pickup-locations');
         if ($ckbox.is(':checked')) {
-          console.log("ii bine");
           $pickup.show();
         } else if (!($ckbox.is(":checked"))){
-            console.log("ii rau");
           $pickup.hide();
         }
     });
-    var variabila = $('[id*=delivery-method]');
-    console.log(variabila);
 });
 </script>
 {/literal}

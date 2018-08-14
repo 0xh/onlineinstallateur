@@ -1,5 +1,7 @@
 <div id="local-pickup-locations" hidden>
-        <select>
+        <select name="delivery_address" class="delivery_address">
+            </br>
+             </br>
                 {loop type="local_pickup" name="local_pickup"}
                         {assign var="lp_address" value="$ADDRESS"}
                         {assign var="lp_hint" value="$HINT"}
