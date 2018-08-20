@@ -117,47 +117,33 @@
 </div>
 
 <!-- Google DataLayer START -->
-{assign var="timestamp" value=$smarty.now|date_format:'%s'}
 
-<script type="text/javascript">
+{loop type="order" name="placed-order" id=$placed_order_id}
+    {assign var="order_created_timestamp" value=$CREATE_DATE|date_format:'%s'}
+    {assign var="placed_order_id" value=$placed_order_id}
+{/loop}
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-    'event':'Receipt Page – Transaction Present',
-            'transactionId': '{$transactionId}',
-            'timeStamp': '{$timestamp}',
-            'transactionAffiliation': "{customer attr='email'}",
-            'transactionTotal': "{$transactionTotal}",
-            'transactionTax': "{$transactionTax}",
-            'transactionShipping': 4,
-            'transactionProducts': [
-            {loop type = "order_product" name = "order-products" order = $placed_order_id}
-            {assign var = "sku" value = $REF}
-            {assign var = "quantity" value = $QUANTITY}
-            {assign var = "price" value = $TAXED_PRICE}
-            {loop type = "product" name = "product" id = $PRODUCT_ID}
-            {loop type = "category" name = "category" id = $DEFAULT_CATEGORY}
-            {assign var = "category" value = $TITLE}
-            {loop name = "brandloop" type = "brand" product = $PRODUCT_ID}
-            {assign var = "brand" value = $TITLE}
-            {
-            'sku':'{$sku}',
-                    'name': '{$sku}',
-                    'category': '{$category}',
-                    'price': "{$price}",
-                    'quantity': "{$quantity}",
-                    'brand' : "{$brand}"
+    {assign var="timestamp" value=$smarty.now|date_format:'%s'}
+        
+{"Created Timestamp"}
+{$order_created_timestamp|@var_dump}
+{"Order_placed_id"}
+{$placed_order_id|@var_dump}      
+{"Current Timestamp"}
+{$timestamp|@var_dump}
+{"Timestamp + 60000"}
+{$timestamp+60000}
 
-            },
-            {/loop}
-            {/loop}
-            {/loop}
-            {/loop}
-            ]
-                    });</script>
+{if $timestamp+9999999999>$order_created_timestamp}
+{"inLoop"}
+
+ {hook name="order-placed.javascript-initialization"}
+
+{"exitLoop"}
+{/if}
+{"ifDone"}
 
 <!-- Google DataLayer END-->
-
 <!-- BEGIN GCR Opt-in Module Code -->
 
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer>

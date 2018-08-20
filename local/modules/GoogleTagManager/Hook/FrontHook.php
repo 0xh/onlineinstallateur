@@ -37,4 +37,8 @@ class FrontHook extends BaseHook
             $event->add($value);
         }
     }
+    
+    public function onOrderPlacedDataLayerGet(HookRenderEvent $event) {
+    $event->add($this->render("data_layer.javascript-initialization.html"));
+    }
 }
