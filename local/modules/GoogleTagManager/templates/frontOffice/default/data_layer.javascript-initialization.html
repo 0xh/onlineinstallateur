@@ -1,13 +1,12 @@
 <script type="text/javascript">
     window.dataLayer = window.dataLayer || [];
-    console.log("Pushing");
     window.dataLayer.push({
-    'event':'transaction',
+            'event':'transaction',
             'transactionId': '{$transactionId}',
             'transactionAffiliation': "{customer attr='email'}",
             'userId': "{customer attr='ref'}",  
-            'transactionTotal': "{$transactionTotal}",
-            'transactionTax': "{$transactionTax}",
+            'transactionTotal': {$transactionTotal},
+            'transactionTax': {$transactionTax},
             'transactionShipping': 4,
             'transactionProducts': [
             {loop type = "order_product" name = "order-products" order = $placed_order_id}
@@ -22,7 +21,7 @@
                                         {
                                                 'sku':'{$sku}',
                                                 'name': '{$sku}',
-                                                'price': "{$price}",
+                                                'price': {$price},
                                                 'quantity': "{$quantity}",
                                                 'brand' : "{$brand}",
                                                 'category': '{$category}',
