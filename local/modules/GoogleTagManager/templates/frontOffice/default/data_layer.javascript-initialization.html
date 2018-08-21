@@ -1,10 +1,9 @@
-{literal}
 <script type="text/javascript">
     window.dataLayer = window.dataLayer || [];
+    console.log("Pushing");
     window.dataLayer.push({
     'event':'transaction',
             'transactionId': '{$transactionId}',
-            'timeStamp': '{$timestamp}',
             'transactionAffiliation': "{customer attr='email'}",
             'userId': "{customer attr='ref'}",  
             'transactionTotal': "{$transactionTotal}",
@@ -34,7 +33,5 @@
                     {/loop}
             {/loop}
             ]
-    });
-};}    
+        });
 </script>
-{literal}

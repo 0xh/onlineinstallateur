@@ -15,8 +15,8 @@
         <hook id="googletagmanager.configuration.hook" class="GoogleTagManager\Hook\BackHook" scope="request">
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfiguration"/>
         </hook>
-        <hook id="datalayer.javascript" class="GoogleTagManager\Hook\FrontHook"  scope="request">
-             <tag name="hook.event_listener" event="order-placed.javascript-initialization" type="front" method="onOrderPlacedDataLayerGet" />
+        <hook id="googletagmanager.datalyer.javascript" class="GoogleTagManager\Hook\FrontHook"  scope="request">
+            <tag name="hook.event_listener" event="order-placed.javascript-datalayer" type="front" method="onOrderPlacedDataLayerGet" />
         </hook>
     </hooks>
 

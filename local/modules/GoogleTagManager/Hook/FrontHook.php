@@ -39,6 +39,12 @@ class FrontHook extends BaseHook
     }
     
     public function onOrderPlacedDataLayerGet(HookRenderEvent $event) {
-    $event->add($this->render("data_layer.javascript-initialization.html"));
+    $params['transactionId'] = $event->getArgument('mytransactionvariable');
+    $params['timeStamp'] = $event->getArgument('mytimestampvariable');
+    $params['transactionTotal'] = $event->getArgument('mytransactiontotal');
+    $params['transactionTax'] = $event->getArgument('mytransactiontax');
+    
+    
+    $event->add($this->render("data_layer.javascript-initialization.html", $params));
     }
 }

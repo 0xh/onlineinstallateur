@@ -119,29 +119,16 @@
 <!-- Google DataLayer START -->
 
 {loop type="order" name="placed-order" id=$placed_order_id}
-    {assign var="order_created_timestamp" value=$CREATE_DATE|date_format:'%s'}
-    {assign var="placed_order_id" value=$placed_order_id}
+{assign var="order_created_timestamp" value=$CREATE_DATE|date_format:'%s'}
+{assign var="placed_order_id" value=$placed_order_id}
 {/loop}
+{assign var="timestamp" value=$smarty.now|date_format:'%s'}
 
-    {assign var="timestamp" value=$smarty.now|date_format:'%s'}
-        
-{"Created Timestamp"}
-{$order_created_timestamp|@var_dump}
-{"Order_placed_id"}
-{$placed_order_id|@var_dump}      
-{"Current Timestamp"}
-{$timestamp|@var_dump}
-{"Timestamp + 60000"}
-{$timestamp+60000}
+{if $timestamp<$order_created_timestamp+60}
 
-{if $timestamp+9999999999>$order_created_timestamp}
-{"inLoop"}
+{hook name="order-placed.javascript-datalayer" mytransactionvariable=$transactionId mytransactiontotal=$transactionTotal mytransactiontax=$transactionTax}
 
- {hook name="order-placed.javascript-initialization"}
-
-{"exitLoop"}
 {/if}
-{"ifDone"}
 
 <!-- Google DataLayer END-->
 <!-- BEGIN GCR Opt-in Module Code -->
