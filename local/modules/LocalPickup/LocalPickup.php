@@ -103,19 +103,78 @@ class LocalPickup extends AbstractDeliveryModule {
                 "type" => TemplateDefinition::FRONT_OFFICE,
                 "code" => "order-delivery.method.help-block",
                 "title" => array(
-                    "fr_FR" => "Order Delivery Help Block",
-                    "en_US" => "Order Delivery Help Block",
-                    "de_DE" => "Order Delivery Help Block",
+                    "fr_FR" => "Drop-down menu for multiple LocalPickup locations",
+                    "en_US" => "Drop-down menu for multiple LocalPickup locations",
+                    "de_DE" => "Drop-down menu for multiple LocalPickup locations",
                 ),
                 "description" => array(
-                    "fr_FR" => "Hook for displaying help information to order delivery elements",
-                    "en_US" => "Hook for displaying help information to order delivery elements",
-                    "de_DE" => "Hook for displaying help information to order delivery elements",
+                    "fr_FR" => "Hook for displaying help information to order delivery elements in a drop-down menu for multiple locations",
+                    "en_US" => "Hook for displaying help information to order delivery elements in a drop-down menu for multiple locations",
+                    "de_DE" => "Hook for displaying help information to order delivery elements in a drop-down menu for multiple locations",
+                ),
+                "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::EMAIL,
+                "code" => "order-delivery.email-localpickup",
+                "title" => array(
+                    "fr_FR" => "Order Delivery Local Pickup email template",
+                    "en_US" => "Order Delivery Local Pickup email template",
+                    "de_DE" => "Order Delivery Local Pickup email template",
+                ),
+                "description" => array(
+                    "fr_FR" => "Hook for defining a Order Delivery Local Pickup email template",
+                    "en_US" => "Hook for defining a Order Delivery Local Pickup email template",
+                    "de_DE" => "Hook for defining a Order Delivery Local Pickup email template",
+                ),
+                "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::PDF,
+                "code" => "order-delivery.pdf-localpickup",
+                "title" => array(
+                    "fr_FR" => "Order Delivery Local Pickup pdf template",
+                    "en_US" => "Order Delivery Local Pickup pdf template",
+                    "de_DE" => "Order Delivery Local Pickup pdf template",
+                ),
+                "description" => array(
+                    "fr_FR" => "Hook for defining a Order Delivery Local Pickup pdf template",
+                    "en_US" => "Hook for defining a Order Delivery Local Pickup pdf template",
+                    "de_DE" => "Hook for defining a Order Delivery Local Pickup pdf template",
+                ),
+                "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::FRONT_OFFICE,
+                "code" => "order-delivery.address-localpickup",
+                "title" => array(
+                    "fr_FR" => "Local Pickup address template",
+                    "en_US" => "Local Pickup address template",
+                    "de_DE" => "Local Pickup address template",
+                ),
+                "description" => array(
+                    "fr_FR" => "Hook for defining a Order Delivery Local Pickup address template",
+                    "en_US" => "Hook for defining a Order Delivery Local Pickup address template",
+                    "de_DE" => "Hook for defining a Order Delivery Local Pickup address template",
+                ),
+                "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::BACK_OFFICE,
+                "code" => "order-delivery.addressBack-localpickup",
+                "title" => array(
+                    "fr_FR" => "Local Pickup address template",
+                    "en_US" => "Local Pickup address template",
+                    "de_DE" => "Local Pickup address template",
+                ),
+                "description" => array(
+                    "fr_FR" => "Hook for defining a Order Delivery Local Pickup address template",
+                    "en_US" => "Hook for defining a Order Delivery Local Pickup address template",
+                    "de_DE" => "Hook for defining a Order Delivery Local Pickup address template",
                 ),
                 "active" => true
             )
         );
     }
-    
 
 }

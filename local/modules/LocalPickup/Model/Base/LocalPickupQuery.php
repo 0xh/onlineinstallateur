@@ -10,6 +10,9 @@ use LocalPickup\Model\Map\LocalPickupTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
@@ -37,6 +40,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildLocalPickupQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildLocalPickupQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildLocalPickupQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildLocalPickupQuery leftJoinOrderLocalPickupAddress($relationAlias = null) Adds a LEFT JOIN clause to the query using the OrderLocalPickupAddress relation
+ * @method     ChildLocalPickupQuery rightJoinOrderLocalPickupAddress($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OrderLocalPickupAddress relation
+ * @method     ChildLocalPickupQuery innerJoinOrderLocalPickupAddress($relationAlias = null) Adds a INNER JOIN clause to the query using the OrderLocalPickupAddress relation
  *
  * @method     ChildLocalPickup findOne(ConnectionInterface $con = null) Return the first ChildLocalPickup matching the query
  * @method     ChildLocalPickup findOneOrCreate(ConnectionInterface $con = null) Return the first ChildLocalPickup matching the query, or a new ChildLocalPickup object populated from the query conditions when no match is found
@@ -498,6 +505,79 @@ abstract class LocalPickupQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(LocalPickupTableMap::UPDATED_AT, $updatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \LocalPickup\Model\OrderLocalPickupAddress object
+     *
+     * @param \LocalPickup\Model\OrderLocalPickupAddress|ObjectCollection $orderLocalPickupAddress  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildLocalPickupQuery The current query, for fluid interface
+     */
+    public function filterByOrderLocalPickupAddress($orderLocalPickupAddress, $comparison = null)
+    {
+        if ($orderLocalPickupAddress instanceof \LocalPickup\Model\OrderLocalPickupAddress) {
+            return $this
+                ->addUsingAlias(LocalPickupTableMap::ID, $orderLocalPickupAddress->getLocalPickupId(), $comparison);
+        } elseif ($orderLocalPickupAddress instanceof ObjectCollection) {
+            return $this
+                ->useOrderLocalPickupAddressQuery()
+                ->filterByPrimaryKeys($orderLocalPickupAddress->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByOrderLocalPickupAddress() only accepts arguments of type \LocalPickup\Model\OrderLocalPickupAddress or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the OrderLocalPickupAddress relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildLocalPickupQuery The current query, for fluid interface
+     */
+    public function joinOrderLocalPickupAddress($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('OrderLocalPickupAddress');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'OrderLocalPickupAddress');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the OrderLocalPickupAddress relation OrderLocalPickupAddress object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \LocalPickup\Model\OrderLocalPickupAddressQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderLocalPickupAddressQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinOrderLocalPickupAddress($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'OrderLocalPickupAddress', '\LocalPickup\Model\OrderLocalPickupAddressQuery');
     }
 
     /**

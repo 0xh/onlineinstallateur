@@ -1,0 +1,27 @@
+{ifhook rel="product.order-fulfilment-center-address"}
+{hook name="product.order-fulfilment-center-address" orderid=$order_id}	
+{/ifhook}
+{elsehook rel="product.order-fulfilment-center-address"}	
+{loop name="delivery-module" type="module" id=$delivery_module_id}
+<div class="table-responsive">
+    <table class="table table-striped table-condensed table-left-aligned">
+        <caption class="clearfix">
+            {intl l='Delivery Information'}
+        </caption>
+        <tbody>
+            <tr>
+                <th>{intl l="Delivery Method"}</th>
+                <td>{$CODE} - {$TITLE}</td>
+            </tr>
+
+            <tr>
+                <th>{intl l="Description"}</th>
+                <td>{$DESCRIPTION nofilter}{hook name="order-delivery.addressBack-localpickup" orderid=$order_id}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{hook name="order-edit.delivery-module-bottom" order_id=$order_id module_id=$delivery_module_id}
+{/loop}
+{/elsehook}

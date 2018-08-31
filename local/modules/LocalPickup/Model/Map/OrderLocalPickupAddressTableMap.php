@@ -2,8 +2,8 @@
 
 namespace LocalPickup\Model\Map;
 
-use LocalPickup\Model\LocalPickup;
-use LocalPickup\Model\LocalPickupQuery;
+use LocalPickup\Model\OrderLocalPickupAddress;
+use LocalPickup\Model\OrderLocalPickupAddressQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'local_pickup' table.
+ * This class defines the structure of the 'order_local_pickup_address' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class LocalPickupTableMap extends TableMap
+class OrderLocalPickupAddressTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'LocalPickup.Model.Map.LocalPickupTableMap';
+    const CLASS_NAME = 'LocalPickup.Model.Map.OrderLocalPickupAddressTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class LocalPickupTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'local_pickup';
+    const TABLE_NAME = 'order_local_pickup_address';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\LocalPickup\\Model\\LocalPickup';
+    const OM_CLASS = '\\LocalPickup\\Model\\OrderLocalPickupAddress';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'LocalPickup.Model.LocalPickup';
+    const CLASS_DEFAULT = 'LocalPickup.Model.OrderLocalPickupAddress';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,42 +68,22 @@ class LocalPickupTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
-     * the column name for the ID field
+     * the column name for the ORDER_ID field
      */
-    const ID = 'local_pickup.ID';
+    const ORDER_ID = 'order_local_pickup_address.ORDER_ID';
 
     /**
-     * the column name for the ADDRESS field
+     * the column name for the CART_ID field
      */
-    const ADDRESS = 'local_pickup.ADDRESS';
+    const CART_ID = 'order_local_pickup_address.CART_ID';
 
     /**
-     * the column name for the GPS_LAT field
+     * the column name for the LOCAL_PICKUP_ID field
      */
-    const GPS_LAT = 'local_pickup.GPS_LAT';
-
-    /**
-     * the column name for the GPS_LONG field
-     */
-    const GPS_LONG = 'local_pickup.GPS_LONG';
-
-    /**
-     * the column name for the HINT field
-     */
-    const HINT = 'local_pickup.HINT';
-
-    /**
-     * the column name for the CREATED_AT field
-     */
-    const CREATED_AT = 'local_pickup.CREATED_AT';
-
-    /**
-     * the column name for the UPDATED_AT field
-     */
-    const UPDATED_AT = 'local_pickup.UPDATED_AT';
+    const LOCAL_PICKUP_ID = 'order_local_pickup_address.LOCAL_PICKUP_ID';
 
     /**
      * The default string format for model objects of the related table
@@ -117,12 +97,12 @@ class LocalPickupTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Address', 'GpsLat', 'GpsLong', 'hint', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'address', 'gpsLat', 'gpsLong', 'hint', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(LocalPickupTableMap::ID, LocalPickupTableMap::ADDRESS, LocalPickupTableMap::GPS_LAT, LocalPickupTableMap::GPS_LONG, LocalPickupTableMap::HINT, LocalPickupTableMap::CREATED_AT, LocalPickupTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ADDRESS', 'GPS_LAT', 'GPS_LONG', 'HINT', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'address', 'gps_lat', 'gps_long', 'hint', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('OrderId', 'LocalPickupCartId', 'LocalPickupId', ),
+        self::TYPE_STUDLYPHPNAME => array('orderId', 'localPickupCartId', 'localPickupId', ),
+        self::TYPE_COLNAME       => array(OrderLocalPickupAddressTableMap::ORDER_ID, OrderLocalPickupAddressTableMap::CART_ID, OrderLocalPickupAddressTableMap::LOCAL_PICKUP_ID, ),
+        self::TYPE_RAW_COLNAME   => array('ORDER_ID', 'CART_ID', 'LOCAL_PICKUP_ID', ),
+        self::TYPE_FIELDNAME     => array('order_id', 'cart_id', 'local_pickup_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -132,12 +112,12 @@ class LocalPickupTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Address' => 1, 'GpsLat' => 2, 'GpsLong' => 3, 'hint' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'address' => 1, 'gpsLat' => 2, 'gpsLong' => 3, 'hint' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        self::TYPE_COLNAME       => array(LocalPickupTableMap::ID => 0, LocalPickupTableMap::ADDRESS => 1, LocalPickupTableMap::GPS_LAT => 2, LocalPickupTableMap::GPS_LONG => 3, LocalPickupTableMap::HINT => 4, LocalPickupTableMap::CREATED_AT => 5, LocalPickupTableMap::UPDATED_AT => 6, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ADDRESS' => 1, 'GPS_LAT' => 2, 'GPS_LONG' => 3, 'HINT' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'address' => 1, 'gps_lat' => 2, 'gps_long' => 3, 'hint' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('OrderId' => 0, 'LocalPickupCartId' => 1, 'LocalPickupId' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('orderId' => 0, 'localPickupCartId' => 1, 'localPickupId' => 2, ),
+        self::TYPE_COLNAME       => array(OrderLocalPickupAddressTableMap::ORDER_ID => 0, OrderLocalPickupAddressTableMap::CART_ID => 1, OrderLocalPickupAddressTableMap::LOCAL_PICKUP_ID => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ORDER_ID' => 0, 'CART_ID' => 1, 'LOCAL_PICKUP_ID' => 2, ),
+        self::TYPE_FIELDNAME     => array('order_id' => 0, 'cart_id' => 1, 'local_pickup_id' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -150,19 +130,15 @@ class LocalPickupTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('local_pickup');
-        $this->setPhpName('LocalPickup');
-        $this->setClassName('\\LocalPickup\\Model\\LocalPickup');
+        $this->setName('order_local_pickup_address');
+        $this->setPhpName('OrderLocalPickupAddress');
+        $this->setClassName('\\LocalPickup\\Model\\OrderLocalPickupAddress');
         $this->setPackage('LocalPickup.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('ADDRESS', 'Address', 'VARCHAR', false, 255, null);
-        $this->addColumn('GPS_LAT', 'GpsLat', 'DECIMAL', false, 18, null);
-        $this->addColumn('GPS_LONG', 'GpsLong', 'DECIMAL', false, 18, null);
-        $this->addColumn('HINT', 'hint', 'CLOB', false, null, null);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', false, null, null);
+        $this->addPrimaryKey('CART_ID', 'LocalPickupCartId', 'INTEGER', true, null, null);
+        $this->addForeignKey('LOCAL_PICKUP_ID', 'LocalPickupId', 'INTEGER', 'local_pickup', 'ID', true, null, null);
     } // initialize()
 
     /**
@@ -170,30 +146,9 @@ class LocalPickupTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('OrderLocalPickupAddress', '\\LocalPickup\\Model\\OrderLocalPickupAddress', RelationMap::ONE_TO_MANY, array('id' => 'local_pickup_id', ), 'CASCADE', null, 'OrderLocalPickupAddresses');
+        $this->addRelation('LocalPickup', '\\LocalPickup\\Model\\LocalPickup', RelationMap::MANY_TO_ONE, array('local_pickup_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
-
-    /**
-     *
-     * Gets the list of behaviors registered for this table
-     *
-     * @return array Associative array (name => parameters) of behaviors
-     */
-    public function getBehaviors()
-    {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-        );
-    } // getBehaviors()
-    /**
-     * Method to invalidate the instance pool of all tables related to local_pickup     * by a foreign key with ON DELETE CASCADE
-     */
-    public static function clearRelatedInstancePool()
-    {
-        // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                OrderLocalPickupAddressTableMap::clearInstancePool();
-            }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -209,11 +164,11 @@ class LocalPickupTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('LocalPickupCartId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return (string) $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('LocalPickupCartId', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -233,8 +188,8 @@ class LocalPickupTableMap extends TableMap
 
             return (int) $row[
                             $indexType == TableMap::TYPE_NUM
-                            ? 0 + $offset
-                            : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                            ? 1 + $offset
+                            : self::translateFieldName('LocalPickupCartId', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
     
@@ -251,7 +206,7 @@ class LocalPickupTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? LocalPickupTableMap::CLASS_DEFAULT : LocalPickupTableMap::OM_CLASS;
+        return $withPrefix ? OrderLocalPickupAddressTableMap::CLASS_DEFAULT : OrderLocalPickupAddressTableMap::OM_CLASS;
     }
 
     /**
@@ -265,21 +220,21 @@ class LocalPickupTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (LocalPickup object, last column rank)
+     * @return array (OrderLocalPickupAddress object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = LocalPickupTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = LocalPickupTableMap::getInstanceFromPool($key))) {
+        $key = OrderLocalPickupAddressTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = OrderLocalPickupAddressTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + LocalPickupTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + OrderLocalPickupAddressTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = LocalPickupTableMap::OM_CLASS;
+            $cls = OrderLocalPickupAddressTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            LocalPickupTableMap::addInstanceToPool($obj, $key);
+            OrderLocalPickupAddressTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -302,8 +257,8 @@ class LocalPickupTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = LocalPickupTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = LocalPickupTableMap::getInstanceFromPool($key))) {
+            $key = OrderLocalPickupAddressTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = OrderLocalPickupAddressTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -312,7 +267,7 @@ class LocalPickupTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                LocalPickupTableMap::addInstanceToPool($obj, $key);
+                OrderLocalPickupAddressTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -333,21 +288,13 @@ class LocalPickupTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(LocalPickupTableMap::ID);
-            $criteria->addSelectColumn(LocalPickupTableMap::ADDRESS);
-            $criteria->addSelectColumn(LocalPickupTableMap::GPS_LAT);
-            $criteria->addSelectColumn(LocalPickupTableMap::GPS_LONG);
-            $criteria->addSelectColumn(LocalPickupTableMap::HINT);
-            $criteria->addSelectColumn(LocalPickupTableMap::CREATED_AT);
-            $criteria->addSelectColumn(LocalPickupTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(OrderLocalPickupAddressTableMap::ORDER_ID);
+            $criteria->addSelectColumn(OrderLocalPickupAddressTableMap::CART_ID);
+            $criteria->addSelectColumn(OrderLocalPickupAddressTableMap::LOCAL_PICKUP_ID);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.ADDRESS');
-            $criteria->addSelectColumn($alias . '.GPS_LAT');
-            $criteria->addSelectColumn($alias . '.GPS_LONG');
-            $criteria->addSelectColumn($alias . '.HINT');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.ORDER_ID');
+            $criteria->addSelectColumn($alias . '.CART_ID');
+            $criteria->addSelectColumn($alias . '.LOCAL_PICKUP_ID');
         }
     }
 
@@ -360,7 +307,7 @@ class LocalPickupTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(LocalPickupTableMap::DATABASE_NAME)->getTable(LocalPickupTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(OrderLocalPickupAddressTableMap::DATABASE_NAME)->getTable(OrderLocalPickupAddressTableMap::TABLE_NAME);
     }
 
     /**
@@ -368,16 +315,16 @@ class LocalPickupTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(LocalPickupTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(LocalPickupTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new LocalPickupTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(OrderLocalPickupAddressTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(OrderLocalPickupAddressTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new OrderLocalPickupAddressTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a LocalPickup or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a OrderLocalPickupAddress or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or LocalPickup object or primary key or array of primary keys
+     * @param mixed               $values Criteria or OrderLocalPickupAddress object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -388,25 +335,25 @@ class LocalPickupTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderLocalPickupAddressTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \LocalPickup\Model\LocalPickup) { // it's a model object
+        } elseif ($values instanceof \LocalPickup\Model\OrderLocalPickupAddress) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(LocalPickupTableMap::DATABASE_NAME);
-            $criteria->add(LocalPickupTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(OrderLocalPickupAddressTableMap::DATABASE_NAME);
+            $criteria->add(OrderLocalPickupAddressTableMap::CART_ID, (array) $values, Criteria::IN);
         }
 
-        $query = LocalPickupQuery::create()->mergeWith($criteria);
+        $query = OrderLocalPickupAddressQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { LocalPickupTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { OrderLocalPickupAddressTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { LocalPickupTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { OrderLocalPickupAddressTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -414,20 +361,20 @@ class LocalPickupTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the local_pickup table.
+     * Deletes all rows from the order_local_pickup_address table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return LocalPickupQuery::create()->doDeleteAll($con);
+        return OrderLocalPickupAddressQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a LocalPickup or Criteria object.
+     * Performs an INSERT on the database, given a OrderLocalPickupAddress or Criteria object.
      *
-     * @param mixed               $criteria Criteria or LocalPickup object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or OrderLocalPickupAddress object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -436,22 +383,18 @@ class LocalPickupTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(OrderLocalPickupAddressTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from LocalPickup object
-        }
-
-        if ($criteria->containsKey(LocalPickupTableMap::ID) && $criteria->keyContainsValue(LocalPickupTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.LocalPickupTableMap::ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from OrderLocalPickupAddress object
         }
 
 
         // Set the correct dbName
-        $query = LocalPickupQuery::create()->mergeWith($criteria);
+        $query = OrderLocalPickupAddressQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -467,7 +410,7 @@ class LocalPickupTableMap extends TableMap
         return $pk;
     }
 
-} // LocalPickupTableMap
+} // OrderLocalPickupAddressTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-LocalPickupTableMap::buildTableMap();
+OrderLocalPickupAddressTableMap::buildTableMap();

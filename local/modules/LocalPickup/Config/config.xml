@@ -9,9 +9,10 @@
     </forms>
 
     <loops>
-        <loop class="LocalPickup\Loop\LocalAddress"     name="address.local" />
-        <loop class="LocalPickup\Loop\LocalPickupId"    name="localpickupid" />
-        <loop class="LocalPickup\Loop\LocalPickupLoop"  name="local_pickup" />
+        <loop class="LocalPickup\Loop\LocalAddress"                 name="address.local" />
+        <loop class="LocalPickup\Loop\LocalPickupId"                name="localpickupid" />
+        <loop class="LocalPickup\Loop\LocalPickupLoop"              name="local_pickup" />
+        <loop class="LocalPickup\Loop\LocalPickupAddressLoop"       name="local_pickup_order_loop" />
     </loops>
 
     <hooks>
@@ -19,13 +20,23 @@
             <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfiguration" />
         </hook>
         <hook id="local.orderdelivery.helpblock" class="LocalPickup\Hook\HookManager"  scope="request">
-             <tag name="hook.event_listener" event="order-delivery.method.help-block" type="front" method="onOrderDeliveryMethodHelpBlock" />
+            <tag name="hook.event_listener" event="order-delivery.method.help-block" type="front" method="onOrderDeliveryMethodHelpBlock" />
         </hook>
         <hook id="local.orderdelivery.javascript" class="LocalPickup\Hook\HookManager"  scope="request">
-             <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front" method="onOrderDeliveryjavascriptInitialization" />
+            <tag name="hook.event_listener" event="order-delivery.javascript-initialization" type="front" method="onOrderDeliveryjavascriptInitialization" />
+            <tag name="hook.event_listener" event="order-edit.cart-bottom" type="back" method="onProductLocationOrderBack" />
+        </hook>
+        
+        <hook id="localpickup.email.order" class="LocalPickup\Hook\Front\LocationStockEditHookLocalPickup" scope="request">
+            <tag name="hook.event_listener" event="order-delivery.email-localpickup" type="email" method="orderLocationAddressEmailLocalPickup" />
+            <tag name="hook.event_listener" event="order-delivery.pdf-localpickup" type="pdf" method="orderLocationAddressPdfLocalPickup" />
+            <tag name="hook.event_listener" event="order-delivery.address-localpickup" type="front" method="orderLocationAddressLocalPickup" />
+            <tag name="hook.event_listener" event="order-delivery.addressBack-localpickup" type="back" method="orderLocationAddressBackLocalPickup" />
         </hook>
         
     </hooks>
+    
+    
 
     <services>
         <service id="send.localpickup.mail" class="LocalPickup\Listener\SendEMail" scope="request">
@@ -34,6 +45,10 @@
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="update.localpickup.delivery.address" class="LocalPickup\Listener\UpdateDeliveryAddress">
+            <tag name="kernel.event_subscriber" />
+        </service>
+        <service id="add.localpickup.delivery.address" class="LocalPickup\Listener\OrderLocalPickupListener">
+            <argument type="service" id="request"/>
             <tag name="kernel.event_subscriber" />
         </service>
     </services>

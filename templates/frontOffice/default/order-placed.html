@@ -76,7 +76,6 @@
                 <p>{intl l="A summary of your order has been sent to the following address"} : {customer attr="email"}</p>
                 <p>{intl l="Your order will be confirmed by us upon receipt of your payment."}</p>
                 {/if}
-
                 <dl class="dl-horizontal">
                     <dt>{intl l="Order number"} : </dt>
                     <dd>{$REF}</dd>
@@ -88,15 +87,20 @@
 
                 {block name='additional-payment-info'}{/block}
                 {if $deliverymodule=="LocalPickup"}
-                {ifhook rel="product.fulfilment-center-address"}
+                {ifhook rel="order-delivery.address-localpickup"}
                 {hook name="product.fulfilment-center-address" orderid=$placed_order_id}	
+                {hook name="order-delivery.address-localpickup" orderid=$placed_order_id}
                 {/ifhook}	
-                {elsehook rel="product.fulfilment-center-address"}	
+                {elsehook rel="order-delivery.address-localpickup"}	
+                {"ELSE"}
                 <p>{intl l="The pickup address is:"}</p> <strong>{config key="pickupaddress"}</strong>
                 {/elsehook}	
                 {else}
                 {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
                 {/if}
+
+
+
             </div>
             <div id="customCheckoutDiv" style="width: 500px;margin:auto"></div>
             <div id="trustedShopsCheckout" style="display: none;">
@@ -137,24 +141,27 @@
 </script>
 
 <script>
-            window.renderOptIn = function() {
-            window.gapi.load('surveyoptin', function() {
-            window.gapi.surveyoptin.render(
-            {   "merchant_id": "113938678",
-                    "order_id": "{$orderId}",
-                    "email": "{customer attr='email'}",
-                    "delivery_country": "{$countryCode}",
-                    "estimated_delivery_date": "{$maxDeliveryDate}"
-            }
-            );
-            });
-            }
-</script>
+  window.renderOptIn = function() {
+    window.gapi.load('surveyoptin', function() {
+      window.gapi.surveyoptin.render({
+        "merchant_id": "113938678",
+        "order_id": "{$orderId}",
+        "email": "{customer attr='email'}",
+        "delivery_country": "{$countryCode}",
+        "estimated_delivery_date": "{$maxDeliveryDate}"
+      });
+    });
+  } 
+  </script>
+
 <!-- END GCR Opt-in Module Code -->
 <!-- BEGIN GCR Language Code -->
 <script>
-            window.___gcfg = { lang: 'de' };
-</script>
+  window.___gcfg = {
+    lang: 'de'
+  }; 
+  </script>
+
 <!-- END GCR Language Code -->
 
 {/block}
