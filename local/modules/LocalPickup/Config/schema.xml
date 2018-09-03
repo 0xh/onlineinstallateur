@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database defaultIdMethod="native" name="thelia" namespace="LocalPickup\Model">
+<database defaultIdMethod="native" name="thelia">
 
     <table name="local_pickup_shipping">
         <column name="id" primaryKey="true" required="true" type="INTEGER" autoIncrement="true" />
@@ -7,7 +7,7 @@
         <behavior name="timestampable" />
     </table>
     
-    <table name="local_pickup">
+    <table name="local_pickup" namespace="LocalPickup\Model">
         <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
         <column name="address" phpName="Address" type="VARCHAR" size="255"/>
         <column name="gps_lat" phpName="GpsLat" type="DECIMAL" size="18" scale="14"/>
@@ -19,9 +19,9 @@
         </vendor>
     </table>
     
-    <table name="order_local_pickup_address">
+    <table name="order_local_pickup_address" namespace="LocalPickup\Model">
         <column name="order_id" phpName="OrderId" type="INTEGER"/>
-        <column name="cart_id" phpName="CartId" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="cart_id" phpName="LocalPickupCartId" type="INTEGER" primaryKey="true" required="true"/>
         <column name="local_pickup_id" phpName="LocalPickupId" type="INTEGER" required="true"/>
         <foreign-key foreignTable="local_pickup" name="fk_order_local_pickup_address_local_pickup_id" onDelete="CASCADE">
             <reference local="local_pickup_id" foreign="id"/>
