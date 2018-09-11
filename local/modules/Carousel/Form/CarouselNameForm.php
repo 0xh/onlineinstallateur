@@ -14,44 +14,40 @@
 namespace Carousel\Form;
 
 use Carousel\Carousel;
-use Symfony\Component\Validator\Constraints\Image;
-use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
+use Thelia\Log\Tlog;
 
 /**
- * Class CarouselImageForm
+ * Class CarouselNameForm
  * @package Carousel\Form
  * @author manuel raynaud <mraynaud@openstudio.fr>
  */
-class CarouselImageForm extends BaseForm
+class CarouselNameForm extends BaseForm
 {
-
-    /**
-     * @return string the name of you form. This name must be unique
-     */
-    public function getName()
-    {
-        return 'carousel_image';
-    }
 
     /**
      * @inheritdoc
      */
     protected function buildForm()
     {
-        $translator = Translator::getInstance();
         $this->formBuilder
-         ->add(
-          'file', 'file', [
+         ->add("name", "text", [
           'constraints' => [
-           new Image()
           ],
-          'label'       => $translator->trans('Carousel image', [], Carousel::DOMAIN_NAME),
-          'label_attr'  => [
-           'for' => 'file'
-          ]
-          ]
-        );
+          'label'       => $this->translator->trans('Carousel name', [], Carousel::DOMAIN_NAME)
+         ])->add("template", "text", [
+         'constraints' => [
+         ],
+         'label'       => $this->translator->trans('Carousel template', [], Carousel::DOMAIN_NAME)
+        ]);
+    }
+
+    /**
+     * @return string the name of you form. This name must be unique
+     */
+    public function getName()
+    {
+        return 'carousel_name';
     }
 
 }

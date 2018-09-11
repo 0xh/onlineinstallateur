@@ -5,21 +5,25 @@
 
     <loops>
         <loop name="carousel" class="Carousel\Loop\CarouselLoop" />
+        <loop name="carousel.list" class="Carousel\Loop\CarouselListLoop" />
+        <loop name="carousel.hook.loop" class="Carousel\Loop\CarouselHookLoop"/>
     </loops>
 
     <forms>
         <form name="carousel.image" class="Carousel\Form\CarouselImageForm" />
         <form name="carousel.update" class="Carousel\Form\CarouselUpdateForm" />
+        <form name="carousel.name.form" class="Carousel\Form\CarouselNameForm" />
+        <form name="carousel.hook.form" class="Carousel\Form\CarouselHookForm" />
     </forms>
 
     <hooks>
-        <hook id="carousel.hook">
-            <tag name="hook.event_listener" event="home.body" type="front" templates="render:carousel.html" />
-            <tag name="hook.event_listener" event="module.configuration" type="back" templates="render:module_configuration.html" />
-            <tag name="hook.event_listener" event="module.config-js" type="back" templates="js:assets/js/module-configuration.js" />
+        <hook id="carousel.hook.front" class="Carousel\Hook\Front\FrontHook">
+            <tag name="hook.event_listener" event="carousel-hook-placement" type="front" method="displayFormSlider" />
         </hook>
-        <hook id="carousel.hook.back" class="Carousel\Hook\BackHook">
+        <hook id="carousel.hook.back12" class="Carousel\Hook\BackHook">
             <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfiguration" />
+            <tag name="hook.event_listener" event="module.config-js" type="back" method="onJsModuleConfig" />
         </hook>
     </hooks>
 </config>
