@@ -34,8 +34,6 @@ use Thelia\Log\Tlog;
  */
 class CarouselLoop extends Image
 {
-
-
     /**
      * @inheritdoc
      */
@@ -47,6 +45,7 @@ class CarouselLoop extends Image
             Argument::createIntTypeArgument('rotation', 0),
             Argument::createAnyTypeArgument('background_color'),
             Argument::createIntTypeArgument('quality'),
+            Argument::createIntTypeArgument('carousel_id'),
             Argument::createBooleanTypeArgument('visible'),
             new Argument(
                 'resize_mode',
@@ -132,7 +131,6 @@ class CarouselLoop extends Image
 
             $loopResultRow
                 ->set('ID', $carousel->getId())
-                ->set('VISIBLE',$carousel->getVisible())
                 ->set("LOCALE", $this->locale)
                 ->set("IMAGE_URL", $event->getFileUrl())
                 ->set("ORIGINAL_IMAGE_URL", $event->getOriginalFileUrl())
@@ -145,8 +143,11 @@ class CarouselLoop extends Image
                 ->set("ALT", $carousel->getVirtualColumn('i18n_ALT'))
                 ->set("URL", $carousel->getUrl())
                 ->set('POSITION', $carousel->getPosition())
+                ->set('VISIBLE',$carousel->getVisible())
             ;
-
+            
+            Tlog::getInstance()->err("Is visible ".$carousel->getVisible()." Carousel Id: ".$carousel->getId());
+            
             $loopResult->addRow($loopResultRow);
         }
 
@@ -154,17 +155,17 @@ class CarouselLoop extends Image
     }
 
     /**
-     * this method returns a Propel ModelCriteria
+     * this method returns a Propel ModelCriteria 
      *
      * @return \Propel\Runtime\ActiveQuery\ModelCriteria
      */
     public function buildModelCriteria()
     {
-        $search = CarouselQuery::create();
         $visible = $this->getVisible();
-        $this->configureI18nProcessing($search, [ 'ALT', 'TITLE', 'CHAPO', 'DESCRIPTION', 'POSTSCRIPTUM' ]);
-        
+        $search = CarouselQuery::create()
+                ->filterByCarouselId($this->getCarouselId());
 
+        $this->configureI18nProcessing($search, [ 'ALT', 'TITLE', 'CHAPO', 'DESCRIPTION', 'POSTSCRIPTUM' ]);
 
         $orders  = $this->getOrder();
 
@@ -193,7 +194,7 @@ class CarouselLoop extends Image
         
         if($visible != null)
             $search->where(CarouselTableMap::VISIBLE." = ?", $visible, \PDO::PARAM_INT);
-        
+
         return $search;
     }
 }
