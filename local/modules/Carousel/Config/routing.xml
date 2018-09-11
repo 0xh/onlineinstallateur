@@ -27,16 +27,64 @@
     ...
     </route>
     -->
-    <route id="carousel.upload.image" path="/admin/module/carousel/upload" methods="post">
+    <route id="carousel.upload.image" path="/admin/module/carousel/upload/{carouselId}" methods="post">
         <default key="_controller">Carousel\Controller\ConfigurationController::uploadImage</default>
+        <requirement key="carouselId">\d+</requirement>
     </route>
 
-    <route id="carousel.update" path="/admin/module/carousel/update" methods="post">
+    <route id="carousel.update" path="/admin/module/carousel/update/{carouselId}" methods="post">
         <default key="_controller">Carousel\Controller\ConfigurationController::updateAction</default>
+        <requirement key="carouselId">\d+</requirement>
     </route>
 
-    <route id="carousel.delete" path="/admin/module/carousel/delete" methods="post">
+    <route id="carousel.delete" path="/admin/module/carousel/delete/{carouselId}/{imageId}" methods="get">
         <default key="_controller">Carousel\Controller\ConfigurationController::deleteAction</default>
+        <requirement key="carouselId">\d+</requirement>
+        <requirement key="imageId">\d+</requirement>
+    </route>
+
+    <route id="carousel.list" path="/admin/module/carousel/list" methods="get">
+        <default key="_controller">Carousel\Controller\ConfigurationController::listAction</default>
+    </route>
+
+    <route id="carousel.list.config" path="/admin/module/Carousel" methods="get">
+        <default key="_controller">Carousel\Controller\ConfigurationController::listAction</default>
+    </route>
+
+    <route id="carousel.view" path="/admin/module/carousel/view/{carouselId}" methods="get">
+        <default key="_controller">Carousel\Controller\ConfigurationController::viewAction</default>
+        <requirement key="carouselId">\d+</requirement>
+    </route>
+    
+    <route id="carousel.add.new.hook.id" path="/admin/module/carousel/add-new-hook-id">
+        <default key="_controller">Carousel\Controller\Admin\ConfigController::addNewHookIdCarousel</default>
+    </route>
+    
+    <route id="carousel.delete.hook.id" path="/admin/module/carousel/delete-hook-id/{id}">
+        <default key="_controller">Carousel\Controller\Admin\ConfigController::deleteHookIdCarousel</default>
+    </route>
+    
+    <route id="carousel.edit.hook.id" path="/admin/module/carousel/edit-hook-id">
+        <default key="_controller">Carousel\Controller\Admin\ConfigController::editHookIdCarousel</default>
+    </route>
+    <!--    
+    <route id="carousel.template.view" path="/admin/module/carousel/view-template/{carouselTemplate}" methods="get">
+        <default key="_controller">Carousel\Controller\ConfigurationController::viewTemplateAction</default>
+        <requirement key="carouselTemplate">\d+</requirement>
+    </route>-->
+
+    <route id="carousel.delete.name" path="/admin/module/carousel/delete-name/{carouselId}" methods="post">
+        <default key="_controller">Carousel\Controller\ConfigurationController::deleteCarouselName</default>
+        <requirement key="carouselId">\d+</requirement>
+    </route>
+
+    <route id="carousel.add.new" path="/admin/module/carousel/add/newcarousel" methods="post">
+        <default key="_controller">Carousel\Controller\ConfigurationController::addNewCarouselName</default>
+    </route>
+    
+    <route id="carousel.name.update" path="/admin/module/carousel/update1/{carouselId}" methods="post">
+        <default key="_controller">Carousel\Controller\ConfigurationController::updateCarouselName</default>
+        <requirement key="carouselId">\d+</requirement>
     </route>
 
 </routes>

@@ -2,8 +2,8 @@
 
 namespace Carousel\Model\Map;
 
-use Carousel\Model\Carousel;
-use Carousel\Model\CarouselQuery;
+use Carousel\Model\CarouselName;
+use Carousel\Model\CarouselNameQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'carousel' table.
+ * This class defines the structure of the 'carousel_name' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class CarouselTableMap extends TableMap
+class CarouselNameTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Carousel.Model.Map.CarouselTableMap';
+    const CLASS_NAME = 'Carousel.Model.Map.CarouselNameTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class CarouselTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'carousel';
+    const TABLE_NAME = 'carousel_name';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Carousel\\Model\\Carousel';
+    const OM_CLASS = '\\Carousel\\Model\\CarouselName';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Carousel.Model.Carousel';
+    const CLASS_DEFAULT = 'Carousel.Model.CarouselName';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 11;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -68,76 +68,52 @@ class CarouselTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 11;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'carousel.ID';
+    const ID = 'carousel_name.ID';
 
     /**
-     * the column name for the CAROUSEL_ID field
+     * the column name for the NAME field
      */
-    const CAROUSEL_ID = 'carousel.CAROUSEL_ID';
+    const NAME = 'carousel_name.NAME';
 
     /**
-     * the column name for the VISIBLE field
+     * the column name for the TEMPLATE field
      */
-    const VISIBLE = 'carousel.VISIBLE';
-
-    /**
-     * the column name for the FILE field
-     */
-    const FILE = 'carousel.FILE';
-
-    /**
-     * the column name for the POSITION field
-     */
-    const POSITION = 'carousel.POSITION';
-
-    /**
-     * the column name for the URL field
-     */
-    const URL = 'carousel.URL';
+    const TEMPLATE = 'carousel_name.TEMPLATE';
 
     /**
      * the column name for the CREATED_AT field
      */
-    const CREATED_AT = 'carousel.CREATED_AT';
+    const CREATED_AT = 'carousel_name.CREATED_AT';
 
     /**
      * the column name for the UPDATED_AT field
      */
-    const UPDATED_AT = 'carousel.UPDATED_AT';
+    const UPDATED_AT = 'carousel_name.UPDATED_AT';
 
     /**
      * the column name for the VERSION field
      */
-    const VERSION = 'carousel.VERSION';
+    const VERSION = 'carousel_name.VERSION';
 
     /**
      * the column name for the VERSION_CREATED_AT field
      */
-    const VERSION_CREATED_AT = 'carousel.VERSION_CREATED_AT';
+    const VERSION_CREATED_AT = 'carousel_name.VERSION_CREATED_AT';
 
     /**
      * the column name for the VERSION_CREATED_BY field
      */
-    const VERSION_CREATED_BY = 'carousel.VERSION_CREATED_BY';
+    const VERSION_CREATED_BY = 'carousel_name.VERSION_CREATED_BY';
 
     /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
-
-    // i18n behavior
-    
-    /**
-     * The default locale to use for translations.
-     *
-     * @var string
-     */
-    const DEFAULT_LOCALE = 'en_US';
 
     /**
      * holds an array of fieldnames
@@ -146,12 +122,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'CarouselId', 'Visible', 'File', 'Position', 'Url', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'carouselId', 'visible', 'file', 'position', 'url', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID, CarouselTableMap::CAROUSEL_ID, CarouselTableMap::VISIBLE, CarouselTableMap::FILE, CarouselTableMap::POSITION, CarouselTableMap::URL, CarouselTableMap::CREATED_AT, CarouselTableMap::UPDATED_AT, CarouselTableMap::VERSION, CarouselTableMap::VERSION_CREATED_AT, CarouselTableMap::VERSION_CREATED_BY, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'CAROUSEL_ID', 'VISIBLE', 'FILE', 'POSITION', 'URL', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
-        self::TYPE_FIELDNAME     => array('id', 'carousel_id', 'visible', 'file', 'position', 'url', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('Id', 'Name', 'Template', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'name', 'template', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
+        self::TYPE_COLNAME       => array(CarouselNameTableMap::ID, CarouselNameTableMap::NAME, CarouselNameTableMap::TEMPLATE, CarouselNameTableMap::CREATED_AT, CarouselNameTableMap::UPDATED_AT, CarouselNameTableMap::VERSION, CarouselNameTableMap::VERSION_CREATED_AT, CarouselNameTableMap::VERSION_CREATED_BY, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'NAME', 'TEMPLATE', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
+        self::TYPE_FIELDNAME     => array('id', 'name', 'template', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -161,12 +137,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'CarouselId' => 1, 'Visible' => 2, 'File' => 3, 'Position' => 4, 'Url' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Version' => 8, 'VersionCreatedAt' => 9, 'VersionCreatedBy' => 10, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'carouselId' => 1, 'visible' => 2, 'file' => 3, 'position' => 4, 'url' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'version' => 8, 'versionCreatedAt' => 9, 'versionCreatedBy' => 10, ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID => 0, CarouselTableMap::CAROUSEL_ID => 1, CarouselTableMap::VISIBLE => 2, CarouselTableMap::FILE => 3, CarouselTableMap::POSITION => 4, CarouselTableMap::URL => 5, CarouselTableMap::CREATED_AT => 6, CarouselTableMap::UPDATED_AT => 7, CarouselTableMap::VERSION => 8, CarouselTableMap::VERSION_CREATED_AT => 9, CarouselTableMap::VERSION_CREATED_BY => 10, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CAROUSEL_ID' => 1, 'VISIBLE' => 2, 'FILE' => 3, 'POSITION' => 4, 'URL' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'VERSION' => 8, 'VERSION_CREATED_AT' => 9, 'VERSION_CREATED_BY' => 10, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'carousel_id' => 1, 'visible' => 2, 'file' => 3, 'position' => 4, 'url' => 5, 'created_at' => 6, 'updated_at' => 7, 'version' => 8, 'version_created_at' => 9, 'version_created_by' => 10, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, 'Template' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, 'Version' => 5, 'VersionCreatedAt' => 6, 'VersionCreatedBy' => 7, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'name' => 1, 'template' => 2, 'createdAt' => 3, 'updatedAt' => 4, 'version' => 5, 'versionCreatedAt' => 6, 'versionCreatedBy' => 7, ),
+        self::TYPE_COLNAME       => array(CarouselNameTableMap::ID => 0, CarouselNameTableMap::NAME => 1, CarouselNameTableMap::TEMPLATE => 2, CarouselNameTableMap::CREATED_AT => 3, CarouselNameTableMap::UPDATED_AT => 4, CarouselNameTableMap::VERSION => 5, CarouselNameTableMap::VERSION_CREATED_AT => 6, CarouselNameTableMap::VERSION_CREATED_BY => 7, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'NAME' => 1, 'TEMPLATE' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, 'VERSION' => 5, 'VERSION_CREATED_AT' => 6, 'VERSION_CREATED_BY' => 7, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'name' => 1, 'template' => 2, 'created_at' => 3, 'updated_at' => 4, 'version' => 5, 'version_created_at' => 6, 'version_created_by' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -179,18 +155,15 @@ class CarouselTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('carousel');
-        $this->setPhpName('Carousel');
-        $this->setClassName('\\Carousel\\Model\\Carousel');
+        $this->setName('carousel_name');
+        $this->setPhpName('CarouselName');
+        $this->setClassName('\\Carousel\\Model\\CarouselName');
         $this->setPackage('Carousel.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('CAROUSEL_ID', 'CarouselId', 'INTEGER', 'carousel_name', 'ID', true, null, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 1);
-        $this->addColumn('FILE', 'File', 'VARCHAR', false, 255, null);
-        $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
-        $this->addColumn('URL', 'Url', 'VARCHAR', false, 255, null);
+        $this->addColumn('NAME', 'Name', 'VARCHAR', false, 255, null);
+        $this->addColumn('TEMPLATE', 'Template', 'VARCHAR', false, 255, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
@@ -203,9 +176,9 @@ class CarouselTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('CarouselName', '\\Carousel\\Model\\CarouselName', RelationMap::MANY_TO_ONE, array('carousel_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('CarouselI18n', '\\Carousel\\Model\\CarouselI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CarouselI18ns');
-        $this->addRelation('CarouselVersion', '\\Carousel\\Model\\CarouselVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CarouselVersions');
+        $this->addRelation('Carousel', '\\Carousel\\Model\\Carousel', RelationMap::ONE_TO_MANY, array('id' => 'carousel_id', ), 'CASCADE', null, 'Carousels');
+        $this->addRelation('CarouselHook', '\\Carousel\\Model\\CarouselHook', RelationMap::ONE_TO_MANY, array('id' => 'carousel_id', ), 'CASCADE', 'RESTRICT', 'CarouselHooks');
+        $this->addRelation('CarouselNameVersion', '\\Carousel\\Model\\CarouselNameVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CarouselNameVersions');
     } // buildRelations()
 
     /**
@@ -217,20 +190,20 @@ class CarouselTableMap extends TableMap
     public function getBehaviors()
     {
         return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'alt, title, description, chapo, postscriptum', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
             'versionable' => array('version_column' => 'version', 'version_table' => '', 'log_created_at' => 'true', 'log_created_by' => 'true', 'log_comment' => 'false', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', ),
+            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
         );
     } // getBehaviors()
     /**
-     * Method to invalidate the instance pool of all tables related to carousel     * by a foreign key with ON DELETE CASCADE
+     * Method to invalidate the instance pool of all tables related to carousel_name     * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                CarouselI18nTableMap::clearInstancePool();
-                CarouselVersionTableMap::clearInstancePool();
+                CarouselTableMap::clearInstancePool();
+                CarouselHookTableMap::clearInstancePool();
+                CarouselNameVersionTableMap::clearInstancePool();
             }
 
     /**
@@ -289,7 +262,7 @@ class CarouselTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? CarouselTableMap::CLASS_DEFAULT : CarouselTableMap::OM_CLASS;
+        return $withPrefix ? CarouselNameTableMap::CLASS_DEFAULT : CarouselNameTableMap::OM_CLASS;
     }
 
     /**
@@ -303,21 +276,21 @@ class CarouselTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (Carousel object, last column rank)
+     * @return array (CarouselName object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = CarouselTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = CarouselTableMap::getInstanceFromPool($key))) {
+        $key = CarouselNameTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = CarouselNameTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + CarouselTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + CarouselNameTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = CarouselTableMap::OM_CLASS;
+            $cls = CarouselNameTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            CarouselTableMap::addInstanceToPool($obj, $key);
+            CarouselNameTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -340,8 +313,8 @@ class CarouselTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = CarouselTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = CarouselTableMap::getInstanceFromPool($key))) {
+            $key = CarouselNameTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = CarouselNameTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -350,7 +323,7 @@ class CarouselTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                CarouselTableMap::addInstanceToPool($obj, $key);
+                CarouselNameTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -371,24 +344,18 @@ class CarouselTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(CarouselTableMap::ID);
-            $criteria->addSelectColumn(CarouselTableMap::CAROUSEL_ID);
-            $criteria->addSelectColumn(CarouselTableMap::VISIBLE);
-            $criteria->addSelectColumn(CarouselTableMap::FILE);
-            $criteria->addSelectColumn(CarouselTableMap::POSITION);
-            $criteria->addSelectColumn(CarouselTableMap::URL);
-            $criteria->addSelectColumn(CarouselTableMap::CREATED_AT);
-            $criteria->addSelectColumn(CarouselTableMap::UPDATED_AT);
-            $criteria->addSelectColumn(CarouselTableMap::VERSION);
-            $criteria->addSelectColumn(CarouselTableMap::VERSION_CREATED_AT);
-            $criteria->addSelectColumn(CarouselTableMap::VERSION_CREATED_BY);
+            $criteria->addSelectColumn(CarouselNameTableMap::ID);
+            $criteria->addSelectColumn(CarouselNameTableMap::NAME);
+            $criteria->addSelectColumn(CarouselNameTableMap::TEMPLATE);
+            $criteria->addSelectColumn(CarouselNameTableMap::CREATED_AT);
+            $criteria->addSelectColumn(CarouselNameTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(CarouselNameTableMap::VERSION);
+            $criteria->addSelectColumn(CarouselNameTableMap::VERSION_CREATED_AT);
+            $criteria->addSelectColumn(CarouselNameTableMap::VERSION_CREATED_BY);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.CAROUSEL_ID');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
-            $criteria->addSelectColumn($alias . '.FILE');
-            $criteria->addSelectColumn($alias . '.POSITION');
-            $criteria->addSelectColumn($alias . '.URL');
+            $criteria->addSelectColumn($alias . '.NAME');
+            $criteria->addSelectColumn($alias . '.TEMPLATE');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
             $criteria->addSelectColumn($alias . '.VERSION');
@@ -406,7 +373,7 @@ class CarouselTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(CarouselTableMap::DATABASE_NAME)->getTable(CarouselTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(CarouselNameTableMap::DATABASE_NAME)->getTable(CarouselNameTableMap::TABLE_NAME);
     }
 
     /**
@@ -414,16 +381,16 @@ class CarouselTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(CarouselTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(CarouselTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new CarouselTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(CarouselNameTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(CarouselNameTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new CarouselNameTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a Carousel or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a CarouselName or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Carousel object or primary key or array of primary keys
+     * @param mixed               $values Criteria or CarouselName object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -434,25 +401,25 @@ class CarouselTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CarouselTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CarouselNameTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Carousel\Model\Carousel) { // it's a model object
+        } elseif ($values instanceof \Carousel\Model\CarouselName) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(CarouselTableMap::DATABASE_NAME);
-            $criteria->add(CarouselTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(CarouselNameTableMap::DATABASE_NAME);
+            $criteria->add(CarouselNameTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = CarouselQuery::create()->mergeWith($criteria);
+        $query = CarouselNameQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { CarouselTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { CarouselNameTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { CarouselTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { CarouselNameTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -460,20 +427,20 @@ class CarouselTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the carousel table.
+     * Deletes all rows from the carousel_name table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return CarouselQuery::create()->doDeleteAll($con);
+        return CarouselNameQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Carousel or Criteria object.
+     * Performs an INSERT on the database, given a CarouselName or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Carousel object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or CarouselName object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -482,22 +449,22 @@ class CarouselTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CarouselTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CarouselNameTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Carousel object
+            $criteria = $criteria->buildCriteria(); // build Criteria from CarouselName object
         }
 
-        if ($criteria->containsKey(CarouselTableMap::ID) && $criteria->keyContainsValue(CarouselTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CarouselTableMap::ID.')');
+        if ($criteria->containsKey(CarouselNameTableMap::ID) && $criteria->keyContainsValue(CarouselNameTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.CarouselNameTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = CarouselQuery::create()->mergeWith($criteria);
+        $query = CarouselNameQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -513,7 +480,7 @@ class CarouselTableMap extends TableMap
         return $pk;
     }
 
-} // CarouselTableMap
+} // CarouselNameTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-CarouselTableMap::buildTableMap();
+CarouselNameTableMap::buildTableMap();

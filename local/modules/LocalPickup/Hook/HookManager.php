@@ -22,23 +22,28 @@ use LocalPickup\LocalPickup;
  * @package LocalPickup\Hook
  * @author Thomas Arnaud <tarnaud@openstudio.fr>
  */
-class HookManager extends BaseHook {
+class HookManager extends BaseHook
+{
 
-    public function onModuleConfiguration(HookRenderEvent $event) {
+    public function onModuleConfiguration(HookRenderEvent $event)
+    {
         $event->add($this->render("module_configuration.html"));
     }
 
-    public function onOrderDeliveryMethodHelpBlock(HookRenderEvent $event) {
+    public function onOrderDeliveryMethodHelpBlock(HookRenderEvent $event)
+    {
         if (LocalPickup::getModCode() == $event->getArgument("whoisallowed", null)) {
             $event->add($this->render("order-delivery.method.help-block.html"));
         }
     }
 
-    public function onOrderDeliveryjavascriptInitialization(HookRenderEvent $event) {
+    public function onOrderDeliveryjavascriptInitialization(HookRenderEvent $event)
+    {
         $event->add($this->render("order-delivery.javascript-initialization.html"));
     }
-    
-    public function onProductLocationOrderBack(HookRenderEvent $event) {
+
+    public function onProductLocationOrderBack(HookRenderEvent $event)
+    {
         $delivery_module_id = $event->getArgument("delivery_module_id");
         $event->add($this->render("product_location_order_back.html", array("delivery_module_id" => $delivery_module_id)));
     }

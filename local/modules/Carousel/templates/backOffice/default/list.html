@@ -1,0 +1,202 @@
+{extends file="admin-layout.tpl"}
+
+{block name="main-content"}
+
+
+    <div class="general-block-decorator">
+        <ul class="breadcrumb">
+            <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
+        </ul>
+
+        <table class="table table-striped">
+            <tr>
+                {form name="carousel.name.form"}
+            <form action="{url path='/admin/module/carousel/add/newcarousel'}" method="post">
+                {form_hidden_fields form=$form}
+                {if $form_error}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">{$form_error_message}</div>
+                        </div>
+                    </div>
+                {/if}
+                <td>#</td>
+                <td>{render_form_field form=$form field="name" value=$name}</td>
+                <td>{render_form_field form=$form field="template" value=$template}</td>
+                <td>
+                    <button type="submit" class="btn btn-primary action-btn"
+                            title="{intl l='Add'}" data-toggle="modal">
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    </button>
+                </td>
+            </form>
+            {/form}
+            </tr>
+        </table>
+        <div class="txt-div" >
+            <table class="table table-striped">
+                {assign var="nr" value="1"}
+                <tr style="font-weight: bold">
+                    <td class="col-md-3">Id</td>
+                    <td class="col-md-3">Name</td>
+                    <td class="col-md-3">Template</td>
+                    <td class="col-md-3">Update Template</td>
+                    <td class="col-md-3">Delete</td>
+                </tr>
+                {loop name="carousel.list" type="carousel.list" page={$page} limit=25}
+                <tr>   
+                <form action="{url path='/admin/module/carousel/update1/'}{$id}" method="post">
+                    <td class="col-md-3">{$id}.</td>
+                    <td class="col-md-3"><a href="/admin/module/carousel/view/{$id}">{$name}</a></td>
+                    <td class="col-md-3"><input name="template-input" value="{$template}"></td>
+                    <td class="col-md-4">
+                        {form name="carousel.name.form"}
+                        {form_hidden_fields form=$form}
+                        <button type="submit" class="btn btn-success action-btn" style="float: left"
+                                title="{intl l='Update Template'}" data-toggle="modal">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        {/form}
+                    </td>
+                </form>
+                <td class="col-md-3">
+                    {form name="carousel.name.form"}
+                    <form action="{url path='/admin/module/carousel/delete-name/'}{$id}"
+                          method="post">
+                        {form_hidden_fields form=$form}
+                        <button type="submit" class="btn btn-danger action-btn" style="float: left"
+                                title="{intl l='Delete carousel'}" data-toggle="modal">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </form>
+                    {/form}
+
+                </td>
+
+                </tr>
+                {/loop}
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 general-block-decorator">
+                <div class="form-container">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <span class="glyphicon glyphicon-cog"></span>
+                                {intl l="Carousel hook"}
+                            </h3>
+                        </div>
+                        <form action="{url path='/admin/module/carousel/add-new-hook-id'}" method="post">
+                            <div class="panel-body">
+                                <table id="config-table">
+                                    <tr>
+                                        <td>
+                                            <div class="">
+                                                <label for="" class="control-label">
+                                                   {intl l='Add new ID for hook :'}
+                                                </label>
+                                                <button type="submit" class="btn btn-primary action-btn" title="Add" data-toggle="modal" style="margin-left: 1%; margin-top: 8px;">
+                                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
+                        {form name="carousel.hook.form"}
+                        <div class="panel-footer">
+                            <table id="config-table">
+                                <tr>
+                                    <th class="col-md-1">{intl l='ID'}</th>
+                                    <th class="col-md-4">{intl l='Carousel id'}</th>
+                                    <th class="col-md-4">{intl l='Hook code'}</th>
+                                    <th class="col-md-2">{intl l='Choose a hook'}</th>
+                                    <th class="col-md-4">{intl l='Action'}</th>
+                                </tr>
+                                </br>
+                                {loop name="carousel.hook.loop" type="carousel.hook.loop"}
+                                <tr>
+                                    
+                                <form action="{url path='/admin/module/carousel/edit-hook-id'}" method="post">
+                                    {form_hidden_fields form=$form}
+                                    <td class="col-md-1">
+                                        {$id}.
+                                        <input type="hidden" name="hook_key_id" value="{$id}" />
+                                        {assign var=carouselHookId value=$id}
+                                    </td>
+                                    <td class="col-md-4">
+                                        {render_form_field form=$form field="carousel_id" value=$carousel_id}
+                                    </td>
+                                    <td class="col-md-4">
+
+                                        {form_field form=$form field="hook_code"}
+                                        <label>{intl l="{$label}"}</label>
+                                        <input style="width: 90%;" type="text" name="{$name}" id="hook_code_{$id}" value="{$hook_code}" {$attr} />
+                                        {/form_field}
+
+                                        {form_field form=$form field="hook_id"}
+                                        <label>{intl l="{$label}"}</label>
+                                        <input style="width: 90%;" type="hidden" name="{$name}" id="hook_code_id_{$id}" value="{$hook_id}" {$attr} />
+                                        {/form_field}
+
+
+                                    </td>
+                                    <td class="col-md-2">
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                Hook
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul style="cursor: pointer;" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1">
+                                                <li><a onclick="changeCarouselHookId({$carouselHookId}, '', {$ID})" >Empty</a></li>
+                                                    {loop name="hook_edit" type="hook" backend_context="1" lang="en_US" order="code"}
+                                                <li><a onclick="changeCarouselHookId({$carouselHookId}, '{$CODE}', {$ID})" >{$CODE} - {$TITLE}</a></li>
+                                                    {/loop}
+
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td class="col-md-4">
+                                        <div class="" style="padding-bottom: 6px;">
+                                            <button type="submit" class="js-modal-btn-save btn btn-success">Save</button>
+                                        </div>
+                                        <div class="tool-items"><a class="selection-delete btn-danger" title="Delete Carousel" href="{url path='/admin/module/carousel/delete-hook-id/'}{$id}">
+                                                <span class="label label-danger">Delete</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </form>
+                                </tr>
+                                {/loop}
+                            </table>
+                        </div>
+                        {/form}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <tfoot>
+            <tr>
+                <td colspan="100">
+                    {include
+                file = "includes/pagination.html"
+                loop_ref       = "carousel.list"
+                max_page_count = 25
+                page_url       = {url path="/admin/module/carousel/list" }
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </div>
+                
+<script>
+ function changeCarouselHookId(id, code, hookId) {
+        $("#hook_code_" + id).val(code);
+        $("#hook_code_id_" + id).val(hookId);
+    }
+</script>
+
+{/block}

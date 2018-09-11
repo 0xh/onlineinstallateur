@@ -2,11 +2,13 @@
 
 namespace Carousel\Model;
 
+use Carousel\Form\CarouselImageForm;
 use Carousel\Model\Base\Carousel as BaseCarousel;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Thelia\Core\HttpFoundation\Request;
 use Thelia\Files\FileModelInterface;
 use Thelia\Files\FileModelParentInterface;
 use Thelia\Form\BaseForm;
@@ -85,7 +87,7 @@ class Carousel extends BaseCarousel implements FileModelInterface
      */
     public function getRedirectionUrl()
     {
-        return '/admin/module/Carousel';
+        return '/admin/module/carousel/list';
     }
 
     /**
