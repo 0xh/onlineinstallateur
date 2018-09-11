@@ -108,7 +108,7 @@ class ConfigurationController extends BaseAdminController
 
         return $value;
     }
-    
+
     protected function getFormFieldCarouselName($form, $fieldName)
     {
         $value = $form->get(sprintf('%s%d', $fieldName))->getData();
@@ -122,7 +122,6 @@ class ConfigurationController extends BaseAdminController
             return $response;
         }
 
-        Tlog::getInstance()->err("In update action");
         $form = $this->createForm('carousel.update');
 
         $error_message = null;
@@ -153,8 +152,6 @@ class ConfigurationController extends BaseAdminController
                  ->save();
             }
 
-            Tlog::getInstance()->err("In foreach" . $carousel);
-            Tlog::getInstance()->err("Dupa foreach in try");
             $response = $this->redirectToConfigurationPage($carouselId);
         } catch (FormValidationException $e) {
             $error_message = $this->createStandardFormValidationErrorMessage($e);
@@ -168,7 +165,6 @@ class ConfigurationController extends BaseAdminController
 
             $response = $this->render("module-configure", ['module_code' => 'Carousel']);
         }
-        Tlog::getInstance()->err("dupa if null ");
 
         return $response;
     }
@@ -204,21 +200,11 @@ class ConfigurationController extends BaseAdminController
 
     public function viewAction($carouselId)
     {
-        Tlog::getInstance()->err("Viewing Template before");
         $carousel = CarouselQuery::create()
          ->findByCarouselId($carouselId);
 
         return $this->render("module_configuration", ['carouselId' => $carouselId]);
     }
-
-//    public function viewTemplateAction($carouselTemplate) {
-//         Tlog::getInstance()->err("Viewing Template before");
-//        $carouselTemplate = CarouselNameQuery::create()
-//                ->findByTemplate($carouselTemplate);
-//
-//        Tlog::getInstance()->err("Viewing Template");
-//        return $this->render("$carouselTemplate");
-//    }
 
     public function addNewCarouselName()
     {
@@ -227,8 +213,6 @@ class ConfigurationController extends BaseAdminController
             return $response;
         }
 
-        Tlog::getInstance()->err("Add new carousel method");
-
         try {
             $carouselName = $this->createForm("carousel.name.form");
             $form         = $this->validateForm($carouselName, "POST");
@@ -236,7 +220,6 @@ class ConfigurationController extends BaseAdminController
 
             $crName = new CarouselName();
             $crName->setName($data["name"]);
-            Tlog::getInstance()->err("Inainte de template" . $data["template"]);
             $crName->setTemplate($data["template"]);
             $crName->save();
 
@@ -248,7 +231,6 @@ class ConfigurationController extends BaseAdminController
         }
 
 
-        Tlog::getInstance()->err("passed catch blocks");
         $this->setupFormErrorContext($this->getTranslator()
           ->trans("New carousel", [], \Carousel\Carousel::DOMAIN_NAME), $error_msg, $carouselName, $ex);
 
@@ -280,20 +262,21 @@ class ConfigurationController extends BaseAdminController
 
         return $this->render("list");
     }
-    
-    public function updateCarouselName($carouselId){
-        
+
+    public function updateCarouselName($carouselId)
+    {
+
         if (null !== $response = $this->checkAuth(AdminResources::MODULE, ['carousel'], AccessManager::UPDATE)) {
             return $response;
         }
-        
+
         $carousel = CarouselNameQuery::create()
-             ->findOneById($carouselId);
-       
-            $carousel
-                 ->setTemplate($this->getRequest()->get("template-input"))
-                 ->save();
-      
+         ->findOneById($carouselId);
+
+        $carousel
+         ->setTemplate($this->getRequest()->get("template-input"))
+         ->save();
+
         return RedirectResponse::create(URL::getInstance()->absoluteUrl('/admin/module/carousel/list'));
     }
 
