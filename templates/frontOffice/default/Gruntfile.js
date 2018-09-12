@@ -114,7 +114,22 @@ module.exports = function (grunt) {
                         flatten: true,
                         dest: 'assets/dist/js/vendors',
                         src: 'bower_components/bootbox/bootbox.js'
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        dest: 'assets/dist/js/vendors',
+                        src: 'assets/src/js/vendors/jquery.meanmenu.min.js'
+                    },
+                    {
+                        expand: true,
+                        flatten: true,
+                        dest: 'assets/dist/js/vendors',
+                        src: 'assets/src/js/vendors/owl.carousel.min.js'
                     }
+					
+					
+					
                 ]
             },
             fonts: {
