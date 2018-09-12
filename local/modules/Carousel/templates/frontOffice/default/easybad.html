@@ -1,26 +1,4 @@
-{*<section class="carousel-container">
-    <div id="carousel-{$carousel_id}" class="carousel slide" data-ride="carousel">
-        <div class="carousel-wrapper">
-            <div class="carousel-inner">
-                {loop type="carousel" name="carousel{$carousel_id}" carousel_id=$carousel_id visible="1" showTitle=true height="650" resize_mode="borders"}
-                <figure class="item {if $LOOP_COUNT == 1}active{/if}">
-                    {if $URL}<a href="{$URL|default:'#'}">{/if}
-                        <img src="{$IMAGE_URL}" alt="{$ALT}">
-                        {if $URL}</a>{/if}
-                    <div class="carousel-caption">   
-                        {if $TITLE}<h3>{$TITLE}</h3>{/if}
-                    {if $DESCRIPTION}{$DESCRIPTION nofilter}{/if}
-                </div>
-            </figure>
-            {/loop}
-        </div>
-    </div>
-    <a class="left carousel-control" href="#carousel-{$carousel_id}" data-slide="prev"><span class="icon-prev"></span></a>
-    <a class="right carousel-control" href="#carousel-{$carousel_id}" data-slide="next"><span class="icon-next"></span></a>
-</div>
-</section><!-- #carousel -->*}
-
-{stylesheets source="Carousel" file='assets/css/carouselCustom.css'}
+{stylesheets source="Carousel" file='assets/css/easybad.css'}
   <link rel="stylesheet" href="{$asset_url}">
 {/stylesheets}
 
@@ -30,7 +8,7 @@
                     <div class="carousel-inner">
                         {$sliders=0}
                         {loop type="carousel" name="carousel{$carousel_id}" carousel_id=$carousel_id visible="1" showTitle=true height="650" resize_mode="borders" }
-                        <div class="item {if $LOOP_COUNT == 1}active{/if}">
+                        <div class="item  item-carousel {if $LOOP_COUNT == 1}active{/if}">
                             {if $URL}<a href="{$URL|default:'#'}">{/if}
                                 <img src="{$IMAGE_URL}" alt="{$ALT}" style="width: 100%; padding: 0px;">
                             {if $URL}</a>{/if}
@@ -63,6 +41,6 @@
         </div>
     <!-- #carousel -->
     
-{javascripts source="Carousel" file='assets/js/carouselSlideCount.js'}
+{javascripts source="Carousel" file='assets/js/easybad.js'}
     <script src="{$asset_url}"></script>
 {/javascripts}
