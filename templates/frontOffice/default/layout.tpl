@@ -167,6 +167,13 @@ src="https://www.facebook.com/tr?id=1710133262638327&ev=PageView
 {/literal} 
  <script src="{javascript file='assets/dist/js/vendors/cookieconsent.min.js'}"></script>
 
+     <!-- Jquery -->
+    <!--[if lt IE 9]><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> <![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!--><script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><!--<![endif]-->
+    {javascripts file="assets/dist/js/vendors/jquery.min.js"}
+        <script>window.jQuery || document.write('<script src="{$asset_url}"><\/script>');</script>
+    {/javascripts}
+
 
 <!-- End Cookie Consent plugin -->
    
@@ -462,12 +469,6 @@ Qualität zum Bestpreis - Damit Sie sich in Ihrem zu Hause wohl fühlen können.
     {block name="before-javascript-include"}{/block}
     <!-- JavaScript -->
 
-    <!-- Jquery -->
-    <!--[if lt IE 9]><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> <![endif]-->
-    <!--[if (gte IE 9)|!(IE)]><!--><script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><!--<![endif]-->
-    {javascripts file="assets/dist/js/vendors/jquery.min.js"}
-        <script>window.jQuery || document.write('<script src="{$asset_url}"><\/script>');</script>
-    {/javascripts}
 
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
     {* do no try to load messages_en, as this file does not exists *}
