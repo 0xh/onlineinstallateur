@@ -20,7 +20,7 @@ use Thelia\Model\Content;
 /**
  * Base class that represents a query for the 'selection_content' table.
  *
- * 
+ *
  *
  * @method     ChildSelectionContentQuery orderBySelectionId($order = Criteria::ASC) Order by the selection_id column
  * @method     ChildSelectionContentQuery orderByContentId($order = Criteria::ASC) Order by the content_id column
@@ -64,7 +64,7 @@ use Thelia\Model\Content;
  */
 abstract class SelectionContentQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionContentQuery object.
      *
@@ -150,8 +150,8 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         $sql = 'SELECT SELECTION_ID, CONTENT_ID, POSITION, CREATED_AT, UPDATED_AT FROM selection_content WHERE SELECTION_ID = :p0 AND CONTENT_ID = :p1';
         try {
-            $stmt = $con->prepare($sql);            
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -690,10 +690,10 @@ abstract class SelectionContentQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         SelectionContentTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             SelectionContentTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -706,7 +706,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     }
 
     // timestampable behavior
-    
+
     /**
      * Filter by the latest updated
      *
@@ -718,7 +718,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContentTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-    
+
     /**
      * Filter by the latest created
      *
@@ -730,7 +730,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContentTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-    
+
     /**
      * Order by update date desc
      *
@@ -740,7 +740,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContentTableMap::UPDATED_AT);
     }
-    
+
     /**
      * Order by update date asc
      *
@@ -750,7 +750,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionContentTableMap::UPDATED_AT);
     }
-    
+
     /**
      * Order by create date desc
      *
@@ -760,7 +760,7 @@ abstract class SelectionContentQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContentTableMap::CREATED_AT);
     }
-    
+
     /**
      * Order by create date asc
      *

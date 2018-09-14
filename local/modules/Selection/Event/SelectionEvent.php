@@ -10,10 +10,10 @@ class SelectionEvent extends ActionEvent
 
     /*---- GENERAL parts */
     protected $id;
+    protected $containerId;
     protected $title;
     protected $chapo;
-    protected $header;
-    protected $footer;
+    protected $description;
     protected $postscriptum;
 
     /*---- SEO parts */
@@ -67,26 +67,14 @@ class SelectionEvent extends ActionEvent
         return $this;
     }
 
-    public function getHeader()
+    public function getDescription()
     {
-        return $this->header;
+        return $this->description;
     }
 
-    public function setHeader($header)
+    public function setDescription($description)
     {
-        $this->header = $header;
-
-        return $this;
-    }
-
-    public function getFooter()
-    {
-        return $this->footer;
-    }
-
-    public function setFooter($footer)
-    {
-        $this->footer = $footer;
+        $this->description = $description;
 
         return $this;
     }
@@ -186,5 +174,21 @@ class SelectionEvent extends ActionEvent
     {
 
         return ! is_null($this->selection);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContainerId()
+    {
+        return $this->containerId;
+    }
+
+    /**
+     * @param mixed $containerId
+     */
+    public function setContainerId($containerId)
+    {
+        $this->containerId = $containerId;
     }
 }

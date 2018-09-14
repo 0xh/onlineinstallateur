@@ -18,6 +18,8 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 use Selection\Model\Selection as ChildSelection;
+use Selection\Model\SelectionContainerAssociatedSelection as ChildSelectionContainerAssociatedSelection;
+use Selection\Model\SelectionContainerAssociatedSelectionQuery as ChildSelectionContainerAssociatedSelectionQuery;
 use Selection\Model\SelectionContent as ChildSelectionContent;
 use Selection\Model\SelectionContentQuery as ChildSelectionContentQuery;
 use Selection\Model\SelectionI18n as ChildSelectionI18n;
@@ -29,7 +31,7 @@ use Selection\Model\SelectionProductQuery as ChildSelectionProductQuery;
 use Selection\Model\SelectionQuery as ChildSelectionQuery;
 use Selection\Model\Map\SelectionTableMap;
 
-abstract class Selection implements ActiveRecordInterface 
+abstract class Selection implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -112,6 +114,12 @@ abstract class Selection implements ActiveRecordInterface
     protected $collSelectionImagesPartial;
 
     /**
+     * @var        ObjectCollection|ChildSelectionContainerAssociatedSelection[] Collection to store aggregation of ChildSelectionContainerAssociatedSelection objects.
+     */
+    protected $collSelectionContainerAssociatedSelections;
+    protected $collSelectionContainerAssociatedSelectionsPartial;
+
+    /**
      * @var        ObjectCollection|ChildSelectionI18n[] Collection to store aggregation of ChildSelectionI18n objects.
      */
     protected $collSelectionI18ns;
@@ -126,13 +134,13 @@ abstract class Selection implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     // i18n behavior
-    
+
     /**
      * Current locale
      * @var        string
      */
     protected $currentLocale = 'en_US';
-    
+
     /**
      * Current translation objects
      * @var        array[ChildSelectionI18n]
@@ -156,6 +164,12 @@ abstract class Selection implements ActiveRecordInterface
      * @var ObjectCollection
      */
     protected $selectionImagesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $selectionContainerAssociatedSelectionsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -423,7 +437,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -434,7 +448,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [visible] column value.
-     * 
+     *
      * @return   int
      */
     public function getVisible()
@@ -445,7 +459,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     * 
+     *
      * @return   int
      */
     public function getPosition()
@@ -456,7 +470,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -476,7 +490,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -496,7 +510,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -517,7 +531,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [visible] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -538,7 +552,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -559,7 +573,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\Selection The current object (for fluent API support)
@@ -580,7 +594,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\Selection The current object (for fluent API support)
@@ -730,6 +744,8 @@ abstract class Selection implements ActiveRecordInterface
             $this->collSelectionContents = null;
 
             $this->collSelectionImages = null;
+
+            $this->collSelectionContainerAssociatedSelections = null;
 
             $this->collSelectionI18ns = null;
 
@@ -917,6 +933,23 @@ abstract class Selection implements ActiveRecordInterface
                 }
             }
 
+            if ($this->selectionContainerAssociatedSelectionsScheduledForDeletion !== null) {
+                if (!$this->selectionContainerAssociatedSelectionsScheduledForDeletion->isEmpty()) {
+                    \Selection\Model\SelectionContainerAssociatedSelectionQuery::create()
+                        ->filterByPrimaryKeys($this->selectionContainerAssociatedSelectionsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->selectionContainerAssociatedSelectionsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collSelectionContainerAssociatedSelections !== null) {
+            foreach ($this->collSelectionContainerAssociatedSelections as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             if ($this->selectionI18nsScheduledForDeletion !== null) {
                 if (!$this->selectionI18nsScheduledForDeletion->isEmpty()) {
                     \Selection\Model\SelectionI18nQuery::create()
@@ -986,19 +1019,19 @@ abstract class Selection implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'VISIBLE':                        
+                    case 'VISIBLE':
                         $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
                         break;
-                    case 'POSITION':                        
+                    case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':                        
+                    case 'CREATED_AT':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':                        
+                    case 'UPDATED_AT':
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1117,7 +1150,7 @@ abstract class Selection implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->collSelectionProducts) {
                 $result['SelectionProducts'] = $this->collSelectionProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1127,6 +1160,9 @@ abstract class Selection implements ActiveRecordInterface
             }
             if (null !== $this->collSelectionImages) {
                 $result['SelectionImages'] = $this->collSelectionImages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collSelectionContainerAssociatedSelections) {
+                $result['SelectionContainerAssociatedSelections'] = $this->collSelectionContainerAssociatedSelections->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collSelectionI18ns) {
                 $result['SelectionI18ns'] = $this->collSelectionI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1316,6 +1352,12 @@ abstract class Selection implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getSelectionContainerAssociatedSelections() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSelectionContainerAssociatedSelection($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getSelectionI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addSelectionI18n($relObj->copy($deepCopy));
@@ -1371,6 +1413,9 @@ abstract class Selection implements ActiveRecordInterface
         }
         if ('SelectionImage' == $relationName) {
             return $this->initSelectionImages();
+        }
+        if ('SelectionContainerAssociatedSelection' == $relationName) {
+            return $this->initSelectionContainerAssociatedSelections();
         }
         if ('SelectionI18n' == $relationName) {
             return $this->initSelectionI18ns();
@@ -1494,7 +1539,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionProductsToDelete = $this->getSelectionProducts(new Criteria(), $con)->diff($selectionProducts);
 
-        
+
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -1740,7 +1785,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionContentsToDelete = $this->getSelectionContents(new Criteria(), $con)->diff($selectionContents);
 
-        
+
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -1986,7 +2031,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionImagesToDelete = $this->getSelectionImages(new Criteria(), $con)->diff($selectionImages);
 
-        
+
         $this->selectionImagesScheduledForDeletion = $selectionImagesToDelete;
 
         foreach ($selectionImagesToDelete as $selectionImageRemoved) {
@@ -2085,6 +2130,249 @@ abstract class Selection implements ActiveRecordInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Clears out the collSelectionContainerAssociatedSelections collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSelectionContainerAssociatedSelections()
+     */
+    public function clearSelectionContainerAssociatedSelections()
+    {
+        $this->collSelectionContainerAssociatedSelections = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collSelectionContainerAssociatedSelections collection loaded partially.
+     */
+    public function resetPartialSelectionContainerAssociatedSelections($v = true)
+    {
+        $this->collSelectionContainerAssociatedSelectionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collSelectionContainerAssociatedSelections collection.
+     *
+     * By default this just sets the collSelectionContainerAssociatedSelections collection to an empty array (like clearcollSelectionContainerAssociatedSelections());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSelectionContainerAssociatedSelections($overrideExisting = true)
+    {
+        if (null !== $this->collSelectionContainerAssociatedSelections && !$overrideExisting) {
+            return;
+        }
+        $this->collSelectionContainerAssociatedSelections = new ObjectCollection();
+        $this->collSelectionContainerAssociatedSelections->setModel('\Selection\Model\SelectionContainerAssociatedSelection');
+    }
+
+    /**
+     * Gets an array of ChildSelectionContainerAssociatedSelection objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSelection is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildSelectionContainerAssociatedSelection[] List of ChildSelectionContainerAssociatedSelection objects
+     * @throws PropelException
+     */
+    public function getSelectionContainerAssociatedSelections($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSelectionContainerAssociatedSelectionsPartial && !$this->isNew();
+        if (null === $this->collSelectionContainerAssociatedSelections || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSelectionContainerAssociatedSelections) {
+                // return empty collection
+                $this->initSelectionContainerAssociatedSelections();
+            } else {
+                $collSelectionContainerAssociatedSelections = ChildSelectionContainerAssociatedSelectionQuery::create(null, $criteria)
+                    ->filterBySelection($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collSelectionContainerAssociatedSelectionsPartial && count($collSelectionContainerAssociatedSelections)) {
+                        $this->initSelectionContainerAssociatedSelections(false);
+
+                        foreach ($collSelectionContainerAssociatedSelections as $obj) {
+                            if (false == $this->collSelectionContainerAssociatedSelections->contains($obj)) {
+                                $this->collSelectionContainerAssociatedSelections->append($obj);
+                            }
+                        }
+
+                        $this->collSelectionContainerAssociatedSelectionsPartial = true;
+                    }
+
+                    reset($collSelectionContainerAssociatedSelections);
+
+                    return $collSelectionContainerAssociatedSelections;
+                }
+
+                if ($partial && $this->collSelectionContainerAssociatedSelections) {
+                    foreach ($this->collSelectionContainerAssociatedSelections as $obj) {
+                        if ($obj->isNew()) {
+                            $collSelectionContainerAssociatedSelections[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSelectionContainerAssociatedSelections = $collSelectionContainerAssociatedSelections;
+                $this->collSelectionContainerAssociatedSelectionsPartial = false;
+            }
+        }
+
+        return $this->collSelectionContainerAssociatedSelections;
+    }
+
+    /**
+     * Sets a collection of SelectionContainerAssociatedSelection objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $selectionContainerAssociatedSelections A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildSelection The current object (for fluent API support)
+     */
+    public function setSelectionContainerAssociatedSelections(Collection $selectionContainerAssociatedSelections, ConnectionInterface $con = null)
+    {
+        $selectionContainerAssociatedSelectionsToDelete = $this->getSelectionContainerAssociatedSelections(new Criteria(), $con)->diff($selectionContainerAssociatedSelections);
+
+
+        $this->selectionContainerAssociatedSelectionsScheduledForDeletion = $selectionContainerAssociatedSelectionsToDelete;
+
+        foreach ($selectionContainerAssociatedSelectionsToDelete as $selectionContainerAssociatedSelectionRemoved) {
+            $selectionContainerAssociatedSelectionRemoved->setSelection(null);
+        }
+
+        $this->collSelectionContainerAssociatedSelections = null;
+        foreach ($selectionContainerAssociatedSelections as $selectionContainerAssociatedSelection) {
+            $this->addSelectionContainerAssociatedSelection($selectionContainerAssociatedSelection);
+        }
+
+        $this->collSelectionContainerAssociatedSelections = $selectionContainerAssociatedSelections;
+        $this->collSelectionContainerAssociatedSelectionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related SelectionContainerAssociatedSelection objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related SelectionContainerAssociatedSelection objects.
+     * @throws PropelException
+     */
+    public function countSelectionContainerAssociatedSelections(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSelectionContainerAssociatedSelectionsPartial && !$this->isNew();
+        if (null === $this->collSelectionContainerAssociatedSelections || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSelectionContainerAssociatedSelections) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSelectionContainerAssociatedSelections());
+            }
+
+            $query = ChildSelectionContainerAssociatedSelectionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySelection($this)
+                ->count($con);
+        }
+
+        return count($this->collSelectionContainerAssociatedSelections);
+    }
+
+    /**
+     * Method called to associate a ChildSelectionContainerAssociatedSelection object to this object
+     * through the ChildSelectionContainerAssociatedSelection foreign key attribute.
+     *
+     * @param    ChildSelectionContainerAssociatedSelection $l ChildSelectionContainerAssociatedSelection
+     * @return   \Selection\Model\Selection The current object (for fluent API support)
+     */
+    public function addSelectionContainerAssociatedSelection(ChildSelectionContainerAssociatedSelection $l)
+    {
+        if ($this->collSelectionContainerAssociatedSelections === null) {
+            $this->initSelectionContainerAssociatedSelections();
+            $this->collSelectionContainerAssociatedSelectionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collSelectionContainerAssociatedSelections->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddSelectionContainerAssociatedSelection($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param SelectionContainerAssociatedSelection $selectionContainerAssociatedSelection The selectionContainerAssociatedSelection object to add.
+     */
+    protected function doAddSelectionContainerAssociatedSelection($selectionContainerAssociatedSelection)
+    {
+        $this->collSelectionContainerAssociatedSelections[]= $selectionContainerAssociatedSelection;
+        $selectionContainerAssociatedSelection->setSelection($this);
+    }
+
+    /**
+     * @param  SelectionContainerAssociatedSelection $selectionContainerAssociatedSelection The selectionContainerAssociatedSelection object to remove.
+     * @return ChildSelection The current object (for fluent API support)
+     */
+    public function removeSelectionContainerAssociatedSelection($selectionContainerAssociatedSelection)
+    {
+        if ($this->getSelectionContainerAssociatedSelections()->contains($selectionContainerAssociatedSelection)) {
+            $this->collSelectionContainerAssociatedSelections->remove($this->collSelectionContainerAssociatedSelections->search($selectionContainerAssociatedSelection));
+            if (null === $this->selectionContainerAssociatedSelectionsScheduledForDeletion) {
+                $this->selectionContainerAssociatedSelectionsScheduledForDeletion = clone $this->collSelectionContainerAssociatedSelections;
+                $this->selectionContainerAssociatedSelectionsScheduledForDeletion->clear();
+            }
+            $this->selectionContainerAssociatedSelectionsScheduledForDeletion[]= clone $selectionContainerAssociatedSelection;
+            $selectionContainerAssociatedSelection->setSelection(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Selection is new, it will return
+     * an empty collection; or if this Selection has previously
+     * been saved, it will retrieve related SelectionContainerAssociatedSelections from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Selection.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildSelectionContainerAssociatedSelection[] List of ChildSelectionContainerAssociatedSelection objects
+     */
+    public function getSelectionContainerAssociatedSelectionsJoinSelectionContainer($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSelectionContainerAssociatedSelectionQuery::create(null, $criteria);
+        $query->joinWith('SelectionContainer', $joinBehavior);
+
+        return $this->getSelectionContainerAssociatedSelections($query, $con);
     }
 
     /**
@@ -2204,7 +2492,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionI18nsToDelete = $this->getSelectionI18ns(new Criteria(), $con)->diff($selectionI18ns);
 
-        
+
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -2356,6 +2644,11 @@ abstract class Selection implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collSelectionContainerAssociatedSelections) {
+                foreach ($this->collSelectionContainerAssociatedSelections as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collSelectionI18ns) {
                 foreach ($this->collSelectionI18ns as $o) {
                     $o->clearAllReferences($deep);
@@ -2370,6 +2663,7 @@ abstract class Selection implements ActiveRecordInterface
         $this->collSelectionProducts = null;
         $this->collSelectionContents = null;
         $this->collSelectionImages = null;
+        $this->collSelectionContainerAssociatedSelections = null;
         $this->collSelectionI18ns = null;
     }
 
@@ -2384,7 +2678,7 @@ abstract class Selection implements ActiveRecordInterface
     }
 
     // timestampable behavior
-    
+
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -2393,12 +2687,12 @@ abstract class Selection implements ActiveRecordInterface
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[SelectionTableMap::UPDATED_AT] = true;
-    
+
         return $this;
     }
 
     // i18n behavior
-    
+
     /**
      * Sets the locale for translations
      *
@@ -2409,10 +2703,10 @@ abstract class Selection implements ActiveRecordInterface
     public function setLocale($locale = 'en_US')
     {
         $this->currentLocale = $locale;
-    
+
         return $this;
     }
-    
+
     /**
      * Gets the locale for translations
      *
@@ -2422,7 +2716,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         return $this->currentLocale;
     }
-    
+
     /**
      * Returns the current translation for a given locale
      *
@@ -2437,7 +2731,7 @@ abstract class Selection implements ActiveRecordInterface
                 foreach ($this->collSelectionI18ns as $translation) {
                     if ($translation->getLocale() == $locale) {
                         $this->currentTranslations[$locale] = $translation;
-    
+
                         return $translation;
                     }
                 }
@@ -2453,10 +2747,10 @@ abstract class Selection implements ActiveRecordInterface
             }
             $this->addSelectionI18n($translation);
         }
-    
+
         return $this->currentTranslations[$locale];
     }
-    
+
     /**
      * Remove the translation for a given locale
      *
@@ -2481,10 +2775,10 @@ abstract class Selection implements ActiveRecordInterface
                 break;
             }
         }
-    
+
         return $this;
     }
-    
+
     /**
      * Returns the current translation
      *
@@ -2495,196 +2789,172 @@ abstract class Selection implements ActiveRecordInterface
     {
         return $this->getTranslation($this->getLocale(), $con);
     }
-    
-    
+
+
         /**
          * Get the [title] column value.
-         * 
+         *
          * @return   string
          */
         public function getTitle()
         {
         return $this->getCurrentTranslation()->getTitle();
     }
-    
-    
+
+
         /**
          * Set the value of [title] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setTitle($v)
         {    $this->getCurrentTranslation()->setTitle($v);
-    
+
         return $this;
     }
-    
-    
+
+
         /**
-         * Get the [header] column value.
-         * 
+         * Get the [description] column value.
+         *
          * @return   string
          */
-        public function getHeader()
+        public function getDescription()
         {
-        return $this->getCurrentTranslation()->getHeader();
+        return $this->getCurrentTranslation()->getDescription();
     }
-    
-    
+
+
         /**
-         * Set the value of [header] column.
-         * 
+         * Set the value of [description] column.
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
-        public function setHeader($v)
-        {    $this->getCurrentTranslation()->setHeader($v);
-    
+        public function setDescription($v)
+        {    $this->getCurrentTranslation()->setDescription($v);
+
         return $this;
     }
-    
-    
-        /**
-         * Get the [footer] column value.
-         * 
-         * @return   string
-         */
-        public function getFooter()
-        {
-        return $this->getCurrentTranslation()->getFooter();
-    }
-    
-    
-        /**
-         * Set the value of [footer] column.
-         * 
-         * @param      string $v new value
-         * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
-         */
-        public function setFooter($v)
-        {    $this->getCurrentTranslation()->setFooter($v);
-    
-        return $this;
-    }
-    
-    
+
+
         /**
          * Get the [chapo] column value.
-         * 
+         *
          * @return   string
          */
         public function getChapo()
         {
         return $this->getCurrentTranslation()->getChapo();
     }
-    
-    
+
+
         /**
          * Set the value of [chapo] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setChapo($v)
         {    $this->getCurrentTranslation()->setChapo($v);
-    
+
         return $this;
     }
-    
-    
+
+
         /**
          * Get the [postscriptum] column value.
-         * 
+         *
          * @return   string
          */
         public function getPostscriptum()
         {
         return $this->getCurrentTranslation()->getPostscriptum();
     }
-    
-    
+
+
         /**
          * Set the value of [postscriptum] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setPostscriptum($v)
         {    $this->getCurrentTranslation()->setPostscriptum($v);
-    
+
         return $this;
     }
-    
-    
+
+
         /**
          * Get the [meta_title] column value.
-         * 
+         *
          * @return   string
          */
         public function getMetaTitle()
         {
         return $this->getCurrentTranslation()->getMetaTitle();
     }
-    
-    
+
+
         /**
          * Set the value of [meta_title] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaTitle($v)
         {    $this->getCurrentTranslation()->setMetaTitle($v);
-    
+
         return $this;
     }
-    
-    
+
+
         /**
          * Get the [meta_description] column value.
-         * 
+         *
          * @return   string
          */
         public function getMetaDescription()
         {
         return $this->getCurrentTranslation()->getMetaDescription();
     }
-    
-    
+
+
         /**
          * Set the value of [meta_description] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaDescription($v)
         {    $this->getCurrentTranslation()->setMetaDescription($v);
-    
+
         return $this;
     }
-    
-    
+
+
         /**
          * Get the [meta_keywords] column value.
-         * 
+         *
          * @return   string
          */
         public function getMetaKeywords()
         {
         return $this->getCurrentTranslation()->getMetaKeywords();
     }
-    
-    
+
+
         /**
          * Set the value of [meta_keywords] column.
-         * 
+         *
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaKeywords($v)
         {    $this->getCurrentTranslation()->setMetaKeywords($v);
-    
+
         return $this;
     }
 

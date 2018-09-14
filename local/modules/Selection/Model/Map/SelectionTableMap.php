@@ -101,7 +101,7 @@ class SelectionTableMap extends TableMap
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     // i18n behavior
-    
+
     /**
      * The default locale to use for translations.
      *
@@ -170,6 +170,7 @@ class SelectionTableMap extends TableMap
         $this->addRelation('SelectionProduct', '\\Selection\\Model\\SelectionProduct', RelationMap::ONE_TO_MANY, array('id' => 'selection_id', ), 'CASCADE', 'RESTRICT', 'SelectionProducts');
         $this->addRelation('SelectionContent', '\\Selection\\Model\\SelectionContent', RelationMap::ONE_TO_MANY, array('id' => 'selection_id', ), 'CASCADE', 'RESTRICT', 'SelectionContents');
         $this->addRelation('SelectionImage', '\\Selection\\Model\\SelectionImage', RelationMap::ONE_TO_MANY, array('id' => 'selection_id', ), 'CASCADE', 'RESTRICT', 'SelectionImages');
+        $this->addRelation('SelectionContainerAssociatedSelection', '\\Selection\\Model\\SelectionContainerAssociatedSelection', RelationMap::ONE_TO_MANY, array('id' => 'selection_id', ), 'CASCADE', 'RESTRICT', 'SelectionContainerAssociatedSelections');
         $this->addRelation('SelectionI18n', '\\Selection\\Model\\SelectionI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'SelectionI18ns');
     } // buildRelations()
 
@@ -183,7 +184,7 @@ class SelectionTableMap extends TableMap
     {
         return array(
             'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'title, header, footer, chapo, postscriptum, meta_title, meta_description, meta_keywords', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
+            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'title, description, chapo, postscriptum, meta_title, meta_description, meta_keywords', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
         );
     } // getBehaviors()
     /**
@@ -196,6 +197,7 @@ class SelectionTableMap extends TableMap
                 SelectionProductTableMap::clearInstancePool();
                 SelectionContentTableMap::clearInstancePool();
                 SelectionImageTableMap::clearInstancePool();
+                SelectionContainerAssociatedSelectionTableMap::clearInstancePool();
                 SelectionI18nTableMap::clearInstancePool();
             }
 
@@ -241,7 +243,7 @@ class SelectionTableMap extends TableMap
                             : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
-    
+
     /**
      * The class that the tableMap will make instances of.
      *
@@ -301,7 +303,7 @@ class SelectionTableMap extends TableMap
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
         // populate the object(s)

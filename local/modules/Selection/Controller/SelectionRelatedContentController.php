@@ -169,4 +169,13 @@ class SelectionRelatedContentController extends BaseAdminController
             return $result;
         }
     }
+    
+    
+     public function addSelectionFeautersRelated() {
+         
+        $selectionID = $this->getRequest()->get('selectionID');
+        $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
+         return "null";
+         
+     }
 }
