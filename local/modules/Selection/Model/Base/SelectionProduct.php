@@ -24,7 +24,7 @@ use Selection\Model\Map\SelectionProductTableMap;
 use Thelia\Model\Product as ChildProduct;
 use Thelia\Model\ProductQuery;
 
-abstract class SelectionProduct implements ActiveRecordInterface 
+abstract class SelectionProduct implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -366,7 +366,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Get the [selection_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getSelectionId()
@@ -377,7 +377,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Get the [product_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getProductId()
@@ -388,7 +388,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     * 
+     *
      * @return   int
      */
     public function getPosition()
@@ -399,7 +399,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -419,7 +419,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -439,7 +439,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [selection_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
      */
@@ -464,7 +464,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [product_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
      */
@@ -489,7 +489,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
      */
@@ -510,7 +510,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
@@ -531,7 +531,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
@@ -884,19 +884,19 @@ abstract class SelectionProduct implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'SELECTION_ID':                        
+                    case 'SELECTION_ID':
                         $stmt->bindValue($identifier, $this->selection_id, PDO::PARAM_INT);
                         break;
-                    case 'PRODUCT_ID':                        
+                    case 'PRODUCT_ID':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
                         break;
-                    case 'POSITION':                        
+                    case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':                        
+                    case 'CREATED_AT':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':                        
+                    case 'UPDATED_AT':
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1008,7 +1008,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aProduct) {
                 $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1360,7 +1360,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     // timestampable behavior
-    
+
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -1369,7 +1369,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[SelectionProductTableMap::UPDATED_AT] = true;
-    
+
         return $this;
     }
 

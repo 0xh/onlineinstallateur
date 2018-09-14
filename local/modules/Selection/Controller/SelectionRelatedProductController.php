@@ -26,22 +26,22 @@ class SelectionRelatedProductController extends BaseAdminController
     public function getProductRelated()
     {
         $categoryID = $this->getRequest()->get('categoryID');
-
+        
         $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
         $productCategory = ProductCategoryQuery::create();
-
+        
         $result = array();
-
+        
         if ($categoryID !== null) {
             $productCategory->filterByCategoryId($categoryID)
-                ->find();
+            ->find();
             if ($productCategory !== null) {
                 /** @var ProductCategory $item */
                 foreach ($productCategory as $item) {
                     $product = ProductQuery::create()
-                        ->filterById($item->getProductId())
-                        ->findOne();
-
+                    ->filterById($item->getProductId())
+                    ->findOne();
+                    
                     if (null !== $product) {
                         $result[] = [
                             'id' => $product->getId(),
