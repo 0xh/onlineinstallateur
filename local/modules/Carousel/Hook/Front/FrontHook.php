@@ -13,16 +13,16 @@ use Thelia\Log\Tlog;
 class FrontHook extends BaseHook
 {
 
-//    public function onPageRenderCarouselTemplate(HookRenderEvent $event)
-//    {
-//        $id = $event->getArgument("carousel_id");
-//
-//        $carousel = CarouselNameQuery::create()
-//         ->findOneById($id);
-//
-//
-//        $event->add($this->render($carousel->getTemplate(), array("carousel_id" => $id)));
-//    }
+    public function onPageRenderCarouselTemplate(HookRenderEvent $event)
+    {
+        $id = $event->getArgument("carousel_id");
+
+        $carousel = CarouselNameQuery::create()
+         ->findOneById($id);
+
+
+        $event->add($this->render($carousel->getTemplate(), array("carousel_id" => $id)));
+    }
 
     public function displayCarouselOnHook(HookRenderEvent $event)
     {
