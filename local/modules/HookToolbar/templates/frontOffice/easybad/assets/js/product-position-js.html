@@ -1,0 +1,49 @@
+{javascripts  source="HookToolbar" file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+ <script src="{$asset_url}"></script>
+{/javascripts}
+
+{javascripts source="HookToolbar" file='assets/js/bootstrap-editable/bootstrap-editable.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+  
+{javascripts source="HookToolbar" file='assets/js/jquery.typewatch.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
+<script>
+     $(function() {
+         {* Inline editing of object position using bootstrap-editable *}
+
+         $('.productPositionChange').editable({
+             type        : 'text',
+             title       : '{intl l="Enter new product position"}',
+             mode        : 'popup',
+             inputclass  : 'input-mini',
+             placement   : 'left',
+             success     : function(response, newValue) {
+                 // The URL template
+                 var url = "{url noamp='1' path='/admin/products/update-position' product_id='__ID__' position='__POS__' category_id=$category_id}";
+
+                 // Perform subtitutions
+                 url = url.replace('__ID__', $(this).data('id'))
+                 .replace('__POS__', newValue);
+                 var upAHref = $(this).prev().attr("href");
+                 var categoryFromHref = upAHref.substring(upAHref.lastIndexOf("category_id=")+12,upAHref.lastIndexOf("&mode"));
+                 // Reload the page
+                 location.reload();
+		$.ajax({
+		    url      : '{url path="/admin/products/update-position"}?product_id='+$(this).data('id')+'&position='+newValue+'&category_id='+categoryFromHref,
+		    type     : 'get',
+		    success  : function(json) {
+		    },
+		    error : function(jqXHR, textStatus, errorThrown) {
+		        alert("{intl l='Failed to update product position'} (" +errorThrown+ ")");
+		    }
+		});
+                 
+                 
+                 
+             }
+         });
+
+     });
+     </script>
