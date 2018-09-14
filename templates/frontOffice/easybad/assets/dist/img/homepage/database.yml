@@ -1,0 +1,6 @@
+database:
+  connection:
+    driver: mysql
+    user: sql7900250
+    password: grb9ita
+    dsn: mysql:host=mysqlsvr39.world4you.com;dbname=7900250db1;port=3306

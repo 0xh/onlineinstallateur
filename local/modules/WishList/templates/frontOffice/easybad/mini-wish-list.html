@@ -1,0 +1,26 @@
+{$products_in_wish_list=0}
+{ifloop rel="wishlist"}
+	{loop name="wishlist" type="wishlist"}
+	    {$products_in_wish_list = $WISHLIST_COUNT}
+    {/loop}
+{/ifloop}
+
+<ul class="nav navbar-nav navbar-wish-list navbar-left">
+	<li class="dropdown wish-container {if $products_in_wish_list}wish-not-empty{/if}">
+	    <a href="{url path="/wish-list"}" rel="nofollow" class="wish">
+	        <img src="{image file='assets/img/heart.png' source='WishList'}"/>
+	    </a>
+	    <div class="dropdown-menu wish-content">
+	    	{if $products_in_wish_list == 1}
+	        	<p>{intl l="You have %nr item in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
+	        {elseif $products_in_wish_list > 1}
+	        	<p>{intl l="You have %nr items in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
+	        {else}
+	        	<p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
+	        {/if}
+	        <span class="wishlist_message_item hide">{intl l="You have %nr item in your wishlist." d="wishlist.fo.default"}</span>
+	        <span class="wishlist_message_items hide">{intl l="You have %nr items in your wishlist." d="wishlist.fo.default"}</span>
+	        <span class="wishlist_message_no_items hide">{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</span>
+	    </div>
+	</li>
+</ul>

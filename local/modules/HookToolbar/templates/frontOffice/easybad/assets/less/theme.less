@@ -1,0 +1,34 @@
+// Import FontAwesome
+@import "../../../../../bower_components/fontawesome/less/font-awesome.less";
+@fa-font-path: "../fonts/fontawesome";
+
+#hook-toolbar {
+    margin-bottom: 0;
+
+    &,
+    .navbar-nav > li >.dropdown-menu {
+        background: #45484d;
+        color: #fff;
+
+        a {
+            color: #fff;
+        }
+    }
+    
+    .dropdown-menu {
+        z-index: 1010;
+
+        > li {
+            a {
+                &:hover,
+                &:focus {
+                    background: #f49a17;
+                }
+            }
+        }
+    }
+    
+    #hook-toolbar-center {
+        background: #333;
+    }
+}

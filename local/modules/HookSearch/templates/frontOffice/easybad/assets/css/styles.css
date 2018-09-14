@@ -1,0 +1,45 @@
+.header-container .search-container label,
+.header-container .search-container .btn-search>span {
+    position:absolute;
+    width:1px;
+    height:1px;
+    margin:-1px;
+    padding:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    border:0
+}
+.header-container .search-container .btn-search{
+    margin:0px;
+    padding: 0px;
+    border: 0px;
+    height: 48px;
+}
+#form-search{
+    padding-left: 10%;
+}
+#form-search #q{
+    height: 48px;
+    border-radius: 0px;
+    float: left;  
+    border: 0;
+    background: #B7E8EF;
+    height: 48px;
+    font-size: 20px;
+    padding: 0 14px;  
+    margin-right: 1px;
+    -webkit-appearance: textfield;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+    text-rendering: auto;
+    color: #236E83;
+    width:80%;
+}
+
+#form-search #q::placeholder{
+    color: #236E83;
+}
+.navbar.navbar-secondary .search-container{
+    line-height: 48px;
+    width: 70%;
+}
