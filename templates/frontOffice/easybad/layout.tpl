@@ -237,7 +237,7 @@ web : http://www.hausfabrik.at
                     <div class="row">
                         <div class="navbar-header col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <a class="navbar-brand " href="{navigate to="index"}">
-                                <img src="{image file='assets/dist/img/easybadLOGO.png'}" alt="{$store_name}">
+                                <img src="{image file='assets/dist/img/easybadlogo.png'}" alt="{$store_name}">
                             </a>
                         </div>
                         {ifhook rel="main.navbar-secondary"}
