@@ -1,0 +1,90 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Impressum" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/impressum"}]]}
+{/block}
+
+{block name="main-content"}
+
+
+
+<div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+<div class="container">
+
+			
+
+
+<h2 class="title">Impressum</h2>
+
+ <div class="row">
+     <div class="col-sm-4">
+
+Hausfabrik<br>
+Marke der Nwing- Networking GmbH<br>
+Breitenfurterstrasse 360-368/3/R6<br>
+1230 Wien<br>
+Österreich<br><br>
+
+Firmenbuchnummer: 326758 b<br>
+Firmenbuchgericht: Handelsgericht Wien <br>
+UID-Nr. ATU 64985136 <br>
+
+Tel.: 0800 022573<br>
+Fax: +43 (1) 6887420<br>
+
+E-Mail:<a href="mailto:office@hausfabrik.at">office@hausfabrik.at</a> <br>
+Web: <a href="http://hausfabrik.at">http://hausfabrik.at</a>
+
+
+     </div>
+     <div class="col-sm-8">
+         Alle Inhalte unseres Internetauftritts wurden mit Sorgfalt und nach bestem Gewissen erstellt. Eine Gewähr für die Aktualität, Vollständigkeit und Richtigkeit sämtlicher Seiten kann jedoch nicht übernommen werden.<br><br>
+
+Unsere Webseite enthält sog. „externe Links“ (Verknüpfungen zu Webseiten Dritter), auf deren Inhalt wir keinen Einfluss haben und für den wir aus diesem Grund keine Gewähr übernehmen. Für die Inhalte und Richtigkeit der Informationen ist der jeweilige Informationsanbieter der verlinkten Webseite verantwortlich. Als die Verlinkung vorgenommen wurde, waren für uns keine Rechtsverstöße erkennbar. Sollte uns eine Rechtsverletzung bekannt werden, wird der jeweilige Link umgehend von uns entfernt.<br><br>
+
+Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem österreichischen Urheberrecht. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Die Betreiber der Seiten sind bemüht, stets die Urheberrechte anderer zu beachten bzw. auf selbst erstellte sowie lizenzfreie Werke zurückzugreifen.<br><br>
+
+Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen) erhoben werden, erfolgt dies soweit möglich stets auf freiwilliger Basis. Die Nutzung der Angebote und Dienste ist, soweit möglich, stets ohne Angabe personenbezogener Daten möglich.<br><br>
+
+Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich. Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.<br><br>
+         
+Die Europäische Kommission stellt eine Plattform für die außergerichtliche Online-Streitbeilegung (OS-Plattform) bereit, aufrufbar unter <a href="http://ec.europa.eu/odr">http://ec.europa.eu/odr</a>
+
+     </div>
+
+              
+</div>
+  
+           
+</div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+
+{hook name="register.stylesheet"}
+
+{/block}
+
+
+{block name="after-javascript-include"}
+
+
+
+
+
+
+
+
+{hook name="register.after-javascript-include"}
+
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}

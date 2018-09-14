@@ -1,0 +1,687 @@
+<!--  /templates/frontOffice/default  dort hinlegen-->
+
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-register{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Services"}, 'url'=>{url path="/register"}]]}
+{/block}
+{block name="stylesheet"}
+    {stylesheets file='assets/dist/css/dropzone.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{hook name="register.stylesheet"}
+{/block}
+{block name="main-content"}
+
+    {* This page should not replace the current previous URL *}
+    {set_previous_url ignore_current="1"}
+    {block name="services-form"}  
+<div class="services-top-image">
+
+     <img  src="{image file='assets/dist/img/services/plumber.png'}" style="width:100%; padding-bottom:20px;">
+    <div class="services-image-info"> 
+    <h2> <span style="color:#000000;">So funktioniert's!</span></h2>  <!--brauche ich für Infos!!  Farben <span style="color:#000000;"> </span>  --> 
+    <p><span style="color:#7A7A7A;">Nachdem Sie die unten stehenden Fragen ausgefüllt haben, erhalten Sie ein unverbindliches Angebot binnen 1 Werktag per Email. Sollten Sie Fragen haben, zögern Sie nicht und kontaktieren uns per Live-Chat oder unter unserer Hotline.</span></p>
+    </div>
+
+</div>
+
+    <div class="main" id="demo-content">
+
+        <article class="col-main" role="main" aria-labelledby="main-label">
+
+            <h1 id="main-label" class="page-header">{intl l="Mieten Sie Ihren Installateur"}</h1>
+          
+            
+            {hook name="register.top"}
+            {form name="services"}
+            <form id="form-services" class="form-horizontal dropzone" action="{url path="/services/sendmail"}" method="post" enctype="multipart/form-data">
+               
+
+                {form_field field='error_message'}
+                    <input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
+                {/form_field}
+                {form_hidden_fields}
+                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                {hook name="register.form-top"}
+                <fieldset id="register-info" class="panel panel-default">
+                    <div class="panel-heading"><strong>
+                        1. {intl l="Schritt"}
+                    </strong></div>
+
+                    <div class="panel-body">
+                        {form_field field="projekt_art"}
+                           <div class="form-group group-title{if $error} has-error{/if}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>  
+                                        
+                                <div class="control-input col-sm-4">
+
+											<select class="form-control" name="{$name}" id="{$label_attr.for}" value="{$value}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="bad-projekt-geraet"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="kueche-projekt-geraet"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="heizung-projekt-geraet"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="warmwasser-projekt-geraet"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+
+
+                         {form_field field="bad-arbeit-typ"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="kueche-arbeit-typ"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="heizung-arbeit-typ"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="warmwasser-arbeit-typ"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="andere-arbeit-typ"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                       
+                        
+                        
+                       
+                         
+                        {form_field field="badMarke"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20"  value="{$value}"{if $required}  {/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+
+
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="badAnbieten"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+
+                        
+                         <!-- KÜCHE -->                       
+                         
+                        {form_field field="kuecheMarke"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20"  value="{$value}"{if $required}  {/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+
+
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                         {form_field field="kuecheAnbieten"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                       
+                        
+                        <!-- Heizung -->
+                        
+                        {form_field field="heizungMarke"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20"  value="{$value}"{if $required}  {/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+
+
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                         {form_field field="heizungAnbieten"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                       
+                        
+                        <!-- Warmwasser -->
+                                                
+
+                        
+                        {form_field field="warmwasserMarke"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20"  value="{$value}"{if $required}  {/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+
+
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                         {form_field field="warmwasserAnbieten"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="andereMarke"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20"  value="{$value}"{if $required}  {/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+
+
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                         {form_field field="andereAnbieten"}
+                           <div class="form-group group-title{if $error} has-error{/if} {$label_attr.for}" >
+
+                                <label class="control-label col-sm-5" for="q3">{$label}</label>
+                                        
+                                <div class="control-input col-sm-4">
+                                   
+                                         
+											<select class="form-control" name="{$name}" id="{$label_attr.for}">
+                                               	{foreach $choices as $choice}
+                            						<option value="{$choice->value}" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {elseif !$value}
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        
+                        
+        
+                        
+                    </div>
+                </fieldset>
+  
+                <fieldset id="register-delivery" class="panel panel-default">
+                    <div class="panel-heading"><strong>
+                        2. {intl l="Schritt"}
+                    </strong></div>
+                
+                        
+                        {include file="includes/personal-data.html"}
+                           
+                      
+                    <div class="panel-body">
+                        {form_field field="anmerkungen"}
+							<label class="fs-field-label" for="{$label_attr.for}">Bitte geben Sie hier mehr Details zu Ihrer Anfrage bekannt.</label><br>
+							<textarea id="{$label_attr.for}" name="{$name}" placeholder="Mehr Details zu Ihrer Anfrage z.B.: Toilette ist verstopft und der Spükasten ist undicht." style="width: 100%;height: 120px;"></textarea>
+                            
+                        {/form_field}
+                         <fieldset  class="panel panel-default">
+                     <div >
+                       
+                    </div>
+                    <div id="imsirun">
+                    {form_field field="image_upload"}
+                        
+                         <div id="dragdrop" class="fs-anim-upper">                     
+                          <div class="fallback">
+                              <input name="file" type="file" id="{$label_attr.for}" multiple />
+                          </div>
+                          <div class="dz-default dz-message dz-clickable" id="dropzonePreview" >
+                             <span>Bitte legen Sie hier Ihre Bilder per Drag & Drop ab. (optional)</span>
+                          </div>
+                          <div id="previews" class="dropzone"></div>
+                       </div>
+
+                    {/form_field}
+                    </div>  
+                </fieldset>
+
+                    </div>
+                </fieldset>
+                <fieldset id="register-login" class="panel panel-info">
+                    <div class="panel-heading"><strong>
+                         {intl l="Was passiert als Nächstes?"}
+                    </strong></div>
+
+                    <div class="panel-body">
+                       Sie erhalten innerhalb von einen Werktag ein persönliches, unverbindliches Angebot per Email. Dieses Angebot wird individuell erstellt und richtet sich nach Ihren persönlichen Angaben. Sollte Ihnen das Angebot zusagen, können Sie es sofort über den mitgeschickten Link buchen. Bei Unklarheiten oder Fragen stehen Ihnen unsere Experten telefonisch oder per Live-Chat zu Verfügung. Unsere Mitarbeiter beraten Sie gerne!
+                    </div>
+                </fieldset>
+
+
+
+            
+
+                {hook name="register.form-bottom"}
+
+                <div class="form-group group-btn">
+                    <div class="control-btn col-sm-12" style="float:right">
+                        <button type="submit" class="btn btn-primary" id="btn-submit"><i class="fa fa-chevron-right"></i> {intl l="Unverbindliche Anfrage senden"}</button>
+                    </div>
+                </div><!--/.form-group-->
+            </form>
+            {/form}
+
+             {*hook name="servicesjs.bottom"*} 
+            
+        </article>
+
+        
+        
+        <div class="faq">
+            <div><h3 style="margin:10px">Häufig gestellte Fragen</h3></div>
+            <div class="col-sm-5">
+            <h5><strong>Welche Angaben sollte meine Anfrage beinhalten? </strong></h5>
+            <p>Fügen Sie so viele Details wie möglich in Ihrer Anfrage an und laden Sie bitte ein paar Fotos hoch. Das hilft unseren Installateuren den bevorstehenden Arbeitsaufwand sowie die Arbeitszeit abschätzen zu können. Weiters nimmt die Bearbeitung Ihrer Anfrage so nur eine kurze Zeit in Anspruch. Bitte teilen Sie uns alle relevanten Dimensionen, Messungen, Produktinformationen (z.B.: Modellnummer, Link auf die Produktseite) und Materialien für die Reparatur/Installation oder Austausch mit.</p>
+                
+            <h5><strong>Ist die Anfrage verbindlich? </strong></h5>
+                <p>Nein. Die Anfrage einen Installateur zu mieten ist kostenlos und enthält keine Verpflichtung zum Kauf. Auch ein Kostenvoranschlag von einem unserer Installateure ist kostenlos.</p>   
+                
+            <h5><strong>Für welche Aufgaben kann ich einen Installateur mieten? </strong></h5>
+                <p>Sie können einen Installateur für alle Reparaturen, Installationen oder Austausch-Projekte in den Bereichen Küche, Bad, Waschküche, Keller oder Abwasserkanal beauftragen. Wenn Sie Zweifel haben ob die Abflüsse oder Rohre bei Ihnen Zuhause nicht einwandfrei funktionieren, hilft Ihnen gerne einer unserer Installateure weiter. Unsere Installateure können das Problem feststellen und bei Bedarf Rohre reparieren, austauschen und installieren. Sollte eine der folgenden Anlagen veraltet sein, kann unser Installateur diese aktualisieren: Toiletten, Boiler, Pumpenanlangen und Waschmaschinen. Mit  der Hilfe einer unserer Installateure können Sie auf  Nimmerwiedersehen zu undichten Armaturen, verstopften Abflüssen und beschädigten Abwasserleitungen sagen. Zusätzlich zu Reparaturen können Sie Installateure auch buchen, um beispielsweise einen Geschirrspüler zu installieren oder um ein individuelles Projekt zu planen. Sagen Sie uns einfach was Sie brauchen und wir senden Ihnen ein Angebot!</p>  
+            </div>
+            <div class="col-sm-5">
+                <h5><strong>Wie verläuft die Vor-Ort  Abschätzung des Arbeitsaufwandes?</strong></h5>
+                <p>Für einige Projekte, muss unser Installateur die spezifische Situation kennen, um ein genaues Angebot erstellen zu können.  Wenn ein Installateur einen Vor-Ort Termin mit Ihnen vereinbaren möchte, erhalten Sie eine Anfrage per Email bezüglich des Termins. Sollten Kosten für diesen Vor-Ort Besuch entstehen, finden Sie diese in dem Email angeführt. Sie können den Termin online vereinbaren und erhalten nach dem Besuch unseres Installateurs ein persönliches Angebot. Sollte Ihnen das Angebot zusagen, können Sie den Installateur für diesen Auftrag mieten. Es besteht jedoch keine Verpflichtung das Angebot anzunehmen, auch nicht wenn ein Vor-Ort Besuch stattgefunden hat.</p>
+                
+                <h5><strong>Was ist, wenn ich einen Installateur miete und etwas geht schief?</strong></h5>
+                <p>Wir stehen hinter jedem Service mit unserer Zufriedenheits-Garantie. Sollten Sie nicht zufrieden mit dem durchgeführten Service sein, werden wir versuchen das Service erneut zu Ihrer Zufriedenheit durchführen oder Sie erhalten eine vollständige Rückerstattung.</p>
+                
+                <h5><strong>Kaufen Sie Reparatur- oder Ersatzteile</strong></h5>
+                <p>Wollen Sie beispielsweise Ihre Küche oder Ihr Bad verschönern?  Werfen Sie einfach einen Blick auf unsere große Auswahl in unserem <a href="{url path="/?view=category&lang=de_DE&category_id=11"}"> 
+<span style="color:#74A027;"> <span style="text-decoration:underline;"> Shop</span></span></a>. Dort finden Sie alles was Sie brauchen, bevor Sie einen Installateur mieten.</p>
+            </div>
+            <div class="col-sm-2">
+               <img src="{image file='assets/dist/img/services/tool.png'}" style="width:100%">
+            </div>
+            
+           
+        </div>
+    </div><!-- /.layout -->
+{/block}
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="register.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+ <script src="{javascript file='assets/dist/js/vendors/dropzone.js'}"></script>
+ <script>
+    
+ Dropzone.options.formServices = {
+
+		  // Prevents Dropzone from uploading dropped files immediately
+		  autoProcessQueue: false,
+		  uploadMultiple: true,
+		  addRemoveLinks: true,
+		  parallelUploads: 10,
+		  maxFilesize: 256,
+		  clickable: false,
+		  previewsContainer: '#previews',
+		  hiddenInputContainer: "#imsirun",
+		  capture:"#imsirun",
+	      dictDefaultMessage: "Drop files here to upload",
+	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+	      dictFileTooBig: "File is too big ( { { filesize } } MiB). Max filesize: { { maxFilesize } } MiB.",
+	      dictInvalidFileType: "You can't upload files of this type.",
+	      dictResponseError: "Server responded with { { statusCode } } code.",
+	      dictCancelUpload: "Cancel upload",
+	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+	      dictRemoveFile: "Entfernen",
+	      dictRemoveFileConfirmation: null,
+	      dictMaxFilesExceeded: "You can not upload any more files.",
+	      
+		  init: function() {
+            
+              
+		     var submitButton =document.getElementById("btn-submit");
+		        myDropzone = this; // closure
+
+		    submitButton.addEventListener("click", function(e) {
+               
+                if(myDropzone.files.length!=0){
+                	e.preventDefault();
+                	  myDropzone.processQueue();// Tell Dropzone to process all queued files.
+                }
+		    });
+		  },
+	      success: function(file,response){
+	    	  document.open();
+	    	    document.write(response);
+	    	    document.close();
+	    	    window.history.pushState( { "html":response,"pageTitle":response.pageTitle } ,"", "/klimakonfigurator-angebot/success");
+	      }
+		};
+  $("#form-services").dropzone();
+</script>
+
+
+
+
+{hook name="register.after-javascript-include"}
+ <script src="{javascript file='assets/dist/js/vendors/demo.js'}"></script>
+ <script src="{javascript file='assets/dist/js/vendors/deps.js'}"></script>
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}
+
