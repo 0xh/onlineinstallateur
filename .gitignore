@@ -6,11 +6,6 @@ web/install/*
 log/*
 local/session
 web/schedule/app/config/config.inc.php
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/order-placed.html
-local/modules/AmazonIntegration/Controller/Admin/AmazonIntegrationContoller.php
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
