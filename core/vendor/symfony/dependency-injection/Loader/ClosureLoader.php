@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\DependencyInjection\Loader;
 
-use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\Loader\Loader;
 
 /**
  * ClosureLoader loads service definitions from a PHP closure.
@@ -25,6 +25,11 @@ class ClosureLoader extends Loader
 {
     private $container;
 
+    /**
+     * Constructor.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
     public function __construct(ContainerBuilder $container)
     {
         $this->container = $container;
@@ -35,7 +40,7 @@ class ClosureLoader extends Loader
      */
     public function load($resource, $type = null)
     {
-        \call_user_func($resource, $this->container);
+        call_user_func($resource, $this->container);
     }
 
     /**

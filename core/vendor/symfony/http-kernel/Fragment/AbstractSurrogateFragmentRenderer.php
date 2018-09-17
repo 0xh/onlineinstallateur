@@ -29,6 +29,8 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
     private $signer;
 
     /**
+     * Constructor.
+     *
      * The "fallback" strategy when surrogate is not available should always be an
      * instance of InlineFragmentRenderer.
      *
@@ -88,6 +90,6 @@ abstract class AbstractSurrogateFragmentRenderer extends RoutableFragmentRendere
         // we need to sign the absolute URI, but want to return the path only.
         $fragmentUri = $this->signer->sign($this->generateFragmentUri($uri, $request, true));
 
-        return substr($fragmentUri, \strlen($request->getSchemeAndHttpHost()));
+        return substr($fragmentUri, strlen($request->getSchemeAndHttpHost()));
     }
 }

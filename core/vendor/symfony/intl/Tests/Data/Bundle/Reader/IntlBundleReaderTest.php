@@ -11,14 +11,14 @@
 
 namespace Symfony\Component\Intl\Tests\Data\Bundle\Reader;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Intl\Data\Bundle\Reader\IntlBundleReader;
+use Symfony\Component\Intl\Intl;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @requires extension intl
  */
-class IntlBundleReaderTest extends TestCase
+class IntlBundleReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var IntlBundleReader
@@ -36,7 +36,7 @@ class IntlBundleReaderTest extends TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bar', $data['Foo']);
-        $this->assertArrayNotHasKey('ExistsNot', $data);
+        $this->assertFalse(isset($data['ExistsNot']));
     }
 
     public function testReadFollowsAlias()
@@ -46,16 +46,16 @@ class IntlBundleReaderTest extends TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bar', $data['Foo']);
-        $this->assertArrayNotHasKey('ExistsNot', $data);
+        $this->assertFalse(isset($data['ExistsNot']));
     }
 
     public function testReadDoesNotFollowFallback()
     {
-        if (\PHP_VERSION_ID < 50307 || \PHP_VERSION_ID === 50400) {
+        if (PHP_VERSION_ID < 50307 || PHP_VERSION_ID === 50400) {
             $this->markTestSkipped('ResourceBundle handles disabling fallback properly only as of PHP 5.3.7 and 5.4.1.');
         }
 
-        if (\defined('HHVM_VERSION')) {
+        if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('ResourceBundle does not support disabling fallback properly on HHVM.');
         }
 
@@ -64,18 +64,18 @@ class IntlBundleReaderTest extends TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bam', $data['Baz']);
-        $this->assertArrayNotHasKey('Foo', $data);
+        $this->assertFalse(isset($data['Foo']));
         $this->assertNull($data['Foo']);
-        $this->assertArrayNotHasKey('ExistsNot', $data);
+        $this->assertFalse(isset($data['ExistsNot']));
     }
 
     public function testReadDoesNotFollowFallbackAlias()
     {
-        if (\PHP_VERSION_ID < 50307 || \PHP_VERSION_ID === 50400) {
+        if (PHP_VERSION_ID < 50307 || PHP_VERSION_ID === 50400) {
             $this->markTestSkipped('ResourceBundle handles disabling fallback properly only as of PHP 5.3.7 and 5.4.1.');
         }
 
-        if (\defined('HHVM_VERSION')) {
+        if (defined('HHVM_VERSION')) {
             $this->markTestSkipped('ResourceBundle does not support disabling fallback properly on HHVM.');
         }
 
@@ -84,9 +84,9 @@ class IntlBundleReaderTest extends TestCase
 
         $this->assertInstanceOf('\ArrayAccess', $data);
         $this->assertSame('Bam', $data['Baz'], 'data from the aliased locale can be accessed');
-        $this->assertArrayNotHasKey('Foo', $data);
+        $this->assertFalse(isset($data['Foo']));
         $this->assertNull($data['Foo']);
-        $this->assertArrayNotHasKey('ExistsNot', $data);
+        $this->assertFalse(isset($data['ExistsNot']));
     }
 
     /**

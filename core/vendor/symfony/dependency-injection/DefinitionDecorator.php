@@ -25,7 +25,9 @@ class DefinitionDecorator extends Definition
     private $changes = array();
 
     /**
-     * @param string $parent The id of Definition instance to decorate
+     * Constructor.
+     *
+     * @param string $parent The id of Definition instance to decorate.
      */
     public function __construct($parent)
     {
@@ -76,6 +78,7 @@ class DefinitionDecorator extends Definition
 
     /**
      * {@inheritdoc}
+     *
      */
     public function setFactoryClass($class)
     {
@@ -97,11 +100,11 @@ class DefinitionDecorator extends Definition
     /**
      * {@inheritdoc}
      */
-    public function setFactoryService($service, $triggerDeprecationError = true)
+    public function setFactoryService($service)
     {
         $this->changes['factory_service'] = true;
 
-        return parent::setFactoryService($service, $triggerDeprecationError);
+        return parent::setFactoryService($service);
     }
 
     /**
@@ -165,16 +168,6 @@ class DefinitionDecorator extends Definition
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setAutowired($autowired)
-    {
-        $this->changes['autowire'] = true;
-
-        return parent::setAutowired($autowired);
-    }
-
-    /**
      * Gets an argument to pass to the service constructor/factory method.
      *
      * If replaceArgument() has been used to replace an argument, this method
@@ -192,7 +185,7 @@ class DefinitionDecorator extends Definition
             return $this->arguments['index_'.$index];
         }
 
-        $lastIndex = \count(array_filter(array_keys($this->arguments), 'is_int')) - 1;
+        $lastIndex = count(array_filter(array_keys($this->arguments), 'is_int')) - 1;
 
         if ($index < 0 || $index > $lastIndex) {
             throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, $lastIndex));
@@ -212,13 +205,13 @@ class DefinitionDecorator extends Definition
      * @param int   $index
      * @param mixed $value
      *
-     * @return $this
+     * @return DefinitionDecorator the current instance
      *
      * @throws InvalidArgumentException when $index isn't an integer
      */
     public function replaceArgument($index, $value)
     {
-        if (!\is_int($index)) {
+        if (!is_int($index)) {
             throw new InvalidArgumentException('$index must be an integer.');
         }
 

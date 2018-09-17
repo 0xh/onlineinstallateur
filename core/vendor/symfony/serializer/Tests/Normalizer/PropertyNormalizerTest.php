@@ -12,7 +12,6 @@
 namespace Symfony\Component\Serializer\Tests\Normalizer;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -23,7 +22,7 @@ use Symfony\Component\Serializer\Tests\Fixtures\GroupDummy;
 use Symfony\Component\Serializer\Tests\Fixtures\PropertyCircularReferenceDummy;
 use Symfony\Component\Serializer\Tests\Fixtures\PropertySiblingHolder;
 
-class PropertyNormalizerTest extends TestCase
+class PropertyNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PropertyNormalizer
@@ -36,7 +35,7 @@ class PropertyNormalizerTest extends TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMockBuilder('Symfony\Component\Serializer\SerializerInterface')->getMock();
+        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
         $this->normalizer = new PropertyNormalizer();
         $this->normalizer->setSerializer($this->serializer);
     }
@@ -215,7 +214,7 @@ class PropertyNormalizerTest extends TestCase
 
         $this->assertEquals(array(
             'bar' => 'bar',
-        ), $this->normalizer->normalize($obj, null, array(PropertyNormalizer::GROUPS => array('c'))));
+        ), $this->normalizer->normalize($obj, null, array('groups' => array('c'))));
 
         // The PropertyNormalizer is not able to hydrate properties from parent classes
         $this->assertEquals(array(
@@ -223,7 +222,7 @@ class PropertyNormalizerTest extends TestCase
             'foo' => 'foo',
             'fooBar' => 'fooBar',
             'bar' => 'bar',
-        ), $this->normalizer->normalize($obj, null, array(PropertyNormalizer::GROUPS => array('a', 'c'))));
+        ), $this->normalizer->normalize($obj, null, array('groups' => array('a', 'c'))));
     }
 
     public function testGroupsDenormalize()
@@ -241,7 +240,7 @@ class PropertyNormalizerTest extends TestCase
             $toNormalize,
             'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy',
             null,
-            array(PropertyNormalizer::GROUPS => array('a'))
+            array('groups' => array('a'))
         );
         $this->assertEquals($obj, $normalized);
 
@@ -251,7 +250,7 @@ class PropertyNormalizerTest extends TestCase
             $toNormalize,
             'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy',
             null,
-            array(PropertyNormalizer::GROUPS => array('a', 'b'))
+            array('groups' => array('a', 'b'))
         );
         $this->assertEquals($obj, $normalized);
     }
@@ -273,7 +272,7 @@ class PropertyNormalizerTest extends TestCase
                 'foo_bar' => '@dunglas',
                 'symfony' => '@coopTilleuls',
             ),
-            $this->normalizer->normalize($obj, null, array(PropertyNormalizer::GROUPS => array('name_converter')))
+            $this->normalizer->normalize($obj, null, array('groups' => array('name_converter')))
         );
     }
 
@@ -294,7 +293,7 @@ class PropertyNormalizerTest extends TestCase
                 'foo_bar' => '@dunglas',
                 'symfony' => '@coopTilleuls',
                 'coop_tilleuls' => 'les-tilleuls.coop',
-            ), 'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy', null, array(PropertyNormalizer::GROUPS => array('name_converter')))
+            ), 'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy', null, array('groups' => array('name_converter')))
         );
     }
 
@@ -349,7 +348,7 @@ class PropertyNormalizerTest extends TestCase
             array(
                 array(
                     'bar' => function ($bars) {
-                        return \count($bars);
+                        return count($bars);
                     },
                 ),
                 array(new PropertyConstructorDummy('baz', ''), new PropertyConstructorDummy('quux', '')),
@@ -393,7 +392,7 @@ class PropertyNormalizerTest extends TestCase
         $serializer = new Serializer(array($this->normalizer));
         $this->normalizer->setSerializer($serializer);
         $this->normalizer->setCircularReferenceHandler(function ($obj) {
-            return \get_class($obj);
+            return get_class($obj);
         });
 
         $obj = new PropertyCircularReferenceDummy();
@@ -424,7 +423,7 @@ class PropertyNormalizerTest extends TestCase
      */
     public function testUnableToNormalizeObjectAttribute()
     {
-        $serializer = $this->getMockBuilder('Symfony\Component\Serializer\SerializerInterface')->getMock();
+        $serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
         $this->normalizer->setSerializer($serializer);
 
         $obj = new PropertyDummy();
@@ -511,3 +510,4 @@ class StaticPropertyDummy
 {
     private static $property = 'value';
 }
+

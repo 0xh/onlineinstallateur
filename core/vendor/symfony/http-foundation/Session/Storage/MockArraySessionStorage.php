@@ -58,13 +58,15 @@ class MockArraySessionStorage implements SessionStorageInterface
     protected $metadataBag;
 
     /**
-     * @var array|SessionBagInterface[]
+     * @var array
      */
-    protected $bags = array();
+    protected $bags;
 
     /**
+     * Constructor.
+     *
      * @param string      $name    Session name
-     * @param MetadataBag $metaBag MetadataBag instance
+     * @param MetadataBag $metaBag MetadataBag instance.
      */
     public function __construct($name = 'MOCKSESSID', MetadataBag $metaBag = null)
     {
@@ -72,6 +74,11 @@ class MockArraySessionStorage implements SessionStorageInterface
         $this->setMetadataBag($metaBag);
     }
 
+    /**
+     * Sets the session data.
+     *
+     * @param array $array
+     */
     public function setSessionData(array $array)
     {
         $this->data = $array;
@@ -208,6 +215,11 @@ class MockArraySessionStorage implements SessionStorageInterface
         return $this->started;
     }
 
+    /**
+     * Sets the MetadataBag.
+     *
+     * @param MetadataBag $bag
+     */
     public function setMetadataBag(MetadataBag $bag = null)
     {
         if (null === $bag) {

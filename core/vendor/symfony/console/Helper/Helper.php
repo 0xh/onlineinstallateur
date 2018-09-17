@@ -23,7 +23,9 @@ abstract class Helper implements HelperInterface
     protected $helperSet = null;
 
     /**
-     * {@inheritdoc}
+     * Sets the helper set associated with this helper.
+     *
+     * @param HelperSet $helperSet A HelperSet instance
      */
     public function setHelperSet(HelperSet $helperSet = null)
     {
@@ -31,7 +33,9 @@ abstract class Helper implements HelperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the helper set associated with this helper.
+     *
+     * @return HelperSet A HelperSet instance
      */
     public function getHelperSet()
     {
@@ -48,7 +52,7 @@ abstract class Helper implements HelperInterface
     public static function strlen($string)
     {
         if (false === $encoding = mb_detect_encoding($string, null, true)) {
-            return \strlen($string);
+            return strlen($string);
         }
 
         return mb_strwidth($string, $encoding);
@@ -58,28 +62,26 @@ abstract class Helper implements HelperInterface
     {
         static $timeFormats = array(
             array(0, '< 1 sec'),
-            array(1, '1 sec'),
-            array(2, 'secs', 1),
+            array(2, '1 sec'),
+            array(59, 'secs', 1),
             array(60, '1 min'),
-            array(120, 'mins', 60),
-            array(3600, '1 hr'),
-            array(7200, 'hrs', 3600),
-            array(86400, '1 day'),
-            array(172800, 'days', 86400),
+            array(3600, 'mins', 60),
+            array(5400, '1 hr'),
+            array(86400, 'hrs', 3600),
+            array(129600, '1 day'),
+            array(604800, 'days', 86400),
         );
 
-        foreach ($timeFormats as $index => $format) {
+        foreach ($timeFormats as $format) {
             if ($secs >= $format[0]) {
-                if ((isset($timeFormats[$index + 1]) && $secs < $timeFormats[$index + 1][0])
-                    || $index == \count($timeFormats) - 1
-                ) {
-                    if (2 == \count($format)) {
-                        return $format[1];
-                    }
-
-                    return floor($secs / $format[2]).' '.$format[1];
-                }
+                continue;
             }
+
+            if (2 == count($format)) {
+                return $format[1];
+            }
+
+            return ceil($secs / $format[2]).' '.$format[1];
         }
     }
 
@@ -102,11 +104,6 @@ abstract class Helper implements HelperInterface
 
     public static function strlenWithoutDecoration(OutputFormatterInterface $formatter, $string)
     {
-        return self::strlen(self::removeDecoration($formatter, $string));
-    }
-
-    public static function removeDecoration(OutputFormatterInterface $formatter, $string)
-    {
         $isDecorated = $formatter->isDecorated();
         $formatter->setDecorated(false);
         // remove <...> formatting
@@ -115,6 +112,6 @@ abstract class Helper implements HelperInterface
         $string = preg_replace("/\033\[[^m]*m/", '', $string);
         $formatter->setDecorated($isDecorated);
 
-        return $string;
+        return self::strlen($string);
     }
 }

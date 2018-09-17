@@ -11,27 +11,19 @@
 
 namespace Symfony\Component\HttpKernel\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\EnvParametersResource;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\Tests\Fixtures\FooBarBundle;
-use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForOverrideName;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForTest;
+use Symfony\Component\HttpKernel\Tests\Fixtures\KernelForOverrideName;
+use Symfony\Component\HttpKernel\Tests\Fixtures\FooBarBundle;
 
-class KernelTest extends TestCase
+class KernelTest extends \PHPUnit_Framework_TestCase
 {
-    public static function tearDownAfterClass()
-    {
-        $fs = new Filesystem();
-        $fs->remove(__DIR__.'/Fixtures/cache');
-    }
-
     public function testConstructor()
     {
         $env = 'test_env';
@@ -73,7 +65,7 @@ class KernelTest extends TestCase
 
     public function testBootSetsTheContainerToTheBundles()
     {
-        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')->getMock();
+        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\Bundle');
         $bundle->expects($this->once())
             ->method('setContainer');
 
@@ -107,7 +99,7 @@ class KernelTest extends TestCase
 
     public function testClassCacheIsNotLoadedByDefault()
     {
-        $kernel = $this->getKernel(array('initializeBundles', 'initializeContainer', 'doLoadClassCache'));
+        $kernel = $this->getKernel(array('initializeBundles', 'initializeContainer'));
         $kernel->expects($this->never())
             ->method('doLoadClassCache');
 
@@ -142,7 +134,7 @@ class KernelTest extends TestCase
             ->method('getLogDir')
             ->will($this->returnValue(sys_get_temp_dir()));
 
-        $reflection = new \ReflectionClass(\get_class($kernel));
+        $reflection = new \ReflectionClass(get_class($kernel));
         $method = $reflection->getMethod('buildContainer');
         $method->setAccessible(true);
         $method->invoke($kernel);
@@ -170,7 +162,7 @@ class KernelTest extends TestCase
 
     public function testShutdownCallsShutdownOnAllBundles()
     {
-        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')->getMock();
+        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\Bundle');
         $bundle->expects($this->once())
             ->method('shutdown');
 
@@ -182,7 +174,7 @@ class KernelTest extends TestCase
 
     public function testShutdownGivesNullContainerToAllBundles()
     {
-        $bundle = $this->getMockBuilder('Symfony\Component\HttpKernel\Bundle\Bundle')->getMock();
+        $bundle = $this->getMock('Symfony\Component\HttpKernel\Bundle\Bundle');
         $bundle->expects($this->at(3))
             ->method('setContainer')
             ->with(null);
@@ -254,7 +246,7 @@ modified';
 $heredoc = <<<HD
 
 
-Heredoc should not be   modified {$a[1+$b]}
+Heredoc should not be   modified
 
 
 HD;
@@ -290,7 +282,7 @@ modified';
 $heredoc = <<<HD
 
 
-Heredoc should not be   modified {$a[1+$b]}
+Heredoc should not be   modified
 
 
 HD;
@@ -313,7 +305,7 @@ EOF;
 
         // Heredocs are preserved, making the output mixing Unix and Windows line
         // endings, switching to "\n" everywhere on Windows to avoid failure.
-        if ('\\' === \DIRECTORY_SEPARATOR) {
+        if ('\\' === DIRECTORY_SEPARATOR) {
             $expected = str_replace("\r\n", "\n", $expected);
             $output = str_replace("\r\n", "\n", $output);
         }
@@ -367,7 +359,7 @@ EOF;
     {
         $kernel = new KernelForTest('test', true);
 
-        $this->assertEquals(__DIR__.\DIRECTORY_SEPARATOR.'Fixtures', realpath($kernel->getRootDir()));
+        $this->assertEquals(__DIR__.DIRECTORY_SEPARATOR.'Fixtures', realpath($kernel->getRootDir()));
     }
 
     public function testGetName()
@@ -738,17 +730,21 @@ EOF;
     public function testTerminateDelegatesTerminationOnlyForTerminableInterface()
     {
         // does not implement TerminableInterface
-        $httpKernel = new TestKernel();
+        $httpKernelMock = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $httpKernelMock
+            ->expects($this->never())
+            ->method('terminate');
 
         $kernel = $this->getKernel(array('getHttpKernel'));
         $kernel->expects($this->once())
             ->method('getHttpKernel')
-            ->willReturn($httpKernel);
+            ->will($this->returnValue($httpKernelMock));
 
         $kernel->boot();
         $kernel->terminate(Request::create('/'), new Response());
-
-        $this->assertFalse($httpKernel->terminateCalled, 'terminate() is never called if the kernel class does not implement TerminableInterface');
 
         // implements TerminableInterface
         $httpKernelMock = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernel')
@@ -767,14 +763,6 @@ EOF;
 
         $kernel->boot();
         $kernel->terminate(Request::create('/'), new Response());
-    }
-
-    public function testKernelRootDirNameStartingWithANumber()
-    {
-        $dir = __DIR__.'/Fixtures/123';
-        require_once $dir.'/Kernel123.php';
-        $kernel = new \Symfony\Component\HttpKernel\Tests\Fixtures\_123\Kernel123('dev', true);
-        $this->assertEquals('_123', $kernel->getName());
     }
 
     /**
@@ -799,7 +787,7 @@ EOF;
         $bundle
             ->expects($this->any())
             ->method('getName')
-            ->will($this->returnValue(null === $bundleName ? \get_class($bundle) : $bundleName))
+            ->will($this->returnValue(null === $bundleName ? get_class($bundle) : $bundleName))
         ;
 
         $bundle
@@ -857,19 +845,5 @@ EOF;
         $p->setValue($kernel, __DIR__.'/Fixtures');
 
         return $kernel;
-    }
-}
-
-class TestKernel implements HttpKernelInterface
-{
-    public $terminateCalled = false;
-
-    public function terminate()
-    {
-        $this->terminateCalled = true;
-    }
-
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
-    {
     }
 }

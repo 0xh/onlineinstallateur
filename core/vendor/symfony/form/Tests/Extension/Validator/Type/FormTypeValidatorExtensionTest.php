@@ -12,23 +12,15 @@
 namespace Symfony\Component\Form\Tests\Extension\Validator\Type;
 
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\Tests\Extension\Core\Type\FormTypeTest;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TextTypeTest;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\GroupSequence;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validation;
 
 class FormTypeValidatorExtensionTest extends BaseValidatorExtensionTest
 {
     public function testSubmitValidatesData()
     {
         $builder = $this->factory->createBuilder(
-            FormTypeTest::TESTED_TYPE,
+            'Symfony\Component\Form\Extension\Core\Type\FormType',
             null,
             array(
                 'validation_groups' => 'group',
@@ -76,7 +68,7 @@ class FormTypeValidatorExtensionTest extends BaseValidatorExtensionTest
     public function testValidatorInterfaceSinceSymfony25()
     {
         // Mock of ValidatorInterface since apiVersion 2.5
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\Validator\ValidatorInterface')->getMock();
+        $validator = $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface');
 
         $formTypeValidatorExtension = new FormTypeValidatorExtension($validator);
         $this->assertAttributeSame($validator, 'validator', $formTypeValidatorExtension);
@@ -85,7 +77,7 @@ class FormTypeValidatorExtensionTest extends BaseValidatorExtensionTest
     public function testValidatorInterfaceUntilSymfony24()
     {
         // Mock of ValidatorInterface until apiVersion 2.4
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\ValidatorInterface')->getMock();
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
 
         $formTypeValidatorExtension = new FormTypeValidatorExtension($validator);
         $this->assertAttributeSame($validator, 'validator', $formTypeValidatorExtension);
@@ -99,27 +91,8 @@ class FormTypeValidatorExtensionTest extends BaseValidatorExtensionTest
         new FormTypeValidatorExtension(null);
     }
 
-    public function testGroupSequenceWithConstraintsOption()
-    {
-        $form = Forms::createFormFactoryBuilder()
-            ->addExtension(new ValidatorExtension(Validation::createValidator()))
-            ->getFormFactory()
-            ->create(FormTypeTest::TESTED_TYPE, null, (array('validation_groups' => new GroupSequence(array('First', 'Second')))))
-            ->add('field', TextTypeTest::TESTED_TYPE, array(
-                'constraints' => array(
-                    new Length(array('min' => 10, 'groups' => array('First'))),
-                    new Email(array('groups' => array('Second'))),
-                ),
-            ))
-        ;
-
-        $form->submit(array('field' => 'wrong'));
-
-        $this->assertCount(1, $form->getErrors(true));
-    }
-
     protected function createForm(array $options = array())
     {
-        return $this->factory->create(FormTypeTest::TESTED_TYPE, null, $options);
+        return $this->factory->create('Symfony\Component\Form\Extension\Core\Type\FormType', null, $options);
     }
 }

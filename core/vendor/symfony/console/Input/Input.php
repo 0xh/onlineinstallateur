@@ -27,11 +27,19 @@ use Symfony\Component\Console\Exception\RuntimeException;
  */
 abstract class Input implements InputInterface
 {
+    /**
+     * @var InputDefinition
+     */
     protected $definition;
     protected $options = array();
     protected $arguments = array();
     protected $interactive = true;
 
+    /**
+     * Constructor.
+     *
+     * @param InputDefinition $definition A InputDefinition instance
+     */
     public function __construct(InputDefinition $definition = null)
     {
         if (null === $definition) {
@@ -43,7 +51,9 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Binds the current Input instance with the given arguments and options.
+     *
+     * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition)
     {
@@ -60,7 +70,9 @@ abstract class Input implements InputInterface
     abstract protected function parse();
 
     /**
-     * {@inheritdoc}
+     * Validates the input.
+     *
+     * @throws RuntimeException When not enough arguments are given
      */
     public function validate()
     {
@@ -71,13 +83,15 @@ abstract class Input implements InputInterface
             return !array_key_exists($argument, $givenArguments) && $definition->getArgument($argument)->isRequired();
         });
 
-        if (\count($missingArguments) > 0) {
+        if (count($missingArguments) > 0) {
             throw new RuntimeException(sprintf('Not enough arguments (missing: "%s").', implode(', ', $missingArguments)));
         }
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if the input is interactive.
+     *
+     * @return bool Returns true if the input is interactive
      */
     public function isInteractive()
     {
@@ -85,7 +99,9 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the input interactivity.
+     *
+     * @param bool $interactive If the input should be interactive
      */
     public function setInteractive($interactive)
     {
@@ -93,7 +109,9 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the argument values.
+     *
+     * @return array An array of argument values
      */
     public function getArguments()
     {
@@ -101,7 +119,13 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the argument value for a given argument name.
+     *
+     * @param string $name The argument name
+     *
+     * @return mixed The argument value
+     *
+     * @throws InvalidArgumentException When argument given doesn't exist
      */
     public function getArgument($name)
     {
@@ -113,7 +137,12 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets an argument value by name.
+     *
+     * @param string $name  The argument name
+     * @param string $value The argument value
+     *
+     * @throws InvalidArgumentException When argument given doesn't exist
      */
     public function setArgument($name, $value)
     {
@@ -125,7 +154,11 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if an InputArgument object exists by name or position.
+     *
+     * @param string|int $name The InputArgument name or position
+     *
+     * @return bool true if the InputArgument object exists, false otherwise
      */
     public function hasArgument($name)
     {
@@ -133,7 +166,9 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the options values.
+     *
+     * @return array An array of option values
      */
     public function getOptions()
     {
@@ -141,7 +176,13 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the option value for a given option name.
+     *
+     * @param string $name The option name
+     *
+     * @return mixed The option value
+     *
+     * @throws InvalidArgumentException When option given doesn't exist
      */
     public function getOption($name)
     {
@@ -153,7 +194,12 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets an option value by name.
+     *
+     * @param string      $name  The option name
+     * @param string|bool $value The option value
+     *
+     * @throws InvalidArgumentException When option given doesn't exist
      */
     public function setOption($name, $value)
     {
@@ -165,7 +211,11 @@ abstract class Input implements InputInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns true if an InputOption object exists by name.
+     *
+     * @param string $name The InputOption name
+     *
+     * @return bool true if the InputOption object exists, false otherwise
      */
     public function hasOption($name)
     {

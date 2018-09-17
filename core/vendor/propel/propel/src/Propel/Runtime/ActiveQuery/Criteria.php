@@ -1207,7 +1207,8 @@ class Criteria
      */
     public function setLimit($limit)
     {
-        $this->limit = (int) $limit;
+        // TODO: do we enforce int here? 32bit issue if we do
+        $this->limit = $limit;
 
         return $this;
     }
@@ -1225,7 +1226,8 @@ class Criteria
     /**
      * Set offset.
      *
-     * @param int $offset An int with the value for offset.
+     * @param int $offset An int with the value for offset.  (Note this values is
+     *                             cast to a 32bit integer and may result in truncation)
      * @return Criteria Modified Criteria object (for fluent API)
      */
     public function setOffset($offset)

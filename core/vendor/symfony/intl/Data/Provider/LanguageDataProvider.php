@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Intl\Data\Provider;
 
-use Symfony\Component\Intl\Data\Bundle\Reader\BundleEntryReaderInterface;
 use Symfony\Component\Intl\Locale;
+use Symfony\Component\Intl\Data\Bundle\Reader\BundleEntryReaderInterface;
 
 /**
  * Data provider for language-related ICU data.
@@ -23,14 +23,23 @@ use Symfony\Component\Intl\Locale;
  */
 class LanguageDataProvider
 {
+    /**
+     * @var string
+     */
     private $path;
+
+    /**
+     * @var BundleEntryReaderInterface
+     */
     private $reader;
 
     /**
      * Creates a data provider that reads locale-related data from .res files.
      *
-     * @param string                     $path   The path to the directory containing the .res files
-     * @param BundleEntryReaderInterface $reader The reader for reading the .res files
+     * @param string                     $path   The path to the directory
+     *                                           containing the .res files.
+     * @param BundleEntryReaderInterface $reader The reader for reading the .res
+     *                                           files.
      */
     public function __construct($path, BundleEntryReaderInterface $reader)
     {

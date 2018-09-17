@@ -24,6 +24,8 @@ class PropertyPath implements \IteratorAggregate, PropertyPathInterface
 {
     /**
      * Character used for separating between plural and singular of an element.
+     *
+     * @var string
      */
     const SINGULAR_SEPARATOR = '|';
 
@@ -76,12 +78,12 @@ class PropertyPath implements \IteratorAggregate, PropertyPathInterface
 
             return;
         }
-        if (!\is_string($propertyPath)) {
+        if (!is_string($propertyPath)) {
             throw new InvalidArgumentException(sprintf(
                 'The property path constructor needs a string or an instance of '.
                 '"Symfony\Component\PropertyAccess\PropertyPath". '.
                 'Got: "%s"',
-                \is_object($propertyPath) ? \get_class($propertyPath) : \gettype($propertyPath)
+                is_object($propertyPath) ? get_class($propertyPath) : gettype($propertyPath)
             ));
         }
 
@@ -94,7 +96,7 @@ class PropertyPath implements \IteratorAggregate, PropertyPathInterface
         $remaining = $propertyPath;
 
         // first element is evaluated differently - no leading dot for properties
-        $pattern = '/^(([^\.\[]++)|\[([^\]]++)\])(.*)/';
+        $pattern = '/^(([^\.\[]+)|\[([^\]]+)\])(.*)/';
 
         while (preg_match($pattern, $remaining, $matches)) {
             if ('' !== $matches[2]) {
@@ -107,9 +109,9 @@ class PropertyPath implements \IteratorAggregate, PropertyPathInterface
 
             $this->elements[] = $element;
 
-            $position += \strlen($matches[1]);
+            $position += strlen($matches[1]);
             $remaining = $matches[4];
-            $pattern = '/^(\.([^\.|\[]++)|\[([^\]]++)\])(.*)/';
+            $pattern = '/^(\.([^\.|\[]+)|\[([^\]]+)\])(.*)/';
         }
 
         if ('' !== $remaining) {
@@ -121,7 +123,7 @@ class PropertyPath implements \IteratorAggregate, PropertyPathInterface
             ));
         }
 
-        $this->length = \count($this->elements);
+        $this->length = count($this->elements);
     }
 
     /**

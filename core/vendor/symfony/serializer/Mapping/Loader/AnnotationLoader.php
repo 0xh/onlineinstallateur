@@ -24,8 +24,14 @@ use Symfony\Component\Serializer\Mapping\ClassMetadataInterface;
  */
 class AnnotationLoader implements LoaderInterface
 {
+    /**
+     * @var Reader
+     */
     private $reader;
 
+    /**
+     * @param Reader $reader
+     */
     public function __construct(Reader $reader)
     {
         $this->reader = $reader;

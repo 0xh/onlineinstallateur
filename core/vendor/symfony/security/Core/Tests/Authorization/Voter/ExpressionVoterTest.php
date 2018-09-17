@@ -11,17 +11,16 @@
 
 namespace Symfony\Component\Security\Core\Tests\Authorization\Voter;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authorization\Voter\ExpressionVoter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Role\Role;
 
-class ExpressionVoterTest extends TestCase
+class ExpressionVoterTest extends \PHPUnit_Framework_TestCase
 {
     public function testSupportsAttribute()
     {
         $expression = $this->createExpression();
-        $expressionLanguage = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\ExpressionLanguage')->getMock();
+        $expressionLanguage = $this->getMock('Symfony\Component\Security\Core\Authorization\ExpressionLanguage');
         $voter = new ExpressionVoter($expressionLanguage, $this->createTrustResolver(), $this->createRoleHierarchy());
 
         $this->assertTrue($voter->supportsAttribute($expression));
@@ -55,7 +54,7 @@ class ExpressionVoterTest extends TestCase
         foreach ($roles as $i => $role) {
             $roles[$i] = new Role($role);
         }
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
         if ($tokenExpectsGetRoles) {
             $token->expects($this->once())
@@ -68,7 +67,7 @@ class ExpressionVoterTest extends TestCase
 
     protected function createExpressionLanguage($expressionLanguageExpectsEvaluate = true)
     {
-        $mock = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\ExpressionLanguage')->getMock();
+        $mock = $this->getMock('Symfony\Component\Security\Core\Authorization\ExpressionLanguage');
 
         if ($expressionLanguageExpectsEvaluate) {
             $mock->expects($this->once())
@@ -81,12 +80,12 @@ class ExpressionVoterTest extends TestCase
 
     protected function createTrustResolver()
     {
-        return $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface')->getMock();
+        return $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface');
     }
 
     protected function createRoleHierarchy()
     {
-        return $this->getMockBuilder('Symfony\Component\Security\Core\Role\RoleHierarchyInterface')->getMock();
+        return $this->getMock('Symfony\Component\Security\Core\Role\RoleHierarchyInterface');
     }
 
     protected function createExpression()

@@ -57,16 +57,18 @@ class ApcClassLoader
     protected $decorated;
 
     /**
-     * @param string $prefix    The APC namespace prefix to use
-     * @param object $decorated A class loader object that implements the findFile() method
+     * Constructor.
+     *
+     * @param string $prefix    The APC namespace prefix to use.
+     * @param object $decorated A class loader object that implements the findFile() method.
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
     public function __construct($prefix, $decorated)
     {
-        if (!\function_exists('apcu_fetch')) {
-            throw new \RuntimeException('Unable to use ApcClassLoader as APC is not installed.');
+        if (!extension_loaded('apc')) {
+            throw new \RuntimeException('Unable to use ApcClassLoader as APC is not enabled.');
         }
 
         if (!method_exists($decorated, 'findFile')) {
@@ -120,10 +122,8 @@ class ApcClassLoader
      */
     public function findFile($class)
     {
-        $file = apcu_fetch($this->prefix.$class, $success);
-
-        if (!$success) {
-            apcu_store($this->prefix.$class, $file = $this->decorated->findFile($class) ?: null);
+        if (false === $file = apc_fetch($this->prefix.$class)) {
+            apc_store($this->prefix.$class, $file = $this->decorated->findFile($class));
         }
 
         return $file;
@@ -134,6 +134,6 @@ class ApcClassLoader
      */
     public function __call($method, $args)
     {
-        return \call_user_func_array(array($this->decorated, $method), $args);
+        return call_user_func_array(array($this->decorated, $method), $args);
     }
 }

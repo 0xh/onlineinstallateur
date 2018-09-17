@@ -5,7 +5,7 @@
 	"subdivisions": {
 		"VN-44": {
 			"code": "An Giang",
-			"name": "An Giang Province",
+			"name": "AN GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "An Giang"
@@ -14,7 +14,7 @@
 		},
 		"VN-43": {
 			"code": "Bà Rịa–Vũng Tàu",
-			"name": "Ba Ria-Vung Tau Province",
+			"name": "BA RIA-VUNG TAU PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bà Rịa–Vũng Tàu"
@@ -23,7 +23,7 @@
 		},
 		"VN-54": {
 			"code": "Bắc Giang",
-			"name": "Bac Giang Province",
+			"name": "BAC GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bắc Giang"
@@ -32,7 +32,7 @@
 		},
 		"VN-53": {
 			"code": "Bắc Kạn",
-			"name": "Bac Kan Province",
+			"name": "BAC KAN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bắc Kạn"
@@ -41,7 +41,7 @@
 		},
 		"VN-55": {
 			"code": "Bắc Lieu",
-			"name": "Bac Lieu Province",
+			"name": "BAC LIEU PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bắc Lieu"
@@ -50,7 +50,7 @@
 		},
 		"VN-56": {
 			"code": "Bắc Ninh",
-			"name": "Bac Ninh Province",
+			"name": "BAC NINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bắc Ninh"
@@ -59,7 +59,7 @@
 		},
 		"VN-50": {
 			"code": "Bến Tre",
-			"name": "Ben Tre Province",
+			"name": "BEN TRE PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bến Tre"
@@ -68,7 +68,7 @@
 		},
 		"VN-57": {
 			"code": "Bình Dương",
-			"name": "Binh Duong Province",
+			"name": "BINH DUONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bình Dương"
@@ -77,7 +77,7 @@
 		},
 		"VN-31": {
 			"code": "Bình Định",
-			"name": "Binh Dinh Province",
+			"name": "BINH DINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bình Định"
@@ -86,7 +86,7 @@
 		},
 		"VN-58": {
 			"code": "Bình Phước",
-			"name": "Binh Phuoc Province",
+			"name": "BINH PHUOC PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bình Phước"
@@ -95,7 +95,7 @@
 		},
 		"VN-40": {
 			"code": "Bình Thuận",
-			"name": "Binh Thuan Province",
+			"name": "BINH THUAN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Bình Thuận"
@@ -104,7 +104,7 @@
 		},
 		"VN-59": {
 			"code": "Cà Mau",
-			"name": "Ca Mau Province",
+			"name": "CA MAU PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Cà Mau"
@@ -113,7 +113,7 @@
 		},
 		"VN-04": {
 			"code": "Cao Bằng",
-			"name": "Cao Bang Province",
+			"name": "CAO BANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Cao Bằng"
@@ -122,7 +122,7 @@
 		},
 		"VN-48": {
 			"code": "Cần Thơ",
-			"name": "Can Tho City",
+			"name": "CAN THO CITY",
 			"translations": {
 				"vi": {
 					"name": "Cần Thơ"
@@ -131,7 +131,7 @@
 		},
 		"VN-60": {
 			"code": "Đà Nẵng",
-			"name": "Da Nang City",
+			"name": "DA NANG CITY",
 			"translations": {
 				"vi": {
 					"name": "Đà Nẵng"
@@ -140,7 +140,7 @@
 		},
 		"VN-33": {
 			"code": "Đắk Lắk",
-			"name": "Dak Lak Province",
+			"name": "DAK LAK PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Đắk Lắk"
@@ -149,7 +149,7 @@
 		},
 		"VN-72": {
 			"code": "Đăk Nông",
-			"name": "Dak Nong Province",
+			"name": "DAK NONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Đăk Nông"
@@ -158,7 +158,7 @@
 		},
 		"VN-71": {
 			"code": "Điện Biên",
-			"name": "Dien Bien Province",
+			"name": "DIEN BIEN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Điện Biên"
@@ -167,7 +167,7 @@
 		},
 		"VN-39": {
 			"code": "Đồng Nai",
-			"name": "Dong Nai Province",
+			"name": "DONG NAI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Đồng Nai"
@@ -176,7 +176,7 @@
 		},
 		"VN-45": {
 			"code": "Đồng Tháp",
-			"name": "Dong Thap Province",
+			"name": "DONG THAP PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Đồng Tháp"
@@ -185,7 +185,7 @@
 		},
 		"VN-30": {
 			"code": "Gia Lai",
-			"name": "Gia Lai Province",
+			"name": "GIA LAI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Gia Lai"
@@ -194,7 +194,7 @@
 		},
 		"VN-03": {
 			"code": "Hà Giang",
-			"name": "Ha Giang Province",
+			"name": "HA GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hà Giang"
@@ -203,7 +203,7 @@
 		},
 		"VN-63": {
 			"code": "Hà Nam",
-			"name": "Ha Nam Province",
+			"name": "HA NAM PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hà Nam"
@@ -212,7 +212,7 @@
 		},
 		"VN-64": {
 			"code": "Hà Nội",
-			"name": "Hanoi City",
+			"name": "HANOI CITY",
 			"translations": {
 				"vi": {
 					"name": "Hà Nội"
@@ -221,7 +221,7 @@
 		},
 		"VN-15": {
 			"code": "Hà Tây",
-			"name": "Ha Tay province",
+			"name": "HA TAY PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hà Tây"
@@ -230,7 +230,7 @@
 		},
 		"VN-23": {
 			"code": "Hà Tĩnh",
-			"name": "Ha Tinh Province",
+			"name": "HA TINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hà Tĩnh"
@@ -239,7 +239,7 @@
 		},
 		"VN-61": {
 			"code": "Hải Dương",
-			"name": "Hai Duong Province",
+			"name": "HAI DUONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hải Dương"
@@ -248,7 +248,7 @@
 		},
 		"VN-62": {
 			"code": "Hải Phòng",
-			"name": "Haiphong City",
+			"name": "HAIPHONG CITY",
 			"translations": {
 				"vi": {
 					"name": "Hải Phòng"
@@ -257,7 +257,7 @@
 		},
 		"VN-73": {
 			"code": "Hậu Giang",
-			"name": "Hau Giang Province",
+			"name": "HAU GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hậu Giang"
@@ -266,7 +266,7 @@
 		},
 		"VN-14": {
 			"code": "Hòa Bình",
-			"name": "Hoa binh Province",
+			"name": "HOA BINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hòa Bình"
@@ -275,7 +275,7 @@
 		},
 		"VN-66": {
 			"code": "Hưng Yên",
-			"name": "Hung Yen Province",
+			"name": "HUNG YEN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Hưng Yên"
@@ -284,7 +284,7 @@
 		},
 		"VN-34": {
 			"code": "Khánh Hòa",
-			"name": "Khanh Hoa Province",
+			"name": "KHANH HOA PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Khánh Hòa"
@@ -293,7 +293,7 @@
 		},
 		"VN-47": {
 			"code": "Kiên Giang",
-			"name": "Kien Giang Province",
+			"name": "KIEN GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Kiên Giang"
@@ -302,7 +302,7 @@
 		},
 		"VN-28": {
 			"code": "Kon Tum",
-			"name": "Kon Tum Province",
+			"name": "KON TUM PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Kon Tum"
@@ -311,7 +311,7 @@
 		},
 		"VN-01": {
 			"code": "Lai Châu",
-			"name": "Lai Chau Province",
+			"name": "LAI CHAU PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Lai Châu"
@@ -320,7 +320,7 @@
 		},
 		"VN-09": {
 			"code": "Lạng Sơn",
-			"name": "Lang Song Province",
+			"name": "LANG SONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Lạng Sơn"
@@ -329,7 +329,7 @@
 		},
 		"VN-02": {
 			"code": "Lào Cai",
-			"name": "Lao Cai Province",
+			"name": "LAO CAI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Lào Cai"
@@ -338,7 +338,7 @@
 		},
 		"VN-35": {
 			"code": "Lâm Đồng",
-			"name": "Lam Dong Province",
+			"name": "LAM DONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Lâm Đồng"
@@ -347,7 +347,7 @@
 		},
 		"VN-41": {
 			"code": "Long An",
-			"name": "Long An Province",
+			"name": "LONG AN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Long An"
@@ -356,7 +356,7 @@
 		},
 		"VN-67": {
 			"code": "Nam Định",
-			"name": "Nam Dinh Province",
+			"name": "NAM DINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Nam Định"
@@ -365,7 +365,7 @@
 		},
 		"VN-22": {
 			"code": "Nghệ An",
-			"name": "Nghe An Province",
+			"name": "NGHE AN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Nghệ An"
@@ -374,7 +374,7 @@
 		},
 		"VN-18": {
 			"code": "Ninh Bình",
-			"name": "Nanh Binh Province",
+			"name": "NINH BINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Ninh Bình"
@@ -383,7 +383,7 @@
 		},
 		"VN-36": {
 			"code": "Ninh Thuận",
-			"name": "Ninh Thuan Province",
+			"name": "NINH THUAN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Ninh Thuận"
@@ -392,7 +392,7 @@
 		},
 		"VN-68": {
 			"code": "Phú Thọ",
-			"name": "Phu Tho Province",
+			"name": "PHU THO PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Phú Thọ"
@@ -401,7 +401,7 @@
 		},
 		"VN-32": {
 			"code": "Phú Yên",
-			"name": "Phu Yen Province",
+			"name": "PHU YEN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Phú Yên"
@@ -410,7 +410,7 @@
 		},
 		"VN-24": {
 			"code": "Quảng Bình",
-			"name": "Quang Binh Province",
+			"name": "QUANG BINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Quảng Bình"
@@ -419,7 +419,7 @@
 		},
 		"VN-27": {
 			"code": "Quảng Nam",
-			"name": "Quang Nam Province",
+			"name": "QUANG NAM PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Quảng Nam"
@@ -428,7 +428,7 @@
 		},
 		"VN-29": {
 			"code": "Quảng Ngãi",
-			"name": "Quang Ngai Province",
+			"name": "QUANG NGAI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Quảng Ngãi"
@@ -437,7 +437,7 @@
 		},
 		"VN-13": {
 			"code": "Quảng Ninh",
-			"name": "Quang Ninh Province",
+			"name": "QUANG NINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Quảng Ninh"
@@ -446,7 +446,7 @@
 		},
 		"VN-25": {
 			"code": "Quảng Trị",
-			"name": "Quang Tri Province",
+			"name": "QUANG TRI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Quảng Trị"
@@ -455,7 +455,7 @@
 		},
 		"VN-52": {
 			"code": "Sóc Trăng",
-			"name": "Soc Trang Province",
+			"name": "SOC TRANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Sóc Trăng"
@@ -464,7 +464,7 @@
 		},
 		"VN-05": {
 			"code": "Sơn La",
-			"name": "Son La Province",
+			"name": "SON LA PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Sơn La"
@@ -473,7 +473,7 @@
 		},
 		"VN-37": {
 			"code": "Tây Ninh",
-			"name": "Tay Ninh Province",
+			"name": "TAY NINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Tây Ninh"
@@ -482,7 +482,7 @@
 		},
 		"VN-20": {
 			"code": "Thái Bình",
-			"name": "Thai Binh Province",
+			"name": "THAI BINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Thái Bình"
@@ -491,7 +491,7 @@
 		},
 		"VN-69": {
 			"code": "Thái Nguyên",
-			"name": "Thai Nguyen Province",
+			"name": "THAI NGUYEN PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Thái Nguyên"
@@ -500,7 +500,7 @@
 		},
 		"VN-21": {
 			"code": "Thanh Hóa",
-			"name": "Thanh Hoa Province",
+			"name": "THANH HOA PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Thanh Hóa"
@@ -509,7 +509,7 @@
 		},
 		"VN-65": {
 			"code": "Thành phố Hồ Chí Minh",
-			"name": "Ho Chi Minh City",
+			"name": "HO CHI MINH CITY",
 			"translations": {
 				"vi": {
 					"name": "Thành phố Hồ Chí Minh"
@@ -518,7 +518,7 @@
 		},
 		"VN-26": {
 			"code": "Thừa Thiên–Huế",
-			"name": "Thua Thien-Hue Province",
+			"name": "THUA THIEN-HUE PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Thừa Thiên–Huế"
@@ -527,7 +527,7 @@
 		},
 		"VN-46": {
 			"code": "Tiền Giang",
-			"name": "Tien Giang Province",
+			"name": "TIEN GIANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Tiền Giang"
@@ -536,7 +536,7 @@
 		},
 		"VN-51": {
 			"code": "Trà Vinh",
-			"name": "Tra Vinh Province",
+			"name": "TRA VINH PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Trà Vinh"
@@ -545,7 +545,7 @@
 		},
 		"VN-07": {
 			"code": "Tuyên Quang",
-			"name": "Tuyen Quang Province",
+			"name": "TUYEN QUANG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Tuyên Quang"
@@ -554,7 +554,7 @@
 		},
 		"VN-49": {
 			"code": "Vĩnh Long",
-			"name": "Vinh Long Province",
+			"name": "VINH LONG PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Vĩnh Long"
@@ -563,7 +563,7 @@
 		},
 		"VN-70": {
 			"code": "Vĩnh Phúc",
-			"name": "Vinh Phuc Province",
+			"name": "VINH PHUC PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Vĩnh Phúc"
@@ -572,7 +572,7 @@
 		},
 		"VN-06": {
 			"code": "Yên Bái",
-			"name": "Yen Bai Province",
+			"name": "YEN BAI PROVINCE",
 			"translations": {
 				"vi": {
 					"name": "Yên Bái"

@@ -11,14 +11,13 @@
 
 namespace Symfony\Component\HttpKernel\Tests\HttpCache;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpCache\Esi;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class HttpCacheTestCase extends TestCase
+class HttpCacheTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $kernel;
     protected $cache;
@@ -51,9 +50,6 @@ class HttpCacheTestCase extends TestCase
 
     protected function tearDown()
     {
-        if ($this->cache) {
-            $this->cache->getStore()->cleanup();
-        }
         $this->kernel = null;
         $this->cache = null;
         $this->caches = null;
@@ -164,7 +160,7 @@ class HttpCacheTestCase extends TestCase
 
         $fp = opendir($directory);
         while (false !== $file = readdir($fp)) {
-            if (!\in_array($file, array('.', '..'))) {
+            if (!in_array($file, array('.', '..'))) {
                 if (is_link($directory.'/'.$file)) {
                     unlink($directory.'/'.$file);
                 } elseif (is_dir($directory.'/'.$file)) {

@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\LogicException;
 use Symfony\Component\Serializer\Exception\RuntimeException;
-use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
+use Symfony\Component\Serializer\Mapping\AttributeMetadataInterface;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
@@ -27,40 +27,30 @@ use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
  */
 abstract class AbstractNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    const CIRCULAR_REFERENCE_LIMIT = 'circular_reference_limit';
-    const OBJECT_TO_POPULATE = 'object_to_populate';
-    const GROUPS = 'groups';
-
     /**
      * @var int
      */
     protected $circularReferenceLimit = 1;
-
     /**
      * @var callable
      */
     protected $circularReferenceHandler;
-
     /**
      * @var ClassMetadataFactoryInterface|null
      */
     protected $classMetadataFactory;
-
     /**
      * @var NameConverterInterface|null
      */
     protected $nameConverter;
-
     /**
      * @var array
      */
     protected $callbacks = array();
-
     /**
      * @var array
      */
     protected $ignoredAttributes = array();
-
     /**
      * @var array
      */
@@ -68,6 +58,9 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
 
     /**
      * Sets the {@link ClassMetadataFactoryInterface} to use.
+     *
+     * @param ClassMetadataFactoryInterface|null $classMetadataFactory
+     * @param NameConverterInterface|null        $nameConverter
      */
     public function __construct(ClassMetadataFactoryInterface $classMetadataFactory = null, NameConverterInterface $nameConverter = null)
     {
@@ -78,7 +71,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     /**
      * Set circular reference limit.
      *
-     * @param int $circularReferenceLimit Limit of iterations for the same object
+     * @param int $circularReferenceLimit limit of iterations for the same object
      *
      * @return self
      */
@@ -100,7 +93,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      */
     public function setCircularReferenceHandler($circularReferenceHandler)
     {
-        if (!\is_callable($circularReferenceHandler)) {
+        if (!is_callable($circularReferenceHandler)) {
             throw new InvalidArgumentException('The given circular reference handler is not callable.');
         }
 
@@ -112,7 +105,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     /**
      * Set normalization callbacks.
      *
-     * @param callable[] $callbacks Help normalize the result
+     * @param callable[] $callbacks help normalize the result
      *
      * @return self
      *
@@ -121,7 +114,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     public function setCallbacks(array $callbacks)
     {
         foreach ($callbacks as $attribute => $callback) {
-            if (!\is_callable($callback)) {
+            if (!is_callable($callback)) {
                 throw new InvalidArgumentException(sprintf(
                     'The given callback for attribute "%s" is not callable.',
                     $attribute
@@ -135,6 +128,8 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
 
     /**
      * Set ignored attributes for normalization and denormalization.
+     *
+     * @param array $ignoredAttributes
      *
      * @return self
      */
@@ -158,7 +153,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      */
     public function setCamelizedAttributes(array $camelizedAttributes)
     {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 2.7 and will be removed in 3.0. Use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter instead.', __METHOD__), E_USER_DEPRECATED);
+        @trigger_error(sprintf('%s is deprecated since version 2.7 and will be removed in 3.0. Use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter instead.', __METHOD__), E_USER_DEPRECATED);
 
         if ($this->nameConverter && !$this->nameConverter instanceof CamelCaseToSnakeCaseNameConverter) {
             throw new LogicException(sprintf('%s cannot be called if a custom Name Converter is defined.', __METHOD__));
@@ -190,16 +185,16 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     {
         $objectHash = spl_object_hash($object);
 
-        if (isset($context[static::CIRCULAR_REFERENCE_LIMIT][$objectHash])) {
-            if ($context[static::CIRCULAR_REFERENCE_LIMIT][$objectHash] >= $this->circularReferenceLimit) {
-                unset($context[static::CIRCULAR_REFERENCE_LIMIT][$objectHash]);
+        if (isset($context['circular_reference_limit'][$objectHash])) {
+            if ($context['circular_reference_limit'][$objectHash] >= $this->circularReferenceLimit) {
+                unset($context['circular_reference_limit'][$objectHash]);
 
                 return true;
             }
 
-            ++$context[static::CIRCULAR_REFERENCE_LIMIT][$objectHash];
+            ++$context['circular_reference_limit'][$objectHash];
         } else {
-            $context[static::CIRCULAR_REFERENCE_LIMIT][$objectHash] = 1;
+            $context['circular_reference_limit'][$objectHash] = 1;
         }
 
         return false;
@@ -220,10 +215,10 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     protected function handleCircularReference($object)
     {
         if ($this->circularReferenceHandler) {
-            return \call_user_func($this->circularReferenceHandler, $object);
+            return call_user_func($this->circularReferenceHandler, $object);
         }
 
-        throw new CircularReferenceException(sprintf('A circular reference has been detected when serializing the object of class "%s" (configured limit: %d)', \get_class($object), $this->circularReferenceLimit));
+        throw new CircularReferenceException(sprintf('A circular reference has been detected (configured limit: %d).', $this->circularReferenceLimit));
     }
 
     /**
@@ -237,7 +232,7 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      */
     protected function formatAttribute($attributeName)
     {
-        @trigger_error(sprintf('The "%s()" method is deprecated since Symfony 2.7 and will be removed in 3.0. Use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter instead.', __METHOD__), E_USER_DEPRECATED);
+        @trigger_error(sprintf('%s is deprecated since version 2.7 and will be removed in 3.0. Use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter instead.', __METHOD__), E_USER_DEPRECATED);
 
         return $this->nameConverter ? $this->nameConverter->normalize($attributeName) : $attributeName;
     }
@@ -253,13 +248,13 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
      */
     protected function getAllowedAttributes($classOrObject, array $context, $attributesAsString = false)
     {
-        if (!$this->classMetadataFactory || !isset($context[static::GROUPS]) || !\is_array($context[static::GROUPS])) {
+        if (!$this->classMetadataFactory || !isset($context['groups']) || !is_array($context['groups'])) {
             return false;
         }
 
         $allowedAttributes = array();
         foreach ($this->classMetadataFactory->getMetadataFor($classOrObject)->getAttributesMetadata() as $attributeMetadata) {
-            if (array_intersect($attributeMetadata->getGroups(), $context[static::GROUPS])) {
+            if (count(array_intersect($attributeMetadata->getGroups(), $context['groups']))) {
                 $allowedAttributes[] = $attributesAsString ? $attributeMetadata->getName() : $attributeMetadata;
             }
         }
@@ -301,12 +296,12 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
     protected function instantiateObject(array &$data, $class, array &$context, \ReflectionClass $reflectionClass, $allowedAttributes)
     {
         if (
-            isset($context[static::OBJECT_TO_POPULATE]) &&
-            \is_object($context[static::OBJECT_TO_POPULATE]) &&
-            $context[static::OBJECT_TO_POPULATE] instanceof $class
+            isset($context['object_to_populate']) &&
+            is_object($context['object_to_populate']) &&
+            $context['object_to_populate'] instanceof $class
         ) {
-            $object = $context[static::OBJECT_TO_POPULATE];
-            unset($context[static::OBJECT_TO_POPULATE]);
+            $object = $context['object_to_populate'];
+            unset($context['object_to_populate']);
 
             return $object;
         }
@@ -320,11 +315,11 @@ abstract class AbstractNormalizer extends SerializerAwareNormalizer implements N
                 $paramName = $constructorParameter->name;
                 $key = $this->nameConverter ? $this->nameConverter->normalize($paramName) : $paramName;
 
-                $allowed = false === $allowedAttributes || \in_array($paramName, $allowedAttributes);
-                $ignored = \in_array($paramName, $this->ignoredAttributes);
+                $allowed = $allowedAttributes === false || in_array($paramName, $allowedAttributes);
+                $ignored = in_array($paramName, $this->ignoredAttributes);
                 if (method_exists($constructorParameter, 'isVariadic') && $constructorParameter->isVariadic()) {
                     if ($allowed && !$ignored && (isset($data[$key]) || array_key_exists($key, $data))) {
-                        if (!\is_array($data[$paramName])) {
+                        if (!is_array($data[$paramName])) {
                             throw new RuntimeException(sprintf('Cannot create an instance of %s from serialized data because the variadic parameter %s can only accept an array.', $class, $constructorParameter->name));
                         }
 

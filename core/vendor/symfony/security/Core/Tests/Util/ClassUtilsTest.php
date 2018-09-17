@@ -11,13 +11,12 @@
 
 namespace Symfony\Component\Security\Core\Tests\Util
 {
-    use PHPUnit\Framework\TestCase;
     use Symfony\Component\Security\Core\Util\ClassUtils;
 
     /**
      * @group legacy
      */
-    class ClassUtilsTest extends TestCase
+    class ClassUtilsTest extends \PHPUnit_Framework_TestCase
     {
         public static function dataGetClass()
         {
@@ -48,9 +47,7 @@ namespace Symfony\Component\Security\Core\Tests\Util
 
 namespace Acme\DemoBundle\Proxy\__CG__\Symfony\Component\Security\Core\Tests\Util
 {
-    use Symfony\Component\Security\Core\Tests\Util\TestObject as BaseTestObject;
-
-    class TestObject extends BaseTestObject
+    class TestObject extends \Symfony\Component\Security\Core\Tests\Util\TestObject
     {
     }
 }

@@ -22,6 +22,8 @@ class SplFileInfo extends \SplFileInfo
     private $relativePathname;
 
     /**
+     * Constructor.
+     *
      * @param string $file             The file name
      * @param string $relativePath     The relative path
      * @param string $relativePathname The relative path name
@@ -36,8 +38,6 @@ class SplFileInfo extends \SplFileInfo
     /**
      * Returns the relative path.
      *
-     * This path does not contain the file name.
-     *
      * @return string the relative path
      */
     public function getRelativePath()
@@ -47,8 +47,6 @@ class SplFileInfo extends \SplFileInfo
 
     /**
      * Returns the relative path name.
-     *
-     * This path contains the file name.
      *
      * @return string the relative path name
      */
@@ -66,11 +64,12 @@ class SplFileInfo extends \SplFileInfo
      */
     public function getContents()
     {
-        set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
+        $level = error_reporting(0);
         $content = file_get_contents($this->getPathname());
-        restore_error_handler();
+        error_reporting($level);
         if (false === $content) {
-            throw new \RuntimeException($error);
+            $error = error_get_last();
+            throw new \RuntimeException($error['message']);
         }
 
         return $content;

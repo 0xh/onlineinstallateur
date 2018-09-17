@@ -22,6 +22,8 @@ class HeaderBag implements \IteratorAggregate, \Countable
     protected $cacheControl = array();
 
     /**
+     * Constructor.
+     *
      * @param array $headers An array of HTTP headers
      */
     public function __construct(array $headers = array())
@@ -101,11 +103,11 @@ class HeaderBag implements \IteratorAggregate, \Countable
     /**
      * Returns a header value by name.
      *
-     * @param string               $key     The header name
-     * @param string|string[]|null $default The default value
-     * @param bool                 $first   Whether to return the first value or all header values
+     * @param string $key     The header name
+     * @param mixed  $default The default value
+     * @param bool   $first   Whether to return the first value or all header values
      *
-     * @return string|string[]|null The first header value or default value if $first is true, an array of values otherwise
+     * @return string|array The first header value if $first is true, an array of values otherwise
      */
     public function get($key, $default = null, $first = true)
     {
@@ -120,7 +122,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
         }
 
         if ($first) {
-            return \count($this->headers[$key]) ? $this->headers[$key][0] : $default;
+            return count($this->headers[$key]) ? $this->headers[$key][0] : $default;
         }
 
         return $this->headers[$key];
@@ -129,9 +131,9 @@ class HeaderBag implements \IteratorAggregate, \Countable
     /**
      * Sets a header by name.
      *
-     * @param string          $key     The key
-     * @param string|string[] $values  The value or an array of values
-     * @param bool            $replace Whether to replace the actual value or not (true by default)
+     * @param string       $key     The key
+     * @param string|array $values  The value or an array of values
+     * @param bool         $replace Whether to replace the actual value or not (true by default)
      */
     public function set($key, $values, $replace = true)
     {
@@ -146,7 +148,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
         }
 
         if ('cache-control' === $key) {
-            $this->cacheControl = $this->parseCacheControl(implode(', ', $this->headers[$key]));
+            $this->cacheControl = $this->parseCacheControl($values[0]);
         }
     }
 
@@ -172,7 +174,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function contains($key, $value)
     {
-        return \in_array($value, $this->get($key, null, false));
+        return in_array($value, $this->get($key, null, false));
     }
 
     /**
@@ -280,7 +282,7 @@ class HeaderBag implements \IteratorAggregate, \Countable
      */
     public function count()
     {
-        return \count($this->headers);
+        return count($this->headers);
     }
 
     protected function getCacheControlHeader()

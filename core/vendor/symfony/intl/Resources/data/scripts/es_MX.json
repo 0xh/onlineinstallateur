@@ -1,8 +1,10 @@
 {
-    "Version": "2.1.38.73",
+    "Version": "2.1.8.19",
     "Names": {
-        "Hanb": "hanb",
-        "Mlym": "malayálam",
+        "Hans": "han simplificado",
+        "Hant": "han tradicional",
+        "Laoo": "lao",
+        "Sinh": "cingalés",
         "Telu": "telugú"
     }
 }

@@ -14,9 +14,11 @@ namespace Symfony\Component\Form\Util;
 /**
  * Iterator for {@link OrderedHashMap} objects.
  *
+ * This class is internal and should not be used.
+ *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @internal
+ * @since 2.2.6
  */
 class OrderedHashMapIterator implements \Iterator
 {
@@ -59,21 +61,23 @@ class OrderedHashMapIterator implements \Iterator
      * Creates a new iterator.
      *
      * @param array $elements       The elements of the map, indexed by their
-     *                              keys
+     *                              keys.
      * @param array $orderedKeys    The keys of the map in the order in which
-     *                              they should be iterated
+     *                              they should be iterated.
      * @param array $managedCursors An array from which to reference the
      *                              iterator's cursor as long as it is alive.
      *                              This array is managed by the corresponding
      *                              {@link OrderedHashMap} instance to support
      *                              recognizing the deletion of elements.
+     *
+     * @since 2.2.6
      */
     public function __construct(array &$elements, array &$orderedKeys, array &$managedCursors)
     {
         $this->elements = &$elements;
         $this->orderedKeys = &$orderedKeys;
         $this->managedCursors = &$managedCursors;
-        $this->cursorId = \count($managedCursors);
+        $this->cursorId = count($managedCursors);
 
         $this->managedCursors[$this->cursorId] = &$this->cursor;
     }
@@ -81,6 +85,8 @@ class OrderedHashMapIterator implements \Iterator
     /**
      * Removes the iterator's cursors from the managed cursors of the
      * corresponding {@link OrderedHashMap} instance.
+     *
+     * @since 2.2.6
      */
     public function __destruct()
     {
@@ -90,7 +96,9 @@ class OrderedHashMapIterator implements \Iterator
     }
 
     /**
-     * {@inheritdoc}
+     *{@inheritdoc}
+     *
+     * @since 2.2.6
      */
     public function current()
     {
@@ -99,6 +107,8 @@ class OrderedHashMapIterator implements \Iterator
 
     /**
      * {@inheritdoc}
+     *
+     * @since 2.2.6
      */
     public function next()
     {
@@ -114,21 +124,19 @@ class OrderedHashMapIterator implements \Iterator
     }
 
     /**
-     * {@inheritdoc}
+     *{@inheritdoc}
+     *
+     * @since 2.2.6
      */
     public function key()
     {
-        if (null === $this->key) {
-            return null;
-        }
-
-        $array = array($this->key => null);
-
-        return key($array);
+        return $this->key;
     }
 
     /**
-     * {@inheritdoc}
+     *{@inheritdoc}
+     *
+     * @since 2.2.6
      */
     public function valid()
     {
@@ -136,7 +144,9 @@ class OrderedHashMapIterator implements \Iterator
     }
 
     /**
-     * {@inheritdoc}
+     *{@inheritdoc}
+     *
+     * @since 2.2.6
      */
     public function rewind()
     {

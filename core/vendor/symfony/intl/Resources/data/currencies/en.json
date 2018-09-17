@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.87",
     "Names": {
         "ADP": [
             "ADP",
@@ -215,15 +215,11 @@
         ],
         "BYB": [
             "BYB",
-            "Belarusian Ruble (1994–1999)"
-        ],
-        "BYN": [
-            "BYN",
-            "Belarusian Ruble"
+            "Belarusian New Ruble (1994–1999)"
         ],
         "BYR": [
             "BYR",
-            "Belarusian Ruble (2000–2016)"
+            "Belarusian Ruble"
         ],
         "BZD": [
             "BZD",
@@ -260,10 +256,6 @@
         "CLP": [
             "CLP",
             "Chilean Peso"
-        ],
-        "CNH": [
-            "CNH",
-            "Chinese Yuan (offshore)"
         ],
         "CNX": [
             "CNX",
@@ -311,7 +303,7 @@
         ],
         "CZK": [
             "CZK",
-            "Czech Koruna"
+            "Czech Republic Koruna"
         ],
         "DDM": [
             "DDM",
@@ -395,7 +387,7 @@
         ],
         "GBP": [
             "£",
-            "British Pound"
+            "British Pound Sterling"
         ],
         "GEK": [
             "GEK",
@@ -491,11 +483,11 @@
         ],
         "ILR": [
             "ILR",
-            "Israeli Shekel (1980–1985)"
+            "Israeli Sheqel (1980–1985)"
         ],
         "ILS": [
             "₪",
-            "Israeli New Shekel"
+            "Israeli New Sheqel"
         ],
         "INR": [
             "₹",
@@ -683,10 +675,6 @@
         ],
         "MRO": [
             "MRO",
-            "Mauritanian Ouguiya (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "Mauritanian Ouguiya"
         ],
         "MTL": [
@@ -787,7 +775,7 @@
         ],
         "PEN": [
             "PEN",
-            "Peruvian Sol"
+            "Peruvian Nuevo Sol"
         ],
         "PES": [
             "PES",
@@ -799,7 +787,7 @@
         ],
         "PHP": [
             "PHP",
-            "Philippine Piso"
+            "Philippine Peso"
         ],
         "PKR": [
             "PKR",
@@ -919,10 +907,6 @@
         ],
         "STD": [
             "STD",
-            "São Tomé & Príncipe Dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "São Tomé & Príncipe Dobra"
         ],
         "SUR": [
@@ -1035,7 +1019,7 @@
         ],
         "UZS": [
             "UZS",
-            "Uzbekistani Som"
+            "Uzbekistan Som"
         ],
         "VEB": [
             "VEB",
@@ -1063,7 +1047,7 @@
         ],
         "XAF": [
             "FCFA",
-            "Central African CFA Franc"
+            "CFA Franc BEAC"
         ],
         "XCD": [
             "EC$",
@@ -1083,7 +1067,7 @@
         ],
         "XOF": [
             "CFA",
-            "West African CFA Franc"
+            "CFA Franc BCEAO"
         ],
         "XPF": [
             "CFPF",

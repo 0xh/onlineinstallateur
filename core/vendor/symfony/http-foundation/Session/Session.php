@@ -11,26 +11,42 @@
 
 namespace Symfony\Component\HttpFoundation\Session;
 
+use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
 /**
+ * Session.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Drak <drak@zikula.org>
  */
 class Session implements SessionInterface, \IteratorAggregate, \Countable
 {
+    /**
+     * Storage driver.
+     *
+     * @var SessionStorageInterface
+     */
     protected $storage;
 
+    /**
+     * @var string
+     */
     private $flashName;
+
+    /**
+     * @var string
+     */
     private $attributeName;
 
     /**
-     * @param SessionStorageInterface $storage    A SessionStorageInterface instance
+     * Constructor.
+     *
+     * @param SessionStorageInterface $storage    A SessionStorageInterface instance.
      * @param AttributeBagInterface   $attributes An AttributeBagInterface instance, (defaults null for default AttributeBag)
      * @param FlashBagInterface       $flashes    A FlashBagInterface instance (defaults null for default FlashBag)
      */
@@ -136,7 +152,7 @@ class Session implements SessionInterface, \IteratorAggregate, \Countable
      */
     public function count()
     {
-        return \count($this->storage->getBag($this->attributeName)->all());
+        return count($this->storage->getBag($this->attributeName)->all());
     }
 
     /**

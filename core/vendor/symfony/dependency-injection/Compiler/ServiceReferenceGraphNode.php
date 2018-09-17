@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Alias;
 
 /**
  * Represents a node in your service graph.
@@ -29,6 +29,8 @@ class ServiceReferenceGraphNode
     private $value;
 
     /**
+     * Constructor.
+     *
      * @param string $id    The node identifier
      * @param mixed  $value The node value
      */
@@ -38,11 +40,21 @@ class ServiceReferenceGraphNode
         $this->value = $value;
     }
 
+    /**
+     * Adds an in edge to this node.
+     *
+     * @param ServiceReferenceGraphEdge $edge
+     */
     public function addInEdge(ServiceReferenceGraphEdge $edge)
     {
         $this->inEdges[] = $edge;
     }
 
+    /**
+     * Adds an out edge to this node.
+     *
+     * @param ServiceReferenceGraphEdge $edge
+     */
     public function addOutEdge(ServiceReferenceGraphEdge $edge)
     {
         $this->outEdges[] = $edge;

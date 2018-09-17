@@ -4,31 +4,31 @@
 	"locale": "tyv",
 	"subdivisions": {
 		"TV-FUN": {
-			"name": "Funafuti"
+			"name": "FUNAFUTI"
 		},
 		"TV-NMG": {
-			"name": "Nanumanga"
+			"name": "NANUMANGA"
 		},
 		"TV-NMA": {
-			"name": "Nanumea"
+			"name": "NANUMEA"
 		},
-		"TV-3f4d95": {
-			"name": "Niulakita"
+		"TV-05b851": {
+			"name": "NIULAKITA"
 		},
 		"TV-NIT": {
-			"name": "Niutao"
+			"name": "NIUTAO"
 		},
 		"TV-NUI": {
-			"name": "Nui"
+			"name": "NUI"
 		},
 		"TV-NKF": {
-			"name": "Nukufetau"
+			"name": "NUKUFETAU"
 		},
 		"TV-NKL": {
-			"name": "Nukulaelae"
+			"name": "NUKULAELAE"
 		},
 		"TV-VAI": {
-			"name": "Vaitupu"
+			"name": "VAITUPU"
 		}
 	}
 }

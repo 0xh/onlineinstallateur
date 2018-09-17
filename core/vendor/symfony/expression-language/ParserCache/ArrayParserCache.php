@@ -18,6 +18,9 @@ use Symfony\Component\ExpressionLanguage\ParsedExpression;
  */
 class ArrayParserCache implements ParserCacheInterface
 {
+    /**
+     * @var array
+     */
     private $cache = array();
 
     /**

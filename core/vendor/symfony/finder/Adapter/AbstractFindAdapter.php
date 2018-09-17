@@ -11,15 +11,15 @@
 
 namespace Symfony\Component\Finder\Adapter;
 
-@trigger_error('The '.__NAMESPACE__.'\AbstractFindAdapter class is deprecated since Symfony 2.8 and will be removed in 3.0. Use directly the Finder class instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\AbstractFindAdapter class is deprecated since version 2.8 and will be removed in 3.0. Use directly the Finder class instead.', E_USER_DEPRECATED);
 
-use Symfony\Component\Finder\Comparator\DateComparator;
-use Symfony\Component\Finder\Comparator\NumberComparator;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
-use Symfony\Component\Finder\Expression\Expression;
 use Symfony\Component\Finder\Iterator;
-use Symfony\Component\Finder\Shell\Command;
 use Symfony\Component\Finder\Shell\Shell;
+use Symfony\Component\Finder\Expression\Expression;
+use Symfony\Component\Finder\Shell\Command;
+use Symfony\Component\Finder\Comparator\NumberComparator;
+use Symfony\Component\Finder\Comparator\DateComparator;
 
 /**
  * Shell engine implementation using GNU find command.
@@ -30,8 +30,14 @@ use Symfony\Component\Finder\Shell\Shell;
  */
 abstract class AbstractFindAdapter extends AbstractAdapter
 {
+    /**
+     * @var Shell
+     */
     protected $shell;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->shell = new Shell();
@@ -77,7 +83,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
         $this->buildDatesFiltering($find, $this->dates);
 
         $useGrep = $this->shell->testCommand('grep') && $this->shell->testCommand('xargs');
-        $useSort = \is_int($this->sort) && $this->shell->testCommand('sort') && $this->shell->testCommand('cut');
+        $useSort = is_int($this->sort) && $this->shell->testCommand('sort') && $this->shell->testCommand('cut');
 
         if ($useGrep && ($this->contains || $this->notContains)) {
             $grep = $command->ins('grep');
@@ -92,7 +98,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
         $command->setErrorHandler(
             $this->ignoreUnreadableDirs
                 // If directory is unreadable and finder is set to ignore it, `stderr` is ignored.
-                ? function ($stderr) { }
+                ? function ($stderr) { return; }
                 : function ($stderr) { throw new AccessDeniedException($stderr); }
         );
 
@@ -149,7 +155,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
      */
     private function buildNamesFiltering(Command $command, array $names, $not = false)
     {
-        if (0 === \count($names)) {
+        if (0 === count($names)) {
             return;
         }
 
@@ -197,7 +203,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
      */
     private function buildPathsFiltering(Command $command, $dir, array $paths, $not = false)
     {
-        if (0 === \count($paths)) {
+        if (0 === count($paths)) {
             return;
         }
 
@@ -214,7 +220,7 @@ abstract class AbstractFindAdapter extends AbstractAdapter
             // Fixes 'not search' regex problems.
             if ($expr->isRegex()) {
                 $regex = $expr->getRegex();
-                $regex->prepend($regex->hasStartFlag() ? preg_quote($dir).\DIRECTORY_SEPARATOR : '.*')->setEndJoker(!$regex->hasEndFlag());
+                $regex->prepend($regex->hasStartFlag() ? preg_quote($dir).DIRECTORY_SEPARATOR : '.*')->setEndJoker(!$regex->hasEndFlag());
             } else {
                 $expr->prepend('*')->append('*');
             }

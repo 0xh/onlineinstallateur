@@ -11,12 +11,11 @@
 
 namespace Symfony\Component\Form\Tests;
 
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormBuilder;
 
-abstract class AbstractFormTest extends TestCase
+abstract class AbstractFormTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var EventDispatcherInterface
@@ -38,7 +37,7 @@ abstract class AbstractFormTest extends TestCase
         // We need an actual dispatcher to use the deprecated
         // bindRequest() method
         $this->dispatcher = new EventDispatcher();
-        $this->factory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')->getMock();
+        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $this->form = $this->createForm();
     }
 
@@ -74,8 +73,8 @@ abstract class AbstractFormTest extends TestCase
      */
     protected function getMockForm($name = 'name')
     {
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
-        $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')->getMock();
+        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $config = $this->getMock('Symfony\Component\Form\FormConfigInterface');
 
         $form->expects($this->any())
             ->method('getName')
@@ -92,7 +91,7 @@ abstract class AbstractFormTest extends TestCase
      */
     protected function getDataMapper()
     {
-        return $this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock();
+        return $this->getMock('Symfony\Component\Form\DataMapperInterface');
     }
 
     /**
@@ -100,7 +99,7 @@ abstract class AbstractFormTest extends TestCase
      */
     protected function getDataTransformer()
     {
-        return $this->getMockBuilder('Symfony\Component\Form\DataTransformerInterface')->getMock();
+        return $this->getMock('Symfony\Component\Form\DataTransformerInterface');
     }
 
     /**
@@ -108,6 +107,6 @@ abstract class AbstractFormTest extends TestCase
      */
     protected function getFormValidator()
     {
-        return $this->getMockBuilder('Symfony\Component\Form\FormValidatorInterface')->getMock();
+        return $this->getMock('Symfony\Component\Form\FormValidatorInterface');
     }
 }

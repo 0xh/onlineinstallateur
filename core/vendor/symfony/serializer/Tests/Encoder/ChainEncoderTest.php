@@ -11,12 +11,10 @@
 
 namespace Symfony\Component\Serializer\Tests\Encoder;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\ChainEncoder;
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
 
-class ChainEncoderTest extends TestCase
+class ChainEncoderTest extends \PHPUnit_Framework_TestCase
 {
     const FORMAT_1 = 'format1';
     const FORMAT_2 = 'format2';
@@ -71,7 +69,7 @@ class ChainEncoderTest extends TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
+     * @expectedException Symfony\Component\Serializer\Exception\RuntimeException
      */
     public function testEncodeUnsupportedFormat()
     {
@@ -122,14 +120,10 @@ class ChainNormalizationAwareEncoder extends ChainEncoder implements Normalizati
 {
 }
 
-class NormalizationAwareEncoder implements EncoderInterface, NormalizationAwareInterface
+class NormalizationAwareEncoder implements NormalizationAwareInterface
 {
     public function supportsEncoding($format)
     {
         return true;
-    }
-
-    public function encode($data, $format, array $context = array())
-    {
     }
 }

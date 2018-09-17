@@ -11,28 +11,18 @@
 
 namespace Symfony\Component\Security\Http\Tests\RememberMe;
 
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Authentication\RememberMe\PersistentToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\Security\Core\Authentication\RememberMe\PersistentToken;
-use Symfony\Component\Security\Core\Exception\CookieTheftException;
-use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Http\RememberMe\PersistentTokenBasedRememberMeServices;
-use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
+use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
+use Symfony\Component\Security\Core\Exception\CookieTheftException;
 
-class PersistentTokenBasedRememberMeServicesTest extends TestCase
+class PersistentTokenBasedRememberMeServicesTest extends \PHPUnit_Framework_TestCase
 {
-    public static function setUpBeforeClass()
-    {
-        try {
-            random_bytes(1);
-        } catch (\Exception $e) {
-            self::markTestSkipped($e->getMessage());
-        }
-    }
-
     public function testAutoLoginReturnsNullWhenNoCookie()
     {
         $service = $this->getService(null, array('name' => 'foo'));
@@ -61,7 +51,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
             $tokenValue = 'foovalue',
         )));
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('loadTokenBySeries')
@@ -80,7 +70,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', $this->encodeCookie(array('fooseries', 'foovalue')));
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('loadTokenBySeries')
@@ -105,7 +95,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', $this->encodeCookie(array('fooseries', 'foovalue')));
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $service->setTokenProvider($tokenProvider);
 
         $tokenProvider
@@ -136,7 +126,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', $this->encodeCookie(array('fooseries', 'foovalue')));
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('loadTokenBySeries')
@@ -151,7 +141,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
 
     public function testAutoLogin()
     {
-        $user = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')->getMock();
+        $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
         $user
             ->expects($this->once())
             ->method('getRoles')
@@ -170,7 +160,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', $this->encodeCookie(array('fooseries', 'foovalue')));
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('loadTokenBySeries')
@@ -193,9 +183,9 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', $this->encodeCookie(array('fooseries', 'foovalue')));
         $response = new Response();
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('deleteTokenBySeries')
@@ -219,9 +209,9 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $service = $this->getService(null, array('name' => 'foo', 'path' => null, 'domain' => null));
         $request = new Request();
         $response = new Response();
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->never())
             ->method('deleteTokenBySeries')
@@ -242,9 +232,9 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $request->cookies->set('foo', 'somefoovalue');
         $response = new Response();
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->never())
             ->method('deleteTokenBySeries')
@@ -272,20 +262,20 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
         $request = new Request();
         $response = new Response();
 
-        $account = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')->getMock();
+        $account = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
         $account
             ->expects($this->once())
             ->method('getUsername')
             ->will($this->returnValue('foo'))
         ;
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token
             ->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue($account))
         ;
 
-        $tokenProvider = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface')->getMock();
+        $tokenProvider = $this->getMock('Symfony\Component\Security\Core\Authentication\RememberMe\TokenProviderInterface');
         $tokenProvider
             ->expects($this->once())
             ->method('createNewToken')
@@ -327,7 +317,7 @@ class PersistentTokenBasedRememberMeServicesTest extends TestCase
 
     protected function getProvider()
     {
-        $provider = $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')->getMock();
+        $provider = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $provider
             ->expects($this->any())
             ->method('supportsClass')

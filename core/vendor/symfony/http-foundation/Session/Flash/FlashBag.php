@@ -21,11 +21,25 @@ namespace Symfony\Component\HttpFoundation\Session\Flash;
 class FlashBag implements FlashBagInterface, \IteratorAggregate
 {
     private $name = 'flashes';
+
+    /**
+     * Flash messages.
+     *
+     * @var array
+     */
     private $flashes = array();
+
+    /**
+     * The storage key for flashes in the session.
+     *
+     * @var string
+     */
     private $storageKey;
 
     /**
-     * @param string $storageKey The key used to store flashes in the session
+     * Constructor.
+     *
+     * @param string $storageKey The key used to store flashes in the session.
      */
     public function __construct($storageKey = '_sf2_flashes')
     {
@@ -161,7 +175,7 @@ class FlashBag implements FlashBagInterface, \IteratorAggregate
      */
     public function getIterator()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
 
         return new \ArrayIterator($this->all());
     }

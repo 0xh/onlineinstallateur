@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Console\Helper;
 
-use Symfony\Component\Console\Exception\LogicException;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\LogicException;
 
 /**
  * The ProgressBar provides helpers to display progress output.
@@ -23,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ProgressBar
 {
+    // options
     private $barWidth = 28;
     private $barChar;
     private $emptyBarChar = '-';
@@ -30,21 +31,27 @@ class ProgressBar
     private $format;
     private $internalFormat;
     private $redrawFreq = 1;
+
+    /**
+     * @var OutputInterface
+     */
     private $output;
     private $step = 0;
     private $max;
     private $startTime;
     private $stepWidth;
     private $percent = 0.0;
+    private $lastMessagesLength = 0;
     private $formatLineCount;
-    private $messages = array();
+    private $messages;
     private $overwrite = true;
-    private $firstRun = true;
 
     private static $formatters;
     private static $formats;
 
     /**
+     * Constructor.
+     *
      * @param OutputInterface $output An OutputInterface instance
      * @param int             $max    Maximum steps (0 if unknown)
      */
@@ -134,16 +141,6 @@ class ProgressBar
         return isset(self::$formats[$name]) ? self::$formats[$name] : null;
     }
 
-    /**
-     * Associates a text with a named placeholder.
-     *
-     * The text is displayed when the progress bar is rendered but only
-     * when the corresponding placeholder is part of the custom format line
-     * (by wrapping the name with %).
-     *
-     * @param string $message The text to associate with the placeholder
-     * @param string $name    The name of the placeholder
-     */
     public function setMessage($message, $name = 'message')
     {
         $this->messages[$name] = $message;
@@ -183,7 +180,7 @@ class ProgressBar
      */
     public function getStep()
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.6 and will be removed in 3.0. Use the getProgress() method instead.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the getProgress() method instead.', E_USER_DEPRECATED);
 
         return $this->getProgress();
     }
@@ -366,7 +363,7 @@ class ProgressBar
      */
     public function setCurrent($step)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.6 and will be removed in 3.0. Use the setProgress() method instead.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.6 and will be removed in 3.0. Use the setProgress() method instead.', E_USER_DEPRECATED);
 
         $this->setProgress($step);
     }
@@ -444,7 +441,7 @@ class ProgressBar
         $messages = $this->messages;
         $this->overwrite(preg_replace_callback("{%([a-z\-_]+)(?:\:([^%]+))?%}i", function ($matches) use ($self, $output, $messages) {
             if ($formatter = $self::getPlaceholderFormatterDefinition($matches[1])) {
-                $text = \call_user_func($formatter, $self, $output);
+                $text = call_user_func($formatter, $self, $output);
             } elseif (isset($messages[$matches[1]])) {
                 $text = $messages[$matches[1]];
             } else {
@@ -476,7 +473,7 @@ class ProgressBar
             $this->setRealFormat($this->internalFormat ?: $this->determineBestFormat());
         }
 
-        $this->overwrite('');
+        $this->overwrite(str_repeat("\n", $this->formatLineCount));
     }
 
     /**
@@ -516,26 +513,37 @@ class ProgressBar
      */
     private function overwrite($message)
     {
-        if ($this->overwrite) {
-            if (!$this->firstRun) {
-                // Move the cursor to the beginning of the line
-                $this->output->write("\x0D");
+        $lines = explode("\n", $message);
 
-                // Erase the line
-                $this->output->write("\x1B[2K");
-
-                // Erase previous lines
-                if ($this->formatLineCount > 0) {
-                    $this->output->write(str_repeat("\x1B[1A\x1B[2K", $this->formatLineCount));
+        // append whitespace to match the line's length
+        if (null !== $this->lastMessagesLength) {
+            foreach ($lines as $i => $line) {
+                if ($this->lastMessagesLength > Helper::strlenWithoutDecoration($this->output->getFormatter(), $line)) {
+                    $lines[$i] = str_pad($line, $this->lastMessagesLength, "\x20", STR_PAD_RIGHT);
                 }
             }
+        }
+
+        if ($this->overwrite) {
+            // move back to the beginning of the progress bar before redrawing it
+            $this->output->write("\x0D");
         } elseif ($this->step > 0) {
+            // move to new line
             $this->output->writeln('');
         }
 
-        $this->firstRun = false;
+        if ($this->formatLineCount) {
+            $this->output->write(sprintf("\033[%dA", $this->formatLineCount));
+        }
+        $this->output->write(implode("\n", $lines));
 
-        $this->output->write($message);
+        $this->lastMessagesLength = 0;
+        foreach ($lines as $line) {
+            $len = Helper::strlenWithoutDecoration($this->output->getFormatter(), $line);
+            if ($len > $this->lastMessagesLength) {
+                $this->lastMessagesLength = $len;
+            }
+        }
     }
 
     private function determineBestFormat()

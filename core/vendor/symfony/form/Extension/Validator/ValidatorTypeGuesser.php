@@ -81,11 +81,13 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
     /**
      * Guesses a field class name for a given constraint.
      *
+     * @param Constraint $constraint The constraint to guess for
+     *
      * @return TypeGuess|null The guessed field class and options
      */
     public function guessTypeForConstraint(Constraint $constraint)
     {
-        switch (\get_class($constraint)) {
+        switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\Type':
                 switch ($constraint->type) {
                     case 'array':
@@ -168,11 +170,13 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
     /**
      * Guesses whether a field is required based on the given constraint.
      *
+     * @param Constraint $constraint The constraint to guess for
+     *
      * @return ValueGuess|null The guess whether the field is required
      */
     public function guessRequiredForConstraint(Constraint $constraint)
     {
-        switch (\get_class($constraint)) {
+        switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\NotNull':
             case 'Symfony\Component\Validator\Constraints\NotBlank':
             case 'Symfony\Component\Validator\Constraints\True':
@@ -184,11 +188,13 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
     /**
      * Guesses a field's maximum length based on the given constraint.
      *
+     * @param Constraint $constraint The constraint to guess for
+     *
      * @return ValueGuess|null The guess for the maximum length
      */
     public function guessMaxLengthForConstraint(Constraint $constraint)
     {
-        switch (\get_class($constraint)) {
+        switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\Length':
                 if (is_numeric($constraint->max)) {
                     return new ValueGuess($constraint->max, Guess::HIGH_CONFIDENCE);
@@ -196,14 +202,14 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
                 break;
 
             case 'Symfony\Component\Validator\Constraints\Type':
-                if (\in_array($constraint->type, array('double', 'float', 'numeric', 'real'))) {
+                if (in_array($constraint->type, array('double', 'float', 'numeric', 'real'))) {
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
                 }
                 break;
 
             case 'Symfony\Component\Validator\Constraints\Range':
                 if (is_numeric($constraint->max)) {
-                    return new ValueGuess(\strlen((string) $constraint->max), Guess::LOW_CONFIDENCE);
+                    return new ValueGuess(strlen((string) $constraint->max), Guess::LOW_CONFIDENCE);
                 }
                 break;
         }
@@ -212,11 +218,13 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
     /**
      * Guesses a field's pattern based on the given constraint.
      *
+     * @param Constraint $constraint The constraint to guess for
+     *
      * @return ValueGuess|null The guess for the pattern
      */
     public function guessPatternForConstraint(Constraint $constraint)
     {
-        switch (\get_class($constraint)) {
+        switch (get_class($constraint)) {
             case 'Symfony\Component\Validator\Constraints\Length':
                 if (is_numeric($constraint->min)) {
                     return new ValueGuess(sprintf('.{%s,}', (string) $constraint->min), Guess::LOW_CONFIDENCE);
@@ -233,12 +241,12 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
 
             case 'Symfony\Component\Validator\Constraints\Range':
                 if (is_numeric($constraint->min)) {
-                    return new ValueGuess(sprintf('.{%s,}', \strlen((string) $constraint->min)), Guess::LOW_CONFIDENCE);
+                    return new ValueGuess(sprintf('.{%s,}', strlen((string) $constraint->min)), Guess::LOW_CONFIDENCE);
                 }
                 break;
 
             case 'Symfony\Component\Validator\Constraints\Type':
-                if (\in_array($constraint->type, array('double', 'float', 'numeric', 'real'))) {
+                if (in_array($constraint->type, array('double', 'float', 'numeric', 'real'))) {
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
                 }
                 break;
@@ -254,7 +262,7 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
      * @param \Closure $closure      The closure that returns a guess
      *                               for a given constraint
      * @param mixed    $defaultValue The default value assumed if no other value
-     *                               can be guessed
+     *                               can be guessed.
      *
      * @return Guess|null The guessed value with the highest confidence
      */
@@ -264,8 +272,12 @@ class ValidatorTypeGuesser implements FormTypeGuesserInterface
         $classMetadata = $this->metadataFactory->getMetadataFor($class);
 
         if ($classMetadata instanceof ClassMetadataInterface && $classMetadata->hasPropertyMetadata($property)) {
-            foreach ($classMetadata->getPropertyMetadata($property) as $memberMetadata) {
-                foreach ($memberMetadata->getConstraints() as $constraint) {
+            $memberMetadatas = $classMetadata->getPropertyMetadata($property);
+
+            foreach ($memberMetadatas as $memberMetadata) {
+                $constraints = $memberMetadata->getConstraints();
+
+                foreach ($constraints as $constraint) {
                     if ($guess = $closure($constraint)) {
                         $guesses[] = $guess;
                     }

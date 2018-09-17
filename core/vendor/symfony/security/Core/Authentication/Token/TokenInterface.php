@@ -33,7 +33,7 @@ interface TokenInterface extends \Serializable
     /**
      * Returns the user roles.
      *
-     * @return RoleInterface[] An array of RoleInterface instances
+     * @return RoleInterface[] An array of RoleInterface instances.
      */
     public function getRoles();
 
@@ -47,22 +47,17 @@ interface TokenInterface extends \Serializable
     /**
      * Returns a user representation.
      *
-     * @return string|object Can be a UserInterface instance, an object implementing a __toString method,
-     *                       or the username as a regular string
+     * @return mixed Can be a UserInterface instance, an object implementing a __toString method,
+     *               or the username as a regular string
      *
      * @see AbstractToken::setUser()
      */
     public function getUser();
 
     /**
-     * Sets the user in the token.
+     * Sets a user.
      *
-     * The user can be a UserInterface instance, or an object implementing
-     * a __toString method or the username as a regular string.
-     *
-     * @param string|object $user The user
-     *
-     * @throws \InvalidArgumentException
+     * @param mixed $user
      */
     public function setUser($user);
 

@@ -12,12 +12,11 @@
 namespace Symfony\Component\Form\Tests\Extension\Core\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormEvent;
 
-class ResizeFormListenerTest extends TestCase
+class ResizeFormListenerTest extends \PHPUnit_Framework_TestCase
 {
     private $dispatcher;
     private $factory;
@@ -25,8 +24,8 @@ class ResizeFormListenerTest extends TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
-        $this->factory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')->getMock();
+        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
         $this->form = $this->getBuilder()
             ->setCompound(true)
             ->setDataMapper($this->getDataMapper())
@@ -55,12 +54,12 @@ class ResizeFormListenerTest extends TestCase
      */
     private function getDataMapper()
     {
-        return $this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock();
+        return $this->getMock('Symfony\Component\Form\DataMapperInterface');
     }
 
     protected function getMockForm()
     {
-        return $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        return $this->getMock('Symfony\Component\Form\Test\FormInterface');
     }
 
     public function testPreSetDataResizesForm()

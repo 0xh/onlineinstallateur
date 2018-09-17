@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -34,15 +34,18 @@ class LengthValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
         $stringValue = (string) $value;
 
-        if (!$invalidCharset = !@mb_check_encoding($stringValue, $constraint->charset)) {
-            $length = mb_strlen($stringValue, $constraint->charset);
+        if ('UTF8' === $charset = strtoupper($constraint->charset)) {
+            $charset = 'UTF-8'; // iconv on Windows requires "UTF-8" instead of "UTF8"
         }
+
+        $length = @iconv_strlen($stringValue, $charset);
+        $invalidCharset = false === $length;
 
         if ($invalidCharset) {
             if ($this->context instanceof ExecutionContextInterface) {

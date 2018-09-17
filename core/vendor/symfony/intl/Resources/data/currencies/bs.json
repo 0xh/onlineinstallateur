@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -27,11 +27,11 @@
         ],
         "AMD": [
             "AMD",
-            "Armenski dram"
+            "Jermenski dram"
         ],
         "ANG": [
             "ANG",
-            "Holandskoantilski gulden"
+            "Gulden Holandskih Antila"
         ],
         "AOA": [
             "AOA",
@@ -87,7 +87,7 @@
         ],
         "BAM": [
             "KM",
-            "Bosanskohercegovačka konvertibilna marka"
+            "Bosansko-Hercegovačka konvertibilna marka"
         ],
         "BBD": [
             "BBD",
@@ -201,13 +201,9 @@
             "BYB",
             "Beloruska nova rublja (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "Bjeloruska rublja"
-        ],
         "BYR": [
             "BYR",
-            "Bjeloruska rublja (2000–2016)"
+            "Bjeloruska rublja"
         ],
         "BZD": [
             "BZD",
@@ -240,10 +236,6 @@
         "CLP": [
             "CLP",
             "Čileanski pezos"
-        ],
-        "CNH": [
-            "CNH",
-            "Kineski juan (izvanteritorijalni)"
         ],
         "CNY": [
             "CNY",
@@ -355,7 +347,7 @@
         ],
         "FJD": [
             "FJD",
-            "Fidžijski dolar"
+            "Fidži dolar"
         ],
         "FKP": [
             "FKP",
@@ -367,7 +359,7 @@
         ],
         "GBP": [
             "GBP",
-            "Britanska funta"
+            "Britanska funta sterlinga"
         ],
         "GEK": [
             "GEK",
@@ -431,7 +423,7 @@
         ],
         "HNL": [
             "HNL",
-            "Honduraška lempira"
+            "Honduraska lempira"
         ],
         "HRD": [
             "HRD",
@@ -495,7 +487,7 @@
         ],
         "JMD": [
             "JMD",
-            "Jamajčanski dolar"
+            "Jamajski dolar"
         ],
         "JOD": [
             "JOD",
@@ -611,11 +603,11 @@
         ],
         "MDL": [
             "MDL",
-            "Moldavski lej"
+            "Moldavski lev"
         ],
         "MGA": [
             "MGA",
-            "Malagaški arijari"
+            "Malagaski ariari"
         ],
         "MGF": [
             "MGF",
@@ -647,10 +639,6 @@
         ],
         "MRO": [
             "MRO",
-            "Mauritanijska ugvija (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "Mauritanijska ugvija"
         ],
         "MTL": [
@@ -671,7 +659,7 @@
         ],
         "MWK": [
             "MWK",
-            "Malavijska kvača"
+            "Malavska kvača"
         ],
         "MXN": [
             "MXN",
@@ -747,7 +735,7 @@
         ],
         "PEN": [
             "PEN",
-            "Peruanski sol"
+            "Peruanski novi sol"
         ],
         "PES": [
             "PES",
@@ -795,7 +783,7 @@
         ],
         "RON": [
             "RON",
-            "Rumunski lej"
+            "Rumunski lev"
         ],
         "RSD": [
             "din.",
@@ -879,10 +867,6 @@
         ],
         "STD": [
             "STD",
-            "Dobra Sao Toma i Principa (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "Dobra Sao Toma i Principa"
         ],
         "SUR": [
@@ -923,7 +907,7 @@
         ],
         "TND": [
             "TND",
-            "Tuniški dinar"
+            "Tuniski dinar"
         ],
         "TOP": [
             "TOP",
@@ -951,11 +935,11 @@
         ],
         "TZS": [
             "TZS",
-            "Tanzanijski šiling"
+            "Tanzanski šiling"
         ],
         "UAH": [
             "UAH",
-            "Ukrajinska hrivnja"
+            "Ukrajinska grivna"
         ],
         "UAK": [
             "UAK",
@@ -1023,7 +1007,7 @@
         ],
         "XAF": [
             "FCFA",
-            "Centralnoafrički franak (CFA)"
+            "CFA franak BEAC"
         ],
         "XCD": [
             "XCD",
@@ -1043,11 +1027,11 @@
         ],
         "XOF": [
             "CFA",
-            "Zapadnoafrički franak (CFA)"
+            "CFA franak BCEAO"
         ],
         "XPF": [
             "XPF",
-            "Franak (CFP)"
+            "CFP franak"
         ],
         "XRE": [
             "XRE",

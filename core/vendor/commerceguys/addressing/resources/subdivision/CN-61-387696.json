@@ -12,6 +12,15 @@
 				}
 			}
 		},
+		"CN-61-387696-6a1074": {
+			"code": "略阳县",
+			"name": "Lüeyang Xian",
+			"translations": {
+				"zh": {
+					"name": "略阳县"
+				}
+			}
+		},
 		"CN-61-387696-e00898": {
 			"code": "佛坪县",
 			"name": "Foping Xian",
@@ -36,15 +45,6 @@
 			"translations": {
 				"zh": {
 					"name": "留坝县"
-				}
-			}
-		},
-		"CN-61-387696-6a1074": {
-			"code": "略阳县",
-			"name": "Lüeyang Xian",
-			"translations": {
-				"zh": {
-					"name": "略阳县"
 				}
 			}
 		},

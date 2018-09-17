@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Security\Core\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * @group legacy
  */
-class LegacySecurityContextTest extends TestCase
+class LegacySecurityContextTest extends \PHPUnit_Framework_TestCase
 {
     private $tokenStorage;
     private $authorizationChecker;
@@ -27,26 +26,26 @@ class LegacySecurityContextTest extends TestCase
 
     protected function setUp()
     {
-        $this->tokenStorage = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')->getMock();
-        $this->authorizationChecker = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')->getMock();
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        $this->authorizationChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
         $this->securityContext = new SecurityContext($this->tokenStorage, $this->authorizationChecker);
     }
 
     public function testGetTokenDelegation()
     {
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
         $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token));
 
-        $this->assertSame($token, $this->securityContext->getToken());
+        $this->assertTrue($token === $this->securityContext->getToken());
     }
 
     public function testSetTokenDelegation()
     {
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
         $this->tokenStorage
             ->expects($this->once())
@@ -86,10 +85,9 @@ class LegacySecurityContextTest extends TestCase
      */
     public function testOldConstructorSignature()
     {
-        $authenticationManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')->getMock();
-        $accessDecisionManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface')->getMock();
-
-        $this->assertInstanceOf('Symfony\Component\Security\Core\SecurityContext', new SecurityContext($authenticationManager, $accessDecisionManager));
+        $authenticationManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+        $accessDecisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
+        new SecurityContext($authenticationManager, $accessDecisionManager);
     }
 
     /**
@@ -103,10 +101,10 @@ class LegacySecurityContextTest extends TestCase
 
     public function oldConstructorSignatureFailuresProvider()
     {
-        $tokenStorage = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface')->getMock();
-        $authorizationChecker = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface')->getMock();
-        $authenticationManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')->getMock();
-        $accessDecisionManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface')->getMock();
+        $tokenStorage = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface');
+        $authorizationChecker = $this->getMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
+        $authenticationManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+        $accessDecisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
 
         return array(
             array(new \stdClass(), new \stdClass()),

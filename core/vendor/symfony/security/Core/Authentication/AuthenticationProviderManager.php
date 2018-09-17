@@ -11,15 +11,15 @@
 
 namespace Symfony\Component\Security\Core\Authentication;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\AuthenticationEvents;
-use Symfony\Component\Security\Core\Event\AuthenticationEvent;
 use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
+use Symfony\Component\Security\Core\Event\AuthenticationEvent;
+use Symfony\Component\Security\Core\AuthenticationEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\ProviderNotFoundException;
+use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * AuthenticationProviderManager uses a list of AuthenticationProviderInterface
@@ -35,6 +35,8 @@ class AuthenticationProviderManager implements AuthenticationManagerInterface
     private $eventDispatcher;
 
     /**
+     * Constructor.
+     *
      * @param AuthenticationProviderInterface[] $providers        An array of AuthenticationProviderInterface instances
      * @param bool                              $eraseCredentials Whether to erase credentials after authentication or not
      *
@@ -48,7 +50,7 @@ class AuthenticationProviderManager implements AuthenticationManagerInterface
 
         foreach ($providers as $provider) {
             if (!$provider instanceof AuthenticationProviderInterface) {
-                throw new \InvalidArgumentException(sprintf('Provider "%s" must implement the AuthenticationProviderInterface.', \get_class($provider)));
+                throw new \InvalidArgumentException(sprintf('Provider "%s" must implement the AuthenticationProviderInterface.', get_class($provider)));
             }
         }
 
@@ -81,9 +83,9 @@ class AuthenticationProviderManager implements AuthenticationManagerInterface
                     break;
                 }
             } catch (AccountStatusException $e) {
-                $lastException = $e;
+                $e->setToken($token);
 
-                break;
+                throw $e;
             } catch (AuthenticationException $e) {
                 $lastException = $e;
             }
@@ -102,7 +104,7 @@ class AuthenticationProviderManager implements AuthenticationManagerInterface
         }
 
         if (null === $lastException) {
-            $lastException = new ProviderNotFoundException(sprintf('No Authentication Provider found for token of class "%s".', \get_class($token)));
+            $lastException = new ProviderNotFoundException(sprintf('No Authentication Provider found for token of class "%s".', get_class($token)));
         }
 
         if (null !== $this->eventDispatcher) {

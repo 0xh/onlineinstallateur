@@ -12,16 +12,16 @@
 namespace Symfony\Component\Security\Http\Firewall;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
-use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface;
+use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 
 /**
  * RememberMeListener implements authentication capabilities via a cookie.
@@ -39,13 +39,15 @@ class RememberMeListener implements ListenerInterface
     private $sessionStrategy;
 
     /**
-     * @param TokenStorageInterface                       $tokenStorage
-     * @param RememberMeServicesInterface                 $rememberMeServices
-     * @param AuthenticationManagerInterface              $authenticationManager
-     * @param LoggerInterface|null                        $logger
-     * @param EventDispatcherInterface|null               $dispatcher
-     * @param bool                                        $catchExceptions
-     * @param SessionAuthenticationStrategyInterface|null $sessionStrategy
+     * Constructor.
+     *
+     * @param TokenStorageInterface                  $tokenStorage
+     * @param RememberMeServicesInterface            $rememberMeServices
+     * @param AuthenticationManagerInterface         $authenticationManager
+     * @param LoggerInterface                        $logger
+     * @param EventDispatcherInterface               $dispatcher
+     * @param bool                                   $catchExceptions
+     * @param SessionAuthenticationStrategyInterface $sessionStrategy
      */
     public function __construct(TokenStorageInterface $tokenStorage, RememberMeServicesInterface $rememberMeServices, AuthenticationManagerInterface $authenticationManager, LoggerInterface $logger = null, EventDispatcherInterface $dispatcher = null, $catchExceptions = true, SessionAuthenticationStrategyInterface $sessionStrategy = null)
     {
@@ -60,6 +62,8 @@ class RememberMeListener implements ListenerInterface
 
     /**
      * Handles remember-me cookie based authentication.
+     *
+     * @param GetResponseEvent $event A GetResponseEvent instance
      */
     public function handle(GetResponseEvent $event)
     {
@@ -68,25 +72,7 @@ class RememberMeListener implements ListenerInterface
         }
 
         $request = $event->getRequest();
-        try {
-            if (null === $token = $this->rememberMeServices->autoLogin($request)) {
-                return;
-            }
-        } catch (AuthenticationException $e) {
-            if (null !== $this->logger) {
-                $this->logger->warning(
-                    'The token storage was not populated with remember-me token as the'
-                   .' RememberMeServices was not able to create a token from the remember'
-                   .' me information.', array('exception' => $e)
-                );
-            }
-
-            $this->rememberMeServices->loginFail($request);
-
-            if (!$this->catchExceptions) {
-                throw $e;
-            }
-
+        if (null === $token = $this->rememberMeServices->autoLogin($request)) {
             return;
         }
 

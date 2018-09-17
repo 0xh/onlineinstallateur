@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\HttpKernel\Event;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Allows filtering of a controller callable.
@@ -27,6 +27,9 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
  */
 class FilterControllerEvent extends KernelEvent
 {
+    /**
+     * The current controller.
+     */
     private $controller;
 
     public function __construct(HttpKernelInterface $kernel, $controller, Request $request, $requestType)
@@ -56,7 +59,7 @@ class FilterControllerEvent extends KernelEvent
     public function setController($controller)
     {
         // controller must be a callable
-        if (!\is_callable($controller)) {
+        if (!is_callable($controller)) {
             throw new \LogicException(sprintf('The controller must be a callable (%s given).', $this->varToString($controller)));
         }
 
@@ -65,11 +68,11 @@ class FilterControllerEvent extends KernelEvent
 
     private function varToString($var)
     {
-        if (\is_object($var)) {
-            return sprintf('Object(%s)', \get_class($var));
+        if (is_object($var)) {
+            return sprintf('Object(%s)', get_class($var));
         }
 
-        if (\is_array($var)) {
+        if (is_array($var)) {
             $a = array();
             foreach ($var as $k => $v) {
                 $a[] = sprintf('%s => %s', $k, $this->varToString($v));
@@ -78,7 +81,7 @@ class FilterControllerEvent extends KernelEvent
             return sprintf('Array(%s)', implode(', ', $a));
         }
 
-        if (\is_resource($var)) {
+        if (is_resource($var)) {
             return sprintf('Resource(%s)', get_resource_type($var));
         }
 

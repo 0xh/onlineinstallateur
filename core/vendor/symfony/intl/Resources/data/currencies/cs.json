@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -123,15 +123,15 @@
         ],
         "BGL": [
             "BGL",
-            "bulharský tvrdý leva"
+            "BGL"
         ],
         "BGM": [
             "BGM",
-            "bulharský socialistický leva"
+            "BGM"
         ],
         "BGN": [
             "BGN",
-            "bulharský leva"
+            "bulharský lev"
         ],
         "BGO": [
             "BGO",
@@ -217,13 +217,9 @@
             "BYB",
             "běloruský rubl (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "běloruský rubl"
-        ],
         "BYR": [
             "BYR",
-            "běloruský rubl (2000–2016)"
+            "běloruský rubl"
         ],
         "BZD": [
             "BZD",
@@ -260,14 +256,6 @@
         "CLP": [
             "CLP",
             "chilské peso"
-        ],
-        "CNH": [
-            "CNH",
-            "čínský jüan (offshore)"
-        ],
-        "CNX": [
-            "CNX",
-            "čínský dolar ČLB"
         ],
         "CNY": [
             "CN¥",
@@ -683,10 +671,6 @@
         ],
         "MRO": [
             "MRO",
-            "mauritánská ouguiya (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "mauritánská ouguiya"
         ],
         "MTL": [
@@ -787,7 +771,7 @@
         ],
         "PEN": [
             "PEN",
-            "peruánský sol"
+            "peruánský nový sol"
         ],
         "PES": [
             "PES",
@@ -835,7 +819,7 @@
         ],
         "RON": [
             "RON",
-            "rumunský leu"
+            "rumunské leu"
         ],
         "RSD": [
             "RSD",
@@ -919,10 +903,6 @@
         ],
         "STD": [
             "STD",
-            "svatotomášská dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "svatotomášská dobra"
         ],
         "SUR": [

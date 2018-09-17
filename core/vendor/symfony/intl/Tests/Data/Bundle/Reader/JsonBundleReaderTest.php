@@ -11,13 +11,12 @@
 
 namespace Symfony\Component\Intl\Tests\Data\Bundle\Reader;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Intl\Data\Bundle\Reader\JsonBundleReader;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
-class JsonBundleReaderTest extends TestCase
+class JsonBundleReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var JsonBundleReader
@@ -33,9 +32,9 @@ class JsonBundleReaderTest extends TestCase
     {
         $data = $this->reader->read(__DIR__.'/Fixtures/json', 'en');
 
-        $this->assertInternalType('array', $data);
+        $this->assertTrue(is_array($data));
         $this->assertSame('Bar', $data['Foo']);
-        $this->assertArrayNotHasKey('ExistsNot', $data);
+        $this->assertFalse(isset($data['ExistsNot']));
     }
 
     /**
@@ -68,13 +67,5 @@ class JsonBundleReaderTest extends TestCase
     public function testReadFailsIfInvalidJson()
     {
         $this->reader->read(__DIR__.'/Fixtures/json', 'en_Invalid');
-    }
-
-    /**
-     * @expectedException \Symfony\Component\Intl\Exception\ResourceBundleNotFoundException
-     */
-    public function testReaderDoesNotBreakOutOfGivenPath()
-    {
-        $this->reader->read(__DIR__.'/Fixtures/json', '../invalid_directory/en');
     }
 }

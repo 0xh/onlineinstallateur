@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\Security\Http\Firewall;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 /**
  * AnonymousAuthenticationListener automatically adds a Token if none is
@@ -41,6 +41,8 @@ class AnonymousAuthenticationListener implements ListenerInterface
 
     /**
      * Handles anonymous authentication.
+     *
+     * @param GetResponseEvent $event A GetResponseEvent instance
      */
     public function handle(GetResponseEvent $event)
     {

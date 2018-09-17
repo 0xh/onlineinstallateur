@@ -11,11 +11,10 @@
 
 namespace Symfony\Component\Security\Core\Tests\Authorization;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
-class AuthorizationCheckerTest extends TestCase
+class AuthorizationCheckerTest extends \PHPUnit_Framework_TestCase
 {
     private $authenticationManager;
     private $accessDecisionManager;
@@ -24,8 +23,8 @@ class AuthorizationCheckerTest extends TestCase
 
     protected function setUp()
     {
-        $this->authenticationManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface')->getMock();
-        $this->accessDecisionManager = $this->getMockBuilder('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface')->getMock();
+        $this->authenticationManager = $this->getMock('Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface');
+        $this->accessDecisionManager = $this->getMock('Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface');
         $this->tokenStorage = new TokenStorage();
 
         $this->authorizationChecker = new AuthorizationChecker(
@@ -37,10 +36,10 @@ class AuthorizationCheckerTest extends TestCase
 
     public function testVoteAuthenticatesTokenIfNecessary()
     {
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $this->tokenStorage->setToken($token);
 
-        $newToken = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $newToken = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
 
         $this->authenticationManager
             ->expects($this->once())
@@ -61,9 +60,9 @@ class AuthorizationCheckerTest extends TestCase
             ->will($this->returnValue(true));
 
         // first run the token has not been re-authenticated yet, after isGranted is called, it should be equal
-        $this->assertNotSame($newToken, $this->tokenStorage->getToken());
+        $this->assertFalse($newToken === $this->tokenStorage->getToken());
         $this->assertTrue($this->authorizationChecker->isGranted('foo'));
-        $this->assertSame($newToken, $this->tokenStorage->getToken());
+        $this->assertTrue($newToken === $this->tokenStorage->getToken());
     }
 
     /**
@@ -79,7 +78,7 @@ class AuthorizationCheckerTest extends TestCase
      */
     public function testIsGranted($decide)
     {
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token
             ->expects($this->once())
             ->method('isAuthenticated')
@@ -90,7 +89,7 @@ class AuthorizationCheckerTest extends TestCase
             ->method('decide')
             ->will($this->returnValue($decide));
         $this->tokenStorage->setToken($token);
-        $this->assertSame($decide, $this->authorizationChecker->isGranted('ROLE_FOO'));
+        $this->assertTrue($decide === $this->authorizationChecker->isGranted('ROLE_FOO'));
     }
 
     public function isGrantedProvider()

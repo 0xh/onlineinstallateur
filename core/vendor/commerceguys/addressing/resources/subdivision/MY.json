@@ -4,67 +4,67 @@
 	"locale": "ms",
 	"subdivisions": {
 		"MY-01": {
-			"name": "Johor",
+			"name": "JOHOR",
 			"postal_code_pattern": "79|8[0-6]"
 		},
 		"MY-02": {
-			"name": "Kedah",
+			"name": "KEDAH",
 			"postal_code_pattern": "0[5-9]|34950"
 		},
 		"MY-03": {
-			"name": "Kelantan",
+			"name": "KELANTAN",
 			"postal_code_pattern": "1[5-9]"
 		},
 		"MY-14": {
-			"name": "Kuala Lumpur",
+			"name": "KUALA LUMPUR",
 			"postal_code_pattern": "5|60"
 		},
 		"MY-15": {
-			"name": "Labuan",
+			"name": "LABUAN",
 			"postal_code_pattern": "87"
 		},
 		"MY-04": {
-			"name": "Melaka",
+			"name": "MELAKA",
 			"postal_code_pattern": "7[5-8]"
 		},
 		"MY-05": {
-			"name": "Negeri Sembilan",
+			"name": "NEGERI SEMBILAN",
 			"postal_code_pattern": "7[0-4]"
 		},
 		"MY-06": {
-			"name": "Pahang",
+			"name": "PAHANG",
 			"postal_code_pattern": "2[5-8]|[346]9"
 		},
 		"MY-08": {
-			"name": "Perak",
+			"name": "PERAK",
 			"postal_code_pattern": "3[0-6]|39000"
 		},
 		"MY-09": {
-			"name": "Perlis",
+			"name": "PERLIS",
 			"postal_code_pattern": "0[12]"
 		},
 		"MY-07": {
-			"name": "Pulau Pinang",
+			"name": "PULAU PINANG",
 			"postal_code_pattern": "1[0-4]"
 		},
 		"MY-16": {
-			"name": "Putrajaya",
+			"name": "PUTRAJAYA",
 			"postal_code_pattern": "62"
 		},
 		"MY-12": {
-			"name": "Sabah",
+			"name": "SABAH",
 			"postal_code_pattern": "8[89]|9[01]"
 		},
 		"MY-13": {
-			"name": "Sarawak",
+			"name": "SARAWAK",
 			"postal_code_pattern": "9[3-8]"
 		},
 		"MY-10": {
-			"name": "Selangor",
+			"name": "SELANGOR",
 			"postal_code_pattern": "4[0-8]|6[3-8]"
 		},
 		"MY-11": {
-			"name": "Terengganu",
+			"name": "TERENGGANU",
 			"postal_code_pattern": "2[0-4]"
 		}
 	}

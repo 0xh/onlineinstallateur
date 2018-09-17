@@ -32,23 +32,17 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
     private $embeddedResponses = 0;
     private $ttls = array();
     private $maxAges = array();
-    private $isNotCacheableResponseEmbedded = false;
 
     /**
      * {@inheritdoc}
      */
     public function add(Response $response)
     {
-        if (!$response->isFresh() || !$response->isCacheable()) {
+        if ($response->isValidateable()) {
             $this->cacheable = false;
         } else {
-            $maxAge = $response->getMaxAge();
             $this->ttls[] = $response->getTtl();
-            $this->maxAges[] = $maxAge;
-
-            if (null === $maxAge) {
-                $this->isNotCacheableResponseEmbedded = true;
-            }
+            $this->maxAges[] = $response->getMaxAge();
         }
 
         ++$this->embeddedResponses;
@@ -70,9 +64,6 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
         if ($response->isValidateable()) {
             $response->setEtag(null);
             $response->setLastModified(null);
-        }
-
-        if (!$response->isFresh() || !$response->isCacheable()) {
             $this->cacheable = false;
         }
 
@@ -85,9 +76,7 @@ class ResponseCacheStrategy implements ResponseCacheStrategyInterface
         $this->ttls[] = $response->getTtl();
         $this->maxAges[] = $response->getMaxAge();
 
-        if ($this->isNotCacheableResponseEmbedded) {
-            $response->headers->removeCacheControlDirective('s-maxage');
-        } elseif (null !== $maxAge = min($this->maxAges)) {
+        if (null !== $maxAge = min($this->maxAges)) {
             $response->setSharedMaxAge($maxAge);
             $response->headers->set('Age', $maxAge - min($this->ttls));
         }

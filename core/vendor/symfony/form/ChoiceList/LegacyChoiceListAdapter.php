@@ -133,7 +133,9 @@ class LegacyChoiceListAdapter implements ChoiceListInterface
         $this->values = array();
         $this->structuredValues = $this->adaptedList->getValues();
 
-        foreach ($this->adaptedList->getChoices() as $index => $choice) {
+        $innerChoices = $this->adaptedList->getChoices();
+
+        foreach ($innerChoices as $index => $choice) {
             $value = $this->structuredValues[$index];
             $this->values[] = $value;
             $this->choices[$value] = $choice;

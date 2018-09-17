@@ -11,12 +11,14 @@
 
 namespace Symfony\Component\HttpKernel\DataCollector;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
+ * ConfigDataCollector.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class ConfigDataCollector extends DataCollector
@@ -27,8 +29,11 @@ class ConfigDataCollector extends DataCollector
     private $kernel;
     private $name;
     private $version;
+    private $cacheVersionInfo = true;
 
     /**
+     * Constructor.
+     *
      * @param string $name    The name of the application using the web profiler
      * @param string $version The version of the application using the web profiler
      */
@@ -40,6 +45,8 @@ class ConfigDataCollector extends DataCollector
 
     /**
      * Sets the Kernel associated with this Request.
+     *
+     * @param KernelInterface $kernel A KernelInterface instance
      */
     public function setKernel(KernelInterface $kernel = null)
     {
@@ -61,14 +68,14 @@ class ConfigDataCollector extends DataCollector
             'env' => isset($this->kernel) ? $this->kernel->getEnvironment() : 'n/a',
             'debug' => isset($this->kernel) ? $this->kernel->isDebug() : 'n/a',
             'php_version' => PHP_VERSION,
-            'xdebug_enabled' => \extension_loaded('xdebug'),
-            'eaccel_enabled' => \extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'),
-            'apc_enabled' => \extension_loaded('apc') && ini_get('apc.enabled'),
-            'xcache_enabled' => \extension_loaded('xcache') && ini_get('xcache.cacher'),
-            'wincache_enabled' => \extension_loaded('wincache') && ini_get('wincache.ocenabled'),
-            'zend_opcache_enabled' => \extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
+            'xdebug_enabled' => extension_loaded('xdebug'),
+            'eaccel_enabled' => extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'),
+            'apc_enabled' => extension_loaded('apc') && ini_get('apc.enabled'),
+            'xcache_enabled' => extension_loaded('xcache') && ini_get('xcache.cacher'),
+            'wincache_enabled' => extension_loaded('wincache') && ini_get('wincache.ocenabled'),
+            'zend_opcache_enabled' => extension_loaded('Zend OPcache') && ini_get('opcache.enable'),
             'bundles' => array(),
-            'sapi_name' => \PHP_SAPI,
+            'sapi_name' => php_sapi_name(),
         );
 
         if (isset($this->kernel)) {
@@ -122,7 +129,7 @@ class ConfigDataCollector extends DataCollector
 
     public function setCacheVersionInfo($cacheVersionInfo)
     {
-        // no-op for BC
+        $this->cacheVersionInfo = $cacheVersionInfo;
     }
 
     /**

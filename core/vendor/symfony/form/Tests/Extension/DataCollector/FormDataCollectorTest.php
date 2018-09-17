@@ -11,13 +11,12 @@
 
 namespace Symfony\Component\Form\Tests\Extension\DataCollector;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\DataCollector\FormDataCollector;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormView;
 
-class FormDataCollectorTest extends TestCase
+class FormDataCollectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -66,11 +65,11 @@ class FormDataCollectorTest extends TestCase
 
     protected function setUp()
     {
-        $this->dataExtractor = $this->getMockBuilder('Symfony\Component\Form\Extension\DataCollector\FormDataExtractorInterface')->getMock();
+        $this->dataExtractor = $this->getMock('Symfony\Component\Form\Extension\DataCollector\FormDataExtractorInterface');
         $this->dataCollector = new FormDataCollector($this->dataExtractor);
-        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
-        $this->factory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')->getMock();
-        $this->dataMapper = $this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock();
+        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->factory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
+        $this->dataMapper = $this->getMock('Symfony\Component\Form\DataMapperInterface');
         $this->form = $this->createForm('name');
         $this->childForm = $this->createForm('child');
         $this->view = new FormView();

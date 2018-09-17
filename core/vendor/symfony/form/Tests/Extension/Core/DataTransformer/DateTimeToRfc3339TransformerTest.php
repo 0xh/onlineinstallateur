@@ -11,10 +11,9 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Core\DataTransformer;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToRfc3339Transformer;
 
-class DateTimeToRfc3339TransformerTest extends TestCase
+class DateTimeToRfc3339TransformerTest extends DateTimeTestCase
 {
     protected $dateTime;
     protected $dateTimeWithoutSeconds;
@@ -108,9 +107,9 @@ class DateTimeToRfc3339TransformerTest extends TestCase
         $transformer = new DateTimeToRfc3339Transformer($toTz, $fromTz);
 
         if (null !== $to) {
-            $this->assertEquals(new \DateTime($to), $transformer->reverseTransform($from));
+            $this->assertDateTimeEquals(new \DateTime($to), $transformer->reverseTransform($from));
         } else {
-            $this->assertNull($transformer->reverseTransform($from));
+            $this->assertSame($to, $transformer->reverseTransform($from));
         }
     }
 

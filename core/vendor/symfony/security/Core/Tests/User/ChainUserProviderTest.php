@@ -11,12 +11,11 @@
 
 namespace Symfony\Component\Security\Core\Tests\User;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\ChainUserProvider;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class ChainUserProviderTest extends TestCase
+class ChainUserProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadUserByUsername()
     {
@@ -174,11 +173,11 @@ class ChainUserProviderTest extends TestCase
 
     protected function getAccount()
     {
-        return $this->getMockBuilder('Symfony\Component\Security\Core\User\UserInterface')->getMock();
+        return $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
     }
 
     protected function getProvider()
     {
-        return $this->getMockBuilder('Symfony\Component\Security\Core\User\UserProviderInterface')->getMock();
+        return $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
     }
 }

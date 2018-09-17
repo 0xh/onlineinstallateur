@@ -11,11 +11,9 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Validator;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Validator\ValidatorInterface;
 
-class ValidatorExtensionTest extends TestCase
+class ValidatorExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function test2Dot5ValidationApi()
     {
@@ -40,11 +38,9 @@ class ValidatorExtensionTest extends TestCase
             ->method('addPropertyConstraint')
             ->with('children', $this->isInstanceOf('Symfony\Component\Validator\Constraints\Valid'));
 
-        if ($validator instanceof ValidatorInterface) {
-            $validator
-                ->expects($this->never())
-                ->method('getMetadataFactory');
-        }
+        $validator
+            ->expects($this->never())
+            ->method('getMetadataFactory');
 
         $extension = new ValidatorExtension($validator);
         $guesser = $extension->loadTypeGuesser();
@@ -57,8 +53,8 @@ class ValidatorExtensionTest extends TestCase
      */
     public function test2Dot4ValidationApi()
     {
-        $factory = $this->getMockBuilder('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface')->getMock();
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\ValidatorInterface')->getMock();
+        $factory = $this->getMock('Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface');
+        $validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
         $metadata = $this->getMockBuilder('Symfony\Component\Validator\Mapping\ClassMetadata')
             ->disableOriginalConstructor()
             ->getMock();

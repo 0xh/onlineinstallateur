@@ -11,12 +11,11 @@
 
 namespace Symfony\Component\BrowserKit\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\BrowserKit\Response;
 
-class CookieJarTest extends TestCase
+class CookieJarTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetGet()
     {
@@ -94,7 +93,7 @@ class CookieJarTest extends TestCase
     {
         $timestamp = time() + 3600;
         $date = gmdate('D, d M Y H:i:s \G\M\T', $timestamp);
-        $setCookies = array(sprintf('foo=foo; expires=%s; domain=.symfony.com; path=/, bar=bar; domain=.blog.symfony.com, PHPSESSID=id; expires=%1$s', $date));
+        $setCookies = array(sprintf('foo=foo; expires=%s; domain=.symfony.com; path=/, bar=bar; domain=.blog.symfony.com, PHPSESSID=id; expires=%s', $date, $date));
 
         $cookieJar = new CookieJar();
         $cookieJar->updateFromSetCookie($setCookies);
@@ -237,8 +236,6 @@ class CookieJarTest extends TestCase
         $this->assertEquals($cookie1, $cookieJar->get('foo', '/test', 'example.com'));
         $this->assertEquals($cookie2, $cookieJar->get('foo1', '/', 'example.com'));
         $this->assertEquals($cookie2, $cookieJar->get('foo1', '/bar', 'example.com'));
-
-        $this->assertEquals($cookie2, $cookieJar->get('foo1', '/bar'));
     }
 
     public function testCookieWithWildcardDomain()

@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Form;
 
-use Symfony\Component\Form\Exception\BadMethodCallException;
 use Symfony\Component\Form\Exception\LogicException;
+use Symfony\Component\Form\Exception\BadMethodCallException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderAdapter;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
@@ -27,13 +27,37 @@ class FormRenderer implements FormRendererInterface
 {
     const CACHE_KEY_VAR = 'unique_block_prefix';
 
+    /**
+     * @var FormRendererEngineInterface
+     */
     private $engine;
+
+    /**
+     * @var CsrfTokenManagerInterface
+     */
     private $csrfTokenManager;
+
+    /**
+     * @var array
+     */
     private $blockNameHierarchyMap = array();
+
+    /**
+     * @var array
+     */
     private $hierarchyLevelMap = array();
+
+    /**
+     * @var array
+     */
     private $variableStack = array();
 
     /**
+     * Constructor.
+     *
+     * @param FormRendererEngineInterface    $engine
+     * @param CsrfTokenManagerInterface|null $csrfTokenManager
+     *
      * @throws UnexpectedTypeException
      */
     public function __construct(FormRendererEngineInterface $engine, $csrfTokenManager = null)
@@ -185,7 +209,7 @@ class FormRenderer implements FormRendererInterface
             foreach ($view->vars['block_prefixes'] as $blockNamePrefix) {
                 $blockNameHierarchy[] = $blockNamePrefix.'_'.$blockNameSuffix;
             }
-            $hierarchyLevel = \count($blockNameHierarchy) - 1;
+            $hierarchyLevel = count($blockNameHierarchy) - 1;
 
             $hierarchyInit = true;
         } else {
@@ -229,11 +253,10 @@ class FormRenderer implements FormRendererInterface
 
         // Escape if no resource exists for this block
         if (!$resource) {
-            if (\count($blockNameHierarchy) !== \count(array_unique($blockNameHierarchy))) {
-                throw new LogicException(sprintf('Unable to render the form because the block names array contains duplicates: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
-            }
-
-            throw new LogicException(sprintf('Unable to render the form as none of the following blocks exist: "%s".', implode('", "', array_reverse($blockNameHierarchy))));
+            throw new LogicException(sprintf(
+                'Unable to render the form as none of the following blocks exist: "%s".',
+                implode('", "', array_reverse($blockNameHierarchy))
+            ));
         }
 
         // Merge the passed with the existing attributes
@@ -292,6 +315,6 @@ class FormRenderer implements FormRendererInterface
      */
     public function humanize($text)
     {
-        return ucfirst(strtolower(trim(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $text))));
+        return ucfirst(trim(strtolower(preg_replace(array('/([A-Z])/', '/[_\s]+/'), array('_$1', ' '), $text))));
     }
 }

@@ -11,18 +11,18 @@
 
 namespace Symfony\Component\Security\Http\RememberMe;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Exception\CookieTheftException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Authentication\Token\RememberMeToken;
+use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
+use Symfony\Component\Security\Core\Exception\CookieTheftException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Http\ParameterBagUtils;
 
 /**
@@ -44,6 +44,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     private $userProviders;
 
     /**
+     * Constructor.
+     *
      * @param array           $userProviders
      * @param string          $secret
      * @param string          $providerKey
@@ -60,7 +62,7 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
         if (empty($providerKey)) {
             throw new \InvalidArgumentException('$providerKey must not be empty.');
         }
-        if (0 === \count($userProviders)) {
+        if (0 === count($userProviders)) {
             throw new \InvalidArgumentException('You must provide at least one user provider.');
         }
 
@@ -87,7 +89,7 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
      */
     public function getKey()
     {
-        @trigger_error(__METHOD__.'() is deprecated since Symfony 2.8 and will be removed in 3.0. Use getSecret() instead.', E_USER_DEPRECATED);
+        @trigger_error(__method__.'() is deprecated since version 2.8 and will be removed in 3.0. Use getSecret() instead.', E_USER_DEPRECATED);
 
         return $this->getSecret();
     }
@@ -103,6 +105,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     /**
      * Implementation of RememberMeServicesInterface. Detects whether a remember-me
      * cookie was set, decodes it, and hands it to subclasses for further processing.
+     *
+     * @param Request $request
      *
      * @return TokenInterface|null
      *
@@ -156,6 +160,10 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
 
     /**
      * Implementation for LogoutHandlerInterface. Deletes the cookie.
+     *
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
      */
     public function logout(Request $request, Response $response, TokenInterface $token)
     {
@@ -165,6 +173,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     /**
      * Implementation for RememberMeServicesInterface. Deletes the cookie when
      * an attempted authentication fails.
+     *
+     * @param Request $request
      */
     final public function loginFail(Request $request)
     {
@@ -175,6 +185,10 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     /**
      * Implementation for RememberMeServicesInterface. This is called when an
      * authentication is successful.
+     *
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token    The token that resulted in a successful authentication
      */
     final public function loginSuccess(Request $request, Response $response, TokenInterface $token)
     {
@@ -214,10 +228,16 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
      * Subclasses should validate the cookie and do any additional processing
      * that is required. This is called from autoLogin().
      *
+     * @param array   $cookieParts
+     * @param Request $request
+     *
      * @return UserInterface
      */
     abstract protected function processAutoLoginCookie(array $cookieParts, Request $request);
 
+    /**
+     * @param Request $request
+     */
     protected function onLoginFail(Request $request)
     {
     }
@@ -226,6 +246,10 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
      * This is called after a user has been logged in successfully, and has
      * requested remember-me capabilities. The implementation usually sets a
      * cookie and possibly stores a persistent record of it.
+     *
+     * @param Request        $request
+     * @param Response       $response
+     * @param TokenInterface $token
      */
     abstract protected function onLoginSuccess(Request $request, Response $response, TokenInterface $token);
 
@@ -255,6 +279,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     /**
      * Encodes the cookie parts.
      *
+     * @param array $cookieParts
+     *
      * @return string
      *
      * @throws \InvalidArgumentException When $cookieParts contain the cookie delimiter. Extending class should either remove or escape it.
@@ -272,6 +298,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
 
     /**
      * Deletes the remember-me cookie.
+     *
+     * @param Request $request
      */
     protected function cancelCookie(Request $request)
     {
@@ -284,6 +312,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
 
     /**
      * Checks whether remember-me capabilities were requested.
+     *
+     * @param Request $request
      *
      * @return bool
      */
@@ -299,6 +329,6 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
             $this->logger->debug('Did not send remember-me cookie.', array('parameter' => $this->options['remember_me_parameter']));
         }
 
-        return 'true' === $parameter || 'on' === $parameter || '1' === $parameter || 'yes' === $parameter || true === $parameter;
+        return $parameter === 'true' || $parameter === 'on' || $parameter === '1' || $parameter === 'yes';
     }
 }

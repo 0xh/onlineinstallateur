@@ -18,8 +18,6 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  * @Annotation
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  *
- * @property int $maxSize
- *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class File extends Constraint
@@ -88,33 +86,22 @@ class File extends Constraint
         return parent::__get($option);
     }
 
-    public function __isset($option)
-    {
-        if ('maxSize' === $option) {
-            return true;
-        }
-
-        return parent::__isset($option);
-    }
-
     private function normalizeBinaryFormat($maxSize)
     {
-        $sizeInt = (int) $maxSize;
-
         if (ctype_digit((string) $maxSize)) {
-            $this->maxSize = $sizeInt;
+            $this->maxSize = (int) $maxSize;
             $this->binaryFormat = null === $this->binaryFormat ? false : $this->binaryFormat;
         } elseif (preg_match('/^\d++k$/i', $maxSize)) {
-            $this->maxSize = $sizeInt * 1000;
+            $this->maxSize = $maxSize * 1000;
             $this->binaryFormat = null === $this->binaryFormat ? false : $this->binaryFormat;
         } elseif (preg_match('/^\d++M$/i', $maxSize)) {
-            $this->maxSize = $sizeInt * 1000000;
+            $this->maxSize = $maxSize * 1000000;
             $this->binaryFormat = null === $this->binaryFormat ? false : $this->binaryFormat;
         } elseif (preg_match('/^\d++Ki$/i', $maxSize)) {
-            $this->maxSize = $sizeInt << 10;
+            $this->maxSize = $maxSize << 10;
             $this->binaryFormat = null === $this->binaryFormat ? true : $this->binaryFormat;
         } elseif (preg_match('/^\d++Mi$/i', $maxSize)) {
-            $this->maxSize = $sizeInt << 20;
+            $this->maxSize = $maxSize << 20;
             $this->binaryFormat = null === $this->binaryFormat ? true : $this->binaryFormat;
         } else {
             throw new ConstraintDefinitionException(sprintf('"%s" is not a valid maximum size', $this->maxSize));

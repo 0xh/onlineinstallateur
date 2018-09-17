@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\ClassLoader;
 
-@trigger_error('The '.__NAMESPACE__.'\ApcUniversalClassLoader class is deprecated since Symfony 2.7 and will be removed in 3.0. Use the Symfony\Component\ClassLoader\ApcClassLoader class instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\ApcUniversalClassLoader class is deprecated since version 2.7 and will be removed in 3.0. Use the Symfony\Component\ClassLoader\ApcClassLoader class instead.', E_USER_DEPRECATED);
 
 /**
  * ApcUniversalClassLoader implements a "universal" autoloader cached in APC for PHP 5.3.
@@ -68,13 +68,15 @@ class ApcUniversalClassLoader extends UniversalClassLoader
     private $prefix;
 
     /**
+     * Constructor.
+     *
      * @param string $prefix A prefix to create a namespace in APC
      *
      * @throws \RuntimeException
      */
     public function __construct($prefix)
     {
-        if (!\function_exists('apcu_fetch')) {
+        if (!extension_loaded('apc')) {
             throw new \RuntimeException('Unable to use ApcUniversalClassLoader as APC is not enabled.');
         }
 
@@ -90,10 +92,8 @@ class ApcUniversalClassLoader extends UniversalClassLoader
      */
     public function findFile($class)
     {
-        $file = apcu_fetch($this->prefix.$class, $success);
-
-        if (!$success) {
-            apcu_store($this->prefix.$class, $file = parent::findFile($class) ?: null);
+        if (false === $file = apc_fetch($this->prefix.$class)) {
+            apc_store($this->prefix.$class, $file = parent::findFile($class));
         }
 
         return $file;

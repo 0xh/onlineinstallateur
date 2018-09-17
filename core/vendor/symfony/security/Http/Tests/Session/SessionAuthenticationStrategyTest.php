@@ -11,10 +11,9 @@
 
 namespace Symfony\Component\Security\Http\Tests\Session;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy;
 
-class SessionAuthenticationStrategyTest extends TestCase
+class SessionAuthenticationStrategyTest extends \PHPUnit_Framework_TestCase
 {
     public function testSessionIsNotChanged()
     {
@@ -40,11 +39,11 @@ class SessionAuthenticationStrategyTest extends TestCase
 
     public function testSessionIsMigrated()
     {
-        if (\PHP_VERSION_ID >= 50400 && \PHP_VERSION_ID < 50411) {
+        if (PHP_VERSION_ID >= 50400 && PHP_VERSION_ID < 50411) {
             $this->markTestSkipped('We cannot destroy the old session on PHP 5.4.0 - 5.4.10.');
         }
 
-        $session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')->getMock();
+        $session = $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface');
         $session->expects($this->once())->method('migrate')->with($this->equalTo(true));
 
         $strategy = new SessionAuthenticationStrategy(SessionAuthenticationStrategy::MIGRATE);
@@ -53,11 +52,11 @@ class SessionAuthenticationStrategyTest extends TestCase
 
     public function testSessionIsMigratedWithPhp54Workaround()
     {
-        if (\PHP_VERSION_ID < 50400 || \PHP_VERSION_ID >= 50411) {
+        if (PHP_VERSION_ID < 50400 || PHP_VERSION_ID >= 50411) {
             $this->markTestSkipped('This PHP version is not affected.');
         }
 
-        $session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')->getMock();
+        $session = $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface');
         $session->expects($this->once())->method('migrate')->with($this->equalTo(false));
 
         $strategy = new SessionAuthenticationStrategy(SessionAuthenticationStrategy::MIGRATE);
@@ -66,7 +65,7 @@ class SessionAuthenticationStrategyTest extends TestCase
 
     public function testSessionIsInvalidated()
     {
-        $session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\SessionInterface')->getMock();
+        $session = $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface');
         $session->expects($this->once())->method('invalidate');
 
         $strategy = new SessionAuthenticationStrategy(SessionAuthenticationStrategy::INVALIDATE);
@@ -75,7 +74,7 @@ class SessionAuthenticationStrategyTest extends TestCase
 
     private function getRequest($session = null)
     {
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->getMock();
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
 
         if (null !== $session) {
             $request->expects($this->any())->method('getSession')->will($this->returnValue($session));
@@ -86,6 +85,6 @@ class SessionAuthenticationStrategyTest extends TestCase
 
     private function getToken()
     {
-        return $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')->getMock();
+        return $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
     }
 }

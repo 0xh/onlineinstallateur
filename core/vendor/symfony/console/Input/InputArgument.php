@@ -31,6 +31,8 @@ class InputArgument
     private $description;
 
     /**
+     * Constructor.
+     *
      * @param string $name        The argument name
      * @param int    $mode        The argument mode: self::REQUIRED or self::OPTIONAL
      * @param string $description A description text
@@ -42,7 +44,7 @@ class InputArgument
     {
         if (null === $mode) {
             $mode = self::OPTIONAL;
-        } elseif (!\is_int($mode) || $mode > 7 || $mode < 1) {
+        } elseif (!is_int($mode) || $mode > 7 || $mode < 1) {
             throw new InvalidArgumentException(sprintf('Argument mode "%s" is not valid.', $mode));
         }
 
@@ -99,7 +101,7 @@ class InputArgument
         if ($this->isArray()) {
             if (null === $default) {
                 $default = array();
-            } elseif (!\is_array($default)) {
+            } elseif (!is_array($default)) {
                 throw new LogicException('A default value for an array argument must be an array.');
             }
         }

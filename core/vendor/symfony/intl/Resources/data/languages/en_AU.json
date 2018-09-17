@@ -1,10 +1,7 @@
 {
-    "Version": "2.1.38.73",
+    "Version": "2.1.8.19",
     "Names": {
-        "bn": "Bengali",
-        "en_US": "United States English",
-        "frc": "frc",
-        "lou": "lou",
-        "ro_MD": "Moldovan"
+        "bax": "Bamum",
+        "en_US": "United States English"
     }
 }

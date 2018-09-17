@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Finder\Shell;
 
-@trigger_error('The '.__NAMESPACE__.'\Command class is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\Command class is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
 
 /**
  * @author Jean-François Simon <contact@jfsimon.fr>
@@ -20,8 +20,19 @@ namespace Symfony\Component\Finder\Shell;
  */
 class Command
 {
+    /**
+     * @var Command|null
+     */
     private $parent;
+
+    /**
+     * @var array
+     */
     private $bits = array();
+
+    /**
+     * @var array
+     */
     private $labels = array();
 
     /**
@@ -29,6 +40,11 @@ class Command
      */
     private $errorHandler;
 
+    /**
+     * Constructor.
+     *
+     * @param Command|null $parent Parent command
+     */
     public function __construct(Command $parent = null)
     {
         $this->parent = $parent;
@@ -47,7 +63,9 @@ class Command
     /**
      * Creates a new Command instance.
      *
-     * @return self
+     * @param Command|null $parent Parent command
+     *
+     * @return Command New Command instance
      */
     public static function create(Command $parent = null)
     {
@@ -83,7 +101,7 @@ class Command
      *
      * @param string|Command $bit
      *
-     * @return $this
+     * @return Command The current Command instance
      */
     public function add($bit)
     {
@@ -97,14 +115,14 @@ class Command
      *
      * @param string|Command $bit
      *
-     * @return $this
+     * @return Command The current Command instance
      */
     public function top($bit)
     {
         array_unshift($this->bits, $bit);
 
         foreach ($this->labels as $label => $index) {
-            ++$this->labels[$label];
+            $this->labels[$label] += 1;
         }
 
         return $this;
@@ -115,7 +133,7 @@ class Command
      *
      * @param string $arg
      *
-     * @return $this
+     * @return Command The current Command instance
      */
     public function arg($arg)
     {
@@ -129,7 +147,7 @@ class Command
      *
      * @param string $esc
      *
-     * @return $this
+     * @return Command The current Command instance
      */
     public function cmd($esc)
     {
@@ -143,7 +161,7 @@ class Command
      *
      * @param string $label The unique label
      *
-     * @return self|string
+     * @return Command The current Command instance
      *
      * @throws \RuntimeException If label already exists
      */
@@ -154,7 +172,7 @@ class Command
         }
 
         $this->bits[] = self::create($this);
-        $this->labels[$label] = \count($this->bits) - 1;
+        $this->labels[$label] = count($this->bits) - 1;
 
         return $this->bits[$this->labels[$label]];
     }
@@ -164,7 +182,7 @@ class Command
      *
      * @param string $label
      *
-     * @return self|string
+     * @return Command The labeled command
      *
      * @throws \RuntimeException
      */
@@ -180,7 +198,7 @@ class Command
     /**
      * Returns parent command (if any).
      *
-     * @return self
+     * @return Command Parent command
      *
      * @throws \RuntimeException If command has no parent
      */
@@ -200,11 +218,13 @@ class Command
      */
     public function length()
     {
-        return \count($this->bits);
+        return count($this->bits);
     }
 
     /**
-     * @return $this
+     * @param \Closure $errorHandler
+     *
+     * @return Command
      */
     public function setErrorHandler(\Closure $errorHandler)
     {
@@ -267,7 +287,7 @@ class Command
      * @param string|Command $bit
      * @param int            $index
      *
-     * @return $this
+     * @return Command The current Command instance
      */
     public function addAtIndex($bit, $index)
     {

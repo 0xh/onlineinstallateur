@@ -25,9 +25,11 @@ class ServiceReferenceGraphEdge
     private $value;
 
     /**
+     * Constructor.
+     *
      * @param ServiceReferenceGraphNode $sourceNode
      * @param ServiceReferenceGraphNode $destNode
-     * @param mixed                     $value
+     * @param string                    $value
      */
     public function __construct(ServiceReferenceGraphNode $sourceNode, ServiceReferenceGraphNode $destNode, $value = null)
     {
@@ -39,7 +41,7 @@ class ServiceReferenceGraphEdge
     /**
      * Returns the value of the edge.
      *
-     * @return string
+     * @return ServiceReferenceGraphNode
      */
     public function getValue()
     {

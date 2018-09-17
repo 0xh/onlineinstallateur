@@ -12,19 +12,18 @@
 namespace Symfony\Component\Validator\Tests\Mapping\Loader;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Validator\Tests\Fixtures\ConstraintA;
 
-class AnnotationLoaderTest extends TestCase
+class AnnotationLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadClassMetadataReturnsTrueIfSuccessful()
     {
@@ -54,7 +53,7 @@ class AnnotationLoaderTest extends TestCase
         $expected->setGroupSequence(array('Foo', 'Entity'));
         $expected->addConstraint(new ConstraintA());
         $expected->addConstraint(new Callback(array('Symfony\Component\Validator\Tests\Fixtures\CallbackClass', 'callback')));
-        $expected->addConstraint(new Callback(array('callback' => 'validateMe', 'payload' => 'foo')));
+        $expected->addConstraint(new Callback('validateMe'));
         $expected->addConstraint(new Callback('validateMeStatic'));
         $expected->addPropertyConstraint('firstName', new NotNull());
         $expected->addPropertyConstraint('firstName', new Range(array('min' => 3)));
@@ -69,7 +68,7 @@ class AnnotationLoaderTest extends TestCase
             'choices' => array('A', 'B'),
         )));
         $expected->addGetterConstraint('lastName', new NotNull());
-        $expected->addGetterMethodConstraint('valid', 'isValid', new IsTrue());
+        $expected->addGetterConstraint('valid', new IsTrue());
         $expected->addGetterConstraint('permissions', new IsTrue());
 
         // load reflection class so that the comparison passes
@@ -95,7 +94,6 @@ class AnnotationLoaderTest extends TestCase
 
         $this->assertEquals($expected_parent, $parent_metadata);
     }
-
     /**
      * Test MetaData merge with parent annotation.
      */
@@ -124,7 +122,7 @@ class AnnotationLoaderTest extends TestCase
         $expected->setGroupSequence(array('Foo', 'Entity'));
         $expected->addConstraint(new ConstraintA());
         $expected->addConstraint(new Callback(array('Symfony\Component\Validator\Tests\Fixtures\CallbackClass', 'callback')));
-        $expected->addConstraint(new Callback(array('callback' => 'validateMe', 'payload' => 'foo')));
+        $expected->addConstraint(new Callback('validateMe'));
         $expected->addConstraint(new Callback('validateMeStatic'));
         $expected->addPropertyConstraint('firstName', new NotNull());
         $expected->addPropertyConstraint('firstName', new Range(array('min' => 3)));
@@ -139,7 +137,7 @@ class AnnotationLoaderTest extends TestCase
             'choices' => array('A', 'B'),
         )));
         $expected->addGetterConstraint('lastName', new NotNull());
-        $expected->addGetterMethodConstraint('valid', 'isValid', new IsTrue());
+        $expected->addGetterConstraint('valid', new IsTrue());
         $expected->addGetterConstraint('permissions', new IsTrue());
 
         // load reflection class so that the comparison passes

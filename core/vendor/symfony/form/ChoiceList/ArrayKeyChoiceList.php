@@ -11,7 +11,7 @@
 
 namespace Symfony\Component\Form\ChoiceList;
 
-@trigger_error('The '.__NAMESPACE__.'\ArrayKeyChoiceList class is deprecated since Symfony 2.8 and will be removed in 3.0. Use '.__NAMESPACE__.'\ArrayChoiceList instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\ArrayKeyChoiceList class is deprecated since version 2.8 and will be removed in 3.0. Use '.__NAMESPACE__.'\ArrayChoiceList instead.', E_USER_DEPRECATED);
 
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 
@@ -74,11 +74,11 @@ class ArrayKeyChoiceList extends ArrayChoiceList
         if (!is_scalar($choice) && null !== $choice) {
             throw new InvalidArgumentException(sprintf(
                 'The value of type "%s" cannot be converted to a valid array key.',
-                \gettype($choice)
+                gettype($choice)
             ));
         }
 
-        if (\is_bool($choice) || (string) (int) $choice === (string) $choice) {
+        if (is_bool($choice) || (string) (int) $choice === (string) $choice) {
             return (int) $choice;
         }
 
@@ -157,13 +157,12 @@ class ArrayKeyChoiceList extends ArrayChoiceList
     /**
      * Flattens and flips an array into the given output variable.
      *
-     * @param array    $choices          The array to flatten
-     * @param callable $value            The callable for generating choice values
-     * @param array    $choicesByValues  The flattened choices indexed by the
-     *                                   corresponding values
-     * @param array    $keysByValues     The original keys indexed by the
-     *                                   corresponding values
-     * @param array    $structuredValues The values indexed by the original keys
+     * @param array    $choices         The array to flatten
+     * @param callable $value           The callable for generating choice values
+     * @param array    $choicesByValues The flattened choices indexed by the
+     *                                  corresponding values
+     * @param array    $keysByValues    The original keys indexed by the
+     *                                  corresponding values
      *
      * @internal Must not be used by user-land code
      */
@@ -176,13 +175,13 @@ class ArrayKeyChoiceList extends ArrayChoiceList
         }
 
         foreach ($choices as $choice => $key) {
-            if (\is_array($key)) {
+            if (is_array($key)) {
                 $this->flatten($key, $value, $choicesByValues, $keysByValues, $structuredValues[$choice]);
 
                 continue;
             }
 
-            $choiceValue = (string) \call_user_func($value, $choice);
+            $choiceValue = (string) call_user_func($value, $choice);
             $choicesByValues[$choiceValue] = $choice;
             $keysByValues[$choiceValue] = $key;
             $structuredValues[$key] = $choiceValue;

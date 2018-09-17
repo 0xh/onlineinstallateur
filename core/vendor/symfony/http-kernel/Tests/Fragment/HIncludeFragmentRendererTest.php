@@ -11,13 +11,12 @@
 
 namespace Symfony\Component\HttpKernel\Tests\Fragment;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\HIncludeFragmentRenderer;
 use Symfony\Component\HttpKernel\UriSigner;
+use Symfony\Component\HttpFoundation\Request;
 
-class HIncludeFragmentRendererTest extends TestCase
+class HIncludeFragmentRendererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \LogicException
@@ -76,7 +75,7 @@ class HIncludeFragmentRendererTest extends TestCase
 
     public function testRenderWithDefaultText()
     {
-        $engine = $this->getMockBuilder('Symfony\\Component\\Templating\\EngineInterface')->getMock();
+        $engine = $this->getMock('Symfony\\Component\\Templating\\EngineInterface');
         $engine->expects($this->once())
             ->method('exists')
             ->with('default')
@@ -85,18 +84,5 @@ class HIncludeFragmentRendererTest extends TestCase
         // only default
         $strategy = new HIncludeFragmentRenderer($engine);
         $this->assertEquals('<hx:include src="/foo">default</hx:include>', $strategy->render('/foo', Request::create('/'), array('default' => 'default'))->getContent());
-    }
-
-    public function testRenderWithEngineAndDefaultText()
-    {
-        $engine = $this->getMockBuilder('Symfony\\Component\\Templating\\EngineInterface')->getMock();
-        $engine->expects($this->once())
-            ->method('exists')
-            ->with('loading...')
-            ->will($this->throwException(new \RuntimeException()));
-
-        // only default
-        $strategy = new HIncludeFragmentRenderer($engine);
-        $this->assertEquals('<hx:include src="/foo">loading...</hx:include>', $strategy->render('/foo', Request::create('/'), array('default' => 'loading...'))->getContent());
     }
 }

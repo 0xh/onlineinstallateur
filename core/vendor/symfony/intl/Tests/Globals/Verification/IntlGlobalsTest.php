@@ -24,7 +24,7 @@ class IntlGlobalsTest extends AbstractIntlGlobalsTest
 {
     protected function setUp()
     {
-        IntlTestHelper::requireFullIntl($this, false);
+        IntlTestHelper::requireFullIntl($this);
 
         parent::setUp();
     }

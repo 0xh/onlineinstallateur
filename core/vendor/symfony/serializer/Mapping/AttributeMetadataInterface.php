@@ -45,6 +45,8 @@ interface AttributeMetadataInterface
 
     /**
      * Merges an {@see AttributeMetadataInterface} with in the current one.
+     *
+     * @param AttributeMetadataInterface $attributeMetadata
      */
     public function merge(AttributeMetadataInterface $attributeMetadata);
 }

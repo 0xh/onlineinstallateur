@@ -33,30 +33,7 @@ class OutputFormatter implements OutputFormatterInterface
      */
     public static function escape($text)
     {
-        $text = preg_replace('/([^\\\\]?)</', '$1\\<', $text);
-
-        return self::escapeTrailingBackslash($text);
-    }
-
-    /**
-     * Escapes trailing "\" in given text.
-     *
-     * @param string $text Text to escape
-     *
-     * @return string Escaped text
-     *
-     * @internal
-     */
-    public static function escapeTrailingBackslash($text)
-    {
-        if ('\\' === substr($text, -1)) {
-            $len = \strlen($text);
-            $text = rtrim($text, '\\');
-            $text = str_replace("\0", '', $text);
-            $text .= str_repeat("\0", $len - \strlen($text));
-        }
-
-        return $text;
+        return preg_replace('/([^\\\\]?)</', '$1\\<', $text);
     }
 
     /**
@@ -82,7 +59,9 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets the decorated flag.
+     *
+     * @param bool $decorated Whether to decorate the messages or not
      */
     public function setDecorated($decorated)
     {
@@ -90,7 +69,9 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the decorated flag.
+     *
+     * @return bool true if the output will decorate messages, false otherwise
      */
     public function isDecorated()
     {
@@ -98,7 +79,10 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Sets a new style.
+     *
+     * @param string                        $name  The style name
+     * @param OutputFormatterStyleInterface $style The style instance
      */
     public function setStyle($name, OutputFormatterStyleInterface $style)
     {
@@ -106,7 +90,11 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if output formatter has style with specified name.
+     *
+     * @param string $name
+     *
+     * @return bool
      */
     public function hasStyle($name)
     {
@@ -114,7 +102,13 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Gets style options from style with specified name.
+     *
+     * @param string $name
+     *
+     * @return OutputFormatterStyleInterface
+     *
+     * @throws InvalidArgumentException When style isn't defined
      */
     public function getStyle($name)
     {
@@ -126,14 +120,18 @@ class OutputFormatter implements OutputFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Formats a message according to the given styles.
+     *
+     * @param string $message The message to style
+     *
+     * @return string The styled message
      */
     public function format($message)
     {
         $message = (string) $message;
         $offset = 0;
         $output = '';
-        $tagRegex = '[a-z][a-z0-9_=;-]*+';
+        $tagRegex = '[a-z][a-z0-9_=;-]*';
         preg_match_all("#<(($tagRegex) | /($tagRegex)?)>#ix", $message, $matches, PREG_OFFSET_CAPTURE);
         foreach ($matches[0] as $i => $match) {
             $pos = $match[1];
@@ -145,7 +143,7 @@ class OutputFormatter implements OutputFormatterInterface
 
             // add the text up to the next tag
             $output .= $this->applyCurrentStyle(substr($message, $offset, $pos - $offset));
-            $offset = $pos + \strlen($text);
+            $offset = $pos + strlen($text);
 
             // opening tag?
             if ($open = '/' != $text[1]) {
@@ -168,10 +166,6 @@ class OutputFormatter implements OutputFormatterInterface
 
         $output .= $this->applyCurrentStyle(substr($message, $offset));
 
-        if (false !== strpos($output, "\0")) {
-            return strtr($output, array("\0" => '\\', '\\<' => '<'));
-        }
-
         return str_replace('\\<', '<', $output);
     }
 
@@ -188,7 +182,7 @@ class OutputFormatter implements OutputFormatterInterface
      *
      * @param string $string
      *
-     * @return OutputFormatterStyle|false false if string is not format string
+     * @return OutputFormatterStyle|bool false if string is not format string
      */
     private function createStyleFromString($string)
     {
@@ -229,6 +223,6 @@ class OutputFormatter implements OutputFormatterInterface
      */
     private function applyCurrentStyle($text)
     {
-        return $this->isDecorated() && \strlen($text) > 0 ? $this->styleStack->getCurrent()->apply($text) : $text;
+        return $this->isDecorated() && strlen($text) > 0 ? $this->styleStack->getCurrent()->apply($text) : $text;
     }
 }

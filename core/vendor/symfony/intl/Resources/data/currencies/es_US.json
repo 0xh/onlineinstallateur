@@ -1,37 +1,13 @@
 {
-    "Version": "2.1.38.73",
+    "Version": "2.1.8.19",
     "Names": {
         "JPY": [
             "¥",
             "yen"
         ],
-        "MYR": [
-            "MYR",
-            "ringit"
-        ],
-        "STN": [
-            "STN",
-            "dobra santotomense"
-        ],
-        "THB": [
-            "THB",
-            "bat"
-        ],
         "USD": [
             "$",
             "dólar estadounidense"
-        ],
-        "UZS": [
-            "UZS",
-            "sum"
-        ],
-        "XAF": [
-            "XAF",
-            "franco CFA de África central"
-        ],
-        "XOF": [
-            "XOF",
-            "franco CFA de África Occidental"
         ]
     }
 }

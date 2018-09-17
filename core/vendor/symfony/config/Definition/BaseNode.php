@@ -33,14 +33,16 @@ abstract class BaseNode implements NodeInterface
     protected $attributes = array();
 
     /**
-     * @param string|null        $name   The name of the node
-     * @param NodeInterface|null $parent The parent of this node
+     * Constructor.
      *
-     * @throws \InvalidArgumentException if the name contains a period
+     * @param string        $name   The name of the node
+     * @param NodeInterface $parent The parent of this node
+     *
+     * @throws \InvalidArgumentException if the name contains a period.
      */
     public function __construct($name, NodeInterface $parent = null)
     {
-        if (false !== strpos($name = (string) $name, '.')) {
+        if (false !== strpos($name, '.')) {
             throw new \InvalidArgumentException('The name must not contain ".".');
         }
 
@@ -170,7 +172,9 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if this node is required.
+     *
+     * @return bool
      */
     public function isRequired()
     {
@@ -178,7 +182,9 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the name of this node.
+     *
+     * @return string The Node's name.
      */
     public function getName()
     {
@@ -186,7 +192,9 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves the path of this node.
+     *
+     * @return string The Node's path
      */
     public function getPath()
     {
@@ -200,7 +208,14 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Merges two values together.
+     *
+     * @param mixed $leftSide
+     * @param mixed $rightSide
+     *
+     * @return mixed The merged value
+     *
+     * @throws ForbiddenOverwriteException
      */
     final public function merge($leftSide, $rightSide)
     {
@@ -220,7 +235,11 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Normalizes a value, applying all normalization closures.
+     *
+     * @param mixed $value Value to normalize.
+     *
+     * @return mixed The normalized value.
      */
     final public function normalize($value)
     {
@@ -268,7 +287,14 @@ abstract class BaseNode implements NodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Finalizes a value, applying all finalization closures.
+     *
+     * @param mixed $value The value to finalize
+     *
+     * @return mixed The finalized value
+     *
+     * @throws Exception
+     * @throws InvalidConfigurationException
      */
     final public function finalize($value)
     {
@@ -303,7 +329,7 @@ abstract class BaseNode implements NodeInterface
     /**
      * Normalizes the value.
      *
-     * @param mixed $value The value to normalize
+     * @param mixed $value The value to normalize.
      *
      * @return mixed The normalized value
      */

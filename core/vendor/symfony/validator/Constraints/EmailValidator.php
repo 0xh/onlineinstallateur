@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Validator\Constraints;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\RuntimeException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -22,11 +22,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class EmailValidator extends ConstraintValidator
 {
+    /**
+     * @var bool
+     */
     private $isStrict;
 
-    /**
-     * @param bool $strict
-     */
     public function __construct($strict = false)
     {
         $this->isStrict = $strict;
@@ -45,7 +45,7 @@ class EmailValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_scalar($value) && !(\is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedTypeException($value, 'string');
         }
 
@@ -56,8 +56,8 @@ class EmailValidator extends ConstraintValidator
         }
 
         if ($constraint->strict) {
-            if (!class_exists('\Egulias\EmailValidator\EmailValidator') || interface_exists('\Egulias\EmailValidator\Validation\EmailValidation')) {
-                throw new RuntimeException('Strict email validation requires egulias/email-validator:~1.2');
+            if (!class_exists('\Egulias\EmailValidator\EmailValidator')) {
+                throw new RuntimeException('Strict email validation requires egulias/email-validator');
             }
 
             $strictValidator = new \Egulias\EmailValidator\EmailValidator();
@@ -93,7 +93,7 @@ class EmailValidator extends ConstraintValidator
             return;
         }
 
-        $host = (string) substr($value, strrpos($value, '@') + 1);
+        $host = substr($value, strpos($value, '@') + 1);
 
         // Check for host DNS resource records
         if ($constraint->checkMX) {
@@ -138,7 +138,7 @@ class EmailValidator extends ConstraintValidator
      */
     private function checkMX($host)
     {
-        return '' !== $host && checkdnsrr($host, 'MX');
+        return checkdnsrr($host, 'MX');
     }
 
     /**
@@ -150,6 +150,6 @@ class EmailValidator extends ConstraintValidator
      */
     private function checkHost($host)
     {
-        return '' !== $host && ($this->checkMX($host) || (checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA')));
+        return $this->checkMX($host) || (checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA'));
     }
 }

@@ -21,83 +21,105 @@ interface AdapterInterface
     /**
      * @param bool $followLinks
      *
-     * @return $this
+     * @return AdapterInterface Current instance
      */
     public function setFollowLinks($followLinks);
 
     /**
      * @param int $mode
      *
-     * @return $this
+     * @return AdapterInterface Current instance
      */
     public function setMode($mode);
 
     /**
-     * @return $this
+     * @param array $exclude
+     *
+     * @return AdapterInterface Current instance
      */
     public function setExclude(array $exclude);
 
     /**
-     * @return $this
+     * @param array $depths
+     *
+     * @return AdapterInterface Current instance
      */
     public function setDepths(array $depths);
 
     /**
-     * @return $this
+     * @param array $names
+     *
+     * @return AdapterInterface Current instance
      */
     public function setNames(array $names);
 
     /**
-     * @return $this
+     * @param array $notNames
+     *
+     * @return AdapterInterface Current instance
      */
     public function setNotNames(array $notNames);
 
     /**
-     * @return $this
+     * @param array $contains
+     *
+     * @return AdapterInterface Current instance
      */
     public function setContains(array $contains);
 
     /**
-     * @return $this
+     * @param array $notContains
+     *
+     * @return AdapterInterface Current instance
      */
     public function setNotContains(array $notContains);
 
     /**
-     * @return $this
+     * @param array $sizes
+     *
+     * @return AdapterInterface Current instance
      */
     public function setSizes(array $sizes);
 
     /**
-     * @return $this
+     * @param array $dates
+     *
+     * @return AdapterInterface Current instance
      */
     public function setDates(array $dates);
 
     /**
-     * @return $this
+     * @param array $filters
+     *
+     * @return AdapterInterface Current instance
      */
     public function setFilters(array $filters);
 
     /**
      * @param \Closure|int $sort
      *
-     * @return $this
+     * @return AdapterInterface Current instance
      */
     public function setSort($sort);
 
     /**
-     * @return $this
+     * @param array $paths
+     *
+     * @return AdapterInterface Current instance
      */
     public function setPath(array $paths);
 
     /**
-     * @return $this
+     * @param array $notPaths
+     *
+     * @return AdapterInterface Current instance
      */
     public function setNotPath(array $notPaths);
 
     /**
      * @param bool $ignore
      *
-     * @return $this
+     * @return AdapterInterface Current instance
      */
     public function ignoreUnreadableDirs($ignore = true);
 

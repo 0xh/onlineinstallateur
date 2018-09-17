@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -185,13 +185,9 @@
             "BYB",
             "Fehérorosz új rubel (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "fehérorosz rubel"
-        ],
         "BYR": [
             "BYR",
-            "fehérorosz rubel (2000–2016)"
+            "fehérorosz rubel"
         ],
         "BZD": [
             "BZD",
@@ -224,10 +220,6 @@
         "CLP": [
             "CLP",
             "chilei peso"
-        ],
-        "CNH": [
-            "CNH",
-            "kínai jüan (offshore)"
         ],
         "CNY": [
             "CNY",
@@ -355,7 +347,7 @@
         ],
         "GBP": [
             "GBP",
-            "brit font"
+            "brit font sterling"
         ],
         "GEK": [
             "GEK",
@@ -434,7 +426,7 @@
             "haiti gourde"
         ],
         "HUF": [
-            "Ft",
+            "HUF",
             "magyar forint"
         ],
         "IDR": [
@@ -615,10 +607,6 @@
         ],
         "MRO": [
             "MRO",
-            "mauritániai ouguiya (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "mauritániai ouguiya"
         ],
         "MTL": [
@@ -711,15 +699,15 @@
         ],
         "PEI": [
             "PEI",
-            "perui inti"
+            "Perui inti"
         ],
         "PEN": [
             "PEN",
-            "perui sol"
+            "perui sol nuevo"
         ],
         "PES": [
             "PES",
-            "perui sol (1863–1965)"
+            "Perui sol"
         ],
         "PGK": [
             "PGK",
@@ -847,10 +835,6 @@
         ],
         "STD": [
             "STD",
-            "São Tomé és Príncipe-i dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "São Tomé és Príncipe-i dobra"
         ],
         "SUR": [

@@ -11,21 +11,20 @@
 
 namespace Symfony\Component\Security\Core\Tests\User;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Ldap\Exception\ConnectionException;
 use Symfony\Component\Security\Core\User\LdapUserProvider;
+use Symfony\Component\Ldap\Exception\ConnectionException;
 
 /**
  * @requires extension ldap
  */
-class LdapUserProviderTest extends TestCase
+class LdapUserProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     public function testLoadUserByUsernameFailsIfCantConnectToLdap()
     {
-        $ldap = $this->getMockBuilder('Symfony\Component\Ldap\LdapClientInterface')->getMock();
+        $ldap = $this->getMock('Symfony\Component\Ldap\LdapClientInterface');
         $ldap
             ->expects($this->once())
             ->method('bind')
@@ -41,7 +40,7 @@ class LdapUserProviderTest extends TestCase
      */
     public function testLoadUserByUsernameFailsIfNoLdapEntries()
     {
-        $ldap = $this->getMockBuilder('Symfony\Component\Ldap\LdapClientInterface')->getMock();
+        $ldap = $this->getMock('Symfony\Component\Ldap\LdapClientInterface');
         $ldap
             ->expects($this->once())
             ->method('escape')
@@ -57,7 +56,7 @@ class LdapUserProviderTest extends TestCase
      */
     public function testLoadUserByUsernameFailsIfMoreThanOneLdapEntry()
     {
-        $ldap = $this->getMockBuilder('Symfony\Component\Ldap\LdapClientInterface')->getMock();
+        $ldap = $this->getMock('Symfony\Component\Ldap\LdapClientInterface');
         $ldap
             ->expects($this->once())
             ->method('escape')
@@ -79,7 +78,7 @@ class LdapUserProviderTest extends TestCase
 
     public function testSuccessfulLoadUserByUsername()
     {
-        $ldap = $this->getMockBuilder('Symfony\Component\Ldap\LdapClientInterface')->getMock();
+        $ldap = $this->getMock('Symfony\Component\Ldap\LdapClientInterface');
         $ldap
             ->expects($this->once())
             ->method('escape')

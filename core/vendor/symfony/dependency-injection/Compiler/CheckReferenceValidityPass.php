@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Exception\ScopeCrossingInjectionException;
 use Symfony\Component\DependencyInjection\Exception\ScopeWideningInjectionException;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Checks the validity of references.
@@ -39,6 +39,8 @@ class CheckReferenceValidityPass implements CompilerPassInterface
 
     /**
      * Processes the ContainerBuilder to validate References.
+     *
+     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
@@ -83,12 +85,12 @@ class CheckReferenceValidityPass implements CompilerPassInterface
      *
      * @param array $arguments An array of Reference objects
      *
-     * @throws RuntimeException when there is a reference to an abstract definition
+     * @throws RuntimeException when there is a reference to an abstract definition.
      */
     private function validateReferences(array $arguments)
     {
         foreach ($arguments as $argument) {
-            if (\is_array($argument)) {
+            if (is_array($argument)) {
                 $this->validateReferences($argument);
             } elseif ($argument instanceof Reference) {
                 $targetDefinition = $this->getDefinition((string) $argument);
@@ -109,6 +111,9 @@ class CheckReferenceValidityPass implements CompilerPassInterface
 
     /**
      * Validates the scope of a single Reference.
+     *
+     * @param Reference  $reference
+     * @param Definition $definition
      *
      * @throws ScopeWideningInjectionException when the definition references a service of a narrower scope
      * @throws ScopeCrossingInjectionException when the definition references a service of another scope hierarchy
@@ -133,11 +138,11 @@ class CheckReferenceValidityPass implements CompilerPassInterface
 
         $id = (string) $reference;
 
-        if (\in_array($scope, $this->currentScopeChildren, true)) {
+        if (in_array($scope, $this->currentScopeChildren, true)) {
             throw new ScopeWideningInjectionException($this->currentId, $this->currentScope, $id, $scope);
         }
 
-        if (!\in_array($scope, $this->currentScopeAncestors, true)) {
+        if (!in_array($scope, $this->currentScopeAncestors, true)) {
             throw new ScopeCrossingInjectionException($this->currentId, $this->currentScope, $id, $scope);
         }
     }

@@ -39,7 +39,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Creates a new button from a form configuration.
      *
-     * @param FormConfigInterface $config The button's configuration
+     * @param FormConfigInterface $config The button's configuration.
      */
     public function __construct(FormConfigInterface $config)
     {
@@ -51,7 +51,7 @@ class Button implements \IteratorAggregate, FormInterface
      *
      * @param mixed $offset
      *
-     * @return bool Always returns false
+     * @return bool Always returns false.
      */
     public function offsetExists($offset)
     {
@@ -106,10 +106,6 @@ class Button implements \IteratorAggregate, FormInterface
      */
     public function setParent(FormInterface $parent = null)
     {
-        if ($this->submitted) {
-            throw new AlreadySubmittedException('You cannot set the parent of a submitted button');
-        }
-
         $this->parent = $parent;
     }
 
@@ -156,7 +152,7 @@ class Button implements \IteratorAggregate, FormInterface
      *
      * @param string $name
      *
-     * @return bool Always returns false
+     * @return bool Always returns false.
      */
     public function has($name)
     {
@@ -230,7 +226,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return array Always returns an empty array
+     * @return array Always returns an empty array.
      */
     public function getExtraData()
     {
@@ -240,7 +236,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Returns the button's configuration.
      *
-     * @return FormConfigInterface The configuration
+     * @return FormConfigInterface The configuration.
      */
     public function getConfig()
     {
@@ -250,7 +246,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Returns whether the button is submitted.
      *
-     * @return bool true if the button was submitted
+     * @return bool true if the button was submitted.
      */
     public function isSubmitted()
     {
@@ -260,7 +256,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Returns the name by which the button is identified in forms.
      *
-     * @return string The name of the button
+     * @return string The name of the button.
      */
     public function getName()
     {
@@ -277,6 +273,8 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
+     * @param FormError $error
+     *
      * @throws BadMethodCallException
      */
     public function addError(FormError $error)
@@ -287,7 +285,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return bool Always returns true
+     * @return bool Always returns true.
      */
     public function isValid()
     {
@@ -297,7 +295,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return bool Always returns false
+     * @return bool Always returns false.
      */
     public function isRequired()
     {
@@ -319,7 +317,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return bool Always returns true
+     * @return bool Always returns true.
      */
     public function isEmpty()
     {
@@ -329,7 +327,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return bool Always returns true
+     * @return bool Always returns true.
      */
     public function isSynchronized()
     {
@@ -368,12 +366,12 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Submits data to the button.
      *
-     * @param null|string $submittedData The data
-     * @param bool        $clearMissing  Not used
+     * @param null|string $submittedData The data.
+     * @param bool        $clearMissing  Not used.
      *
-     * @return $this
+     * @return Button The button instance
      *
-     * @throws Exception\AlreadySubmittedException if the button has already been submitted
+     * @throws Exception\AlreadySubmittedException If the button has already been submitted.
      */
     public function submit($submittedData, $clearMissing = true)
     {
@@ -425,7 +423,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return int Always returns 0
+     * @return int Always returns 0.
      */
     public function count()
     {
@@ -435,7 +433,7 @@ class Button implements \IteratorAggregate, FormInterface
     /**
      * Unsupported method.
      *
-     * @return \EmptyIterator Always returns an empty iterator
+     * @return \EmptyIterator Always returns an empty iterator.
      */
     public function getIterator()
     {

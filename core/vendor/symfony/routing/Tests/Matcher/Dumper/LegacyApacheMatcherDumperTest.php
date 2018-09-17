@@ -11,15 +11,14 @@
 
 namespace Symfony\Component\Routing\Tests\Matcher\Dumper;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Routing\Matcher\Dumper\ApacheMatcherDumper;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\Matcher\Dumper\ApacheMatcherDumper;
 
 /**
  * @group legacy
  */
-class LegacyApacheMatcherDumperTest extends TestCase
+class LegacyApacheMatcherDumperTest extends \PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 

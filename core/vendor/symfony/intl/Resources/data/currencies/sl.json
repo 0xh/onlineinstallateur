@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -62,7 +62,7 @@
             "avstrijski šiling"
         ],
         "AUD": [
-            "AUD",
+            "A$",
             "avstralski dolar"
         ],
         "AWG": [
@@ -154,7 +154,7 @@
             "stari brazilski kruzeiro (1990–1993)"
         ],
         "BRL": [
-            "BRL",
+            "R$",
             "brazilski real"
         ],
         "BRN": [
@@ -185,13 +185,9 @@
             "BYB",
             "beloruski novi rubelj (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "beloruski rubelj"
-        ],
         "BYR": [
             "BYR",
-            "beloruski rubelj (2000–2016)"
+            "beloruski rubelj"
         ],
         "BZD": [
             "BZD",
@@ -225,13 +221,9 @@
             "CLP",
             "čilski peso"
         ],
-        "CNH": [
-            "CNH",
-            "kitajski juan (offshore)"
-        ],
         "CNY": [
             "CN¥",
-            "kitajski juan"
+            "kitajski juan renminbi"
         ],
         "COP": [
             "COP",
@@ -354,7 +346,7 @@
             "francoski frank"
         ],
         "GBP": [
-            "GBP",
+            "£",
             "britanski funt"
         ],
         "GEK": [
@@ -615,10 +607,6 @@
         ],
         "MRO": [
             "MRO",
-            "mavretanska uguija (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "mavretanska uguija"
         ],
         "MTL": [
@@ -642,7 +630,7 @@
             "malavijska kvača"
         ],
         "MXN": [
-            "MXN",
+            "MX$",
             "mehiški peso"
         ],
         "MXP": [
@@ -698,7 +686,7 @@
             "nepalska rupija"
         ],
         "NZD": [
-            "NZD",
+            "NZ$",
             "novozelandski dolar"
         ],
         "OMR": [
@@ -715,11 +703,11 @@
         ],
         "PEN": [
             "PEN",
-            "perujski sol"
+            "perujski novi sol"
         ],
         "PES": [
             "PES",
-            "perujski sol (1863–1965)"
+            "perujski sol"
         ],
         "PGK": [
             "PGK",
@@ -847,10 +835,6 @@
         ],
         "STD": [
             "STD",
-            "saotomejska dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "saotomejska dobra"
         ],
         "SUR": [
@@ -870,7 +854,7 @@
             "svazijski lilangeni"
         ],
         "THB": [
-            "THB",
+            "฿",
             "tajski baht"
         ],
         "TJR": [
@@ -914,7 +898,7 @@
             "dolar Trinidada in Tobaga"
         ],
         "TWD": [
-            "TWD",
+            "NT$",
             "novi tajvanski dolar"
         ],
         "TZS": [
@@ -986,7 +970,7 @@
             "CFA frank BEAC"
         ],
         "XCD": [
-            "XCD",
+            "EC$",
             "vzhodnokaribski dolar"
         ],
         "XEU": [
@@ -1003,7 +987,7 @@
         ],
         "XOF": [
             "CFA",
-            "zahodnoafriški frank CFA"
+            "CFA frank BCEAO"
         ],
         "XPF": [
             "CFPF",

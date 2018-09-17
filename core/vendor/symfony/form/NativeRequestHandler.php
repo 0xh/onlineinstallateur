@@ -21,10 +21,23 @@ use Symfony\Component\Form\Util\ServerParams;
  */
 class NativeRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * @var ServerParams
+     */
     private $serverParams;
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct(ServerParams $params = null)
+    {
+        $this->serverParams = $params ?: new ServerParams();
+    }
+
+    /**
      * The allowed keys of the $_FILES array.
+     *
+     * @var array
      */
     private static $fileKeys = array(
         'error',
@@ -33,11 +46,6 @@ class NativeRequestHandler implements RequestHandlerInterface
         'tmp_name',
         'type',
     );
-
-    public function __construct(ServerParams $params = null)
-    {
-        $this->serverParams = $params ?: new ServerParams();
-    }
 
     /**
      * {@inheritdoc}
@@ -73,12 +81,15 @@ class NativeRequestHandler implements RequestHandlerInterface
             // Mark the form with an error if the uploaded size was too large
             // This is done here and not in FormValidator because $_POST is
             // empty when that error occurs. Hence the form is never submitted.
-            if ($this->serverParams->hasPostMaxSizeBeenExceeded()) {
+            $contentLength = $this->serverParams->getContentLength();
+            $maxContentLength = $this->serverParams->getPostMaxSize();
+
+            if (!empty($maxContentLength) && $contentLength > $maxContentLength) {
                 // Submit the form, but don't clear the default values
                 $form->submit(null, false);
 
                 $form->addError(new FormError(
-                    \call_user_func($form->getConfig()->getOption('upload_max_size_message')),
+                    $form->getConfig()->getOption('post_max_size_message'),
                     null,
                     array('{{ max }}' => $this->serverParams->getNormalizedIniPostMaxSize())
                 ));
@@ -103,7 +114,7 @@ class NativeRequestHandler implements RequestHandlerInterface
                 return;
             }
 
-            if (\is_array($params) && \is_array($files)) {
+            if (is_array($params) && is_array($files)) {
                 $data = array_replace_recursive($params, $files);
             } else {
                 $data = $params ?: $files;
@@ -111,7 +122,7 @@ class NativeRequestHandler implements RequestHandlerInterface
         }
 
         // Don't auto-submit the form unless at least one field is present.
-        if ('' === $name && \count(array_intersect_key($data, $form->all())) <= 0) {
+        if ('' === $name && count(array_intersect_key($data, $form->all())) <= 0) {
             return;
         }
 
@@ -119,20 +130,9 @@ class NativeRequestHandler implements RequestHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isFileUpload($data)
-    {
-        // POST data will always be strings or arrays of strings. Thus, we can be sure
-        // that the submitted data is a file upload if the "error" value is an integer
-        // (this value must have been injected by PHP itself).
-        return \is_array($data) && isset($data['error']) && \is_int($data['error']);
-    }
-
-    /**
      * Returns the method used to submit the request to the server.
      *
-     * @return string The request method
+     * @return string The request method.
      */
     private static function getRequestMethod()
     {
@@ -162,18 +162,20 @@ class NativeRequestHandler implements RequestHandlerInterface
      * This method is identical to {@link \Symfony\Component\HttpFoundation\FileBag::fixPhpFilesArray}
      * and should be kept as such in order to port fixes quickly and easily.
      *
+     * @param array $data
+     *
      * @return array
      */
     private static function fixPhpFilesArray($data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             return $data;
         }
 
         $keys = array_keys($data);
         sort($keys);
 
-        if (self::$fileKeys !== $keys || !isset($data['name']) || !\is_array($data['name'])) {
+        if (self::$fileKeys !== $keys || !isset($data['name']) || !is_array($data['name'])) {
             return $data;
         }
 
@@ -198,13 +200,13 @@ class NativeRequestHandler implements RequestHandlerInterface
     /**
      * Sets empty uploaded files to NULL in the given uploaded files array.
      *
-     * @param mixed $data The file upload data
+     * @param mixed $data The file upload data.
      *
-     * @return array|null Returns the stripped upload data
+     * @return array|null Returns the stripped upload data.
      */
     private static function stripEmptyFiles($data)
     {
-        if (!\is_array($data)) {
+        if (!is_array($data)) {
             return $data;
         }
 

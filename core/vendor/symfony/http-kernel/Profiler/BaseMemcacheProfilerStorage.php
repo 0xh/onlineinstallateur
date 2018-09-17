@@ -29,6 +29,8 @@ abstract class BaseMemcacheProfilerStorage implements ProfilerStorageInterface
     protected $lifetime;
 
     /**
+     * Constructor.
+     *
      * @param string $dsn      A data source name
      * @param string $username
      * @param string $password
@@ -56,11 +58,11 @@ abstract class BaseMemcacheProfilerStorage implements ProfilerStorageInterface
         $result = array();
 
         foreach ($profileList as $item) {
-            if (0 === $limit) {
+            if ($limit === 0) {
                 break;
             }
 
-            if ('' == $item) {
+            if ($item == '') {
                 continue;
             }
 
@@ -122,7 +124,7 @@ abstract class BaseMemcacheProfilerStorage implements ProfilerStorageInterface
         $profileList = explode("\n", $indexContent);
 
         foreach ($profileList as $item) {
-            if ('' == $item) {
+            if ($item == '') {
                 continue;
             }
 
@@ -302,7 +304,7 @@ abstract class BaseMemcacheProfilerStorage implements ProfilerStorageInterface
 
     private function isItemNameValid($name)
     {
-        $length = \strlen($name);
+        $length = strlen($name);
 
         if ($length > 250) {
             throw new \RuntimeException(sprintf('The memcache item key "%s" is too long (%s bytes). Allowed maximum size is 250 bytes.', $name, $length));

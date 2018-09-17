@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -217,13 +217,9 @@
             "BYB",
             "Rùbal ùr Bealaruiseach (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "Rùbal Bealaruiseach"
-        ],
         "BYR": [
             "BYR",
-            "Rùbal Bealaruiseach (2000–2016)"
+            "Rùbal Bealaruiseach"
         ],
         "BZD": [
             "BZD",
@@ -679,10 +675,6 @@
         ],
         "MRO": [
             "MRO",
-            "Ouguiya Moratàineach (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "Ouguiya Moratàineach"
         ],
         "MTL": [
@@ -783,7 +775,7 @@
         ],
         "PEN": [
             "PEN",
-            "Sol Pearùthach"
+            "Sol ùr Pearùthach"
         ],
         "PES": [
             "PES",
@@ -915,10 +907,6 @@
         ],
         "STD": [
             "STD",
-            "Dobra São Tomé agus Príncipe (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "Dobra São Tomé agus Príncipe"
         ],
         "SUR": [

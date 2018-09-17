@@ -11,10 +11,10 @@
 
 namespace Symfony\Component\Form\Extension\Csrf;
 
-use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderAdapter;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface;
+use Symfony\Component\Form\AbstractExtension;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -25,11 +25,24 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class CsrfExtension extends AbstractExtension
 {
+    /**
+     * @var CsrfTokenManagerInterface
+     */
     private $tokenManager;
+
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
+
+    /**
+     * @var null|string
+     */
     private $translationDomain;
 
     /**
+     * Constructor.
+     *
      * @param CsrfTokenManagerInterface $tokenManager      The CSRF token manager
      * @param TranslatorInterface       $translator        The translator for translating error messages
      * @param null|string               $translationDomain The translation domain for translating

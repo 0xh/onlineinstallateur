@@ -11,19 +11,18 @@
 
 namespace Symfony\Component\Form\Tests\Extension\HttpFoundation\EventListener;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\HttpFoundation\EventListener\BindRequestListener;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @group legacy
  */
-class LegacyBindRequestListenerTest extends TestCase
+class LegacyBindRequestListenerTest extends \PHPUnit_Framework_TestCase
 {
     private $values;
 
@@ -93,7 +92,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => $method,
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $form = new Form($config);
         $event = new FormEvent($form, $request);
@@ -116,7 +115,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => $method,
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('', null, $dispatcher);
         $form = new Form($config);
         $event = new FormEvent($form, $request);
@@ -139,10 +138,10 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => $method,
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $config->setCompound(true);
-        $config->setDataMapper($this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock());
+        $config->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'));
         $form = new Form($config);
         $event = new FormEvent($form, $request);
 
@@ -162,7 +161,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => $method,
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $config->setCompound(false);
         $form = new Form($config);
@@ -182,7 +181,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $form = new Form($config);
         $event = new FormEvent($form, $request);
@@ -202,7 +201,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('', null, $dispatcher);
         $form = new Form($config);
         $event = new FormEvent($form, $request);
@@ -222,10 +221,10 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $config->setCompound(true);
-        $config->setDataMapper($this->getMockBuilder('Symfony\Component\Form\DataMapperInterface')->getMock());
+        $config->setDataMapper($this->getMock('Symfony\Component\Form\DataMapperInterface'));
         $form = new Form($config);
         $event = new FormEvent($form, $request);
 
@@ -241,7 +240,7 @@ class LegacyBindRequestListenerTest extends TestCase
             'REQUEST_METHOD' => 'GET',
         ));
 
-        $dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')->getMock();
+        $dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         $config = new FormConfigBuilder('author', null, $dispatcher);
         $config->setCompound(false);
         $form = new Form($config);

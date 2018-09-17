@@ -11,16 +11,15 @@
 
 namespace Symfony\Component\Security\Http\Tests\EntryPoint;
 
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Http\EntryPoint\DigestAuthenticationEntryPoint;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\NonceExpiredException;
-use Symfony\Component\Security\Http\EntryPoint\DigestAuthenticationEntryPoint;
 
-class DigestAuthenticationEntryPointTest extends TestCase
+class DigestAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
 {
     public function testStart()
     {
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->getMock();
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
 
         $authenticationException = new AuthenticationException('TheAuthenticationExceptionMessage');
 
@@ -33,7 +32,7 @@ class DigestAuthenticationEntryPointTest extends TestCase
 
     public function testStartWithNoException()
     {
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->getMock();
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
 
         $entryPoint = new DigestAuthenticationEntryPoint('TheRealmName', 'TheSecret');
         $response = $entryPoint->start($request);
@@ -44,7 +43,7 @@ class DigestAuthenticationEntryPointTest extends TestCase
 
     public function testStartWithNonceExpiredException()
     {
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')->getMock();
+        $request = $this->getMock('Symfony\Component\HttpFoundation\Request');
 
         $nonceExpiredException = new NonceExpiredException('TheNonceExpiredExceptionMessage');
 

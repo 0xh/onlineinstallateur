@@ -11,8 +11,8 @@
 
 namespace Symfony\Component\Translation\Writer;
 
-use Symfony\Component\Translation\Dumper\DumperInterface;
 use Symfony\Component\Translation\MessageCatalogue;
+use Symfony\Component\Translation\Dumper\DumperInterface;
 
 /**
  * TranslationWriter writes translation messages.
@@ -21,6 +21,11 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 class TranslationWriter
 {
+    /**
+     * Dumpers used for export.
+     *
+     * @var array
+     */
     private $dumpers = array();
 
     /**
@@ -40,9 +45,7 @@ class TranslationWriter
     public function disableBackup()
     {
         foreach ($this->dumpers as $dumper) {
-            if (method_exists($dumper, 'setBackup')) {
-                $dumper->setBackup(false);
-            }
+            $dumper->setBackup(false);
         }
     }
 

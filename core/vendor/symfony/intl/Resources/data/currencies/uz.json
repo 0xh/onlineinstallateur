@@ -1,29 +1,29 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "AED": [
             "AED",
-            "Birlashgan Arab Amirliklari dirhami"
+            "AED"
         ],
         "AFN": [
             "AFN",
-            "Afg‘oniston afg‘oniysi"
+            "AFN"
         ],
         "ALL": [
             "ALL",
-            "Albaniya leki"
+            "Alban leki"
         ],
         "AMD": [
             "AMD",
-            "Armaniston drami"
+            "AMD"
         ],
         "ANG": [
             "ANG",
-            "Niderlandiya antil guldeni"
+            "Golland Antil guldeni"
         ],
         "AOA": [
             "AOA",
-            "Angola kvanzasi"
+            "AOA"
         ],
         "ARS": [
             "ARS",
@@ -39,11 +39,11 @@
         ],
         "AZN": [
             "AZN",
-            "Ozarbayjon manati"
+            "AZN"
         ],
         "BAM": [
             "BAM",
-            "Bosniya va Gertsegovina ayirboshlash markasi"
+            "Bosniya va Gertsogovina ayriboshlash markasi"
         ],
         "BBD": [
             "BBD",
@@ -51,7 +51,7 @@
         ],
         "BDT": [
             "BDT",
-            "Bangladesh takasi"
+            "BDT"
         ],
         "BGN": [
             "BGN",
@@ -59,11 +59,11 @@
         ],
         "BHD": [
             "BHD",
-            "Bahrayn dinori"
+            "BHD"
         ],
         "BIF": [
             "BIF",
-            "Burundi franki"
+            "BIF"
         ],
         "BMD": [
             "BMD",
@@ -71,15 +71,15 @@
         ],
         "BND": [
             "BND",
-            "Bruney dollari"
+            "BND"
         ],
         "BOB": [
             "BOB",
-            "Boliviya bolivianosi"
+            "Boliviya bolivyani"
         ],
         "BRL": [
             "R$",
-            "Braziliya reali"
+            "Brazil reali"
         ],
         "BSD": [
             "BSD",
@@ -87,19 +87,15 @@
         ],
         "BTN": [
             "BTN",
-            "Butan ngultrumi"
+            "BTN"
         ],
         "BWP": [
             "BWP",
-            "Botsvana pulasi"
-        ],
-        "BYN": [
-            "BYN",
-            "Belarus rubli"
+            "BWP"
         ],
         "BYR": [
             "BYR",
-            "Belarus rubli (2000–2016)"
+            "Belarus rubli"
         ],
         "BZD": [
             "BZD",
@@ -111,19 +107,15 @@
         ],
         "CDF": [
             "CDF",
-            "Kongo franki"
+            "CDF"
         ],
         "CHF": [
             "CHF",
-            "Shveytsariya franki"
+            "Shvetsariya franki"
         ],
         "CLP": [
             "CLP",
             "Chili pesosi"
-        ],
-        "CNH": [
-            "CNH",
-            "CNH"
         ],
         "CNY": [
             "CN¥",
@@ -139,7 +131,7 @@
         ],
         "CUC": [
             "CUC",
-            "Kuba ayirboshlash pesosi"
+            "Kuba Ayirboshlash pesosi"
         ],
         "CUP": [
             "CUP",
@@ -147,15 +139,15 @@
         ],
         "CVE": [
             "CVE",
-            "Kabo-Verde eskudosi"
+            "CVE"
         ],
         "CZK": [
             "CZK",
-            "Chexiya kronasi"
+            "Chex kronasi"
         ],
         "DJF": [
             "DJF",
-            "Jibuti franki"
+            "DJF"
         ],
         "DKK": [
             "DKK",
@@ -163,7 +155,7 @@
         ],
         "DOP": [
             "DOP",
-            "Dominikana pesosi"
+            "Dominikan pesosi"
         ],
         "DZD": [
             "DZD",
@@ -175,11 +167,11 @@
         ],
         "ERN": [
             "ERN",
-            "Eritreya nakfasi"
+            "ERN"
         ],
         "ETB": [
             "ETB",
-            "Efiopiya biri"
+            "ETB"
         ],
         "EUR": [
             "€",
@@ -187,23 +179,23 @@
         ],
         "FJD": [
             "FJD",
-            "Fiji dollari"
+            "FJD"
         ],
         "FKP": [
             "FKP",
-            "Folklend orollari funti"
+            "Folklend oroli funti"
         ],
         "GBP": [
             "£",
-            "Angliya funt sterlingi"
+            "Ingliz funt sterlingi"
         ],
         "GEL": [
             "GEL",
-            "Gruziya larisi"
+            "GEL"
         ],
         "GHS": [
             "GHS",
-            "Gana sedisi"
+            "GHS"
         ],
         "GIP": [
             "GIP",
@@ -211,15 +203,15 @@
         ],
         "GMD": [
             "GMD",
-            "Gambiya dalasisi"
+            "GMD"
         ],
         "GNF": [
             "GNF",
-            "Gvineya franki"
+            "GNF"
         ],
         "GTQ": [
             "GTQ",
-            "Gvatemala ketsali"
+            "Gvatemala kvetzali"
         ],
         "GYD": [
             "GYD",
@@ -235,11 +227,11 @@
         ],
         "HRK": [
             "HRK",
-            "Xorvatiya kunasi"
+            "Horvat kunasi"
         ],
         "HTG": [
             "HTG",
-            "Gaiti gurdi"
+            "Gaiti gurdasi"
         ],
         "HUF": [
             "HUF",
@@ -251,19 +243,19 @@
         ],
         "ILS": [
             "₪",
-            "Isroil yangi shekeli"
+            "ILS"
         ],
         "INR": [
             "₹",
-            "Hindiston rupiyasi"
+            "Hind rupiyasi"
         ],
         "IQD": [
             "IQD",
-            "Iroq dinori"
+            "IQD"
         ],
         "IRR": [
             "IRR",
-            "Eron riyoli"
+            "IRR"
         ],
         "ISK": [
             "ISK",
@@ -275,31 +267,31 @@
         ],
         "JOD": [
             "JOD",
-            "Iordaniya dinori"
+            "JOD"
         ],
         "JPY": [
             "JP¥",
-            "Yaponiya iyenasi"
+            "Yapon yenasi"
         ],
         "KES": [
             "KES",
-            "Keniya shillingi"
+            "KES"
         ],
         "KGS": [
             "KGS",
-            "Qirg‘iziston somi"
+            "KGS"
         ],
         "KHR": [
             "KHR",
-            "Kambodja rieli"
+            "KHR"
         ],
         "KMF": [
             "KMF",
-            "Komor orollari franki"
+            "KMF"
         ],
         "KPW": [
             "KPW",
-            "Shimoliy Koreya voni"
+            "KPW"
         ],
         "KRW": [
             "₩",
@@ -307,31 +299,31 @@
         ],
         "KWD": [
             "KWD",
-            "Kuvayt dinori"
+            "KWD"
         ],
         "KYD": [
             "KYD",
-            "Kayman orollari dollari"
+            "Kayman Orollari Dollari"
         ],
         "KZT": [
             "KZT",
-            "Qozog‘iston tengesi"
+            "KZT"
         ],
         "LAK": [
             "LAK",
-            "Laos kipi"
+            "LAK"
         ],
         "LBP": [
             "LBP",
-            "Livan funti"
+            "LBP"
         ],
         "LKR": [
             "LKR",
-            "Shri-Lanka rupiyasi"
+            "LKR"
         ],
         "LRD": [
             "LRD",
-            "Liberiya dollari"
+            "LRD"
         ],
         "LTL": [
             "LTL",
@@ -351,11 +343,11 @@
         ],
         "MDL": [
             "MDL",
-            "Moldova leyi"
+            "Moldova leusi"
         ],
         "MGA": [
             "MGA",
-            "Malagasi ariarisi"
+            "MGA"
         ],
         "MKD": [
             "MKD",
@@ -363,35 +355,31 @@
         ],
         "MMK": [
             "MMK",
-            "Myanma kyati"
+            "MMK"
         ],
         "MNT": [
             "MNT",
-            "Mongoliya tugriki"
+            "MNT"
         ],
         "MOP": [
             "MOP",
-            "Makao patakasi"
+            "MOP"
         ],
         "MRO": [
             "MRO",
-            "Mavritaniya uqiyasi (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
-            "Mavritaniya uqiyasi"
+            "MRO"
         ],
         "MUR": [
             "MUR",
-            "Mavritaniya rupiyasi"
+            "MUR"
         ],
         "MVR": [
             "MVR",
-            "Maldiv rupiyasi"
+            "MVR"
         ],
         "MWK": [
             "MWK",
-            "Malavi kvachasi"
+            "MWK"
         ],
         "MXN": [
             "MX$",
@@ -399,19 +387,19 @@
         ],
         "MYR": [
             "MYR",
-            "Malayziya ringgiti"
+            "MYR"
         ],
         "MZN": [
             "MZN",
-            "Mozambik metikali"
+            "MZN"
         ],
         "NAD": [
             "NAD",
-            "Namibiya dollari"
+            "NAD"
         ],
         "NGN": [
             "NGN",
-            "Nigeriya nayrasi"
+            "NGN"
         ],
         "NIO": [
             "NIO",
@@ -423,15 +411,15 @@
         ],
         "NPR": [
             "NPR",
-            "Nepal rupiyasi"
+            "NPR"
         ],
         "NZD": [
             "NZ$",
-            "Yangi Zelandiya dollari"
+            "NZD"
         ],
         "OMR": [
             "OMR",
-            "Ummon riyoli"
+            "OMR"
         ],
         "PAB": [
             "PAB",
@@ -439,19 +427,19 @@
         ],
         "PEN": [
             "PEN",
-            "Peru soli"
+            "Peru noyvo soli"
         ],
         "PGK": [
             "PGK",
-            "Papua – Yangi Gvineya kinasi"
+            "PGK"
         ],
         "PHP": [
             "PHP",
-            "Filippin pesosi"
+            "PHP"
         ],
         "PKR": [
             "PKR",
-            "Pokiston rupiyasi"
+            "PKR"
         ],
         "PLN": [
             "PLN",
@@ -459,15 +447,15 @@
         ],
         "PYG": [
             "PYG",
-            "Paragvay guaranisi"
+            "Paragvay guarani"
         ],
         "QAR": [
             "QAR",
-            "Qatar riyoli"
+            "QAR"
         ],
         "RON": [
             "RON",
-            "Ruminiya leyi"
+            "Rumin leusi"
         ],
         "RSD": [
             "RSD",
@@ -475,11 +463,11 @@
         ],
         "RUB": [
             "RUB",
-            "Rossiya rubli"
+            "Rus rubli"
         ],
         "RWF": [
             "RWF",
-            "Ruanda franki"
+            "RWF"
         ],
         "SAR": [
             "SAR",
@@ -487,11 +475,11 @@
         ],
         "SBD": [
             "SBD",
-            "Solomon orollari dollari"
+            "SBD"
         ],
         "SCR": [
             "SCR",
-            "Seyshel rupiyasi"
+            "SCR"
         ],
         "SDG": [
             "SDG",
@@ -503,19 +491,19 @@
         ],
         "SGD": [
             "SGD",
-            "Singapur dollari"
+            "SGD"
         ],
         "SHP": [
             "SHP",
-            "Muqaddas Yelena oroli funti"
+            "SHP"
         ],
         "SLL": [
             "SLL",
-            "Syerra-Leone leonesi"
+            "SLL"
         ],
         "SOS": [
             "SOS",
-            "Somali shillingi"
+            "SOS"
         ],
         "SRD": [
             "SRD",
@@ -527,31 +515,27 @@
         ],
         "STD": [
             "STD",
-            "San-Tome va Prinsipi dobrasi (1977–2017)"
-        ],
-        "STN": [
-            "STN",
-            "San-Tome va Prinsipi dobrasi"
+            "STD"
         ],
         "SYP": [
             "SYP",
-            "Suriya funti"
+            "SYP"
         ],
         "SZL": [
             "SZL",
-            "Svazilend lilangenisi"
+            "SZL"
         ],
         "THB": [
-            "THB",
-            "Tailand bati"
+            "฿",
+            "Tayland bahti"
         ],
         "TJS": [
             "TJS",
-            "Tojikiston somoniysi"
+            "TJS"
         ],
         "TMT": [
             "TMT",
-            "Turkmaniston manati"
+            "TMT"
         ],
         "TND": [
             "TND",
@@ -559,7 +543,7 @@
         ],
         "TOP": [
             "TOP",
-            "Tonga paangasi"
+            "TOP"
         ],
         "TRY": [
             "TRY",
@@ -575,15 +559,15 @@
         ],
         "TZS": [
             "TZS",
-            "Tanzaniya shillingi"
+            "TZS"
         ],
         "UAH": [
             "UAH",
-            "Ukraina grivnasi"
+            "Ukrain grivnasi"
         ],
         "UGX": [
             "UGX",
-            "Uganda shillingi"
+            "UGX"
         ],
         "USD": [
             "US$",
@@ -595,7 +579,7 @@
         ],
         "UZS": [
             "soʻm",
-            "O‘zbekiston so‘mi"
+            "Oʻzbekiston soʻm"
         ],
         "VEF": [
             "VEF",
@@ -603,19 +587,19 @@
         ],
         "VND": [
             "₫",
-            "Vyetnam dongi"
+            "VND"
         ],
         "VUV": [
             "VUV",
-            "Vanuatu vatusi"
+            "VUV"
         ],
         "WST": [
             "WST",
-            "Samoa talasi"
+            "WST"
         ],
         "XAF": [
             "FCFA",
-            "Markaziy Afrika CFA franki"
+            "XAF"
         ],
         "XCD": [
             "EC$",
@@ -623,23 +607,23 @@
         ],
         "XOF": [
             "CFA",
-            "G‘arbiy Afrika CFA franki"
+            "XOF"
         ],
         "XPF": [
             "CFPF",
-            "Fransuz Polineziyasi franki"
+            "XPF"
         ],
         "YER": [
             "YER",
-            "Yaman riyoli"
+            "YER"
         ],
         "ZAR": [
             "ZAR",
-            "Janubiy Afrika rendi"
+            "Janubiy Afrika randi"
         ],
         "ZMW": [
             "ZMW",
-            "Zambiya kvachasi"
+            "ZMW"
         ]
     }
 }

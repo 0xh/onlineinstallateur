@@ -12,7 +12,6 @@
 namespace Symfony\Component\Serializer\Tests\Mapping\Factory;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Mapping\Loader\LoaderChain;
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Tests\Mapping\TestClassMetadataFactory;
 /**
  * @author Kévin Dunglas <dunglas@gmail.com>
  */
-class ClassMetadataFactoryTest extends TestCase
+class ClassMetadataFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
@@ -48,7 +47,7 @@ class ClassMetadataFactoryTest extends TestCase
 
     public function testCacheExists()
     {
-        $cache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
+        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
         $cache
             ->expects($this->once())
             ->method('fetch')
@@ -61,7 +60,7 @@ class ClassMetadataFactoryTest extends TestCase
 
     public function testCacheNotExists()
     {
-        $cache = $this->getMockBuilder('Doctrine\Common\Cache\Cache')->getMock();
+        $cache = $this->getMock('Doctrine\Common\Cache\Cache');
         $cache
             ->method('fetch')
             ->will($this->returnValue(false))

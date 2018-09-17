@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -189,13 +189,9 @@
             "BYB",
             "nouveau rouble biélorusse (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "rouble biélorusse"
-        ],
         "BYR": [
             "BYR",
-            "rouble biélorusse (2000–2016)"
+            "rouble biélorusse"
         ],
         "BZD": [
             "$BZ",
@@ -228,10 +224,6 @@
         "CLP": [
             "$CL",
             "peso chilien"
-        ],
-        "CNH": [
-            "CNH",
-            "yuan chinois (zone extracôtière)"
         ],
         "CNY": [
             "CNY",
@@ -351,7 +343,7 @@
         ],
         "FKP": [
             "£FK",
-            "livre des îles Malouines"
+            "livre des Falkland"
         ],
         "FRF": [
             "F",
@@ -467,7 +459,7 @@
         ],
         "IRR": [
             "IRR",
-            "riyal iranien"
+            "rial iranien"
         ],
         "ISK": [
             "ISK",
@@ -619,10 +611,6 @@
         ],
         "MRO": [
             "MRO",
-            "ouguiya mauritanien (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "ouguiya mauritanien"
         ],
         "MTL": [
@@ -707,7 +695,7 @@
         ],
         "OMR": [
             "OMR",
-            "riyal omanais"
+            "rial omanais"
         ],
         "PAB": [
             "PAB",
@@ -719,11 +707,11 @@
         ],
         "PEN": [
             "PEN",
-            "sol péruvien"
+            "nouveau sol péruvien"
         ],
         "PES": [
             "PES",
-            "sol péruvien (1863–1985)"
+            "sol péruvien"
         ],
         "PGK": [
             "PGK",
@@ -755,7 +743,7 @@
         ],
         "QAR": [
             "QAR",
-            "riyal qatari"
+            "rial qatari"
         ],
         "RHD": [
             "$RH",
@@ -787,7 +775,7 @@
         ],
         "SAR": [
             "SAR",
-            "riyal saoudien"
+            "rial saoudien"
         ],
         "SBD": [
             "$SB",
@@ -851,10 +839,6 @@
         ],
         "STD": [
             "STD",
-            "dobra santoméen (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "dobra santoméen"
         ],
         "SUR": [
@@ -874,7 +858,7 @@
             "lilangeni swazi"
         ],
         "THB": [
-            "THB",
+            "฿",
             "baht thaïlandais"
         ],
         "TJR": [
@@ -1027,7 +1011,7 @@
         ],
         "YER": [
             "YER",
-            "riyal yéménite"
+            "rial yéménite"
         ],
         "YUD": [
             "YUD",

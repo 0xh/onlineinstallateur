@@ -11,10 +11,9 @@
 
 namespace Symfony\Component\HttpFoundation\Tests\File;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class UploadedFileTest extends TestCase
+class UploadedFileTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
@@ -25,7 +24,7 @@ class UploadedFileTest extends TestCase
 
     public function testConstructWhenFileNotExists()
     {
-        $this->{method_exists($this, $_ = 'expectException') ? $_ : 'setExpectedException'}('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
+        $this->setExpectedException('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
 
         new UploadedFile(
             __DIR__.'/Fixtures/not_here',
@@ -46,7 +45,7 @@ class UploadedFileTest extends TestCase
 
         $this->assertEquals('application/octet-stream', $file->getClientMimeType());
 
-        if (\extension_loaded('fileinfo')) {
+        if (extension_loaded('fileinfo')) {
             $this->assertEquals('image/gif', $file->getMimeType());
         }
     }
@@ -165,8 +164,8 @@ class UploadedFileTest extends TestCase
 
         $movedFile = $file->move(__DIR__.'/Fixtures/directory');
 
-        $this->assertFileExists($targetPath);
-        $this->assertFileNotExists($path);
+        $this->assertTrue(file_exists($targetPath));
+        $this->assertFalse(file_exists($path));
         $this->assertEquals(realpath($targetPath), $movedFile->getRealPath());
 
         @unlink($targetPath);

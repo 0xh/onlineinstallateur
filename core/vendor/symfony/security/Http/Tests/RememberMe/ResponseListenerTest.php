@@ -11,16 +11,14 @@
 
 namespace Symfony\Component\Security\Http\Tests\RememberMe;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
 use Symfony\Component\Security\Http\RememberMe\ResponseListener;
+use Symfony\Component\Security\Http\RememberMe\RememberMeServicesInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-class ResponseListenerTest extends TestCase
+class ResponseListenerTest extends \PHPUnit_Framework_TestCase
 {
     public function testRememberMeCookieIsSentWithResponse()
     {
@@ -83,8 +81,8 @@ class ResponseListenerTest extends TestCase
 
     private function getResponse()
     {
-        $response = new Response();
-        $response->headers = $this->getMockBuilder('Symfony\Component\HttpFoundation\ResponseHeaderBag')->getMock();
+        $response = $this->getMock('Symfony\Component\HttpFoundation\Response');
+        $response->headers = $this->getMock('Symfony\Component\HttpFoundation\ResponseHeaderBag');
 
         return $response;
     }
@@ -96,7 +94,7 @@ class ResponseListenerTest extends TestCase
             ->getMock();
 
         $event->expects($this->any())->method('getRequest')->will($this->returnValue($request));
-        $event->expects($this->any())->method('isMasterRequest')->will($this->returnValue(HttpKernelInterface::MASTER_REQUEST === $type));
+        $event->expects($this->any())->method('isMasterRequest')->will($this->returnValue($type === HttpKernelInterface::MASTER_REQUEST));
         $event->expects($this->any())->method('getResponse')->will($this->returnValue($response));
 
         return $event;

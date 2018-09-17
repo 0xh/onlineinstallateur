@@ -18,13 +18,20 @@ namespace Symfony\Component\PropertyAccess;
  */
 class PropertyAccessorBuilder
 {
+    /**
+     * @var bool
+     */
     private $magicCall = false;
+
+    /**
+     * @var bool
+     */
     private $throwExceptionOnInvalidIndex = false;
 
     /**
      * Enables the use of "__call" by the PropertyAccessor.
      *
-     * @return $this
+     * @return PropertyAccessorBuilder The builder object
      */
     public function enableMagicCall()
     {
@@ -36,7 +43,7 @@ class PropertyAccessorBuilder
     /**
      * Disables the use of "__call" by the PropertyAccessor.
      *
-     * @return $this
+     * @return PropertyAccessorBuilder The builder object
      */
     public function disableMagicCall()
     {
@@ -59,7 +66,7 @@ class PropertyAccessorBuilder
      * This has no influence on writing non-existing indices with PropertyAccessorInterface::setValue()
      * which are always created on-the-fly.
      *
-     * @return $this
+     * @return PropertyAccessorBuilder The builder object
      */
     public function enableExceptionOnInvalidIndex()
     {
@@ -73,7 +80,7 @@ class PropertyAccessorBuilder
      *
      * Instead, null is returned when calling PropertyAccessorInterface::getValue() on a non-existing index.
      *
-     * @return $this
+     * @return PropertyAccessorBuilder The builder object
      */
     public function disableExceptionOnInvalidIndex()
     {

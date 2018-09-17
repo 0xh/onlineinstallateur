@@ -15,11 +15,11 @@ use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 
 /**
  * Container is a dependency injection container.
@@ -29,6 +29,16 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  * Services and parameters are simple key/pair stores.
  *
  * Parameter and service keys are case insensitive.
+ *
+ * A service id can contain lowercased letters, digits, underscores, and dots.
+ * Underscores are used to separate words, and dots to group services
+ * under namespaces:
+ *
+ * <ul>
+ *   <li>request</li>
+ *   <li>mysql_session_storage</li>
+ *   <li>symfony.mysql_session_storage</li>
+ * </ul>
  *
  * A service can also be defined by creating a method named
  * getXXXService(), where XXX is the camelized version of the id:
@@ -51,7 +61,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class Container implements IntrospectableContainerInterface, ResettableContainerInterface
 {
+    /**
+     * @var ParameterBagInterface
+     */
     protected $parameterBag;
+
     protected $services = array();
     protected $methodMap = array();
     protected $aliases = array();
@@ -63,6 +77,11 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
 
     private $underscoreMap = array('_' => '', '.' => '_', '\\' => '_');
 
+    /**
+     * Constructor.
+     *
+     * @param ParameterBagInterface $parameterBag A ParameterBagInterface instance
+     */
     public function __construct(ParameterBagInterface $parameterBag = null)
     {
         $this->parameterBag = $parameterBag ?: new ParameterBag();
@@ -157,8 +176,8 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
      */
     public function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
-        if (!\in_array($scope, array('container', 'request')) || ('request' === $scope && 'request' !== $id)) {
-            @trigger_error('The concept of container scopes is deprecated since Symfony 2.8 and will be removed in 3.0. Omit the third parameter.', E_USER_DEPRECATED);
+        if (!in_array($scope, array('container', 'request')) || ('request' === $scope && 'request' !== $id)) {
+            @trigger_error('The concept of container scopes is deprecated since version 2.8 and will be removed in 3.0. Omit the third parameter.', E_USER_DEPRECATED);
         }
 
         if (self::SCOPE_PROTOTYPE === $scope) {
@@ -179,10 +198,6 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
             }
 
             $this->scopedServices[$scope][$id] = $service;
-        }
-
-        if (isset($this->aliases[$id])) {
-            unset($this->aliases[$id]);
         }
 
         $this->services[$id] = $service;
@@ -249,15 +264,15 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
         // this method can be called thousands of times during a request, avoid
         // calling strtolower() unless necessary.
         for ($i = 2;;) {
+            if ('service_container' === $id) {
+                return $this;
+            }
             if (isset($this->aliases[$id])) {
                 $id = $this->aliases[$id];
             }
             // Re-use shared service instance if it exists.
             if (isset($this->services[$id]) || array_key_exists($id, $this->services)) {
                 return $this->services[$id];
-            }
-            if ('service_container' === $id) {
-                return $this;
             }
 
             if (isset($this->loading[$id])) {
@@ -278,10 +293,10 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
                     }
 
                     $alternatives = array();
-                    foreach ($this->getServiceIds() as $knownId) {
-                        $lev = levenshtein($id, $knownId);
-                        if ($lev <= \strlen($id) / 3 || false !== strpos($knownId, $id)) {
-                            $alternatives[] = $knownId;
+                    foreach ($this->services as $key => $associatedService) {
+                        $lev = levenshtein($id, $key);
+                        if ($lev <= strlen($id) / 3 || false !== strpos($key, $id)) {
+                            $alternatives[] = $key;
                         }
                     }
 
@@ -304,11 +319,6 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
                 }
 
                 throw $e;
-            } catch (\Throwable $e) {
-                unset($this->loading[$id]);
-                unset($this->services[$id]);
-
-                throw $e;
             }
 
             unset($this->loading[$id]);
@@ -328,14 +338,14 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     {
         $id = strtolower($id);
 
-        if (isset($this->aliases[$id])) {
-            $id = $this->aliases[$id];
-        }
-
         if ('service_container' === $id) {
             // BC: 'service_container' was a synthetic service previously.
             // @todo Change to false in next major release.
             return true;
+        }
+
+        if (isset($this->aliases[$id])) {
+            $id = $this->aliases[$id];
         }
 
         return isset($this->services[$id]) || array_key_exists($id, $this->services);
@@ -361,8 +371,9 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     public function getServiceIds()
     {
         $ids = array();
-        foreach (get_class_methods($this) as $method) {
-            if (preg_match('/^get(.+)Service$/', $method, $match)) {
+        $r = new \ReflectionClass($this);
+        foreach ($r->getMethods() as $method) {
+            if (preg_match('/^get(.+)Service$/', $method->name, $match)) {
                 $ids[] = self::underscore($match[1]);
             }
         }
@@ -384,7 +395,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     public function enterScope($name)
     {
         if ('request' !== $name) {
-            @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('The '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
         }
 
         if (!isset($this->scopes[$name])) {
@@ -410,7 +421,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
             }
 
             // update global map
-            $this->services = \call_user_func_array('array_diff_key', $services);
+            $this->services = call_user_func_array('array_diff_key', $services);
             array_shift($services);
 
             // add stack entry for this scope so we can restore the removed services later
@@ -436,7 +447,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     public function leaveScope($name)
     {
         if ('request' !== $name) {
-            @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('The '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
         }
 
         if (!isset($this->scopedServices[$name])) {
@@ -456,10 +467,10 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
         }
 
         // update global map
-        $this->services = \call_user_func_array('array_diff_key', $services);
+        $this->services = call_user_func_array('array_diff_key', $services);
 
         // check if we need to restore services of a previous scope of this type
-        if (isset($this->scopeStacks[$name]) && \count($this->scopeStacks[$name]) > 0) {
+        if (isset($this->scopeStacks[$name]) && count($this->scopeStacks[$name]) > 0) {
             $services = $this->scopeStacks[$name]->pop();
             $this->scopedServices += $services;
 
@@ -478,6 +489,8 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     /**
      * Adds a scope to the container.
      *
+     * @param ScopeInterface $scope
+     *
      * @throws InvalidArgumentException
      *
      * @deprecated since version 2.8, to be removed in 3.0.
@@ -488,7 +501,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
         $parentScope = $scope->getParentName();
 
         if ('request' !== $name) {
-            @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('The '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
         }
         if (self::SCOPE_CONTAINER === $name || self::SCOPE_PROTOTYPE === $name) {
             throw new InvalidArgumentException(sprintf('The scope "%s" is reserved.', $name));
@@ -504,7 +517,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
         $this->scopeChildren[$name] = array();
 
         // normalize the child relations
-        while (self::SCOPE_CONTAINER !== $parentScope) {
+        while ($parentScope !== self::SCOPE_CONTAINER) {
             $this->scopeChildren[$parentScope][] = $name;
             $parentScope = $this->scopes[$parentScope];
         }
@@ -522,7 +535,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
     public function hasScope($name)
     {
         if ('request' !== $name) {
-            @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+            @trigger_error('The '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
         }
 
         return isset($this->scopes[$name]);
@@ -541,7 +554,7 @@ class Container implements IntrospectableContainerInterface, ResettableContainer
      */
     public function isScopeActive($name)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
 
         return isset($this->scopedServices[$name]);
     }

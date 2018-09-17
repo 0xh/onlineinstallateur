@@ -30,22 +30,19 @@ class JsonBundleReader implements BundleReaderInterface
     {
         $fileName = $path.'/'.$locale.'.json';
 
-        // prevent directory traversal attacks
-        if (\dirname($fileName) !== $path) {
-            throw new ResourceBundleNotFoundException(sprintf('The resource bundle "%s" does not exist.', $fileName));
-        }
-
         if (!file_exists($fileName)) {
             throw new ResourceBundleNotFoundException(sprintf(
-                'The resource bundle "%s" does not exist.',
-                $fileName
+                'The resource bundle "%s/%s.json" does not exist.',
+                $path,
+                $locale
             ));
         }
 
         if (!is_file($fileName)) {
             throw new RuntimeException(sprintf(
-                'The resource bundle "%s" is not a file.',
-                $fileName
+                'The resource bundle "%s/%s.json" is not a file.',
+                $path,
+                $locale
             ));
         }
 
@@ -53,8 +50,9 @@ class JsonBundleReader implements BundleReaderInterface
 
         if (null === $data) {
             throw new RuntimeException(sprintf(
-                'The resource bundle "%s" contains invalid JSON: %s',
-                $fileName,
+                'The resource bundle "%s/%s.json" contains invalid JSON: %s',
+                $path,
+                $locale,
                 json_last_error_msg()
             ));
         }

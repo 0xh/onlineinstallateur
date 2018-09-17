@@ -51,7 +51,7 @@ class Glob
         $escaping = false;
         $inCurlies = 0;
         $regex = '';
-        $sizeGlob = \strlen($glob);
+        $sizeGlob = strlen($glob);
         for ($i = 0; $i < $sizeGlob; ++$i) {
             $car = $glob[$i];
             if ($firstByte) {
@@ -66,7 +66,7 @@ class Glob
                 $firstByte = true;
             }
 
-            if ($delimiter === $car || '.' === $car || '(' === $car || ')' === $car || '|' === $car || '+' === $car || '^' === $car || '$' === $car) {
+            if ('.' === $car || '(' === $car || ')' === $car || '|' === $car || '+' === $car || '^' === $car || '$' === $car) {
                 $regex .= "\\$car";
             } elseif ('*' === $car) {
                 $regex .= $escaping ? '\\*' : ($strictWildcardSlash ? '[^/]*' : '.*');

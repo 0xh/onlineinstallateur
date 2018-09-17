@@ -11,10 +11,9 @@
 
 namespace Symfony\Component\Security\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 
-class TranslationSyncStatusTest extends TestCase
+class TranslationSyncStatusTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getTranslationDirectoriesData

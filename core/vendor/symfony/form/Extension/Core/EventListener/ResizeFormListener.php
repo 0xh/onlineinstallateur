@@ -11,11 +11,10 @@
 
 namespace Symfony\Component\Form\Extension\Core\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Resize a collection form element based on the data sent from the client.
@@ -24,20 +23,35 @@ use Symfony\Component\Form\FormInterface;
  */
 class ResizeFormListener implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
     protected $type;
-    protected $options;
-    protected $allowAdd;
-    protected $allowDelete;
-
-    private $deleteEmpty;
 
     /**
-     * @param string $type
-     * @param array  $options
-     * @param bool   $allowAdd    Whether children could be added to the group
-     * @param bool   $allowDelete Whether children could be removed from the group
-     * @param bool   $deleteEmpty
+     * @var array
      */
+    protected $options;
+
+    /**
+     * Whether children could be added to the group.
+     *
+     * @var bool
+     */
+    protected $allowAdd;
+
+    /**
+     * Whether children could be removed from the group.
+     *
+     * @var bool
+     */
+    protected $allowDelete;
+
+    /**
+     * @var bool
+     */
+    private $deleteEmpty;
+
     public function __construct($type, array $options = array(), $allowAdd = false, $allowDelete = false, $deleteEmpty = false)
     {
         $this->type = $type;
@@ -66,7 +80,7 @@ class ResizeFormListener implements EventSubscriberInterface
             $data = array();
         }
 
-        if (!\is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
+        if (!is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
             throw new UnexpectedTypeException($data, 'array or (\Traversable and \ArrayAccess)');
         }
 
@@ -88,7 +102,11 @@ class ResizeFormListener implements EventSubscriberInterface
         $form = $event->getForm();
         $data = $event->getData();
 
-        if (!\is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
+        if (null === $data || '' === $data) {
+            $data = array();
+        }
+
+        if (!is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
             $data = array();
         }
 
@@ -126,13 +144,12 @@ class ResizeFormListener implements EventSubscriberInterface
             $data = array();
         }
 
-        if (!\is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
+        if (!is_array($data) && !($data instanceof \Traversable && $data instanceof \ArrayAccess)) {
             throw new UnexpectedTypeException($data, 'array or (\Traversable and \ArrayAccess)');
         }
 
         if ($this->deleteEmpty) {
             $previousData = $event->getForm()->getData();
-            /** @var FormInterface $child */
             foreach ($form as $name => $child) {
                 $isNew = !isset($previousData[$name]);
 
@@ -172,7 +189,7 @@ class ResizeFormListener implements EventSubscriberInterface
      */
     public function preBind(FormEvent $event)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.3 and will be removed in 3.0. Use the preSubmit() method instead.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Use the preSubmit() method instead.', E_USER_DEPRECATED);
 
         $this->preSubmit($event);
     }
@@ -185,7 +202,7 @@ class ResizeFormListener implements EventSubscriberInterface
      */
     public function onBind(FormEvent $event)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.3 and will be removed in 3.0. Use the onSubmit() method instead.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 3.0. Use the onSubmit() method instead.', E_USER_DEPRECATED);
 
         $this->onSubmit($event);
     }

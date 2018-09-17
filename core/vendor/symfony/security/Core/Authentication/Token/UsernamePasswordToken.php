@@ -24,10 +24,12 @@ class UsernamePasswordToken extends AbstractToken
     private $providerKey;
 
     /**
-     * @param string|object            $user        The username (like a nickname, email address, etc.), or a UserInterface instance or an object implementing a __toString method
-     * @param mixed                    $credentials This usually is the password of the user
+     * Constructor.
+     *
+     * @param string|object            $user        The username (like a nickname, email address, etc.), or a UserInterface instance or an object implementing a __toString method.
+     * @param string                   $credentials This usually is the password of the user
      * @param string                   $providerKey The provider key
-     * @param (RoleInterface|string)[] $roles       An array of roles
+     * @param RoleInterface[]|string[] $roles       An array of roles
      *
      * @throws \InvalidArgumentException
      */
@@ -43,7 +45,7 @@ class UsernamePasswordToken extends AbstractToken
         $this->credentials = $credentials;
         $this->providerKey = $providerKey;
 
-        parent::setAuthenticated(\count($roles) > 0);
+        parent::setAuthenticated(count($roles) > 0);
     }
 
     /**

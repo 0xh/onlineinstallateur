@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\HttpFoundation\Tests\Session\Attribute;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 
 /**
@@ -19,9 +18,12 @@ use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
  *
  * @author Drak <drak@zikula.org>
  */
-class AttributeBagTest extends TestCase
+class AttributeBagTest extends \PHPUnit_Framework_TestCase
 {
-    private $array = array();
+    /**
+     * @var array
+     */
+    private $array;
 
     /**
      * @var AttributeBag
@@ -41,9 +43,8 @@ class AttributeBagTest extends TestCase
             'category' => array(
                 'fishing' => array(
                     'first' => 'cod',
-                    'second' => 'sole',
+                    'second' => 'sole',),
                 ),
-            ),
         );
         $this->bag = new AttributeBag('_sf2');
         $this->bag->initialize($this->array);
@@ -176,11 +177,11 @@ class AttributeBagTest extends TestCase
             ++$i;
         }
 
-        $this->assertEquals(\count($this->array), $i);
+        $this->assertEquals(count($this->array), $i);
     }
 
     public function testCount()
     {
-        $this->assertCount(\count($this->array), $this->bag);
+        $this->assertEquals(count($this->array), count($this->bag));
     }
 }

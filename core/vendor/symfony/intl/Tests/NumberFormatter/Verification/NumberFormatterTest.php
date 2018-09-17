@@ -22,7 +22,7 @@ class NumberFormatterTest extends AbstractNumberFormatterTest
 {
     protected function setUp()
     {
-        IntlTestHelper::requireFullIntl($this, '55.1');
+        IntlTestHelper::requireFullIntl($this);
 
         parent::setUp();
     }
@@ -30,13 +30,6 @@ class NumberFormatterTest extends AbstractNumberFormatterTest
     public function testCreate()
     {
         $this->assertInstanceOf('\NumberFormatter', \NumberFormatter::create('en', \NumberFormatter::DECIMAL));
-    }
-
-    public function testGetTextAttribute()
-    {
-        IntlTestHelper::requireFullIntl($this, '57.1');
-
-        parent::testGetTextAttribute();
     }
 
     protected function getNumberFormatter($locale = 'en', $style = null, $pattern = null)

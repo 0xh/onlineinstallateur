@@ -4,34 +4,34 @@
 	"locale": "nl",
 	"subdivisions": {
 		"SR-BR": {
-			"name": "Brokopondo"
+			"name": "BROKOPONDO"
 		},
 		"SR-CM": {
-			"name": "Commewijne"
+			"name": "COMMEWIJNE"
 		},
 		"SR-CR": {
-			"name": "Coronie"
+			"name": "CORONIE"
 		},
 		"SR-MA": {
-			"name": "Marowijne"
+			"name": "MAROWIJNE"
 		},
 		"SR-NI": {
-			"name": "Nickerie"
+			"name": "NICKERIE"
 		},
 		"SR-PR": {
-			"name": "Para"
+			"name": "PARA"
 		},
 		"SR-PM": {
-			"name": "Paramaribo"
+			"name": "PARAMARIBO"
 		},
 		"SR-SA": {
-			"name": "Saramacca"
+			"name": "SARAMACCA"
 		},
 		"SR-SI": {
-			"name": "Sipaliwini"
+			"name": "SIPALIWINI"
 		},
 		"SR-WA": {
-			"name": "Wanica"
+			"name": "WANICA"
 		}
 	}
 }

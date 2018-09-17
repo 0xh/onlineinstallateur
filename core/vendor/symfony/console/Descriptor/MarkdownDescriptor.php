@@ -13,7 +13,6 @@ namespace Symfony\Component\Console\Descriptor;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
@@ -50,7 +49,7 @@ class MarkdownDescriptor extends Descriptor
         $this->write(
             '**'.$option->getName().':**'."\n\n"
             .'* Name: `--'.$option->getName().'`'."\n"
-            .'* Shortcut: '.($option->getShortcut() ? '`-'.str_replace('|', '|-', $option->getShortcut()).'`' : '<none>')."\n"
+            .'* Shortcut: '.($option->getShortcut() ? '`-'.implode('|-', explode('|', $option->getShortcut())).'`' : '<none>')."\n"
             .'* Accept value: '.($option->acceptValue() ? 'yes' : 'no')."\n"
             .'* Is value required: '.($option->isValueRequired() ? 'yes' : 'no')."\n"
             .'* Is multiple: '.($option->isArray() ? 'yes' : 'no')."\n"
@@ -64,7 +63,7 @@ class MarkdownDescriptor extends Descriptor
      */
     protected function describeInputDefinition(InputDefinition $definition, array $options = array())
     {
-        if ($showArguments = \count($definition->getArguments()) > 0) {
+        if ($showArguments = count($definition->getArguments()) > 0) {
             $this->write('### Arguments:');
             foreach ($definition->getArguments() as $argument) {
                 $this->write("\n\n");
@@ -72,7 +71,7 @@ class MarkdownDescriptor extends Descriptor
             }
         }
 
-        if (\count($definition->getOptions()) > 0) {
+        if (count($definition->getOptions()) > 0) {
             if ($showArguments) {
                 $this->write("\n\n");
             }
@@ -95,11 +94,11 @@ class MarkdownDescriptor extends Descriptor
 
         $this->write(
             $command->getName()."\n"
-            .str_repeat('-', Helper::strlen($command->getName()))."\n\n"
+            .str_repeat('-', strlen($command->getName()))."\n\n"
             .'* Description: '.($command->getDescription() ?: '<none>')."\n"
             .'* Usage:'."\n\n"
             .array_reduce(array_merge(array($command->getSynopsis()), $command->getAliases(), $command->getUsages()), function ($carry, $usage) {
-                return $carry.'  * `'.$usage.'`'."\n";
+                return $carry .= '  * `'.$usage.'`'."\n";
             })
         );
 
@@ -122,7 +121,7 @@ class MarkdownDescriptor extends Descriptor
         $describedNamespace = isset($options['namespace']) ? $options['namespace'] : null;
         $description = new ApplicationDescription($application, $describedNamespace);
 
-        $this->write($application->getName()."\n".str_repeat('=', Helper::strlen($application->getName())));
+        $this->write($application->getName()."\n".str_repeat('=', strlen($application->getName())));
 
         foreach ($description->getNamespaces() as $namespace) {
             if (ApplicationDescription::GLOBAL_NAMESPACE !== $namespace['id']) {

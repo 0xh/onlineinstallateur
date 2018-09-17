@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\DependencyInjection\Dumper;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Parameter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Scope;
 
 /**
@@ -53,6 +53,8 @@ class GraphvizDumper extends Dumper
      *  * node.instance: The default options for services that are defined directly by object instances
      *  * node.definition: The default options for services that are defined via service definition instances
      *  * node.missing: The default options for missing services
+     *
+     * @param array $options An array of options
      *
      * @return string The dot representation of the service container
      */
@@ -128,13 +130,13 @@ class GraphvizDumper extends Dumper
      *
      * @return array An array of edges
      */
-    private function findEdges($id, array $arguments, $required, $name)
+    private function findEdges($id, $arguments, $required, $name)
     {
         $edges = array();
         foreach ($arguments as $argument) {
             if ($argument instanceof Parameter) {
                 $argument = $this->container->hasParameter($argument) ? $this->container->getParameter($argument) : null;
-            } elseif (\is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
+            } elseif (is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
                 $argument = $this->container->hasParameter($match[1]) ? $this->container->getParameter($match[1]) : null;
             }
 
@@ -144,7 +146,7 @@ class GraphvizDumper extends Dumper
                 }
 
                 $edges[] = array('name' => $name, 'required' => $required, 'to' => $argument);
-            } elseif (\is_array($argument)) {
+            } elseif (is_array($argument)) {
                 $edges = array_merge($edges, $this->findEdges($id, $argument, $required, $name));
             }
         }
@@ -187,7 +189,7 @@ class GraphvizDumper extends Dumper
             }
 
             if (!$container->hasDefinition($id)) {
-                $class = ('service_container' === $id) ? \get_class($this->container) : \get_class($service);
+                $class = ('service_container' === $id) ? get_class($this->container) : get_class($service);
                 $nodes[$id] = array('class' => str_replace('\\', '\\\\', $class), 'attributes' => $this->options['node.instance']);
             }
         }
@@ -244,7 +246,7 @@ class GraphvizDumper extends Dumper
      *
      * @return string A comma separated list of attributes
      */
-    private function addAttributes(array $attributes)
+    private function addAttributes($attributes)
     {
         $code = array();
         foreach ($attributes as $k => $v) {
@@ -261,7 +263,7 @@ class GraphvizDumper extends Dumper
      *
      * @return string A space separated list of options
      */
-    private function addOptions(array $options)
+    private function addOptions($options)
     {
         $code = array();
         foreach ($options as $k => $v) {

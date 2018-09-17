@@ -11,9 +11,8 @@
 
 namespace Symfony\Component\Validator\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\ConstraintValidatorFactory;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -24,7 +23,7 @@ use Symfony\Component\Validator\ValidationVisitor;
 /**
  * @group legacy
  */
-class LegacyExecutionContextTest extends TestCase
+class LegacyExecutionContextTest extends \PHPUnit_Framework_TestCase
 {
     const TRANS_DOMAIN = 'trans_domain';
 
@@ -46,9 +45,9 @@ class LegacyExecutionContextTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->violations = new ConstraintViolationList();
-        $this->metadata = $this->getMockBuilder('Symfony\Component\Validator\MetadataInterface')->getMock();
-        $this->metadataFactory = $this->getMockBuilder('Symfony\Component\Validator\MetadataFactoryInterface')->getMock();
-        $this->globalContext = $this->getMockBuilder('Symfony\Component\Validator\GlobalExecutionContextInterface')->getMock();
+        $this->metadata = $this->getMock('Symfony\Component\Validator\MetadataInterface');
+        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
+        $this->globalContext = $this->getMock('Symfony\Component\Validator\GlobalExecutionContextInterface');
         $this->globalContext->expects($this->any())
             ->method('getRoot')
             ->will($this->returnValue('Root'));
@@ -61,7 +60,7 @@ class LegacyExecutionContextTest extends TestCase
         $this->globalContext->expects($this->any())
             ->method('getMetadataFactory')
             ->will($this->returnValue($this->metadataFactory));
-        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')->getMock();
+        $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->context = new ExecutionContext($this->globalContext, $this->translator, self::TRANS_DOMAIN, $this->metadata, 'currentValue', 'Group', 'foo.bar');
     }
 

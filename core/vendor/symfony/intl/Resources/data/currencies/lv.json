@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "AED": [
             "AED",
@@ -51,7 +51,7 @@
         ],
         "BAM": [
             "BAM",
-            "Bosnijas un Hercogovinas konvertējamā marka"
+            "Bosnijas un Hercogovinas marka"
         ],
         "BBD": [
             "BBD",
@@ -105,13 +105,9 @@
             "BWP",
             "Botsvanas pula"
         ],
-        "BYN": [
-            "BYN",
-            "Baltkrievijas rubelis"
-        ],
         "BYR": [
             "BYR",
-            "Baltkrievijas rubelis (2000–2016)"
+            "Baltkrievijas rubelis"
         ],
         "BZD": [
             "BZD",
@@ -132,10 +128,6 @@
         "CLP": [
             "CLP",
             "Čīles peso"
-        ],
-        "CNH": [
-            "CNH",
-            "Ķīnas juaņa (ofšors)"
         ],
         "CNY": [
             "CN¥",
@@ -235,7 +227,7 @@
         ],
         "GBP": [
             "£",
-            "Lielbritānijas mārciņa"
+            "Lielbritānijas sterliņu mārciņa"
         ],
         "GEL": [
             "GEL",
@@ -315,7 +307,7 @@
         ],
         "ISK": [
             "ISK",
-            "Islandes krona"
+            "Īslandes krona"
         ],
         "ITL": [
             "ITL",
@@ -443,10 +435,6 @@
         ],
         "MRO": [
             "MRO",
-            "Mauritānijas ugija (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "Mauritānijas ugija"
         ],
         "MTL": [
@@ -527,7 +515,7 @@
         ],
         "PEN": [
             "PEN",
-            "Peru sols"
+            "Peru jaunais sols"
         ],
         "PGK": [
             "PGK",
@@ -635,10 +623,6 @@
         ],
         "STD": [
             "STD",
-            "Santome un Prinsipi dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "Santome un Prinsipi dobra"
         ],
         "SVC": [

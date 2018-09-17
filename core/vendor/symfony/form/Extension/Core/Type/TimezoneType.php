@@ -24,6 +24,13 @@ class TimezoneType extends AbstractType
     private static $timezones;
 
     /**
+     * Stores the available timezone choices.
+     *
+     * @var array
+     */
+    private static $flippedTimezones;
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -73,7 +80,7 @@ class TimezoneType extends AbstractType
      */
     public static function getTimezones()
     {
-        @trigger_error('The TimezoneType::getTimezones() method is deprecated since Symfony 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The TimezoneType::getTimezones() method is deprecated since version 2.8 and will be removed in 3.0.', E_USER_DEPRECATED);
 
         if (null === static::$timezones) {
             static::$timezones = array();
@@ -81,10 +88,10 @@ class TimezoneType extends AbstractType
             foreach (\DateTimeZone::listIdentifiers() as $timezone) {
                 $parts = explode('/', $timezone);
 
-                if (\count($parts) > 2) {
+                if (count($parts) > 2) {
                     $region = $parts[0];
                     $name = $parts[1].' - '.$parts[2];
-                } elseif (\count($parts) > 1) {
+                } elseif (count($parts) > 1) {
                     $region = $parts[0];
                     $name = $parts[1];
                 } else {
@@ -117,10 +124,10 @@ class TimezoneType extends AbstractType
             foreach (\DateTimeZone::listIdentifiers() as $timezone) {
                 $parts = explode('/', $timezone);
 
-                if (\count($parts) > 2) {
+                if (count($parts) > 2) {
                     $region = $parts[0];
                     $name = $parts[1].' - '.$parts[2];
-                } elseif (\count($parts) > 1) {
+                } elseif (count($parts) > 1) {
                     $region = $parts[0];
                     $name = $parts[1];
                 } else {

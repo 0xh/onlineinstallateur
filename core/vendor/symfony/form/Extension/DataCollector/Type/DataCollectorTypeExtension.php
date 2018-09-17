@@ -19,13 +19,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * Type extension for collecting data of a form with this type.
  *
+ * @since  2.4
+ *
  * @author Robert Schönthal <robert.schoenthal@gmail.com>
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
 class DataCollectorTypeExtension extends AbstractTypeExtension
 {
     /**
-     * @var DataCollectorListener
+     * @var \Symfony\Component\EventDispatcher\EventSubscriberInterface
      */
     private $listener;
 

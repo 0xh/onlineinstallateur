@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\Intl\Data\Generator;
 
-use Symfony\Component\Intl\Data\Bundle\Compiler\GenrbCompiler;
 use Symfony\Component\Intl\Data\Bundle\Reader\BundleReaderInterface;
 use Symfony\Component\Intl\Data\Util\ArrayAccessibleResourceBundle;
+use Symfony\Component\Intl\Data\Bundle\Compiler\GenrbCompiler;
 use Symfony\Component\Intl\Data\Util\LocaleScanner;
 
 /**
@@ -21,22 +21,30 @@ use Symfony\Component\Intl\Data\Util\LocaleScanner;
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @see http://source.icu-project.org/repos/icu/icu4j/trunk/main/classes/core/src/com/ibm/icu/util/Region.java
+ * @link http://source.icu-project.org/repos/icu/icu4j/trunk/main/classes/core/src/com/ibm/icu/util/Region.java
  *
  * @internal
  */
 class RegionDataGenerator extends AbstractDataGenerator
 {
     const UNKNOWN_REGION_ID = 'ZZ';
+
     const OUTLYING_OCEANIA_REGION_ID = 'QO';
+
     const EUROPEAN_UNION_ID = 'EU';
+
     const NETHERLANDS_ANTILLES_ID = 'AN';
+
     const BOUVET_ISLAND_ID = 'BV';
+
     const HEARD_MCDONALD_ISLANDS_ID = 'HM';
+
     const CLIPPERTON_ISLAND_ID = 'CP';
 
     /**
      * Regions excluded from generation.
+     *
+     * @var array
      */
     private static $blacklist = array(
         self::UNKNOWN_REGION_ID => true,
@@ -127,6 +135,8 @@ class RegionDataGenerator extends AbstractDataGenerator
     }
 
     /**
+     * @param ArrayAccessibleResourceBundle $localeBundle
+     *
      * @return array
      */
     protected function generateRegionNames(ArrayAccessibleResourceBundle $localeBundle)
@@ -140,7 +150,7 @@ class RegionDataGenerator extends AbstractDataGenerator
             }
 
             // WORLD/CONTINENT/SUBCONTINENT/GROUPING
-            if (ctype_digit($region) || \is_int($region)) {
+            if (ctype_digit($region) || is_int($region)) {
                 continue;
             }
 

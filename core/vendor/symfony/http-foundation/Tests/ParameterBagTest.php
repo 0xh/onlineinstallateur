@@ -11,10 +11,9 @@
 
 namespace Symfony\Component\HttpFoundation\Tests;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class ParameterBagTest extends TestCase
+class ParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
@@ -206,7 +205,7 @@ class ParameterBagTest extends TestCase
             $this->assertEquals($parameters[$key], $val);
         }
 
-        $this->assertEquals(\count($parameters), $i);
+        $this->assertEquals(count($parameters), $i);
     }
 
     public function testCount()
@@ -214,7 +213,7 @@ class ParameterBagTest extends TestCase
         $parameters = array('foo' => 'bar', 'hello' => 'world');
         $bag = new ParameterBag($parameters);
 
-        $this->assertCount(\count($parameters), $bag);
+        $this->assertEquals(count($parameters), count($bag));
     }
 
     public function testGetBoolean()

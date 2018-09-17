@@ -11,12 +11,12 @@
 
 namespace Symfony\Component\Routing\Generator;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Routing\Exception\InvalidParameterException;
-use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Psr\Log\LoggerInterface;
 
 /**
  * UrlGenerator can generate a URL or a path for any route in the RouteCollection
@@ -27,7 +27,14 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInterface
 {
+    /**
+     * @var RouteCollection
+     */
     protected $routes;
+
+    /**
+     * @var RequestContext
+     */
     protected $context;
 
     /**
@@ -35,6 +42,9 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
      */
     protected $strictRequirements = true;
 
+    /**
+     * @var LoggerInterface|null
+     */
     protected $logger;
 
     /**
@@ -65,6 +75,13 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         '%7C' => '|',
     );
 
+    /**
+     * Constructor.
+     *
+     * @param RouteCollection      $routes  A RouteCollection instance
+     * @param RequestContext       $context The context
+     * @param LoggerInterface|null $logger  A logger instance
+     */
     public function __construct(RouteCollection $routes, RequestContext $context, LoggerInterface $logger = null)
     {
         $this->routes = $routes;
@@ -126,8 +143,8 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
      */
     protected function doGenerate($variables, $defaults, $requirements, $tokens, $parameters, $name, $referenceType, $hostTokens, array $requiredSchemes = array())
     {
-        if (\is_bool($referenceType) || \is_string($referenceType)) {
-            @trigger_error('The hardcoded value you are using for the $referenceType argument of the '.__CLASS__.'::generate method is deprecated since Symfony 2.8 and will not be supported anymore in 3.0. Use the constants defined in the UrlGeneratorInterface instead.', E_USER_DEPRECATED);
+        if (is_bool($referenceType) || is_string($referenceType)) {
+            @trigger_error('The hardcoded value you are using for the $referenceType argument of the '.__CLASS__.'::generate method is deprecated since version 2.8 and will not be supported anymore in 3.0. Use the constants defined in the UrlGeneratorInterface instead.', E_USER_DEPRECATED);
 
             if (true === $referenceType) {
                 $referenceType = self::ABSOLUTE_URL;
@@ -195,62 +212,72 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         $schemeAuthority = '';
-        $host = $this->context->getHost();
-        $scheme = $this->context->getScheme();
+        if ($host = $this->context->getHost()) {
+            $scheme = $this->context->getScheme();
 
-        if ($requiredSchemes) {
-            if (!\in_array($scheme, $requiredSchemes, true)) {
-                $referenceType = self::ABSOLUTE_URL;
-                $scheme = current($requiredSchemes);
-            }
-        } elseif (isset($requirements['_scheme']) && ($req = strtolower($requirements['_scheme'])) && $scheme !== $req) {
-            // We do this for BC; to be removed if _scheme is not supported anymore
-            $referenceType = self::ABSOLUTE_URL;
-            $scheme = $req;
-        }
+            if ($requiredSchemes) {
+                $schemeMatched = false;
+                foreach ($requiredSchemes as $requiredScheme) {
+                    if ($scheme === $requiredScheme) {
+                        $schemeMatched = true;
 
-        if ($hostTokens) {
-            $routeHost = '';
-            foreach ($hostTokens as $token) {
-                if ('variable' === $token[0]) {
-                    if (null !== $this->strictRequirements && !preg_match('#^'.$token[2].'$#i', $mergedParams[$token[3]])) {
-                        $message = sprintf('Parameter "%s" for route "%s" must match "%s" ("%s" given) to generate a corresponding URL.', $token[3], $name, $token[2], $mergedParams[$token[3]]);
-
-                        if ($this->strictRequirements) {
-                            throw new InvalidParameterException($message);
-                        }
-
-                        if ($this->logger) {
-                            $this->logger->error($message);
-                        }
-
-                        return;
+                        break;
                     }
+                }
 
-                    $routeHost = $token[1].$mergedParams[$token[3]].$routeHost;
-                } else {
-                    $routeHost = $token[1].$routeHost;
+                if (!$schemeMatched) {
+                    $referenceType = self::ABSOLUTE_URL;
+                    $scheme = current($requiredSchemes);
+                }
+            } elseif (isset($requirements['_scheme']) && ($req = strtolower($requirements['_scheme'])) && $scheme !== $req) {
+                // We do this for BC; to be removed if _scheme is not supported anymore
+                $referenceType = self::ABSOLUTE_URL;
+                $scheme = $req;
+            }
+
+            if ($hostTokens) {
+                $routeHost = '';
+                foreach ($hostTokens as $token) {
+                    if ('variable' === $token[0]) {
+                        if (null !== $this->strictRequirements && !preg_match('#^'.$token[2].'$#i', $mergedParams[$token[3]])) {
+                            $message = sprintf('Parameter "%s" for route "%s" must match "%s" ("%s" given) to generate a corresponding URL.', $token[3], $name, $token[2], $mergedParams[$token[3]]);
+
+                            if ($this->strictRequirements) {
+                                throw new InvalidParameterException($message);
+                            }
+
+                            if ($this->logger) {
+                                $this->logger->error($message);
+                            }
+
+                            return;
+                        }
+
+                        $routeHost = $token[1].$mergedParams[$token[3]].$routeHost;
+                    } else {
+                        $routeHost = $token[1].$routeHost;
+                    }
+                }
+
+                if ($routeHost !== $host) {
+                    $host = $routeHost;
+                    if (self::ABSOLUTE_URL !== $referenceType) {
+                        $referenceType = self::NETWORK_PATH;
+                    }
                 }
             }
 
-            if ($routeHost !== $host) {
-                $host = $routeHost;
-                if (self::ABSOLUTE_URL !== $referenceType) {
-                    $referenceType = self::NETWORK_PATH;
+            if (self::ABSOLUTE_URL === $referenceType || self::NETWORK_PATH === $referenceType) {
+                $port = '';
+                if ('http' === $scheme && 80 != $this->context->getHttpPort()) {
+                    $port = ':'.$this->context->getHttpPort();
+                } elseif ('https' === $scheme && 443 != $this->context->getHttpsPort()) {
+                    $port = ':'.$this->context->getHttpsPort();
                 }
-            }
-        }
 
-        if ((self::ABSOLUTE_URL === $referenceType || self::NETWORK_PATH === $referenceType) && !empty($host)) {
-            $port = '';
-            if ('http' === $scheme && 80 != $this->context->getHttpPort()) {
-                $port = ':'.$this->context->getHttpPort();
-            } elseif ('https' === $scheme && 443 != $this->context->getHttpsPort()) {
-                $port = ':'.$this->context->getHttpsPort();
+                $schemeAuthority = self::NETWORK_PATH === $referenceType ? '//' : "$scheme://";
+                $schemeAuthority .= $host.$port;
             }
-
-            $schemeAuthority = self::NETWORK_PATH === $referenceType ? '//' : "$scheme://";
-            $schemeAuthority .= $host.$port;
         }
 
         if (self::RELATIVE_PATH === $referenceType) {
@@ -260,10 +287,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         // add a query string if needed
-        $extra = array_udiff_assoc(array_diff_key($parameters, $variables), $defaults, function ($a, $b) {
-            return $a == $b ? 0 : 1;
-        });
-
+        $extra = array_diff_key($parameters, $variables, $defaults);
         if ($extra && $query = http_build_query($extra, '', '&')) {
             // "/" and "?" can be left decoded for better user experience, see
             // http://tools.ietf.org/html/rfc3986#section-3.4
@@ -313,7 +337,7 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         $targetDirs[] = $targetFile;
-        $path = str_repeat('../', \count($sourceDirs)).implode('/', $targetDirs);
+        $path = str_repeat('../', count($sourceDirs)).implode('/', $targetDirs);
 
         // A reference to the same base directory or an empty subdirectory must be prefixed with "./".
         // This also applies to a segment with a colon character (e.g., "file:colon") that cannot be used

@@ -15,8 +15,6 @@ use Symfony\Component\DomCrawler\Field\FormField;
 
 /**
  * This is an internal class that must not be used directly.
- *
- * @internal
  */
 class FormFieldRegistry
 {
@@ -26,6 +24,10 @@ class FormFieldRegistry
 
     /**
      * Adds a field to the registry.
+     *
+     * @param FormField $field The field
+     *
+     * @throws \InvalidArgumentException when the name is malformed
      */
     public function add(FormField $field)
     {
@@ -33,7 +35,7 @@ class FormFieldRegistry
 
         $target = &$this->fields;
         while ($segments) {
-            if (!\is_array($target)) {
+            if (!is_array($target)) {
                 $target = array();
             }
             $path = array_shift($segments);
@@ -50,12 +52,14 @@ class FormFieldRegistry
      * Removes a field and its children from the registry.
      *
      * @param string $name The fully qualified name of the base field
+     *
+     * @throws \InvalidArgumentException when the name is malformed
      */
     public function remove($name)
     {
         $segments = $this->getSegments($name);
         $target = &$this->fields;
-        while (\count($segments) > 1) {
+        while (count($segments) > 1) {
             $path = array_shift($segments);
             if (!array_key_exists($path, $target)) {
                 return;
@@ -72,6 +76,7 @@ class FormFieldRegistry
      *
      * @return mixed The value of the field
      *
+     * @throws \InvalidArgumentException when the name is malformed
      * @throws \InvalidArgumentException if the field does not exist
      */
     public function &get($name)
@@ -113,14 +118,15 @@ class FormFieldRegistry
      * @param string $name  The fully qualified name of the field
      * @param mixed  $value The value
      *
+     * @throws \InvalidArgumentException when the name is malformed
      * @throws \InvalidArgumentException if the field does not exist
      */
     public function set($name, $value)
     {
         $target = &$this->get($name);
-        if ((!\is_array($value) && $target instanceof Field\FormField) || $target instanceof Field\ChoiceFormField) {
+        if ((!is_array($value) && $target instanceof Field\FormField) || $target instanceof Field\ChoiceFormField) {
             $target->setValue($value);
-        } elseif (\is_array($value)) {
+        } elseif (is_array($value)) {
             $fields = self::create($name, $value);
             foreach ($fields->all() as $k => $v) {
                 $this->set($k, $v);
@@ -149,7 +155,7 @@ class FormFieldRegistry
      * @param string $base   The fully qualified name of the base field
      * @param array  $values The values of the fields
      *
-     * @return static
+     * @return FormFieldRegistry
      */
     private static function create($base, array $values)
     {
@@ -173,7 +179,7 @@ class FormFieldRegistry
     {
         foreach ($array as $k => $v) {
             $path = empty($base) ? $k : sprintf('%s[%s]', $base, $k);
-            if (\is_array($v)) {
+            if (is_array($v)) {
                 $this->walk($v, $path, $output);
             } else {
                 $output[$path] = $v;
@@ -193,23 +199,24 @@ class FormFieldRegistry
      * @param string $name The name of the field
      *
      * @return string[] The list of segments
+     *
+     * @throws \InvalidArgumentException when the name is malformed
      */
     private function getSegments($name)
     {
         if (preg_match('/^(?P<base>[^[]+)(?P<extra>(\[.*)|$)/', $name, $m)) {
             $segments = array($m['base']);
             while (!empty($m['extra'])) {
-                $extra = $m['extra'];
-                if (preg_match('/^\[(?P<segment>.*?)\](?P<extra>.*)$/', $extra, $m)) {
+                if (preg_match('/^\[(?P<segment>.*?)\](?P<extra>.*)$/', $m['extra'], $m)) {
                     $segments[] = $m['segment'];
                 } else {
-                    $segments[] = $extra;
+                    throw new \InvalidArgumentException(sprintf('Malformed field path "%s"', $name));
                 }
             }
 
             return $segments;
         }
 
-        return array($name);
+        throw new \InvalidArgumentException(sprintf('Malformed field path "%s"', $name));
     }
 }

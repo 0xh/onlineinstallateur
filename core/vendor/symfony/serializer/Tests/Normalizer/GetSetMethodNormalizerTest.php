@@ -12,19 +12,18 @@
 namespace Symfony\Component\Serializer\Tests\Normalizer;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Tests\Fixtures\CircularReferenceDummy;
-use Symfony\Component\Serializer\Tests\Fixtures\GroupDummy;
 use Symfony\Component\Serializer\Tests\Fixtures\SiblingHolder;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Tests\Fixtures\GroupDummy;
 
-class GetSetMethodNormalizerTest extends TestCase
+class GetSetMethodNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var GetSetMethodNormalizer
@@ -37,7 +36,7 @@ class GetSetMethodNormalizerTest extends TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMockBuilder(__NAMESPACE__.'\SerializerNormalizer')->getMock();
+        $this->serializer = $this->getMock(__NAMESPACE__.'\SerializerNormalizer');
         $this->normalizer = new GetSetMethodNormalizer();
         $this->normalizer->setSerializer($this->serializer);
     }
@@ -278,7 +277,7 @@ class GetSetMethodNormalizerTest extends TestCase
 
         $this->assertEquals(array(
             'bar' => 'bar',
-        ), $this->normalizer->normalize($obj, null, array(GetSetMethodNormalizer::GROUPS => array('c'))));
+        ), $this->normalizer->normalize($obj, null, array('groups' => array('c'))));
 
         $this->assertEquals(array(
             'symfony' => 'symfony',
@@ -287,7 +286,7 @@ class GetSetMethodNormalizerTest extends TestCase
             'bar' => 'bar',
             'kevin' => 'kevin',
             'coopTilleuls' => 'coopTilleuls',
-        ), $this->normalizer->normalize($obj, null, array(GetSetMethodNormalizer::GROUPS => array('a', 'c'))));
+        ), $this->normalizer->normalize($obj, null, array('groups' => array('a', 'c'))));
     }
 
     public function testGroupsDenormalize()
@@ -305,7 +304,7 @@ class GetSetMethodNormalizerTest extends TestCase
             $toNormalize,
             'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy',
             null,
-            array(GetSetMethodNormalizer::GROUPS => array('a'))
+            array('groups' => array('a'))
         );
         $this->assertEquals($obj, $normalized);
 
@@ -315,7 +314,7 @@ class GetSetMethodNormalizerTest extends TestCase
             $toNormalize,
             'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy',
             null,
-            array(GetSetMethodNormalizer::GROUPS => array('a', 'b'))
+            array('groups' => array('a', 'b'))
         );
         $this->assertEquals($obj, $normalized);
     }
@@ -337,7 +336,7 @@ class GetSetMethodNormalizerTest extends TestCase
                 'foo_bar' => '@dunglas',
                 'symfony' => '@coopTilleuls',
             ),
-            $this->normalizer->normalize($obj, null, array(GetSetMethodNormalizer::GROUPS => array('name_converter')))
+            $this->normalizer->normalize($obj, null, array('groups' => array('name_converter')))
         );
     }
 
@@ -358,7 +357,7 @@ class GetSetMethodNormalizerTest extends TestCase
                 'foo_bar' => '@dunglas',
                 'symfony' => '@coopTilleuls',
                 'coop_tilleuls' => 'les-tilleuls.coop',
-            ), 'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy', null, array(GetSetMethodNormalizer::GROUPS => array('name_converter')))
+            ), 'Symfony\Component\Serializer\Tests\Fixtures\GroupDummy', null, array('groups' => array('name_converter')))
         );
     }
 
@@ -421,6 +420,7 @@ class GetSetMethodNormalizerTest extends TestCase
             array(
                 array(
                     'bar' => function ($bar) {
+                        return;
                     },
                 ),
                 'baz',
@@ -455,7 +455,7 @@ class GetSetMethodNormalizerTest extends TestCase
             array(
                 array(
                     'bar' => function ($bars) {
-                        return \count($bars);
+                        return count($bars);
                     },
                 ),
                 array(new GetConstructorDummy('baz', '', false), new GetConstructorDummy('quux', '', false)),
@@ -471,7 +471,7 @@ class GetSetMethodNormalizerTest extends TestCase
      */
     public function testUnableToNormalizeObjectAttribute()
     {
-        $serializer = $this->getMockBuilder('Symfony\Component\Serializer\SerializerInterface')->getMock();
+        $serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
         $this->normalizer->setSerializer($serializer);
 
         $obj = new GetSetDummy();
@@ -515,7 +515,7 @@ class GetSetMethodNormalizerTest extends TestCase
         $serializer = new Serializer(array($this->normalizer));
         $this->normalizer->setSerializer($serializer);
         $this->normalizer->setCircularReferenceHandler(function ($obj) {
-            return \get_class($obj);
+            return get_class($obj);
         });
 
         $obj = new CircularReferenceDummy();
@@ -533,7 +533,7 @@ class GetSetMethodNormalizerTest extends TestCase
             array('bar' => 'bar'),
             __NAMESPACE__.'\GetSetDummy',
             null,
-            array(GetSetMethodNormalizer::OBJECT_TO_POPULATE => $dummy)
+            array('object_to_populate' => $dummy)
         );
 
         $this->assertEquals($dummy, $obj);
@@ -651,11 +651,6 @@ class GetSetDummy
     public static function setStaticObject($object)
     {
         self::$staticObject = $object;
-    }
-
-    protected function getPrivate()
-    {
-        throw new \RuntimeException('Dummy::getPrivate() should not be called');
     }
 }
 

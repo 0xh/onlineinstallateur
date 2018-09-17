@@ -1,6 +1,10 @@
 {
-    "Version": "2.1.38.73",
+    "Version": "2.1.8.19",
     "Names": {
-        "Beng": "Bengali"
+        "Cham": "Cham",
+        "Loma": "Loma",
+        "Modi": "Modi",
+        "Moon": "Moon",
+        "Thai": "Thai"
     }
 }

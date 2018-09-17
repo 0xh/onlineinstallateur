@@ -11,7 +11,6 @@
 
 namespace Symfony\Component\Form\Tests\Extension\Csrf\CsrfProvider;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
 
 /**
@@ -19,9 +18,15 @@ use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
  * @preserveGlobalState disabled
  * @group legacy
  */
-class LegacyDefaultCsrfProviderTest extends TestCase
+class LegacyDefaultCsrfProviderTest extends \PHPUnit_Framework_TestCase
 {
     protected $provider;
+
+    public static function setUpBeforeClass()
+    {
+        ini_set('session.save_handler', 'files');
+        ini_set('session.save_path', sys_get_temp_dir());
+    }
 
     protected function setUp()
     {

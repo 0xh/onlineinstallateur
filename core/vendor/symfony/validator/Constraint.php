@@ -19,9 +19,9 @@ use Symfony\Component\Validator\Exception\MissingOptionsException;
 /**
  * Contains the properties of a constraint definition.
  *
- * A constraint can be defined on a class, a property or a getter method.
+ * A constraint can be defined on a class, an option or a getter method.
  * The Constraint class encapsulates all the configuration required for
- * validating this class, property or getter result successfully.
+ * validating this class, option or getter result successfully.
  *
  * Constraint instances are immutable and serializable.
  *
@@ -33,21 +33,29 @@ abstract class Constraint
 {
     /**
      * The name of the group given to all constraints with no explicit group.
+     *
+     * @var string
      */
     const DEFAULT_GROUP = 'Default';
 
     /**
      * Marks a constraint that can be put onto classes.
+     *
+     * @var string
      */
     const CLASS_CONSTRAINT = 'class';
 
     /**
      * Marks a constraint that can be put onto properties.
+     *
+     * @var string
      */
     const PROPERTY_CONSTRAINT = 'property';
 
     /**
      * Maps error codes to the names of their constants.
+     *
+     * @var array
      */
     protected static $errorNames = array();
 
@@ -61,7 +69,7 @@ abstract class Constraint
     /**
      * Returns the name of the given error code.
      *
-     * @param string $errorCode The error code
+     * @param int $errorCode The error code
      *
      * @return string The name of the error code
      *
@@ -73,7 +81,7 @@ abstract class Constraint
             throw new InvalidArgumentException(sprintf(
                 'The error code "%s" does not exist for constraint of type "%s".',
                 $errorCode,
-                \get_called_class()
+                get_called_class()
             ));
         }
 
@@ -116,15 +124,12 @@ abstract class Constraint
         // The "groups" option is added to the object lazily
         $knownOptions['groups'] = true;
 
-        if (\is_array($options) && \count($options) >= 1 && isset($options['value']) && !property_exists($this, 'value')) {
+        if (is_array($options) && count($options) >= 1 && isset($options['value']) && !property_exists($this, 'value')) {
             $options[$this->getDefaultOption()] = $options['value'];
             unset($options['value']);
         }
 
-        if (\is_array($options)) {
-            reset($options);
-        }
-        if (\is_array($options) && \count($options) > 0 && \is_string(key($options))) {
+        if (is_array($options) && count($options) > 0 && is_string(key($options))) {
             foreach ($options as $option => $value) {
                 if (array_key_exists($option, $knownOptions)) {
                     $this->$option = $value;
@@ -133,12 +138,12 @@ abstract class Constraint
                     $invalidOptions[] = $option;
                 }
             }
-        } elseif (null !== $options && !(\is_array($options) && 0 === \count($options))) {
+        } elseif (null !== $options && !(is_array($options) && count($options) === 0)) {
             $option = $this->getDefaultOption();
 
             if (null === $option) {
                 throw new ConstraintDefinitionException(
-                    sprintf('No default option is configured for constraint %s', \get_class($this))
+                    sprintf('No default option is configured for constraint %s', get_class($this))
                 );
             }
 
@@ -150,16 +155,16 @@ abstract class Constraint
             }
         }
 
-        if (\count($invalidOptions) > 0) {
+        if (count($invalidOptions) > 0) {
             throw new InvalidOptionsException(
-                sprintf('The options "%s" do not exist in constraint %s', implode('", "', $invalidOptions), \get_class($this)),
+                sprintf('The options "%s" do not exist in constraint %s', implode('", "', $invalidOptions), get_class($this)),
                 $invalidOptions
             );
         }
 
-        if (\count($missingOptions) > 0) {
+        if (count($missingOptions) > 0) {
             throw new MissingOptionsException(
-                sprintf('The options "%s" must be set for constraint %s', implode('", "', array_keys($missingOptions)), \get_class($this)),
+                sprintf('The options "%s" must be set for constraint %s', implode('", "', array_keys($missingOptions)), get_class($this)),
                 array_keys($missingOptions)
             );
         }
@@ -185,7 +190,7 @@ abstract class Constraint
             return;
         }
 
-        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, \get_class($this)), array($option));
+        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, get_class($this)), array($option));
     }
 
     /**
@@ -201,7 +206,9 @@ abstract class Constraint
      *
      * @throws InvalidOptionsException If an invalid option name is given
      *
-     * @internal this method should not be used or overwritten in userland code
+     * @internal This method should not be used or overwritten in userland code.
+     *
+     * @since 2.6
      */
     public function __get($option)
     {
@@ -211,17 +218,7 @@ abstract class Constraint
             return $this->groups;
         }
 
-        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, \get_class($this)), array($option));
-    }
-
-    /**
-     * @param string $option The option name
-     *
-     * @return bool
-     */
-    public function __isset($option)
-    {
-        return 'groups' === $option;
+        throw new InvalidOptionsException(sprintf('The option "%s" does not exist in constraint %s', $option, get_class($this)), array($option));
     }
 
     /**
@@ -231,7 +228,7 @@ abstract class Constraint
      */
     public function addImplicitGroupName($group)
     {
-        if (\in_array(self::DEFAULT_GROUP, $this->groups) && !\in_array($group, $this->groups)) {
+        if (in_array(self::DEFAULT_GROUP, $this->groups) && !in_array($group, $this->groups)) {
             $this->groups[] = $group;
         }
     }
@@ -274,7 +271,7 @@ abstract class Constraint
      */
     public function validatedBy()
     {
-        return \get_class($this).'Validator';
+        return get_class($this).'Validator';
     }
 
     /**
@@ -299,6 +296,8 @@ abstract class Constraint
      * @internal This method may be replaced by an implementation of
      *           {@link \Serializable} in the future. Please don't use or
      *           overwrite it.
+     *
+     * @since 2.6
      */
     public function __sleep()
     {

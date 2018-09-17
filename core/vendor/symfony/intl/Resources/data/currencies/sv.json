@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -217,20 +217,16 @@
             "BYB",
             "vitrysk ny rubel (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "vitrysk rubel"
-        ],
         "BYR": [
             "BYR",
-            "vitrysk rubel (2000–2016)"
+            "vitrysk rubel"
         ],
         "BZD": [
             "BZ$",
             "belizisk dollar"
         ],
         "CAD": [
-            "CA$",
+            "CAN$",
             "kanadensisk dollar"
         ],
         "CDF": [
@@ -260,10 +256,6 @@
         "CLP": [
             "CLP",
             "chilensk peso"
-        ],
-        "CNH": [
-            "CNH",
-            "CNH"
         ],
         "CNX": [
             "CNX",
@@ -451,7 +443,7 @@
         ],
         "GYD": [
             "GYD",
-            "Guyanadollar"
+            "guyanansk dollar"
         ],
         "HKD": [
             "HKD",
@@ -479,10 +471,10 @@
         ],
         "IDR": [
             "IDR",
-            "indonesisk rupie"
+            "indonesisk rupiah"
         ],
         "IEP": [
-            "IE£",
+            "IEP",
             "irländskt pund"
         ],
         "ILP": [
@@ -679,15 +671,11 @@
         ],
         "MOP": [
             "MOP",
-            "makanesisk pataca"
+            "macaosk pataca"
         ],
         "MRO": [
             "MRO",
-            "mauretansk ouguiya (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
-            "mauretansk ouguiya"
+            "mauretansk ouquiya"
         ],
         "MTL": [
             "MTL",
@@ -787,7 +775,7 @@
         ],
         "PEN": [
             "PEN",
-            "peruansk sol"
+            "peruansk nuevo sol"
         ],
         "PES": [
             "PES",
@@ -919,10 +907,6 @@
         ],
         "STD": [
             "STD",
-            "saotomeansk dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "saotomeansk dobra"
         ],
         "SUR": [
@@ -1079,7 +1063,7 @@
         ],
         "XFU": [
             "XFU",
-            "internationella järnvägsunionens franc"
+            "French UIC-Franc"
         ],
         "XOF": [
             "CFA",

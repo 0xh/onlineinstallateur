@@ -11,13 +11,13 @@
 
 namespace Symfony\Component\Form\Extension\Core\ChoiceList;
 
-@trigger_error('The '.__NAMESPACE__.'\ChoiceList class is deprecated since Symfony 2.7 and will be removed in 3.0. Use Symfony\Component\Form\ChoiceList\ArrayChoiceList instead.', E_USER_DEPRECATED);
+@trigger_error('The '.__NAMESPACE__.'\ChoiceList class is deprecated since version 2.7 and will be removed in 3.0. Use Symfony\Component\Form\ChoiceList\ArrayChoiceList instead.', E_USER_DEPRECATED);
 
-use Symfony\Component\Form\Exception\InvalidArgumentException;
-use Symfony\Component\Form\Exception\InvalidConfigurationException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormConfigBuilder;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Exception\InvalidConfigurationException;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * A choice list for choices of arbitrary data types.
@@ -43,23 +43,31 @@ class ChoiceList implements ChoiceListInterface
 {
     /**
      * The choices with their indices as keys.
+     *
+     * @var array
      */
     protected $choices = array();
 
     /**
      * The choice values with the indices of the matching choices as keys.
+     *
+     * @var array
      */
     protected $values = array();
 
     /**
      * The preferred view objects as hierarchy containing also the choice groups
      * with the indices of the matching choices as bottom-level keys.
+     *
+     * @var array
      */
     private $preferredViews = array();
 
     /**
      * The non-preferred view objects as hierarchy containing also the choice
      * groups with the indices of the matching choices as bottom-level keys.
+     *
+     * @var array
      */
     private $remainingViews = array();
 
@@ -75,13 +83,13 @@ class ChoiceList implements ChoiceListInterface
      * @param array              $labels           The array of labels. The structure of this array
      *                                             should match the structure of $choices.
      * @param array              $preferredChoices A flat array of choices that should be
-     *                                             presented to the user with priority
+     *                                             presented to the user with priority.
      *
-     * @throws UnexpectedTypeException if the choices are not an array or \Traversable
+     * @throws UnexpectedTypeException If the choices are not an array or \Traversable.
      */
     public function __construct($choices, array $labels, array $preferredChoices = array())
     {
-        if (!\is_array($choices) && !$choices instanceof \Traversable) {
+        if (!is_array($choices) && !$choices instanceof \Traversable) {
             throw new UnexpectedTypeException($choices, 'array or \Traversable');
         }
 
@@ -93,9 +101,9 @@ class ChoiceList implements ChoiceListInterface
      *
      * Safe to be called multiple times. The list is cleared on every call.
      *
-     * @param array|\Traversable $choices          The choices to write into the list
-     * @param array              $labels           The labels belonging to the choices
-     * @param array              $preferredChoices The choices to display with priority
+     * @param array|\Traversable $choices          The choices to write into the list.
+     * @param array              $labels           The labels belonging to the choices.
+     * @param array              $preferredChoices The choices to display with priority.
      */
     protected function initialize($choices, array $labels, array $preferredChoices)
     {
@@ -159,7 +167,7 @@ class ChoiceList implements ChoiceListInterface
                     $choices[$i] = $this->choices[$j];
                     unset($values[$i]);
 
-                    if (0 === \count($values)) {
+                    if (0 === count($values)) {
                         break 2;
                     }
                 }
@@ -183,7 +191,7 @@ class ChoiceList implements ChoiceListInterface
                     $values[$i] = $this->values[$j];
                     unset($choices[$i]);
 
-                    if (0 === \count($choices)) {
+                    if (0 === count($choices)) {
                         break 2;
                     }
                 }
@@ -200,7 +208,7 @@ class ChoiceList implements ChoiceListInterface
      */
     public function getIndicesForChoices(array $choices)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
 
         $choices = $this->fixChoices($choices);
         $indices = array();
@@ -211,7 +219,7 @@ class ChoiceList implements ChoiceListInterface
                     $indices[$i] = $j;
                     unset($choices[$i]);
 
-                    if (0 === \count($choices)) {
+                    if (0 === count($choices)) {
                         break 2;
                     }
                 }
@@ -228,7 +236,7 @@ class ChoiceList implements ChoiceListInterface
      */
     public function getIndicesForValues(array $values)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.4 and will be removed in 3.0.', E_USER_DEPRECATED);
 
         $values = $this->fixValues($values);
         $indices = array();
@@ -239,7 +247,7 @@ class ChoiceList implements ChoiceListInterface
                     $indices[$i] = $j;
                     unset($values[$i]);
 
-                    if (0 === \count($values)) {
+                    if (0 === count($values)) {
                         break 2;
                     }
                 }
@@ -252,14 +260,16 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Recursively adds the given choices to the list.
      *
-     * @param array              $bucketForPreferred The bucket where to store the preferred view objects
-     * @param array              $bucketForRemaining The bucket where to store the non-preferred view objects
-     * @param array|\Traversable $choices            The list of choices
-     * @param array              $labels             The labels corresponding to the choices
-     * @param array              $preferredChoices   The preferred choices
+     * @param array              $bucketForPreferred The bucket where to store the preferred
+     *                                               view objects.
+     * @param array              $bucketForRemaining The bucket where to store the
+     *                                               non-preferred view objects.
+     * @param array|\Traversable $choices            The list of choices.
+     * @param array              $labels             The labels corresponding to the choices.
+     * @param array              $preferredChoices   The preferred choices.
      *
-     * @throws InvalidArgumentException      if the structures of the choices and labels array do not match
-     * @throws InvalidConfigurationException if no valid value or index could be created for a choice
+     * @throws InvalidArgumentException      If the structures of the choices and labels array do not match.
+     * @throws InvalidConfigurationException If no valid value or index could be created for a choice.
      */
     protected function addChoices(array &$bucketForPreferred, array &$bucketForRemaining, $choices, array $labels, array $preferredChoices)
     {
@@ -269,9 +279,9 @@ class ChoiceList implements ChoiceListInterface
                 throw new InvalidArgumentException('The structures of the choices and labels array do not match.');
             }
 
-            if (\is_array($choice)) {
+            if (is_array($choice)) {
                 // Don't do the work if the array is empty
-                if (\count($choice) > 0) {
+                if (count($choice) > 0) {
                     $this->addChoiceGroup(
                         $group,
                         $bucketForPreferred,
@@ -296,14 +306,16 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Recursively adds a choice group.
      *
-     * @param string $group              The name of the group
-     * @param array  $bucketForPreferred The bucket where to store the preferred view objects
-     * @param array  $bucketForRemaining The bucket where to store the non-preferred view objects
-     * @param array  $choices            The list of choices in the group
-     * @param array  $labels             The labels corresponding to the choices in the group
-     * @param array  $preferredChoices   The preferred choices
+     * @param string $group              The name of the group.
+     * @param array  $bucketForPreferred The bucket where to store the preferred
+     *                                   view objects.
+     * @param array  $bucketForRemaining The bucket where to store the
+     *                                   non-preferred view objects.
+     * @param array  $choices            The list of choices in the group.
+     * @param array  $labels             The labels corresponding to the choices in the group.
+     * @param array  $preferredChoices   The preferred choices.
      *
-     * @throws InvalidConfigurationException if no valid value or index could be created for a choice
+     * @throws InvalidConfigurationException If no valid value or index could be created for a choice.
      */
     protected function addChoiceGroup($group, array &$bucketForPreferred, array &$bucketForRemaining, array $choices, array $labels, array $preferredChoices)
     {
@@ -332,13 +344,15 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Adds a new choice.
      *
-     * @param array  $bucketForPreferred The bucket where to store the preferred view objects
-     * @param array  $bucketForRemaining The bucket where to store the non-preferred view objects
-     * @param mixed  $choice             The choice to add
-     * @param string $label              The label for the choice
-     * @param array  $preferredChoices   The preferred choices
+     * @param array  $bucketForPreferred The bucket where to store the preferred
+     *                                   view objects.
+     * @param array  $bucketForRemaining The bucket where to store the
+     *                                   non-preferred view objects.
+     * @param mixed  $choice             The choice to add.
+     * @param string $label              The label for the choice.
+     * @param array  $preferredChoices   The preferred choices.
      *
-     * @throws InvalidConfigurationException if no valid value or index could be created
+     * @throws InvalidConfigurationException If no valid value or index could be created.
      */
     protected function addChoice(array &$bucketForPreferred, array &$bucketForRemaining, $choice, $label, array $preferredChoices)
     {
@@ -350,8 +364,8 @@ class ChoiceList implements ChoiceListInterface
 
         $value = $this->createValue($choice);
 
-        if (!\is_string($value)) {
-            throw new InvalidConfigurationException(sprintf('The value created by the choice list is of type "%s", but should be a string.', \gettype($value)));
+        if (!is_string($value)) {
+            throw new InvalidConfigurationException(sprintf('The value created by the choice list is of type "%s", but should be a string.', gettype($value)));
         }
 
         $view = new ChoiceView($choice, $value, $label);
@@ -373,14 +387,14 @@ class ChoiceList implements ChoiceListInterface
      * Extension point to optimize performance by changing the structure of the
      * $preferredChoices array.
      *
-     * @param mixed $choice           The choice to test
-     * @param array $preferredChoices An array of preferred choices
+     * @param mixed $choice           The choice to test.
+     * @param array $preferredChoices An array of preferred choices.
      *
-     * @return bool Whether the choice is preferred
+     * @return bool Whether the choice is preferred.
      */
     protected function isPreferred($choice, array $preferredChoices)
     {
-        return \in_array($choice, $preferredChoices, true);
+        return in_array($choice, $preferredChoices, true);
     }
 
     /**
@@ -390,12 +404,12 @@ class ChoiceList implements ChoiceListInterface
      *
      * @param mixed $choice The choice to create an index for
      *
-     * @return int|string a unique index containing only ASCII letters,
-     *                    digits and underscores
+     * @return int|string A unique index containing only ASCII letters,
+     *                    digits and underscores.
      */
     protected function createIndex($choice)
     {
-        return \count($this->choices);
+        return count($this->choices);
     }
 
     /**
@@ -407,20 +421,20 @@ class ChoiceList implements ChoiceListInterface
      *
      * @param mixed $choice The choice to create a value for
      *
-     * @return string A unique string
+     * @return string A unique string.
      */
     protected function createValue($choice)
     {
-        return (string) \count($this->values);
+        return (string) count($this->values);
     }
 
     /**
      * Fixes the data type of the given choice value to avoid comparison
      * problems.
      *
-     * @param mixed $value The choice value
+     * @param mixed $value The choice value.
      *
-     * @return string The value as string
+     * @return string The value as string.
      */
     protected function fixValue($value)
     {
@@ -431,9 +445,9 @@ class ChoiceList implements ChoiceListInterface
      * Fixes the data types of the given choice values to avoid comparison
      * problems.
      *
-     * @param array $values The choice values
+     * @param array $values The choice values.
      *
-     * @return array The values as strings
+     * @return array The values as strings.
      */
     protected function fixValues(array $values)
     {
@@ -448,13 +462,13 @@ class ChoiceList implements ChoiceListInterface
      * Fixes the data type of the given choice index to avoid comparison
      * problems.
      *
-     * @param mixed $index The choice index
+     * @param mixed $index The choice index.
      *
-     * @return int|string The index as PHP array key
+     * @return int|string The index as PHP array key.
      */
     protected function fixIndex($index)
     {
-        if (\is_bool($index) || (string) (int) $index === (string) $index) {
+        if (is_bool($index) || (string) (int) $index === (string) $index) {
             return (int) $index;
         }
 
@@ -465,9 +479,9 @@ class ChoiceList implements ChoiceListInterface
      * Fixes the data types of the given choice indices to avoid comparison
      * problems.
      *
-     * @param array $indices The choice indices
+     * @param array $indices The choice indices.
      *
-     * @return array The indices as strings
+     * @return array The indices as strings.
      */
     protected function fixIndices(array $indices)
     {
@@ -496,9 +510,9 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Fixes the data type of the given choices to avoid comparison problems.
      *
-     * @param array $choices The choices
+     * @param array $choices The choices.
      *
-     * @return array The fixed choices
+     * @return array The fixed choices.
      *
      * @see fixChoice()
      */

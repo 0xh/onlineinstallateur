@@ -1,7 +1,6 @@
 {
     "Names": {
-        "bn": "Bengali",
-        "bn_BD": "Bengali (Bangladesh)",
-        "bn_IN": "Bengali (India)"
+        "en_UM": "English (U.S. Minor Outlying Islands)",
+        "en_VC": "English (Saint Vincent and the Grenadines)"
     }
 }

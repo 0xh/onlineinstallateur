@@ -26,9 +26,14 @@ class RepeatedPass implements CompilerPassInterface
      */
     private $repeat = false;
 
+    /**
+     * @var RepeatablePassInterface[]
+     */
     private $passes;
 
     /**
+     * Constructor.
+     *
      * @param RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
      *
      * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
@@ -48,15 +53,19 @@ class RepeatedPass implements CompilerPassInterface
 
     /**
      * Process the repeatable passes that run more than once.
+     *
+     * @param ContainerBuilder $container
      */
     public function process(ContainerBuilder $container)
     {
-        do {
-            $this->repeat = false;
-            foreach ($this->passes as $pass) {
-                $pass->process($container);
-            }
-        } while ($this->repeat);
+        $this->repeat = false;
+        foreach ($this->passes as $pass) {
+            $pass->process($container);
+        }
+
+        if ($this->repeat) {
+            $this->process($container);
+        }
     }
 
     /**

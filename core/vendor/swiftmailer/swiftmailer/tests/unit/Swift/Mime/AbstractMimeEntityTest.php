@@ -379,7 +379,7 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
             $this->_createEncoder(), $this->_createCache()
             );
         $firstBoundary = $entity->getBoundary();
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 10; $i++) {
             $this->assertEquals($firstBoundary, $entity->getBoundary());
         }
     }
@@ -540,13 +540,13 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
         $child1 = new MimeEntityFixture(Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE,
             "Content-Type: text/plain\r\n".
             "\r\n".
-            'foobar', 'text/plain'
+            'foobar'
             );
 
         $child2 = new MimeEntityFixture(Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE,
             "Content-Type: text/html\r\n".
             "\r\n".
-            '<b>foobar</b>', 'text/html'
+            '<b>foobar</b>'
             );
 
         $headers->shouldReceive('toString')
@@ -623,7 +623,7 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
             "\r\n".
             'data'.
             "\r\n\r\n--xxx--\r\n".
-            '$~',
+            "\$~",
             $entity->toString()
             );
     }
@@ -738,46 +738,6 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
             "\r\n\r\n--xxx--\r\n",
             $entity->toString()
             );
-    }
-
-    public function testOrderingEqualContentTypesMaintainsOriginalOrdering()
-    {
-        $firstChild = new MimeEntityFixture(Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE,
-            "Content-Type: text/plain\r\n".
-            "\r\n".
-            'PART 1',
-            'text/plain'
-        );
-        $secondChild = new MimeEntityFixture(Swift_Mime_MimeEntity::LEVEL_ALTERNATIVE,
-            "Content-Type: text/plain\r\n".
-            "\r\n".
-            'PART 2',
-            'text/plain'
-        );
-        $headers = $this->_createHeaderSet(array(), false);
-        $headers->shouldReceive('toString')
-            ->zeroOrMoreTimes()
-            ->andReturn("Content-Type: multipart/alternative; boundary=\"xxx\"\r\n");
-
-        $entity = $this->_createEntity($headers, $this->_createEncoder(),
-            $this->_createCache()
-        );
-        $entity->setBoundary('xxx');
-        $entity->setChildren(array($firstChild, $secondChild));
-
-        $this->assertEquals(
-            "Content-Type: multipart/alternative; boundary=\"xxx\"\r\n".
-            "\r\n\r\n--xxx\r\n".
-            "Content-Type: text/plain\r\n".
-            "\r\n".
-            'PART 1'.
-            "\r\n\r\n--xxx\r\n".
-            "Content-Type: text/plain\r\n".
-            "\r\n".
-            'PART 2'.
-            "\r\n\r\n--xxx--\r\n",
-            $entity->toString()
-        );
     }
 
     public function testUnsettingChildrenRestoresContentType()
@@ -988,6 +948,8 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
             );
     }
 
+    // -- Private helpers
+
     abstract protected function _createEntity($headers, $encoder, $cache);
 
     protected function _createChild($level = null, $string = '', $stub = true)
@@ -1007,7 +969,7 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
 
     protected function _createEncoder($name = 'quoted-printable', $stub = true)
     {
-        $encoder = $this->getMockBuilder('Swift_Mime_ContentEncoder')->getMock();
+        $encoder = $this->getMock('Swift_Mime_ContentEncoder');
         $encoder->expects($this->any())
                 ->method('getName')
                 ->will($this->returnValue($name));
@@ -1087,6 +1049,6 @@ abstract class Swift_Mime_AbstractMimeEntityTest extends \SwiftMailerTestCase
 
     protected function _createInputStream($stub = true)
     {
-        return $this->getMockBuilder('Swift_InputByteStream')->getMock();
+        return $this->getMock('Swift_InputByteStream');
     }
 }

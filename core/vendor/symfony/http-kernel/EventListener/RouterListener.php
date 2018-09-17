@@ -12,21 +12,20 @@
 namespace Symfony\Component\HttpKernel\EventListener;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
+use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RequestContextAwareInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Initializes the context from the request and sets request attributes based on a matching route.
@@ -47,6 +46,8 @@ class RouterListener implements EventSubscriberInterface
     private $requestStack;
 
     /**
+     * Constructor.
+     *
      * RequestStack will become required in 3.0.
      *
      * @param UrlMatcherInterface|RequestMatcherInterface $matcher      The Url or Request matcher
@@ -106,7 +107,7 @@ class RouterListener implements EventSubscriberInterface
      */
     public function setRequest(Request $request = null)
     {
-        @trigger_error('The '.__METHOD__.' method is deprecated since Symfony 2.4 and will be made private in 3.0.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 2.4 and will be made private in 3.0.', E_USER_DEPRECATED);
 
         $this->setCurrentRequest($request);
     }
@@ -114,11 +115,7 @@ class RouterListener implements EventSubscriberInterface
     private function setCurrentRequest(Request $request = null)
     {
         if (null !== $request && $this->request !== $request) {
-            try {
-                $this->context->fromRequest($request);
-            } catch (\UnexpectedValueException $e) {
-                throw new BadRequestHttpException($e->getMessage(), $e, $e->getCode());
-            }
+            $this->context->fromRequest($request);
         }
 
         $this->request = $request;

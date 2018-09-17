@@ -1,16 +1,20 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.19",
     "Names": {
         "Armn": "arménio",
+        "Blis": "símbolos Bliss",
         "Egyd": "egípcio demótico",
         "Egyh": "egípcio hierático",
-        "Hanb": "han com bopomofo",
+        "Gujr": "guzerate",
+        "Hans": "han simplificado",
+        "Hant": "han tradicional",
         "Inds": "indus",
-        "Orya": "odia",
+        "Lina": "linear A",
+        "Linb": "linear B",
         "Sylo": "siloti nagri",
         "Tale": "tai le",
         "Telu": "telugu",
-        "Zsye": "emoji",
+        "Xsux": "cuneiforme sumero-acadiano",
         "Zsym": "símbolos",
         "Zxxx": "não escrito"
     }

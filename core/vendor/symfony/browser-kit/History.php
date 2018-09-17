@@ -32,12 +32,14 @@ class History
 
     /**
      * Adds a Request to the history.
+     *
+     * @param Request $request A Request instance
      */
     public function add(Request $request)
     {
-        $this->stack = \array_slice($this->stack, 0, $this->position + 1);
+        $this->stack = array_slice($this->stack, 0, $this->position + 1);
         $this->stack[] = clone $request;
-        $this->position = \count($this->stack) - 1;
+        $this->position = count($this->stack) - 1;
     }
 
     /**
@@ -47,7 +49,7 @@ class History
      */
     public function isEmpty()
     {
-        return 0 == \count($this->stack);
+        return count($this->stack) == 0;
     }
 
     /**
@@ -75,7 +77,7 @@ class History
      */
     public function forward()
     {
-        if ($this->position > \count($this->stack) - 2) {
+        if ($this->position > count($this->stack) - 2) {
             throw new \LogicException('You are already on the last page.');
         }
 

@@ -16,7 +16,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\RequestHandlerInterface;
 use Symfony\Component\Form\Util\ServerParams;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,8 +26,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class HttpFoundationRequestHandler implements RequestHandlerInterface
 {
+    /**
+     * @var ServerParams
+     */
     private $serverParams;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(ServerParams $serverParams = null)
     {
         $this->serverParams = $serverParams ?: new ServerParams();
@@ -68,12 +73,15 @@ class HttpFoundationRequestHandler implements RequestHandlerInterface
             // Mark the form with an error if the uploaded size was too large
             // This is done here and not in FormValidator because $_POST is
             // empty when that error occurs. Hence the form is never submitted.
-            if ($this->serverParams->hasPostMaxSizeBeenExceeded()) {
+            $contentLength = $this->serverParams->getContentLength();
+            $maxContentLength = $this->serverParams->getPostMaxSize();
+
+            if (!empty($maxContentLength) && $contentLength > $maxContentLength) {
                 // Submit the form, but don't clear the default values
                 $form->submit(null, false);
 
                 $form->addError(new FormError(
-                    \call_user_func($form->getConfig()->getOption('upload_max_size_message')),
+                    $form->getConfig()->getOption('post_max_size_message'),
                     null,
                     array('{{ max }}' => $this->serverParams->getNormalizedIniPostMaxSize())
                 ));
@@ -93,7 +101,7 @@ class HttpFoundationRequestHandler implements RequestHandlerInterface
                 return;
             }
 
-            if (\is_array($params) && \is_array($files)) {
+            if (is_array($params) && is_array($files)) {
                 $data = array_replace_recursive($params, $files);
             } else {
                 $data = $params ?: $files;
@@ -101,18 +109,10 @@ class HttpFoundationRequestHandler implements RequestHandlerInterface
         }
 
         // Don't auto-submit the form unless at least one field is present.
-        if ('' === $name && \count(array_intersect_key($data, $form->all())) <= 0) {
+        if ('' === $name && count(array_intersect_key($data, $form->all())) <= 0) {
             return;
         }
 
         $form->submit($data, 'PATCH' !== $method);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isFileUpload($data)
-    {
-        return $data instanceof File;
     }
 }

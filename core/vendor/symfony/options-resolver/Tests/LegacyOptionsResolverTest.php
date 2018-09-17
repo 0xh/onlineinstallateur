@@ -11,14 +11,13 @@
 
 namespace Symfony\Component\OptionsResolver\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\Options;
 
 /**
  * @group legacy
  */
-class LegacyOptionsResolverTest extends TestCase
+class LegacyOptionsResolverTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OptionsResolver
@@ -89,9 +88,9 @@ class LegacyOptionsResolverTest extends TestCase
             'force' => 'boolean',
         ));
 
-        $this->assertSame(array('force' => true), $this->resolver->resolve(array(
+        $this->resolver->resolve(array(
             'force' => true,
-        )));
+        ));
     }
 
     public function testResolveLazyDependencyOnOptional()
@@ -123,8 +122,8 @@ class LegacyOptionsResolverTest extends TestCase
 
         $this->resolver->setDefaults(array(
             'two' => function (Options $options) use ($test) {
-                /* @var TestCase $test */
-                $test->assertArrayNotHasKey('one', $options);
+                /* @var \PHPUnit_Framework_TestCase $test */
+                $test->assertFalse(isset($options['one']));
 
                 return '2';
             },
@@ -147,8 +146,8 @@ class LegacyOptionsResolverTest extends TestCase
 
         $this->resolver->setDefaults(array(
             'two' => function (Options $options) use ($test) {
-                /* @var TestCase $test */
-                $test->assertArrayHasKey('one', $options);
+                /* @var \PHPUnit_Framework_TestCase $test */
+                $test->assertTrue(isset($options['one']));
 
                 return $options['one'].'2';
             },
@@ -191,7 +190,7 @@ class LegacyOptionsResolverTest extends TestCase
 
         $this->resolver->setDefaults(array(
             'one' => function (Options $options) use ($test) {
-                /* @var TestCase $test */
+                /* @var \PHPUnit_Framework_TestCase $test */
                 $test->fail('Previous closure should not be executed');
             },
         ));

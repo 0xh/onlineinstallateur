@@ -1,5 +1,5 @@
 {
-    "Version": "2.1.41.97",
+    "Version": "2.1.8.9",
     "Names": {
         "ADP": [
             "ADP",
@@ -217,13 +217,9 @@
             "BYB",
             "Valko-Venäjän uusi rupla (1994–1999)"
         ],
-        "BYN": [
-            "BYN",
-            "Valko-Venäjän rupla"
-        ],
         "BYR": [
             "BYR",
-            "Valko-Venäjän rupla (2000–2016)"
+            "Valko-Venäjän rupla"
         ],
         "BZD": [
             "BZD",
@@ -261,17 +257,13 @@
             "CLP",
             "Chilen peso"
         ],
-        "CNH": [
-            "CNH",
-            "Kiinan juan (offshore)"
-        ],
         "CNX": [
             "CNX",
             "Kiinan kansanpankin dollari"
         ],
         "CNY": [
             "CNY",
-            "Kiinan juan"
+            "Kiinan yuan"
         ],
         "COP": [
             "COP",
@@ -283,7 +275,7 @@
         ],
         "CRC": [
             "CRC",
-            "Costa Rican colón"
+            "Costa Rican colon"
         ],
         "CSD": [
             "CSD",
@@ -359,7 +351,7 @@
         ],
         "ESA": [
             "ESA",
-            "Espanjan peseta (A-tili)"
+            "Espanjan peseta (A–tili)"
         ],
         "ESB": [
             "ESB",
@@ -683,10 +675,6 @@
         ],
         "MRO": [
             "MRO",
-            "Mauritanian ouguiya (1973–2017)"
-        ],
-        "MRU": [
-            "MRU",
             "Mauritanian ouguiya"
         ],
         "MTL": [
@@ -751,11 +739,11 @@
         ],
         "NIC": [
             "NIC",
-            "Nicaraguan córdoba (1988–1991)"
+            "Nicaraguan cordoba (1988–1991)"
         ],
         "NIO": [
             "NIO",
-            "Nicaraguan córdoba"
+            "Nicaraguan cordoba"
         ],
         "NLG": [
             "NLG",
@@ -787,7 +775,7 @@
         ],
         "PEN": [
             "PEN",
-            "Perun sol"
+            "Perun uusi sol"
         ],
         "PES": [
             "PES",
@@ -807,11 +795,11 @@
         ],
         "PLN": [
             "PLN",
-            "Puolan złoty"
+            "Puolan zloty"
         ],
         "PLZ": [
             "PLZ",
-            "Puolan złoty (1950–1995)"
+            "Puolan zloty (1950–1995)"
         ],
         "PTE": [
             "PTE",
@@ -907,11 +895,11 @@
         ],
         "SRD": [
             "SRD",
-            "Surinamen dollari"
+            "Surinamin dollari"
         ],
         "SRG": [
             "SRG",
-            "Surinamen guldeni"
+            "Surinamin guldeni"
         ],
         "SSP": [
             "SSP",
@@ -919,10 +907,6 @@
         ],
         "STD": [
             "STD",
-            "São Tomén ja Príncipen dobra (1977–2017)"
-        ],
-        "STN": [
-            "STN",
             "São Tomén ja Príncipen dobra"
         ],
         "SUR": [
@@ -931,7 +915,7 @@
         ],
         "SVC": [
             "SVC",
-            "El Salvadorin colón"
+            "El Salvadorin colon"
         ],
         "SYP": [
             "SYP",
