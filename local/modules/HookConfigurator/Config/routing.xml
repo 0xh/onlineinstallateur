@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+    
+    <route id="hookConfigurator" path="/static_form">
+        <default key="_controller">HookConfigurator\Controller\Front\ConfiguratorController::viewAction</default>
+    </route>
+    
+    <route id="get_configurator_data" path="/get_configurator_data/{configurator}">
+        <default key="_controller">HookConfigurator\Controller\Front\ConfiguratorController::getConfiguratorData</default>
+    </route>
+    
+    <route id="doRequest" path="/doRequest">
+        <default key="_controller">HookConfigurator\Controller\Front\ConfiguratorController::requestProduct</default>
+    </route>
+    
+    <route id="confsuccess" path="/success">
+        <default key="_controller">HookConfigurator\Controller\Front\ConfiguratorController::success</default>
+    </route>
+
+    <route id="confsuccess" path="/configurator/{configurator}">
+        <default key="_controller">HookConfigurator\Controller\Front\ConfiguratorController::viewConfigurator</default>
+    </route>
+
+    <route id="configurator.list.add" path="/admin/module/configurator-list-add">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::addConfigurator</default>
+    </route>
+
+    <route id="configurator.edit.page" path="/admin/module/configurator-edit-page/{id}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::editPageConfigurator</default>
+    </route>
+
+    <route id="configurator.edit.hook.id" path="/admin/module/configurator-edit-hook-id">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::editHookIdConfigurator</default>
+    </route>
+
+    <route id="configurator.add.new.hook.id" path="/admin/module/configurator-add-new-hook-id">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::addNewHookIdConfigurator</default>
+    </route>
+
+    <route id="configurator.delete.hook.id" path="/admin/module/configurator-delete-hook-id/{id}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::deleteHookIdConfigurator</default>
+    </route>
+
+    <route id="configurator.page.add.element" path="/admin/module/configurator-add-element/{id}/{type}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::addNewElementInConfigurator</default>
+    </route>
+
+    <route id="configurator.element.add.answer" path="/admin/module/configurator-add-answer/{id}/{idElement}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::addNewAnswer</default>
+    </route>
+
+    <route id="configurator.element.save" path="/admin/module/configurator-element-save">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::saveElement</default>
+    </route>
+
+    <route id="configurator.element.delete" path="/admin/module/configurator-element-delete/{idElement}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::deleteElement</default>
+    </route>
+
+    <route id="configurator.delete" path="/admin/module/configurator-delete/{id}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::deleteConfigurator</default>
+    </route>
+
+    <route id="configurator.delete.answer" path="/admin/module/delete-answer/{id}/{idElement}/{answer}">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::deleteAnswer</default>
+    </route>
+
+    <route id="configurator.save.email" path="/admin/module/configurator-save-contact">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::saveConfiguratorContact</default>
+    </route>
+
+    <route id="configurator.save.background.image" path="/admin/module/configurator-save-background-image">
+        <default key="_controller">HookConfigurator\Controller\Admin\ConfigController::saveConfiguratorBackgroundImage</default>
+    </route>
+
+</routes>

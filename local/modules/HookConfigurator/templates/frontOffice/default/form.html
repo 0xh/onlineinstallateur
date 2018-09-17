@@ -1,0 +1,21 @@
+<div class="multistepForm">
+
+    {if $fromHook == 1}
+        {include file="form-with-hook.html"}
+    {else}
+        {include file="form-without-hook.html"}
+    {/if}
+
+</div>
+
+<script>
+    function alertFromFront(str) {
+        $("#alert-from-front").html($("#alert-from-front").html() + "<br/>" + str);
+        $("#alert-from-front").show();
+    }
+
+    function resetAlert() {
+        $("#alert-from-front").html('');
+    }
+
+</script>

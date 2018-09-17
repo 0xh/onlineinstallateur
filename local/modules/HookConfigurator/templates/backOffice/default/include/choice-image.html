@@ -1,0 +1,85 @@
+{assign var=params value=$parameters|json_decode:1}
+
+<td class="text-center col-md-1">
+    {$id} 
+    <input type="hidden" name="elementId" value="{$id}">
+</td>
+<td class="text-center col-md-1">
+    {$typeElement}
+    <input type="hidden" name="typeElement" value="{$typeElement}">
+</td>
+<td class="text-center col-md-1">
+    {if $params.multiple}true{else}false{/if} 
+</td>
+<td class="text-center col-md-1">
+    <input type="checkbox" id="c-visible-{$id}" class="selectionVisibleToggle" name="visible" {if $visible == 1}checked="checked"{/if}>
+</td>
+<td class="text-center col-md-1">
+    <input type="checkbox" id="c-required-{$id}" class="selectionRequiredToggle1" name="required" {if $params.required}checked="checked"{/if}>
+</td>
+<td class="text-center col-md-2">
+    <div class="form-group">
+        <div class="control-input">
+            <input type="text" name="question" value="{$question}" class="form-control" aria-required="true" required>
+        </div>
+    </div>
+</td>
+
+<td class="text-center col-md-3">
+
+    {foreach from=$params.attr.answer.values item=entry}
+        <div class="form-group margin-bootom-10" style="border-style: dotted; border-color: darkseagreen; display: inline-block; float: left; width: 373px;">
+            <div class="control-input">
+                <input type="text" name="{$entry.value}" value="{$entry.text}" class="form-control" aria-required="true" required>
+            </div>
+            <input type="text" class="wysiwyg" value='<p><img class="img-responsive" src="{$entry.data_icon}" alt="" /></p>' name="data_icon_{$entry.value}" id="data_icon_{$id}_{$entry.value}" style="display: none;" />
+            <button type="button" id="data_icon_close_{$id}_{$entry.value}" onclick="closeEditor({$id}, {$entry.value})" style="display: none;" class="js-modal-btn-save btn btn-success">{intl l='Close'}</button>
+
+            <div id="myBtn1" class="image-element-div">
+                <!--<input type="hidden" value="{$entry.data_icon}" name="data_icon_{$entry.value}" id="data_icon_{$id}_{$entry.value}" />-->
+                <img src="{if $entry.data_icon|strpos:'http' === 0} {$entry.data_icon nofilter} {/if}"  alt="Element image" style="height: 100px; width: 150px; float: left;" id="data_icon_edit_{$id}_{$entry.value}" onclick="showEditor({$id}, {$entry.value})" />
+                <div class="control-input image-element-delete-div">
+                    <a class="selection-delete" style="width: 20px; height: 20px; float: right; margin-top: 50px;" title="{intl l='Delete element'}" href="/admin/module/delete-answer/{$configuratorId}/{$id}/{$entry.value}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </div>
+                {*<div id="div_data_icon_{$id}_{$entry.value}" class="IconHolder myBtn" data-id="{$id}_{$entry.value}" style="background-image: url({$entry.data_icon nofilter}); height: 250px; width: 70%;" data-value="{$entry.data_icon}" data-iconn="{$entry.data_icon nofilter}"></div>*}
+            </div>
+        </div>
+        <!-- Trigger/Open The Modal -->
+        <br><br><br><br><br><br>
+
+    {/foreach}
+</td>
+
+<td class="text-center col-md-1">
+    <a href="/admin/module/configurator-add-answer/{$configuratorId}/{$id}" class="btn btn-primary action-btn margin-top-15"
+       title="{intl l='Add new answer'}">
+        <span class="glyphicon glyphicon-plus-sign"></span>
+    </a>
+</td>
+
+<td class="text-center col-md-1">
+    <div class="form-group">
+        <div class="control-input">
+            <input type="text" name="placeholder" value="{$params.attr.placeholder}" class="form-control" aria-required="true" >
+        </div>
+    </div>
+</td>
+
+
+<script>
+
+    function showEditor(id, value) {
+        $("#" + tinyMCE.get("data_icon_" + id + "_" + value).editorContainer.id).css("display", "block");
+        $("#data_icon_close_" + id + "_" + value).css("display", "block");
+        $("#data_icon_edit_" + id + "_" + value).css("display", "none");
+    }
+
+    function closeEditor(id, value) {
+        $("#" + tinyMCE.get("data_icon_" + id + "_" + value).editorContainer.id).css("display", "none");
+        $("#data_icon_close_" + id + "_" + value).css("display", "none");
+        $("#data_icon_edit_" + id + "_" + value).css("display", "block");
+    }
+
+</script>
