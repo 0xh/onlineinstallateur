@@ -13,11 +13,17 @@ class DisputeTest extends TestCase
 
     private function createDisputedCharge()
     {
+        $card = array(
+            'number' => '4000000000000259',
+            'exp_month' => 5,
+            'exp_year' => date('Y') + 1
+        );
+
         $c = Charge::create(
             array(
                 'amount' => 100,
                 'currency' => 'usd',
-                'source' => 'tok_createDispute'
+                'card' => $card
             )
         );
         $c = Charge::retrieve($c->id);
@@ -55,11 +61,11 @@ class DisputeTest extends TestCase
 
         $c = $this->createDisputedCharge();
 
-        $d = Dispute::retrieve($c->dispute);
+        $d = $c->dispute;
         $d->evidence["customer_name"] = "Bob";
         $s = $d->save();
 
-        $this->assertSame($c->dispute, $s->id);
+        $this->assertSame($d->id, $s->id);
         $this->assertSame("Bob", $s->evidence["customer_name"]);
     }
 
@@ -68,12 +74,8 @@ class DisputeTest extends TestCase
         self::authorizeFromEnv();
 
         $c = $this->createDisputedCharge();
-        $d = Dispute::retrieve($c->dispute);
 
-        $this->assertNotSame("lost", $d->status);
-
-        $d->close();
-
+        $d = $c->dispute->close();
         $this->assertSame("lost", $d->status);
     }
 
@@ -83,8 +85,7 @@ class DisputeTest extends TestCase
 
         $c = $this->createDisputedCharge();
 
-        $d = Dispute::retrieve($c->dispute);
-
-        $this->assertSame($c->dispute, $d->id);
+        $d = Dispute::retrieve($c->dispute->id);
+        $this->assertSame($d->id, $c->dispute->id);
     }
 }

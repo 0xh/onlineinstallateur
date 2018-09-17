@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpKernel;
 
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 /**
  * The Kernel is the heart of the Symfony system.
@@ -27,14 +27,12 @@ interface KernelInterface extends HttpKernelInterface, \Serializable
     /**
      * Returns an array of bundles to register.
      *
-     * @return BundleInterface[] An array of bundle instances.
+     * @return BundleInterface[] An array of bundle instances
      */
     public function registerBundles();
 
     /**
      * Loads the container configuration.
-     *
-     * @param LoaderInterface $loader A LoaderInterface instance
      */
     public function registerContainerConfiguration(LoaderInterface $loader);
 

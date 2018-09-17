@@ -12,22 +12,21 @@
 namespace Symfony\Component\Form\Extension\Core\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToArrayTransformer;
+use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToTimestampTransformer;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\ReversedTransformer;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class DateType extends AbstractType
 {
     const DEFAULT_FORMAT = \IntlDateFormatter::MEDIUM;
-
     const HTML5_FORMAT = 'yyyy-MM-dd';
 
     private static $acceptedFormats = array(
@@ -47,20 +46,20 @@ class DateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $dateFormat = is_int($options['format']) ? $options['format'] : self::DEFAULT_FORMAT;
+        $dateFormat = \is_int($options['format']) ? $options['format'] : self::DEFAULT_FORMAT;
         $timeFormat = \IntlDateFormatter::NONE;
         $calendar = \IntlDateFormatter::GREGORIAN;
-        $pattern = is_string($options['format']) ? $options['format'] : null;
+        $pattern = \is_string($options['format']) ? $options['format'] : null;
 
-        if (!in_array($dateFormat, self::$acceptedFormats, true)) {
+        if (!\in_array($dateFormat, self::$acceptedFormats, true)) {
             throw new InvalidOptionsException('The "format" option must be one of the IntlDateFormatter constants (FULL, LONG, MEDIUM, SHORT) or a string representing a custom format.');
         }
 
-        if (null !== $pattern && (false === strpos($pattern, 'y') || false === strpos($pattern, 'M') || false === strpos($pattern, 'd'))) {
-            throw new InvalidOptionsException(sprintf('The "format" option should contain the letters "y", "M" and "d". Its current value is "%s".', $pattern));
-        }
-
         if ('single_text' === $options['widget']) {
+            if (null !== $pattern && false === strpos($pattern, 'y') && false === strpos($pattern, 'M') && false === strpos($pattern, 'd')) {
+                throw new InvalidOptionsException(sprintf('The "format" option should contain the letters "y", "M" or "d". Its current value is "%s".', $pattern));
+            }
+
             $builder->addViewTransformer(new DateTimeToLocalizedStringTransformer(
                 $options['model_timezone'],
                 $options['view_timezone'],
@@ -70,6 +69,10 @@ class DateType extends AbstractType
                 $pattern
             ));
         } else {
+            if (null !== $pattern && (false === strpos($pattern, 'y') || false === strpos($pattern, 'M') || false === strpos($pattern, 'd'))) {
+                throw new InvalidOptionsException(sprintf('The "format" option should contain the letters "y", "M" and "d". Its current value is "%s".', $pattern));
+            }
+
             $yearOptions = $monthOptions = $dayOptions = array(
                 'error_bubbling' => true,
             );
@@ -78,12 +81,13 @@ class DateType extends AbstractType
                 \Locale::getDefault(),
                 $dateFormat,
                 $timeFormat,
-                null,
+                // see https://bugs.php.net/bug.php?id=66323
+                class_exists('IntlTimeZone', false) ? \IntlTimeZone::createDefault() : null,
                 $calendar,
                 $pattern
             );
 
-            // new \intlDateFormatter may return null instead of false in case of failure, see https://bugs.php.net/bug.php?id=66323
+            // new \IntlDateFormatter may return null instead of false in case of failure, see https://bugs.php.net/bug.php?id=66323
             if (!$formatter) {
                 throw new InvalidOptionsException(intl_get_error_message(), intl_get_error_code());
             }
@@ -156,7 +160,7 @@ class DateType extends AbstractType
             $pattern = $form->getConfig()->getAttribute('formatter')->getPattern();
 
             // remove special characters unless the format was explicitly specified
-            if (!is_string($options['format'])) {
+            if (!\is_string($options['format'])) {
                 // remove quoted strings first
                 $pattern = preg_replace('/\'[^\']+\'/', '', $pattern);
 
@@ -183,7 +187,7 @@ class DateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $compound = function (Options $options) {
-            return $options['widget'] !== 'single_text';
+            return 'single_text' !== $options['widget'];
         };
 
         $placeholder = $placeholderDefault = function (Options $options) {
@@ -191,13 +195,13 @@ class DateType extends AbstractType
         };
 
         $placeholderNormalizer = function (Options $options, $placeholder) use ($placeholderDefault) {
-            if (!is_object($options['empty_value']) || !$options['empty_value'] instanceof \Exception) {
-                @trigger_error('The form option "empty_value" is deprecated since version 2.6 and will be removed in 3.0. Use "placeholder" instead.', E_USER_DEPRECATED);
+            if (ChoiceType::DEPRECATED_EMPTY_VALUE !== $options['empty_value']) {
+                @trigger_error('The form option "empty_value" is deprecated since Symfony 2.6 and will be removed in 3.0. Use "placeholder" instead.', E_USER_DEPRECATED);
 
                 $placeholder = $options['empty_value'];
             }
 
-            if (is_array($placeholder)) {
+            if (\is_array($placeholder)) {
                 $default = $placeholderDefault($options);
 
                 return array_merge(
@@ -214,14 +218,14 @@ class DateType extends AbstractType
         };
 
         $choiceTranslationDomainNormalizer = function (Options $options, $choiceTranslationDomain) {
-            if (is_array($choiceTranslationDomain)) {
+            if (\is_array($choiceTranslationDomain)) {
                 $default = false;
 
                 return array_replace(
                     array('year' => $default, 'month' => $default, 'day' => $default),
                     $choiceTranslationDomain
                 );
-            };
+            }
 
             return array(
                 'year' => $choiceTranslationDomain,
@@ -231,7 +235,7 @@ class DateType extends AbstractType
         };
 
         $format = function (Options $options) {
-            return $options['widget'] === 'single_text' ? DateType::HTML5_FORMAT : DateType::DEFAULT_FORMAT;
+            return 'single_text' === $options['widget'] ? DateType::HTML5_FORMAT : DateType::DEFAULT_FORMAT;
         };
 
         $resolver->setDefaults(array(
@@ -243,7 +247,7 @@ class DateType extends AbstractType
             'format' => $format,
             'model_timezone' => null,
             'view_timezone' => null,
-            'empty_value' => new \Exception(), // deprecated
+            'empty_value' => ChoiceType::DEPRECATED_EMPTY_VALUE,
             'placeholder' => $placeholder,
             'html5' => true,
             // Don't modify \DateTime classes by reference, we treat
@@ -299,10 +303,10 @@ class DateType extends AbstractType
     private function formatTimestamps(\IntlDateFormatter $formatter, $regex, array $timestamps)
     {
         $pattern = $formatter->getPattern();
-        $timezone = $formatter->getTimezoneId();
+        $timezone = $formatter->getTimeZoneId();
         $formattedTimestamps = array();
 
-        if ($setTimeZone = PHP_VERSION_ID >= 50500 || method_exists($formatter, 'setTimeZone')) {
+        if ($setTimeZone = \PHP_VERSION_ID >= 50500 || method_exists($formatter, 'setTimeZone')) {
             $formatter->setTimeZone('UTC');
         } else {
             $formatter->setTimeZoneId('UTC');

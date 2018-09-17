@@ -76,15 +76,13 @@ class ApiRequestor
      * @throws Error\InvalidRequest if the error is caused by the user.
      * @throws Error\Authentication if the error is caused by a lack of
      *    permissions.
-     * @throws Error\Permission if the error is caused by insufficient
-     *    permissions.
      * @throws Error\Card if the error is the error code is 402 (payment
      *    required)
      * @throws Error\RateLimit if the error is caused by too many requests
      *    hitting the API.
      * @throws Error\Api otherwise.
      */
-    public function handleErrorResponse($rbody, $rcode, $rheaders, $resp)
+    public function handleApiError($rbody, $rcode, $rheaders, $resp)
     {
         if (!is_array($resp) || !isset($resp['error'])) {
             $msg = "Invalid response object from API: $rbody "
@@ -92,69 +90,31 @@ class ApiRequestor
             throw new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
         }
 
-        $errorData = $resp['error'];
-
-        $error = null;
-        if (is_string($errorData)) {
-            $error = self::_specificOAuthError($rbody, $rcode, $rheaders, $resp, $errorData);
-        }
-        if (!$error) {
-            $error = self::_specificAPIError($rbody, $rcode, $rheaders, $resp, $errorData);
-        }
-
-        throw $error;
-    }
-
-    private static function _specificAPIError($rbody, $rcode, $rheaders, $resp, $errorData)
-    {
-        $msg = isset($errorData['message']) ? $errorData['message'] : null;
-        $param = isset($errorData['param']) ? $errorData['param'] : null;
-        $code = isset($errorData['code']) ? $errorData['code'] : null;
+        $error = $resp['error'];
+        $msg = isset($error['message']) ? $error['message'] : null;
+        $param = isset($error['param']) ? $error['param'] : null;
+        $code = isset($error['code']) ? $error['code'] : null;
 
         switch ($rcode) {
             case 400:
                 // 'rate_limit' code is deprecated, but left here for backwards compatibility
                 // for API versions earlier than 2015-09-08
                 if ($code == 'rate_limit') {
-                    return new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
+                    throw new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
                 }
 
                 // intentional fall-through
             case 404:
-                return new Error\InvalidRequest($msg, $param, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\InvalidRequest($msg, $param, $rcode, $rbody, $resp, $rheaders);
             case 401:
-                return new Error\Authentication($msg, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\Authentication($msg, $rcode, $rbody, $resp, $rheaders);
             case 402:
-                return new Error\Card($msg, $param, $code, $rcode, $rbody, $resp, $rheaders);
-            case 403:
-                return new Error\Permission($msg, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\Card($msg, $param, $code, $rcode, $rbody, $resp, $rheaders);
             case 429:
-                return new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\RateLimit($msg, $param, $rcode, $rbody, $resp, $rheaders);
             default:
-                return new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
+                throw new Error\Api($msg, $rcode, $rbody, $resp, $rheaders);
         }
-    }
-
-    private static function _specificOAuthError($rbody, $rcode, $rheaders, $resp, $errorCode)
-    {
-        $description = isset($resp['error_description']) ? $resp['error_description'] : $errorCode;
-
-        switch ($errorCode) {
-            case 'invalid_client':
-                return new Error\OAuth\InvalidClient($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-            case 'invalid_grant':
-                return new Error\OAuth\InvalidGrant($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-            case 'invalid_request':
-                return new Error\OAuth\InvalidRequest($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-            case 'invalid_scope':
-                return new Error\OAuth\InvalidScope($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-            case 'unsupported_grant_type':
-                return new Error\OAuth\UnsupportedGrantType($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-            case 'unsupported_response_type':
-                return new Error\OAuth\UnsupportedResponseType($errorCode, $description, $rcode, $rbody, $resp, $rheaders);
-        }
-
-        return null;
     }
 
     private static function _formatAppInfo($appInfo)
@@ -173,13 +133,14 @@ class ApiRequestor
         }
     }
 
-    private static function _defaultHeaders($apiKey, $clientInfo = null)
+    private static function _defaultHeaders($apiKey)
     {
+        $appInfo = Stripe::getAppInfo();
+
         $uaString = 'Stripe/v1 PhpBindings/' . Stripe::VERSION;
 
         $langVersion = phpversion();
         $uname = php_uname();
-
         $appInfo = Stripe::getAppInfo();
         $ua = array(
             'bindings_version' => Stripe::VERSION,
@@ -188,9 +149,6 @@ class ApiRequestor
             'publisher' => 'stripe',
             'uname' => $uname,
         );
-        if ($clientInfo) {
-            $ua = array_merge($clientInfo, $ua);
-        }
         if ($appInfo !== null) {
             $uaString .= ' ' . self::_formatAppInfo($appInfo);
             $ua['application'] = $appInfo;
@@ -219,17 +177,9 @@ class ApiRequestor
             throw new Error\Authentication($msg);
         }
 
-        // Clients can supply arbitrary additional keys to be included in the
-        // X-Stripe-Client-User-Agent header via the optional getUserAgentInfo()
-        // method
-        $clientUAInfo = null;
-        if (method_exists($this->httpClient(), 'getUserAgentInfo')) {
-            $clientUAInfo = $this->httpClient()->getUserAgentInfo();
-        }
-
         $absUrl = $this->_apiBase.$url;
         $params = self::_encodeObjects($params);
-        $defaultHeaders = $this->_defaultHeaders($myApiKey, $clientUAInfo);
+        $defaultHeaders = $this->_defaultHeaders($myApiKey);
         if (Stripe::$apiVersion) {
             $defaultHeaders['Stripe-Version'] = Stripe::$apiVersion;
         }
@@ -297,16 +247,16 @@ class ApiRequestor
 
     private function _interpretResponse($rbody, $rcode, $rheaders)
     {
-        $resp = json_decode($rbody, true);
-        $jsonError = json_last_error();
-        if ($resp === null && $jsonError !== JSON_ERROR_NONE) {
+        try {
+            $resp = json_decode($rbody, true);
+        } catch (Exception $e) {
             $msg = "Invalid response body from API: $rbody "
-              . "(HTTP response code was $rcode, json_last_error() was $jsonError)";
+              . "(HTTP response code was $rcode)";
             throw new Error\Api($msg, $rcode, $rbody);
         }
 
         if ($rcode < 200 || $rcode >= 300) {
-            $this->handleErrorResponse($rbody, $rcode, $rheaders, $resp);
+            $this->handleApiError($rbody, $rcode, $rheaders, $resp);
         }
         return $resp;
     }

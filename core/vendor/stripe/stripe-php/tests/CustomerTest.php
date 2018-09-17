@@ -68,14 +68,11 @@ class CustomerTest extends TestCase
     {
         $customer = self::createTestCustomer();
 
-        $customer->metadata['test1'] = 'foo';
-        $customer->metadata['test2'] = 'bar';
+        $customer->metadata['test'] = 'foo bar';
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
-        $this->assertSame(2, count($updatedCustomer->metadata));
-        $this->assertSame('foo', $updatedCustomer->metadata['test1']);
-        $this->assertSame('bar', $updatedCustomer->metadata['test2']);
+        $this->assertSame('foo bar', $updatedCustomer->metadata['test']);
     }
 
     public function testDeleteMetadata()
@@ -86,7 +83,7 @@ class CustomerTest extends TestCase
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
-        $this->assertSame(0, count($updatedCustomer->metadata));
+        $this->assertSame(0, count($updatedCustomer->metadata->keys()));
     }
 
     public function testUpdateSomeMetadata()
@@ -149,8 +146,17 @@ class CustomerTest extends TestCase
 
     public function testCustomerAddCard()
     {
+        $token = Token::create(
+            array("card" => array(
+                "number" => "4242424242424242",
+                "exp_month" => 5,
+                "exp_year" => date('Y') + 3,
+                "cvc" => "314"
+            ))
+        );
+
         $customer = $this->createTestCustomer();
-        $createdCard = $customer->sources->create(array("card" => 'tok_visa'));
+        $createdCard = $customer->sources->create(array("card" => $token->id));
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
@@ -177,8 +183,17 @@ class CustomerTest extends TestCase
 
     public function testCustomerDeleteCard()
     {
+        $token = Token::create(
+            array("card" => array(
+                "number" => "4242424242424242",
+                "exp_month" => 5,
+                "exp_year" => date('Y') + 3,
+                "cvc" => "314"
+            ))
+        );
+
         $customer = $this->createTestCustomer();
-        $createdCard = $customer->sources->create(array("card" => 'tok_visa'));
+        $createdCard = $customer->sources->create(array("card" => $token->id));
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
@@ -197,9 +212,17 @@ class CustomerTest extends TestCase
     public function testCustomerAddSource()
     {
         self::authorizeFromEnv();
+        $token = Token::create(
+            array("card" => array(
+                "number" => "4242424242424242",
+                "exp_month" => 5,
+                "exp_year" => date('Y') + 3,
+                "cvc" => "314"
+            ))
+        );
 
         $customer = $this->createTestCustomer();
-        $createdSource = $customer->sources->create(array("source" => 'tok_visa'));
+        $createdSource = $customer->sources->create(array("source" => $token->id));
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
@@ -227,9 +250,17 @@ class CustomerTest extends TestCase
     public function testCustomerDeleteSource()
     {
         self::authorizeFromEnv();
+        $token = Token::create(
+            array("card" => array(
+                "number" => "4242424242424242",
+                "exp_month" => 5,
+                "exp_year" => date('Y') + 3,
+                "cvc" => "314"
+            ))
+        );
 
         $customer = $this->createTestCustomer();
-        $createdSource = $customer->sources->create(array("source" => 'tok_visa'));
+        $createdSource = $customer->sources->create(array("source" => $token->id));
         $customer->save();
 
         $updatedCustomer = Customer::retrieve($customer->id);
@@ -243,96 +274,5 @@ class CustomerTest extends TestCase
         $postDeleteCustomer = Customer::retrieve($customer->id);
         $postDeleteSources = $postDeleteCustomer->sources->all();
         $this->assertSame(count($postDeleteSources["data"]), 1);
-    }
-
-
-    public function testStaticCreateSource()
-    {
-        $this->mockRequest(
-            'POST',
-            '/v1/customers/cus_123/sources',
-            array('source' => 'tok_123'),
-            array('id' => 'card_123', 'object' => 'card')
-        );
-
-        $source = Customer::createSource(
-            'cus_123',
-            array('source' => 'tok_123')
-        );
-
-        $this->assertSame('card_123', $source->id);
-        $this->assertSame('card', $source->object);
-    }
-
-    public function testStaticRetrieveSource()
-    {
-        $this->mockRequest(
-            'GET',
-            '/v1/customers/cus_123/sources/card_123',
-            array(),
-            array('id' => 'card_123', 'object' => 'card')
-        );
-
-        $source = Customer::retrieveSource(
-            'cus_123',
-            'card_123'
-        );
-
-        $this->assertSame('card_123', $source->id);
-        $this->assertSame('card', $source->object);
-    }
-
-    public function testStaticUpdateSource()
-    {
-        $this->mockRequest(
-            'POST',
-            '/v1/customers/cus_123/sources/card_123',
-            array('metadata' => array('foo' => 'bar')),
-            array('id' => 'card_123', 'object' => 'card')
-        );
-
-        $source = Customer::updateSource(
-            'cus_123',
-            'card_123',
-            array('metadata' => array('foo' => 'bar'))
-        );
-
-        $this->assertSame('card_123', $source->id);
-        $this->assertSame('card', $source->object);
-    }
-
-    public function testStaticDeleteSource()
-    {
-        $this->mockRequest(
-            'DELETE',
-            '/v1/customers/cus_123/sources/card_123',
-            array(),
-            array('id' => 'card_123', 'deleted' => true)
-        );
-
-        $source = Customer::deleteSource(
-            'cus_123',
-            'card_123'
-        );
-
-        $this->assertSame('card_123', $source->id);
-        $this->assertSame(true, $source->deleted);
-    }
-
-    public function testStaticAllSources()
-    {
-        $this->mockRequest(
-            'GET',
-            '/v1/customers/cus_123/sources',
-            array(),
-            array('object' => 'list', 'data' => array())
-        );
-
-        $sources = Customer::allsources(
-            'cus_123'
-        );
-
-        $this->assertSame('list', $sources->object);
-        $this->assertEmpty($sources->data);
     }
 }

@@ -24,19 +24,8 @@ use Symfony\Component\Translation\MessageCatalogueInterface;
  */
 abstract class AbstractOperation implements OperationInterface
 {
-    /**
-     * @var MessageCatalogueInterface The source catalogue
-     */
     protected $source;
-
-    /**
-     * @var MessageCatalogueInterface The target catalogue
-     */
     protected $target;
-
-    /**
-     * @var MessageCatalogue The result catalogue
-     */
     protected $result;
 
     /**
@@ -69,9 +58,6 @@ abstract class AbstractOperation implements OperationInterface
     protected $messages;
 
     /**
-     * @param MessageCatalogueInterface $source The source catalogue
-     * @param MessageCatalogueInterface $target The target catalogue
-     *
      * @throws \LogicException
      */
     public function __construct(MessageCatalogueInterface $source, MessageCatalogueInterface $target)
@@ -83,7 +69,6 @@ abstract class AbstractOperation implements OperationInterface
         $this->source = $source;
         $this->target = $target;
         $this->result = new MessageCatalogue($source->getLocale());
-        $this->domains = null;
         $this->messages = array();
     }
 
@@ -104,7 +89,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
@@ -120,7 +105,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getNewMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 
@@ -136,7 +121,7 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function getObsoleteMessages($domain)
     {
-        if (!in_array($domain, $this->getDomains())) {
+        if (!\in_array($domain, $this->getDomains())) {
             throw new \InvalidArgumentException(sprintf('Invalid domain: %s.', $domain));
         }
 

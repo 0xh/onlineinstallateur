@@ -4,114 +4,107 @@ namespace Stripe;
 
 class TransferTest extends TestCase
 {
-    // The resource that was traditionally called "transfer" became a "payout"
-    // in API version 2017-04-06. We're testing traditional transfers here, so
-    // we force the API version just prior anywhere that we need to.
-    private $opts = array('stripe_version' => '2017-02-14');
-
     public function testCreate()
     {
-        $transfer = self::createTestTransfer(array(), $this->opts);
-        $this->assertSame('transfer', $transfer->object);
+        $recipient = self::createTestRecipient();
+
+        self::authorizeFromEnv();
+        $transfer = Transfer::create(array(
+            'amount' => 100,
+            'currency' => 'usd',
+            'recipient' => $recipient->id
+        ));
+        $this->assertSame('pending', $transfer->status);
     }
 
     public function testRetrieve()
     {
-        $transfer = self::createTestTransfer(array(), $this->opts);
-        $reloaded = Transfer::retrieve($transfer->id, $this->opts);
+        $recipient = self::createTestRecipient();
+
+        self::authorizeFromEnv();
+        $transfer = Transfer::create(array(
+            'amount' => 100,
+            'currency' => 'usd',
+            'recipient' => $recipient->id
+        ));
+        $reloaded = Transfer::retrieve($transfer->id);
         $this->assertSame($reloaded->id, $transfer->id);
+    }
+
+    /**
+     * @expectedException Stripe\Error\InvalidRequest
+     */
+    public function testCancel()
+    {
+        $recipient = self::createTestRecipient();
+
+        self::authorizeFromEnv();
+        $transfer = Transfer::create(array(
+            'amount' => 100,
+            'currency' => 'usd',
+            'recipient' => $recipient->id
+        ));
+        $reloaded = Transfer::retrieve($transfer->id);
+        $this->assertSame($reloaded->id, $transfer->id);
+
+        $reloaded->cancel();
     }
 
     public function testTransferUpdateMetadata()
     {
-        $transfer = self::createTestTransfer(array(), $this->opts);
+        $recipient = self::createTestRecipient();
+
+        self::authorizeFromEnv();
+        $transfer = Transfer::create(array(
+            'amount' => 100,
+            'currency' => 'usd',
+            'recipient' => $recipient->id
+        ));
 
         $transfer->metadata['test'] = 'foo bar';
         $transfer->save();
 
-        $updatedTransfer = Transfer::retrieve($transfer->id, $this->opts);
+        $updatedTransfer = Transfer::retrieve($transfer->id);
         $this->assertSame('foo bar', $updatedTransfer->metadata['test']);
     }
 
     public function testTransferUpdateMetadataAll()
     {
-        $transfer = self::createTestTransfer(array(), $this->opts);
+        $recipient = self::createTestRecipient();
+
+        self::authorizeFromEnv();
+        $transfer = Transfer::create(array(
+            'amount' => 100,
+            'currency' => 'usd',
+            'recipient' => $recipient->id
+        ));
 
         $transfer->metadata = array('test' => 'foo bar');
         $transfer->save();
 
-        $updatedTransfer = Transfer::retrieve($transfer->id, $this->opts);
+        $updatedTransfer = Transfer::retrieve($transfer->id);
         $this->assertSame('foo bar', $updatedTransfer->metadata['test']);
     }
 
-    public function testStaticCreateReversal()
+    public function testRecipientUpdateMetadata()
     {
-        $this->mockRequest(
-            'POST',
-            '/v1/transfers/tr_123/reversals',
-            array(),
-            array('id' => 'trr_123', 'object' => 'transfer_reversal')
-        );
+        $recipient = self::createTestRecipient();
 
-        $reversal = Transfer::createReversal(
-            'tr_123'
-        );
+        $recipient->metadata['test'] = 'foo bar';
+        $recipient->save();
 
-        $this->assertSame('trr_123', $reversal->id);
-        $this->assertSame('transfer_reversal', $reversal->object);
+        $updatedRecipient = Recipient::retrieve($recipient->id);
+        $this->assertSame('foo bar', $updatedRecipient->metadata['test']);
     }
 
-    public function testStaticRetrieveReversal()
+    public function testRecipientUpdateMetadataAll()
     {
-        $this->mockRequest(
-            'GET',
-            '/v1/transfers/tr_123/reversals/trr_123',
-            array(),
-            array('id' => 'trr_123', 'object' => 'transfer_reversal')
-        );
+        $recipient = self::createTestRecipient();
 
-        $reversal = Transfer::retrieveReversal(
-            'tr_123',
-            'trr_123'
-        );
+        $recipient->metadata = array('test' => 'foo bar');
+        $recipient->save();
 
-        $this->assertSame('trr_123', $reversal->id);
-        $this->assertSame('transfer_reversal', $reversal->object);
-    }
-
-    public function testStaticUpdateReversal()
-    {
-        $this->mockRequest(
-            'POST',
-            '/v1/transfers/tr_123/reversals/trr_123',
-            array('metadata' => array('foo' => 'bar')),
-            array('id' => 'trr_123', 'object' => 'transfer_reversal')
-        );
-
-        $reversal = Transfer::updateReversal(
-            'tr_123',
-            'trr_123',
-            array('metadata' => array('foo' => 'bar'))
-        );
-
-        $this->assertSame('trr_123', $reversal->id);
-        $this->assertSame('transfer_reversal', $reversal->object);
-    }
-
-    public function testStaticAllReversals()
-    {
-        $this->mockRequest(
-            'GET',
-            '/v1/transfers/tr_123/reversals',
-            array(),
-            array('object' => 'list', 'data' => array())
-        );
-
-        $reversals = Transfer::allReversals(
-            'tr_123'
-        );
-
-        $this->assertSame('list', $reversals->object);
-        $this->assertEmpty($reversals->data);
+        $updatedRecipient = Recipient::retrieve($recipient->id);
+        $this->assertSame('foo bar', $updatedRecipient->metadata['test']);
     }
 }
