@@ -1,0 +1,56 @@
+.outer-container {
+    height: 100%;
+}
+.outer-container,
+.intro-container {
+  padding-top: 40px;
+  xxpadding-bottom: 20px;
+  NONOWARUM_min-height: 620px;
+}
+.innerback {
+  background-color: rgba(52, 124, 146, 0.6);
+  height: 100%;
+  min-height: 700px;
+}
+.outer-container.page-section {
+  min-height: initial;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.outer-container.page-section .container .row + .row {
+  margin-top: 0;
+}
+.back {
+  padding-top: 0 !important;
+  color: white;
+  background-image: url('../img/dummy_planungstarten.jpg');
+  background-size: cover;
+  background-position: center;
+}
+div[id^="carouselpicture"]{
+height: 166px; 
+background-size: cover;
+}
+
+#carouselpicture1{
+background-image: url('../img/carouselpicture1.jpg');
+}
+
+#carouselpicture2{
+background-image: url('../img/carouselpicture2.jpg');
+}
+
+#carouselpicture3{
+background-image: url('../img/carouselpicture3.jpg');
+}
+
+.media-object, .thumbnail {
+    display: block;
+}
+.bg-gray {
+    color: white;
+    background-color: #10b4cf;
+}
+div.media{
+height:416px;
+}
