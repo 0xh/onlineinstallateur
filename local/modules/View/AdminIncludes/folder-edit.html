@@ -1,0 +1,12 @@
+{include
+    file="view-includes/generic-view-selector.html"
+    sourceType = 'folder'
+    sourceId = $folder_id
+    successUrl = {url path="/admin/folders/update/$folder_id?current_tab=modules"}
+    hasSubTree = 1
+    objectLabel = {intl d='view.ai' l='ce dossier'}
+    subTreeObjectLabel = {intl d='view.ai' l='sous-dossiers'}
+
+    childrenObjectLabel = {intl d='view.ai' l='contenus'}
+    childrenSourceType = 'content'
+}

@@ -1,0 +1,328 @@
+<div class="row">
+    <div class="col-md-12 general-block-decorator">
+        <div class="form-container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {intl l="Configurator list:"}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {form name="hookconfig.form.configurator.list"}
+                    <table style="width:100%">
+                        <form action="{url path='/admin/module/configurator-list-add'}" method="post">
+                            {form_hidden_fields form=$form}
+                            <tr>
+                                <td style="width: 28%;">{render_form_field form=$form field="configurator_name" value=$configurator_name}</td> 
+                                <td></td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary action-btn"
+                                            title="{intl l='Add'}" data-toggle="modal" style="margin-left: 1%; margin-top: 8px;">
+                                        <span class="glyphicon glyphicon-plus-sign"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                    {/form}
+
+                    <div id="log-container">
+                        <table id="config-table">
+                            <tr class="row">
+                                <th class="col-md-4">{intl l='ID'}</th>
+                                <th class="col-md-4">{intl l='Configurator name'}</th>
+                                <th class="col-md-4">{intl l='Image'}</th>
+                            </tr>
+                            {loop name="configurator_list_loop" type="configurator_list_loop"}
+                            <tr class="row">
+                                <td class="col-md-3">
+                                    {$id}.
+                                </td>
+                                <td class="col-md-3">
+                                    <a href="{url path='/admin/module/configurator-edit-page/'}{$id}">{$name}</a>
+                                </td>
+                            <form action="{url path='/admin/module/configurator-save-background-image'}" method="post">
+                                <td class="col-md-3">
+                                    {assign var=params value=$parameters|json_decode:1}
+                                    <img src="{$params.image}" style="height: auto; width: 150px;" id="background_image_edit_{$id}" onclick="showEditor({$id})" alt="Configurator image"/>
+                                    <input type="hidden" value="{$id}" name="configurator_id" />
+                                    <input type="text" id="background_image_{$id}" class="wysiwyg" style="display: none;" value='<p><img class="img-responsive" src="{$params.image}" alt="" /></p>' name="background_image" />
+                                    <button type="button" id="background_image_close_{$id}" onclick="closeEditor({$id})" style="display: none;" class="js-modal-btn-save btn btn-success">{intl l='Close'}</button>
+                                </td>
+                                <td class="actions col-md-4">
+                                    <div class="">
+                                        <button type="submit" class="js-modal-btn-save btn btn-success">{intl l='Save'}</button>
+                                    </div>
+                                </td>
+                            </form>
+                            <td class="actions col-md-4">
+                                <div class="btn-toolbar btn toolbar-primary">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                </div>
+                                <div class="toolbar-options hidden">
+                                    <a class="selection-delete" title="{intl l='Delete configurator'}" href="{url path="/admin/module/configurator-delete/{$id}"}">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </div>
+                            </td>
+                            </tr>
+                            {/loop}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 general-block-decorator">
+        <div class="form-container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {intl l="Configurator hook"}
+                    </h3>
+                </div>
+                <form action="{url path='/admin/module/configurator-add-new-hook-id'}" method="post">
+                    <div class="panel-body">
+                        <table id="config-table">
+                            <tr>
+                                <td>
+                                    <div class="">
+                                        <label for="" class="control-label">
+                                            {intl l='Add new ID for hook:'}
+                                        </label>
+                                        <button type="submit" class="btn btn-primary action-btn" title="{intl l='Add'}" data-toggle="modal" style="margin-left: 1%; margin-top: 8px;">
+                                            <span class="glyphicon glyphicon-plus-sign"></span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                {form name="hookconfig.form.configurator.hook"}
+                <div class="panel-footer">
+                    <table id="config-table">
+                        <tr>
+                            <th class="col-md-1">{intl l='ID'}</th>
+                            <th class="col-md-4">{intl l='Configurator id'}</th>
+                            <th class="col-md-4">{intl l='Hook code'}</th>
+                            <th class="col-md-2">{intl l='Choose a hook'}</th>
+                            <th class="col-md-4">{intl l='Action'}</th>
+                        </tr>
+                        {loop name="configurator_hook_loop" type="configurator_hook_loop"}
+                        <tr>
+                        <form action="{url path='/admin/module/configurator-edit-hook-id'}" method="post">
+                            {form_hidden_fields form=$form}
+                            <td class="col-md-1">
+                                {$id}.
+                                <input type="hidden" name="hook_key_id" value="{$id}" />
+                                {assign var=configuratorHookId value=$id}
+                            </td>
+                            <td class="col-md-4">
+                                {render_form_field form=$form field="configurator_id" value=$configurator_id}
+                            </td>
+                            <td class="col-md-4">
+
+                                {form_field form=$form field="hook_code"}
+                                <label>{intl l="{$label}"}</label>
+                                <input style="width: 90%;" type="text" name="{$name}" id="hook_code_{$id}" value="{$hook_code}" {$attr} />
+                                {/form_field}
+
+                                {form_field form=$form field="hook_id"}
+                                <label>{intl l="{$label}"}</label>
+                                <input style="width: 90%;" type="hidden" name="{$name}" id="hook_code_id_{$id}" value="{$hook_id}" {$attr} />
+                                {/form_field}
+
+
+                                <!--<input style="width: 90%;" type="text" value="{$hook_code}1" id="hook_code_{$id}" name="hook_code" />-->
+                            </td>
+                            <td class="col-md-2">
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        Hook
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul style="cursor: pointer;" class="dropdown-menu scrollable-menu" aria-labelledby="dropdownMenu1">
+                                        <li><a onclick="changeConfiguratorHookId({$configuratorHookId}, '', {$ID})" >{intl l='Empty'}</a></li>
+                                            {loop name="hook_edit" type="hook" backend_context="1" lang="en_US" order="code"}
+                                        <li><a onclick="changeConfiguratorHookId({$configuratorHookId}, '{$CODE}', {$ID})" >{$CODE} - {$TITLE}</a></li>
+                                            {/loop}
+
+                                    </ul>
+                                </div>
+                            </td>
+                            <td class="col-md-4">
+                                <div class="" style="padding-bottom: 6px;">
+                                    <button type="submit" class="js-modal-btn-save btn btn-success">{intl l='Save'}</button>
+                                </div>
+                                <div class="tool-items"><a class="selection-delete btn-danger" title="{intl l='Delete configurator'}" href="{url path='/admin/module/configurator-delete-hook-id/'}{$id}">
+                                        <span class="label label-danger">{intl l='Delete'}</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </form>
+                        </tr>
+                        {/loop}
+                    </table>
+                </div>
+                {/form}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="width: 100%; display: grid; overflow: auto;">
+    <div class="col-md-12 general-block-decorator">
+        <div class="form-container">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {intl l="Configurator email"}
+                    </h3>
+                </div>
+                <form action="{url path='/admin/module/configurator-save-contact'}" method="post">
+                    <div class="panel-body">
+                        <div id="log-container" style="font-size: 12px;">
+                            <table class="table table-striped table-condensed row">
+                              
+                                {loop name="configurator_contact" type="configurator_contact" limit=1}
+                                <div class="row">
+                                    <div class="col-md-3">
+                                    	{intl l='Id'}
+                                        <input type="text" name="id" value="{$id}" disabled="">
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='With search result'}
+                                        <input type="checkbox" name="with_search_result" {if $with_search_result == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                        {intl l='Id category to search'}
+                                        <input style="width: 60px;" type="number" name="id_category_search" value="{$id_category_search}">
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible form contact'}
+                                        <input type="checkbox" name="visible_form_contact" {if $visible_form_contact == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required vorname'}
+                                        <input type="checkbox" name="required_vorname" {if $required_vorname == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible vorname'}
+                                        <input type="checkbox" name="visible_vorname" {if $visible_vorname == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required nachname'}
+                                        <input type="checkbox" name="required_nachname" {if $required_nachname == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible nachname'}
+                                        <input type="checkbox" name="visible_nachname" {if $visible_nachname == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required str'}
+                                        <input type="checkbox" name="required_str" {if $required_str == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible str'}
+                                        <input type="checkbox" name="visible_str" {if $visible_str == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required plz'}
+                                        <input type="checkbox" name="required_plz" {if $required_plz == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible plz'}
+                                        <input type="checkbox" name="visible_plz" {if $visible_plz == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required ort'}
+                                        <input type="checkbox" name="required_ort" {if $required_ort == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible ort'}
+                                        <input type="checkbox" name="visible_ort" {if $visible_ort == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required telefon'}
+                                        <input type="checkbox" name="required_telefon" {if $required_telefon == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible telefon'}
+                                        <input type="checkbox" name="visible_telefon" {if $visible_telefon == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required email'}
+                                        <input type="checkbox" name="required_email" {if $required_email == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible email'}
+                                        <input type="checkbox" name="visible_email" {if $visible_email == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Required terms'}
+                                        <input type="checkbox" name="required_terms" {if $required_terms == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Visible terms'}
+                                        <input type="checkbox" name="visible_terms" {if $visible_terms == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Send email'}
+                                        <input type="checkbox" name="send_email" {if $send_email == 1}checked="checked"{/if}>
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Template email name customer'}
+                                        <input type="text" name="template_email_name_customer" value="{$template_email_name_customer}">
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Template email name admin'}
+                                        <input type="text" name="template_email_name_admin" value="{$template_email_name_admin}">
+                                    </div>
+                                    <div class="col-md-3">
+                                    	{intl l='Template redirect search'}
+                                        <input type="text" name="template_redirect_search" value="{$template_redirect_search}">
+                                    </div>
+                                </div>
+                                {/loop}
+                            </table>
+                        </div>
+                        <div class="">
+                            <button type="submit" class="js-modal-btn-save btn btn-success">{intl l='Save'}</button>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function showEditor(id) {
+        $("#" + tinyMCE.get("background_image_" + id).editorContainer.id).css("display", "block");
+        $("#background_image_close_" + id).css("display", "block");
+        $("#background_image_edit_" + id).css("display", "none");
+    }
+
+    function closeEditor(id) {
+        $("#" + tinyMCE.get("background_image_" + id).editorContainer.id).css("display", "none");
+        $("#background_image_close_" + id).css("display", "none");
+        $("#background_image_edit_" + id).css("display", "block");
+    }
+
+    function changeConfiguratorHookId(id, code, hoodId) {
+        $("#hook_code_" + id).val(code);
+        $("#hook_code_id_" + id).val(hoodId);
+    }
+
+</script>
