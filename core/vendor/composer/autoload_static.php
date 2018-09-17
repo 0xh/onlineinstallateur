@@ -4,20 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
+class ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07
 {
     public static $files = array (
         '3e2471375464aac821502deb0ac64275' => __DIR__ . '/..' . '/symfony/polyfill-php54/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'e40631d46120a9c38ea139981f8dab26' => __DIR__ . '/..' . '/ircmaxell/password-compat/lib/password.php',
         'edc6464955a37aa4d5fbf39d40fb6ee7' => __DIR__ . '/..' . '/symfony/polyfill-php55/bootstrap.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '6a47392539ca2329373e0d33e1dba053' => __DIR__ . '/..' . '/symfony/polyfill-intl-icu/bootstrap.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '023d27dca8066ef29e6739335ea73bad' => __DIR__ . '/..' . '/symfony/polyfill-php70/bootstrap.php',
         'ce89ac35a6c330c55f4710717db9ff78' => __DIR__ . '/..' . '/kriswallsmith/assetic/src/functions.php',
         '8cd2fca4db21bffce1ad0612f7caeec4' => __DIR__ . '/..' . '/ramsey/array_column/src/array_column.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'ef59a7524a39cf678a351859a6e326b4' => __DIR__ . '/../../..' . '/core/bootstrap.php',
     );
 
@@ -61,14 +61,13 @@ class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Config\\' => 25,
             'Symfony\\Component\\ClassLoader\\' => 30,
+            'Symfony\\Component\\Cache\\' => 24,
             'Symfony\\Component\\BrowserKit\\' => 29,
             'Symfony\\Cmf\\Component\\Routing\\' => 30,
-            'Stripe\\' => 7,
         ),
-        'M' => 
+        'P' => 
         array (
-            'MySQLHandler\\' => 13,
-            'Monolog\\' => 8,
+            'Psr\\Cache\\' => 10,
         ),
         'F' => 
         array (
@@ -223,6 +222,10 @@ class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
         array (
             0 => __DIR__ . '/..' . '/symfony/class-loader',
         ),
+        'Symfony\\Component\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/cache',
+        ),
         'Symfony\\Component\\BrowserKit\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
@@ -231,17 +234,9 @@ class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
         array (
             0 => __DIR__ . '/..' . '/symfony-cmf/routing',
         ),
-        'Stripe\\' => 
+        'Psr\\Cache\\' => 
         array (
-            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
-        ),
-        'MySQLHandler\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/wazaari/monolog-mysql/src/MySQLHandler',
-        ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'Faker\\' => 
         array (
@@ -308,10 +303,6 @@ class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
             'Propel' => 
             array (
                 0 => __DIR__ . '/..' . '/propel/propel/src',
-            ),
-            'PayPal' => 
-            array (
-                0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
             ),
         ),
         'M' => 
@@ -833,11 +824,11 @@ class ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInit90d4e84ac127cb4604c63fd0a8aca95c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInita67104091e8dc3b65b1fe93ba094bb07::$classMap;
 
         }, null, ClassLoader::class);
     }
