@@ -4100,7 +4100,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 }
 .navbar {
     position: relative;
-    min-height: 50px;
+/*     min-height: 50px; */
     margin-bottom: 0px;
 }
 .navbar-collapse {
@@ -4438,7 +4438,7 @@ textarea.input-group-sm>.input-group-btn>.btn {
 .navbar-default .navbar-nav>.active>a:hover,
 .navbar-default .navbar-nav>li>a:focus,
 .navbar-default .navbar-nav>li>a:hover {
-    color: #10B4CF!important;
+/*     color: #10B4CF!important; */
     background-color: #FFF
 }
 .navbar-default .navbar-nav>.disabled>a,
@@ -9979,7 +9979,7 @@ label {
 .navbar .navbar-nav>.open>a:focus,
 .navbar .navbar-nav>.open>a:hover {
     background-color: #FFF;
-    color: #10B4CF!important;
+/*     color: #10B4CF!important; */
 }
 .navbar .navbar-nav>.open>a:before,
 .navbar .navbar-nav>.open>a:focus:before,
