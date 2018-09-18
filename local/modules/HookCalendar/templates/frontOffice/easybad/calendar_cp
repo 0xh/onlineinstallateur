@@ -1,0 +1,49 @@
+	
+
+	
+	
+	
+	
+	
+	/*
+	<li class="list-group-item pjAsAsideService selectedTimeSlotItem" style="display:none;">
+		<dl>
+			<dd>
+				<p><strong>Priorität<span name="selectedTimeSlotPriority"></span></strong><span name="selectedTimeSlotDate"></span></p>
+				<p><span name="selectedTimeSlotStartTime"></span> - <span name="selectedTimeSlotEndTime"></span></p>
+			</dd>
+		</dl>
+		<input type="hidden" name="ca_start_ts">
+		<input type="hidden" name="ca_end_ts">
+		<input type="hidden" name="ca_employee_id">
+		<button class="pjAsBtn pjAsBtnRemove pjAsBtnRemoveSelectedAppointment" id="selected-service_1">
+			<span class="glyphicon glyphicon-remove"></span>
+		</button>
+    </li><!-- /.list-group-item pjAsAsideService -->
+	*/
+	
+	
+	
+/*
+		<dl>
+			<dd>
+				<p><strong>Priorität<?php echo $counter; ?></strong> <?php echo  date($tpl['option_arr']['o_date_format'], strtotime($date));?></p>
+				<p><?php echo date($tpl['option_arr']['o_time_format'], $fixed_start_ts);?> - <?php echo date($tpl['option_arr']['o_time_format'], $fixed_end_ts);?></p>
+			</dd>
+		</dl>
+
+<button class="pjAsBtn pjAsBtnRemove pjAsBtnRemoveFromCart" data-start_ts="<?php echo $start_ts; ?>" data-end_ts="<?php echo $end_ts; ?>" data-date="<?php echo $date; ?>" data-service_id="<?php echo $service_id; ?>" data-employee_id="<?php echo $employee_id; ?>">
+<span class="glyphicon glyphicon-remove"></span>
+</button>*/
+	
+/*
+			calendar_reference = document.getElementById('calendar_time_reference');
+			calendar_week_nr = document.getElementById('calendar_week_number');
+			
+			if(this.getAttribute("data-direction") == "next")
+				calendar_reference.innerHTML = calendar_reference.innerHTML+2592000; 
+			if(this.getAttribute("data-direction") == "prev") 
+				calendar_reference.innerHTML = calendar_reference.innerHTML-2592000;  
+			alert(calendar_reference.innerHTML);
+			calendar_week_nr.innerHTML =getWeek(calendar_reference);*/
+				

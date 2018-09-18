@@ -1,0 +1,573 @@
+.pj-calendar .btn-primary,
+.pj-calendar-day p { -webkit-transition: all 0.2s; -o-transition: all 0.2s; transition: all 0.2s; }
+
+.pj-calendar-head,
+.pj-calendar-views,
+.pj-calendar-actions,
+.pj-calendar-body { *zoom: 1; }
+
+.pj-calendar-head:after,
+.pj-calendar-views:after,
+.pj-calendar-actions:after,
+.pj-calendar-body:after { content: ''; clear: both; display: table; }
+
+.pj-calendar { }
+
+.pj-calendar-day-header,
+.pj-calendar-day { width: 14.285714285714286%; float: left; float: left; text-align: center;}
+
+.pj-calendar-head.pj-calendar-8-columns .pj-calendar-day-header{width: 12.5%;}
+.pj-calendar-body.pj-calendar-8-columns .pj-calendar-day{width: 12.5%;}
+
+.pj-calendar-head p,
+.pj-calendar-day p { margin: 0; padding: 2px 0; font-size: 15px; position: relative;}
+
+.pj-calendar-day { }
+.pj-calendar-day p:hover { }
+.pj-calendar-day p { margin: 0 1px 1px 0; cursor: pointer; }
+
+.pj-calendar-body { margin-left: 1px; }
+
+.pj-calendar-head {border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; margin-bottom: 1px;}
+.pj-calendar-head p { font-weight: bold; padding: 10% 0;}
+
+.pj-calendar-day-selected p {}
+.pj-calendar-day-selected p:hover {}
+
+.pj-calendar-day-today p {}
+.pj-calendar-day-today p:hover {}
+
+.pj-calendar-day-disabled p:hover,
+.pj-calendar-day-disabled p { background: transparent; cursor: default;}
+
+.pj-calendar-day-past p:hover,
+.pj-calendar-day-past p { cursor: not-allowed;}
+
+.pj-calendar-day-inactive p:hover,
+.pj-calendar-day-inactive p { cursor: not-allowed;}
+
+.pj-calendar-actions { position: relative; padding: 6px;}
+.pj-calendar-actions .btn { position: relative; z-index: 2; }
+
+.pj-calendar-ym { position: absolute; top: 9px; left: 0; width: 100%; z-index: 1; text-align: center; font-weight: bold; font-size: 21px;}
+
+.pj-calendar-views { padding: 10px 10px 0;}
+.pj-calendar-views .btn-primary { font-size: 15px;}
+
+@media (max-width: 420px) {
+	.pj-calendar-head p,
+	.pj-calendar-day p { padding: 22% 0; }
+	
+	.pj-calendar-cell p,
+	.pj-calendar-head p { font-size: 14px; }
+
+	.pj-calendar-cell { padding-left: 0; padding-right: 0; }
+}
+.pj-calendar { border: 1px solid #ccc; border-radius:5px}
+
+.pj-calendar-day { background: #f7f7f7; }
+.pj-calendar-day p:hover { background-color: #1b6aac; color: #fff; }
+.pj-calendar-day p {background: #fff; }
+
+.pj-calendar-head { background: #f8f8f8;}
+.pj-calendar-body {background: #f8f8f8 none repeat scroll 0 0;}
+.pj-calendar-day-selected p { background: #12965d; color: #fff; }
+.pj-calendar-day-selected p:hover { background: #128956;}
+
+.pj-calendar-day-today p { background: #ffdb99; color: #333; }
+.pj-calendar-day-today p:hover { background: #f1ce8d; color: #333;}
+
+.pj-calendar-day-past p:hover,
+.pj-calendar-day-past p { background: #dde4e6; color: #333;}
+
+.pj-calendar-day-inactive p:hover,
+.pj-calendar-day-inactive p { background: #d21e1d; color: #fff;}
+
+.pj-calendar-day-disabled p:hover,
+.pj-calendar-day-disabled p { background: transparent; cursor: default; color: inherit;}
+
+.pj-calendar-ym{font-size: 18px; top: 12px;}
+
+	#General
+========================================================================== */
+ select.form-control { cursor: pointer; }
+
+
+
+/* ==========================================================================
+	#Buttons
+========================================================================== */
+ .pjAsBtnBack { font-size: 14px; font-weight: bold; text-transform: capitalize; }
+
+/* ==========================================================================
+	#pjAsNav
+========================================================================== */
+ .pjAsNav li { margin: 0; padding-right: 5px; }
+ .pjAsNav li:last-of-type { padding-right: 0; }
+ .pjAsNav .pjAsBtn { padding: 0 15px; font-size: 14px; line-height: 34px; font-weight: normal; text-transform: uppercase; }
+
+/* ==========================================================================
+	#pjAsAside
+========================================================================== */
+ .pjAsAside .pjAsAsideTitle { margin: 0; font-size: 18px; }
+ .pjAsAside .pjAsAsideService { position: relative; }
+
+ .pjAsAside dl { margin: 0; padding-right: 15px; }
+ .pjAsAside dt { font-size: 15px; font-weight: bold; }
+ .pjAsAside dd p { margin: 0; font-size: 14px; }
+
+ .pjAsAsideService .pjAsBtnRemove { position: absolute; top: 10px; right: 5px; width: 20px; height: 20px; padding: 0; border: 1px solid #000; font-size: 12px; line-height: 20px; border-radius: 3px; }
+
+/* ==========================================================================
+	#pjAsHead
+========================================================================== */
+ .pjAsContainer .pjAsHead { padding: 20px; }
+ .pjAsHead .form-group { margin-bottom: 0; }
+ .pjAsHead .control-label { font-size: 17px; font-weight: normal; text-align: left; }
+ .pjAsHead .form-control { cursor: pointer; }
+
+ .pjAsHead .pjAsBtnLink .badge { width: 23px; height: 23px; padding: 6px 0; vertical-align: middle; border-radius: 50%; }
+ .pjAsHead .pjAsHeadTitle { margin: 0; padding-top: 3px; }
+ .pjAsHead .pjAsSelectedDate { margin-top: 15px;}
+ .pjAsSelectedDateWrapper li { border-bottom: 0; }
+ .pjAsSelectedDateWrapper .pjAsSelectedDate { font-size: 18px; padding-top: 5px; }
+
+/* ==========================================================================
+	#pjAsListElements
+========================================================================== */
+ .pjAsListElement { padding: 20px; }
+ .pjAsListElementTitle { margin: 0; padding-bottom: 5px; font-size: 19px; }
+ .pjAsListElement p { font-size: 15px; line-height: 1.6; }
+ .pjAsEmployee .pjAsEmployeePosition { margin: 0; padding-bottom: 12px; font-size: 15px; }
+
+/* ==========================================================================
+	#pjAsEmployeeInfo
+========================================================================== */
+ .pjAsEmployeeInfoSection { padding: 20px; }
+ .pjAsEmployeeInfoSection p { padding-top: 7px; line-height: 1.7; }
+
+ .pjAsSectionTitle { margin: 0; padding: 20px 0 30px; font-size: 17px; }
+
+ .pjAsEmployeeInfoTitle,
+ .pjAsEmployeePosition { margin: 0; }
+ .pjAsEmployeeInfoTitle { padding: 12px 0; font-size: 30px; font-weight: bold; }
+ .pjAsEmployeePosition { font-size: 15px; }
+
+ .pjAsEmployeeContacts { padding-top: 43px; }
+ .pjAsEmployeeContacts dl { margin-bottom: 0; padding-bottom: 24px; }
+ .pjAsEmployeeContacts .dl-horizontal dt { width: auto; padding-right: 3px; font-size: 13px; }
+ .pjAsEmployeeContacts span { display: inline-block; vertical-align: middle; }
+ .pjAsEmployeeContacts .pjAsEmployeeContactIcon { overflow: hidden; width: 25px; height: 25px; margin-right: 3px; border: 2px solid #000; text-align: center; border-radius: 50%; }
+ .pjAsEmployeeContacts .pjAsEmployeeContactIcon .fa { vertical-align: middle; }
+ .pjAsEmployeeContacts .dl-horizontal dd { margin-left: 0; padding-top: 2px; font-size: 15px; font-weight: bold; }
+ .pjAsEmployeeContacts .dl-horizontal dd a { font-weight: normal; }
+
+ .pjAsSectionForm .control-label { font-size: 17px; font-weight: normal; text-align: left; }
+ .pjAsSectionForm .form-control { height: 42px; padding: 11px 20px; font-size: 15px; }
+
+ .pjAsBox { margin-bottom: 0; padding: 10px 10px; }
+
+ .pjAsBox dl { margin-bottom: 0; }
+ .pjAsBox dt,
+ .pjAsBox dd { font-size: 14px; }
+ .pjAsBox dt { width: auto; padding-right: 3px; font-weight: normal; text-align: left; }
+ .pjAsBox dd { margin-left: 0; font-weight: bold; }
+
+ .pjAsDatePick { width: 160px; }
+ .pjAsDatePick .form-control { border-right: 0; cursor: pointer; }
+ .pjAsDatePick .form-control:focus { -webkit-box-shadow: none; box-shadow: none; }
+ .pjAsDatePick .input-group-addon { background: none; cursor: pointer; }
+
+ .pjAsEmployeeTime { padding: 0 5px; }
+
+
+
+/* ==========================================================================
+	#pjAsChosenServices
+========================================================================== */
+ .pjAsChosenServices .pjAsServiceTitle { font-size: 15px; font-weight: normal; }
+ .pjAsChosenService p { font-size: 15px; }
+
+ .pjAsChosenService .pjAsChosenServiceActions p { display: inline-block; }
+ .pjAsChosenService .pjAsBtnRemove { position: relative; top: 0; left: 0; width: 24px; height: 24px; border: 1px solid #000; border-radius: 3px; }
+
+ .pjAsSectionTotal { font-size: 15px; font-weight: bold; text-transform: uppercase; }
+ .pjAsSectionPrice { font-size: 21px; font-weight: bold; }
+
+ .pjAsCheckout .control-label { font-weight: normal; text-align: left; }
+ .pjAsCheckout .asterisk { font-weight: bold; }
+
+ .pjAsCheckout .help-block.with-errors,
+ .pjAsCheckout .help-block.with-errors .list-unstyled { margin: 0; }
+ .pjAsCheckout .has-error .help-block.with-errors { padding-top: 5px; }
+
+/* ==========================================================================
+	#pjAsServices
+========================================================================== */
+ .pjAsServiceMeta { padding-bottom: 10px; }
+ .pjAsServiceMeta dl { margin-bottom: 0; }
+ .pjAsServiceMeta dt,
+ .pjAsServiceMeta dd { font-size: 15px; }
+ .pjAsServiceMeta dt { width: auto; padding-right: 5px; font-weight: normal; }
+ .pjAsServiceMeta dd { margin-left: 0; }
+
+.modal-backdrop.fade {
+	opacity: 0 !important;
+	filter: alpha(opacity=0)  !important;
+}
+.modal-backdrop.fade.in {
+	opacity: 0.5  !important;
+	filter: alpha(opacity=50)  !important;
+}
+
+/* ==========================================================================
+	.pjAsjQueryUI
+========================================================================== */
+.pjAsjQueryUI{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+}
+.pjAsjQueryUI .ui-widget button {
+   	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 12px !important;
+}
+.pjAsjQueryUI{width: 226px;}
+.pjAsjQueryUI td{width: 32px;}
+.pjAsjQueryUI td span, 
+.pjAsjQueryUI td a{text-align: center !important;}
+/* ==========================================================================
+	#Responsive
+========================================================================== */
+@media only screen and ( max-width: 991px ) {
+	 .pjAsNav li { padding-right: 5px; }
+	 .pjAsNav .pjAsBtn { padding: 0 4px; font-size: 14px; text-transform: capitalize; }
+}
+
+@media only screen and ( max-width: 767px ) {
+	 .pjAsListElement > .row > .col-xs-12 { width: 60%; }
+	 .pjAsListElement > .row > .col-xs-12:first-of-type { width: 40%; }
+
+	 .pjAsHead > .row > .col-xs-12 { width: 35%; }
+	 .pjAsHead > .row > .col-xs-12:first-of-type { width: 65%; }
+
+	 .pjAsFilter .col-sx-8 { display: inline-block; }
+
+	 .pjAsEmployeeInfoTitle { font-size: 26px; }
+	 .pjAsEmployeeContacts { padding-top: 10px; }
+	 .pjAsEmployeeContacts dl { padding-bottom: 10px; }
+	 .pjAsEmployeeContacts .dl-horizontal dt,
+	 .pjAsEmployeeContacts .dl-horizontal dd,
+	 .pjAsBox dt,
+	 .pjAsBox dd { display: inline-block; }
+
+	 .pjAsServiceMeta dt,
+	 .pjAsServiceMeta dd { display: inline-block; }
+
+	 .pjAsNav li { padding: 2px; }
+	 .pjAsNav .pjAsBtn { padding: 0 5px; }
+}
+
+@media only screen and ( max-width: 480px ) {
+	 .pjAsHead > .row > .col-xs-12,
+	 .pjAsHead > .row > .col-xs-12:first-of-type,
+	 .pjAsListElement > .row > .col-xs-12,
+	 .pjAsListElement > .row > .col-xs-12:first-of-type { width: 100%; }
+
+	 .pjAsListElement .pjAsListElementTitle { padding-top: 20px; }
+
+	 .pjAsFilter { padding-bottom: 10px; }
+	 .pjAsContainer .pjAsHead { padding: 10px 20px; }
+	 .pjAsHead .pjAsBtnLink { padding: 0; }
+	
+	 .pjAsListElement > .row > .col-xs-12 { float: none; }
+	 .pjAsListElement > .row > .col-xs-12:first-of-type { float: left; width: auto; }
+	 .pjAsListElement .pjAsListElementTitle { padding-top: 0; }
+	 .pjAsListElement img.center-block { margin: 0; }
+
+	 .pjAsHead .pjAsHeadTitle { padding-bottom: 10px; }
+
+	 .pjAsNav { padding-bottom: 5px; }
+
+	 .pjAsEmployeeTimes .col-xs-6 { width: 100%; }
+
+	 .pjAsTableTimes td a { padding: 5px 0; }
+}
+
+@media only screen and ( max-width: 380px ) {
+	 .pjAsListElement > .row > .col-xs-12 { overflow: hidden; }
+	 .pjAsListElement > .row > .col-xs-12:first-of-type { width: 100%; }
+	 .pjAsListElement .pjAsListElementTitle { padding-top: 10px; }
+
+	 .pjAsEmployeeInfoSection .form-group:last-of-type { text-align: center; }
+	 .pjAsEmployeeInfoSection .pjAsBtnPrimary { width: 100%; margin-bottom: 10px; }
+
+	 .pjAsAddToCartForm .pjAsBtn { margin: 2px 5px; }
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 300;
+	src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTegdm0LZdjqr5-oayXSOefg.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzOgdm0LZdjqr5-oayXSOefg.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: italic;
+	font-weight: 300;
+	src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v13/PRmiXeptR36kaC0GEAetxko2lTMeWA_kmIyWrkNCwPc.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: italic;
+	font-weight: 400;
+	src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v13/xjAJXh38I15wypJXxuGMBo4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+	font-family: 'Open Sans';
+	font-style: italic;
+	font-weight: 700;
+	src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v13/PRmiXeptR36kaC0GEAetxolIZu-HDpmDIZMigmsroc4.woff2) format('woff2'), url(//fonts.gstatic.com/s/opensans/v13/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+/* ==========================================================================
+	#General
+========================================================================== */
+ * { font-family: 'Open Sans', sans-serif; }
+ .fa { font-family: 'FontAwesome'; }
+ .glyphicon { font-family: 'Glyphicons Halflings'; }
+
+/* ==========================================================================
+	#General
+========================================================================== */
+ .pjAsLinkMore { color: #4881ae; }
+ .pjAsLinkMore:hover { color: #86ac33; }
+
+/* ==========================================================================
+	#Buttons
+========================================================================== */
+ .pjAsBtnPrimary { color: #fff; text-transform: uppercase; 
+	background: #86ac33;border:none;margin-right:5px;
+	
+}
+ .pjAsBtnPrimary:hover { color: #fff; 
+
+}
+
+ .pjAsBtnSecondary { border-color: #7a7f85; color: #fff; text-transform: uppercase; 
+	background: rgb(147,154,160);
+	background: -moz-linear-gradient(top,  rgba(147,154,160,1) 0%, rgba(147,154,162,1) 9%, rgba(136,145,152,1) 72%, rgba(134,143,150,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(147,154,160,1)), color-stop(9%,rgba(147,154,162,1)), color-stop(72%,rgba(136,145,152,1)), color-stop(100%,rgba(134,143,150,1)));
+	background: -webkit-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: -o-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: linear-gradient(to bottom,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#939aa0', endColorstr='#868f96',GradientType=0 );
+}
+ .pjAsBtnSecondary:hover { border-color: #7a7f85; color: #fff; 
+	background: rgb(134,143,150);
+	background: -moz-linear-gradient(top,  rgba(134,143,150,1) 0%, rgba(136,145,152,1) 28%, rgba(147,154,162,1) 91%, rgba(147,154,160,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(134,143,150,1)), color-stop(28%,rgba(136,145,152,1)), color-stop(91%,rgba(147,154,162,1)), color-stop(100%,rgba(147,154,160,1)));
+	background: -webkit-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: -o-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: linear-gradient(to bottom,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#868f96', endColorstr='#939aa0',GradientType=0 );
+}
+
+ .pjAsBtnBack { color: #4b81b0; }
+ .pjAsBtnBack:hover { color: #386f98; }
+
+/* ==========================================================================
+	#pjAsNav
+========================================================================== */
+ .pjAsNav .pjAsBtn { border-color: #7a7f85; color: #fff; 
+	background: rgb(147,154,160);
+	background: -moz-linear-gradient(top,  rgba(147,154,160,1) 0%, rgba(147,154,162,1) 9%, rgba(136,145,152,1) 72%, rgba(134,143,150,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(147,154,160,1)), color-stop(9%,rgba(147,154,162,1)), color-stop(72%,rgba(136,145,152,1)), color-stop(100%,rgba(134,143,150,1)));
+	background: -webkit-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: -o-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	background: linear-gradient(to bottom,  rgba(147,154,160,1) 0%,rgba(147,154,162,1) 9%,rgba(136,145,152,1) 72%,rgba(134,143,150,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#939aa0', endColorstr='#868f96',GradientType=0 );
+}
+ .pjAsNav .pjAsBtn:hover { border-color: #7a7f85; color: #fff; 
+	background: rgb(134,143,150);
+	background: -moz-linear-gradient(top,  rgba(134,143,150,1) 0%, rgba(136,145,152,1) 28%, rgba(147,154,162,1) 91%, rgba(147,154,160,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(134,143,150,1)), color-stop(28%,rgba(136,145,152,1)), color-stop(91%,rgba(147,154,162,1)), color-stop(100%,rgba(147,154,160,1)));
+	background: -webkit-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: -o-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	background: linear-gradient(to bottom,  rgba(134,143,150,1) 0%,rgba(136,145,152,1) 28%,rgba(147,154,162,1) 91%,rgba(147,154,160,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#868f96', endColorstr='#939aa0',GradientType=0 );
+}
+ .pjAsNav .active .pjAsBtn { border-color: #386f98; 
+	background: rgb(71,129,175);
+	background: -moz-linear-gradient(top,  rgba(71,129,175,1) 0%, rgba(69,127,173,1) 16%, rgba(71,130,174,1) 19%, rgba(70,126,173,1) 25%, rgba(65,128,172,1) 34%, rgba(69,125,172,1) 38%, rgba(64,125,170,1) 44%, rgba(66,127,172,1) 47%, rgba(63,124,171,1) 63%, rgba(62,123,170,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(71,129,175,1)), color-stop(16%,rgba(69,127,173,1)), color-stop(19%,rgba(71,130,174,1)), color-stop(25%,rgba(70,126,173,1)), color-stop(34%,rgba(65,128,172,1)), color-stop(38%,rgba(69,125,172,1)), color-stop(44%,rgba(64,125,170,1)), color-stop(47%,rgba(66,127,172,1)), color-stop(63%,rgba(63,124,171,1)), color-stop(100%,rgba(62,123,170,1)));
+	background: -webkit-linear-gradient(top,  rgba(71,129,175,1) 0%,rgba(69,127,173,1) 16%,rgba(71,130,174,1) 19%,rgba(70,126,173,1) 25%,rgba(65,128,172,1) 34%,rgba(69,125,172,1) 38%,rgba(64,125,170,1) 44%,rgba(66,127,172,1) 47%,rgba(63,124,171,1) 63%,rgba(62,123,170,1) 100%);
+	background: -o-linear-gradient(top,  rgba(71,129,175,1) 0%,rgba(69,127,173,1) 16%,rgba(71,130,174,1) 19%,rgba(70,126,173,1) 25%,rgba(65,128,172,1) 34%,rgba(69,125,172,1) 38%,rgba(64,125,170,1) 44%,rgba(66,127,172,1) 47%,rgba(63,124,171,1) 63%,rgba(62,123,170,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(71,129,175,1) 0%,rgba(69,127,173,1) 16%,rgba(71,130,174,1) 19%,rgba(70,126,173,1) 25%,rgba(65,128,172,1) 34%,rgba(69,125,172,1) 38%,rgba(64,125,170,1) 44%,rgba(66,127,172,1) 47%,rgba(63,124,171,1) 63%,rgba(62,123,170,1) 100%);
+	background: linear-gradient(to bottom,  rgba(71,129,175,1) 0%,rgba(69,127,173,1) 16%,rgba(71,130,174,1) 19%,rgba(70,126,173,1) 25%,rgba(65,128,172,1) 34%,rgba(69,125,172,1) 38%,rgba(64,125,170,1) 44%,rgba(66,127,172,1) 47%,rgba(63,124,171,1) 63%,rgba(62,123,170,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4781af', endColorstr='#3e7baa',GradientType=0 );
+}
+ .pjAsNav .active .pjAsBtn:hover { border-color: #386f98; 
+	background: rgb(62,123,170);
+	background: -moz-linear-gradient(top,  rgba(62,123,170,1) 0%, rgba(63,124,171,1) 37%, rgba(66,127,172,1) 53%, rgba(64,125,170,1) 56%, rgba(69,125,172,1) 62%, rgba(65,128,172,1) 66%, rgba(70,126,173,1) 75%, rgba(71,130,174,1) 81%, rgba(69,127,173,1) 84%, rgba(71,129,175,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(62,123,170,1)), color-stop(37%,rgba(63,124,171,1)), color-stop(53%,rgba(66,127,172,1)), color-stop(56%,rgba(64,125,170,1)), color-stop(62%,rgba(69,125,172,1)), color-stop(66%,rgba(65,128,172,1)), color-stop(75%,rgba(70,126,173,1)), color-stop(81%,rgba(71,130,174,1)), color-stop(84%,rgba(69,127,173,1)), color-stop(100%,rgba(71,129,175,1)));
+	background: -webkit-linear-gradient(top,  rgba(62,123,170,1) 0%,rgba(63,124,171,1) 37%,rgba(66,127,172,1) 53%,rgba(64,125,170,1) 56%,rgba(69,125,172,1) 62%,rgba(65,128,172,1) 66%,rgba(70,126,173,1) 75%,rgba(71,130,174,1) 81%,rgba(69,127,173,1) 84%,rgba(71,129,175,1) 100%);
+	background: -o-linear-gradient(top,  rgba(62,123,170,1) 0%,rgba(63,124,171,1) 37%,rgba(66,127,172,1) 53%,rgba(64,125,170,1) 56%,rgba(69,125,172,1) 62%,rgba(65,128,172,1) 66%,rgba(70,126,173,1) 75%,rgba(71,130,174,1) 81%,rgba(69,127,173,1) 84%,rgba(71,129,175,1) 100%);
+	background: -ms-linear-gradient(top,  rgba(62,123,170,1) 0%,rgba(63,124,171,1) 37%,rgba(66,127,172,1) 53%,rgba(64,125,170,1) 56%,rgba(69,125,172,1) 62%,rgba(65,128,172,1) 66%,rgba(70,126,173,1) 75%,rgba(71,130,174,1) 81%,rgba(69,127,173,1) 84%,rgba(71,129,175,1) 100%);
+	background: linear-gradient(to bottom,  rgba(62,123,170,1) 0%,rgba(63,124,171,1) 37%,rgba(66,127,172,1) 53%,rgba(64,125,170,1) 56%,rgba(69,125,172,1) 62%,rgba(65,128,172,1) 66%,rgba(70,126,173,1) 75%,rgba(71,130,174,1) 81%,rgba(69,127,173,1) 84%,rgba(71,129,175,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e7baa', endColorstr='#4781af',GradientType=0 );
+}
+
+/* ==========================================================================
+	#pjAsAside
+========================================================================== */
+ .pjAsAside .pjAsAsideTitle,
+ .pjAsAside .pjAsHead .pjAsHeadTitle { color: #86ac33; }
+ .pjAsAside dt { color: #45494a; }
+ .pjAsAside dd p { color: #77787c; }
+
+ .pjAsAside .pjAsAsideService:first-of-type { background: #fafafa; }
+ .pjAsAsideService .pjAsBtnRemove { border-color: #77787c; background: #fff; color: #77787c; }
+ .pjAsAsideService .pjAsBtnRemove:hover { border-color: #45494a; color: #45494a; }
+
+ .pjAsSelectedDateWrapper .pjAsSelectedDate { color: #45494a; }
+ .pjAsSelectedDateWrapper .pjAsSelectedDate strong { color: #86ac33; }
+
+/* ==========================================================================
+	#pjAsContainer
+========================================================================== */
+ .pjAsContainer { color: #8f969c; }
+
+/* ==========================================================================
+	#pjAsHead
+========================================================================== */
+ .pjAsContainer .pjAsHead { background: #fafafa; }
+
+ .pjAsHead .control-label { color: #6e7c85; }
+ .pjAsHead .form-control { color: #47484a; }
+ .pjAsHead .pjAsBtnLink { color: #86ac33; }
+ .pjAsHead .pjAsBtnLink .badge { background: #86ac33; color: #fff; }
+
+/* ==========================================================================
+	#pjAsListElements
+========================================================================== */
+ .pjAsListElementTitle { color: #4680ae; }
+ .pjAsEmployee .pjAsEmployeePosition { color: #d17165; }
+
+/* ==========================================================================
+	#pjAsEmployeeInfo
+========================================================================== */
+ .pjAsEmployeeInfoSection p strong { color: #505050; }
+ .pjAsSectionTitle { color: #2e4044; }
+ .pjAsEmployeeInfoTitle { color: #313f40; }
+ .pjAsEmployeePosition { color: #d17165; }
+
+ .pjAsEmployeeContacts .dl-horizontal dt { color: #92a1a8; }
+ .pjAsEmployeeContacts .pjAsEmployeeContactIcon { border-color: #4780ad;  color: #4780ad; }
+ .pjAsEmployeeContacts .dl-horizontal dd { color: #304040; }
+ .pjAsEmployeeContacts .dl-horizontal dd a { color: #4680b0; }
+ .pjAsEmployeeContacts .dl-horizontal dd a:hover { color: #386f98; }
+
+ .pjAsSectionForm .control-label { color: #6f7c82; }
+ .pjAsSectionForm .form-control { color: #444849; }
+
+ .pjAsBox { border-color: #bddade; background: #FFF; }
+ .pjAsBox.pjAsBoxTimeEnd { border-color: #d6d6d6; background: #f1f1f1; }
+ .pjAsBox dt { color: #6b7c83; }
+ .pjAsBox dd { color: #3b4046; }
+
+ .pjAsDatePick .form-control { color: #45494a; }
+ .pjAsDatePick .form-control:focus { border-color: #ccc; }
+ .pjAsDatePick .input-group-addon { color: #999; }
+ .pjAsDatePick .input-group-addon:hover { color: #45494a; }
+
+/* ==========================================================================
+	#pjAsTableTimes
+========================================================================== */
+ .pjAsTableTimes .table tr { border-color: #e2e2e2; }
+ .pjAsTableTimes .table td { border-color: #e2e2e2; }
+
+ .pjAsTableTimes .pjAsTime { }
+ .pjAsTableTimes .pjAsTimeAvailable  { color: #000;}
+ .pjAsTableTimes .pjAsTimeUnavailable  {  color: #b9b7b8!important; text-decoration: line-through!important;}
+.pjAsTableTimes .pjAsTimeUnavailable  a{  color: #b9b7b8!important; }
+ .pjAsTableTimes .pjAsTimeUnavailable :hover { background: #FFF; color: #b9b7b8!important; text-decoration: line-through!important;cursor: not-allowed;}
+ .pjAsTableTimes .pjAsTimeSelected  { background: #86ac33; color: #fff!important; }
+.pjAsTableTimes .pjAsTimeSelected a {color: #fff!important; }
+ .pjAsTableTimes .pjAsTimeBooked  { background: #C60B0B; color: #fff!important; }
+.pjAsTableTimes .pjAsTimeBooked  a{ color: #fff!important; }
+ .pjAsTableTimes .pjAsTimeBooked :hover { cursor: not-allowed; }
+
+ .pjAsTableTimesActions p { color: #86ac33; }
+
+/* ==========================================================================
+	#pjAsChosenServices
+========================================================================== */
+ .pjAsChosenServices .pjAsServiceTitle { color: #86ac33; font-weight: bold; }
+ .pjAsChosenService p { color: #77787c; }
+ .pjAsChosenService p strong { color: #45494a; }
+ .pjAsChosenService a { color: #4481ae; }
+ .pjAsChosenService a:hover { color: #386f98; }
+ .pjAsChosenService .pjAsBtnRemove { border-color: #000; color: #000; }
+ .pjAsSectionTotal { color: #45494c; }
+ .pjAsSectionPrice { color: #23272a; }
+
+ .pjAsCheckout .control-label { color: #6a7b82; }
+ .pjAsCheckout .asterisk { color: #d47464; }
+ .pjAsCheckout .checkbox { color: #45494c; }
+
+/* ==========================================================================
+	#pjAsServices
+========================================================================== */
+ .pjAsServiceMeta dd { color: #d07364; }
+
+/* ==========================================================================
+	#pjCalendar
+========================================================================== */
+.pj-calendar,
+.pj-calendar-head { border-color: #ddd; }
+.pj-calendar { background: #fafafa; }
+.pj-calendar-head { background: #fff; }
+.pj-calendar-ym { color: #86ac33; }
+.pj-calendar-actions .btn-primary {  color: #fff; text-transform: uppercase; 
+	background:#d6d6d6;
+    border:none
+	
+}
+.pj-calendar-actions .btn-primary:hover { 
+    background:#666;
+}
+
+.pj-calendar-day-header p { color: #45494a; }
+.pj-calendar-day { background: #fff; }
+.pj-calendar-day p { background: #fff; color: #000; }
+.pj-calendar-day p:hover { background: #86ac33; color: #fff; }
+.pj-calendar-day-disabled p,
+.pj-calendar-day-disabled p:hover { background: #fafafa; color: #45494a; }
+.pj-calendar-day-past p,
+.pj-calendar-day-past p:hover { background: #bcbaba; color: #fff; }
+.pj-calendar-day-selected p,
+.pj-calendar-day-today p,
+.pj-calendar-day-today p:hover { background: #86ac33; color: #fff; }
+.pj-calendar-day-inactive p { background: #FFF; color: #b9b7b8; }
+.pj-calendar-day-inactive p:hover {	background: #FFF;color: #b9b7b8; }
+.timeslot{border:solid 1px #ccc; text-align:center;    margin-left: 5%;
+    margin-right:3%;
+    margin-top: 10px;text-decoration:none!important}
+.timeslot a,.timeslot a:hover{text-decoration:none!important}
+.timetable{border-top:solid 1px #CCC; text-align:center; margin-left:auto; margin-right:auto}
