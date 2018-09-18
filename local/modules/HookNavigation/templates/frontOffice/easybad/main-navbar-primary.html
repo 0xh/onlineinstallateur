@@ -10,7 +10,7 @@
                 {loop type="category" name="category.navigation" parent="0" need_count_child="yes"}
 					{if $CHILD_COUNT > 0}
                     <li class="dropdown mega-minnu " style="float:unset">
-                        <a href="{$URL}"  style="color:white">{$TITLE}</a>
+                        <a href="{$URL}"  style="color:white;background-color: transparent;">{$TITLE}</a>
                         <ul class="dropdown-menu minnu-menu" role="menu">
 
                             {assign var="parent_id" value=$ID}
@@ -118,7 +118,7 @@
                     </li>
                 {else}
                     <li class="dropdown mega-minnu " style="float:unset">
-                        <a href="{$URL}"  style="color:white">{$TITLE}</a>
+                        <a href="{$URL}"  style="color:white;background-color: transparent;">{$TITLE}</a>
                     </li>
                 {/if}
                 {/loop}
