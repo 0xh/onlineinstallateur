@@ -107,32 +107,6 @@ class FileController extends BaseAdminController
      * Process file uploaded
      *
      * @param UploadedFile $fileBeingUploaded
-     * @param int $parentId
-     * @param string $parentType
-     * @param string $objectType
-     * @param array $validMimeTypes
-     * @param array $extBlackList
-     * @return ResponseRest
-     *
-     * @deprecated since version 2.3, to be removed in 2.6. Please use the process method File present in the same class.
-     */
-    public function processImage(
-        $fileBeingUploaded,
-        $parentId,
-        $parentType,
-        $objectType,
-        $validMimeTypes = array(),
-        $extBlackList = array()
-        ) {
-            @trigger_error('The '.__METHOD__.' method is deprecated since version 2.3 and will be removed in 2.6. Please use the process method File present in the same class.', E_USER_DEPRECATED);
-            
-            return $this->processFile($fileBeingUploaded, $parentId, $parentType, $objectType, $validMimeTypes, $extBlackList);
-    }
-    
-    /**
-     * Process file uploaded
-     *
-     * @param UploadedFile $fileBeingUploaded
      * @param  int      $parentId       Parent id owning files being saved
      * @param  string   $parentType     Parent Type owning files being saved (product, category, content, etc.)
      * @param  string   $objectType     Object type, e.g. image or document
@@ -151,7 +125,6 @@ class FileController extends BaseAdminController
         $extBlackList = array()
         ) {
             $fileManager = $this->getFileManager();
-            
             // Validate if file is too big
             if ($fileBeingUploaded->getError() == 1) {
                 $message = $this->getTranslator()
@@ -160,16 +133,12 @@ class FileController extends BaseAdminController
                     array('%size%' => ini_get('upload_max_filesize')),
                     'core'
                     );
-                
                 throw new ProcessFileException($message, 403);
             }
-            
             $message = null;
             $realFileName = $fileBeingUploaded->getClientOriginalName();
-            
             if (! empty($validMimeTypes)) {
                 $mimeType = $fileBeingUploaded->getMimeType();
-                
                 if (!isset($validMimeTypes[$mimeType])) {
                     $message = $this->getTranslator()
                     ->trans(
@@ -178,7 +147,6 @@ class FileController extends BaseAdminController
                         );
                 } else {
                     $regex = "#^(.+)\.(".implode("|", $validMimeTypes[$mimeType]).")$#i";
-                    
                     if (!preg_match($regex, $realFileName)) {
                         $message = $this->getTranslator()
                         ->trans(
@@ -191,10 +159,8 @@ class FileController extends BaseAdminController
                     }
                 }
             }
-            
             if (!empty($extBlackList)) {
                 $regex = "#^(.+)\.(".implode("|", $extBlackList).")$#i";
-                
                 if (preg_match($regex, $realFileName)) {
                     $message = $this->getTranslator()
                     ->trans(
@@ -205,42 +171,32 @@ class FileController extends BaseAdminController
                         );
                 }
             }
-            
             if ($message !== null) {
                 throw new ProcessFileException($message, 415);
             }
-            
             $fileModel = $fileManager->getModelInstance($objectType, $parentType);
-            
             $parentModel = $fileModel->getParentFileModel();
-            
             if ($parentModel === null || $fileModel === null || $fileBeingUploaded === null) {
                 throw new ProcessFileException('', 404);
             }
-            
             $defaultTitle = $parentModel->getTitle();
-            
             if (empty($defaultTitle) && $objectType !== 'image') {
                 $defaultTitle = $fileBeingUploaded->getClientOriginalName();
             }
-            
             $fileModel
             ->setParentId($parentId)
             ->setLocale(Lang::getDefaultLanguage()->getLocale())
             ->setTitle($defaultTitle)
             ;
-            
             $fileCreateOrUpdateEvent = new FileCreateOrUpdateEvent($parentId);
             $fileCreateOrUpdateEvent->setModel($fileModel);
             $fileCreateOrUpdateEvent->setUploadedFile($fileBeingUploaded);
             $fileCreateOrUpdateEvent->setParentName($parentModel->getTitle());
-            
             // Dispatch Event to the Action
             $this->dispatch(
                 TheliaEvents::IMAGE_SAVE,
                 $fileCreateOrUpdateEvent
                 );
-            
             $this->adminLogAppend(
                 $this->getAdminResources()->getResource($parentType, static::MODULE_RIGHT),
                 AccessManager::UPDATE,
@@ -253,7 +209,6 @@ class FileController extends BaseAdminController
                     )
                     )
                 );
-            
             //return new ResponseRest(array('status' => true, 'message' => ''));
             return $fileCreateOrUpdateEvent;
     }
