@@ -80,17 +80,11 @@
 					<figcaption>
 						<h2>Serie <span>{$SELECTION_TITLE}</span> <i>Now</i></h2>
                         <h2> </h2>
-                        {loop name="feature_loop" type="selection-feature-availability-values" selection_id=$SELECTION_ID}  
-                        {if $FEATURE_ID != NULL}
-                            {$FEATURE_ID|@var_dump}
-                            {/if}
-                        {if $FEATURE_AV_ID != NULL}
-                        {$FEATURE_AV_ID|@var_dump}
-                        {/if}
-                        {if $FV_ID != NULL}
-                        {$FV_ID|@var_dump}
-                        {/if}
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
+                        {$FTITLE} 
+                        {$F_TITLE}
                         {/loop}
+
 					</figcaption>			
 				</figure>
 			</a>
