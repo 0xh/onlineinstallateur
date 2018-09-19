@@ -73,24 +73,33 @@
 			<a href="{$SELECTION_URL}">	
 				
 				<figure class="effect-honey mb-5">
-						 {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
-                         {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
-                         {assign var = "feature_title" value = $F_TITLE}    
-                         {assign var = "feature_value" value = $FTITLE}
-                        {/loop}
-
-
+	{loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
 					<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"  >
                     {/loop}
-					<figcaption><i>
-                        <h2>Serie <span>{$SELECTION_TITLE}</span> <span>{$feature_title}:</span>
+                    
+                     
+            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
+                       {assign var = "feature_title" value = $F_TITLE}    
+                       {assign var = "feature_value" value = $FTITLE}
+                   {/loop}   
+                       
+                   {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
+                    {/loop}
+
+					<figcaption>
+                           <i><h2>Serie <span>{$SELECTION_TITLE}</span> <span><b>{$feature_title}</b>:</span>
                                 <span>{$feature_value}</span>
-                                {$SELECTION_PRODUCT_PRICE}
-                                <i> » Details Zeigen</i>
+                            
+                            
+                                <span>{$selection_price} €</span>
+                                
+                                <span> » Details Zeigen</span>
                             </i></h2>
                         <h2> </h2>
-
-					</figcaption>			
+					</figcaption>	
+                                
+                                
 				</figure>
 			</a>
 </div>
