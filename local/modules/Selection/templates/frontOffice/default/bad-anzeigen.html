@@ -1,0 +1,282 @@
+{extends file="layout.tpl"}
+
+{block name="main-content"} 
+    {loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
+    {$IMAGE_URL|var_dump}
+    <img src="{$IMAGE_URL}">
+    {/loop}
+
+    <div style="text-align: center;">
+        {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=3 selection_id=$SELECTION_ID show_feature_value_selected=true}
+        <h2>{$FTITLE}</h2>
+        {/loop}
+
+        {loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
+        <h2>{$SELECTION_TITLE nofilter}</h2>
+        <p>{$SELECTION_DESCRIPTION nofilter}</p>
+        {/loop}
+
+        <div class="row">
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=1 selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=17 selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                <h2>€ <label  id="total_price">2.611,00</label></h2>
+            </div>
+        </div>
+
+        <h1>PRODUCT OVERVIEW</h1>
+        <h2>All items in this bathroom in detail</h2>
+
+        <table style="width:100%; text-align: left;">
+            <tr>
+                <th>{intl l='Selection'}</th>
+                <th>{intl l='Items'}</th> 
+                <th>{intl l='Price'}</th>
+                <th>{intl l='Amount'}</th>
+                <th>{intl l='Total'}</th>
+            </tr>
+            <tr><td colspan="5" style="border-bottom:1px solid #B7B7B7;padding-top:10px;margin-bottom:10px"></td></tr>
+                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+            <tr>
+                <td>
+                    <input type="checkbox" name="{$SELECTION_PRODUCT_ID}" />
+                    {loop type="image" name="image" source="product" source_id="$SELECTION_PRODUCT_ID" limit="1" width="100" height="100" resize_mode="crop" backend_context="1"}
+                    <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" />
+                    {/loop}
+                </td>
+                <td>
+                    {loop type="product" name="the-loop-name" id="$SELECTION_PRODUCT_ID"}
+                    <a href="{$URL nofilter}" style="color: #10b4cf;">{$SELECTION_PRODUCT_TITLE}</a>
+
+                    <br>
+                    <br>
+                    <br>
+                    {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+
+                    {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
+                        <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"  d="fo.default"}</small></em></span>
+                                {else}
+                                    {if $QUANTITY > 0}
+                            <span class="in ">{intl l='In Stock' d="fo.default"}</span> 
+                        {else}
+                            <span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$SELECTION_PRODUCT_ID}}</small></em>
+                            {/if}
+                        {/if}
+                        <br>
+                        <br>
+                        <div style="position:relative;" class="wishlist " data-productid="" data-toggle="tooltip" title="Add to wishlist"></div>
+                        {/loop}
+                </td> 
+                <td>
+                    <input type="hidden" id="price_{$SELECTION_PRODUCT_ID}" value="{$SELECTION_PRODUCT_PRICE}" name="" />
+                    {$SELECTION_PRODUCT_PRICE} - {$product_sale_elements_id}
+                </td>
+                <td>
+                    <select class="stkla" id="select_{$SELECTION_PRODUCT_ID}" onchange="changeTotalPrice({$SELECTION_PRODUCT_ID});" data-productid="{$SELECTION_PRODUCT_ID}">
+                        <option value="1" selected="">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </td>
+                <td>
+                    € <label id="total_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="border-bottom:1px solid #B7B7B7;padding-top:10px;margin-bottom:10px"></td>
+            </tr>
+            {/loop}
+            <tr>
+                <th></th>
+                <th></th> 
+                <th></th>
+                <th></th>
+                <td colspan="3" style="padding-top:15px" valign="top">
+                    <button type="submit">
+                        <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                        IN THE CART
+                        </font>
+                        </font>
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+
+        {assign var="ID" value="2061"}
+        {assign var="PRODUCT_SALE_ELEMENT" value="2112"}
+        {assign var="product_id" value="2061"}
+
+        {form name="thelia.cart.add" }
+        <form id="form-product-details" action="{url path="/konfigurator/add" }" method="post" class="form-product">
+
+            {form_hidden_fields}
+            <input type="hidden" name="view" value="product">
+            <input type="hidden" name="product_id" value="{$ID}">
+            {form_field field="append"}
+            <input type="hidden" name="{$name}" value="1">
+            {/form_field}
+
+            {if $form_error}<div class="alert alert-error">{$form_error_message}</div>{/if}
+
+            {form_field field="product"}
+            <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$ID}" {$attr} >
+            {/form_field}
+
+            {* pse *}
+            {form_field field='product_sale_elements_id'}
+            <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr} >
+            {/form_field}
+
+            {if $pse_count > 1}
+                {* We have more than 1 combination: custom form *}
+                <fieldset id="pse-options" class="product-options">
+                    {loop name="attributes" type="attribute" product="$product_id" order="manual"}
+
+                    <div class="option option-option">
+                        <label for="option-{$ID}" class="option-heading">{$TITLE}</label>
+                        <div class="option-content clearfix">
+                            <select id="option-{$ID}" name="option-{$ID}" class="form-control input-sm pse-option" data-attribute="{$ID}"></select>
+                        </div>
+                    </div>
+                    {/loop}
+                    <div class="option option-fallback">
+                        <label for="option-fallback" class="option-heading">{intl l="Options"}</label>
+                        <div class="option-content clearfix">
+                            <select id="option-fallback" name="option-fallback" class="form-control input-sm pse-option pse-fallback" data-attribute="0"></select>
+                        </div>
+                    </div>
+                </fieldset>
+            {/if}
+
+
+            {assign var="service_title" value="{$TITLE}"}
+
+
+            {loop type="image" name="image.main" product={$ID} resize_mode="borders"  limit="1"}
+            {assign var="service_image_url" value="{$IMAGE_URL}"}
+            {/loop}
+
+            <div {if $service_category == #services_category_id#}
+                style="margin-left:15px; margin-right:15px;background:url({$service_image_url nofilter}) no-repeat; height:250px; background-size:100%;"
+                {/if}>
+
+                    {if $service_category == #services_category_id#}
+                        <div style="background:#FFF; width:300px;border-radius: 10px;box-shadow: 3px 3px 3px rgba(0,0,0,0.35);text-align:center!important; margin-right: 35px;margin-top:35px; float:right">
+                            <div class="price-container">
+                                {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
+                                <meta itemprop="category" content="{$TITLE}">
+                                {/loop}
+                                {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
+                                <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
+                                {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
+                                <meta itemprop="priceCurrency" content="{currency attr="code"}">
+
+                                {assign var="parent_category" value={category attr="parent"}}
+
+                                <h4>{$service_title}</h4>
+                                <h3>{$BEST_TAXED_PRICE|string_format:"%.2f"}€</h3>
+                                <small><br>Alle Preise inkl. 20% MwSt.</small>
+                                <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
+                            </div>
+
+                        {/if}
+                        <fieldset class="product-cart form-inline">
+                            {form_field field='quantity'}
+                            <br>
+                            <div class=" col-xs-12 col-sm-6 col-lg-12 col-xl-12 text-center form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
+                                 {if $service_category == #services_category_id#}  style="display:none"{/if}>
+                                <div class="amount-plus-minus">
+                                    <div class="amount-text">
+                                        <label for="{$label_attr.for}">{$label}</label>
+                                    </div>
+                                    <div class="plus-minus-div">
+                                        <button type="button" class="button js-fa-minus">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                        <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
+                                        <button type="button" class="button js-fa-plus">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                {elseif $value != "" && !$error}
+                                    <span class="help-block"><i class="fa fa-check"></i></span>
+                                    {/if}
+                            </div>
+                            {/form_field}
+
+                            <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-12 form-group group-btn  align-center" >
+                                <br>
+                                <button id="pse-submit" type="submit" class="btn btn-1 btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
+                            </div>
+
+                            {ifhook rel="wish-list.wish-button"}
+                            {hook name="wish-list.wish-button" product_id={$product_id}}
+                            {/ifhook}
+
+                        </fieldset>
+
+                        {if $service_category == #services_category_id# }</div>{/if}
+                </div>    
+
+                {if $parent_category != #services_category_id#}
+                    <div class="products-content services-checkbox">
+                        <ul class="thumbnails image_picker_selector">
+                            {loop type="service"  name="services_list" product_id=$product_id limit="8"}
+                            {assign var="service_for_appointment" value = $SERVICE_ID} 
+                            {include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=false width="200" height="100"}
+                            <div class="product-service-calendar">
+                                {*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
+                            </div>	
+                            {/loop}
+                        </ul>
+                    </div>
+
+
+
+                {else}       
+                    <div class="product-service-calendar col-sm-12">
+                        {hook name="productservice.bottom" service="{$ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product=true btn_booking="btn-service-booking"}
+                    </div>
+                    <div style="clearfix"></div>
+
+                {/if}
+
+            </form>
+            {/form}
+        </div>
+
+        <script>
+            function changeTotalPrice(prodId) {
+                $("#total_" + prodId).text(parseFloat($("#select_" + prodId).val() * $("#price_" + prodId).val()).toFixed(2));
+
+                total = 0;
+                $(".total-price").each(function () {
+                    total += parseFloat($(this).text());
+                });
+                $("#total_price").text(parseFloat(total).toFixed(2));
+
+            }
+        </script>
+        {/block}

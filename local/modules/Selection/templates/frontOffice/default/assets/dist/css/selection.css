@@ -1,0 +1,13 @@
+.wishlist {
+    left: 5px;
+    width: 28px;
+    height: 25px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    background-image: url(../img/herz_outline.png);
+}
+
+.wishlistactive {
+    background-image: url(../img/herz_filled.png);
+}
