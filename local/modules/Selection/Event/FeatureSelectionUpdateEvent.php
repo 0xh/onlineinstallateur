@@ -5,6 +5,9 @@ use Thelia\Core\Event\ActionEvent;
 class FeatureSelectionUpdateEvent extends ActionEvent
 {
     /** @var int */
+    protected $id;
+    
+    /** @var int */
     protected $selection_id;
 
     /** @var int */
@@ -99,5 +102,16 @@ class FeatureSelectionUpdateEvent extends ActionEvent
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+    
+    
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

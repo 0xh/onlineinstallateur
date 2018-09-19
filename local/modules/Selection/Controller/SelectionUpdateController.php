@@ -35,10 +35,9 @@ use Thelia\Model\FeatureQuery;
 use Thelia\Tools\URL;
 
 class SelectionUpdateController extends AbstractSeoCrudController
-    {
+{
 
     protected $currentRouter = Selection::ROUTER;
-
     protected $deleteGroupEventIdentifier = SelectionEvents::SELECTION_CONTAINER_DELETE;
 
     /**
@@ -48,31 +47,31 @@ class SelectionUpdateController extends AbstractSeoCrudController
      * @throws PropelException
      */
     public function saveSelection()
-        {
+    {
 
         $form = new SelectionUpdateForm($this->getRequest());
 
         $validForm = $this->validateForm($form);
-        $data = $validForm->getData();
+        $data      = $validForm->getData();
 
-        $selectionID = $data['selection_id'];
-        $selectionTitle = $data['selection_title'];
-        $selectionChapo = $data['selection_chapo'];
-        $selectionDescription = $data['selection_description'];
+        $selectionID           = $data['selection_id'];
+        $selectionTitle        = $data['selection_title'];
+        $selectionChapo        = $data['selection_chapo'];
+        $selectionDescription  = $data['selection_description'];
         $selectionPostscriptum = $data['selection_postscriptum'];
 
         $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
 
         $aSelection = SelectionI18nQuery::create()
-          ->filterById($selectionID)
-          ->filterByLocale($lang->getLocale())
-          ->findOne();
+         ->filterById($selectionID)
+         ->filterByLocale($lang->getLocale())
+         ->findOne();
 
         $aSelection
-          ->setTitle($selectionTitle)
-          ->setChapo($selectionChapo)
-          ->setDescription($selectionDescription)
-          ->setPostscriptum($selectionPostscriptum);
+         ->setTitle($selectionTitle)
+         ->setChapo($selectionChapo)
+         ->setDescription($selectionDescription)
+         ->setPostscriptum($selectionPostscriptum);
 
         $aSelection->save();
 
@@ -82,24 +81,23 @@ class SelectionUpdateController extends AbstractSeoCrudController
 
 
         return $this->generateRedirectFromRoute('selection.update', [
-            ], [
-              'selectionId' => $selectionID], null);
-        }
+          ], [
+          'selectionId' => $selectionID], null);
+    }
 
     public function createSelection()
-        {
+    {
         $form = new SelectionCreateForm($this->getRequest());
-        try
-            {
-            $validForm = $this->validateForm($form);
-            $data = $validForm->getData();
-            $title = $data['title'];
-            $chapo = $data['chapo'];
-            $description = $data['description'];
-            $postscriptum = $data['postscriptum'];
-            $lang = $this->getRequest()->getSession()->get('thelia.current.lang');
-            $date = new DateTime();
-            $selection = new SelectionModel();
+        try {
+            $validForm     = $this->validateForm($form);
+            $data          = $validForm->getData();
+            $title         = $data['title'];
+            $chapo         = $data['chapo'];
+            $description   = $data['description'];
+            $postscriptum  = $data['postscriptum'];
+            $lang          = $this->getRequest()->getSession()->get('thelia.current.lang');
+            $date          = new DateTime();
+            $selection     = new SelectionModel();
             $lastSelection = SelectionQuery::create()->orderByPosition(Criteria::DESC)->findOne();
             if (null !== $lastSelection) {
                 $position = $lastSelection->getPosition() + 1;
@@ -107,46 +105,43 @@ class SelectionUpdateController extends AbstractSeoCrudController
                 $position = 1;
             }
             $selection
-              ->setCreatedAt($date->format('Y-m-d H:i:s'))
-              ->setUpdatedAt($date->format('Y-m-d H:i:s'))
-              ->setVisible(1)
-              ->setPosition($position)
-              ->setLocale($lang->getLocale())
-              ->setTitle($title)
-              ->setChapo($chapo)
-              ->setDescription($description)
-              ->setPostscriptum($postscriptum);
+             ->setCreatedAt($date->format('Y-m-d H:i:s'))
+             ->setUpdatedAt($date->format('Y-m-d H:i:s'))
+             ->setVisible(1)
+             ->setPosition($position)
+             ->setLocale($lang->getLocale())
+             ->setTitle($title)
+             ->setChapo($chapo)
+             ->setDescription($description)
+             ->setPostscriptum($postscriptum);
             $selection->save();
             return $this->generateRedirect("/admin/selection");
-            } catch (FormValidationException $ex)
-            {
+        } catch (FormValidationException $ex) {
             // Form cannot be validated
             $error_msg = $this->createStandardFormValidationErrorMessage($ex);
-            } catch (\Exception $ex)
-            {
+        } catch (\Exception $ex) {
             // Any other error
             $error_msg = $ex->getMessage();
-            }
+        }
 
         if (false !== $error_msg) {
             $this->setupFormErrorContext(
-              $this->getTranslator()->trans("%obj creation", [
-                  '%obj' => $this->objectName]), $error_msg, $form, $ex
+             $this->getTranslator()->trans("%obj creation", [
+              '%obj' => $this->objectName]), $error_msg, $form, $ex
             );
             // At this point, the form has error, and should be redisplayed.
             return $this->renderList();
         }
-        }
+    }
 
     public function updateSelectionPositionAction()
-        {
+    {
         if (null !== $response = $this->checkAuth(array(
-            AdminResources::MODULE), array(
-            Selection::DOMAIN_NAME), AccessManager::UPDATE)) {
+         AdminResources::MODULE), array(
+         Selection::DOMAIN_NAME), AccessManager::UPDATE)) {
             return $response;
         }
-        try
-            {
+        try {
             $mode = $this->getRequest()->get('mode', null);
 
             if ($mode == 'up') {
@@ -162,45 +157,39 @@ class SelectionUpdateController extends AbstractSeoCrudController
             $event = $this->createUpdateSelectionPositionEvent($mode, $position);
 
             $this->dispatch(SelectionEvents::SELECTION_UPDATE_POSITION, $event);
-            } catch (\Exception $ex)
-            {
+        } catch (\Exception $ex) {
             Tlog::getInstance()->error($ex->getMessage());
-            }
-
-        return $this->forward('Selection\Controller\SelectionController::viewAction');
         }
 
-    public function updateSelectionFeauturesAction( $selectionId )
-        {
+        return $this->forward('Selection\Controller\SelectionController::viewAction');
+    }
+
+    public function updateSelectionFeauturesAction($selectionId)
+    {
 
         $selection = SelectionQuery::create()->findPk($selectionId);
-        $locale = $this->getSession()->getLang()->getLocale();
+        $locale    = $this->getSession()->getLang()->getLocale();
 
 
         if ($selection != null) {
 
             // Get all features for the template attached to this product
             $allFeatures = FeatureQuery::create()
-              ->find();
+             ->find();
 
             $updatedFeatures = array();
 
             // Update all features values, starting with feature av. values
             $featureValues = $this->getRequest()->get('feature_value', array());
 
-            foreach ($featureValues as
-              $featureId =>
-              $featureValueList) {
-
-
+            foreach ($featureValues as $featureId => $featureValueList) {
 
                 // Delete all features av. for this feature.
                 $event = new FeatureSelectionDeleteEvent($selectionId, $featureId);
                 $this->dispatch(SelectionEvents::SELECTION_FEATURE_DELETE_VALUE, $event);
 
 
-                foreach ($featureValueList as
-                  $featureValue) {
+                foreach ($featureValueList as $featureValue) {
                     $event = new FeatureSelectionUpdateEvent($selectionId, $featureId, $featureValue, $locale, false);
                     $this->dispatch(SelectionEvents::SELECTION_FEATURE_UPDATE_VALUE, $event);
                 }
@@ -211,14 +200,12 @@ class SelectionUpdateController extends AbstractSeoCrudController
             $featureTextValues = $this->getRequest()->get('feature_text_value', array());
 
 
-            foreach ($featureTextValues as
-              $featureId =>
-              $featureValue) {
+            foreach ($featureTextValues as $featureId => $featureValue) {
                 // Check if a FeatureProduct exists for this product and this feature (for another lang)
                 $freeTextFeatureSelection = \Selection\Model\Base\SelectionFeaturesQuery::create()
-                  ->filterBySelectionId($selectionId)
-                  ->filterByFeatureId($featureId)
-                  ->findOne();
+                 ->filterBySelectionId($selectionId)
+                 ->filterByFeatureId($featureId)
+                 ->findOne();
 
                 // If no corresponding FeatureProduct exists AND if the feature_text_value is empty, do nothing
                 if (is_null($freeTextFeatureSelection) && empty($featureValue)) {
@@ -231,16 +218,16 @@ class SelectionUpdateController extends AbstractSeoCrudController
                 $updatedFeatures[] = $featureId;
             }
 
+            
             // Delete features which don't have any values
             /** @var Feature $feature */
-            foreach ($allFeatures as
-              $feature) {
+            foreach ($allFeatures as $feature) {
                 if (!in_array($feature->getId(), $updatedFeatures)) {
                     $event = new FeatureSelectionDeleteEvent($selectionId, $feature->getId());
                     $this->dispatch(SelectionEvents::SELECTION_FEATURE_DELETE_VALUE, $event);
                 }
             }
-        }
+        } 
         // If we have to stay on the same page, do not redirect to the successUrl,
         // just redirect to the edit page again.
         if ($this->getRequest()->get('save_mode') == 'stay') {
@@ -249,79 +236,72 @@ class SelectionUpdateController extends AbstractSeoCrudController
 
         // Redirect to the category/product list
         return $this->redirectToListTemplate();
-        }
+    }
 
     public function deleteRelatedProduct()
-        {
+    {
         $selectionID = $this->getRequest()->get('selectionID');
-        $productID = $this->getRequest()->get('productID');
+        $productID   = $this->getRequest()->get('productID');
 
-        try
-            {
+        try {
             $selection = SelectionProductQuery::create()
-              ->filterByProductId($productID)
-              ->findOneBySelectionId($selectionID);
+             ->filterByProductId($productID)
+             ->findOneBySelectionId($selectionID);
             if (null !== $selection) {
                 $selection->delete();
             }
-            } catch (\Exception $e)
-            {
+        } catch (\Exception $e) {
             Tlog::getInstance()->error($e->getMessage());
-            }
+        }
 
         return $this->generateRedirectFromRoute('selection.update', [
-            ], [
-              'selectionId' => $selectionID], null);
-        }
+          ], [
+          'selectionId' => $selectionID], null);
+    }
 
     public function deleteRelatedContent()
-        {
+    {
         $selectionID = $this->getRequest()->get('selectionID');
-        $contentID = $this->getRequest()->get('contentID');
+        $contentID   = $this->getRequest()->get('contentID');
 
-        try
-            {
+        try {
             $selection = SelectionContentQuery::create()
-              ->filterByContentId($contentID)
-              ->findOneBySelectionId($selectionID);
+             ->filterByContentId($contentID)
+             ->findOneBySelectionId($selectionID);
             if (null !== $selection) {
                 $selection->delete();
             }
-            } catch (\Exception $e)
-            {
+        } catch (\Exception $e) {
             Tlog::getInstance()->error($e->getMessage());
-            }
+        }
 
         return $this->generateRedirectFromRoute('selection.update', [
-            ], [
-              'selectionId' => $selectionID], null);
-        }
+          ], [
+          'selectionId' => $selectionID], null);
+    }
 
     /* --------------------------    Part Controller SEO */
 
     public function __construct()
-        {
+    {
         parent::__construct(
-          'selection', 'selection_id', 'order', AdminResources::MODULE, SelectionEvents::SELECTION_CREATE,
-          SelectionEvents::SELECTION_UPDATE, SelectionEvents::SELECTION_DELETE, null,
-          SelectionEvents::RELATED_PRODUCT_UPDATE_POSITION, SelectionEvents::SELECTION_UPDATE_SEO,
-          Selection::DOMAIN_NAME
+         'selection', 'selection_id', 'order', AdminResources::MODULE, SelectionEvents::SELECTION_CREATE, SelectionEvents::SELECTION_UPDATE, SelectionEvents::SELECTION_DELETE, null, SelectionEvents::RELATED_PRODUCT_UPDATE_POSITION, SelectionEvents::SELECTION_UPDATE_SEO, Selection::DOMAIN_NAME
         );
-        }
+    }
 
     protected function getCreationForm()
-        {
+    {
         return $this->createForm('admin.selection.update');
-        }
+    }
 
-    protected function getUpdateForm( $data = array() )
-        {
+    protected function getUpdateForm($data = array())
+    {
         if (!is_array($data)) {
             $data = array();
         }
 
         return $this->createForm('admin.selection.update', 'form', $data);
-        }
+    }
 
     /**
      * $object Selection
@@ -329,31 +309,31 @@ class SelectionUpdateController extends AbstractSeoCrudController
      * @return BaseForm
      * @throws PropelException
      */
-    protected function hydrateObjectForm( $selection )
-        {
+    protected function hydrateObjectForm($selection)
+    {
         $this->hydrateSeoForm($selection);
         $associatedContainer = $selection->getSelectionContainerAssociatedSelections();
-        $container = null;
+        $container           = null;
         if (!empty($associatedContainer) && count($associatedContainer) > 0) {
             /** @var SelectionContainerAssociatedSelection[] $associatedContainer */
             $container = $associatedContainer[0]->getSelectionContainerId();
         }
         $data = array(
-            'selection_id' => $selection->getId(),
-            'selection_container' => $container,
-            'id' => $selection->getId(),
-            'locale' => $selection->getLocale(),
-            'selection_chapo' => $selection->getChapo(),
-            'selection_description' => $selection->getDescription(),
-            'selection_postscriptum' => $selection->getPostscriptum(),
-            'current_id' => $selection->getId(),
+         'selection_id'           => $selection->getId(),
+         'selection_container'    => $container,
+         'id'                     => $selection->getId(),
+         'locale'                 => $selection->getLocale(),
+         'selection_chapo'        => $selection->getChapo(),
+         'selection_description'  => $selection->getDescription(),
+         'selection_postscriptum' => $selection->getPostscriptum(),
+         'current_id'             => $selection->getId(),
         );
 
         return $this->getUpdateForm($data);
-        }
+    }
 
-    protected function getCreationEvent( $formData )
-        {
+    protected function getCreationEvent($formData)
+    {
         $event = new SelectionEvent();
 
         $event->setTitle($formData['title']);
@@ -362,12 +342,12 @@ class SelectionUpdateController extends AbstractSeoCrudController
         $event->setPostscriptum($formData['postscriptum']);
 
         return $event;
-        }
+    }
 
-    protected function getUpdateEvent( $formData )
-        {
+    protected function getUpdateEvent($formData)
+    {
         $selection = SelectionQuery::create()->findPk($formData['selection_id']);
-        $event = new SelectionEvent($selection);
+        $event     = new SelectionEvent($selection);
 
         $event->setId($formData['selection_id']);
         $event->setContainerId($formData['selection_container_id']);
@@ -377,103 +357,102 @@ class SelectionUpdateController extends AbstractSeoCrudController
         $event->setPostscriptum($formData['selection_postscriptum']);
         $event->setLocale($this->getRequest()->getSession()->get('thelia.current.lang')->getLocale());
         return $event;
-        }
+    }
 
     protected function getDeleteEvent()
-        {
-        $event = new SelectionEvent();
+    {
+        $event       = new SelectionEvent();
         $selectionId = $this->getRequest()->request->get('selection_id');
         $event->setId($selectionId);
         return $event;
-        }
+    }
 
     protected function getDeleteGroupEvent()
-        {
-        $event = new SelectionContainerEvent();
+    {
+        $event            = new SelectionContainerEvent();
         $selectionGroupId = $this->getRequest()->request->get('selection_group_id');
         $event->setId($selectionGroupId);
         return $event;
-        }
+    }
 
-    protected function eventContainsObject( $event )
-        {
+    protected function eventContainsObject($event)
+    {
         return $event->hasSelection();
-        }
+    }
 
-    protected function getObjectFromEvent( $event )
-        {
+    protected function getObjectFromEvent($event)
+    {
         return $event->getSelection();
-        }
+    }
 
     protected function getExistingObject()
-        {
+    {
         $selection = SelectionQuery::create()
-          ->findPk($this->getRequest()->get('selectionId', 0));
+         ->findPk($this->getRequest()->get('selectionId', 0));
 
         if (null !== $selection) {
             $selection->setLocale($this->getCurrentEditionLocale());
         }
 
         return $selection;
-        }
+    }
 
-    protected function getObjectLabel( $object )
-        {
+    protected function getObjectLabel($object)
+    {
         return '';
-        }
+    }
 
     /**
      * Returns the object ID from the object
      * @param \Selection\Model\Selection $object
      * @return int selection id
      */
-    protected function getObjectId( $object )
-        {
+    protected function getObjectId($object)
+    {
         return $object->getId();
-        }
+    }
 
-    protected function renderListTemplate( $currentOrder )
-        {
+    protected function renderListTemplate($currentOrder)
+    {
         $this->getParser()->assign("order", $currentOrder);
         return $this->render('selection-list');
-        }
+    }
 
     protected function renderEditionTemplate()
-        {
+    {
         $selectionId = $this->getRequest()->get('selectionId');
-        $currentTab = $this->getRequest()->get('current_tab');
+        $currentTab  = $this->getRequest()->get('current_tab');
         return $this->render(
-            'selection-edit',
-            [
-              'selection_id' => $selectionId,
-              'current_tab' => $currentTab
-            ]
+          'selection-edit', [
+          'selection_id' => $selectionId,
+          'current_tab'  => $currentTab
+          ]
         );
-        }
+    }
 
     protected function redirectToEditionTemplate()
-        {
+    {
         $id = $this->getRequest()->get('selection_id');
 
         return new RedirectResponse(
-          URL::getInstance()->absoluteUrl(
-            "/admin/selection/update/" . $id
-          )
+         URL::getInstance()->absoluteUrl(
+          "/admin/selection/update/" . $id
+         )
         );
-        }
+    }
 
     protected function redirectToListTemplate()
-        {
+    {
         return new RedirectResponse(
-          URL::getInstance()->absoluteUrl("/admin/selection")
+         URL::getInstance()->absoluteUrl("/admin/selection")
         );
-        }
+    }
 
     /**
      * Online status toggle product
      */
     public function setToggleVisibilityAction()
-        {
+    {
         // Check current user authorization
         if (null !== $response = $this->checkAuth($this->resourceCode, array(), AccessManager::UPDATE)) {
             return $response;
@@ -481,48 +460,45 @@ class SelectionUpdateController extends AbstractSeoCrudController
 
         $event = new SelectionEvent($this->getExistingObject());
 
-        try
-            {
+        try {
             $this->dispatch(SelectionEvents::SELECTION_TOGGLE_VISIBILITY, $event);
-            } catch (\Exception $ex)
-            {
+        } catch (\Exception $ex) {
             // Any error
             return $this->errorPage($ex);
-            }
+        }
 
         // Ajax response -> no action
         return $this->nullResponse();
-        }
+    }
 
-    protected function createUpdateProductPositionEvent( $positionChangeMode, $positionValue )
-        {
+    protected function createUpdateProductPositionEvent($positionChangeMode, $positionValue)
+    {
         return new UpdatePositionEvent(
-          $this->getRequest()->get('product_id', null), $positionChangeMode, $positionValue,
-          $this->getRequest()->get('selection_id', null)
+         $this->getRequest()->get('product_id', null), $positionChangeMode, $positionValue, $this->getRequest()->get('selection_id', null)
         );
-        }
+    }
 
-    protected function createUpdateSelectionPositionEvent( $positionChangeMode, $positionValue )
-        {
+    protected function createUpdateSelectionPositionEvent($positionChangeMode, $positionValue)
+    {
         return new UpdatePositionEvent(
-          $this->getRequest()->get('selection_id', null), $positionChangeMode, $positionValue, Selection::getModuleId()
+         $this->getRequest()->get('selection_id', null), $positionChangeMode, $positionValue, Selection::getModuleId()
         );
-        }
+    }
 
-    protected function performAdditionalUpdatePositionAction( $positionEvent )
-        {
+    protected function performAdditionalUpdatePositionAction($positionEvent)
+    {
         $selectionID = $this->getRequest()->get('selection_id');
 
         return $this->generateRedirectFromRoute('selection.update', [
-            ], [
-              'selectionId' => $selectionID], null);
-        }
+          ], [
+          'selectionId' => $selectionID], null);
+    }
 
     public function processUpdateSeoAction()
-        {
+    {
         $selectionId = $this->getRequest()->get('current_id');
         $this->getRequest()->request->set("selectionId", $selectionId);
         return parent::processUpdateSeoAction();
-        }
-
     }
+
+}

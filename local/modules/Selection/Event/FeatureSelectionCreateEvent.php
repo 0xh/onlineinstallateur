@@ -32,7 +32,7 @@ class FeatureSelectionCreateEvent extends ActionEvent
     }
 
     /**
-     * @return int the product id
+     * @return int the selection id
      */
     public function getSelectionId()
     {
@@ -45,7 +45,7 @@ class FeatureSelectionCreateEvent extends ActionEvent
      */
     public function setSelectionId($selection_id)
     {
-        $this->product_id = $selection_id;
+        $this->selection_id = $selection_id;
 
         return $this;
     }
@@ -101,5 +101,17 @@ class FeatureSelectionCreateEvent extends ActionEvent
     public function setLocale($locale)
     {
         $this->locale = $locale;
+    }
+    
+      public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->feature_id = $id;
+
+        return $this;
     }
 }

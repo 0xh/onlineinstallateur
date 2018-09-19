@@ -1,12 +1,12 @@
--- 
--- # This is a fix for InnoDB in MySQL >= 4.1.x
--- # It "suspends judgement" for fkey relationships until are tables are set.
- SET FOREIGN_KEY_CHECKS = 0;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection
--- -- ---------------------------------------------------------------------
--- 
+
+# This is a fix for InnoDB in MySQL >= 4.1.x
+# It "suspends judgement" for fkey relationships until are tables are set.
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ---------------------------------------------------------------------
+-- selection
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection`;
 
 CREATE TABLE `selection`
@@ -18,11 +18,11 @@ CREATE TABLE `selection`
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_features
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_features
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_features`;
 
 CREATE TABLE `selection_features`
@@ -36,13 +36,7 @@ CREATE TABLE `selection_features`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `FI_feature_selection_feature_id` (`feature_id`),
     INDEX `FI_feature_selection_feature_av_id` (`feature_av_id`),
-    CONSTRAINT `fk_feature_selection_feature_id`
-        FOREIGN KEY (`feature_id`)
-        REFERENCES `feature` (`id`)
-        ON UPDATE RESTRICT
-        ON DELETE CASCADE,
     CONSTRAINT `fk_feature_selection_feature_av_id`
         FOREIGN KEY (`feature_av_id`)
         REFERENCES `feature_av` (`id`)
@@ -54,11 +48,11 @@ CREATE TABLE `selection_features`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_product
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_product
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_product`;
 
 CREATE TABLE `selection_product`
@@ -81,11 +75,11 @@ CREATE TABLE `selection_product`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_content
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_content
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_content`;
 
 CREATE TABLE `selection_content`
@@ -108,11 +102,11 @@ CREATE TABLE `selection_content`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_image
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_image
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_image`;
 
 CREATE TABLE `selection_image`
@@ -132,11 +126,11 @@ CREATE TABLE `selection_image`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_container
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_container
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_container`;
 
 CREATE TABLE `selection_container`
@@ -148,11 +142,11 @@ CREATE TABLE `selection_container`
     `updated_at` DATETIME,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_container_associated_selection
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_container_associated_selection
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_container_associated_selection`;
 
 CREATE TABLE `selection_container_associated_selection`
@@ -176,11 +170,11 @@ CREATE TABLE `selection_container_associated_selection`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_container_image
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_container_image
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_container_image`;
 
 CREATE TABLE `selection_container_image`
@@ -200,11 +194,11 @@ CREATE TABLE `selection_container_image`
         ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_i18n
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_i18n
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_i18n`;
 
 CREATE TABLE `selection_i18n`
@@ -224,11 +218,11 @@ CREATE TABLE `selection_i18n`
         REFERENCES `selection` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_image_i18n
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_image_i18n
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_image_i18n`;
 
 CREATE TABLE `selection_image_i18n`
@@ -245,11 +239,11 @@ CREATE TABLE `selection_image_i18n`
         REFERENCES `selection_image` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_container_i18n
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_container_i18n
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_container_i18n`;
 
 CREATE TABLE `selection_container_i18n`
@@ -269,11 +263,11 @@ CREATE TABLE `selection_container_i18n`
         REFERENCES `selection_container` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- -- ---------------------------------------------------------------------
--- -- selection_container_image_i18n
--- -- ---------------------------------------------------------------------
--- 
+
+-- ---------------------------------------------------------------------
+-- selection_container_image_i18n
+-- ---------------------------------------------------------------------
+
 DROP TABLE IF EXISTS `selection_container_image_i18n`;
 
 CREATE TABLE `selection_container_image_i18n`
@@ -290,6 +284,6 @@ CREATE TABLE `selection_container_image_i18n`
         REFERENCES `selection_container_image` (`id`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
--- 
--- # This restores the fkey checks, after having unset them earlier
- SET FOREIGN_KEY_CHECKS = 1;
+
+# This restores the fkey checks, after having unset them earlier
+SET FOREIGN_KEY_CHECKS = 1;

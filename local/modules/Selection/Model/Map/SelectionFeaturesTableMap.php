@@ -162,7 +162,7 @@ class SelectionFeaturesTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('FEATURE_ID', 'FeatureId', 'INTEGER', 'feature', 'ID', true, null, null);
+        $this->addColumn('FEATURE_ID', 'FeatureId', 'INTEGER', true, null, null);
         $this->addColumn('SELECTION_ID', 'SelectionId', 'INTEGER', true, null, null);
         $this->addForeignKey('FEATURE_AV_ID', 'FeatureAvId', 'INTEGER', 'feature_av', 'ID', true, null, null);
         $this->addForeignKey('FEATURE_AV_ID', 'FeatureAvId', 'INTEGER', 'feature_av_i18n', 'ID', true, null, null);
@@ -177,7 +177,6 @@ class SelectionFeaturesTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Feature', '\\Thelia\\Model\\Feature', RelationMap::MANY_TO_ONE, array('feature_id' => 'id', ), 'CASCADE', 'RESTRICT');
         $this->addRelation('FeatureAv', '\\Thelia\\Model\\FeatureAv', RelationMap::MANY_TO_ONE, array('feature_av_id' => 'id', ), 'CASCADE', 'RESTRICT');
         $this->addRelation('FeatureAvI18n', '\\Thelia\\Model\\FeatureAvI18n', RelationMap::MANY_TO_ONE, array('feature_av_id' => 'id', ), 'CASCADE', 'RESTRICT');
     } // buildRelations()
