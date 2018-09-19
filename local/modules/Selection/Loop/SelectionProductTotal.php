@@ -2,55 +2,71 @@
 
 namespace Selection\Loop;
 
-use Propel\Runtime\ActiveQuery\Criteria;
-use Thelia\Core\Template\Element\PropelSearchLoopInterface;
-use Thelia\Core\Template\Element\BaseLoop;
+use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\Exception\PropelException;
+use Selection\Model\Map\SelectionProductTableMap;
+use Selection\Model\SelectionContentQuery;
+use Selection\Model\SelectionProductQuery;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
+use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Selection\Model\Selection;
-use Selection\Model\SelectionI18nQuery;
-use Selection\Model\SelectionQuery;
-use Selection\Model\SelectionProductQuery;
+use Thelia\Model\Map\ProductI18nTableMap;
+use Thelia\Model\Map\ProductPriceTableMap;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
 
-class SelectionProductTotal extends BaseI18nLoop  implements PropelSearchLoopInterface {
+class SelectionProductTotal extends BaseI18nLoop implements PropelSearchLoopInterface
+{
 
-	protected function getArgDefinitions()
+    protected function getArgDefinitions()
     {
         return new ArgumentCollection(
-            Argument::createAnyTypeArgument('selection_id')
+         Argument::createAnyTypeArgument('selection_id')
         );
     }
 
     /**
-     * @return \Propel\Runtime\ActiveQuery\ModelCriteria|SelectionContentQuery
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @return ModelCriteria|SelectionContentQuery
+     * @throws PropelException
      */
     public function buildModelCriteria()
     {
-    	$search = SelectionProductQuery::create()
-            	->filterBySelectionId( 1 );
+        $search = SelectionProductQuery::create()
+         ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+         ->addJoin(SelectionProductTableMap::PRODUCT_ID, ProductI18nTableMap::ID)
+//                ->addJoin(ProductSaleElementsTableMap::PRODUCT_ID, SelectionProductTableMap::PRODUCT_ID)
+         ->addJoin(ProductI18nTableMap::ID, ProductSaleElementsTableMap::PRODUCT_ID)
+         ->addJoin(ProductSaleElementsTableMap::ID, ProductPriceTableMap::PRODUCT_SALE_ELEMENTS_ID)
+         ->withColumn(ProductI18nTableMap::TITLE, "title")
+         ->withColumn(ProductSaleElementsTableMap::ID, "product_sale_elements_id")
+         ->withColumn(ProductPriceTableMap::PRICE, "price")
+         ->filterBySelectionId($this->getSelectionId())
+         ->where(ProductI18nTableMap::LOCALE . '=' . '"de_DE" ');
 
         return $search;
     }
 
-        /**
+    /**
      * @param LoopResult $loopResult
      * @return LoopResult
-     * @throws \Propel\Runtime\Exception\PropelException
+     * @throws PropelException
      */
     public function parseResults(LoopResult $loopResult)
     {
-    	foreach ($loopResult->getResultDataCollection() as $content) {
+        foreach ($loopResult->getResultDataCollection() as $content) {
 
-      		$loopResultRow = new LoopResultRow($content);
+            $loopResultRow = new LoopResultRow($content);
             $loopResultRow
-                ->set("SELECTION_PRODUCT_ID", $content->getProductId());
+             ->set("SELECTION_PRODUCT_ID", $content->getProductId())
+             ->set("SELECTION_PRODUCT_PRICE", $content->getPrice())
+             ->set("product_sale_elements_id", $content->getVirtualColumn("product_sale_elements_id"))
+             ->set("SELECTION_PRODUCT_TITLE", $content->getTitle());
 
             $loopResult->addRow($loopResultRow);
         }
-       return $loopResult;
+        return $loopResult;
     }
+
 }
