@@ -29,10 +29,7 @@
         <column name="feature_av_id" required="true" type="INTEGER"/>
         <column name="freetext_value" required="true" type="LONGVARCHAR"/>
         <column name="position" type="INTEGER"/>        
-        <behavior name="timestampable" /> 
-        <foreign-key foreignTable="feature" name="fk_feature_selection_feature_id" onDelete="CASCADE" onUpdate="RESTRICT">
-            <reference foreign="id" local="feature_id" />
-        </foreign-key>        
+        <behavior name="timestampable" />         
         <foreign-key foreignTable="feature_av" name="fk_feature_selection_feature_av_id" onDelete="CASCADE" onUpdate="RESTRICT">
           <reference foreign="id" local="feature_av_id" />
         </foreign-key>

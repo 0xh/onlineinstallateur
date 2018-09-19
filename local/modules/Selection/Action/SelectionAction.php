@@ -34,7 +34,7 @@ use Thelia\Model\FeatureAvI18nQuery;
 use function class_uses;
 
 class SelectionAction extends BaseAction implements EventSubscriberInterface
-    {
+{
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
@@ -43,21 +43,21 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
      * @param SelectionEvent $event
      * @throws Exception
      */
-    public function create( SelectionEvent $event )
-        {
+    public function create(SelectionEvent $event)
+    {
         $this->createOrUpdate($event, new Selection());
-        }
+    }
 
     /**
      * @param SelectionEvent $event
      * @throws Exception
      */
-    public function update( SelectionEvent $event )
-        {
+    public function update(SelectionEvent $event)
+    {
         $model = $this->getSelection($event);
 
         $this->createOrUpdate($event, $model);
-        }
+    }
 
     /**
      * @param UpdateSeoEvent $event
@@ -67,44 +67,43 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
      */
     public function updateSeo(
     UpdateSeoEvent $event,
-    /** @noinspection PhpUnusedParameterInspection  */ $eventName, EventDispatcherInterface $dispatcher )
-        {
+    /** @noinspection PhpUnusedParameterInspection  */ $eventName, EventDispatcherInterface $dispatcher)
+    {
         return $this->genericUpdateSeo(SelectionQuery::create(), $event, $dispatcher);
-        }
+    }
 
     /**
      * @param SelectionEvent $event
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function delete( SelectionEvent $event )
-        {
+    public function delete(SelectionEvent $event)
+    {
         $this->getSelection($event)->delete();
-        }
+    }
 
-    protected function getSelection( SelectionEvent $event )
-        {
+    protected function getSelection(SelectionEvent $event)
+    {
         $model = SelectionQuery::create()
-          ->findPk($event->getId());
+         ->findPk($event->getId());
 
         if (null === $model) {
             throw new RuntimeException(sprintf(
-              "Selection id '%d' doesn't exist", $event->getId()
+             "Selection id '%d' doesn't exist", $event->getId()
             ));
         }
         return $model;
-        }
+    }
 
     /**
      * @param SelectionEvent $event
      * @param Selection $model
      * @throws Exception
      */
-    protected function createOrUpdate( SelectionEvent $event, Selection $model )
-        {
+    protected function createOrUpdate(SelectionEvent $event, Selection $model)
+    {
         $con = Propel::getConnection(SelectionTableMap::DATABASE_NAME);
         $con->beginTransaction();
-        try
-            {
+        try {
             if (null !== $locale = $event->getLocale()) {
                 $model->setLocale($locale);
             }
@@ -134,24 +133,23 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
             $this->updateContainerAssociatedToSelection($event, $con);
 
             $con->commit();
-            } catch (Exception $e)
-            {
+        } catch (Exception $e) {
             $con->rollBack();
             Tlog::getInstance()->error($e->getMessage());
             throw $e;
-            }
         }
+    }
 
     /**
      * @param SelectionEvent $event
      * @param ConnectionInterface $con
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    protected function updateContainerAssociatedToSelection( SelectionEvent $event, ConnectionInterface $con )
-        {
+    protected function updateContainerAssociatedToSelection(SelectionEvent $event, ConnectionInterface $con)
+    {
         $associationQuery = SelectionContainerAssociatedSelectionQuery::create();
-        $association = $associationQuery->findOneBySelectionId($event->getId());
-        $containerId = $event->getContainerId();
+        $association      = $associationQuery->findOneBySelectionId($event->getId());
+        $containerId      = $event->getContainerId();
         if (empty($association)) {
             if (empty($containerId)) {
                 return;
@@ -166,23 +164,23 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
         }
         $association->setSelectionContainerId($containerId);
         $association->save($con);
-        }
+    }
 
     /**
      * @param SelectionEvent $event
      * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function toggleVisibility( SelectionEvent $event )
-        {
+    public function toggleVisibility(SelectionEvent $event)
+    {
         $selection = $event->getSelection();
 
         $selection
-          ->setVisible($selection->getVisible() ? false : true)
-          ->save()
+         ->setVisible($selection->getVisible() ? false : true)
+         ->save()
         ;
 
         $event->setSelection($selection);
-        }
+    }
 
     /** @noinspection PhpUnusedParameterInspection */
 
@@ -196,16 +194,16 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
     public function updateProductPosition(
     UpdatePositionEvent $event,
     /** @noinspection PhpUnusedParameterInspection  */
-      $eventName,
+    $eventName,
     /** @noinspection PhpUnusedParameterInspection  */ EventDispatcherInterface $dispatcher
     )
-        {
+    {
         $this->genericUpdateDelegatePosition(
-          SelectionProductQuery::create()
-            ->filterByProductId($event->getObjectId())
-            ->filterBySelectionId($event->getReferrerId()), $event
+         SelectionProductQuery::create()
+          ->filterByProductId($event->getObjectId())
+          ->filterBySelectionId($event->getReferrerId()), $event
         );
-        }
+    }
 
     /**
      * @param UpdatePositionEvent $event
@@ -216,17 +214,17 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
     UpdatePositionEvent $event,
     /** @noinspection PhpUnusedParameterInspection */ $eventName, EventDispatcherInterface $dispatcher
     )
-        {
+    {
         $modelCriteria = SelectionQuery::create()->filterById($event->getObjectId());
         $this->genericUpdateDelegatePosition(
-          $modelCriteria, $event, $dispatcher
+         $modelCriteria, $event, $dispatcher
         );
-        }
+    }
 
     protected function genericUpdateDelegatePosition(
     ModelCriteria $query, UpdatePositionEvent $event, EventDispatcherInterface $dispatcher = null
     )
-        {
+    {
 
         if (null !== $object = $query->findOne()) {
             if (!isset(class_uses($object)['Thelia\Model\Tools\PositionManagementTrait'])) {
@@ -247,19 +245,19 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
                 $object->movePositionDown();
             }
         }
-        }
+    }
 
-    public function createSelectionFeautures( FeatureSelectionCreateEvent $event, $eventName,
-      EventDispatcherInterface $dispatcher )
-        {
+    public function createSelectionFeautures(FeatureSelectionCreateEvent $event, $eventName,
+                                             EventDispatcherInterface $dispatcher)
+    {
         $feature = new SelectionFeatures();
         $feature->setDispatcher($dispatcher)
-          ->setFeatureId($event->getFeautureId())
-          ->setSelectionId($event->getSelectionId())
-          ->setFeatureValue($event->getFeautureId())
-          ->save();
+         ->setFeatureId($event->getFeautureId())
+         ->setSelectionId($event->getSelectionId())
+         ->setFeatureValue($event->getFeautureId())
+         ->save();
         return true;
-        }
+    }
 
     /**
      * Change a product feature
@@ -268,18 +266,18 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
      * @param $eventName
      * @param EventDispatcherInterface $dispatcher
      */
-    public function updateSelectionFeautures( FeatureSelectionUpdateEvent $event, $eventName,
-      EventDispatcherInterface $dispatcher )
-        {
+    public function updateSelectionFeautures(FeatureSelectionUpdateEvent $event, $eventName,
+                                             EventDispatcherInterface $dispatcher)
+    {
 
 
         $feature_av_id = $event->getFeatureValue();
 
         $feature = SelectionFeaturesQuery::create()
-          ->filterBySelectionId($event->getSelectionId())
-          ->filterByFeatureId($event->getFeatureId())
-          ->findOne();
-
+         ->filterBySelectionId($event->getSelectionId())
+         ->filterByFeatureId($event->getFeatureId())
+         ->filterByFeatureAvId($feature_av_id)
+         ->findOne();
 
         if (null !== $feature) {
             if ($event->getIsTextValue()) {
@@ -288,10 +286,10 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
             }
 
             $feature->setFeatureId($event->getFeatureId())
-              ->setSelectionId($event->getSelectionId())
-              ->setFeatureAvId($feature_av_id)
-              ->setFreetextValue($event->getIsTextValue())
-              ->save();
+             ->setSelectionId($event->getSelectionId())
+             ->setFeatureAvId($feature_av_id)
+             ->setFreetextValue($event->getIsTextValue())
+             ->save();
         } else {
 
             $feature = new SelectionFeatures();
@@ -299,13 +297,13 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
                 $feature_av_id = $this->createFreeTextMapping($event);
             }
             $feature->setFeatureId($event->getFeatureId())
-              ->setSelectionId($event->getSelectionId())
-              ->setFeatureAvId($feature_av_id)
-              ->setFreetextValue($event->getIsTextValue())
-              ->setNew(true);
+             ->setSelectionId($event->getSelectionId())
+             ->setFeatureAvId($feature_av_id)
+             ->setFreetextValue($event->getIsTextValue())
+             ->setNew(true);
             $feature->save();
         }
-        }
+    }
 
     /**
      * Delete a product feature entry
@@ -314,71 +312,75 @@ class SelectionAction extends BaseAction implements EventSubscriberInterface
      * @param $eventName
      * @param EventDispatcherInterface $dispatcher
      */
-    public function deleteSelectionFeautures( FeatureSelectionDeleteEvent $event, $eventName,
-      EventDispatcherInterface $dispatcher )
-        {
-        if (null !== ($feature = SelectionFeaturesQuery::create()->findPk($event->getSelectionId()))) {
-            $feature->delete()
-            ;
+    public function deleteSelectionFeautures(FeatureSelectionDeleteEvent $event, $eventName,
+                                             EventDispatcherInterface $dispatcher)
+    {
+        $feature = SelectionFeaturesQuery::create();
+        $feature->filterBySelectionId($event->getSelectionId());
+        $feature->filterByFeatureId($event->getFeatureId());
+        $feature->find();
+
+        if (null !== $feature) {
+            $feature->delete();
             $event->setFeatureId($feature);
         }
-        }
+    }
 
-    public function createFreeTextMapping( FeatureSelectionUpdateEvent $event, $feature_av_id = false )
-        {
+    public function createFreeTextMapping(FeatureSelectionUpdateEvent $event, $feature_av_id = false)
+    {
         $objFav = new FeatureAv();
         $objFav->setLocale($event->getLocale());
         $objFav->setFeatureId($event->getFeatureId());
         $objFav->setTitle($event->getFeatureValue());
         $objFav->save();
         return $objFav->getId();
-        }
+    }
 
-    public function updateFreeTextMapping( FeatureSelectionUpdateEvent $event, $feature_av_id )
-        {
+    public function updateFreeTextMapping(FeatureSelectionUpdateEvent $event, $feature_av_id)
+    {
 
         $objFav = FeatureAvI18nQuery::create()
-          ->filterById($feature_av_id)
-          ->filterByLocale($event->getLocale())
-          ->findOne();
+         ->filterById($feature_av_id)
+         ->filterByLocale($event->getLocale())
+         ->findOne();
         $objFav->setTitle($event->getFeatureValue())
-          ->save();
-        }
+         ->save();
+    }
 
     public static function getSubscribedEvents()
-        {
+    {
         return array(
-            SelectionEvents::SELECTION_CREATE => array(
-                "create",
-                128),
-            SelectionEvents::SELECTION_UPDATE => array(
-                "update",
-                128),
-            SelectionEvents::SELECTION_DELETE => array(
-                "delete",
-                128),
-            SelectionEvents::SELECTION_UPDATE_SEO => array(
-                "updateSeo",
-                128),
-            SelectionEvents::SELECTION_UPDATE_POSITION => array(
-                "updatePosition",
-                128),
-            SelectionEvents::SELECTION_TOGGLE_VISIBILITY => array(
-                "toggleVisibility",
-                128),
-            SelectionEvents::RELATED_PRODUCT_UPDATE_POSITION => array(
-                "updateProductPosition",
-                128),
-            SelectionEvents::SELECTION_FEATURE_DELETE_VALUE => array(
-                "deleteSelectionFeautures",
-                128),
-            SelectionEvents::SELECTION_FEATURE_UPDATE_VALUE => array(
-                "updateSelectionFeautures",
-                128),
-            SelectionEvents::SELECTION_FEATURE_CREATE_VALUE => array(
-                "createSelectionFeautures",
-                128),
+         SelectionEvents::SELECTION_CREATE                => array(
+          "create",
+          128),
+         SelectionEvents::SELECTION_UPDATE                => array(
+          "update",
+          128),
+         SelectionEvents::SELECTION_DELETE                => array(
+          "delete",
+          128),
+         SelectionEvents::SELECTION_UPDATE_SEO            => array(
+          "updateSeo",
+          128),
+         SelectionEvents::SELECTION_UPDATE_POSITION       => array(
+          "updatePosition",
+          128),
+         SelectionEvents::SELECTION_TOGGLE_VISIBILITY     => array(
+          "toggleVisibility",
+          128),
+         SelectionEvents::RELATED_PRODUCT_UPDATE_POSITION => array(
+          "updateProductPosition",
+          128),
+         SelectionEvents::SELECTION_FEATURE_DELETE_VALUE  => array(
+          "deleteSelectionFeautures",
+          128),
+         SelectionEvents::SELECTION_FEATURE_UPDATE_VALUE  => array(
+          "updateSelectionFeautures",
+          128),
+         SelectionEvents::SELECTION_FEATURE_CREATE_VALUE  => array(
+          "createSelectionFeautures",
+          128),
         );
-        }
-
     }
+
+}

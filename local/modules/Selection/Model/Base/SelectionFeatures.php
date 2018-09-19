@@ -19,12 +19,10 @@ use Propel\Runtime\Util\PropelDateTime;
 use Selection\Model\SelectionFeatures as ChildSelectionFeatures;
 use Selection\Model\SelectionFeaturesQuery as ChildSelectionFeaturesQuery;
 use Selection\Model\Map\SelectionFeaturesTableMap;
-use Thelia\Model\Feature as ChildFeature;
 use Thelia\Model\FeatureAv as ChildFeatureAv;
 use Thelia\Model\FeatureAvI18n as ChildFeatureAvI18n;
 use Thelia\Model\FeatureAvI18nQuery;
 use Thelia\Model\FeatureAvQuery;
-use Thelia\Model\FeatureQuery;
 
 abstract class SelectionFeatures implements ActiveRecordInterface
 {
@@ -107,11 +105,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * @var        string
      */
     protected $updated_at;
-
-    /**
-     * @var        Feature
-     */
-    protected $aFeature;
 
     /**
      * @var        FeatureAv
@@ -533,10 +526,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
             $this->modifiedColumns[SelectionFeaturesTableMap::FEATURE_ID] = true;
         }
 
-        if ($this->aFeature !== null && $this->aFeature->getId() !== $v) {
-            $this->aFeature = null;
-        }
-
 
         return $this;
     } // setFeatureId()
@@ -771,9 +760,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aFeature !== null && $this->feature_id !== $this->aFeature->getId()) {
-            $this->aFeature = null;
-        }
         if ($this->aFeatureAv !== null && $this->feature_av_id !== $this->aFeatureAv->getId()) {
             $this->aFeatureAv = null;
         }
@@ -819,7 +805,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aFeature = null;
             $this->aFeatureAv = null;
             $this->aFeatureAvI18n = null;
         } // if (deep)
@@ -948,13 +933,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
             // were passed to this object by their corresponding set
             // method.  This object relates to these object(s) by a
             // foreign key reference.
-
-            if ($this->aFeature !== null) {
-                if ($this->aFeature->isModified() || $this->aFeature->isNew()) {
-                    $affectedRows += $this->aFeature->save($con);
-                }
-                $this->setFeature($this->aFeature);
-            }
 
             if ($this->aFeatureAv !== null) {
                 if ($this->aFeatureAv->isModified() || $this->aFeatureAv->isNew()) {
@@ -1196,9 +1174,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->aFeature) {
-                $result['Feature'] = $this->aFeature->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
             if (null !== $this->aFeatureAv) {
                 $result['FeatureAv'] = $this->aFeatureAv->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1413,57 +1388,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildFeature object.
-     *
-     * @param                  ChildFeature $v
-     * @return                 \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFeature(ChildFeature $v = null)
-    {
-        if ($v === null) {
-            $this->setFeatureId(NULL);
-        } else {
-            $this->setFeatureId($v->getId());
-        }
-
-        $this->aFeature = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildFeature object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionFeatures($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildFeature object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildFeature The associated ChildFeature object.
-     * @throws PropelException
-     */
-    public function getFeature(ConnectionInterface $con = null)
-    {
-        if ($this->aFeature === null && ($this->feature_id !== null)) {
-            $this->aFeature = FeatureQuery::create()->findPk($this->feature_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFeature->addSelectionFeaturess($this);
-             */
-        }
-
-        return $this->aFeature;
-    }
-
-    /**
      * Declares an association between this object and a ChildFeatureAv object.
      *
      * @param                  ChildFeatureAv $v
@@ -1601,7 +1525,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aFeature = null;
         $this->aFeatureAv = null;
         $this->aFeatureAvI18n = null;
     }

@@ -15,7 +15,6 @@ use Propel\Runtime\Exception\PropelException;
 use Selection\Model\SelectionFeatures as ChildSelectionFeatures;
 use Selection\Model\SelectionFeaturesQuery as ChildSelectionFeaturesQuery;
 use Selection\Model\Map\SelectionFeaturesTableMap;
-use Thelia\Model\Feature;
 use Thelia\Model\FeatureAv;
 use Thelia\Model\FeatureAvI18n;
 
@@ -45,10 +44,6 @@ use Thelia\Model\FeatureAvI18n;
  * @method     ChildSelectionFeaturesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildSelectionFeaturesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildSelectionFeaturesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method     ChildSelectionFeaturesQuery leftJoinFeature($relationAlias = null) Adds a LEFT JOIN clause to the query using the Feature relation
- * @method     ChildSelectionFeaturesQuery rightJoinFeature($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Feature relation
- * @method     ChildSelectionFeaturesQuery innerJoinFeature($relationAlias = null) Adds a INNER JOIN clause to the query using the Feature relation
  *
  * @method     ChildSelectionFeaturesQuery leftJoinFeatureAv($relationAlias = null) Adds a LEFT JOIN clause to the query using the FeatureAv relation
  * @method     ChildSelectionFeaturesQuery rightJoinFeatureAv($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FeatureAv relation
@@ -305,8 +300,6 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
      * $query->filterByFeatureId(array(12, 34)); // WHERE feature_id IN (12, 34)
      * $query->filterByFeatureId(array('min' => 12)); // WHERE feature_id > 12
      * </code>
-     *
-     * @see       filterByFeature()
      *
      * @param     mixed $featureId The value to use as filter.
      *              Use scalar values for equality.
@@ -579,81 +572,6 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SelectionFeaturesTableMap::UPDATED_AT, $updatedAt, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Thelia\Model\Feature object
-     *
-     * @param \Thelia\Model\Feature|ObjectCollection $feature The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildSelectionFeaturesQuery The current query, for fluid interface
-     */
-    public function filterByFeature($feature, $comparison = null)
-    {
-        if ($feature instanceof \Thelia\Model\Feature) {
-            return $this
-                ->addUsingAlias(SelectionFeaturesTableMap::FEATURE_ID, $feature->getId(), $comparison);
-        } elseif ($feature instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(SelectionFeaturesTableMap::FEATURE_ID, $feature->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByFeature() only accepts arguments of type \Thelia\Model\Feature or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Feature relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ChildSelectionFeaturesQuery The current query, for fluid interface
-     */
-    public function joinFeature($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Feature');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Feature');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Feature relation Feature object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Thelia\Model\FeatureQuery A secondary query class using the current class as primary query
-     */
-    public function useFeatureQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinFeature($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Feature', '\Thelia\Model\FeatureQuery');
     }
 
     /**

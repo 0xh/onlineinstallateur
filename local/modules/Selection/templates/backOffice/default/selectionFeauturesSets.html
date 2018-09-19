@@ -1,3 +1,5 @@
+
+
 {config_load file='variables.conf'}
 {* Set the default translation domain, that will be used by {intl} when the 'd' parameter is not set *}
 {default_translation_domain domain='bo.default'}
@@ -11,7 +13,7 @@
 
             <form method="POST" action="{url path="/admin/selection/{$selection_id}/update-attributes-and-features"}" id="attribute_form">
 
-                  <input type="hidden" name="selection_id" value="{$selection_id}" />
+                <input type="hidden" name="selection_id" value="{$selection_id}" />
                 <input type="hidden" name="current_tab" value="attributes" />
 
 
@@ -29,15 +31,15 @@
 
                                 <p>
                                     {if $TEMPLATE}
-                                    {intl
+                                        {intl
                                     l="You can change templates features and their positions in <a href=\"%tpl_mgmt_url\" target=\"tpl_window\">the template configuration page</a>."
                                     tpl_mgmt_url={url path='/admin/configuration/templates/update' template_id=$TEMPLATE}
-                                    }
+                                        }
                                     {else}
-                                    {intl
+                                        {intl
                                     l="You can change feature and their positions in <a href=\"%tpl_mgmt_url\" target=\"tpl_window\">the features configuration page</a>."
                                     tpl_mgmt_url={url path='/admin/configuration/features'}
-                                    }
+                                        }
                                     {/if}
                                 </p>
 
@@ -67,21 +69,24 @@
                                                     {/loop} 
 
                                                     {capture name="select_options"}
-                                                    {loop name="selection_feature" type="selection-feature-availability" feature=$current_feature  backend_context="1" lang="$edit_language_id"}                                                                
-                                        <option value="{$ID}" {if in_array($ID, $selected)}selected="selected"{/if}>{$TITLE}</option>
-                                        {$options_count = $LOOP_COUNT} {* LOOP_COUNT is only available inside the loop ! *}
-                                        {/loop}
-                                        {if $options_count > #maximum_product_attribute_select_size#}
-                                        {$select_size = #maximum_product_attribute_select_size#}
-                                        {else}
-                                        {$select_size = $options_count}
-                                        {/if}
+                                                        {loop name="selection_feature" type="selection-feature-availability" feature=$current_feature  backend_context="1" lang="$edit_language_id"}                                                                
+                                            <option value="{$ID}" {if in_array($ID, $selected)}selected="selected"{/if}>{$TITLE}</option>
+                                            {$options_count = $LOOP_COUNT} {* LOOP_COUNT is only available inside the loop ! *}
+                                            {/loop}
+                                            {if $options_count > #maximum_product_attribute_select_size#}
+                                                {$select_size = #maximum_product_attribute_select_size#}
+                                            {else}
+                                                {$select_size = $options_count}
+                                            {/if}
                                         {/capture}
                                         <div class="input-form">
                                             <select multiple="multiple" name="feature_value[{$ID}][]" id="feature_value_{$current_feature}" size="{$select_size}" class="form-control">
                                                 {$smarty.capture.select_options nofilter}
                                             </select>
                                         </div>
+                                        <span class="help-block text-right">
+                                            {intl l='Use Ctrl+click to select more than one value. You can also <a href="#" class="clear_feature_value" data-id="%id">clear selected values</a>.' id={$ID}}
+                                        </span>
                                         </td>
                                         </tr>
                                         {/ifloop}
@@ -93,20 +98,22 @@
                                         {loop name="free-text-value" type="selection_feature_free_text" feature=$ID selection=$selection_id backend_context="1" lang="$edit_language_id"}
 
                                         {if $IS_FREE_TEXT && $FREETEXT_VALUE != 1}
-                                        {$feature_value=$FREETEXT_VALUE}
+                                            {$feature_value=$FREETEXT_VALUE}
                                         {else}
-                                        {$feature_value=$TITLE}
+                                            {$feature_value=$TITLE}
                                         {/if}
                                         {/loop} 
                                         <input type="text" id="feature_text_value_{$ID}" name="feature_text_value[{$ID}]" 
                                                title="{intl l='Enter here the feature value as free text'}" placeholder="{intl l='Feature value'}" class="form-control"
                                                value="{$feature_value|default:''}">
+                                        <span class="help-block text-right">
+                                            {intl l='Use Ctrl+click to select more than one value. You can also <a href="#" class="clear_feature_value" data-id="%id">clear selected values</a>.' id={$ID}}
+                                        </span>
                                         {/elseloop}
-                                        {/loop}
-
-
+                                        {/loop}                                        
                                     </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -129,14 +136,6 @@
 </div>
 {/loop}
 
-
-
-
-
-
-
-
-
-
-
-
+{javascripts source="Selection" file='assets/js/selection.js'}
+<script src="{$asset_url}"></script>
+{/javascripts}
