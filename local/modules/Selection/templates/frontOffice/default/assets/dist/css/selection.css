@@ -11,3 +11,17 @@
 .wishlistactive {
     background-image: url(../img/herz_filled.png);
 }
+
+.add-total-products {
+    color: #fff;
+    background-color: #10b4cf;
+    border-color: #0e9fb7;
+    border: 0;
+    padding: 10px
+}
+
+.add-total-products:hover {
+    color: #fff;
+    background-color: #0c8ba0;
+    border-color: #0a6e7f;
+}
