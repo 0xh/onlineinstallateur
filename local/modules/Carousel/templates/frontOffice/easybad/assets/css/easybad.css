@@ -59,8 +59,11 @@
     vertical-align: middle;
     line-height: 50px;
     color: #10b4cf;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
 }
-
+.carousel_wrapper .controls .spearatorText #slidetext #currentActiveSlide{
+    color: #000;
+}
 .carousel_wrapper .controls .spearatorControlls{
     display: block;
     width: 60%;
@@ -80,6 +83,14 @@
     float: left;
     padding-top: 10px;
 }
+.carousel_wrapper .controls .spearatorControlls .arrowControlls .goLeftControll #toTheLeft{
+    box-shadow: -1px 1px 0 rgba(255, 255, 255, 1);
+    height: 25px;
+    width: 25px;
+    transform: rotate(45deg);
+    margin-top: 12px;
+    margin-left: 20px;
+}
 
 .carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll{
     display: block;
@@ -87,6 +98,16 @@
     text-align: left;
     float: right;
 }
+
+.carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll #toTheRight{
+    box-shadow: -1px 1px 0 rgba(255, 255, 255, 1);
+    transform: rotate(225deg);
+    width: 35px;
+    height: 35px;
+    margin-top: 18px;
+    margin-left: 5px;
+}
+
 .carousel_wrapper .controls .spearatorControlls .arrowControlls .goLeftControll .goLeft{
     display: block;
     float: right;
@@ -100,6 +121,7 @@
     line-height: 45px;
     font-size: 70px;
     cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
 }
 .carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll .goRight{
     display: block;
@@ -114,6 +136,7 @@
     line-height: 60px;
     font-size: 90px;
     cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
 }
 
 @media screen and (max-width: 750px) {
