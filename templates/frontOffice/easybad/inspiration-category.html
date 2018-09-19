@@ -74,16 +74,21 @@
 				
 				<figure class="effect-honey mb-5">
 						 {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                         {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
+                         {assign var = "feature_title" value = $F_TITLE}    
+                         {assign var = "feature_value" value = $FTITLE}
+                        {/loop}
+
 
 					<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"  >
                     {/loop}
-					<figcaption>
-						<h2>Serie <span>{$SELECTION_TITLE}</span> <i>Now</i></h2>
+					<figcaption><i>
+                        <h2>Serie <span>{$SELECTION_TITLE}</span> <span>{$feature_title}:</span>
+                                <span>{$feature_value}</span>
+                                {$SELECTION_PRODUCT_PRICE}
+                                <i> » Details Zeigen</i>
+                            </i></h2>
                         <h2> </h2>
-                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
-                        {$FTITLE} 
-                        {$F_TITLE}
-                        {/loop}
 
 					</figcaption>			
 				</figure>
