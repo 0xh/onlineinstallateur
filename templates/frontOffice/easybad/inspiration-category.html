@@ -65,7 +65,7 @@
 
 	{loop name="inspirations" type="selection_list" visible="true"}  
 	
-
+   
 
 			<div class="col-sm-4 ">
 			
@@ -79,7 +79,18 @@
                     {/loop}
 					<figcaption>
 						<h2>Serie <span>{$SELECTION_TITLE}</span> <i>Now</i></h2>
-							
+                        <h2> </h2>
+                        {loop name="feature_loop" type="selection-feature-availability-values" selection_id=$SELECTION_ID}  
+                        {if $FEATURE_ID != NULL}
+                            {$FEATURE_ID|@var_dump}
+                            {/if}
+                        {if $FEATURE_AV_ID != NULL}
+                        {$FEATURE_AV_ID|@var_dump}
+                        {/if}
+                        {if $FV_ID != NULL}
+                        {$FV_ID|@var_dump}
+                        {/if}
+                        {/loop}
 					</figcaption>			
 				</figure>
 			</a>
@@ -160,6 +171,10 @@
 
 {block name="stylesheet"}
 {hook name="category.stylesheet"}
+{hook name="register.stylesheet"}
+{stylesheets file='assets/src/css/custom.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}
 {/block}
 
 {block name="after-javascript-include"}
