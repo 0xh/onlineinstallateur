@@ -96,7 +96,9 @@
                                 </span>
                             {/if}
                         {/if}
-                        <div style="position:relative;" class="wishlist " data-productid="" data-toggle="tooltip" title="Add to wishlist"></div>
+                        {ifhook rel="selection-wish-list.wish-button"}
+                        {hook name="selection-wish-list.wish-button" product_id={$SELECTION_PRODUCT_ID}}
+                        {/ifhook}
                         {/loop}
                     </td> 
                     <td>
@@ -152,6 +154,52 @@
         </table>
     </div>
 
+    <!-- The Modal -->
+    <div id="myModal-cart-selection" class="modal-selection">
+        <div class="modal-content-selection">
+            <span class="close close-modal-selection">&times;</span>
+            <table style="width:100%; text-align: left;">
+                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                <tr id="visible-tr-{$SELECTION_PRODUCT_ID}">
+                    <td>
+                        {loop type="image" name="image" source="product" source_id="$SELECTION_PRODUCT_ID" limit="1" width="100" height="100" resize_mode="crop" backend_context="1"}
+                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" />
+                        {/loop}
+                    </td>
+                    <td>
+                        {loop type="product" name="the-loop-name" id="$SELECTION_PRODUCT_ID"}
+                        <a href="{$URL nofilter}" style="color: #10b4cf;">{$SELECTION_PRODUCT_TITLE}</a>
+                        {/loop}
+                    </td> 
+                    <td>
+                        {$SELECTION_PRODUCT_PRICE}
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        € <label id="total1_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                    </td>
+                </tr>
+                {/loop}
+                <tr id="visible-tr-{$SELECTION_PRODUCT_ID}">
+                    <td>
+                    </td>
+                    <td>
+                    </td> 
+                    <td>
+                    </td>
+                    <td>
+                        <a href="/cart"><button data-bb-handler="ok" type="button" class="btn btn-primary">{intl l="Go to cart"}</button></a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary close-modal-selection">{intl l="Continue shopping"}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
     <script>
         setTotalPrice();
 
@@ -167,6 +215,10 @@
             $(".checkbox_product").each(function () {
                 if ($(this).is(':checked')) {
                     total += parseFloat($("#total_" + $(this).val()).text());
+                    $("#visible-tr-" + $(this).val()).css("display", "visible");
+                } else
+                {
+                    $("#visible-tr-" + $(this).val()).css("display", "none");
                 }
             });
 
@@ -179,6 +231,24 @@
                     $("#form-product-details_" + $(this).val()).submit();
                 }
             });
+
+            var detectChange = setInterval(function () {
+                var myDisplay = $('.loader').css('display');
+                if (myDisplay == 'none') {
+                    $('#myModal-cart-selection').css('display', "block");
+                    clearInterval(detectChange); //Stop the loop
+                }
+            }, 10);
+        });
+
+        $('.close-modal-selection').click(function () {
+            $('#myModal-cart-selection').css('display', "none");
+        });
+
+        $(window).on('click', function (event) {
+            if (event.target.id == 'myModal-cart-selection') {
+                $('#myModal-cart-selection').css('display', "none");
+            }
         });
 
     </script>
