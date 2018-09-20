@@ -1,0 +1,270 @@
+{extends file='layout.tpl'}
+
+{block name="init"}
+{$category_id={category attr="id"}}
+{/block}
+
+
+{* Body Class *}
+{block name="body-class"}page-category{/block}
+
+{* Page Title *}
+{block name='no-return-functions' append}
+{if $category_id}
+    {loop name="category.seo.title" type="category" id=$category_id limit="1"}
+        {$page_title = {$META_TITLE}}
+    {/loop}
+{/if}
+{/block}
+
+{* Meta *}
+{block name="meta"}
+{if $category_id}
+    {loop name="category.seo.meta" type="category" id=$category_id limit="1"}
+        {include file="includes/meta-seo.html"}
+    {/loop}
+{/if}
+{/block}
+
+{* Feeds *}
+{block name="feeds"}
+{if $category_id}
+    <link rel="alternate" type="application/rss+xml" title="{intl l='All products in'} {category attr='title'}" href="{url path="/feed/catalog/%lang/%category_id" lang={lang attr="locale"} category_id={category attr="id"}}" />
+{/if}
+{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+{if $category_id}
+    {$breadcrumbs = []}
+    {loop name="category_path" type="category-path" category=$category_id}
+        {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
+    {/loop}
+{/if}
+{/block}
+
+{* Content *}
+{block name="main-content"}
+
+{$limit={$smarty.get.limit|default:24}}
+{$page={$smarty.get.page|default:1}}
+{$product_order={$smarty.get.order|default:'manual'}}
+
+
+{hook name="category.top" category="$category_id"}
+
+    <div class="main row">
+
+
+        {hook name="inspiration.main-top" category="$category_id"}
+        <aside class="col-left col-md-3 white-bg" role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
+            {include file="includes/menu.html"}
+            
+        </aside>  
+        <article class="col-main col-md-9  {$smarty.get.mode|default:"grid"}" role="main">
+
+            {hook name="category.content-top" category="$category_id"}
+
+            {*if #category_display_detail# && $category_id*}
+            
+            <section class="category-description">
+                {loop name="category.description" type="category" id={$category_id} limit="1" }
+                {if $PARENT!=0 && $category_id}
+                    <!--h1 id="main-label" class="page-header">{category attr="title"}</h1-->
+                    {loop name="category.image" type="image" source="category" source_id={$ID} resize_mode="borders"}
+                    <p><a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                
+                    {/loop}
+                    {if $DESCRIPTION}
+                    <!--div class="description">
+                        {$DESCRIPTION nofilter}
+                    </div-->
+                    {/if}
+                    {if $POSTSCRIPTUM}
+                    <small class="postscriptum">
+                        {$POSTSCRIPTUM}
+                    </small>
+                    {/if}
+                {/if}
+                  {if $PARENT==0 && $category_id}
+                   
+                    {loop name="category.image" type="image" source="category" source_id={$ID} resize_mode="borders" limit=1 }
+                    <p><a href="{$CHAPO|default:'#'}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive"></a></p>
+                <a href="{$CHAPO|default:'#'}">
+                    <div class="category-caption" >
+                        <div class="banner-title">{if $DESCRIPTION}{$DESCRIPTION nofilter}{/if}</div>
+                        {if $TITLE!=""}
+                        	<button class="btn btn-1 btn-1-a btn-1-responsive">{$TITLE nofilter}</button>
+                        {/if}
+                    </div>
+</a>
+                    {/loop}
+                    {if $DESCRIPTION}
+                    <!--div class="description">
+                        {$DESCRIPTION nofilter}
+                    </div-->
+                    {/if}
+                    {if $POSTSCRIPTUM}
+                    <small class="postscriptum">
+                        {$POSTSCRIPTUM}
+                    </small>
+                    {/if}
+                {/if}
+                {/loop}
+            </section>
+           
+            {*/if*}
+            {ifhook rel="configurator.description"}
+            	{hook name="configurator.description" category_id=$category_id}
+			{/ifhook}
+			
+            {if #category_display_subcategories#}
+            {ifloop rel="subcategories"}
+                <div class="block-links">
+                    <div class="block-content">
+                        <ul>
+                            {loop name="subcategories" type="category" parent=$category_id}
+                            {assign var="subcategorie_title" value=$TITLE}
+                                <li>
+                                    <a href="{$URL}">{$TITLE}</a>
+                                </li>
+                            {/loop}
+                        </ul>
+                    </div>
+                </div>
+            {/ifloop}
+            {/if}
+
+            {*ifloop rel="product_list"*}
+            
+            {assign var="search_criteria" value=$smarty.get.criteria}
+            {assign var="search_category" value=$smarty.get.category_id}
+            {assign var="search_brands" value=$smarty.get.brands}
+            {assign var="search_price_min" value=$smarty.get.price_min}
+            {assign var="search_price_max" value=$smarty.get.price_max}
+            {assign var="search_new" value=$smarty.get.new}
+            {assign var="search_promo" value=$smarty.get.promo} 
+            {assign var="search_limit" value=$smarty.get.limit}
+            {assign var="search_page" value=$smarty.get.page}
+            {assign var="search_order" value=$smarty.get.order}
+               
+            {hook name="criteria-search.search-page" criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+            <div id="category-products">
+                <div class="products-content">
+                    <ul class="list-unstyled row"> 
+                                {include file="criteria-search/search-results.html" search_attribute_loop=true criteria=$search_criteria category=$search_category brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$search_limit page=$search_page order=$search_order}
+                    </ul>
+                </div>
+            </div><!-- /#category-products -->
+
+            {*/ifloop*}
+            {*elseloop rel="product_list"*}
+                {if $category_id eq #services_category_id#}<!-- services_category_id is set in configs\variables.conf -->
+<!--  
+  					<ul id="og-grid" class="og-grid">
+						{loop name="subcategories" type="category" parent=$category_id }
+							{assign var="subcategorie_title" value=$TITLE}
+							{assign var="subcategorie_id" value=$ID}	
+
+							{loop name="category.image" type="image" source="category" source_id={$ID}  resize_mode="borders"}
+								<li>
+									<a class="service_category"   >
+										<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$subcategorie_title}" onClick="showSubcategoryServices({$subcategorie_id})">
+									</a>
+        							<h4>{$subcategorie_title}</h4>
+-->
+        							<!--div><br><button class="btn btn-1 btn-1a" onClick="showSubcategoryServices({$subcategorie_id})">SERVICES ANSEHEN</button></div-->
+<!--      	 						</li>
+							{/loop}
+						{/loop}
+					</ul>
+            		<div class="service_category_products"></div>
+-->
+				{/if}
+            {*/elseloop*}
+
+            {hook name="category.content-bottom" category="$category_id"}
+
+        </article>
+
+    </div>
+    {hook name="category.bottom" category="$category_id" categorytitle="{$subcategorie_title}"}
+	
+<div style="color:#999; margin:10px">
+    <small>{$subcategorie_title}&nbsp; im Hausfabrik Online-Shop versandkostenfrei bestellen.
+Unser Online-Shop bietet eine große Auswahl an Produkten von führenden Markenherstellern wie Grohe, Laufen, Vaillant, Austria Email und vielen mehr an. Neben mehr als 2500 Produkten können Sie auch eine Vielzahl an Service-Leistungen bei der Hausfabrik bestellen. 
+Die Vorteile der Hausfabrik im Überblick:
+<ul>
+    <li> Standartlieferungen innerhalb von 1-3 Werktagen </li>
+    <li> Entscheiden Sie sich für die Zahlungsmethode Ihrer Wahl (PayPal, Sofortüberweisung, Nachnahme, ...) </li>
+    <li> Termine für Serviceleistungen einfach online buchen </li>
+    <li> Kostenlose Beratung vom Hausfabrik Team  </li>
+    <li> 40 Jahre Erfahrung im Heizungsbereich </li>
+</ul>
+
+Im Hausfabrik Online-Shop finden Sie alles, was Sie für Ihr neues, modernes Bad benötigen. Neben zahlreichen Badarmaturen von dem Top-Hersteller Grohe finden Sie auch eine große Auswahl an Waschbecken, Toiletten und Badewannen. Unser Sortiment enthält weiters auch Ersatz- sowie Montageteile für Sanitär-Produkte.
+Sie wünschen sich eine professionelle Beratung für Ihre Badplanung oder möchten sich über bestimmte Produkteigenschaften erkundigen? Wir helfen Ihnen gerne weiter! Kontaktieren Sie uns einfach per Live-Chat, E-Mail oder Telefon unter 0800/022573.
+Gemeinsam setzen wir Ihr Projekt und Ihre individuellen Wünsche um, mit einer großen Auswahl an Produkten zu den günstigsten Preisen. Wir freuen uns, dass Sie sich für den Hausfabrik Online-Shop entschieden haben. 
+
+
+
+
+Für Sanitärkategorien anwendbar, Text kann umgeschrieben werden für Heizung und Klima. Den Text für jede Unterkategorie anzupassen ist meiner Meinung nach ein Schritt für die Zukunft. Im Moment reicht das aus. 
+</small>
+</div>	
+
+	
+	    <script>
+
+    function showSubcategoryServices(id) {
+    	$subcategory = $('.service_category_products'+id);
+    				if($($subcategory).is(':visible') == true)$($subcategory).hide();
+    				else $($subcategory).show();
+    				if($($subcategory).children().length == 0){
+    					$.ajax({
+    						traditional : true,
+    						type: 'post',
+    						data: 'category='+id,
+    						url: 'konfigurator/services'
+    					})
+    					.done(function (data, textStatus, request) {
+    					$('.og-expander-inner').html(data);
+    					})
+    					.fail(function (jqXHR, textStatus, errorThrown) {
+    						if (typeof jqXHR.responseJSON !== 'undefined') {
+    							if (jqXHR.responseJSON.hasOwnProperty('form')) {
+    								$('#form_body').html(jqXHR.responseJSON.form);
+    							}
+    							$('.form_error').html(jqXHR.responseJSON.message);
+    						} else {
+    							alert(errorThrown);
+    						}
+    					});
+    				}
+    	}
+ 	</script>
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="category.stylesheet"}
+{hook name="criteria-search.search-css"}
+
+{/block}
+
+{block name="after-javascript-include"}
+<script src="{javascript file='assets/dist/js/vendors/grid.js'}"></script>
+   <script>
+	$(function() {
+		Grid.init();
+	});
+   </script>
+   
+{hook name="category.after-javascript-include"}
+{hook name="criteria-search.search-js"}
+
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="category.javascript-initialization"}
+{/block}
