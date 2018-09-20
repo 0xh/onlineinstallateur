@@ -7,7 +7,6 @@ use Propel\Runtime\Exception\PropelException;
 use Selection\Model\Map\SelectionContainerAssociatedSelectionTableMap;
 use Selection\Model\Map\SelectionFeaturesTableMap;
 use Selection\Model\Map\SelectionTableMap;
-use Selection\Model\Selection;
 use Selection\Model\SelectionI18nQuery;
 use Selection\Model\SelectionQuery;
 use Thelia\Core\Template\Element\BaseI18nLoop;
@@ -16,11 +15,12 @@ use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Type;
-use Thelia\Type\IntToCombinedIntsListType;
 use Propel\Runtime\ActiveQuery\Join;
 use Thelia\Type\BooleanOrBothType;
 use Thelia\Type\TypeCollection;
+use Thelia\Type\IntToCombinedIntsListType;
+use Thelia\Type\EnumListType;
+use Thelia\Log\Tlog;
 
 /**
  * Class SelectionLoop
@@ -56,13 +56,13 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
             new Argument(
                 'feature_availability',
                 new TypeCollection(
-                    new Type\IntToCombinedIntsListType()
+                    new IntToCombinedIntsListType()
                     )
                 ),
             new Argument(
                 'order',
                 new TypeCollection(
-                    new Type\EnumListType(array(
+                    new EnumListType(array(
                         'id', 'id_reverse',
                         'alpha', 'alpha_reverse',
                         'manual', 'manual_reverse',
@@ -187,7 +187,7 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
                     $search->orderByPosition(Criteria::ASC);
             }
         }
-
+Tlog::getInstance()->error("almost at selection");
         return $search;
     }
     

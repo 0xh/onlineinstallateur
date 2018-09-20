@@ -57,17 +57,14 @@
 	
 <div class=" row " >
 
-	{loop name="inspirations" type="selection_list" visible="true"}  
+	{loop name="inspirations" type="selection_list" visible="true" feature_availability="386 : (5192|5193), 383 : (5178|5181)"}  
 	
 
 
 			<div class="col-sm-4 ">
 			
-
 			<a href="{$SELECTION_URL}">	
-				  {loop name="selection_search" type="selection_list" feature_availability="386 : (5192 5193), 383 : (5178 5181)"}
-                      {$SELECTION_ID}
-                   {/loop} 
+ 
 				<figure class="effect-honey mb-5">
 						 {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
 
