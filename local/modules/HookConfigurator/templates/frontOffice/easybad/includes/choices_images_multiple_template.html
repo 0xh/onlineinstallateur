@@ -10,11 +10,12 @@
             <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">                
                 {foreach $choices as $choice}
                     {assign var=choiceArray value="|"|explode:$choice->label}
-                    <div class="frontIcons frontIcons-multiple {$element.name}{$choice->value} choice-image" radio-id="{$element.name}{$choice->value}" next-question="{$choiceArray[1]}">
-                        <img src="{$element.attr.answer.values[$choice->data].data_icon nofilter}" style="height: 164px; width: 179px;" />
-                        <p>
+                    <div class="frontIcons frontIcons-multiple {$element.name}{$choice->value} choice-image" radio-id="{$element.name}{$choice->value}" next-question="{$choiceArray[1]}" style="position:relative">
+                        <img src="{$element.attr.answer.values[$choice->data].data_icon nofilter}" style="width: 100%;" />
+						<span for="{$name}" class="radio{$choice->text} fs-field-label-sm radiop textHolder" style=""><p>{$choiceArray[0]}</p></span>
+                        <p >
                             <input name="{$name}" type="checkbox" class="multiple-image-choice" value="{$choice->value}">
-                            <span for="{$name}" class="radio{$choice->text} fs-field-label-sm radiop">{$choiceArray[0]}</span>
+
                         </p>
                     </div>
                 {/foreach}
