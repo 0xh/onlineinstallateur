@@ -5,17 +5,31 @@
 <div class="allTabs">
     <div class="tabs">
         <div class="cat-container container">
-            {$catIndex}
-            <ul class="nav nav-tabs">
-                {loop type="category" name="categories" parent="0" need_count_child="no"}
-                    {if $catIndex|@count == 0 }
-                        <li class="active" ><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
-                    {else}
-                        <li><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
-                    {/if}
-                    {$catIndex[] = $ID}
-                {/loop}
-            </ul>
+           {$tabbedProductCategories = {config key="tabbed_product_categories" default="false"}}
+		   {if $tabbedProductCategories != "false"}
+    			{$catIndex = explode(',',$tabbedProductCategories)}
+	            <ul class="nav nav-tabs">
+	                {loop type="category" name="categories" id="$tabbedProductCategories" need_count_child="no"}
+	                    {if $catIndex|@count == 0 }
+	                        <li class="active" ><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {else}
+	                        <li><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {/if}
+	                    {$catIndex[] = $ID}
+	                {/loop}
+	            </ul>
+    		{else}
+	            <ul class="nav nav-tabs">
+	                {loop type="category" name="categories" parent="0" need_count_child="no"}
+	                    {if $catIndex|@count == 0 }
+	                        <li class="active" ><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {else}
+	                        <li><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {/if}
+	                    {$catIndex[] = $ID}
+	                {/loop}
+	            </ul>
+            {/if}
         </div>
     </div>
 
