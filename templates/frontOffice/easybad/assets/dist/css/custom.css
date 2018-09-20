@@ -259,7 +259,7 @@ h1.name{
     background: #347C92;
     color: white;
 }
-.header .nav-darkBlue ul{
+.nav-darkBlue .navbar-nav > ul{
     width: 100%;
     text-align: justify;
     display: table;
@@ -267,12 +267,13 @@ h1.name{
     padding-left: 0px;
 }
 
-.header .nav-darkBlue li{
+.nav-darkBlue .navbar-nav > li{
     display: table-cell;
     text-align: center;
     text-align: -webkit-match-parent;
 }
-.header .nav-darkBlue a{
+
+.nav-darkBlue .navbar-nav > li > a{
     line-height: 25px;
     color: white;
     font-weight: 500;
@@ -281,7 +282,7 @@ h1.name{
     cursor: pointer;
     font-size: 1.5em;
 }
-.header .nav-darkBlue a:hover{
+.nav-darkBlue .navbar-nav > li > a:hover{
     border-bottom: 7px solid #DDE2E6;
     text-decoration: none;
 }
