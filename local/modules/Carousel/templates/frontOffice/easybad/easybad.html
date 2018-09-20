@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="{$asset_url}">
 {/stylesheets}
 
-        <div class ="carousel_wrapper">
+        <div class ="carousel_wrapper minnu flyout">
             <div id="carousel" class="carousel slide  carousel-fade" data-ride="carousel" data-interval="false">
                 <div class="carousel-wrapper">
                     <div class="carousel-inner">
@@ -30,10 +30,14 @@
                 <div class = "spearatorControlls">
                     <div class="arrowControlls">
                         <div class="goLeftControll">
-                            <div class="goLeft" data-slide="prev" onclick="$('#carousel').carousel('prev')">‹</div>
+                            <div class="goLeft" data-slide="prev" onclick="$('#carousel').carousel('prev')">
+                                <div id="toTheLeft"></div>
+                            </div>
                         </div>
                         <div class ="goRightControll">
-                            <div class="goRight" data-slide="next" onclick="$('#carousel').carousel('next')">›</div>
+                            <div class="goRight" data-slide="next" onclick="$('#carousel').carousel('next')">
+                                <div id="toTheRight"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
