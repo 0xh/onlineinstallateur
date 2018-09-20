@@ -20,27 +20,4 @@ class TabbedProductWidget extends BaseModule {
 
     /** @var string */
     const DOMAIN_NAME = 'tabbedproductwidget';
-
-    public function getHooks() {
-        return array(
-            array(
-                "type" => TemplateDefinition::FRONT_OFFICE,
-                "code" => "full_with_before_content",
-                "title" => array(
-                    "fr_FR" => "Full with hook",
-                    "en_US" => "Full with hook",
-                ),
-                "description" => array(
-                    "fr_FR" => "Full with hook",
-                    "en_US" => "Full with hook",
-                ),
-                "chapo" => array(
-                    "fr_FR" => "Full with hook",
-                    "en_US" => "Full with hook",
-                ),
-                "block" => false,
-                "active" => true
-            )
-        );
-    }
 }
