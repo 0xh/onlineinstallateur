@@ -267,7 +267,9 @@ web : http://www.hausfabrik.at
 
         <main class="main-container" role="main">
             <div class="full_with_noContainer">
-                {hook name="full_with_before_content"}
+			{block name="full_with_block"}
+                {hook name="full_with_block.layout_tpl"}
+			{/block}
             </div>
             
             <div class="container">

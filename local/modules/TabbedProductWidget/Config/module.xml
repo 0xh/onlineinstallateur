@@ -19,6 +19,9 @@
         <email>remus.popa@sepa.at</email>
     </author>
     <type>classic</type>
+    <required>
+        <module version="&gt;=1.0">FullWidthBlock</module>
+    </required>
     <thelia>2.1.0</thelia>
     <stability>prod</stability>
 </module>
