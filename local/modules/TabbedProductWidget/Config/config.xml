@@ -30,7 +30,7 @@
 
     <hooks>
         <hook id="tabbedproductwidget.hook" class="TabbedProductWidget\Hook\FrontHook">
-            <tag name="hook.event_listener" event="full_with_before_content" method="onBuildTabs"/>
+            <tag name="hook.event_listener" event="full_with_block.home" method="onBuildTabs"/>
         </hook>
     </hooks>   
 
