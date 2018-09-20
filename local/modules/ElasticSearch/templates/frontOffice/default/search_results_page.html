@@ -86,15 +86,11 @@
                        {/foreach}
             </div>
         </div><!-- /#category-products -->
-       ------------------------------------------------------ ------------------------------------------------------
        <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}">
             <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
             <ul class="pagination pagination-sm">
               {for $page=1 to $PAGES} 
-   
- {if $page >10  && page < $PAGES - 6)}
-      {continue}
-{/if}
+
                {if $page eq 1}
                     <li class="disabled">
                         <span class="prev"><i class="fa fa-caret-left"></i></span>
