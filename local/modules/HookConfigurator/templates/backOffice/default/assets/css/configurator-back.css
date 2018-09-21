@@ -46,7 +46,7 @@
 #config-table tr:hover {background-color: #ddd;}
 
 /*modal*/
-.modal {
+.modal-hook-configurator {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -61,7 +61,7 @@
 }
 
 /* Modal Content */
-.modal-content {
+.modal-content-hook-configurator {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
