@@ -1,7 +1,7 @@
 {extends file='layout.tpl'}
 
 {block name="init"}
-{$category_id={category attr="id"}}
+    {$category_id={category attr="id"}}
 {/block}
 
 
@@ -10,159 +10,150 @@
 
 {* Page Title *}
 {block name='no-return-functions' append}
-{if $category_id}
-    {loop name="category.seo.title" type="category" id=$category_id limit="1"}
+    {if $category_id}
+        {loop name="category.seo.title" type="category" id=$category_id limit="1"}
         {$page_title = $META_TITLE}
-    {/loop}
-{/if}
+        {/loop}
+    {/if}
 {/block}
 
 {* Meta *}
 {block name="meta"}
-{if $category_id}
-    {loop name="category.seo.meta" type="category" id=$category_id limit="1"}
+    {if $category_id}
+        {loop name="category.seo.meta" type="category" id=$category_id limit="1"}
         {include file="includes/meta-seo.html"}
-    {/loop}
-{/if}
+        {/loop}
+    {/if}
 {/block}
 
 {* Feeds *}
 {block name="feeds"}
-{if $category_id}
-    <link rel="alternate" type="application/rss+xml" title="{intl l='All products in'} {category attr='title'}" href="{url path="/feed/catalog/%lang/%category_id" lang={lang attr="locale"} category_id={category attr="id"}}" />
-{/if}
+    {if $category_id}
+        <link rel="alternate" type="application/rss+xml" title="{intl l='All products in'} {category attr='title'}" href="{url path="/feed/catalog/%lang/%category_id" lang={lang attr="locale"} category_id={category attr="id"}}" />
+    {/if}
 {/block}
 
 {* Breadcrumb *}
 {block name='no-return-functions' append}
-{if $category_id}
-    {$breadcrumbs = []}
-    {loop name="category_path" type="category-path" category=$category_id}
+    {if $category_id}
+        {$breadcrumbs = []}
+        {loop name="category_path" type="category-path" category=$category_id}
         {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
-    {/loop}
-{/if}
+        {/loop}
+    {/if}
 {/block}
 
 {* Content *}
 {block name="main-content"}
 
-{$limit={$smarty.get.limit|default:8}}
-{$product_page={$smarty.get.page|default:1}}
-{$product_order={$smarty.get.order|default:'alpha'}}
+    {$limit={$smarty.get.limit|default:8}}
+    {$product_page={$smarty.get.page|default:1}}
+    {$product_order={$smarty.get.order|default:'alpha'}}
 
-{hook name="category.top" category="$category_id"}
+    {hook name="category.top" category="$category_id"}
 
     <div class="main row">
-	
+
 
         <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
-            
+
             {hook name="category.content-top" category="$category_id"}
-            
-                    {hook name="category.main-top" category="$category_id"}
-        
-        <div class=" row " >
 
-	{loop name="inspirations" type="selection_list" visible="true"}  
-	
-   
+            {hook name="category.main-top" category="$category_id"}
 
-			<div class="col-sm-4 ">
-			
+            <div class=" row " >
 
-			<a href="{$SELECTION_URL}">	
-				
-				<figure class="effect-honey mb-5">
-	{loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
-					<img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"  >
-                    {/loop}
-                    
-                     
-            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383}  
-                       {assign var = "feature_title" value = $F_TITLE}    
-                       {assign var = "feature_value" value = $FTITLE}
-                   {/loop}   
-                       
-                   {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
-                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
-                    {/loop}
+                {loop name="inspirations" type="selection_list" visible="true"}  
 
-					<figcaption>
-                           <i><h2>Serie <span>{$SELECTION_TITLE}</span> <span><b>{$feature_title}</b>:</span>
-                                <span>{$feature_value}</span>
-                            
-                            
-                                <span>{$selection_price} €</span>
-                                
-                                <span> » Details Zeigen</span>
-                            </i></h2>
-                        <h2> </h2>
-					</figcaption>	
-                                
-                                
-				</figure>
-			</a>
-</div>
-					
+
+                <div class="col-sm-4 ">
+
+                    <a href="{$SELECTION_URL}">	
+
+                        <figure class="effect-honey mb-5">
+                            {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                            <div class="herz"></div><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                            {/loop}
+                            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383 show_feature_value_selected=true}  
+                            {assign var = "feature_title" value = $F_TITLE}    
+                            {assign var = "feature_value" value = $FTITLE}
+                            {/loop} 
+                            <figcaption>
+                                <i><h2> <span class="mb-1"> {intl  l="Serie"} {$SELECTION_TITLE}</span> <span class="mb-2"><b>{$feature_title}</b>:</span>
+                                        <span class="mb-3">{$feature_value}</span>
+                                        {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                                        {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
+                                        <span class="mb-4">{$selection_price} €</span>
+                                        {/loop}   
+                                        <span class="mb-5"> » Details Zeigen</span>
+                                </i></h2> 
+                                <h2> </h2>
+                            </figcaption>	
+
+
+                        </figure>
+                    </a>
+                </div>
 
 
 
 
-				
-<!--
 
-        This selection id           : {$SELECTION_ID}
-        This selection title        : {$SELECTION_TITLE}
-        This selection status       : {$SELECTION_VISIBLE}
-        This selection description  : {$SELECTION_DESCRIPTION}
-        This selection chapo        : {$SELECTION_CHAPO}
-        This selection url          : {$SELECTION_URL}
-        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}
-        This selection position     : {$SELECTION_POSITION}
 
- -->
-	
+                <!--
+                
+                        This selection id           : {$SELECTION_ID}
+                        This selection title        : {$SELECTION_TITLE}
+                        This selection status       : {$SELECTION_VISIBLE}
+                        This selection description  : {$SELECTION_DESCRIPTION}
+                        This selection chapo        : {$SELECTION_CHAPO}
+                        This selection url          : {$SELECTION_URL}
+                        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}
+                        This selection position     : {$SELECTION_POSITION}
+                
+                -->
 
-{/loop}
-</div>
+
+                {/loop} 
+            </div>
 
 
             {if #category_display_detail# && $category_id}
-            <section class="category-description">
-                {loop name="category.description" type="category" id={$category_id} limit="1" }
+                <section class="category-description">
+                    {loop name="category.description" type="category" id={$category_id} limit="1" }
                     <h1 id="main-label" class="page-header">{category attr="title"}</h1>
                     {loop name="category.image" type="image" source="category" source_id={$ID} width=218 height=146 resize_mode="borders"}
                     <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
-                    {/loop}
-                    {if $DESCRIPTION}
-                    <div class="description">
-                        {$DESCRIPTION nofilter}
-                    </div>
+                        {/loop}
+                        {if $DESCRIPTION}
+                        <div class="description">
+                            {$DESCRIPTION nofilter}
+                        </div>
                     {/if}
                     {if $POSTSCRIPTUM}
-                    <small class="postscriptum">
-                        {$POSTSCRIPTUM}
-                    </small>
+                        <small class="postscriptum">
+                            {$POSTSCRIPTUM}
+                        </small>
                     {/if}
-                {/loop}
-            </section>
-            <hr/>
+                    {/loop}
+                </section>
+                <hr/>
             {/if}
 
             {if #category_display_subcategories#}
-            {ifloop rel="subcategories"}
+                {ifloop rel="subcategories"}
                 <div class="block-links">
                     <div class="block-content">
                         <ul>
                             {loop name="subcategories" type="category" parent=$category_id}
-                                <li>
-                                    <a href="{$URL}">{$TITLE}</a>
-                                </li>
+                            <li>
+                                <a href="{$URL}">{$TITLE}</a>
+                            </li>
                             {/loop}
                         </ul>
                     </div>
                 </div>
-            {/ifloop}
+                {/ifloop}
             {/if}
 
             {hook name="category.content-bottom" category="$category_id"}
@@ -178,17 +169,17 @@
 
 
 {block name="stylesheet"}
-{hook name="category.stylesheet"}
-{hook name="register.stylesheet"}
-{stylesheets file='assets/src/css/custom.css'}
-        <link rel="stylesheet" href="{$asset_url}">
-{/stylesheets}
+    {hook name="category.stylesheet"}
+    {hook name="register.stylesheet"}
+    {stylesheets file='assets/src/css/custom.css'}
+    <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
 {/block}
 
 {block name="after-javascript-include"}
-{hook name="category.after-javascript-include"}
+    {hook name="category.after-javascript-include"}
 {/block}
 
 {block name="javascript-initialization"}
-{hook name="category.javascript-initialization"}
+    {hook name="category.javascript-initialization"}
 {/block}
