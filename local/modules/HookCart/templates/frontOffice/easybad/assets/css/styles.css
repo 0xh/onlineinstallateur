@@ -37,7 +37,8 @@
 .navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
     background-color: #10B4CF;
 }
-.cart .badge{
+.cart .badge,
+.cart-not-empty .badge{
     top: 50%;
     left: 50%;
     transform: translate(40%, -250%);
