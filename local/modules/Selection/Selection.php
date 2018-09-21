@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace Selection;
 
@@ -25,11 +26,11 @@ use Thelia\Module\BaseModule;
 
 class Selection extends BaseModule
 {
-    /** @var string */
-    const DOMAIN_NAME = 'selection';
-    const ROUTER = 'router.selection';
 
-    const RESOURCES_SELECTION = 'admin.selection';
+    /** @var string */
+    const DOMAIN_NAME             = 'selection';
+    const ROUTER                  = 'router.selection';
+    const RESOURCES_SELECTION     = 'admin.selection';
     const CONFIG_ALLOW_PROFILE_ID = 'admin_profile_id';
 
     public function preActivation(ConnectionInterface $con = null)
@@ -43,11 +44,11 @@ class Selection extends BaseModule
             $injectSql = true;
         }
 
+        $database = new Database($con);
         if (true === $injectSql) {
-            $database = new Database($con);
             $database->insertSql(null, [__DIR__ . '/Config/thelia.sql']);
         }
-
+        $database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
 
         return true;
     }
@@ -79,10 +80,10 @@ class Selection extends BaseModule
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
     {
         $finder = Finder::create()
-            ->name('*.sql')
-            ->depth(0)
-            ->sortByName()
-            ->in(__DIR__ . DS . 'Config' . DS . 'update');
+         ->name('*.sql')
+         ->depth(0)
+         ->sortByName()
+         ->in(__DIR__ . DS . 'Config' . DS . 'update');
 
         $database = new Database($con);
 
@@ -103,4 +104,5 @@ class Selection extends BaseModule
             $resource->save();
         }
     }
+
 }

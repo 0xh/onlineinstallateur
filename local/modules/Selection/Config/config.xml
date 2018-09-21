@@ -48,5 +48,9 @@
         <hook id="Selection.hook.back" class="Selection\Hook\BackHook">
             <tag name="hook.event_listener" event="main.top-menu-tools" type="back"/>
         </hook>
+        <hook id="Selection.hook.front" class="Selection\Hook\FrontHook">
+            <tag name="hook.event_listener" event="selection-wish-list.wish-button" templates="selection-wish-button.html"/>
+            <tag name="hook.event_listener" event="main.body-bottom"  type='front' method="onMainCss"/>
+        </hook>
     </hooks>
 </config>
