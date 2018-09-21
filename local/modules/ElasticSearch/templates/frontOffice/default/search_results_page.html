@@ -5,129 +5,161 @@
 
 {* Breadcrumb *}
 {block name='no-return-functions' append}
-{$breadcrumbs = [
+    {$breadcrumbs = [
 ['title' => {intl l="Search"}, 'url'=>{url path="/search"}]
 ]}
 {/block}
 
 {block name="main-content"}
-<div class="main">
+    <div class="main">
 
-    {* {$limit={$smarty.get.limit|default:100}} *}
+        {* {$limit={$smarty.get.limit|default:100}} *}
 
-    {$limit={$RESULTS['limit']}}
-    {$end={$RESULTS['end']}}
-    {$start={$RESULTS['start']}}
-    {$order={$RESULTS['order']}}
-    {$amount={$RESULTS['total']}} 
-    {$current_page={$RESULTS['current_page']}}    
-    {$product_order=$order}    
+        {$limit={$RESULTS['limit']}}
+        {$end={$RESULTS['end']}}
+        {$start={$RESULTS['start']}}
+        {$order={$RESULTS['order']}}
+        {$amount={$RESULTS['total']}}
+        {$current_page={$RESULTS['current_page']}}
+        {$product_order=$order}
+        {$ALL_PAGES = $PAGES}
+        {$max_page = 5}
+        {$min_page = 5}
 
-    <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
-        <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
-        {* {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}} *}
-        <div class="toolbar toolbar-{$toolbar}" role="toolbar">
-          <div class="sorter-container clearfix">
-          <span class="amount">{if ($amount > 1)}{intl l="%nb Items" nb="{$amount}"}{else}{intl l="%nb Item" nb="{$amount}"}{/if}</span>
+        <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
+            <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
+            {* {include file="includes/toolbar.html" toolbar="top" limit=$limit order=$product_order amount={$amount}} *}
+            <div class="toolbar toolbar-{$toolbar}" role="toolbar">
+                <div class="sorter-container clearfix">
+                    <span class="amount">{if ($amount > 1)}{intl l="%nb Items" nb="{$amount}"}{else}{intl l="%nb Item" nb="{$amount}"}{/if}</span>
 
-              <span class="limiter">
-                  <label for="limit-top">{intl l="Show"}</label>
-                  <select id="limit-top" name="limit">
-                      <option value="{url current="1" limit="6"  page=1}" {if $limit==6}selected{/if}>6</option>
-                      <option value="{url current="1" limit="12"  page=1}" {if $limit==12}selected{/if}>12</option>
-                      <option value="{url current="1" limit="24"  page=1 }" {if $limit==24}selected{/if}>24</option>
-                      <option value="{url current="1" limit="48"  page=1 }"{if $limit==48}selected{/if}>48</option>                     
-                      <option value="{url current="1" limit="96" page=1}"{if $limit==96}selected{/if}>96</option>                     
-                      
-                  </select>
-                  <span class="per-page">{intl l="per page"}</span>
-              </span><!-- /.limiter -->
+                    <span class="limiter">
+                        <label for="limit-top">{intl l="Show"}</label>
+                        <select id="limit-top" name="limit">
+                            <option value="{url current="1" limit="6"  page=1}" {if $limit==6}selected{/if}>6</option>
+                            <option value="{url current="1" limit="12"  page=1}" {if $limit==12}selected{/if}>12</option>
+                            <option value="{url current="1" limit="24"  page=1 }" {if $limit==24}selected{/if}>24</option>
+                            <option value="{url current="1" limit="48"  page=1 }"{if $limit==48}selected{/if}>48</option>
+                            <option value="{url current="1" limit="96" page=1}"{if $limit==96}selected{/if}>96</option>
 
-              <span class="sort-by">
-                  <label for="sortby-top">{intl l="Sort By"}</label>
-                  <select id="sortby-top" name="sortby">
-                      {*<option value="{url path="{category attr="url"}" order="manual"}">{intl l="Position"}</option>*}
-                      <option value="{url current="1" limit=$limit order="alpha"}" {if $order=="alpha"}selected{/if}>{intl l="Name ascending"}</option>
-                      <option value="{url current="1" limit=$limit order="alpha_reverse"}" {if $order=="alpha_reverse"}selected{/if}>{intl l="Name descending"}</option>
-                      <option value="{url current="1" limit=$limit order="min_price"}" {if $order=="min_price"}selected{/if}>{intl l="Price ascending"}</option>
-                      <option value="{url current="1" limit=$limit order="max_price"}" {if $order=="max_price"}selected{/if}>{intl l="Price descending"}</option>
-                      {*<option value="{url path="{category attr="url"}" order="rating"}">{intl l="Rating"}</option>*}
-                  </select>
-              </span><!-- /.sort-by -->
+                        </select>
+                        <span class="per-page">{intl l="per page"}</span>
+                    </span><!-- /.limiter -->
 
-              <span class="view-mode">
-                  <span class="view-mode-label sr-only">{intl l="View as"}:</span>
-                  <span class="view-mode-btn">
-                      <a href="{url current="1" mode="grid"}" data-toggle="view" role="button" title="{intl l="Grid"}" rel="nofollow" class="btn btn-default btn-grid"><i class="fa fa-th"></i></a>
-                      <a href="{url current="1" mode="list"}" data-toggle="view" role="button" title="{intl l="List"}" rel="nofollow" class="btn btn-default btn-list"><i class="fa fa-th-list"></i></a>
-                  </span>
-              </span><!-- /.view-mode -->
+                    <span class="sort-by">
+                        <label for="sortby-top">{intl l="Sort By"}</label>
+                        <select id="sortby-top" name="sortby">
+                            {*<option value="{url path="{category attr="url"}" order="manual"}">{intl l="Position"}</option>*}
+                            <option value="{url current="1" limit=$limit order="alpha"}" {if $order=="alpha"}selected{/if}>{intl l="Name ascending"}</option>
+                            <option value="{url current="1" limit=$limit order="alpha_reverse"}" {if $order=="alpha_reverse"}selected{/if}>{intl l="Name descending"}</option>
+                            <option value="{url current="1" limit=$limit order="min_price"}" {if $order=="min_price"}selected{/if}>{intl l="Price ascending"}</option>
+                            <option value="{url current="1" limit=$limit order="max_price"}" {if $order=="max_price"}selected{/if}>{intl l="Price descending"}</option>
+                            {*<option value="{url path="{category attr="url"}" order="rating"}">{intl l="Rating"}</option>*}
+                        </select>
+                    </span><!-- /.sort-by -->
 
-             </div><!-- /.sorter -->
-          </div>
+                    <span class="view-mode">
+                        <span class="view-mode-label sr-only">{intl l="View as"}:</span>
+                        <span class="view-mode-btn">
+                            <a href="{url current="1" mode="grid"}" data-toggle="view" role="button" title="{intl l="Grid"}" rel="nofollow" class="btn btn-default btn-grid"><i class="fa fa-th"></i></a>
+                            <a href="{url current="1" mode="list"}" data-toggle="view" role="button" title="{intl l="List"}" rel="nofollow" class="btn btn-default btn-list"><i class="fa fa-th-list"></i></a>
+                        </span>
+                    </span><!-- /.view-mode -->
 
-        <div id="category-products">
-            <div class="products-content">
-                       <ul class="list-unstyled row">
-                       {foreach from=$RESULTS item=PRODUCT}
-                          {if $PRODUCT|@count  ge 2 }
-                              {include file="single-product.html" 
-                              product_price={$PRODUCT["_source"]["product_price"]} 
-                              product_listen_price = {$PRODUCT["_source"]["product_listen_price"]} 
-                              product_taxed_price={$PRODUCT["_source"]["product_taxed_price"]} 
-                              product_promo_price={$PRODUCT["_source"]["taxedPrice"]} 
-                              product_promo_taxed_price = {$PRODUCT["_source"]["product_promo_taxed_price"]}
-                              product_id={$PRODUCT["_source"]["product_id"]} 
-                              product_title={$PRODUCT["_source"]["product_title"]} 
-                              hasBtn=true hasDescription=true width="819" height="819"}                                                      
-                          {/if}
-                       {foreachelse}
-                            <h2 class="text-center">{intl l="No results found"} </h2>                            
-                       {/foreach}
+                </div><!-- /.sorter -->
             </div>
-        </div><!-- /#category-products -->
-       <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}">
-            <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
-            <ul class="pagination pagination-sm">
-              {for $page=1 to $PAGES} 
 
-               {if $page eq 1}
-                    <li class="disabled">
-                        <span class="prev"><i class="fa fa-caret-left"></i></span>
-                    </li>
-                {/if}                
+            <div id="category-products">
+                <div class="products-content">
+                    <ul class="list-unstyled row">
+                        {foreach from=$RESULTS item=PRODUCT}
+                            {if $PRODUCT|@count  ge 2 }
+                                {include file="single-product.html"
+                              product_price={$PRODUCT["_source"]["product_price"]}
+                              product_listen_price = {$PRODUCT["_source"]["product_listen_price"]}
+                              product_taxed_price={$PRODUCT["_source"]["product_taxed_price"]}
+                              product_promo_price={$PRODUCT["_source"]["taxedPrice"]}
+                              product_promo_taxed_price = {$PRODUCT["_source"]["product_promo_taxed_price"]}
+                              product_id={$PRODUCT["_source"]["product_id"]}
+                              product_title={$PRODUCT["_source"]["product_title"]}
+                              hasBtn=true hasDescription=true width="819" height="819"}
+                            {/if}
+                        {foreachelse}
+                            <h2 class="text-center">{intl l="No results found"} </h2>
+                        {/foreach}
+                </div>
+            </div><!-- /#category-products -->
+            <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}">
+                <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
+                <ul class="pagination pagination-sm">
 
-                <li{if $page eq $current_page} class="active"{/if}>
-                        <a href="{url current="1" page=$page limit=$limit order=$order}">{$page}</a>
-                 </li>
-                {if  $page eq 11  }
-                 {continue}
-                {/if}
+                    {if  $current_page >=6 }
 
-              {if $page eq $PAGES}
-                    <li class="disabled">
-                        <span class="next"><i class="fa fa-caret-right"></i></span>
-                    </li>                       
-              {/if}           
-              {/for}
-            </ul>
-        </div>
-        
-    </article>
-      
+                        {$page = $current_page}
 
-</div><!-- /.layout -->
+                        {if $current_page eq 1}
+                            <li class="disabled">
+                                <span class="prev"><i class="fa fa-caret-left"></i></span>
+                            </li>
+                        {else}
+                            <li>
+                                <span class="prev">
+                                    <a href="{url current="1" page={$current_page - 1} limit=$limit order=$order}">
+                                        <i class="fa fa-caret-left"></i>
+                                    </a>
+                                </span>
+                            </li>
+                        {/if}
+
+                        {$new_page = $page - $min_page}
+                        {while $new_page  <= $current_page + $max_page}
+
+                            <li{if $new_page eq $current_page} class="active"{/if}>
+                                <a href="{url current="1" page=$new_page limit=$limit order=$order}">{$new_page}</a>
+                                {$show_pages = 0}
+                            </li>
+
+                            {$new_page = $new_page + 1 }
+                        {/while}
+
+                        {if $current_page eq $PAGES}
+                            <li class="disabled">
+                                <span class="next"><i class="fa fa-caret-right"></i></span>
+                            </li>
+                        {else}
+                            <li>
+                                <span class="next">
+                                    <a href="{url current="1" page={$current_page + 1} limit=$limit order=$order}">
+                                        <i class="fa fa-caret-right"></i>
+                                    </a>
+                                </span>
+                            </li>
+                        {/if}
+                    {/if}
+                </ul>
+            </div>
+
+        </article>
+
+
+    </div><!-- /.layout -->
 {/block}
+
+{javascripts source="ElasticSearch" file='assets/js/elastic-search'}
+    <script src="{$asset_url}"></script>
+{/javascripts}
 
 
 {block name="stylesheet"}
-{hook name="search.stylesheet"}
+    {hook name="search.stylesheet"}
 {/block}
 
 {block name="after-javascript-include"}
-{hook name="search.after-javascript-include"}
+    {hook name="search.after-javascript-include"}
 {/block}
 
 {block name="javascript-initialization"}
-{hook name="search.javascript-initialization"}
+    {hook name="search.javascript-initialization"}
 {/block}
+
+
