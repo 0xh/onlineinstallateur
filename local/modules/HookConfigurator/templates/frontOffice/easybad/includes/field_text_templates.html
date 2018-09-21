@@ -5,11 +5,11 @@
             <label class="question_label" for="q15">{intl l="{$label}"}{if $element.required eq true }*{/if}</label>
         </h3>
         <span>
-            <input type="text" class="fs-anim-lower inputText" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
+            <input type="text" class="fs-anim-lower inputText" style="width:50%; margin:0 auto" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
             {if $element.description }
                 <label class="text_description">{$element.description}</label>
             {/if}
-            <!--input type="button" name="next" class="simpleNext btn" value="{intl l='Weiter'}" /-->
+
 			 <div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
         </span>
     </div>

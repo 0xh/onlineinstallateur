@@ -115,6 +115,24 @@ class FullWidthBlock extends BaseModule
             ),
             array(
                 "type" => TemplateDefinition::FRONT_OFFICE,
+                "code" => "full_with_block.inspiration.page",
+                "title" => array(
+                    "fr_FR" => "Full with hook for product",
+                    "en_US" => "Full with hook for product",
+                ),
+                "description" => array(
+                    "fr_FR" => "Full with hook for product",
+                    "en_US" => "Full with hook for product",
+                ),
+                "chapo" => array(
+                    "fr_FR" => "Full with hook for product",
+                    "en_US" => "Full with hook for product",
+                ),
+                "block" => false,
+                "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::FRONT_OFFICE,
                 "code" => "full_with_block",
                 "title" => array(
                     "fr_FR" => "Full with block",
