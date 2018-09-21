@@ -24,7 +24,8 @@
     padding-right: 20px;
     padding-bottom: 10px;
     min-height: 550px;
-    text-align:center
+    text-align:center;
+	margin-top:25px;
 }
 .multistepForm .fragelabel {
     display: block;
@@ -555,7 +556,7 @@ fieldset .previous .white {
     cursor: pointer;
     display: block;
     margin-top: 25px;
-	margin-right:15px;
+	margin-right:23px;
     min-width: 170px;
 	max-width: 250px;
     background-color: #10B4CF;
