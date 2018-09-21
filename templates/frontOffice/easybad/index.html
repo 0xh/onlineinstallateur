@@ -11,8 +11,14 @@
 {* Hide breadcrumb *}
 {block name='breadcrumb'}{/block}
 
+{block name="before-main-content"}
+    <div class="full_with_noContainer">
+        {hook name="full_with_before_content"}
+    </div>
+{/block}
+
 {* Main content *}
-{block name="main-content"}
+{block name="main-content"}    
     {hook name="home.body"}
 {/block}
 

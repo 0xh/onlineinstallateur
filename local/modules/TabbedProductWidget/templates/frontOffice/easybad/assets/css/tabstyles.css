@@ -45,3 +45,9 @@
 .allTabs .nav-tabs>li.active>a:hover{
     background-color: unset;
 }
+@media screen and (max-width: 996px){
+    .allTabs .nav-tabs li a{
+        font-size: 1.5vw;
+        padding: 0px;
+    }
+}

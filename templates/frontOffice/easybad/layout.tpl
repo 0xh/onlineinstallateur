@@ -266,10 +266,8 @@ web : http://www.hausfabrik.at
         </div><!-- /.header-container -->
 
         <main class="main-container" role="main">
-            <div class="full_with_noContainer">
-                {hook name="full_with_before_content"}
-            </div>
-            
+            {block name="before-main-content"}
+            {/block}
             <div class="container">
                 {hook name="main.content-top"}
                 {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}

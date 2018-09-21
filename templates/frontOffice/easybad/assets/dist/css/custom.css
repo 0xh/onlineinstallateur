@@ -134,11 +134,9 @@ h1.name{
 	text-align:center;
 	padding:10px 5px 5px 5px;
 }
-.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img{
-	border-radius:5px 5px 0 0 ;
-}
+
 .grid #category-products .item>article .product-info .name{
-	position: relative;
+    position: relative;
     color: #787882;
     overflow: hidden;
     margin-bottom: 0;
@@ -284,7 +282,7 @@ h1.name{
     font-size: 1.5em;
 }
 .header .nav-darkBlue a:hover{
-    border-bottom: 6px solid #DDE2E6;
+    border-bottom: 5px solid #DDE2E6;
     text-decoration: none;
 }
 
@@ -366,13 +364,13 @@ section .product-image{
 }
 
 
-media screen and (min-width: 768px){
-.category-caption {
-    left: 5%;
-    padding-bottom: 30px;
-    top: 2%;
-    text-align: left;
-}
+@media screen and (min-width: 768px){
+    .category-caption {
+        left: 5%;
+        padding-bottom: 30px;
+        top: 2%;
+        text-align: left;
+    }
 }
 .category-caption {
     position: absolute;

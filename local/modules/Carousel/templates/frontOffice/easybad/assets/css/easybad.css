@@ -18,20 +18,22 @@
 .carousel_custom_caption h3{
     text-transform: uppercase;
     color: #0b8fad;
-    font-size: 45px;
+    font-size: 5vw;
     font-weight: 600;
     margin-left: 15px;
     text-align: left;
 }
 
 .carousel_custom_caption .slide_description{
-    font-size: 20px;
+    font-size: 2vw;
     font-weight: 500;
     margin-left: 15px;
     text-align: left;
     color: #5e6366;
 }
-
+.carousel_wrapper{
+    margin-bottom: -74px;
+}
 .carousel_wrapper .controls{
     width: 79%;
     position: relative;
@@ -139,8 +141,16 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
 }
 
+.img-responsive,
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img{
+    borde-radius: 0px !important;
+}
+
 @media screen and (max-width: 750px) {
     .carousel_wrapper .carousel_custom_caption {
         display: none;
-    }
+    }   
 }
