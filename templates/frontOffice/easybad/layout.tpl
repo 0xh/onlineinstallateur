@@ -219,9 +219,11 @@ web : http://www.hausfabrik.at
             <div class="main-header-top-bar">
                 <div class="container">
                     <div class="main-header-top-bar">
-                        <span class="text_light">Einfach & schnell</span>
-                        <span class="text_heavy">zum Traumbad</span>
-                        <div class="hotline">
+                        <div class="textSlogan">
+                            <span class="text_light">Einfach & schnell</span>
+                            <span class="text_heavy">zum Traumbad</span>
+                        </div>
+                        <div class="hotlineTxt">
                             <span class="hotline-holder"> 
                                 <img src="{image file='assets/dist/img/phone.gif'}"/>
                                 0800 969 699
@@ -233,7 +235,7 @@ web : http://www.hausfabrik.at
             <div class="navbar navbar-default navbar-secondary" id="navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
                 <div class="container">
                     <div class="row">
-                        <div class="navbar-header col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <div class="navbar-header-brand col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <a class="navbar-brand " href="{navigate to="index"}">
                                 <img src="{image file='assets/dist/img/easybadlogo.png'}" alt="{$store_name}">
                             </a>

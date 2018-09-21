@@ -1,8 +1,9 @@
 .navbar-cart{
-    width: 10%;
     margin-top: 15px;
     padding: 0px;
-    height: 48px;   
+    height: 48px;
+    max-width: 5%;
+    padding-left: 5%;
 }
 .navbar-cart li{
     float: right;
@@ -35,4 +36,11 @@
 }
 .navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
     background-color: #10B4CF;
+}
+.cart .badge{
+    top: 50%;
+    left: 50%;
+    transform: translate(40%, -250%);
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
