@@ -36,11 +36,11 @@
 }
 .carousel_wrapper .controls{
     width: 79%;
-    position: relative;
+    position: absolute;
     display: inline-block;
     left: 21%;
     z-index: 999;
-    bottom: 70px;
+    bottom: 8px;
 }
 .carousel_wrapper .controls .spearatorText{
     display: block;

@@ -1104,7 +1104,6 @@ html {
     -webkit-tap-highlight-color: transparent
 }
 body {
-	font-family: 'quicksand'!important;
 	font-size: 14px;
 	line-height: 1.42857143;
 	color: #000
@@ -11546,11 +11545,12 @@ font-weight:600
 .fs-fields h3:after {
     position: absolute;
     content: '';
-    background-color:#86ac34;
-    height: 1px;
+    background-color:#10b4cf;
+    height: 2px;
     width: 100px;
-    left: 0;
-    margin-left: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
     bottom: 0;
     z-index: 1;
     margin-bottom: 10px;

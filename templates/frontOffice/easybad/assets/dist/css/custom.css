@@ -3,6 +3,7 @@
 */
 body{
 	background-color:#F3F5F8!important;
+    font-family: 'Open Sans', sans-serif; 
 }
 .price-block{
 	border:1px solid #d2d2d2;
@@ -83,10 +84,10 @@ h1.name{
 /*WhisList*/
 .navbar-wish-list{
     width: 10%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     margin-top: 15px;
     padding: 0px;
-    height: 48px;
+    height: 40px;
 }
 .navbar .navbar-wish-list  li a.wish:after,
 .navbar .navbar-wish-list  li a.wish:before{
@@ -94,13 +95,13 @@ h1.name{
 }
 
 .navbar-default .navbar-wish-list >li{
-    height: 48px;
+    height: 40px;
     padding: 0px;
     margin: 0px;
     float: right;
 }
 .navbar-default .navbar-wish-list>li>a{
-    height: 48px;
+    height: 40px;
     padding: 0px;
     margin: 0px;
     padding-top: 4px;
@@ -134,9 +135,11 @@ h1.name{
 	text-align:center;
 	padding:10px 5px 5px 5px;
 }
-
+.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img{
+	border-radius:5px 5px 0 0 ;
+}
 .grid #category-products .item>article .product-info .name{
-    position: relative;
+	position: relative;
     color: #787882;
     overflow: hidden;
     margin-bottom: 0;
@@ -219,15 +222,14 @@ h1.name{
     color:#000;
 }
 .navbar .navbar-header{
-    margin-top: 10px;
-  //  margin-bottom: 10px;
+    margin-top: 9px;
 }
 .main-header-top-bar .text_light,
 .main-header-top-bar .text_heavy,
 .main-header-top-bar .hotline-holder{
     color: #0E95B3;
-    font-size: 24px;
-    line-height: 40px;
+    font-size: 20px;
+    line-height: 30px;
 }
 .main-header-top-bar .text_light{
     font-style: italic;
@@ -236,44 +238,44 @@ h1.name{
     font-weight: 700;
 }
 .main-header-top-bar .hotline-holder{
-    float: right
+    float: right;
+	margin-bottom:1px;
 }
 .navbar.navbar-secondary{
     box-shadow: unset !important;
     background-color: #10B4CF;
-    min-height:80px;
 }
 .sec-nav{
     float: left;
     width: 100%;
 }
 .navbar-brand {
-    min-height: 54px;
+    min-height: 46px;
 }
 .navbar-brand img{
     width: auto;
 }
 .header  .nav-darkBlue{
-    height: 40px;
+    height: 32px;
     background: #347C92;
     color: white;
 }
-.header .nav-darkBlue ul{
+.nav-darkBlue .navbar-nav > ul{
     width: 100%;
     text-align: justify;
     display: table;
     margin-bottom: 0px;
-    padding-top: 5px;
     padding-left: 0px;
 }
 
-.header .nav-darkBlue li{
+.nav-darkBlue .navbar-nav > li{
     display: table-cell;
     text-align: center;
     text-align: -webkit-match-parent;
 }
-.header .nav-darkBlue a{
-    line-height: 30px;
+
+.nav-darkBlue .navbar-nav > li > a{
+    line-height: 25px;
     color: white;
     font-weight: 500;
     padding: 0 18px;
@@ -281,8 +283,8 @@ h1.name{
     cursor: pointer;
     font-size: 1.5em;
 }
-.header .nav-darkBlue a:hover{
-    border-bottom: 5px solid #DDE2E6;
+.nav-darkBlue .navbar-nav > li > a:hover{
+    border-bottom: 7px solid #DDE2E6;
     text-decoration: none;
 }
 
@@ -364,13 +366,13 @@ section .product-image{
 }
 
 
-@media screen and (min-width: 768px){
-    .category-caption {
-        left: 5%;
-        padding-bottom: 30px;
-        top: 2%;
-        text-align: left;
-    }
+media screen and (min-width: 768px){
+.category-caption {
+    left: 5%;
+    padding-bottom: 30px;
+    top: 2%;
+    text-align: left;
+}
 }
 .category-caption {
     position: absolute;
@@ -399,3 +401,21 @@ section .product-image{
 	font-size:14px;
 }
 
+.search-container {
+    margin-bottom: 0px!important;
+}
+
+@media (min-width: 992px) {
+    .navbar {
+         border-radius: 0px!important;
+    }
+}
+
+.minnu .navbar-nav > li > a {
+    font-weight: normal!important;
+    text-transform: uppercase;
+}
+
+.dropdown-menu {
+   border:unset!important;
+}

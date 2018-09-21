@@ -98,7 +98,6 @@ web : http://www.hausfabrik.at
 {javascripts file="assets/dist/js/vendors/html5shiv.min.js"}
     <script>window.html5 || document.write('<script src="{$asset_url}"><\/script>');</script>
 {/javascripts}
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
 {javascripts file="assets/dist/js/vendors/respond.min.js"}
     <script>window.respond || document.write('<script src="{$asset_url}"><\/script>');</script>
@@ -180,7 +179,6 @@ web : http://www.hausfabrik.at
             s.parentNode.insertBefore(t, s)
         }(window, document, 'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-
         fbq('init', '1710133262638327');
         fbq('track', 'PageView');
     </script>
@@ -266,8 +264,12 @@ web : http://www.hausfabrik.at
         </div><!-- /.header-container -->
 
         <main class="main-container" role="main">
-            {block name="before-main-content"}
-            {/block}
+            <div class="full_with_noContainer">
+			{block name="full_with_block"}
+                {hook name="full_with_block.layout_tpl"}
+			{/block}
+            </div>
+            
             <div class="container">
                 {hook name="main.content-top"}
                 {block name="breadcrumb"}{include file="misc/breadcrumb.tpl"}{/block}
@@ -475,7 +477,6 @@ var addCartMessageUrl = "{url path='ajax/addCartMessage'}";
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
 ga('create', 'UA-78676875-4', 'auto');
 {/literal}
 {loop type="customer" name="customer.info"}ga('set', 'userId', {{{$ID}}});{/loop}
@@ -535,14 +536,11 @@ ga('create', 'UA-78676875-4', 'auto');
 
 {literal}
     <script>
-
         window.onscroll = function () {
             myFunction()
         };
-
         var navbar = document.getElementById("navbar-secondary");
         var sticky = navbar.offsetTop;
-
         function myFunction() {
             if (window.pageYOffset >= sticky) {
                 navbar.classList.add("sticky")

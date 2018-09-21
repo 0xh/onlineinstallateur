@@ -44,7 +44,7 @@
 {/block}
 
 {block name="full_with_block"}
-	{hook name="full_with_block.category"}
+	{hook name="full_with_block.category.inspiration"}
 {/block}
 
 {* Content *}
@@ -60,7 +60,7 @@
     <div class="main row">
 
 
-        {hook name="category.main-top" category="$category_id"}
+        {hook name="inspiration.main-top" category="$category_id"}
         <aside class="col-left col-md-3 white-bg" role="complementary" itemscope itemtype="http://schema.org/WPSideBar">
             {include file="includes/menu.html"}
             
@@ -190,10 +190,7 @@
             {hook name="category.content-bottom" category="$category_id"}
 
         </article>
-<div class="clearfix"></div>
-        {loop name="subcategories" type="category" id=$category_id }
-							{assign var="subcategorie_title" value=$TITLE}
-       {/loop}
+
     </div>
     {hook name="category.bottom" category="$category_id" categorytitle="{$subcategorie_title}"}
 	

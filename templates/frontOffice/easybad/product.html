@@ -37,6 +37,11 @@
         {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
     {/loop}
 {/block}
+
+{block name="full_with_block"}
+	{hook name="full_with_block.product"}
+{/block}
+
 {$SHOW_ORIGINAL_PRICE=false}
 {* Content *}
 {block name="main-content"}
