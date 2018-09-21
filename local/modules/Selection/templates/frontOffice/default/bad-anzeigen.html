@@ -6,7 +6,7 @@
     {/loop}
 
     <div style="text-align: center;">
-        {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=3 selection_id=$SELECTION_ID show_feature_value_selected=true}
+        {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
         <h2>{$FTITLE}</h2>
         {/loop}
 
@@ -17,13 +17,13 @@
 
         <div class="row">
             <div class="col-md-4">
-                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=1 selection_id=$SELECTION_ID show_feature_value_selected=true}
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
                 <h2>{$F_TITLE}</h2>
                 <h2>{$FTITLE}</h2>
                 {/loop}
             </div>
             <div class="col-md-4">
-                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature=17 selection_id=$SELECTION_ID show_feature_value_selected=true}
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
                 <h2>{$F_TITLE}</h2>
                 <h2>{$FTITLE}</h2>
                 {/loop}

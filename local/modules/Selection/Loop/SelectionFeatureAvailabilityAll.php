@@ -38,7 +38,7 @@ class SelectionFeatureAvailabilityAll extends BaseI18nLoop implements PropelSear
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
-         Argument::createIntTypeArgument('feature', null, true), Argument::createIntTypeArgument('show_feature_value_selected', false), Argument::createIntTypeArgument('selection_id', null, true), Argument::createIntListTypeArgument('feature_availability'), Argument::createAnyListTypeArgument('free_text'), new Argument(
+         Argument::createAnyTypeArgument('feature_name'), Argument::createIntTypeArgument('feature', null, false), Argument::createIntTypeArgument('show_feature_value_selected', false), Argument::createIntTypeArgument('selection_id', null, true), Argument::createIntListTypeArgument('feature_availability'), Argument::createAnyListTypeArgument('free_text'), new Argument(
          'order', new TypeCollection(
          new Type\EnumListType(array(
          'alpha',
@@ -65,11 +65,18 @@ class SelectionFeatureAvailabilityAll extends BaseI18nLoop implements PropelSear
          ->withColumn(SelectionFeaturesTableMap::FEATURE_AV_ID, "f_av_id")
          ->where(FeatureAvI18nTableMap::LOCALE . '=' . '"de_DE" '
          . 'AND ' . FeatureI18nTableMap::LOCALE . '=' . '"de_DE" '
-         . 'AND ' . SelectionFeaturesTableMap::SELECTION_ID . ' = ' . $this->getSelectionId()
-         . ' AND ' . SelectionFeaturesTableMap::FEATURE_ID . ' = ' . $this->getFeature());
+         . 'AND ' . SelectionFeaturesTableMap::SELECTION_ID . ' = ' . $this->getSelectionId());
 
         if ($this->getShowFeatureValueSelected()) {
             $search = $search->where(SelectionFeaturesTableMap::FEATURE_AV_ID . " = " . FeatureAvTableMap::ID);
+        }
+
+        if ($this->getFeatureName()) {
+            $search = $search->where(FeatureI18nTableMap::TITLE . " = '" . $this->getFeatureName() . "'");
+        }
+
+        if ($this->getFeature()) {
+            $search = $search->where(SelectionFeaturesTableMap::FEATURE_ID . " = " . $this->getFeature());
         }
 
         return $search;
