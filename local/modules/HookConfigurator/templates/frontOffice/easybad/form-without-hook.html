@@ -3,8 +3,7 @@
         {form name="hookconfig.form.configure"}
 
         <div class="alert alert-success hide"></div>
-        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post" class="dropzone" enctype="multipart/form-data" id="regiration-form" 
-              novalidate="">
+        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post" class="dropzone" enctype="multipart/form-data" id="regiration-form">
             {form_hidden_fields form=$form}
             {if $form_error}
                 <div class="alert alert-danger">{$form_error_message}</div>

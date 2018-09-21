@@ -3,7 +3,7 @@
         {form name="hookconfig.form.configurator.front.with.hook"}
 
         <div class="alert alert-success hide"></div>
-        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post"  enctype="multipart/form-data" id="regiration-form" novalidate="">
+        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post"  enctype="multipart/form-data" id="regiration-form">
             <input type="hidden" name="usehook" value="yes" />
             {form_hidden_fields form=$form}
             {if $form_error}
