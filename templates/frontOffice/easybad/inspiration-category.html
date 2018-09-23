@@ -43,6 +43,10 @@
     {/if}
 {/block}
 
+{block name="full_with_block"}
+	{hook name="full_with_block.category.inspiration"}
+{/block}
+
 {* Content *}
 {block name="main-content"}
 
@@ -54,7 +58,6 @@
 
     <div class="main row">
 
-
         <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
 
             {hook name="category.content-top" category="$category_id"}
@@ -65,10 +68,9 @@
 
                 {loop name="inspirations" type="selection_list" visible="true"}  
 
-
                 <div class="col-sm-4 ">
 
-                    <a href="{$SELECTION_URL}">	
+                    <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">	
 
                         <figure class="effect-honey mb-5">
                             {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
@@ -95,25 +97,6 @@
                     </a>
                 </div>
 
-
-
-
-
-
-                <!--
-                
-                        This selection id           : {$SELECTION_ID}
-                        This selection title        : {$SELECTION_TITLE}
-                        This selection status       : {$SELECTION_VISIBLE}
-                        This selection description  : {$SELECTION_DESCRIPTION}
-                        This selection chapo        : {$SELECTION_CHAPO}
-                        This selection url          : {$SELECTION_URL}
-                        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}
-                        This selection position     : {$SELECTION_POSITION}
-                
-                -->
-
-
                 {/loop} 
             </div>
 
@@ -138,22 +121,6 @@
                     {/loop}
                 </section>
                 <hr/>
-            {/if}
-
-            {if #category_display_subcategories#}
-                {ifloop rel="subcategories"}
-                <div class="block-links">
-                    <div class="block-content">
-                        <ul>
-                            {loop name="subcategories" type="category" parent=$category_id}
-                            <li>
-                                <a href="{$URL}">{$TITLE}</a>
-                            </li>
-                            {/loop}
-                        </ul>
-                    </div>
-                </div>
-                {/ifloop}
             {/if}
 
             {hook name="category.content-bottom" category="$category_id"}
