@@ -98,7 +98,6 @@ web : http://www.hausfabrik.at
 {javascripts file="assets/dist/js/vendors/html5shiv.min.js"}
     <script>window.html5 || document.write('<script src="{$asset_url}"><\/script>');</script>
 {/javascripts}
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.js"></script>
 {javascripts file="assets/dist/js/vendors/respond.min.js"}
     <script>window.respond || document.write('<script src="{$asset_url}"><\/script>');</script>
@@ -180,7 +179,6 @@ web : http://www.hausfabrik.at
             s.parentNode.insertBefore(t, s)
         }(window, document, 'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
-
         fbq('init', '1710133262638327');
         fbq('track', 'PageView');
     </script>
@@ -221,9 +219,11 @@ web : http://www.hausfabrik.at
             <div class="main-header-top-bar">
                 <div class="container">
                     <div class="main-header-top-bar">
-                        <span class="text_light">Einfach & schnell</span>
-                        <span class="text_heavy">zum Traumbad</span>
-                        <div class="hotline">
+                        <div class="textSlogan">
+                            <span class="text_light">Einfach & schnell</span>
+                            <span class="text_heavy">zum Traumbad</span>
+                        </div>
+                        <div class="hotlineTxt">
                             <span class="hotline-holder"> 
                                 <img src="{image file='assets/dist/img/phone.gif'}"/>
                                 0800 969 699
@@ -235,7 +235,7 @@ web : http://www.hausfabrik.at
             <div class="navbar navbar-default navbar-secondary" id="navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
                 <div class="container">
                     <div class="row">
-                        <div class="navbar-header col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <div class="navbar-header-brand col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
                             <a class="navbar-brand " href="{navigate to="index"}">
                                 <img src="{image file='assets/dist/img/easybadlogo.png'}" alt="{$store_name}">
                             </a>
@@ -444,7 +444,7 @@ web : http://www.hausfabrik.at
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/localization/messages_{$lang_code}.js"></script>
 {/if}
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
 {javascripts file="assets/dist/js/vendors/bootstrap.min.js"}
 <script>if (typeof ($.fn.modal) === 'undefined') {
         document.write('<script src="{$asset_url}"><\/script>');
@@ -479,7 +479,6 @@ var addCartMessageUrl = "{url path='ajax/addCartMessage'}";
 (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
 ga('create', 'UA-78676875-4', 'auto');
 {/literal}
 {loop type="customer" name="customer.info"}ga('set', 'userId', {{{$ID}}});{/loop}
@@ -539,14 +538,11 @@ ga('create', 'UA-78676875-4', 'auto');
 
 {literal}
     <script>
-
         window.onscroll = function () {
             myFunction()
         };
-
         var navbar = document.getElementById("navbar-secondary");
         var sticky = navbar.offsetTop;
-
         function myFunction() {
             if (window.pageYOffset >= sticky) {
                 navbar.classList.add("sticky")
