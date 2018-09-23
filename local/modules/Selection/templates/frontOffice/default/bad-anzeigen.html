@@ -2,8 +2,8 @@
 
 {block name="full_with_block"}
 	{hook name="full_with_block.inspiration.page"}
-	{loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
-    <img src="{$IMAGE_URL}">
+	{loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" height="550" resize_mode="borders"}
+    	<img  class="img-responsive" style="max-height:550px"  src="{$IMAGE_URL}">
     {/loop}
 {/block}
 
