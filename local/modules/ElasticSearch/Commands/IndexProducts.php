@@ -82,7 +82,7 @@ class IndexProducts extends ProductQuery
         ;
 
         print_r("Total item to be indexed: " . $list->count() . "\n");
-        sleep(2);
+        sleep(5);
 
         if ($list !== null) {
 

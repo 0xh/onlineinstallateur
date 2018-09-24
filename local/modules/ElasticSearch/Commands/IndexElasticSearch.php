@@ -44,7 +44,7 @@ class IndexElasticSearch extends ContainerAwareCommand
                     default:
                         echo "Uknow language \n ex: php Thelia elasticsearch generate de \n -where: \n - 'generate': is the action \n - 'de' is the language)!!!! \n";
                         break;
-                }     //index action           
+                }     //index action
                 break;
             case 'reindex':
                 switch ($input->getArgument("lang")) {
@@ -57,7 +57,7 @@ class IndexElasticSearch extends ContainerAwareCommand
                     default:
                         echo "Uknow language \n ex: php Thelia elasticsearch generate de \n -where: \n - 'generate': is the action \n - 'de' is the language)!!!! \n";
                         break;
-                }     //index action           
+                }     //index action
                 break;
             case 'delete':
                 switch ($input->getArgument("lang")) {
@@ -72,7 +72,7 @@ class IndexElasticSearch extends ContainerAwareCommand
                 }
                 break; //delete aciton
             default:
-                echo "\n Malformated command : \n !!!!!ex: php Thelia elasticsearch generate de  
+                echo "\n Malformated command : \n !!!!!ex: php Thelia elasticsearch generate de
                 \n -where: \n - 'index': is the action \n - 'de' is the language)!!!! \n";
                 break;
         }
