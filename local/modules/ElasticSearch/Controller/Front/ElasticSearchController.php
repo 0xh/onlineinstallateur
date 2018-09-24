@@ -13,7 +13,6 @@ use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use TheliaSmarty\Template\AbstractSmartyPlugin;
 use TheliaSmarty\Template\SmartyPluginDescriptor;
-
 use Thelia\Core\Template\Element\Exception\ElementNotFoundException;
 use Thelia\Core\Template\Element\Exception\InvalidElementException;
 use Thelia\Core\Translation\Translator;
@@ -22,28 +21,32 @@ use Thelia\Core\Template\Element\SearchLoopInterface;
 class ElasticSearchController extends BaseFrontController
 {
 
-    public function showResults(){
-        $end = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;
-        $limit= $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit'): 6 ;   
-        $order= $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order'): "alpha" ;    
-        $page= $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page'): 1 ;    
+    public function showResults()
+    {
+        $end   = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page') : 1;
+        $limit = $this->getRequest()->get('limit') <> NULL ? $this->getRequest()->get('limit') : 6;
+        $order = $this->getRequest()->get('order') <> NULL ? $this->getRequest()->get('order') : "alpha";
+        $page  = $this->getRequest()->get('page') <> NULL ? $this->getRequest()->get('page') : 1;
 
 
-        $start = $page > 1 ? ($page*$limit) : 0;
-        $search = new ElasticConnection();
-        $results= $search->fullTextSearch($this->getRequest()->get('q'),$start,$end,$limit,$order);
-         if ($results == NULL || count($results) == 1) {
-             $results[]="no results where found!!";
-         }else {
+        $start   = $page > 1 ? ($page * $limit) : 0;
+        $search  = new ElasticConnection();
+        $results = $search->fullTextSearch($this->getRequest()->get('q'), $start, $end, $limit, $order);
+        if ($results == NULL || count($results) == 1) {
+            $results[] = "no results where found!!";
+        } else {
 
-            $results['start'] = $start;
-            $results['end'] = $end;
-            $results['limit'] = $limit;
-            $results['order'] = $order;      
-            $results['current_page'] = $page;            
-         }
+            $results['start']        = $start;
+            $results['end']          = $end;
+            $results['limit']        = $limit;
+            $results['order']        = $order;
+            $results['current_page'] = $page;
+        }
 
-       return $this->render("search_results_page",array("RESULTS"=>$results,"PAGES"=>ceil($results['total'] / $limit)));
+        return $this->render("search_results_page",
+                             array(
+          "RESULTS" => $results,
+          "PAGES"   => ceil($results['total'] / $limit)));
     }
 
     protected function getDefaultCategoryId($product)
@@ -56,5 +59,5 @@ class ElasticSearchController extends BaseFrontController
         }
         return $defaultCategoryId;
     }
+
 }
- 

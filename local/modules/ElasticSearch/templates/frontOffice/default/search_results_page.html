@@ -90,52 +90,55 @@
                 </div>
             </div><!-- /#category-products -->
             <div class="pagination-container clearfix" role="pagination" aria-labelledby="pagination-label-{$toolbar}">
-                <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>                
+                <strong id="pagination-label-{$toolbar}" class="pagination-label sr-only">{intl l="Pagination"}</strong>
                 <ul class="pagination pagination-sm">
                     {$page = $current_page}
 
-                    {if $current_page eq 1}
-                        <li class="disabled">
-                            <span class="prev"><i class="fa fa-caret-left"></i></span>
-                        </li>
-                    {else}
-                        <li>
-                            <span class="prev">
-                                <a href="{url current="1" page={$current_page - 1} limit=$limit order=$order}">
-                                    <i class="fa fa-caret-left"></i>
-                                </a>
-                            </span>
-                        </li>
-                    {/if}
-
-                    {$new_page = $page - $min_page}      
-
-
-                    {while ($new_page  <= $current_page + $max_page)}                        
-
-                        {if $new_page >= 1}
-                            <li{if $new_page eq $current_page} class="active"{/if}>
-                                <a href="{url current="1" page=$new_page limit=$limit order=$order}">{$new_page}</a>                            
+                    {if ($amount > 1) }
+                        {if $current_page eq 1}
+                            <li class="disabled">
+                                <span class="prev"><i class="fa fa-caret-left"></i></span>
+                            </li>
+                        {else}
+                            <li>
+                                <span class="prev">
+                                    <a href="{url current="1" page={$current_page - 1} limit=$limit order=$order}">
+                                        <i class="fa fa-caret-left"></i>
+                                    </a>
+                                </span>
                             </li>
                         {/if}
-                        {$new_page = $new_page+1}                        
-                    {/while}
 
-                    {if $current_page eq $PAGES}
-                        <li class="disabled">
-                            <span class="next"><i class="fa fa-caret-right"></i></span>
-                        </li>
-                    {else}
-                        <li>
-                            <span class="next">
-                                <a href="{url current="1" page={$current_page + 1} limit=$limit order=$order}">
-                                    <i class="fa fa-caret-right"></i>
-                                </a>
-                            </span>
-                        </li>
-                    {/if}
-                </ul>
-            </div>
+                        {$new_page = $page - $min_page}
+
+
+                        {while ($new_page  <= $current_page + $max_page)}
+
+                            {if $new_page >= 1}
+                                <li{if $new_page eq $current_page} class="active"{/if}>
+                                    <a href="{url current="1" page=$new_page limit=$limit order=$order}">{$new_page}</a>
+                                </li>
+                            {/if}
+                            {$new_page = $new_page+1}
+                        {/while}
+
+                        {if $current_page eq $PAGES}
+                            <li class="disabled">
+                                <span class="next"><i class="fa fa-caret-right"></i></span>
+                            </li>
+                        {else}
+                            <li>
+                                <span class="next">
+                                    <a href="{url current="1" page={$current_page + 1} limit=$limit order=$order}">
+                                        <i class="fa fa-caret-right"></i>
+                                    </a>
+                                </span>
+                            </li>
+                        {/if}
+                    </ul>
+                </div>
+            {/if}
+
         </article>
     </div><!-- /.layout -->
 {/block}
