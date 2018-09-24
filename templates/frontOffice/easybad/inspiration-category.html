@@ -76,22 +76,28 @@
                             {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
                             <div class="herz"></div><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
                             {/loop}
-                            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383 show_feature_value_selected=true}  
+                            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}     
+                            {assign var = "bath_size" value = $FTITLE}
+                            {/loop} 
+							{loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=386 show_feature_value_selected=true}     
+                            {assign var = "bath_style" value = $FTITLE}
+                            {/loop} 
+							{loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}  
                             {assign var = "feature_title" value = $F_TITLE}    
                             {assign var = "feature_value" value = $FTITLE}
                             {/loop} 
                             <figcaption>
-                                <i><h2> <span class="mb-1"> {intl  l="Serie"} {$SELECTION_TITLE}</span> <span class="mb-2"><b>{$feature_title}</b>:</span>
-                                        <span class="mb-3">{$feature_value}</span>
+                               <h2>  {intl  l="Serie"} {$SELECTION_TITLE}<br> 
+                                        <i class="bath-size-style">{$bath_size}|{$bath_style}</i>
                                         {assign var = "selection_total" value=0}
                                         {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
                                         {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
                                         {$selection_total=$selection_total+$selection_price}
                                         {/loop}   
-                                      <span class="mb-4">{$selection_total|number_format:2:",":"."} €</span>
-                                        <span class="mb-5"> » Details Zeigen</span>
-                                </i></h2> 
-                                <h2> </h2>
+                                      <i class="bath-price">{$selection_total|number_format:0:",":"."} €</i>
+
+                               </h2> 
+                             
                             </figcaption>	
 
 
@@ -103,27 +109,7 @@
             </div>
 
 
-            {if #category_display_detail# && $category_id}
-                <section class="category-description">
-                    {loop name="category.description" type="category" id={$category_id} limit="1" }
-                    <h1 id="main-label" class="page-header">{category attr="title"}</h1>
-                    {loop name="category.image" type="image" source="category" source_id={$ID} width=218 height=146 resize_mode="borders"}
-                    <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
-                        {/loop}
-                        {if $DESCRIPTION}
-                        <div class="description">
-                            {$DESCRIPTION nofilter}
-                        </div>
-                    {/if}
-                    {if $POSTSCRIPTUM}
-                        <small class="postscriptum">
-                            {$POSTSCRIPTUM}
-                        </small>
-                    {/if}
-                    {/loop}
-                </section>
-                <hr/>
-            {/if}
+    
 
             {hook name="category.content-bottom" category="$category_id"}
 
