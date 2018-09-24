@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup\Controller;
 
@@ -26,41 +27,37 @@ use Thelia\Tools\URL;
  * @author Thelia <info@thelia.net>
  * @contributor Thomas Arnaud <tarnaud@openstudio.fr>
  */
-class SetDeliveryPrice extends BaseAdminController
-{
-    public function configure()
-    {
+class SetDeliveryPrice extends BaseAdminController {
+
+    public function configure() {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('LocalPickup'), AccessManager::UPDATE)) {
             return $response;
         }
 
         $form = $this->createForm('localpickup.form');
-        $errmes=null;
+        $errmes = null;
 
         try {
             $vform = $this->validateForm($form);
 
             $price = $vform->get('price')->getData();
 
-            if (preg_match("#^\d\.?\d*$#",$price)) {
+            if (preg_match("#^\d\.?\d*$#", $price)) {
                 $newprice = new LocalPickupShipping();
                 $newprice->setPrice((float) $price)
-                    ->save();
+                        ->save();
             } else {
                 $errmes = Translator::getInstance()->trans("price must be a number !");
             }
 
             return $this->redirectToConfigurationPage();
-
         } catch (\Exception $e) {
             $errmes = $this->createStandardFormValidationErrorMessage($e);
         }
 
         if (null !== $errmes) {
             $this->setupFormErrorContext(
-                'configuration',
-                $errmes,
-                $form
+                    'configuration', $errmes, $form
             );
 
             $response = $this->render("module-configure", ['module_code' => 'LocalPickup']);
@@ -72,8 +69,8 @@ class SetDeliveryPrice extends BaseAdminController
     /**
      * Redirect to the configuration page
      */
-    protected function redirectToConfigurationPage()
-    {
+    protected function redirectToConfigurationPage() {
         return RedirectResponse::create(URL::getInstance()->absoluteUrl('/admin/module/LocalPickup'));
     }
+
 }

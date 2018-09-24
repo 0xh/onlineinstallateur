@@ -1,0 +1,50 @@
+{literal}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $hints=$('#hints');
+        $('[id*=delivery-method]').click(function () {
+            $ckbox = $('#delivery-method_49');
+            $pickup = $('#local-pickup-locations');
+            //show LocalPickup drowpdown when LocalPickup is selected
+            if ($ckbox.is(':checked')) {
+                $pickup.show();
+            } else if (!($ckbox.is(":checked"))) {
+                $pickup.hide();
+            }
+             console.log("showingDelivery");
+            ;
+            //add Ajax call on dropdown change
+
+            $('.delivery_address').unbind('change').on('change', function () {
+                $option = $(this).find(":selected");
+                $option_hint=$option.attr('data-id');
+                
+                //foreach element, going through, if it's checked => /.show else /.hide
+                    $('[id*=local-pickup-hint').each(function( index ) {
+                      if ($(this).attr('data-id') == $option_hint){
+                          $(this).show();
+                         
+                      }else{
+                          if(!($ckbox.is(":checked")))
+                          $hints.hide();
+                          $(this).hide();
+                      }
+                    });
+                
+                
+                $.ajax({
+                    url: '/cart/localpickup',
+                    type: 'POST',
+                    data: {
+                        locationId: $option.attr('data-id'),
+                        cartId: $option.attr('data-cart-id'),
+                    }
+                }).done(function (data) {
+//                    console.log(data);
+                });
+            });
+            // local-pickup-locations
+        });
+    });
+</script>
+{/literal}

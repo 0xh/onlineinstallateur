@@ -1,10 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database defaultIdMethod="native" name="thelia" namespace="LocalPickup\Model">
+<database defaultIdMethod="native" name="thelia">
 
     <table name="local_pickup_shipping">
         <column name="id" primaryKey="true" required="true" type="INTEGER" autoIncrement="true" />
         <column name="price" required="true" type="DOUBLE" />
         <behavior name="timestampable" />
     </table>
+    
+    <table name="local_pickup" namespace="LocalPickup\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="address" phpName="Address" type="VARCHAR" size="255"/>
+        <column name="gps_lat" phpName="GpsLat" type="DECIMAL" size="18" scale="14"/>
+        <column name="gps_long" phpName="GpsLong" type="DECIMAL" size="18" scale="14"/>
+        <column name="hint" phpName="hint" type="CLOB"/>
+        <behavior name="timestampable" />
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    
+    <table name="order_local_pickup_address" namespace="LocalPickup\Model">
+        <column name="order_id" phpName="OrderId" type="INTEGER"/>
+        <column name="cart_id" phpName="LocalPickupCartId" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="local_pickup_id" phpName="LocalPickupId" type="INTEGER" required="true"/>
+        <foreign-key foreignTable="local_pickup" name="fk_order_local_pickup_address_local_pickup_id" onDelete="CASCADE">
+            <reference local="local_pickup_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="order" name="fk_order_local_pickup_address_order_id" onDelete="CASCADE">
+            <reference local="order_id" foreign="id"/>
+        </foreign-key>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
+    
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

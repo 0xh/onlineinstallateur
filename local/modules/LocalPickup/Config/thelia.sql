@@ -1,12 +1,13 @@
+
+# This is a fix for InnoDB in MySQL >= 4.1.x
+# It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
 -- local_pickup_shipping
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `local_pickup_shipping`;
-
-CREATE TABLE `local_pickup_shipping`
+CREATE TABLE if not exists `local_pickup_shipping`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `price` DOUBLE NOT NULL,
@@ -15,45 +16,43 @@ CREATE TABLE `local_pickup_shipping`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-INSERT INTO `local_pickup_shipping`(`price`, `created_at`, `updated_at`)
-   VALUES(0.0, NOW(), NOW());
+-- ---------------------------------------------------------------------
+-- local_pickup
+-- ---------------------------------------------------------------------
+
+CREATE TABLE if not exists `local_pickup`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `address` VARCHAR(255),
+    `gps_lat` DECIMAL(18,14),
+    `gps_long` DECIMAL(18,14),
+    `hint` LONGTEXT,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- Mail templates for localpickup
+-- order_local_pickup_address
 -- ---------------------------------------------------------------------
--- First, delete existing entries
-SET @var := 0;
-SELECT @var := `id` FROM `message` WHERE name="order_confirmation_localpickup";
-DELETE FROM `message` WHERE `id`=@var;
--- Try if ON DELETE constraint isn't set
-DELETE FROM `message_i18n` WHERE `id`=@var;
 
--- Then add new entries
-SELECT @max := MAX(`id`) FROM `message`;
-SET @max := @max+1;
--- insert message
-INSERT INTO `message` (`id`, `name`, `secured`) VALUES
-  (@max,
-   'order_confirmation_localpickup',
-   '0'
-  );
--- and template fr_FR
-INSERT INTO `message_i18n` (`id`, `locale`, `title`, `subject`, `text_message`, `html_message`) VALUES
-  (@max,
-   'fr_FR',
-   'order confirmation_localpickup',
-   'Reception de la commande : {$order_ref}',
-   'Votre commande: {$order_ref} est disponible à l\'adresse suivante :\r\n{$store_name}\r\n{$store_address1}\r\n{$store_address2}\r\n{$store_address3}\r\n{$store_zipcode} {$store_city}\r\n{$store_country} ',
-   '<html><head></head><body><p>Votre commande: {$order_ref} est disponible à l\'adresse suivante :<br/>{$store_name}<br/>{$store_address1}{if !empty($store_address2)}<br/>{$store_address2}{/if}{if !empty($store_address3)}<br/>{$store_address3}{/if}<br/>{$store_zipcode} {$store_city}<br/>{$store_country}</p></body></html>  '
-  );
--- and en_US
-INSERT INTO `message_i18n` (`id`, `locale`, `title`, `subject`, `text_message`, `html_message`) VALUES
-  (@max,
-   'en_US',
-   'order confirmation_localpickup',
-   'Reception de la commande : {$order_ref}',
-   'Votre commande: {$order_ref} est disponible à l\'adresse suivante :\r\n{$store_name}\r\n{$store_address1}\r\n{$store_address2}\r\n{$store_address3}\r\n{$store_zipcode} {$store_city}\r\n{$store_country} ',
-   '<html><head></head><body><p>Votre commande: {$order_ref} est disponible à l\'adresse suivante :<br/>{$store_name}<br/>{$store_address1}{if !empty($store_address2)}<br/>{$store_address2}{/if}{if !empty($store_address3)}<br/>{$store_address3}{/if}<br/>{$store_zipcode} {$store_city}<br/>{$store_country}</p></body></html>'
-  );
+CREATE TABLE if not exists `order_local_pickup_address`
+(
+    `order_id` INTEGER,
+    `cart_id` INTEGER NOT NULL,
+    `local_pickup_id` INTEGER NOT NULL,
+    PRIMARY KEY (`cart_id`),
+    INDEX `FI_order_local_pickup_address_local_pickup_id` (`local_pickup_id`),
+    INDEX `FI_order_local_pickup_address_order_id` (`order_id`),
+    CONSTRAINT `fk_order_local_pickup_address_local_pickup_id`
+        FOREIGN KEY (`local_pickup_id`)
+        REFERENCES `local_pickup` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `fk_order_local_pickup_address_order_id`
+        FOREIGN KEY (`order_id`)
+        REFERENCES `order` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
+# This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

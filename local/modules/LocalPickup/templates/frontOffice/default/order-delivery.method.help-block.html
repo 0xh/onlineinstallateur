@@ -1,0 +1,25 @@
+<div id="local-pickup-locations" hidden>
+        <select name="delivery_address" class="delivery_address" id="delivery_address_localpickup">
+            </br>
+             </br>
+             <option id="defaulty" selected="true" disabled="disabled">{intl l="Please choose a delivery pick-up location"}</option>
+             {loop type="cart" name="cartloop"}
+             {assign var="cart_id" value="$ID"}
+             {/loop}
+                {loop type="local_pickup" name="local_pickup"}
+                        {assign var="lp_address" value="$ADDRESS"}
+                        {assign var="lp_hint" value="$HINT"}
+                        <option id ="localpickup-locations" value="{$ADDRESS}" data-id="{$ID}" data-cart-id="{$cart_id}">{$lp_address}</option> 
+                {/loop}
+        </select>
+                {loop type="local_pickup" name="local_pickup2"}
+                        {assign var="lp_address" value="$ADDRESS"}
+                        {assign var="lp_hint" value="$HINT"}
+        <p id="local-pickup-hint{$ID}" hidden data-id="{$ID}" data-cart-id="{$cart_id}" >
+            {$lp_hint}
+        </p>
+    {/loop}
+</div>
+
+
+

@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup\Form;
 
@@ -21,8 +22,8 @@ use Thelia\Form\BaseForm;
  * Class SetDeliveryPrice
  * @package LocalPickup\Form
  */
-class SetDeliveryPrice extends BaseForm
-{
+class SetDeliveryPrice extends BaseForm {
+
     /**
      *
      * in this function you add all the fields you need for your Form.
@@ -43,25 +44,23 @@ class SetDeliveryPrice extends BaseForm
      *
      * @return null
      */
-    protected function buildForm()
-    {
+    protected function buildForm() {
         $this->formBuilder
-            ->add("price","text", array(
-                "label"=>Translator::getInstance()->trans("Price"),
-                "label_attr"=>array(
-                    "for"=>"pricefield"
-                ),
-                "constraints"=>array(new NotBlank()),
-                "data"=> LocalPickupShippingQuery::create()->getPrice()
-            ))
+                ->add("price", "text", array(
+                    "label" => Translator::getInstance()->trans("Price"),
+                    "label_attr" => array(
+                        "for" => "pricefield"
+                    ),
+                    "constraints" => array(new NotBlank()),
+                    "data" => LocalPickupShippingQuery::create()->getPrice()
+                ))
         ;
     }
 
     /**
      * @return string the name of you form. This name must be unique
      */
-    public function getName()
-    {
+    public function getName() {
         return "set-delivery-price-localpickup";
     }
 

@@ -5,14 +5,17 @@ namespace LocalPickup\Model\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use LocalPickup\Model\LocalPickupShipping as ChildLocalPickupShipping;
-use LocalPickup\Model\LocalPickupShippingQuery as ChildLocalPickupShippingQuery;
-use LocalPickup\Model\Map\LocalPickupShippingTableMap;
+use LocalPickup\Model\LocalPickup as ChildLocalPickup;
+use LocalPickup\Model\LocalPickupQuery as ChildLocalPickupQuery;
+use LocalPickup\Model\OrderLocalPickupAddress as ChildOrderLocalPickupAddress;
+use LocalPickup\Model\OrderLocalPickupAddressQuery as ChildOrderLocalPickupAddressQuery;
+use LocalPickup\Model\Map\LocalPickupTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
@@ -20,12 +23,12 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
-abstract class LocalPickupShipping implements ActiveRecordInterface 
+abstract class LocalPickup implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\LocalPickup\\Model\\Map\\LocalPickupShippingTableMap';
+    const TABLE_MAP = '\\LocalPickup\\Model\\Map\\LocalPickupTableMap';
 
 
     /**
@@ -61,10 +64,28 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the price field.
-     * @var        double
+     * The value for the address field.
+     * @var        string
      */
-    protected $price;
+    protected $address;
+
+    /**
+     * The value for the gps_lat field.
+     * @var        string
+     */
+    protected $gps_lat;
+
+    /**
+     * The value for the gps_long field.
+     * @var        string
+     */
+    protected $gps_long;
+
+    /**
+     * The value for the hint field.
+     * @var        string
+     */
+    protected $hint;
 
     /**
      * The value for the created_at field.
@@ -79,6 +100,12 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     protected $updated_at;
 
     /**
+     * @var        ObjectCollection|ChildOrderLocalPickupAddress[] Collection to store aggregation of ChildOrderLocalPickupAddress objects.
+     */
+    protected $collOrderLocalPickupAddresses;
+    protected $collOrderLocalPickupAddressesPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -87,7 +114,13 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of LocalPickup\Model\Base\LocalPickupShipping object.
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $orderLocalPickupAddressesScheduledForDeletion = null;
+
+    /**
+     * Initializes internal state of LocalPickup\Model\Base\LocalPickup object.
      */
     public function __construct()
     {
@@ -182,9 +215,9 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>LocalPickupShipping</code> instance.  If
-     * <code>obj</code> is an instance of <code>LocalPickupShipping</code>, delegates to
-     * <code>equals(LocalPickupShipping)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>LocalPickup</code> instance.  If
+     * <code>obj</code> is an instance of <code>LocalPickup</code>, delegates to
+     * <code>equals(LocalPickup)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -267,7 +300,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return LocalPickupShipping The current object, for fluid interface
+     * @return LocalPickup The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -299,7 +332,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return LocalPickupShipping The current object, for fluid interface
+     * @return LocalPickup The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -356,14 +389,47 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     }
 
     /**
-     * Get the [price] column value.
+     * Get the [address] column value.
      * 
-     * @return   double
+     * @return   string
      */
-    public function getPrice()
+    public function getAddress()
     {
 
-        return $this->price;
+        return $this->address;
+    }
+
+    /**
+     * Get the [gps_lat] column value.
+     * 
+     * @return   string
+     */
+    public function getGpsLat()
+    {
+
+        return $this->gps_lat;
+    }
+
+    /**
+     * Get the [gps_long] column value.
+     * 
+     * @return   string
+     */
+    public function getGpsLong()
+    {
+
+        return $this->gps_long;
+    }
+
+    /**
+     * Get the [hint] column value.
+     * 
+     * @return   string
+     */
+    public function gethint()
+    {
+
+        return $this->hint;
     }
 
     /**
@@ -410,7 +476,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \LocalPickup\Model\LocalPickupShipping The current object (for fluent API support)
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -420,7 +486,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[LocalPickupShippingTableMap::ID] = true;
+            $this->modifiedColumns[LocalPickupTableMap::ID] = true;
         }
 
 
@@ -428,32 +494,95 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [price] column.
+     * Set the value of [address] column.
      * 
-     * @param      double $v new value
-     * @return   \LocalPickup\Model\LocalPickupShipping The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
      */
-    public function setPrice($v)
+    public function setAddress($v)
     {
         if ($v !== null) {
-            $v = (double) $v;
+            $v = (string) $v;
         }
 
-        if ($this->price !== $v) {
-            $this->price = $v;
-            $this->modifiedColumns[LocalPickupShippingTableMap::PRICE] = true;
+        if ($this->address !== $v) {
+            $this->address = $v;
+            $this->modifiedColumns[LocalPickupTableMap::ADDRESS] = true;
         }
 
 
         return $this;
-    } // setPrice()
+    } // setAddress()
+
+    /**
+     * Set the value of [gps_lat] column.
+     * 
+     * @param      string $v new value
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
+     */
+    public function setGpsLat($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->gps_lat !== $v) {
+            $this->gps_lat = $v;
+            $this->modifiedColumns[LocalPickupTableMap::GPS_LAT] = true;
+        }
+
+
+        return $this;
+    } // setGpsLat()
+
+    /**
+     * Set the value of [gps_long] column.
+     * 
+     * @param      string $v new value
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
+     */
+    public function setGpsLong($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->gps_long !== $v) {
+            $this->gps_long = $v;
+            $this->modifiedColumns[LocalPickupTableMap::GPS_LONG] = true;
+        }
+
+
+        return $this;
+    } // setGpsLong()
+
+    /**
+     * Set the value of [hint] column.
+     * 
+     * @param      string $v new value
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
+     */
+    public function sethint($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->hint !== $v) {
+            $this->hint = $v;
+            $this->modifiedColumns[LocalPickupTableMap::HINT] = true;
+        }
+
+
+        return $this;
+    } // sethint()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \LocalPickup\Model\LocalPickupShipping The current object (for fluent API support)
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -461,7 +590,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[LocalPickupShippingTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[LocalPickupTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -474,7 +603,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \LocalPickup\Model\LocalPickupShipping The current object (for fluent API support)
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -482,7 +611,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[LocalPickupShippingTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[LocalPickupTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -527,19 +656,28 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : LocalPickupShippingTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : LocalPickupTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : LocalPickupShippingTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->price = (null !== $col) ? (double) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : LocalPickupTableMap::translateFieldName('Address', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->address = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : LocalPickupShippingTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : LocalPickupTableMap::translateFieldName('GpsLat', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->gps_lat = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : LocalPickupTableMap::translateFieldName('GpsLong', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->gps_long = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : LocalPickupTableMap::translateFieldName('hint', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->hint = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : LocalPickupTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : LocalPickupShippingTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : LocalPickupTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -552,10 +690,10 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = LocalPickupShippingTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = LocalPickupTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \LocalPickup\Model\LocalPickupShipping object", 0, $e);
+            throw new PropelException("Error populating \LocalPickup\Model\LocalPickup object", 0, $e);
         }
     }
 
@@ -597,13 +735,13 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(LocalPickupShippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(LocalPickupTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildLocalPickupShippingQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildLocalPickupQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -612,6 +750,8 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->collOrderLocalPickupAddresses = null;
 
         } // if (deep)
     }
@@ -622,8 +762,8 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see LocalPickupShipping::setDeleted()
-     * @see LocalPickupShipping::isDeleted()
+     * @see LocalPickup::setDeleted()
+     * @see LocalPickup::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -632,12 +772,12 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupShippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildLocalPickupShippingQuery::create()
+            $deleteQuery = ChildLocalPickupQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -674,7 +814,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupShippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(LocalPickupTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -684,16 +824,16 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(LocalPickupShippingTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(LocalPickupTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(LocalPickupShippingTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(LocalPickupTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(LocalPickupShippingTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(LocalPickupTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -705,7 +845,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                LocalPickupShippingTableMap::addInstanceToPool($this);
+                LocalPickupTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -746,6 +886,23 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                 $this->resetModified();
             }
 
+            if ($this->orderLocalPickupAddressesScheduledForDeletion !== null) {
+                if (!$this->orderLocalPickupAddressesScheduledForDeletion->isEmpty()) {
+                    \LocalPickup\Model\OrderLocalPickupAddressQuery::create()
+                        ->filterByPrimaryKeys($this->orderLocalPickupAddressesScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->orderLocalPickupAddressesScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collOrderLocalPickupAddresses !== null) {
+            foreach ($this->collOrderLocalPickupAddresses as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
             $this->alreadyInSave = false;
 
         }
@@ -766,27 +923,36 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[LocalPickupShippingTableMap::ID] = true;
+        $this->modifiedColumns[LocalPickupTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LocalPickupShippingTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . LocalPickupTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(LocalPickupShippingTableMap::ID)) {
+        if ($this->isColumnModified(LocalPickupTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(LocalPickupShippingTableMap::PRICE)) {
-            $modifiedColumns[':p' . $index++]  = 'PRICE';
+        if ($this->isColumnModified(LocalPickupTableMap::ADDRESS)) {
+            $modifiedColumns[':p' . $index++]  = 'ADDRESS';
         }
-        if ($this->isColumnModified(LocalPickupShippingTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(LocalPickupTableMap::GPS_LAT)) {
+            $modifiedColumns[':p' . $index++]  = 'GPS_LAT';
+        }
+        if ($this->isColumnModified(LocalPickupTableMap::GPS_LONG)) {
+            $modifiedColumns[':p' . $index++]  = 'GPS_LONG';
+        }
+        if ($this->isColumnModified(LocalPickupTableMap::HINT)) {
+            $modifiedColumns[':p' . $index++]  = 'HINT';
+        }
+        if ($this->isColumnModified(LocalPickupTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(LocalPickupShippingTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(LocalPickupTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
         $sql = sprintf(
-            'INSERT INTO local_pickup_shipping (%s) VALUES (%s)',
+            'INSERT INTO local_pickup (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -798,8 +964,17 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                     case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'PRICE':                        
-                        $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
+                    case 'ADDRESS':                        
+                        $stmt->bindValue($identifier, $this->address, PDO::PARAM_STR);
+                        break;
+                    case 'GPS_LAT':                        
+                        $stmt->bindValue($identifier, $this->gps_lat, PDO::PARAM_STR);
+                        break;
+                    case 'GPS_LONG':                        
+                        $stmt->bindValue($identifier, $this->gps_long, PDO::PARAM_STR);
+                        break;
+                    case 'HINT':                        
+                        $stmt->bindValue($identifier, $this->hint, PDO::PARAM_STR);
                         break;
                     case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -853,7 +1028,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = LocalPickupShippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = LocalPickupTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -873,12 +1048,21 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getPrice();
+                return $this->getAddress();
                 break;
             case 2:
-                return $this->getCreatedAt();
+                return $this->getGpsLat();
                 break;
             case 3:
+                return $this->getGpsLong();
+                break;
+            case 4:
+                return $this->gethint();
+                break;
+            case 5:
+                return $this->getCreatedAt();
+                break;
+            case 6:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -898,27 +1082,36 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['LocalPickupShipping'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['LocalPickup'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['LocalPickupShipping'][$this->getPrimaryKey()] = true;
-        $keys = LocalPickupShippingTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['LocalPickup'][$this->getPrimaryKey()] = true;
+        $keys = LocalPickupTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getPrice(),
-            $keys[2] => $this->getCreatedAt(),
-            $keys[3] => $this->getUpdatedAt(),
+            $keys[1] => $this->getAddress(),
+            $keys[2] => $this->getGpsLat(),
+            $keys[3] => $this->getGpsLong(),
+            $keys[4] => $this->gethint(),
+            $keys[5] => $this->getCreatedAt(),
+            $keys[6] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
         
+        if ($includeForeignObjects) {
+            if (null !== $this->collOrderLocalPickupAddresses) {
+                $result['OrderLocalPickupAddresses'] = $this->collOrderLocalPickupAddresses->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -936,7 +1129,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = LocalPickupShippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = LocalPickupTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -956,12 +1149,21 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setPrice($value);
+                $this->setAddress($value);
                 break;
             case 2:
-                $this->setCreatedAt($value);
+                $this->setGpsLat($value);
                 break;
             case 3:
+                $this->setGpsLong($value);
+                break;
+            case 4:
+                $this->sethint($value);
+                break;
+            case 5:
+                $this->setCreatedAt($value);
+                break;
+            case 6:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -986,12 +1188,15 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = LocalPickupShippingTableMap::getFieldNames($keyType);
+        $keys = LocalPickupTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setPrice($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setUpdatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setAddress($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setGpsLat($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setGpsLong($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->sethint($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
     }
 
     /**
@@ -1001,12 +1206,15 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(LocalPickupShippingTableMap::DATABASE_NAME);
+        $criteria = new Criteria(LocalPickupTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(LocalPickupShippingTableMap::ID)) $criteria->add(LocalPickupShippingTableMap::ID, $this->id);
-        if ($this->isColumnModified(LocalPickupShippingTableMap::PRICE)) $criteria->add(LocalPickupShippingTableMap::PRICE, $this->price);
-        if ($this->isColumnModified(LocalPickupShippingTableMap::CREATED_AT)) $criteria->add(LocalPickupShippingTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(LocalPickupShippingTableMap::UPDATED_AT)) $criteria->add(LocalPickupShippingTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(LocalPickupTableMap::ID)) $criteria->add(LocalPickupTableMap::ID, $this->id);
+        if ($this->isColumnModified(LocalPickupTableMap::ADDRESS)) $criteria->add(LocalPickupTableMap::ADDRESS, $this->address);
+        if ($this->isColumnModified(LocalPickupTableMap::GPS_LAT)) $criteria->add(LocalPickupTableMap::GPS_LAT, $this->gps_lat);
+        if ($this->isColumnModified(LocalPickupTableMap::GPS_LONG)) $criteria->add(LocalPickupTableMap::GPS_LONG, $this->gps_long);
+        if ($this->isColumnModified(LocalPickupTableMap::HINT)) $criteria->add(LocalPickupTableMap::HINT, $this->hint);
+        if ($this->isColumnModified(LocalPickupTableMap::CREATED_AT)) $criteria->add(LocalPickupTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(LocalPickupTableMap::UPDATED_AT)) $criteria->add(LocalPickupTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1021,8 +1229,8 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(LocalPickupShippingTableMap::DATABASE_NAME);
-        $criteria->add(LocalPickupShippingTableMap::ID, $this->id);
+        $criteria = new Criteria(LocalPickupTableMap::DATABASE_NAME);
+        $criteria->add(LocalPickupTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1063,16 +1271,33 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \LocalPickup\Model\LocalPickupShipping (or compatible) type.
+     * @param      object $copyObj An object of \LocalPickup\Model\LocalPickup (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setPrice($this->getPrice());
+        $copyObj->setAddress($this->getAddress());
+        $copyObj->setGpsLat($this->getGpsLat());
+        $copyObj->setGpsLong($this->getGpsLong());
+        $copyObj->sethint($this->gethint());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getOrderLocalPickupAddresses() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOrderLocalPickupAddress($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1088,7 +1313,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \LocalPickup\Model\LocalPickupShipping Clone of current object.
+     * @return                 \LocalPickup\Model\LocalPickup Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1101,13 +1326,275 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
         return $copyObj;
     }
 
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('OrderLocalPickupAddress' == $relationName) {
+            return $this->initOrderLocalPickupAddresses();
+        }
+    }
+
+    /**
+     * Clears out the collOrderLocalPickupAddresses collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addOrderLocalPickupAddresses()
+     */
+    public function clearOrderLocalPickupAddresses()
+    {
+        $this->collOrderLocalPickupAddresses = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collOrderLocalPickupAddresses collection loaded partially.
+     */
+    public function resetPartialOrderLocalPickupAddresses($v = true)
+    {
+        $this->collOrderLocalPickupAddressesPartial = $v;
+    }
+
+    /**
+     * Initializes the collOrderLocalPickupAddresses collection.
+     *
+     * By default this just sets the collOrderLocalPickupAddresses collection to an empty array (like clearcollOrderLocalPickupAddresses());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOrderLocalPickupAddresses($overrideExisting = true)
+    {
+        if (null !== $this->collOrderLocalPickupAddresses && !$overrideExisting) {
+            return;
+        }
+        $this->collOrderLocalPickupAddresses = new ObjectCollection();
+        $this->collOrderLocalPickupAddresses->setModel('\LocalPickup\Model\OrderLocalPickupAddress');
+    }
+
+    /**
+     * Gets an array of ChildOrderLocalPickupAddress objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildLocalPickup is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildOrderLocalPickupAddress[] List of ChildOrderLocalPickupAddress objects
+     * @throws PropelException
+     */
+    public function getOrderLocalPickupAddresses($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderLocalPickupAddressesPartial && !$this->isNew();
+        if (null === $this->collOrderLocalPickupAddresses || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOrderLocalPickupAddresses) {
+                // return empty collection
+                $this->initOrderLocalPickupAddresses();
+            } else {
+                $collOrderLocalPickupAddresses = ChildOrderLocalPickupAddressQuery::create(null, $criteria)
+                    ->filterByLocalPickup($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collOrderLocalPickupAddressesPartial && count($collOrderLocalPickupAddresses)) {
+                        $this->initOrderLocalPickupAddresses(false);
+
+                        foreach ($collOrderLocalPickupAddresses as $obj) {
+                            if (false == $this->collOrderLocalPickupAddresses->contains($obj)) {
+                                $this->collOrderLocalPickupAddresses->append($obj);
+                            }
+                        }
+
+                        $this->collOrderLocalPickupAddressesPartial = true;
+                    }
+
+                    reset($collOrderLocalPickupAddresses);
+
+                    return $collOrderLocalPickupAddresses;
+                }
+
+                if ($partial && $this->collOrderLocalPickupAddresses) {
+                    foreach ($this->collOrderLocalPickupAddresses as $obj) {
+                        if ($obj->isNew()) {
+                            $collOrderLocalPickupAddresses[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOrderLocalPickupAddresses = $collOrderLocalPickupAddresses;
+                $this->collOrderLocalPickupAddressesPartial = false;
+            }
+        }
+
+        return $this->collOrderLocalPickupAddresses;
+    }
+
+    /**
+     * Sets a collection of OrderLocalPickupAddress objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $orderLocalPickupAddresses A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildLocalPickup The current object (for fluent API support)
+     */
+    public function setOrderLocalPickupAddresses(Collection $orderLocalPickupAddresses, ConnectionInterface $con = null)
+    {
+        $orderLocalPickupAddressesToDelete = $this->getOrderLocalPickupAddresses(new Criteria(), $con)->diff($orderLocalPickupAddresses);
+
+        
+        $this->orderLocalPickupAddressesScheduledForDeletion = $orderLocalPickupAddressesToDelete;
+
+        foreach ($orderLocalPickupAddressesToDelete as $orderLocalPickupAddressRemoved) {
+            $orderLocalPickupAddressRemoved->setLocalPickup(null);
+        }
+
+        $this->collOrderLocalPickupAddresses = null;
+        foreach ($orderLocalPickupAddresses as $orderLocalPickupAddress) {
+            $this->addOrderLocalPickupAddress($orderLocalPickupAddress);
+        }
+
+        $this->collOrderLocalPickupAddresses = $orderLocalPickupAddresses;
+        $this->collOrderLocalPickupAddressesPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related OrderLocalPickupAddress objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related OrderLocalPickupAddress objects.
+     * @throws PropelException
+     */
+    public function countOrderLocalPickupAddresses(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOrderLocalPickupAddressesPartial && !$this->isNew();
+        if (null === $this->collOrderLocalPickupAddresses || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOrderLocalPickupAddresses) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getOrderLocalPickupAddresses());
+            }
+
+            $query = ChildOrderLocalPickupAddressQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByLocalPickup($this)
+                ->count($con);
+        }
+
+        return count($this->collOrderLocalPickupAddresses);
+    }
+
+    /**
+     * Method called to associate a ChildOrderLocalPickupAddress object to this object
+     * through the ChildOrderLocalPickupAddress foreign key attribute.
+     *
+     * @param    ChildOrderLocalPickupAddress $l ChildOrderLocalPickupAddress
+     * @return   \LocalPickup\Model\LocalPickup The current object (for fluent API support)
+     */
+    public function addOrderLocalPickupAddress(ChildOrderLocalPickupAddress $l)
+    {
+        if ($this->collOrderLocalPickupAddresses === null) {
+            $this->initOrderLocalPickupAddresses();
+            $this->collOrderLocalPickupAddressesPartial = true;
+        }
+
+        if (!in_array($l, $this->collOrderLocalPickupAddresses->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddOrderLocalPickupAddress($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param OrderLocalPickupAddress $orderLocalPickupAddress The orderLocalPickupAddress object to add.
+     */
+    protected function doAddOrderLocalPickupAddress($orderLocalPickupAddress)
+    {
+        $this->collOrderLocalPickupAddresses[]= $orderLocalPickupAddress;
+        $orderLocalPickupAddress->setLocalPickup($this);
+    }
+
+    /**
+     * @param  OrderLocalPickupAddress $orderLocalPickupAddress The orderLocalPickupAddress object to remove.
+     * @return ChildLocalPickup The current object (for fluent API support)
+     */
+    public function removeOrderLocalPickupAddress($orderLocalPickupAddress)
+    {
+        if ($this->getOrderLocalPickupAddresses()->contains($orderLocalPickupAddress)) {
+            $this->collOrderLocalPickupAddresses->remove($this->collOrderLocalPickupAddresses->search($orderLocalPickupAddress));
+            if (null === $this->orderLocalPickupAddressesScheduledForDeletion) {
+                $this->orderLocalPickupAddressesScheduledForDeletion = clone $this->collOrderLocalPickupAddresses;
+                $this->orderLocalPickupAddressesScheduledForDeletion->clear();
+            }
+            $this->orderLocalPickupAddressesScheduledForDeletion[]= clone $orderLocalPickupAddress;
+            $orderLocalPickupAddress->setLocalPickup(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this LocalPickup is new, it will return
+     * an empty collection; or if this LocalPickup has previously
+     * been saved, it will retrieve related OrderLocalPickupAddresses from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in LocalPickup.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildOrderLocalPickupAddress[] List of ChildOrderLocalPickupAddress objects
+     */
+    public function getOrderLocalPickupAddressesJoinOrder($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOrderLocalPickupAddressQuery::create(null, $criteria);
+        $query->joinWith('Order', $joinBehavior);
+
+        return $this->getOrderLocalPickupAddresses($query, $con);
+    }
+
     /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
-        $this->price = null;
+        $this->address = null;
+        $this->gps_lat = null;
+        $this->gps_long = null;
+        $this->hint = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1129,8 +1616,14 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collOrderLocalPickupAddresses) {
+                foreach ($this->collOrderLocalPickupAddresses as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collOrderLocalPickupAddresses = null;
     }
 
     /**
@@ -1140,7 +1633,7 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(LocalPickupShippingTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(LocalPickupTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1148,11 +1641,11 @@ abstract class LocalPickupShipping implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildLocalPickupShipping The current object (for fluent API support)
+     * @return     ChildLocalPickup The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[LocalPickupShippingTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[LocalPickupTableMap::UPDATED_AT] = true;
     
         return $this;
     }
