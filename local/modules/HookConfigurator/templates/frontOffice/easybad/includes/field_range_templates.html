@@ -8,7 +8,11 @@
             <p><span style="display: block; float: left;">€ {$element.attr.min}</span> <span style="display: block; float: right;">€ {$element.attr.max}</span></p>
             <input type="range" min="{$element.attr.min}" max="{$element.attr.max}" value="{($element.attr.max/2)|string_format:"%d"}" name="{$name}" class="slider" oninput="setValue({$element.name})" id="myRange_{$element.name}" {if $element.required eq true }required{/if}>
             <p style="margin-top: 20px;">€ <span id="value_selected_{$element.name}">{($element.attr.max/2)|string_format:"%d"}</span></p>
-             <div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
+             {if $last_slide == $current_slide}
+             	{include file="includes/submit_template.html"}
+             {else}
+             	<div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
+             {/if}
         </span>
     </div>
     {/form_field}

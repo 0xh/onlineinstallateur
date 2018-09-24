@@ -21,6 +21,7 @@ use Thelia\Model\Map\FeatureI18nTableMap;
 use Thelia\Model\ProductQuery;
 use Thelia\Tools\URL;
 use const THELIA_ROOT;
+use Thelia\Log\Tlog;
 
 class ConfiguratorController extends BaseFrontController {
 
@@ -208,11 +209,27 @@ class ConfiguratorController extends BaseFrontController {
                 }
             }
 
+            $customerLastName = "";
+            $customerFirstName = "";
+            $customerTelephone = "";
+            $customerEmail = "";
+            if(array_key_exists('nachname',$data))
+                $customerLastName = $data['nachname'];
+            
+            if(array_key_exists('vorname',$data))
+                $customerFirstName = $data['vorname'];
+            
+            if(array_key_exists('telefon',$data))
+                $customerTelephone = $data['telefon'];
+            
+            if(array_key_exists('email',$data))
+                $customerEmail = $data['email'];
+                
             $messageParameters += array(
-                'customer_last_name' => $data['nachname'],
-                'customer_first_name' => $data['vorname'],
-                'telefon_number' => $data['telefon'],
-                'email' => $data['email'],
+                'customer_last_name' => $customerLastName,
+                'customer_first_name' => $customerFirstName,
+                'telefon_number' => $customerTelephone,
+                'email' => $customerEmail,
                 'imagesHTML' => $imagesHTML
             );
 
@@ -237,19 +254,14 @@ class ConfiguratorController extends BaseFrontController {
 
             return RedirectResponse::create(URL::getInstance()->absoluteUrl($url));
         } catch (Exception $ex) {
-// Any other error
-            $errorMessage = ('Error  message form' . $ex->getMessage());
+            $errorMessage = ('Error  message form ' . $ex->getMessage());
         }
 
         if (null !== $errorMessage) {
-// Mark the form as with error
             $form->setErrorMessage($errorMessage);
-
-// Send the form and the error to the parser
             $this->getParserContext()
                     ->addForm($form)
-                    ->setGeneralError($errorMessage)
-            ;
+                    ->setGeneralError($errorMessage);
         }
     }
 
@@ -303,6 +315,8 @@ class ConfiguratorController extends BaseFrontController {
     public function buildRedirectURL($data) {
         $arrFeatures = array();
         foreach ($data['questions'] as $question_number => $context) {
+            Tlog::getInstance()->error("question_type  ".$context['type_of']. " question ".$context['question']." answer ".$context['answer']);
+            
             switch ($context['type_of']) {
                 case "choice" :
                     $f_list = FeatureI18nQuery::create()
@@ -310,7 +324,7 @@ class ConfiguratorController extends BaseFrontController {
                             ->withColumn(FeatureAvTableMap::ID, "fv_id")
                             ->addJoin(FeatureI18nTableMap::ID, FeatureAvTableMap::FEATURE_ID)
                             ->addJoin(FeatureAvTableMap::ID, FeatureAvI18nTableMap::ID)
-                            ->addCond('cond1', FeatureI18nTableMap::TITLE, $context['question'], Criteria::EQUAL)
+                            ->addCond('cond1', FeatureI18nTableMap::TITLE, trim($context['question']), Criteria::EQUAL)
                             ->addCond('cond2', FeatureAvI18nTableMap::TITLE, trim($context['answer']), Criteria::EQUAL)
                             ->where(array('cond1', 'cond2'), 'and')
                             ->find();
@@ -322,26 +336,47 @@ class ConfiguratorController extends BaseFrontController {
                             ->withColumn('CAST(' . FeatureAvI18nTableMap::TITLE . ' AS UNSIGNED )', "fv_title")
                             ->addJoin(FeatureI18nTableMap::ID, FeatureAvTableMap::FEATURE_ID)
                             ->addJoin(FeatureAvTableMap::ID, FeatureAvI18nTableMap::ID)
-                            ->addCond('cond1', FeatureI18nTableMap::TITLE, $context['question'], Criteria::EQUAL)
-                            ->addCond('cond2', FeatureAvI18nTableMap::TITLE, $context['answer'], Criteria::LESS_EQUAL)
+                            ->addCond('cond1', FeatureI18nTableMap::TITLE, trim($context['question']), Criteria::EQUAL)
+                            ->addCond('cond2', FeatureAvI18nTableMap::TITLE, trim($context['answer']), Criteria::LESS_EQUAL)
                             ->where(array('cond1', 'cond2'), 'and')
                             ->orderBy('fv_title')
                             ->find();
                     break;
+                case "range" :
+                    $f_list = FeatureI18nQuery::create()
+                            ->withColumn(FeatureI18nTableMap::ID, "f_id")
+                            ->withColumn(FeatureAvTableMap::ID, "fv_id")
+                            ->withColumn('CAST(' . FeatureAvI18nTableMap::TITLE . ' AS UNSIGNED )', "fv_title")
+                            ->addJoin(FeatureI18nTableMap::ID, FeatureAvTableMap::FEATURE_ID)
+                            ->addJoin(FeatureAvTableMap::ID, FeatureAvI18nTableMap::ID)
+                            ->addCond('cond1', FeatureI18nTableMap::TITLE, trim($context['question']), Criteria::EQUAL)
+                            ->addCond('cond2', FeatureAvI18nTableMap::TITLE, trim($context['answer']), Criteria::LESS_EQUAL)
+                            ->where(array('cond1', 'cond2'), 'and')
+                            ->orderBy('fv_title')
+                            ->find();
+                   break;
                 default :
                     continue;
                     break;
             }
 
             if ($f_list && $f_list->getData()[0]) {
-                $arrFeatures[$f_list->getData()[0]->getVirtualColumn("f_id")] .= $f_list->getData()[0]->getVirtualColumn("fv_id") . "|";
+                $feature_id = $f_list->getData()[0]->getVirtualColumn("f_id");
+                $feature_value_id = $f_list->getData()[0]->getVirtualColumn("fv_id");
+                if(array_key_exists($feature_id,$arrFeatures)) {
+                    $arrFeatures[$feature_id] .= "|".$feature_value_id;
+                }
+                else {
+                    $newFeatureRow = array($feature_id => $feature_value_id);
+                    $arrFeatures = $arrFeatures + $newFeatureRow;
+                }
             } else {
                 continue;
             }
         }
 
         foreach ($arrFeatures as $key => $value) {
-            $arrFeatures[$key] = $key . "_(" . rtrim($value, "|") . ")";
+            $arrFeatures[$key] = $key . "_(" . $value . ")";
         }
 
         if ($this->getRedirectTemplateSearch()) {
