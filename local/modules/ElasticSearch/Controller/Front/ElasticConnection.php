@@ -75,7 +75,7 @@ class  ElasticConnection {
             $this->setPass($params['pass']);
             self::connectToElastic($params);
         } else {
-            $this->setHost("elasticsearch");
+            $this->setHost("185.164.5.11");
             $this->setPort("9200");
             $this->setSchema("http");
             $this->setUser("admin");
