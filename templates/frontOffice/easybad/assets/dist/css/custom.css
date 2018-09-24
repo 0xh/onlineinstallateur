@@ -538,3 +538,25 @@ section .product-image{
     }
 }
 /*End Easybad mobile Menu*/
+
+
+/*Inspiration Page*/
+
+.inspiration-header{
+	background- width:100%;
+	max-height:550px;
+	min-height:400px;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.inspiration-header .info-card{
+	margin:20px;
+	background: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 1px -1px rgba(0,0,0,.12);
+}
+.border-top{
+	border-top:#CCC solid 1px;
+}
