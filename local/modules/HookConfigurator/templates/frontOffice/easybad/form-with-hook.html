@@ -16,10 +16,11 @@
             <input type="hidden" name="{$name}" value="{url path='/'}" />
             {/form_field}
 
-            {assign var=val value=1}
+            {assign var=current_slide value=1}
+            {assign var=last_slide value=$arrElements|@count}
             {foreach $arrElements as $element}
-                <fieldset row item-number={$val} style="background-image: url({$background_image}); background-size: cover;">
-                          {if  $val !=1 }
+                <fieldset row item-number={$current_slide} style="background-image: url({$background_image}); background-size: cover;">
+                          {if  $current_slide !=1 }
                               <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                   <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
                               </button>
@@ -57,11 +58,12 @@
                               {include file="includes/file_upload_templates.html"} 
                           {/if}
                 </fieldset>
-                {assign var=val value=$val+1}
+                {assign var=current_slide value=$current_slide+1}
             {/foreach}
+
             {if $contactArr.visible_form_contact}
                 <fieldset>
-                    {if  $val !=1 }
+                    {if  $current_slide !=1 }
                         <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
                         </button>
@@ -70,22 +72,9 @@
                             <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
                         </button>
                     {/if}
-
                     {include file="includes/contact_form_template.html"}     
                 </fieldset>
-            {/if}
-            {*<fieldset>
-            {if  $val !=1 }
-            <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
-            </button>
-            {else}
-            <button class="previous_hide" disabled>
-            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-            </button>
-            {/if}
-
-            </fieldset>*}
+			{/if}
         </form>
         <div class="progress">
             <div class="progress-bar active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>

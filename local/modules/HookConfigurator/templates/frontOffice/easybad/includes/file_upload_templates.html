@@ -22,7 +22,6 @@
         <h3>
             <label class="fragelabel fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"}</label>
         </h3>
-{*        <div class="panel-body" id="imsirun">*}
             <div id="dragdrop" class="fs-anim-upper">                     
                 <div class="fallback">
                     <input name="{$name}" type="file" multiple=""/>
@@ -32,10 +31,13 @@
                 </div>
                 <div id="previews" class="dropzone"></div>
             </div>
-            <span class="form_upload">
-                <input type="button" name="next" class="simpleNext btn" value="{intl l='Weiter'}" />
-            </span>
-{*        </div>*}
+            {if $last_slide == $current_slide}
+           		{include file="includes/submit_template.html"}
+           	{else}
+           		<span class="form_upload">
+                	<input type="button" name="next" class="simpleNext btn" value="{intl l='Weiter'}" />
+            	</span>
+           	{/if}           
     </div>
     {/form_field}
 

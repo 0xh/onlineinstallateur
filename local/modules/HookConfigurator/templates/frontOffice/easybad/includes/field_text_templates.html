@@ -8,9 +8,12 @@
             <input type="text" class="fs-anim-lower inputText" style="width:50%; margin:0 auto" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
             {if $element.description }
                 <label class="text_description">{$element.description}</label>
-            {/if}
-
-			 <div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
+          {/if}
+            {if $last_slide == $current_slide}
+           		{include file="includes/submit_template.html"}
+           	{else}
+           		<div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
+           	{/if}
         </span>
     </div>
     {/form_field}
