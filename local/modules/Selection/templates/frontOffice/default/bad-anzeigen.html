@@ -227,7 +227,8 @@
                 }
             });
 
-            $("#total_price").text(parseFloat(total).toFixed(2));
+            {*            $("#total_price").text(parseFloat(total).toFixed(2));*}
+            $("#total_price").text(new Intl.NumberFormat('de-DE').format(total));
         }
 
         $(".add-total-products").click(function () {
