@@ -5,7 +5,8 @@ namespace Selection\Loop;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Exception\PropelException;
 use Selection\Model\Map\SelectionContainerAssociatedSelectionTableMap;
-use Selection\Model\Selection;
+use Selection\Model\Map\SelectionFeaturesTableMap;
+use Selection\Model\Map\SelectionTableMap;
 use Selection\Model\SelectionI18nQuery;
 use Selection\Model\SelectionQuery;
 use Thelia\Core\Template\Element\BaseI18nLoop;
@@ -14,9 +15,12 @@ use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Type;
+use Propel\Runtime\ActiveQuery\Join;
 use Thelia\Type\BooleanOrBothType;
 use Thelia\Type\TypeCollection;
+use Thelia\Type\IntToCombinedIntsListType;
+use Thelia\Type\EnumListType;
+use Thelia\Log\Tlog;
 
 /**
  * Class SelectionLoop
@@ -50,9 +54,15 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
             Argument::createIntListTypeArgument('position'),
             Argument::createIntListTypeArgument('exclude'),
             new Argument(
+                'feature_availability',
+                new TypeCollection(
+                    new IntToCombinedIntsListType()
+                    )
+                ),
+            new Argument(
                 'order',
                 new TypeCollection(
-                    new Type\EnumListType(array(
+                    new EnumListType(array(
                         'id', 'id_reverse',
                         'alpha', 'alpha_reverse',
                         'manual', 'manual_reverse',
@@ -123,6 +133,10 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
             $search->leftJoinSelectionContainerAssociatedSelection(SelectionContainerAssociatedSelectionTableMap::TABLE_NAME);
             $search->where(SelectionContainerAssociatedSelectionTableMap::SELECTION_ID . Criteria::ISNULL);
         }
+        
+        $feature_availability = $this->getFeatureAvailability();
+        
+        $this->manageFeatureAv($search, $feature_availability);
 
         /** @noinspection PhpUndefinedMethodInspection */
         $orders  = $this->getOrder();
@@ -173,8 +187,58 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
                     $search->orderByPosition(Criteria::ASC);
             }
         }
-
+Tlog::getInstance()->error("almost at selection");
         return $search;
+    }
+    
+    /**
+     * @param SelectionQuery $search
+     * @param string[] $feature_availability
+     */
+    protected function manageFeatureAv(&$search, $feature_availability)
+    {
+        if (null !== $feature_availability) {
+            foreach ($feature_availability as $feature => $feature_choice) {
+                foreach ($feature_choice['values'] as $feature_av) {
+                    $featureAlias = 'fa_' . $feature;
+                    if ($feature_av != '*') {
+                        $featureAlias .= '_' . $feature_av;
+                    }
+                    
+                    $featureAvJoin =  new Join();
+                    $featureAvJoin->addExplicitCondition(
+                        SelectionTableMap::TABLE_NAME,
+                        'ID',
+                        'selection',
+                        SelectionFeaturesTableMap::TABLE_NAME,
+                        'SELECTION_ID',
+                        $featureAlias
+                        );
+                    $featureAvJoin->setJoinType(Criteria::LEFT_JOIN);
+                    $search->addJoinObject($featureAvJoin, $featureAlias);
+                    
+                    
+                 //   $search->join
+                    //$search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
+               //     ->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_ID = ?", $feature, null, \PDO::PARAM_INT);
+                    if ($feature_av != '*') {
+                        $search->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_AV_ID = ?", $feature_av, null, \PDO::PARAM_INT);
+                    }
+                }
+                
+                /* format for mysql */
+                $sqlWhereString = $feature_choice['expression'];
+                if ($sqlWhereString == '*') {
+                    $sqlWhereString = 'NOT ISNULL(`fa_' . $feature . '`.ID)';
+                } else {
+                    $sqlWhereString = preg_replace('#([0-9]+)#', 'NOT ISNULL(`fa_' . $feature . '_' . '\1`.ID)', $sqlWhereString);
+                    $sqlWhereString = str_replace('&', ' AND ', $sqlWhereString);
+                    $sqlWhereString = str_replace('|', ' OR ', $sqlWhereString);
+                }
+                
+                $search->where("(" . $sqlWhereString . ")");
+            }
+        }
     }
 
     /**
