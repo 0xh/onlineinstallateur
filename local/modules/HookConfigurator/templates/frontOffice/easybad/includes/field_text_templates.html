@@ -9,7 +9,7 @@
             {if $element.description }
                 <label class="text_description">{$element.description}</label>
           {/if}
-            {if $last_slide == $current_slide}
+            {if $last_slide == $current_slide && $contactArr.visible_form_contact == "false"}
            		{include file="includes/submit_template.html"}
            	{else}
            		<div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
