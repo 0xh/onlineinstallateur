@@ -36,8 +36,8 @@ class FrontHook extends BaseHook {
     }
 
     public function onMainJs(HookRenderEvent $event) {
-        $event->add($this->addJS('assets/js/configurator.js'));
-        $event->add($this->addJS('assets/js/dropzone.js'));
+        $event->add($this->addJS('assets/dist/js/configurator.js'));
+        $event->add($this->addJS('assets/dist/js/dropzone.js'));
     }
 
     public function onMainCss(HookRenderEvent $event) {
