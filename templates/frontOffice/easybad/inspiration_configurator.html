@@ -50,9 +50,6 @@
 {* Content *}
 {block name="main-content"}
 
-{$limit={$smarty.get.limit|default:24}}
-{$page={$smarty.get.page|default:1}}
-{$product_order={$smarty.get.order|default:'manual'}}
 
 {/block}
 
@@ -64,15 +61,6 @@
 {/block}
 
 {block name="after-javascript-include"}
-<script src="{javascript file='assets/dist/js/vendors/grid.js'}"></script>
-   <script>
-	$(function() {
-		Grid.init();
-	});
-   </script>
-   
-{hook name="category.after-javascript-include"}
-{hook name="criteria-search.search-js"}
 
 {/block}
 

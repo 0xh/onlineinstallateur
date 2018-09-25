@@ -65,8 +65,10 @@
             {hook name="category.main-top" category="$category_id"}
 
             <div class=" row " >
+<!-- "386 : (5192|5193), 383 : (5178|5181)" $smarty.get.features --> 
+{$features=$smarty.get.features}
 
-                {loop name="inspirations" type="selection_list" visible="true"}  
+                {loop name="inspirations" type="selection_list" feature_availability="{$features|replace:'_':' : '}" visible="true"}  
 
                 <div class="col-sm-4 ">
 
