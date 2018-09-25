@@ -1,9 +1,9 @@
 {extends file="layout.tpl"}
 
 {block name="full_with_block"}
-	{hook name="full_with_block.inspiration.page"}
-	{loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" height="550" resize_mode="borders"}
-    	<img  class="img-responsive" style="max-height:550px"  src="{$IMAGE_URL}">
+    {hook name="full_with_block.inspiration.page"}
+    {loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" height="550" resize_mode="borders"}
+    <img  class="img-responsive" style="max-height:550px"  src="{$IMAGE_URL}">
     {/loop}
 {/block}
 
@@ -111,7 +111,7 @@
                         {form_field field='product_sale_elements_id'}
                         <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$product_sale_elements_id}" {$attr} >
                         {/form_field}
-                        {$SELECTION_PRODUCT_PRICE}
+                        {$SELECTION_PRODUCT_PRICE|number_format:2:",":"."}
                     </td>
                     <td>
                         <select class="stkla" id="select_{$SELECTION_PRODUCT_ID}" onchange="changeTotalPrice({$SELECTION_PRODUCT_ID});" data-productid="{$SELECTION_PRODUCT_ID}">
@@ -131,7 +131,7 @@
                         {/form_field}
                     </td>
                     <td>
-                        € <label id="total_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                        € <label id="total_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE|number_format:2:",":"."}</label>
                     </td>
                 </tr>
 
@@ -154,6 +154,13 @@
                         </font>
                         </font>
                     </button>
+                    <button type="button" id="add-total-products1">
+                        <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                        {intl l="tralallaa"}
+                        </font>
+                        </font>
+                    </button>
                 </td>
             </tr>
         </table>
@@ -163,7 +170,14 @@
     <div id="myModal-cart-selection" class="modal-selection">
         <div class="modal-content-selection">
             <span class="close close-modal-selection">&times;</span>
-            <table style="width:100%; text-align: left;">
+            <table style="width:100%; text-align: left; margin:0px 2px 0px 2px">
+                <tr>
+                    <th>{intl l='Selection'}</th>
+                    <th>{intl l='Items'}</th> 
+                    <th>{intl l='Price'}</th>
+                    <th>{intl l='Amount'}</th>
+                    <th>{intl l='Total'}</th>
+                </tr>
                 {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
                 <tr id="visible-tr-{$SELECTION_PRODUCT_ID}">
                     <td>
@@ -177,12 +191,13 @@
                         {/loop}
                     </td> 
                     <td>
-                        {$SELECTION_PRODUCT_PRICE}
+                        {$SELECTION_PRODUCT_PRICE|number_format:2:",":"."}
                     </td>
                     <td>
+                        <label id="quantity_modal_{$SELECTION_PRODUCT_ID}">1</label>
                     </td>
                     <td>
-                        € <label id="total1_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                        € <label id="total_modal_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE|number_format:2:",":"."}</label>
                     </td>
                 </tr>
                 {/loop}
@@ -204,30 +219,30 @@
         </div>
     </div>
 
-
     <script>
         setTotalPrice();
 
         function changeTotalPrice(prodId) {
-            $("#total_" + prodId).text(parseFloat($("#select_" + prodId).val() * $("#price_" + prodId).val()).toFixed(2));
+            total = parseFloat($("#select_" + prodId).val() * $("#price_" + prodId).val());
+            $("#total_" + prodId).text(new Intl.NumberFormat('de-DE').format(total));
+            $("#total_modal_" + prodId).text(new Intl.NumberFormat('de-DE').format(total));
             $("#quantity_" + prodId).val($("#select_" + prodId).val());
+            $("#quantity_modal_" + prodId).text($("#select_" + prodId).val());
 
             setTotalPrice();
         }
 
         function setTotalPrice() {
-            total = 0;
+            total = parseFloat(0);
             $(".checkbox_product").each(function () {
                 if ($(this).is(':checked')) {
-                    total += parseFloat($("#total_" + $(this).val()).text());
+                    total += parseFloat($("#select_" + $(this).val()).val() * $("#price_" + $(this).val()).val())
                     $("#visible-tr-" + $(this).val()).css("display", "visible");
                 } else
                 {
                     $("#visible-tr-" + $(this).val()).css("display", "none");
                 }
             });
-
-            {*            $("#total_price").text(parseFloat(total).toFixed(2));*}
             $("#total_price").text(new Intl.NumberFormat('de-DE').format(total));
         }
 
@@ -237,6 +252,7 @@
                     $("#form-product-details_" + $(this).val()).submit();
                 }
             });
+            
 
             var detectChange = setInterval(function () {
                 var myDisplay = $('.loader').css('display');
@@ -249,6 +265,10 @@
 
         $('.close-modal-selection').click(function () {
             $('#myModal-cart-selection').css('display', "none");
+        });
+
+        $('#add-total-products1').click(function () {
+            $('#myModal-cart-selection').css('display', "block");
         });
 
         $(window).on('click', function (event) {
