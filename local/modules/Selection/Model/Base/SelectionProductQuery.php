@@ -20,7 +20,7 @@ use Thelia\Model\Product;
 /**
  * Base class that represents a query for the 'selection_product' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionProductQuery orderBySelectionId($order = Criteria::ASC) Order by the selection_id column
  * @method     ChildSelectionProductQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
@@ -64,7 +64,7 @@ use Thelia\Model\Product;
  */
 abstract class SelectionProductQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionProductQuery object.
      *
@@ -150,8 +150,8 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         $sql = 'SELECT SELECTION_ID, PRODUCT_ID, POSITION, CREATED_AT, UPDATED_AT FROM selection_product WHERE SELECTION_ID = :p0 AND PRODUCT_ID = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);            
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -690,10 +690,10 @@ abstract class SelectionProductQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionProductTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionProductTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -706,7 +706,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -718,7 +718,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionProductTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -730,7 +730,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionProductTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -740,7 +740,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionProductTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -750,7 +750,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionProductTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -760,7 +760,7 @@ abstract class SelectionProductQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionProductTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *

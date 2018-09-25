@@ -24,7 +24,7 @@ use Selection\Model\SelectionContainerQuery as ChildSelectionContainerQuery;
 use Selection\Model\SelectionQuery as ChildSelectionQuery;
 use Selection\Model\Map\SelectionContainerAssociatedSelectionTableMap;
 
-abstract class SelectionContainerAssociatedSelection implements ActiveRecordInterface
+abstract class SelectionContainerAssociatedSelection implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -366,7 +366,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -377,7 +377,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Get the [selection_container_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getSelectionContainerId()
@@ -388,7 +388,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Get the [selection_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getSelectionId()
@@ -399,7 +399,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -419,7 +419,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -439,7 +439,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionContainerAssociatedSelection The current object (for fluent API support)
      */
@@ -460,7 +460,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Set the value of [selection_container_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionContainerAssociatedSelection The current object (for fluent API support)
      */
@@ -485,7 +485,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Set the value of [selection_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionContainerAssociatedSelection The current object (for fluent API support)
      */
@@ -510,7 +510,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionContainerAssociatedSelection The current object (for fluent API support)
@@ -531,7 +531,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionContainerAssociatedSelection The current object (for fluent API support)
@@ -885,19 +885,19 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'SELECTION_CONTAINER_ID':
+                    case 'SELECTION_CONTAINER_ID':                        
                         $stmt->bindValue($identifier, $this->selection_container_id, PDO::PARAM_INT);
                         break;
-                    case 'SELECTION_ID':
+                    case 'SELECTION_ID':                        
                         $stmt->bindValue($identifier, $this->selection_id, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':
+                    case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
+                    case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1018,7 +1018,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->aSelectionContainer) {
                 $result['SelectionContainer'] = $this->aSelectionContainer->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1363,7 +1363,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
     }
 
     // timestampable behavior
-
+    
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -1372,7 +1372,7 @@ abstract class SelectionContainerAssociatedSelection implements ActiveRecordInte
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[SelectionContainerAssociatedSelectionTableMap::UPDATED_AT] = true;
-
+    
         return $this;
     }
 

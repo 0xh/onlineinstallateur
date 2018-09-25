@@ -26,7 +26,7 @@ use Thelia\Model\FeatureAvI18nQuery;
 use Thelia\Model\FeatureAvQuery;
 use Thelia\Model\FeatureQuery;
 
-abstract class SelectionFeatures implements ActiveRecordInterface
+abstract class SelectionFeatures implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -391,7 +391,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -402,7 +402,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [feature_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getFeatureId()
@@ -413,7 +413,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [selection_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getSelectionId()
@@ -424,7 +424,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [feature_av_id] column value.
-     *
+     * 
      * @return   int
      */
     public function getFeatureAvId()
@@ -435,7 +435,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [freetext_value] column value.
-     *
+     * 
      * @return   string
      */
     public function getFreetextValue()
@@ -446,7 +446,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     *
+     * 
      * @return   int
      */
     public function getPosition()
@@ -457,7 +457,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -477,7 +477,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -497,7 +497,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -518,7 +518,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [feature_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -543,7 +543,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [selection_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -564,7 +564,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [feature_av_id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -593,7 +593,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [freetext_value] column.
-     *
+     * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -614,7 +614,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
      */
@@ -635,7 +635,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
@@ -656,7 +656,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
@@ -1042,28 +1042,28 @@ abstract class SelectionFeatures implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'FEATURE_ID':
+                    case 'FEATURE_ID':                        
                         $stmt->bindValue($identifier, $this->feature_id, PDO::PARAM_INT);
                         break;
-                    case 'SELECTION_ID':
+                    case 'SELECTION_ID':                        
                         $stmt->bindValue($identifier, $this->selection_id, PDO::PARAM_INT);
                         break;
-                    case 'FEATURE_AV_ID':
+                    case 'FEATURE_AV_ID':                        
                         $stmt->bindValue($identifier, $this->feature_av_id, PDO::PARAM_INT);
                         break;
-                    case 'FREETEXT_VALUE':
+                    case 'FREETEXT_VALUE':                        
                         $stmt->bindValue($identifier, $this->freetext_value, PDO::PARAM_STR);
                         break;
-                    case 'POSITION':
+                    case 'POSITION':                        
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':
+                    case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
+                    case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1194,7 +1194,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->aFeature) {
                 $result['Feature'] = $this->aFeature->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1617,7 +1617,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     // timestampable behavior
-
+    
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -1626,7 +1626,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[SelectionFeaturesTableMap::UPDATED_AT] = true;
-
+    
         return $this;
     }
 

@@ -44,7 +44,7 @@
 {/block}
 
 {block name="full_with_block"}
-	{hook name="full_with_block.category.inspiration"}
+    {hook name="full_with_block.category.inspiration"}
 {/block}
 
 {* Content *}
@@ -74,7 +74,11 @@
 
                         <figure class="effect-honey mb-5">
                             {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
-                            <div class="herz"></div><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                            <div class="herz"></div>
+                            <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                            {ifhook rel="selection-wish-list-selection.wish-button"}
+                            {hook name="selection-wish-list-selection.wish-button" selection_id={$SELECTION_ID}}
+                            {/ifhook}
                             {/loop}
                             {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383 show_feature_value_selected=true}  
                             {assign var = "feature_title" value = $F_TITLE}    
@@ -88,7 +92,7 @@
                                         {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
                                         {$selection_total=$selection_total+$selection_price}
                                         {/loop}   
-                                      <span class="mb-4">{$selection_total|number_format:2:",":"."} €</span>
+                                        <span class="mb-4">{$selection_total|number_format:2:",":"."} €</span>
                                         <span class="mb-5"> » Details Zeigen</span>
                                 </i></h2> 
                                 <h2> </h2>
