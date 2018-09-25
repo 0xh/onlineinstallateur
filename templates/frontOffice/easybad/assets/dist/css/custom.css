@@ -112,7 +112,7 @@ h1.name{
     line-height: unset;
     background-color: transparent;
 }
-.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
+.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hover{
     background-color: #10B4CF;
 }
 /*End WhisList*/
@@ -144,7 +144,6 @@ h1.name{
     height: 3.85rem;
     line-height: 1.4;
 }
-
 
 .grid #category-products .item>article .product-info .name:after {
     content: "";
@@ -260,6 +259,9 @@ h1.name{
 .sec-nav{
     float: left;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 .navbar-brand {
     min-height: 46px;
@@ -439,7 +441,6 @@ section .product-image{
     .navbar-header{
         display: none;
     }
-
     .navbar-categories{
         display: block;
         width: 100%;
@@ -469,6 +470,36 @@ section .product-image{
     }
     .navbar-wish-list{
         float: left !important;
+    }   
+    .sec-nav .navbar-header-brand{
+        order: 1;
+    }
+    .sec-nav .navbar-customer{
+        order: 2;
+    }
+    .sec-nav .navbar-cart{
+        order: 3;
+    }
+    .sec-nav .navbar-wish-list{
+        order: 4;
+    }
+    .sec-nav .navbar-toggle{
+        order: 5;
+    }
+    .sec-nav .search-container{
+        order: 6;
+    }
+    .sec-nav .navbar-header-brand,
+    .sec-nav .navbar-customer,
+    .sec-nav .navbar-cart,
+    .sec-nav .navbar-wish-list,
+    .sec-nav .navbar-toggle{
+        display: block;      
+        float: right !important;
+        clear: both;
+    }
+    .sec-nav .search-container{
+        width: 100%
     }
     .search-container{
         padding-left: 0px;
@@ -484,12 +515,19 @@ section .product-image{
     .search-container #form-search{
         padding-left: 0px;
         width: 100% !important;
+        margin-bottom: 0px;
     }
     .search-container #form-search #q{
         width: 93.5% !important;
     }
     .search-container #form-search .btn-search{
         position: absolute;
+    }
+    .sec-nav .navbar-toggle{
+        display: block;
+        position: absolute;
+        padding-right: 10px;
+        margin-right: 0px;
     }
     .navbar-default .navbar-toggle{
         margin-top: 25px;
@@ -498,6 +536,49 @@ section .product-image{
     }
     .navbar-default .navbar-toggle .icon-bar {
         background-color: #fff;
+    }
+    .navbar-header-brand .navbar-brand{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-top: 15px;
+    }
+}
+
+@media screen and (min-width: 961px) and (max-width: 992px){
+    .sec-nav .navbar-toggle{
+        right: 13vw;
+    }
+}
+@media screen and (min-width: 921px) and (max-width: 960px){
+    .sec-nav .navbar-toggle{
+        right: 11vw;
+    }
+}
+@media screen and (min-width: 881px) and (max-width: 920px){
+    .sec-nav .navbar-toggle{
+        right: 9vw;
+    }
+}
+@media screen and (min-width: 841px) and (max-width: 880px){
+    .sec-nav .navbar-toggle{
+        right: 7vw;
+    }
+}
+@media screen and (min-width: 801px) and (max-width: 840px){
+    .sec-nav .navbar-toggle{
+        right: 5vw;
+    }
+}
+@media screen and (min-width: 761px) and (max-width: 800px){
+    .sec-nav .navbar-toggle{
+        right: 3vw;
+    }
+}
+@media screen and (max-width: 760px){
+    .sec-nav .navbar-toggle{
+        right: 5px;
     }
 }
 @media screen and (min-width: 992px){
