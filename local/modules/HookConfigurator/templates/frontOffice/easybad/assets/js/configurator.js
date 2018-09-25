@@ -73,6 +73,47 @@ $(document).ready(function () {
         $(this).addClass("selected");
     });
 
+    /*$(".inputText").focus(function() {
+     
+     }).blur(function() {
+     current_step = $(this).parent();
+     next_step = $(this).parent().next();
+     next_step.show();
+     current_step.hide();
+     setProgressBar(++current);
+     });
+     $(".inputTextarea").focus(function() {
+     
+     }).blur(function() {
+     current_step = $(this).parent();
+     next_step = $(this).parent().next();
+     next_step.show();
+     current_step.hide();
+     setProgressBar(++current);
+     });
+     $(".inputFile").onchange = function() {
+     //document.getElementById("form").submit();
+     alert("Up");
+     };
+     $(".inputFile").change(function (){
+     current_step = $(this).parent();
+     next_step = $(this).parent().next();
+     next_step.show();
+     current_step.hide();
+     setProgressBar(++current);
+     });*/
+    //trigger click on checkbox when click on entire div
+
+    /*$(".frontIcons").click(function (){
+     $(this).children().find('input:checkbox:first').click();
+     });*/
+    /*$(".frontIcons").click(function (event){
+     event.preventDefault();
+     $(this).find('input:checkbox:first').trigger( "click" );
+     });*/
+    $('.form_upload input').change(function () {
+        $('.form_upload p').text(this.files.length + " file(s) selected");
+    });
 
     setProgressBar(current_progress);
     // Change progress bar action
@@ -84,7 +125,13 @@ $(document).ready(function () {
                 .html(' Frage ' + current_progress + '/' + $(".multistepForm fieldset").length + '&nbsp;&nbsp;&nbsp;');
     }
 
-    Dropzone.options.registrationForm = {
+//    $("#regiration-form").submit(function (event) {
+//        /*jQuery('.alert-success').removeClass('hide').html( "Handler for .submit() called and see console logs for your posted variable" );
+//         console.log($(this).serialize());
+//         event.preventDefault();*/
+//    });
+
+    Dropzone.options.regirationForm = {
 
         // Prevents Dropzone from uploading dropped files immediately
         autoProcessQueue: false,
@@ -130,6 +177,5 @@ $(document).ready(function () {
     };
 
     Dropzone.autoDiscover = false;
-    if($("#dropzonePreview").size() > 0)
-    $("#registration-form").dropzone();
+    $("#regiration-form").dropzone();
 });
