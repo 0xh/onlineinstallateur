@@ -19,7 +19,7 @@
             <tag name="hook.event_listener" event="main.body-top" />
             <tag name="hook.event_listener" event="main.stylesheet" />
             <tag name="hook.event_listener" event="singleproduct.top" />
-            <tag name="hook.event_listener" event="category.after-javascript-include" templates="render:assets/js/product-position-js.html" />
+            <tag name="hook.event_listener" event="category.after-javascript-include" templates="render:assets/dist/js/product-position-js.html" />
         </hook>
     </hooks>
 
