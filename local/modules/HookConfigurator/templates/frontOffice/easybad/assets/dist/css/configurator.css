@@ -8,7 +8,7 @@
     font-weight: normal;
     font-style: normal;
 }
-#regiration-form fieldset:not(:first-of-type) {
+#registration-form fieldset:not(:first-of-type) {
     display: none;
 }
 .multistepForm {
