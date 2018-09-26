@@ -216,6 +216,16 @@
         <default key="_controller">Selection\Controller\Front\FrontSelectionController::viewBadAnzeigen</default>
         <requirement key="selectionId">\d+</requirement>
     </route>
+
+    <route id="front.selection.wishlist.add" path="/selection-wishlist/add/{selectionId}">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::addSelection</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
+
+    <route id="front.selection.wishlist.remove" path="/selection-wishlist/remove/{selectionId}">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::removeSelection</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
 </routes>
 
 

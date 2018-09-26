@@ -22,7 +22,7 @@ use Thelia\Model\FeatureAvI18n;
 /**
  * Base class that represents a query for the 'selection_features' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionFeaturesQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionFeaturesQuery orderByFeatureId($order = Criteria::ASC) Order by the feature_id column
@@ -82,7 +82,7 @@ use Thelia\Model\FeatureAvI18n;
  */
 abstract class SelectionFeaturesQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionFeaturesQuery object.
      *
@@ -168,7 +168,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, FEATURE_ID, SELECTION_ID, FEATURE_AV_ID, FREETEXT_VALUE, POSITION, CREATED_AT, UPDATED_AT FROM selection_features WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -882,10 +882,10 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionFeaturesTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionFeaturesTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -898,7 +898,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -910,7 +910,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionFeaturesTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -922,7 +922,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionFeaturesTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -932,7 +932,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionFeaturesTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -942,7 +942,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionFeaturesTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -952,7 +952,7 @@ abstract class SelectionFeaturesQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionFeaturesTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *

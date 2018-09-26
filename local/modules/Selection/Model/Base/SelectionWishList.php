@@ -16,22 +16,16 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
-use Selection\Model\SelectionFeatures as ChildSelectionFeatures;
-use Selection\Model\SelectionFeaturesQuery as ChildSelectionFeaturesQuery;
-use Selection\Model\Map\SelectionFeaturesTableMap;
-use Thelia\Model\Feature as ChildFeature;
-use Thelia\Model\FeatureAv as ChildFeatureAv;
-use Thelia\Model\FeatureAvI18n as ChildFeatureAvI18n;
-use Thelia\Model\FeatureAvI18nQuery;
-use Thelia\Model\FeatureAvQuery;
-use Thelia\Model\FeatureQuery;
+use Selection\Model\SelectionWishList as ChildSelectionWishList;
+use Selection\Model\SelectionWishListQuery as ChildSelectionWishListQuery;
+use Selection\Model\Map\SelectionWishListTableMap;
 
-abstract class SelectionFeatures implements ActiveRecordInterface 
+abstract class SelectionWishList implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Selection\\Model\\Map\\SelectionFeaturesTableMap';
+    const TABLE_MAP = '\\Selection\\Model\\Map\\SelectionWishListTableMap';
 
 
     /**
@@ -67,34 +61,16 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the feature_id field.
-     * @var        int
-     */
-    protected $feature_id;
-
-    /**
      * The value for the selection_id field.
      * @var        int
      */
     protected $selection_id;
 
     /**
-     * The value for the feature_av_id field.
+     * The value for the customer_id field.
      * @var        int
      */
-    protected $feature_av_id;
-
-    /**
-     * The value for the freetext_value field.
-     * @var        string
-     */
-    protected $freetext_value;
-
-    /**
-     * The value for the position field.
-     * @var        int
-     */
-    protected $position;
+    protected $customer_id;
 
     /**
      * The value for the created_at field.
@@ -109,21 +85,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     protected $updated_at;
 
     /**
-     * @var        Feature
-     */
-    protected $aFeature;
-
-    /**
-     * @var        FeatureAv
-     */
-    protected $aFeatureAv;
-
-    /**
-     * @var        FeatureAvI18n
-     */
-    protected $aFeatureAvI18n;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -132,7 +93,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Selection\Model\Base\SelectionFeatures object.
+     * Initializes internal state of Selection\Model\Base\SelectionWishList object.
      */
     public function __construct()
     {
@@ -227,9 +188,9 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>SelectionFeatures</code> instance.  If
-     * <code>obj</code> is an instance of <code>SelectionFeatures</code>, delegates to
-     * <code>equals(SelectionFeatures)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>SelectionWishList</code> instance.  If
+     * <code>obj</code> is an instance of <code>SelectionWishList</code>, delegates to
+     * <code>equals(SelectionWishList)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -312,7 +273,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return SelectionFeatures The current object, for fluid interface
+     * @return SelectionWishList The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -344,7 +305,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return SelectionFeatures The current object, for fluid interface
+     * @return SelectionWishList The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -401,17 +362,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Get the [feature_id] column value.
-     * 
-     * @return   int
-     */
-    public function getFeatureId()
-    {
-
-        return $this->feature_id;
-    }
-
-    /**
      * Get the [selection_id] column value.
      * 
      * @return   int
@@ -423,36 +373,14 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Get the [feature_av_id] column value.
+     * Get the [customer_id] column value.
      * 
      * @return   int
      */
-    public function getFeatureAvId()
+    public function getCustomerId()
     {
 
-        return $this->feature_av_id;
-    }
-
-    /**
-     * Get the [freetext_value] column value.
-     * 
-     * @return   string
-     */
-    public function getFreetextValue()
-    {
-
-        return $this->freetext_value;
-    }
-
-    /**
-     * Get the [position] column value.
-     * 
-     * @return   int
-     */
-    public function getPosition()
-    {
-
-        return $this->position;
+        return $this->customer_id;
     }
 
     /**
@@ -499,7 +427,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -509,7 +437,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::ID] = true;
+            $this->modifiedColumns[SelectionWishListTableMap::ID] = true;
         }
 
 
@@ -517,35 +445,10 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [feature_id] column.
-     * 
-     * @param      int $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     */
-    public function setFeatureId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->feature_id !== $v) {
-            $this->feature_id = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::FEATURE_ID] = true;
-        }
-
-        if ($this->aFeature !== null && $this->aFeature->getId() !== $v) {
-            $this->aFeature = null;
-        }
-
-
-        return $this;
-    } // setFeatureId()
-
-    /**
      * Set the value of [selection_id] column.
      * 
      * @param      int $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setSelectionId($v)
     {
@@ -555,7 +458,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
         if ($this->selection_id !== $v) {
             $this->selection_id = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::SELECTION_ID] = true;
+            $this->modifiedColumns[SelectionWishListTableMap::SELECTION_ID] = true;
         }
 
 
@@ -563,82 +466,32 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     } // setSelectionId()
 
     /**
-     * Set the value of [feature_av_id] column.
+     * Set the value of [customer_id] column.
      * 
      * @param      int $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
-    public function setFeatureAvId($v)
+    public function setCustomerId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->feature_av_id !== $v) {
-            $this->feature_av_id = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::FEATURE_AV_ID] = true;
-        }
-
-        if ($this->aFeatureAv !== null && $this->aFeatureAv->getId() !== $v) {
-            $this->aFeatureAv = null;
-        }
-
-        if ($this->aFeatureAvI18n !== null && $this->aFeatureAvI18n->getId() !== $v) {
-            $this->aFeatureAvI18n = null;
+        if ($this->customer_id !== $v) {
+            $this->customer_id = $v;
+            $this->modifiedColumns[SelectionWishListTableMap::CUSTOMER_ID] = true;
         }
 
 
         return $this;
-    } // setFeatureAvId()
-
-    /**
-     * Set the value of [freetext_value] column.
-     * 
-     * @param      string $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     */
-    public function setFreetextValue($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->freetext_value !== $v) {
-            $this->freetext_value = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::FREETEXT_VALUE] = true;
-        }
-
-
-        return $this;
-    } // setFreetextValue()
-
-    /**
-     * Set the value of [position] column.
-     * 
-     * @param      int $v new value
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     */
-    public function setPosition($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->position !== $v) {
-            $this->position = $v;
-            $this->modifiedColumns[SelectionFeaturesTableMap::POSITION] = true;
-        }
-
-
-        return $this;
-    } // setPosition()
+    } // setCustomerId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -646,7 +499,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[SelectionFeaturesTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[SelectionWishListTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -659,7 +512,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \Selection\Model\SelectionFeatures The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -667,7 +520,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[SelectionFeaturesTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[SelectionWishListTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -712,31 +565,22 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SelectionFeaturesTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SelectionWishListTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SelectionFeaturesTableMap::translateFieldName('FeatureId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->feature_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SelectionFeaturesTableMap::translateFieldName('SelectionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SelectionWishListTableMap::translateFieldName('SelectionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->selection_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionFeaturesTableMap::translateFieldName('FeatureAvId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->feature_av_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SelectionWishListTableMap::translateFieldName('CustomerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->customer_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionFeaturesTableMap::translateFieldName('FreetextValue', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->freetext_value = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SelectionFeaturesTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->position = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : SelectionFeaturesTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionWishListTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : SelectionFeaturesTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionWishListTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -749,10 +593,10 @@ abstract class SelectionFeatures implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = SelectionFeaturesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = SelectionWishListTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \Selection\Model\SelectionFeatures object", 0, $e);
+            throw new PropelException("Error populating \Selection\Model\SelectionWishList object", 0, $e);
         }
     }
 
@@ -771,15 +615,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aFeature !== null && $this->feature_id !== $this->aFeature->getId()) {
-            $this->aFeature = null;
-        }
-        if ($this->aFeatureAv !== null && $this->feature_av_id !== $this->aFeatureAv->getId()) {
-            $this->aFeatureAv = null;
-        }
-        if ($this->aFeatureAvI18n !== null && $this->feature_av_id !== $this->aFeatureAvI18n->getId()) {
-            $this->aFeatureAvI18n = null;
-        }
     } // ensureConsistency
 
     /**
@@ -803,13 +638,13 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(SelectionFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildSelectionFeaturesQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildSelectionWishListQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -819,9 +654,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aFeature = null;
-            $this->aFeatureAv = null;
-            $this->aFeatureAvI18n = null;
         } // if (deep)
     }
 
@@ -831,8 +663,8 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see SelectionFeatures::setDeleted()
-     * @see SelectionFeatures::isDeleted()
+     * @see SelectionWishList::setDeleted()
+     * @see SelectionWishList::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -841,12 +673,12 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildSelectionFeaturesQuery::create()
+            $deleteQuery = ChildSelectionWishListQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -883,7 +715,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -893,16 +725,16 @@ abstract class SelectionFeatures implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(SelectionFeaturesTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(SelectionFeaturesTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(SelectionFeaturesTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -914,7 +746,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SelectionFeaturesTableMap::addInstanceToPool($this);
+                SelectionWishListTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -943,32 +775,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
-
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aFeature !== null) {
-                if ($this->aFeature->isModified() || $this->aFeature->isNew()) {
-                    $affectedRows += $this->aFeature->save($con);
-                }
-                $this->setFeature($this->aFeature);
-            }
-
-            if ($this->aFeatureAv !== null) {
-                if ($this->aFeatureAv->isModified() || $this->aFeatureAv->isNew()) {
-                    $affectedRows += $this->aFeatureAv->save($con);
-                }
-                $this->setFeatureAv($this->aFeatureAv);
-            }
-
-            if ($this->aFeatureAvI18n !== null) {
-                if ($this->aFeatureAvI18n->isModified() || $this->aFeatureAvI18n->isNew()) {
-                    $affectedRows += $this->aFeatureAvI18n->save($con);
-                }
-                $this->setFeatureAvI18n($this->aFeatureAvI18n);
-            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -1001,39 +807,30 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[SelectionFeaturesTableMap::ID] = true;
+        $this->modifiedColumns[SelectionWishListTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SelectionFeaturesTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SelectionWishListTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SelectionFeaturesTableMap::ID)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FEATURE_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'FEATURE_ID';
-        }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::SELECTION_ID)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::SELECTION_ID)) {
             $modifiedColumns[':p' . $index++]  = 'SELECTION_ID';
         }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FEATURE_AV_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'FEATURE_AV_ID';
+        if ($this->isColumnModified(SelectionWishListTableMap::CUSTOMER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CUSTOMER_ID';
         }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FREETEXT_VALUE)) {
-            $modifiedColumns[':p' . $index++]  = 'FREETEXT_VALUE';
-        }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'POSITION';
-        }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(SelectionFeaturesTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
         $sql = sprintf(
-            'INSERT INTO selection_features (%s) VALUES (%s)',
+            'INSERT INTO selection_wish_list (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1045,20 +842,11 @@ abstract class SelectionFeatures implements ActiveRecordInterface
                     case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'FEATURE_ID':                        
-                        $stmt->bindValue($identifier, $this->feature_id, PDO::PARAM_INT);
-                        break;
                     case 'SELECTION_ID':                        
                         $stmt->bindValue($identifier, $this->selection_id, PDO::PARAM_INT);
                         break;
-                    case 'FEATURE_AV_ID':                        
-                        $stmt->bindValue($identifier, $this->feature_av_id, PDO::PARAM_INT);
-                        break;
-                    case 'FREETEXT_VALUE':                        
-                        $stmt->bindValue($identifier, $this->freetext_value, PDO::PARAM_STR);
-                        break;
-                    case 'POSITION':                        
-                        $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
+                    case 'CUSTOMER_ID':                        
+                        $stmt->bindValue($identifier, $this->customer_id, PDO::PARAM_INT);
                         break;
                     case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -1112,7 +900,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SelectionFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SelectionWishListTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1132,24 +920,15 @@ abstract class SelectionFeatures implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getFeatureId();
-                break;
-            case 2:
                 return $this->getSelectionId();
                 break;
+            case 2:
+                return $this->getCustomerId();
+                break;
             case 3:
-                return $this->getFeatureAvId();
-                break;
-            case 4:
-                return $this->getFreetextValue();
-                break;
-            case 5:
-                return $this->getPosition();
-                break;
-            case 6:
                 return $this->getCreatedAt();
                 break;
-            case 7:
+            case 4:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1169,43 +948,28 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['SelectionFeatures'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['SelectionWishList'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['SelectionFeatures'][$this->getPrimaryKey()] = true;
-        $keys = SelectionFeaturesTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['SelectionWishList'][$this->getPrimaryKey()] = true;
+        $keys = SelectionWishListTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getFeatureId(),
-            $keys[2] => $this->getSelectionId(),
-            $keys[3] => $this->getFeatureAvId(),
-            $keys[4] => $this->getFreetextValue(),
-            $keys[5] => $this->getPosition(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedAt(),
+            $keys[1] => $this->getSelectionId(),
+            $keys[2] => $this->getCustomerId(),
+            $keys[3] => $this->getCreatedAt(),
+            $keys[4] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
         
-        if ($includeForeignObjects) {
-            if (null !== $this->aFeature) {
-                $result['Feature'] = $this->aFeature->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aFeatureAv) {
-                $result['FeatureAv'] = $this->aFeatureAv->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aFeatureAvI18n) {
-                $result['FeatureAvI18n'] = $this->aFeatureAvI18n->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -1223,7 +987,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SelectionFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SelectionWishListTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1243,24 +1007,15 @@ abstract class SelectionFeatures implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setFeatureId($value);
-                break;
-            case 2:
                 $this->setSelectionId($value);
                 break;
+            case 2:
+                $this->setCustomerId($value);
+                break;
             case 3:
-                $this->setFeatureAvId($value);
-                break;
-            case 4:
-                $this->setFreetextValue($value);
-                break;
-            case 5:
-                $this->setPosition($value);
-                break;
-            case 6:
                 $this->setCreatedAt($value);
                 break;
-            case 7:
+            case 4:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1285,16 +1040,13 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = SelectionFeaturesTableMap::getFieldNames($keyType);
+        $keys = SelectionWishListTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setFeatureId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setSelectionId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setFeatureAvId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setFreetextValue($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setPosition($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[1], $arr)) $this->setSelectionId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCustomerId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
 
     /**
@@ -1304,16 +1056,13 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SelectionFeaturesTableMap::DATABASE_NAME);
+        $criteria = new Criteria(SelectionWishListTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SelectionFeaturesTableMap::ID)) $criteria->add(SelectionFeaturesTableMap::ID, $this->id);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FEATURE_ID)) $criteria->add(SelectionFeaturesTableMap::FEATURE_ID, $this->feature_id);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::SELECTION_ID)) $criteria->add(SelectionFeaturesTableMap::SELECTION_ID, $this->selection_id);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FEATURE_AV_ID)) $criteria->add(SelectionFeaturesTableMap::FEATURE_AV_ID, $this->feature_av_id);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::FREETEXT_VALUE)) $criteria->add(SelectionFeaturesTableMap::FREETEXT_VALUE, $this->freetext_value);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::POSITION)) $criteria->add(SelectionFeaturesTableMap::POSITION, $this->position);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::CREATED_AT)) $criteria->add(SelectionFeaturesTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(SelectionFeaturesTableMap::UPDATED_AT)) $criteria->add(SelectionFeaturesTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(SelectionWishListTableMap::ID)) $criteria->add(SelectionWishListTableMap::ID, $this->id);
+        if ($this->isColumnModified(SelectionWishListTableMap::SELECTION_ID)) $criteria->add(SelectionWishListTableMap::SELECTION_ID, $this->selection_id);
+        if ($this->isColumnModified(SelectionWishListTableMap::CUSTOMER_ID)) $criteria->add(SelectionWishListTableMap::CUSTOMER_ID, $this->customer_id);
+        if ($this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) $criteria->add(SelectionWishListTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) $criteria->add(SelectionWishListTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1328,8 +1077,8 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SelectionFeaturesTableMap::DATABASE_NAME);
-        $criteria->add(SelectionFeaturesTableMap::ID, $this->id);
+        $criteria = new Criteria(SelectionWishListTableMap::DATABASE_NAME);
+        $criteria->add(SelectionWishListTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1370,18 +1119,15 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Selection\Model\SelectionFeatures (or compatible) type.
+     * @param      object $copyObj An object of \Selection\Model\SelectionWishList (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setFeatureId($this->getFeatureId());
         $copyObj->setSelectionId($this->getSelectionId());
-        $copyObj->setFeatureAvId($this->getFeatureAvId());
-        $copyObj->setFreetextValue($this->getFreetextValue());
-        $copyObj->setPosition($this->getPosition());
+        $copyObj->setCustomerId($this->getCustomerId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         if ($makeNew) {
@@ -1399,7 +1145,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \Selection\Model\SelectionFeatures Clone of current object.
+     * @return                 \Selection\Model\SelectionWishList Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1413,171 +1159,13 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildFeature object.
-     *
-     * @param                  ChildFeature $v
-     * @return                 \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFeature(ChildFeature $v = null)
-    {
-        if ($v === null) {
-            $this->setFeatureId(NULL);
-        } else {
-            $this->setFeatureId($v->getId());
-        }
-
-        $this->aFeature = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildFeature object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionFeatures($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildFeature object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildFeature The associated ChildFeature object.
-     * @throws PropelException
-     */
-    public function getFeature(ConnectionInterface $con = null)
-    {
-        if ($this->aFeature === null && ($this->feature_id !== null)) {
-            $this->aFeature = FeatureQuery::create()->findPk($this->feature_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFeature->addSelectionFeaturess($this);
-             */
-        }
-
-        return $this->aFeature;
-    }
-
-    /**
-     * Declares an association between this object and a ChildFeatureAv object.
-     *
-     * @param                  ChildFeatureAv $v
-     * @return                 \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFeatureAv(ChildFeatureAv $v = null)
-    {
-        if ($v === null) {
-            $this->setFeatureAvId(NULL);
-        } else {
-            $this->setFeatureAvId($v->getId());
-        }
-
-        $this->aFeatureAv = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildFeatureAv object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionFeatures($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildFeatureAv object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildFeatureAv The associated ChildFeatureAv object.
-     * @throws PropelException
-     */
-    public function getFeatureAv(ConnectionInterface $con = null)
-    {
-        if ($this->aFeatureAv === null && ($this->feature_av_id !== null)) {
-            $this->aFeatureAv = FeatureAvQuery::create()->findPk($this->feature_av_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFeatureAv->addSelectionFeaturess($this);
-             */
-        }
-
-        return $this->aFeatureAv;
-    }
-
-    /**
-     * Declares an association between this object and a ChildFeatureAvI18n object.
-     *
-     * @param                  ChildFeatureAvI18n $v
-     * @return                 \Selection\Model\SelectionFeatures The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setFeatureAvI18n(ChildFeatureAvI18n $v = null)
-    {
-        if ($v === null) {
-            $this->setFeatureAvId(NULL);
-        } else {
-            $this->setFeatureAvId($v->getId());
-        }
-
-        $this->aFeatureAvI18n = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildFeatureAvI18n object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionFeatures($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildFeatureAvI18n object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildFeatureAvI18n The associated ChildFeatureAvI18n object.
-     * @throws PropelException
-     */
-    public function getFeatureAvI18n(ConnectionInterface $con = null)
-    {
-        if ($this->aFeatureAvI18n === null && ($this->feature_av_id !== null)) {
-            $this->aFeatureAvI18n = FeatureAvI18nQuery::create()
-                ->filterBySelectionFeatures($this) // here
-                ->findOne($con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aFeatureAvI18n->addSelectionFeaturess($this);
-             */
-        }
-
-        return $this->aFeatureAvI18n;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
-        $this->feature_id = null;
         $this->selection_id = null;
-        $this->feature_av_id = null;
-        $this->freetext_value = null;
-        $this->position = null;
+        $this->customer_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1601,9 +1189,6 @@ abstract class SelectionFeatures implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aFeature = null;
-        $this->aFeatureAv = null;
-        $this->aFeatureAvI18n = null;
     }
 
     /**
@@ -1613,7 +1198,7 @@ abstract class SelectionFeatures implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SelectionFeaturesTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(SelectionWishListTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1621,11 +1206,11 @@ abstract class SelectionFeatures implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildSelectionFeatures The current object (for fluent API support)
+     * @return     ChildSelectionWishList The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[SelectionFeaturesTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[SelectionWishListTableMap::UPDATED_AT] = true;
     
         return $this;
     }
