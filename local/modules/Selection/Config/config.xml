@@ -52,6 +52,12 @@
         <service id="selection.wishList.action" class="Selection\Action\SelectionWishListAction">
             <tag name="kernel.event_subscriber"/>
         </service>
+        
+        <service id="selection.wishList.customer.listener" class="Selection\EventListener\CustomerListener">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="thelia.securityContext"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
     
     <hooks>
