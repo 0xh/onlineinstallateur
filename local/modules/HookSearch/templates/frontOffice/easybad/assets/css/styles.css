@@ -42,4 +42,5 @@
 .navbar.navbar-secondary .search-container{
     line-height: 40px;
     width: 70%;
+    border-bottom: none;
 }
