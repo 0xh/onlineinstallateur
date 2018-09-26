@@ -226,6 +226,10 @@
         <default key="_controller">Selection\Controller\Front\SelectionWishListController::removeSelection</default>
         <requirement key="selectionId">\d+</requirement>
     </route>
+
+    <route id="front.selection.wishlist.clear" path="/selection-wishlist/clear">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::clear</default>
+    </route>
 </routes>
 
 
