@@ -53,8 +53,6 @@ class SelectionWishListLoop extends BaseLoop implements ArraySearchLoopInterface
             if ($session = $this->request->getSession()->get(SelectionWishListController::SESSION_NAME)) {
                 $search = array_unique(array_merge($wishArray, $session));
             }
-        } else {
-            $search = $this->request->getSession()->get(SelectionWishListController::SESSION_NAME);
         }
 
         return $search;

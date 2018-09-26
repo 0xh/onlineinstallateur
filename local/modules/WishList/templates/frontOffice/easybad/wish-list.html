@@ -12,27 +12,6 @@
 
 {* Content *}
 {block name="main-content"}
-    <div id="wishlist-box" class="col-main col-md-12 grid">
-        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.default"}</h1>
-        <div id="category-products">
-            <div class="products-content">
-                <ul class="list-unstyled row">
-                   	{ifloop rel="wishlist"}
-                    {loop name="wishlist" type="wishlist"}
-                    {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
-                    {loop name="product.details" type="product" id=$ID limit="1"}
-                    {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
-                    {/loop}
-                    {/loop}
-                    {/loop}
-                    {/ifloop}
-                    {elseloop rel="wishlist"}
-                    <p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
-                    {/elseloop}	
-                </ul>
-            </div>
-        </div>
-    </div>
 
     {loop type="module" name="selection" code="selection" active="1"}
     <div id="wishlist-box" class="col-main col-md-12 grid">
@@ -61,21 +40,6 @@
                                     {assign var = "feature_title" value = $F_TITLE}    
                                     {assign var = "feature_value" value = $FTITLE}
                                     {/loop} 
-                                    <figcaption>
-                                        <i><h2> <span class="mb-1"> {intl  l="Serie"} {$SELECTION_TITLE}</span> <span class="mb-2"><b>{$feature_title}</b>:</span>
-                                                <span class="mb-3">{$feature_value}</span>
-                                                {assign var = "selection_total" value=0}
-                                                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
-                                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
-                                                {$selection_total=$selection_total+$selection_price}
-                                                {/loop}   
-                                                <span class="mb-4">{$selection_total|number_format:2:",":"."} €</span>
-                                                <span class="mb-5"> » Details Zeigen</span>
-                                            </h2>  
-                                        </i>
-                                        <h2> </h2>
-                                    </figcaption>	
-
                                 </figure>
                             </a>
                         </div>
@@ -84,11 +48,34 @@
                     </div>
                     {/ifloop}
                     {elseloop rel="selection_wish_list"}
-                    <p>{intl l="You have no items in your wishlist." d="selection_wish_list.fo.default"}</p>
+                    <p>{intl l="You have no selection items in your wishlist." d="selection_wish_list.fo.default"}</p>
                     {/elseloop}	
                 </ul>
             </div>
         </div>
     </div>
     {/loop}
+
+    <div id="wishlist-box" class="col-main col-md-12 grid">
+        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.default"}</h1>
+        <div id="category-products">
+            <div class="products-content">
+                <ul class="list-unstyled row">
+                   	{ifloop rel="wishlist"}
+                    {loop name="wishlist" type="wishlist"}
+                    {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
+                    {loop name="product.details" type="product" id=$ID limit="1"}
+                    {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
+                    {/loop}
+                    {/loop}
+                    {/loop}
+                    {/ifloop}
+                    {elseloop rel="wishlist"}
+                    <p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
+                    {/elseloop}	
+                </ul>
+            </div>
+        </div>
+    </div>
+
 {/block}
