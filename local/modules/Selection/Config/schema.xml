@@ -22,6 +22,19 @@
         </behavior>
     </table>
     
+    <table name="selection_wish_list" namespace="Selection\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="selection_id" required="true" type="INTEGER" />
+        <column name="customer_id" required="true" type="INTEGER" />
+        <index name="idx_wish_list_selection_id">
+            <index-column name="selection_id" />
+        </index>
+        <index name="idx_wish_list_customer_id">
+            <index-column name="customer_id" />
+        </index>
+        <behavior name="timestampable" />
+    </table>
+    
     <table name="selection_features" namespace="Selection\Model">
         <column name="id" primaryKey="true" required="true" autoIncrement="true" type="INTEGER"/>
         <column name="feature_id" required="true" type="INTEGER"/>
@@ -31,13 +44,13 @@
         <column name="position" type="INTEGER"/>        
         <behavior name="timestampable" />         
         <foreign-key foreignTable="feature_av" name="fk_feature_selection_feature_av_id" onDelete="CASCADE" onUpdate="RESTRICT">
-          <reference foreign="id" local="feature_av_id" />
+            <reference foreign="id" local="feature_av_id" />
         </foreign-key>
         <foreign-key foreignTable="feature_av_i18n" name="fk_feature_i18n_selection_feature_av_id" onDelete="CASCADE" onUpdate="RESTRICT">
-          <reference foreign="id" local="feature_av_id" />
+            <reference foreign="id" local="feature_av_id" />
         </foreign-key>
         
-   </table>
+    </table>
 
     <table name="selection_product" namespace="Selection\Model">
         <column name="selection_id" primaryKey="true" required="true" type="INTEGER"/>

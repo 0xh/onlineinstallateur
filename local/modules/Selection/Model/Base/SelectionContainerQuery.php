@@ -20,7 +20,7 @@ use Selection\Model\Map\SelectionContainerTableMap;
 /**
  * Base class that represents a query for the 'selection_container' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionContainerQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionContainerQuery orderByVisible($order = Criteria::ASC) Order by the visible column
@@ -68,7 +68,7 @@ use Selection\Model\Map\SelectionContainerTableMap;
  */
 abstract class SelectionContainerQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionContainerQuery object.
      *
@@ -154,7 +154,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM selection_container WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -745,10 +745,10 @@ abstract class SelectionContainerQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionContainerTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionContainerTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -761,7 +761,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -773,7 +773,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -785,7 +785,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -795,7 +795,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -805,7 +805,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionContainerTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -815,7 +815,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *
@@ -827,7 +827,7 @@ abstract class SelectionContainerQuery extends ModelCriteria
     }
 
     // i18n behavior
-
+    
     /**
      * Adds a JOIN clause to the query using the i18n relation
      *
@@ -840,12 +840,12 @@ abstract class SelectionContainerQuery extends ModelCriteria
     public function joinI18n($locale = 'en_US', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $relationName = $relationAlias ? $relationAlias : 'SelectionContainerI18n';
-
+    
         return $this
             ->joinSelectionContainerI18n($relationAlias, $joinType)
             ->addJoinCondition($relationName, $relationName . '.Locale = ?', $locale);
     }
-
+    
     /**
      * Adds a JOIN clause to the query and hydrates the related I18n object.
      * Shortcut for $c->joinI18n($locale)->with()
@@ -861,10 +861,10 @@ abstract class SelectionContainerQuery extends ModelCriteria
             ->joinI18n($locale, null, $joinType)
             ->with('SelectionContainerI18n');
         $this->with['SelectionContainerI18n']->setIsWithOneToMany(false);
-
+    
         return $this;
     }
-
+    
     /**
      * Use the I18n relation query object
      *

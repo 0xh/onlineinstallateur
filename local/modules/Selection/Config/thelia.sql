@@ -20,6 +20,24 @@ CREATE TABLE `selection`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- selection_wish_list
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `selection_wish_list`;
+
+CREATE TABLE `selection_wish_list`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `selection_id` INTEGER NOT NULL,
+    `customer_id` INTEGER NOT NULL,
+    `created_at` DATETIME,
+    `updated_at` DATETIME,
+    PRIMARY KEY (`id`),
+    INDEX `idx_wish_list_selection_id` (`selection_id`),
+    INDEX `idx_wish_list_customer_id` (`customer_id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- selection_features
 -- ---------------------------------------------------------------------
 

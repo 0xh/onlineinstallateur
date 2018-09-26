@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use Selection\Model\SelectionContainerImage;
-use Selection\Model\SelectionContainerImageQuery;
+use Selection\Model\SelectionWishList;
+use Selection\Model\SelectionWishListQuery;
 
 
 /**
- * This class defines the structure of the 'selection_container_image' table.
+ * This class defines the structure of the 'selection_wish_list' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Selection\Model\SelectionContainerImageQuery;
  * (i.e. if it's a text column type).
  *
  */
-class SelectionContainerImageTableMap extends TableMap
+class SelectionWishListTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'Selection.Model.Map.SelectionContainerImageTableMap';
+    const CLASS_NAME = 'Selection.Model.Map.SelectionWishListTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class SelectionContainerImageTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'selection_container_image';
+    const TABLE_NAME = 'selection_wish_list';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Selection\\Model\\SelectionContainerImage';
+    const OM_CLASS = '\\Selection\\Model\\SelectionWishList';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Selection.Model.SelectionContainerImage';
+    const CLASS_DEFAULT = 'Selection.Model.SelectionWishList';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -68,56 +68,37 @@ class SelectionContainerImageTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'selection_container_image.ID';
+    const ID = 'selection_wish_list.ID';
 
     /**
-     * the column name for the SELECTION_CONTAINER_ID field
+     * the column name for the SELECTION_ID field
      */
-    const SELECTION_CONTAINER_ID = 'selection_container_image.SELECTION_CONTAINER_ID';
+    const SELECTION_ID = 'selection_wish_list.SELECTION_ID';
 
     /**
-     * the column name for the FILE field
+     * the column name for the CUSTOMER_ID field
      */
-    const FILE = 'selection_container_image.FILE';
-
-    /**
-     * the column name for the VISIBLE field
-     */
-    const VISIBLE = 'selection_container_image.VISIBLE';
-
-    /**
-     * the column name for the POSITION field
-     */
-    const POSITION = 'selection_container_image.POSITION';
+    const CUSTOMER_ID = 'selection_wish_list.CUSTOMER_ID';
 
     /**
      * the column name for the CREATED_AT field
      */
-    const CREATED_AT = 'selection_container_image.CREATED_AT';
+    const CREATED_AT = 'selection_wish_list.CREATED_AT';
 
     /**
      * the column name for the UPDATED_AT field
      */
-    const UPDATED_AT = 'selection_container_image.UPDATED_AT';
+    const UPDATED_AT = 'selection_wish_list.UPDATED_AT';
 
     /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
-
-    // i18n behavior
-    
-    /**
-     * The default locale to use for translations.
-     *
-     * @var string
-     */
-    const DEFAULT_LOCALE = 'en_US';
 
     /**
      * holds an array of fieldnames
@@ -126,12 +107,12 @@ class SelectionContainerImageTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'SelectionContainerId', 'File', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'selectionContainerId', 'file', 'visible', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(SelectionContainerImageTableMap::ID, SelectionContainerImageTableMap::SELECTION_CONTAINER_ID, SelectionContainerImageTableMap::FILE, SelectionContainerImageTableMap::VISIBLE, SelectionContainerImageTableMap::POSITION, SelectionContainerImageTableMap::CREATED_AT, SelectionContainerImageTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'SELECTION_CONTAINER_ID', 'FILE', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'selection_container_id', 'file', 'visible', 'position', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'SelectionId', 'CustomerId', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'selectionId', 'customerId', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(SelectionWishListTableMap::ID, SelectionWishListTableMap::SELECTION_ID, SelectionWishListTableMap::CUSTOMER_ID, SelectionWishListTableMap::CREATED_AT, SelectionWishListTableMap::UPDATED_AT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'SELECTION_ID', 'CUSTOMER_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        self::TYPE_FIELDNAME     => array('id', 'selection_id', 'customer_id', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -141,12 +122,12 @@ class SelectionContainerImageTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'SelectionContainerId' => 1, 'File' => 2, 'Visible' => 3, 'Position' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'selectionContainerId' => 1, 'file' => 2, 'visible' => 3, 'position' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        self::TYPE_COLNAME       => array(SelectionContainerImageTableMap::ID => 0, SelectionContainerImageTableMap::SELECTION_CONTAINER_ID => 1, SelectionContainerImageTableMap::FILE => 2, SelectionContainerImageTableMap::VISIBLE => 3, SelectionContainerImageTableMap::POSITION => 4, SelectionContainerImageTableMap::CREATED_AT => 5, SelectionContainerImageTableMap::UPDATED_AT => 6, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'SELECTION_CONTAINER_ID' => 1, 'FILE' => 2, 'VISIBLE' => 3, 'POSITION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'selection_container_id' => 1, 'file' => 2, 'visible' => 3, 'position' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'SelectionId' => 1, 'CustomerId' => 2, 'CreatedAt' => 3, 'UpdatedAt' => 4, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'selectionId' => 1, 'customerId' => 2, 'createdAt' => 3, 'updatedAt' => 4, ),
+        self::TYPE_COLNAME       => array(SelectionWishListTableMap::ID => 0, SelectionWishListTableMap::SELECTION_ID => 1, SelectionWishListTableMap::CUSTOMER_ID => 2, SelectionWishListTableMap::CREATED_AT => 3, SelectionWishListTableMap::UPDATED_AT => 4, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'SELECTION_ID' => 1, 'CUSTOMER_ID' => 2, 'CREATED_AT' => 3, 'UPDATED_AT' => 4, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'selection_id' => 1, 'customer_id' => 2, 'created_at' => 3, 'updated_at' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -159,17 +140,15 @@ class SelectionContainerImageTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('selection_container_image');
-        $this->setPhpName('SelectionContainerImage');
-        $this->setClassName('\\Selection\\Model\\SelectionContainerImage');
+        $this->setName('selection_wish_list');
+        $this->setPhpName('SelectionWishList');
+        $this->setClassName('\\Selection\\Model\\SelectionWishList');
         $this->setPackage('Selection.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('SELECTION_CONTAINER_ID', 'SelectionContainerId', 'INTEGER', 'selection_container', 'ID', true, null, null);
-        $this->addColumn('FILE', 'File', 'VARCHAR', true, 255, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 1);
-        $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
+        $this->addColumn('SELECTION_ID', 'SelectionId', 'INTEGER', true, null, null);
+        $this->addColumn('CUSTOMER_ID', 'CustomerId', 'INTEGER', true, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
     } // initialize()
@@ -179,8 +158,6 @@ class SelectionContainerImageTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('SelectionContainer', '\\Selection\\Model\\SelectionContainer', RelationMap::MANY_TO_ONE, array('selection_container_id' => 'id', ), 'CASCADE', 'RESTRICT');
-        $this->addRelation('SelectionContainerImageI18n', '\\Selection\\Model\\SelectionContainerImageI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'SelectionContainerImageI18ns');
     } // buildRelations()
 
     /**
@@ -193,18 +170,8 @@ class SelectionContainerImageTableMap extends TableMap
     {
         return array(
             'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-            'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'title, description, chapo, postscriptum', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
         );
     } // getBehaviors()
-    /**
-     * Method to invalidate the instance pool of all tables related to selection_container_image     * by a foreign key with ON DELETE CASCADE
-     */
-    public static function clearRelatedInstancePool()
-    {
-        // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                SelectionContainerImageI18nTableMap::clearInstancePool();
-            }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -262,7 +229,7 @@ class SelectionContainerImageTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? SelectionContainerImageTableMap::CLASS_DEFAULT : SelectionContainerImageTableMap::OM_CLASS;
+        return $withPrefix ? SelectionWishListTableMap::CLASS_DEFAULT : SelectionWishListTableMap::OM_CLASS;
     }
 
     /**
@@ -276,21 +243,21 @@ class SelectionContainerImageTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (SelectionContainerImage object, last column rank)
+     * @return array (SelectionWishList object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = SelectionContainerImageTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = SelectionContainerImageTableMap::getInstanceFromPool($key))) {
+        $key = SelectionWishListTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = SelectionWishListTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + SelectionContainerImageTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + SelectionWishListTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = SelectionContainerImageTableMap::OM_CLASS;
+            $cls = SelectionWishListTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            SelectionContainerImageTableMap::addInstanceToPool($obj, $key);
+            SelectionWishListTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -313,8 +280,8 @@ class SelectionContainerImageTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = SelectionContainerImageTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = SelectionContainerImageTableMap::getInstanceFromPool($key))) {
+            $key = SelectionWishListTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = SelectionWishListTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -323,7 +290,7 @@ class SelectionContainerImageTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                SelectionContainerImageTableMap::addInstanceToPool($obj, $key);
+                SelectionWishListTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -344,19 +311,15 @@ class SelectionContainerImageTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::ID);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::SELECTION_CONTAINER_ID);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::FILE);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::VISIBLE);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::POSITION);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::CREATED_AT);
-            $criteria->addSelectColumn(SelectionContainerImageTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(SelectionWishListTableMap::ID);
+            $criteria->addSelectColumn(SelectionWishListTableMap::SELECTION_ID);
+            $criteria->addSelectColumn(SelectionWishListTableMap::CUSTOMER_ID);
+            $criteria->addSelectColumn(SelectionWishListTableMap::CREATED_AT);
+            $criteria->addSelectColumn(SelectionWishListTableMap::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.SELECTION_CONTAINER_ID');
-            $criteria->addSelectColumn($alias . '.FILE');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
-            $criteria->addSelectColumn($alias . '.POSITION');
+            $criteria->addSelectColumn($alias . '.SELECTION_ID');
+            $criteria->addSelectColumn($alias . '.CUSTOMER_ID');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
         }
@@ -371,7 +334,7 @@ class SelectionContainerImageTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(SelectionContainerImageTableMap::DATABASE_NAME)->getTable(SelectionContainerImageTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(SelectionWishListTableMap::DATABASE_NAME)->getTable(SelectionWishListTableMap::TABLE_NAME);
     }
 
     /**
@@ -379,16 +342,16 @@ class SelectionContainerImageTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(SelectionContainerImageTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(SelectionContainerImageTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new SelectionContainerImageTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(SelectionWishListTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(SelectionWishListTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new SelectionWishListTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a SelectionContainerImage or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a SelectionWishList or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or SelectionContainerImage object or primary key or array of primary keys
+     * @param mixed               $values Criteria or SelectionWishList object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -399,25 +362,25 @@ class SelectionContainerImageTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionContainerImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Selection\Model\SelectionContainerImage) { // it's a model object
+        } elseif ($values instanceof \Selection\Model\SelectionWishList) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(SelectionContainerImageTableMap::DATABASE_NAME);
-            $criteria->add(SelectionContainerImageTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(SelectionWishListTableMap::DATABASE_NAME);
+            $criteria->add(SelectionWishListTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = SelectionContainerImageQuery::create()->mergeWith($criteria);
+        $query = SelectionWishListQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { SelectionContainerImageTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { SelectionWishListTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { SelectionContainerImageTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { SelectionWishListTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -425,20 +388,20 @@ class SelectionContainerImageTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the selection_container_image table.
+     * Deletes all rows from the selection_wish_list table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return SelectionContainerImageQuery::create()->doDeleteAll($con);
+        return SelectionWishListQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a SelectionContainerImage or Criteria object.
+     * Performs an INSERT on the database, given a SelectionWishList or Criteria object.
      *
-     * @param mixed               $criteria Criteria or SelectionContainerImage object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or SelectionWishList object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -447,18 +410,22 @@ class SelectionContainerImageTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionContainerImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from SelectionContainerImage object
+            $criteria = $criteria->buildCriteria(); // build Criteria from SelectionWishList object
+        }
+
+        if ($criteria->containsKey(SelectionWishListTableMap::ID) && $criteria->keyContainsValue(SelectionWishListTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SelectionWishListTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = SelectionContainerImageQuery::create()->mergeWith($criteria);
+        $query = SelectionWishListQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -474,7 +441,7 @@ class SelectionContainerImageTableMap extends TableMap
         return $pk;
     }
 
-} // SelectionContainerImageTableMap
+} // SelectionWishListTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-SelectionContainerImageTableMap::buildTableMap();
+SelectionWishListTableMap::buildTableMap();

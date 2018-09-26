@@ -20,7 +20,7 @@ use Selection\Model\Map\SelectionContainerImageTableMap;
 /**
  * Base class that represents a query for the 'selection_container_image' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionContainerImageQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionContainerImageQuery orderBySelectionContainerId($order = Criteria::ASC) Order by the selection_container_id column
@@ -72,7 +72,7 @@ use Selection\Model\Map\SelectionContainerImageTableMap;
  */
 abstract class SelectionContainerImageQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionContainerImageQuery object.
      *
@@ -158,7 +158,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, SELECTION_CONTAINER_ID, FILE, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM selection_container_image WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -750,10 +750,10 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionContainerImageTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionContainerImageTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -766,7 +766,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -778,7 +778,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerImageTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -790,7 +790,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerImageTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -800,7 +800,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerImageTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -810,7 +810,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionContainerImageTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -820,7 +820,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerImageTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *
@@ -832,7 +832,7 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     }
 
     // i18n behavior
-
+    
     /**
      * Adds a JOIN clause to the query using the i18n relation
      *
@@ -845,12 +845,12 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
     public function joinI18n($locale = 'en_US', $relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $relationName = $relationAlias ? $relationAlias : 'SelectionContainerImageI18n';
-
+    
         return $this
             ->joinSelectionContainerImageI18n($relationAlias, $joinType)
             ->addJoinCondition($relationName, $relationName . '.Locale = ?', $locale);
     }
-
+    
     /**
      * Adds a JOIN clause to the query and hydrates the related I18n object.
      * Shortcut for $c->joinI18n($locale)->with()
@@ -866,10 +866,10 @@ abstract class SelectionContainerImageQuery extends ModelCriteria
             ->joinI18n($locale, null, $joinType)
             ->with('SelectionContainerImageI18n');
         $this->with['SelectionContainerImageI18n']->setIsWithOneToMany(false);
-
+    
         return $this;
     }
-
+    
     /**
      * Use the I18n relation query object
      *

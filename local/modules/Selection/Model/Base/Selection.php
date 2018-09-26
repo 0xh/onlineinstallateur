@@ -31,7 +31,7 @@ use Selection\Model\SelectionProductQuery as ChildSelectionProductQuery;
 use Selection\Model\SelectionQuery as ChildSelectionQuery;
 use Selection\Model\Map\SelectionTableMap;
 
-abstract class Selection implements ActiveRecordInterface
+abstract class Selection implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
@@ -134,13 +134,13 @@ abstract class Selection implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     // i18n behavior
-
+    
     /**
      * Current locale
      * @var        string
      */
     protected $currentLocale = 'en_US';
-
+    
     /**
      * Current translation objects
      * @var        array[ChildSelectionI18n]
@@ -437,7 +437,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     *
+     * 
      * @return   int
      */
     public function getId()
@@ -448,7 +448,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [visible] column value.
-     *
+     * 
      * @return   int
      */
     public function getVisible()
@@ -459,7 +459,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     *
+     * 
      * @return   int
      */
     public function getPosition()
@@ -470,7 +470,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -490,7 +490,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     *
+     * 
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -510,7 +510,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -531,7 +531,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [visible] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -552,7 +552,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     *
+     * 
      * @param      int $v new value
      * @return   \Selection\Model\Selection The current object (for fluent API support)
      */
@@ -573,7 +573,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\Selection The current object (for fluent API support)
@@ -594,7 +594,7 @@ abstract class Selection implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
+     * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \Selection\Model\Selection The current object (for fluent API support)
@@ -1019,19 +1019,19 @@ abstract class Selection implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
+                    case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'VISIBLE':
+                    case 'VISIBLE':                        
                         $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
                         break;
-                    case 'POSITION':
+                    case 'POSITION':                        
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':
+                    case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
+                    case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                 }
@@ -1150,7 +1150,7 @@ abstract class Selection implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-
+        
         if ($includeForeignObjects) {
             if (null !== $this->collSelectionProducts) {
                 $result['SelectionProducts'] = $this->collSelectionProducts->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -1539,7 +1539,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionProductsToDelete = $this->getSelectionProducts(new Criteria(), $con)->diff($selectionProducts);
 
-
+        
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -1785,7 +1785,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionContentsToDelete = $this->getSelectionContents(new Criteria(), $con)->diff($selectionContents);
 
-
+        
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -2031,7 +2031,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionImagesToDelete = $this->getSelectionImages(new Criteria(), $con)->diff($selectionImages);
 
-
+        
         $this->selectionImagesScheduledForDeletion = $selectionImagesToDelete;
 
         foreach ($selectionImagesToDelete as $selectionImageRemoved) {
@@ -2249,7 +2249,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionContainerAssociatedSelectionsToDelete = $this->getSelectionContainerAssociatedSelections(new Criteria(), $con)->diff($selectionContainerAssociatedSelections);
 
-
+        
         $this->selectionContainerAssociatedSelectionsScheduledForDeletion = $selectionContainerAssociatedSelectionsToDelete;
 
         foreach ($selectionContainerAssociatedSelectionsToDelete as $selectionContainerAssociatedSelectionRemoved) {
@@ -2492,7 +2492,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         $selectionI18nsToDelete = $this->getSelectionI18ns(new Criteria(), $con)->diff($selectionI18ns);
 
-
+        
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -2678,7 +2678,7 @@ abstract class Selection implements ActiveRecordInterface
     }
 
     // timestampable behavior
-
+    
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
@@ -2687,12 +2687,12 @@ abstract class Selection implements ActiveRecordInterface
     public function keepUpdateDateUnchanged()
     {
         $this->modifiedColumns[SelectionTableMap::UPDATED_AT] = true;
-
+    
         return $this;
     }
 
     // i18n behavior
-
+    
     /**
      * Sets the locale for translations
      *
@@ -2703,10 +2703,10 @@ abstract class Selection implements ActiveRecordInterface
     public function setLocale($locale = 'en_US')
     {
         $this->currentLocale = $locale;
-
+    
         return $this;
     }
-
+    
     /**
      * Gets the locale for translations
      *
@@ -2716,7 +2716,7 @@ abstract class Selection implements ActiveRecordInterface
     {
         return $this->currentLocale;
     }
-
+    
     /**
      * Returns the current translation for a given locale
      *
@@ -2731,7 +2731,7 @@ abstract class Selection implements ActiveRecordInterface
                 foreach ($this->collSelectionI18ns as $translation) {
                     if ($translation->getLocale() == $locale) {
                         $this->currentTranslations[$locale] = $translation;
-
+    
                         return $translation;
                     }
                 }
@@ -2747,10 +2747,10 @@ abstract class Selection implements ActiveRecordInterface
             }
             $this->addSelectionI18n($translation);
         }
-
+    
         return $this->currentTranslations[$locale];
     }
-
+    
     /**
      * Remove the translation for a given locale
      *
@@ -2775,10 +2775,10 @@ abstract class Selection implements ActiveRecordInterface
                 break;
             }
         }
-
+    
         return $this;
     }
-
+    
     /**
      * Returns the current translation
      *
@@ -2789,172 +2789,172 @@ abstract class Selection implements ActiveRecordInterface
     {
         return $this->getTranslation($this->getLocale(), $con);
     }
-
-
+    
+    
         /**
          * Get the [title] column value.
-         *
+         * 
          * @return   string
          */
         public function getTitle()
         {
         return $this->getCurrentTranslation()->getTitle();
     }
-
-
+    
+    
         /**
          * Set the value of [title] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setTitle($v)
         {    $this->getCurrentTranslation()->setTitle($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [description] column value.
-         *
+         * 
          * @return   string
          */
         public function getDescription()
         {
         return $this->getCurrentTranslation()->getDescription();
     }
-
-
+    
+    
         /**
          * Set the value of [description] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setDescription($v)
         {    $this->getCurrentTranslation()->setDescription($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [chapo] column value.
-         *
+         * 
          * @return   string
          */
         public function getChapo()
         {
         return $this->getCurrentTranslation()->getChapo();
     }
-
-
+    
+    
         /**
          * Set the value of [chapo] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setChapo($v)
         {    $this->getCurrentTranslation()->setChapo($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [postscriptum] column value.
-         *
+         * 
          * @return   string
          */
         public function getPostscriptum()
         {
         return $this->getCurrentTranslation()->getPostscriptum();
     }
-
-
+    
+    
         /**
          * Set the value of [postscriptum] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setPostscriptum($v)
         {    $this->getCurrentTranslation()->setPostscriptum($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [meta_title] column value.
-         *
+         * 
          * @return   string
          */
         public function getMetaTitle()
         {
         return $this->getCurrentTranslation()->getMetaTitle();
     }
-
-
+    
+    
         /**
          * Set the value of [meta_title] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaTitle($v)
         {    $this->getCurrentTranslation()->setMetaTitle($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [meta_description] column value.
-         *
+         * 
          * @return   string
          */
         public function getMetaDescription()
         {
         return $this->getCurrentTranslation()->getMetaDescription();
     }
-
-
+    
+    
         /**
          * Set the value of [meta_description] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaDescription($v)
         {    $this->getCurrentTranslation()->setMetaDescription($v);
-
+    
         return $this;
     }
-
-
+    
+    
         /**
          * Get the [meta_keywords] column value.
-         *
+         * 
          * @return   string
          */
         public function getMetaKeywords()
         {
         return $this->getCurrentTranslation()->getMetaKeywords();
     }
-
-
+    
+    
         /**
          * Set the value of [meta_keywords] column.
-         *
+         * 
          * @param      string $v new value
          * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
          */
         public function setMetaKeywords($v)
         {    $this->getCurrentTranslation()->setMetaKeywords($v);
-
+    
         return $this;
     }
 

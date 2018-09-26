@@ -101,7 +101,7 @@ class SelectionTableMap extends TableMap
     const DEFAULT_STRING_FORMAT = 'YAML';
 
     // i18n behavior
-
+    
     /**
      * The default locale to use for translations.
      *
@@ -243,7 +243,7 @@ class SelectionTableMap extends TableMap
                             : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
-
+    
     /**
      * The class that the tableMap will make instances of.
      *
@@ -303,7 +303,7 @@ class SelectionTableMap extends TableMap
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
         $results = array();
-
+    
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
         // populate the object(s)

@@ -1,68 +1,87 @@
 {extends file="layout.tpl"}
 
 {block name="full_with_block"}
-	{hook name="full_with_block.inspiration.page"}
-	{loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
-    	<div class="inspiration-header" style="background:url({$IMAGE_URL}) no-repeat center center fixed;">
-			<div class="row">
-			<div class="col-sm-5 col-md-5 col-lg-7"></div>
-			<div class="col-sm-5 col-md-5 col-lg-3 info-card">
-			{loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
-			<h2>{$FTITLE}</h2>
-			{/loop}
+    {hook name="full_with_block.inspiration.page"}
+    {loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
+    <div class="inspiration-header" style="background:url({$IMAGE_URL}) no-repeat center center fixed;">
+        <div class="row">
+            <div class="col-sm-5 col-md-5 col-lg-7"></div>
+            <div class="col-sm-5 col-md-5 col-lg-3 info-card">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$FTITLE}</h2>
+                {/loop}
 
-			{loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
-			<h2>{$SELECTION_TITLE nofilter}</h2>
-			<p>{$SELECTION_DESCRIPTION nofilter}</p>
-			<br>
-			{/loop}
-			
-			
-			
-				
-					<div>
-						{loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
-						<p>{$F_TITLE}:	{$FTITLE}</p>
+                {loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
+                <h2>{$SELECTION_TITLE nofilter}</h2>
+                <p>{$SELECTION_DESCRIPTION nofilter}</p>
+                <br>
+                {/loop}
 
-						{/loop}
-					</div>
-					<div>
-						{loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
-						<p>{$F_TITLE}:	{$FTITLE}</p>
-						{/loop}
-					</div>
-					<div class="col-md-12 border-top text-right">
-						<h2>€ <label  id="total_price"></label></h2>
-					</div>
-					<div class="col-md-12 border-top text-center">
-					<button type="button" class="add-total-products" style="margin:10px"> 
-							{intl l="Set kaufen"}
-					</button>
-					</div>
-				</div>
-				<div class="col-sm-2"></div>
-			</div>
-  </div>
+                <div>
+                    {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                    <p>{$F_TITLE}:	{$FTITLE}</p>
+                    {/loop}
+                </div>
+                <div>
+                    {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                    <p>{$F_TITLE}:	{$FTITLE}</p>
+                    {/loop}
+                </div>
+                <div class="col-md-12 border-top text-right">
+                    <h2>€ <label  id="total_price"></label></h2>
+                </div>
+                <div class="col-md-12 border-top text-center">
+                    <button type="button" class="add-total-products" style="margin:10px"> 
+                        {intl l="Set kaufen"}
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
     {/loop}
 {/block}
 
 {block name="main-content"} 
 
+    <div style="text-align: center; background:#fff; padding:10px;">
+        {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
+        <h2>{$FTITLE}</h2>
+        {/loop}
 
-    <div style="text-align: center; background:#fff; padding:10px">
-       
+        {loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
+        <h2>{$SELECTION_TITLE nofilter}</h2>
+        <p>{$SELECTION_DESCRIPTION nofilter}</p>
+        {/loop}
 
+        <div class="row">
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                <h2>€ <label  id="total_price">2.611,00</label></h2>
+            </div>
+        </div>
 
-        <h2>PRODUKTÜBERSICHT</h2>
-        <h4>Alle Artikel in diesem Badezimmer im Detail</h4>
+        <h1>{intl l='PRODUCT OVERVIEW'}</h1>
+        <h2>{intl l='All items in this bathroom in detail'}</h2>
 
         <table style="width:100%; text-align: left;">
             <tr>
-                <th>{intl l='Auswahl'}</th>
-                <th>{intl l='Artikel'}</th> 
-                <th>{intl l='Preis'}</th>
-                <th>{intl l='Menge'}</th>
-                <th>{intl l='Gesamt'}</th>
+                <th>{intl l='Selection'}</th>
+                <th>{intl l='Items'}</th> 
+                <th>{intl l='Price'}</th>
+                <th>{intl l='Amount'}</th>
+                <th>{intl l='Total'}</th>
             </tr>
             <tr>
                 <td colspan="5" style="border-bottom:1px solid #CCC;padding-top:10px;margin-bottom:10px">
@@ -162,8 +181,12 @@
                 <th></th>
                 <th></th>
                 <td colspan="3" style="padding-top:15px" valign="top">
-                    <button type="button" class="add-total-products"> 
-                        {intl l="Set kaufen"}
+                    <button type="button" class="add-total-products">
+                        <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                        {intl l="Add to cart"}
+                        </font>
+                        </font>
                     </button>
                 </td>
             </tr>

@@ -16,20 +16,16 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
-use Selection\Model\Selection as ChildSelection;
-use Selection\Model\SelectionProduct as ChildSelectionProduct;
-use Selection\Model\SelectionProductQuery as ChildSelectionProductQuery;
-use Selection\Model\SelectionQuery as ChildSelectionQuery;
-use Selection\Model\Map\SelectionProductTableMap;
-use Thelia\Model\Product as ChildProduct;
-use Thelia\Model\ProductQuery;
+use Selection\Model\SelectionWishList as ChildSelectionWishList;
+use Selection\Model\SelectionWishListQuery as ChildSelectionWishListQuery;
+use Selection\Model\Map\SelectionWishListTableMap;
 
-abstract class SelectionProduct implements ActiveRecordInterface 
+abstract class SelectionWishList implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Selection\\Model\\Map\\SelectionProductTableMap';
+    const TABLE_MAP = '\\Selection\\Model\\Map\\SelectionWishListTableMap';
 
 
     /**
@@ -59,22 +55,22 @@ abstract class SelectionProduct implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
+     * The value for the id field.
+     * @var        int
+     */
+    protected $id;
+
+    /**
      * The value for the selection_id field.
      * @var        int
      */
     protected $selection_id;
 
     /**
-     * The value for the product_id field.
+     * The value for the customer_id field.
      * @var        int
      */
-    protected $product_id;
-
-    /**
-     * The value for the position field.
-     * @var        int
-     */
-    protected $position;
+    protected $customer_id;
 
     /**
      * The value for the created_at field.
@@ -89,16 +85,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
     protected $updated_at;
 
     /**
-     * @var        Product
-     */
-    protected $aProduct;
-
-    /**
-     * @var        Selection
-     */
-    protected $aSelection;
-
-    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -107,7 +93,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of Selection\Model\Base\SelectionProduct object.
+     * Initializes internal state of Selection\Model\Base\SelectionWishList object.
      */
     public function __construct()
     {
@@ -202,9 +188,9 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>SelectionProduct</code> instance.  If
-     * <code>obj</code> is an instance of <code>SelectionProduct</code>, delegates to
-     * <code>equals(SelectionProduct)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>SelectionWishList</code> instance.  If
+     * <code>obj</code> is an instance of <code>SelectionWishList</code>, delegates to
+     * <code>equals(SelectionWishList)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -287,7 +273,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return SelectionProduct The current object, for fluid interface
+     * @return SelectionWishList The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -319,7 +305,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return SelectionProduct The current object, for fluid interface
+     * @return SelectionWishList The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -365,6 +351,17 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     /**
+     * Get the [id] column value.
+     * 
+     * @return   int
+     */
+    public function getId()
+    {
+
+        return $this->id;
+    }
+
+    /**
      * Get the [selection_id] column value.
      * 
      * @return   int
@@ -376,25 +373,14 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     /**
-     * Get the [product_id] column value.
+     * Get the [customer_id] column value.
      * 
      * @return   int
      */
-    public function getProductId()
+    public function getCustomerId()
     {
 
-        return $this->product_id;
-    }
-
-    /**
-     * Get the [position] column value.
-     * 
-     * @return   int
-     */
-    public function getPosition()
-    {
-
-        return $this->position;
+        return $this->customer_id;
     }
 
     /**
@@ -438,10 +424,31 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     /**
+     * Set the value of [id] column.
+     * 
+     * @param      int $v new value
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
+     */
+    public function setId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id !== $v) {
+            $this->id = $v;
+            $this->modifiedColumns[SelectionWishListTableMap::ID] = true;
+        }
+
+
+        return $this;
+    } // setId()
+
+    /**
      * Set the value of [selection_id] column.
      * 
      * @param      int $v new value
-     * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setSelectionId($v)
     {
@@ -451,11 +458,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
         if ($this->selection_id !== $v) {
             $this->selection_id = $v;
-            $this->modifiedColumns[SelectionProductTableMap::SELECTION_ID] = true;
-        }
-
-        if ($this->aSelection !== null && $this->aSelection->getId() !== $v) {
-            $this->aSelection = null;
+            $this->modifiedColumns[SelectionWishListTableMap::SELECTION_ID] = true;
         }
 
 
@@ -463,57 +466,32 @@ abstract class SelectionProduct implements ActiveRecordInterface
     } // setSelectionId()
 
     /**
-     * Set the value of [product_id] column.
+     * Set the value of [customer_id] column.
      * 
      * @param      int $v new value
-     * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
-    public function setProductId($v)
+    public function setCustomerId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->product_id !== $v) {
-            $this->product_id = $v;
-            $this->modifiedColumns[SelectionProductTableMap::PRODUCT_ID] = true;
-        }
-
-        if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
-            $this->aProduct = null;
+        if ($this->customer_id !== $v) {
+            $this->customer_id = $v;
+            $this->modifiedColumns[SelectionWishListTableMap::CUSTOMER_ID] = true;
         }
 
 
         return $this;
-    } // setProductId()
-
-    /**
-     * Set the value of [position] column.
-     * 
-     * @param      int $v new value
-     * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
-     */
-    public function setPosition($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->position !== $v) {
-            $this->position = $v;
-            $this->modifiedColumns[SelectionProductTableMap::POSITION] = true;
-        }
-
-
-        return $this;
-    } // setPosition()
+    } // setCustomerId()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -521,7 +499,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[SelectionProductTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[SelectionWishListTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -534,7 +512,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \Selection\Model\SelectionProduct The current object (for fluent API support)
+     * @return   \Selection\Model\SelectionWishList The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -542,7 +520,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[SelectionProductTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[SelectionWishListTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -587,22 +565,22 @@ abstract class SelectionProduct implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SelectionProductTableMap::translateFieldName('SelectionId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SelectionWishListTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SelectionWishListTableMap::translateFieldName('SelectionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->selection_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SelectionProductTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->product_id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SelectionWishListTableMap::translateFieldName('CustomerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->customer_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SelectionProductTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->position = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionProductTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionWishListTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionProductTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionWishListTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -615,10 +593,10 @@ abstract class SelectionProduct implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = SelectionProductTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = SelectionWishListTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \Selection\Model\SelectionProduct object", 0, $e);
+            throw new PropelException("Error populating \Selection\Model\SelectionWishList object", 0, $e);
         }
     }
 
@@ -637,12 +615,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aSelection !== null && $this->selection_id !== $this->aSelection->getId()) {
-            $this->aSelection = null;
-        }
-        if ($this->aProduct !== null && $this->product_id !== $this->aProduct->getId()) {
-            $this->aProduct = null;
-        }
     } // ensureConsistency
 
     /**
@@ -666,13 +638,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(SelectionProductTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildSelectionProductQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildSelectionWishListQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -682,8 +654,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProduct = null;
-            $this->aSelection = null;
         } // if (deep)
     }
 
@@ -693,8 +663,8 @@ abstract class SelectionProduct implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see SelectionProduct::setDeleted()
-     * @see SelectionProduct::isDeleted()
+     * @see SelectionWishList::setDeleted()
+     * @see SelectionWishList::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -703,12 +673,12 @@ abstract class SelectionProduct implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionProductTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildSelectionProductQuery::create()
+            $deleteQuery = ChildSelectionWishListQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -745,7 +715,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SelectionProductTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SelectionWishListTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -755,16 +725,16 @@ abstract class SelectionProduct implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(SelectionProductTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(SelectionProductTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(SelectionProductTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -776,7 +746,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SelectionProductTableMap::addInstanceToPool($this);
+                SelectionWishListTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -805,25 +775,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
-
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProduct !== null) {
-                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
-                    $affectedRows += $this->aProduct->save($con);
-                }
-                $this->setProduct($this->aProduct);
-            }
-
-            if ($this->aSelection !== null) {
-                if ($this->aSelection->isModified() || $this->aSelection->isNew()) {
-                    $affectedRows += $this->aSelection->save($con);
-                }
-                $this->setSelection($this->aSelection);
-            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -856,26 +807,30 @@ abstract class SelectionProduct implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[SelectionWishListTableMap::ID] = true;
+        if (null !== $this->id) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SelectionWishListTableMap::ID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SelectionProductTableMap::SELECTION_ID)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::ID)) {
+            $modifiedColumns[':p' . $index++]  = 'ID';
+        }
+        if ($this->isColumnModified(SelectionWishListTableMap::SELECTION_ID)) {
             $modifiedColumns[':p' . $index++]  = 'SELECTION_ID';
         }
-        if ($this->isColumnModified(SelectionProductTableMap::PRODUCT_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'PRODUCT_ID';
+        if ($this->isColumnModified(SelectionWishListTableMap::CUSTOMER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CUSTOMER_ID';
         }
-        if ($this->isColumnModified(SelectionProductTableMap::POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'POSITION';
-        }
-        if ($this->isColumnModified(SelectionProductTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(SelectionProductTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
         $sql = sprintf(
-            'INSERT INTO selection_product (%s) VALUES (%s)',
+            'INSERT INTO selection_wish_list (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -884,14 +839,14 @@ abstract class SelectionProduct implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
+                    case 'ID':                        
+                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
                     case 'SELECTION_ID':                        
                         $stmt->bindValue($identifier, $this->selection_id, PDO::PARAM_INT);
                         break;
-                    case 'PRODUCT_ID':                        
-                        $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
-                        break;
-                    case 'POSITION':                        
-                        $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
+                    case 'CUSTOMER_ID':                        
+                        $stmt->bindValue($identifier, $this->customer_id, PDO::PARAM_INT);
                         break;
                     case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -906,6 +861,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -938,7 +900,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SelectionProductTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SelectionWishListTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -955,13 +917,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getSelectionId();
+                return $this->getId();
                 break;
             case 1:
-                return $this->getProductId();
+                return $this->getSelectionId();
                 break;
             case 2:
-                return $this->getPosition();
+                return $this->getCustomerId();
                 break;
             case 3:
                 return $this->getCreatedAt();
@@ -986,21 +948,20 @@ abstract class SelectionProduct implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['SelectionProduct'][serialize($this->getPrimaryKey())])) {
+        if (isset($alreadyDumpedObjects['SelectionWishList'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['SelectionProduct'][serialize($this->getPrimaryKey())] = true;
-        $keys = SelectionProductTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['SelectionWishList'][$this->getPrimaryKey()] = true;
+        $keys = SelectionWishListTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getSelectionId(),
-            $keys[1] => $this->getProductId(),
-            $keys[2] => $this->getPosition(),
+            $keys[0] => $this->getId(),
+            $keys[1] => $this->getSelectionId(),
+            $keys[2] => $this->getCustomerId(),
             $keys[3] => $this->getCreatedAt(),
             $keys[4] => $this->getUpdatedAt(),
         );
@@ -1009,14 +970,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
         
-        if ($includeForeignObjects) {
-            if (null !== $this->aProduct) {
-                $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aSelection) {
-                $result['Selection'] = $this->aSelection->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -1034,7 +987,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SelectionProductTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SelectionWishListTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1051,13 +1004,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setSelectionId($value);
+                $this->setId($value);
                 break;
             case 1:
-                $this->setProductId($value);
+                $this->setSelectionId($value);
                 break;
             case 2:
-                $this->setPosition($value);
+                $this->setCustomerId($value);
                 break;
             case 3:
                 $this->setCreatedAt($value);
@@ -1087,11 +1040,11 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = SelectionProductTableMap::getFieldNames($keyType);
+        $keys = SelectionWishListTableMap::getFieldNames($keyType);
 
-        if (array_key_exists($keys[0], $arr)) $this->setSelectionId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setProductId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPosition($arr[$keys[2]]);
+        if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+        if (array_key_exists($keys[1], $arr)) $this->setSelectionId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCustomerId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
     }
@@ -1103,13 +1056,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SelectionProductTableMap::DATABASE_NAME);
+        $criteria = new Criteria(SelectionWishListTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SelectionProductTableMap::SELECTION_ID)) $criteria->add(SelectionProductTableMap::SELECTION_ID, $this->selection_id);
-        if ($this->isColumnModified(SelectionProductTableMap::PRODUCT_ID)) $criteria->add(SelectionProductTableMap::PRODUCT_ID, $this->product_id);
-        if ($this->isColumnModified(SelectionProductTableMap::POSITION)) $criteria->add(SelectionProductTableMap::POSITION, $this->position);
-        if ($this->isColumnModified(SelectionProductTableMap::CREATED_AT)) $criteria->add(SelectionProductTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(SelectionProductTableMap::UPDATED_AT)) $criteria->add(SelectionProductTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(SelectionWishListTableMap::ID)) $criteria->add(SelectionWishListTableMap::ID, $this->id);
+        if ($this->isColumnModified(SelectionWishListTableMap::SELECTION_ID)) $criteria->add(SelectionWishListTableMap::SELECTION_ID, $this->selection_id);
+        if ($this->isColumnModified(SelectionWishListTableMap::CUSTOMER_ID)) $criteria->add(SelectionWishListTableMap::CUSTOMER_ID, $this->customer_id);
+        if ($this->isColumnModified(SelectionWishListTableMap::CREATED_AT)) $criteria->add(SelectionWishListTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(SelectionWishListTableMap::UPDATED_AT)) $criteria->add(SelectionWishListTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1124,37 +1077,30 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SelectionProductTableMap::DATABASE_NAME);
-        $criteria->add(SelectionProductTableMap::SELECTION_ID, $this->selection_id);
-        $criteria->add(SelectionProductTableMap::PRODUCT_ID, $this->product_id);
+        $criteria = new Criteria(SelectionWishListTableMap::DATABASE_NAME);
+        $criteria->add(SelectionWishListTableMap::ID, $this->id);
 
         return $criteria;
     }
 
     /**
-     * Returns the composite primary key for this object.
-     * The array elements will be in same order as specified in XML.
-     * @return array
+     * Returns the primary key for this object (row).
+     * @return   int
      */
     public function getPrimaryKey()
     {
-        $pks = array();
-        $pks[0] = $this->getSelectionId();
-        $pks[1] = $this->getProductId();
-
-        return $pks;
+        return $this->getId();
     }
 
     /**
-     * Set the [composite] primary key.
+     * Generic method to set the primary key (id column).
      *
-     * @param      array $keys The elements of the composite key (order must match the order in XML file).
+     * @param       int $key Primary key.
      * @return void
      */
-    public function setPrimaryKey($keys)
+    public function setPrimaryKey($key)
     {
-        $this->setSelectionId($keys[0]);
-        $this->setProductId($keys[1]);
+        $this->setId($key);
     }
 
     /**
@@ -1164,7 +1110,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
     public function isPrimaryKeyNull()
     {
 
-        return (null === $this->getSelectionId()) && (null === $this->getProductId());
+        return null === $this->getId();
     }
 
     /**
@@ -1173,7 +1119,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Selection\Model\SelectionProduct (or compatible) type.
+     * @param      object $copyObj An object of \Selection\Model\SelectionWishList (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1181,12 +1127,12 @@ abstract class SelectionProduct implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setSelectionId($this->getSelectionId());
-        $copyObj->setProductId($this->getProductId());
-        $copyObj->setPosition($this->getPosition());
+        $copyObj->setCustomerId($this->getCustomerId());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1199,7 +1145,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \Selection\Model\SelectionProduct Clone of current object.
+     * @return                 \Selection\Model\SelectionWishList Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1213,115 +1159,13 @@ abstract class SelectionProduct implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProduct object.
-     *
-     * @param                  ChildProduct $v
-     * @return                 \Selection\Model\SelectionProduct The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProduct(ChildProduct $v = null)
-    {
-        if ($v === null) {
-            $this->setProductId(NULL);
-        } else {
-            $this->setProductId($v->getId());
-        }
-
-        $this->aProduct = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProduct object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionProduct($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProduct object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildProduct The associated ChildProduct object.
-     * @throws PropelException
-     */
-    public function getProduct(ConnectionInterface $con = null)
-    {
-        if ($this->aProduct === null && ($this->product_id !== null)) {
-            $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProduct->addSelectionProducts($this);
-             */
-        }
-
-        return $this->aProduct;
-    }
-
-    /**
-     * Declares an association between this object and a ChildSelection object.
-     *
-     * @param                  ChildSelection $v
-     * @return                 \Selection\Model\SelectionProduct The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setSelection(ChildSelection $v = null)
-    {
-        if ($v === null) {
-            $this->setSelectionId(NULL);
-        } else {
-            $this->setSelectionId($v->getId());
-        }
-
-        $this->aSelection = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildSelection object, it will not be re-added.
-        if ($v !== null) {
-            $v->addSelectionProduct($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildSelection object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildSelection The associated ChildSelection object.
-     * @throws PropelException
-     */
-    public function getSelection(ConnectionInterface $con = null)
-    {
-        if ($this->aSelection === null && ($this->selection_id !== null)) {
-            $this->aSelection = ChildSelectionQuery::create()->findPk($this->selection_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aSelection->addSelectionProducts($this);
-             */
-        }
-
-        return $this->aSelection;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
+        $this->id = null;
         $this->selection_id = null;
-        $this->product_id = null;
-        $this->position = null;
+        $this->customer_id = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1345,8 +1189,6 @@ abstract class SelectionProduct implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProduct = null;
-        $this->aSelection = null;
     }
 
     /**
@@ -1356,7 +1198,7 @@ abstract class SelectionProduct implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SelectionProductTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(SelectionWishListTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1364,11 +1206,11 @@ abstract class SelectionProduct implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildSelectionProduct The current object (for fluent API support)
+     * @return     ChildSelectionWishList The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[SelectionProductTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[SelectionWishListTableMap::UPDATED_AT] = true;
     
         return $this;
     }

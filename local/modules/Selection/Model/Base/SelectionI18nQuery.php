@@ -19,7 +19,7 @@ use Selection\Model\Map\SelectionI18nTableMap;
 /**
  * Base class that represents a query for the 'selection_i18n' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionI18nQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
@@ -75,7 +75,7 @@ use Selection\Model\Map\SelectionI18nTableMap;
  */
 abstract class SelectionI18nQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionI18nQuery object.
      *
@@ -161,8 +161,8 @@ abstract class SelectionI18nQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM, META_TITLE, META_DESCRIPTION, META_KEYWORDS FROM selection_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);            
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -688,10 +688,10 @@ abstract class SelectionI18nQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionI18nTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionI18nTableMap::clearRelatedInstancePool();
             $con->commit();
