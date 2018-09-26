@@ -19,7 +19,7 @@ use Selection\Model\Map\SelectionContainerImageI18nTableMap;
 /**
  * Base class that represents a query for the 'selection_container_image_i18n' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionContainerImageI18nQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionContainerImageI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
@@ -63,7 +63,7 @@ use Selection\Model\Map\SelectionContainerImageI18nTableMap;
  */
 abstract class SelectionContainerImageI18nQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionContainerImageI18nQuery object.
      *
@@ -149,8 +149,8 @@ abstract class SelectionContainerImageI18nQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM selection_container_image_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
+            $stmt = $con->prepare($sql);            
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_STR);
             $stmt->execute();
         } catch (Exception $e) {
@@ -589,10 +589,10 @@ abstract class SelectionContainerImageI18nQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionContainerImageI18nTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionContainerImageI18nTableMap::clearRelatedInstancePool();
             $con->commit();

@@ -4,7 +4,6 @@
     {$category_id={category attr="id"}}
 {/block}
 
-
 {* Body Class *}
 {block name="body-class"}page-category{/block}
 
@@ -43,6 +42,10 @@
     {/if}
 {/block}
 
+{block name="full_with_block"}
+    {hook name="full_with_block.category.inspiration"}
+{/block}
+
 {* Content *}
 {block name="main-content"}
 
@@ -54,7 +57,6 @@
 
     <div class="main row">
 
-
         <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
 
             {hook name="category.content-top" category="$category_id"}
@@ -62,111 +64,56 @@
             {hook name="category.main-top" category="$category_id"}
 
             <div class=" row " >
+                <!-- "386 : (5192|5193), 383 : (5178|5181)" $smarty.get.features --> 
+                {$features=$smarty.get.features}
 
-                {loop name="inspirations" type="selection_list" visible="true"}  
-
+                {loop name="inspirations" type="selection_list" feature_availability="{$features|replace:'_':' : '}" visible="true"}  
 
                 <div class="col-sm-4 ">
-
-                    <a href="{$SELECTION_URL}">	
-
-                        <figure class="effect-honey mb-5">
-                            {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
-                            <div class="herz"></div><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
-                            {/loop}
-                            {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383 show_feature_value_selected=true}  
-                            {assign var = "feature_title" value = $F_TITLE}    
-                            {assign var = "feature_value" value = $FTITLE}
-                            {/loop} 
-                            <figcaption>
-                                <i><h2> <span class="mb-1"> {intl  l="Serie"} {$SELECTION_TITLE}</span> <span class="mb-2"><b>{$feature_title}</b>:</span>
-                                        <span class="mb-3">{$feature_value}</span>
-                                        {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
-                                        {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
-                                        <span class="mb-4">{$selection_price} €</span>
-                                        {/loop}   
-                                        <span class="mb-5"> » Details Zeigen</span>
-                                </i></h2> 
-                                <h2> </h2>
-                            </figcaption>	
-
-
-                        </figure>
-                    </a>
+                    <figure class="effect-honey mb-5">
+                        {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                        <div class="herz"></div>
+                        <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                        {ifhook rel="selection-wish-list-selection.wish-button"}
+                        {hook name="selection-wish-list-selection.wish-button" selection_id={$SELECTION_ID}}
+                        {/ifhook}
+                        {/loop}
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}     
+                        {assign var = "bath_size" value = $FTITLE}
+                        {/loop} 
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=386 show_feature_value_selected=true}     
+                        {assign var = "bath_style" value = $FTITLE}
+                        {/loop} 
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}  
+                        {assign var = "feature_title" value = $F_TITLE}    
+                        {assign var = "feature_value" value = $FTITLE}
+                        {/loop} 
+                        <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">
+                            <h2>
+                                <span class="inspiration-bath-size-style">{intl  l="Serie"} {$SELECTION_TITLE}</span>
+                                <i class="bath-size-style">{$bath_size}|{$bath_style}</i>
+                                {assign var = "selection_total" value=0}
+                                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
+                                {$selection_total=$selection_total+$selection_price}
+                                {/loop}   
+                                <i class="bath-price">{$selection_total|number_format:0:",":"."} €</i>
+                            </h2> 
+                        </a>
+                    </figure>
                 </div>
-
-
-
-
-
-
-                <!--
-                
-                        This selection id           : {$SELECTION_ID}
-                        This selection title        : {$SELECTION_TITLE}
-                        This selection status       : {$SELECTION_VISIBLE}
-                        This selection description  : {$SELECTION_DESCRIPTION}
-                        This selection chapo        : {$SELECTION_CHAPO}
-                        This selection url          : {$SELECTION_URL}
-                        This selection postscriptum : {$SELECTION_POSTSCRIPTUM}
-                        This selection position     : {$SELECTION_POSITION}
-                
-                -->
-
 
                 {/loop} 
             </div>
-
-
-            {if #category_display_detail# && $category_id}
-                <section class="category-description">
-                    {loop name="category.description" type="category" id={$category_id} limit="1" }
-                    <h1 id="main-label" class="page-header">{category attr="title"}</h1>
-                    {loop name="category.image" type="image" source="category" source_id={$ID} width=218 height=146 resize_mode="borders"}
-                    <p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
-                        {/loop}
-                        {if $DESCRIPTION}
-                        <div class="description">
-                            {$DESCRIPTION nofilter}
-                        </div>
-                    {/if}
-                    {if $POSTSCRIPTUM}
-                        <small class="postscriptum">
-                            {$POSTSCRIPTUM}
-                        </small>
-                    {/if}
-                    {/loop}
-                </section>
-                <hr/>
-            {/if}
-
-            {if #category_display_subcategories#}
-                {ifloop rel="subcategories"}
-                <div class="block-links">
-                    <div class="block-content">
-                        <ul>
-                            {loop name="subcategories" type="category" parent=$category_id}
-                            <li>
-                                <a href="{$URL}">{$TITLE}</a>
-                            </li>
-                            {/loop}
-                        </ul>
-                    </div>
-                </div>
-                {/ifloop}
-            {/if}
-
             {hook name="category.content-bottom" category="$category_id"}
 
         </article>
-
 
         {hook name="category.main-bottom" category="$category_id"}
 
     </div>
     {hook name="category.bottom" category="$category_id"}
 {/block}
-
 
 {block name="stylesheet"}
     {hook name="category.stylesheet"}

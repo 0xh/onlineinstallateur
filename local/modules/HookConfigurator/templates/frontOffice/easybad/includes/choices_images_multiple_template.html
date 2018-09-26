@@ -19,7 +19,11 @@
                         </p>
                     </div>
                 {/foreach}
-                <div class="next btn-weiter">{intl l='Weiter'} </div>
+                {if $last_slide == $current_slide && $contactArr.visible_form_contact == "false"}
+             		{include file="includes/submit_template.html"}
+             	{else}
+             		<div class="next btn-weiter">{intl l='Weiter'} </div>
+             	{/if}
             </div>
         </div>
     </div>

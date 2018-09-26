@@ -1,18 +1,24 @@
 <li>
     {form_field field="{$element.name}"} 
     <div class="frage {$element.name}">
-        <h3>
-            <label class="question_label" for="q15">{intl l="{$label}"}{if $element.required eq true }*{/if}</label>
-        </h3>
-        <span>
-            <input type="text" class="fs-anim-lower inputText" style="width:50%; margin:0 auto" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
+        <div>
+            <label class="fragelabel fs-field-label fs-anim-upper" for="{$for}">
+                <h3 class="question_label">{intl l="{$label}"}{if $element.required eq true }*{/if}</h3>
+            </label>
+        </div>
+        <div class="fs-radio-group fs-radio-custom clearfix">
+            <div class="fs-radio-group fs-radio-normal clearfix"> 
+            <input type="text" class="fs-anim-lower inputText" style="width:50%; margin:7.5% auto" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
             {if $element.description }
                 <label class="text_description">{$element.description}</label>
-            {/if}
-
-			 <div class="simpleNext  btn-weiter">{intl l='Weiter'} </div>
-        </span>
+          {/if}
+            {if $last_slide == $current_slide && $contactArr.visible_form_contact == "false"}
+           		{include file="includes/submit_template.html"}
+           	{else}
+           		<div class="next btn-weiter">{intl l='Weiter'} </div>
+           	{/if}
+            </div>
+        </div>
     </div>
     {/form_field}
 </li>
-

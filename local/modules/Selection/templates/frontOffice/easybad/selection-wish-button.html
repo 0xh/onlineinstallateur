@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-12 col-lg-12 col-xl-12 wish-list-button1 ">
+    {if {in_wishlist product_id=$product_id}}
+        <a class="wishlist wishlistactive" href="{url path="/wishlist/remove/$product_id"}">
+        </a>
+        {loop type="auth" name="customer_info_block" role="CUSTOMER"}
+        {if !{is_saved_in_wishlist product_id=$product_id}}
+            <p>This product is not really in your wish list. To really add, click the button below.</p>
+            <a class="wishlist" href="{url path="/wishlist/add/$product_id"}">
+            </a>
+        {/if}
+        {/loop}
+    {else}
+        <a class="wishlist" href="{url path="/wishlist/add/$product_id"}">
+        </a>
+    {/if}
+    <input type="hidden" class="wish-list-product-id" value="{$product_id}">
+    <input type="hidden" class="wish-list-text-remove" value='{intl l="Remove from wish list" d="wishlist.fo.default"}'>
+    <input type="hidden" class="wish-list-text-add" value='{intl l="Add to wish list" d="wishlist.fo.default"}'>
+</div>

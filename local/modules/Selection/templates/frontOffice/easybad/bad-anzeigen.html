@@ -1,0 +1,294 @@
+{extends file="layout.tpl"}
+
+{block name="full_with_block"}
+    {hook name="full_with_block.inspiration.page"}
+    {loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
+    <div class="inspiration-header" style="background:url({$IMAGE_URL}) no-repeat center center fixed;">
+        <div class="row">
+            <div class="col-sm-5 col-md-5 col-lg-7"></div>
+            <div class="col-sm-5 col-md-5 col-lg-3 info-card">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$FTITLE}</h2>
+                {/loop}
+
+                {loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
+                <h2>{$SELECTION_TITLE nofilter}</h2>
+                <p>{$SELECTION_DESCRIPTION nofilter}</p>
+                <br>
+                {/loop}
+
+                <div>
+                    {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                    <p>{$F_TITLE}:	{$FTITLE}</p>
+                    {/loop}
+                </div>
+                <div>
+                    {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                    <p>{$F_TITLE}:	{$FTITLE}</p>
+                    {/loop}
+                </div>
+                <div class="col-md-12 border-top text-right">
+                    <h2>€ <label  id="total_price"></label></h2>
+                </div>
+                <div class="col-md-12 border-top text-center">
+                    <button type="button" class="add-total-products" style="margin:10px"> 
+                        {intl l="Set kaufen"}
+                    </button>
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+    {/loop}
+{/block}
+
+{block name="main-content"} 
+
+    <div style="text-align: center; background:#fff; padding:10px;">
+        {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="Serie" selection_id=$SELECTION_ID show_feature_value_selected=true}
+        <h2>{$FTITLE}</h2>
+        {/loop}
+
+        {loop name="selection_list" type="selection_list" visible=true id=$SELECTION_ID}
+        <h2>{$SELECTION_TITLE nofilter}</h2>
+        <p>{$SELECTION_DESCRIPTION nofilter}</p>
+        {/loop}
+
+        <div class="row">
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="FARBE & STIL" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                {loop type="selection_feature_av_all" name="selection_feature_av_all" feature_name="BADEZIMMER GRÖSSE" selection_id=$SELECTION_ID show_feature_value_selected=true}
+                <h2>{$F_TITLE}</h2>
+                <h2>{$FTITLE}</h2>
+                {/loop}
+            </div>
+            <div class="col-md-4">
+                <h2>€ <label  id="total_price">2.611,00</label></h2>
+            </div>
+        </div>
+
+        <h1>{intl l='PRODUCT OVERVIEW'}</h1>
+        <h2>{intl l='All items in this bathroom in detail'}</h2>
+
+        <table style="width:100%; text-align: left;">
+            <tr>
+                <th>{intl l='Selection'}</th>
+                <th>{intl l='Items'}</th> 
+                <th>{intl l='Price'}</th>
+                <th>{intl l='Amount'}</th>
+                <th>{intl l='Total'}</th>
+            </tr>
+            <tr>
+                <td colspan="5" style="border-bottom:1px solid #CCC;padding-top:10px;margin-bottom:10px">
+                </td>
+            </tr>
+            {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+            {form name="thelia.cart.add" }
+            <form id="form-product-details_{$SELECTION_PRODUCT_ID}" action="{url path="/konfigurator/add" }" method="post" class="form-product">
+                {form_hidden_fields}
+                <input type="hidden" name="view" value="product">
+                <input type="hidden" name="product_id" value="{$SELECTION_PRODUCT_ID}">
+                {form_field field="append"}
+                <input type="hidden" name="{$name}" value="1">
+                {/form_field}
+                <tr>
+                    <td>
+                        <input type="checkbox" onclick="changeTotalPrice({$SELECTION_PRODUCT_ID});" checked="" class="checkbox_product" value="{$SELECTION_PRODUCT_ID}" name="{$SELECTION_PRODUCT_ID}" />
+                        {loop type="image" name="image" source="product" source_id="$SELECTION_PRODUCT_ID" limit="1" width="100" height="100" resize_mode="crop" backend_context="1"}
+                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" />
+                        {/loop}
+                        {form_field field="product"}
+                        <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$SELECTION_PRODUCT_ID}" {$attr} >
+                        {/form_field}
+                    </td>
+                    <td>
+                        {loop type="product" name="the-loop-name" id="$SELECTION_PRODUCT_ID"}
+                        <a href="{$URL nofilter}" style="color: #10b4cf;">{$SELECTION_PRODUCT_TITLE}</a>
+
+                        <br/>
+                        <br/>
+                        {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+
+                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
+                            <span class="highlighted-bg">
+                                <em>
+                                    <small>
+                                        <span class="fa fa-check"></span> 
+                                        {intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"  d="fo.default"}
+                                    </small>
+                                </em>
+                            </span>
+                        {else}
+                            {if $QUANTITY > 0}
+                                <span class="in ">{intl l='In Stock' d="fo.default"}</span> 
+                            {else}
+                                <span class="delivery-info">
+                                    <span class="fa-truck highlightcolor fa "></span> 
+                                    <em>
+                                        <small>Versand {hook name="product.delivery-delay" product={$SELECTION_PRODUCT_ID}}</small>
+                                    </em>
+                                </span>
+                            {/if}
+                        {/if}
+                        {ifhook rel="selection-wish-list.wish-button"}
+                        {hook name="selection-wish-list.wish-button" product_id={$SELECTION_PRODUCT_ID}}
+                        {/ifhook}
+                        {/loop}
+                    </td> 
+                    <td>
+                        <input type="hidden" id="price_{$SELECTION_PRODUCT_ID}" value="{$SELECTION_PRODUCT_PRICE}" name="" />
+                        {form_field field='product_sale_elements_id'}
+                        <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$product_sale_elements_id}" {$attr} >
+                        {/form_field}
+                        {$SELECTION_PRODUCT_PRICE}
+                    </td>
+                    <td>
+                        <select class="stkla" id="select_{$SELECTION_PRODUCT_ID}" onchange="changeTotalPrice({$SELECTION_PRODUCT_ID});" data-productid="{$SELECTION_PRODUCT_ID}">
+                            <option value="1" selected="">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        {form_field field='quantity'}
+                        <input type="hidden" name="{$name}" id="quantity_{$SELECTION_PRODUCT_ID}" class="form-control" value="1" min="1" required>
+                        {/form_field}
+                    </td>
+                    <td>
+                        € <label id="total_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                    </td>
+                </tr>
+
+            </form>
+            {/form}
+            <tr>
+                <td colspan="5" style="border-bottom:1px solid #B7B7B7;padding-top:10px;margin-bottom:10px"></td>
+            </tr>
+            {/loop}
+            <tr>
+                <th></th>
+                <th></th> 
+                <th></th>
+                <th></th>
+                <td colspan="3" style="padding-top:15px" valign="top">
+                    <button type="button" class="add-total-products">
+                        <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                        {intl l="Add to cart"}
+                        </font>
+                        </font>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal-cart-selection" class="modal-selection">
+        <div class="modal-content-selection">
+            <span class="close close-modal-selection">&times;</span>
+            <table style="width:100%; text-align: left;">
+                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                <tr id="visible-tr-{$SELECTION_PRODUCT_ID}">
+                    <td>
+                        {loop type="image" name="image" source="product" source_id="$SELECTION_PRODUCT_ID" limit="1" width="100" height="100" resize_mode="crop" backend_context="1"}
+                        <img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" />
+                        {/loop}
+                    </td>
+                    <td>
+                        {loop type="product" name="the-loop-name" id="$SELECTION_PRODUCT_ID"}
+                        <a href="{$URL nofilter}" style="color: #10b4cf;">{$SELECTION_PRODUCT_TITLE}</a>
+                        {/loop}
+                    </td> 
+                    <td>
+                        {$SELECTION_PRODUCT_PRICE}
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        € <label id="total1_{$SELECTION_PRODUCT_ID}" class="total-price">{$SELECTION_PRODUCT_PRICE}</label>
+                    </td>
+                </tr>
+                {/loop}
+                <tr id="visible-tr-{$SELECTION_PRODUCT_ID}">
+                    <td>
+                    </td>
+                    <td>
+                    </td> 
+                    <td>
+                    </td>
+                    <td>
+                        <a href="/cart"><button data-bb-handler="ok" type="button" class="btn btn-primary">{intl l="Go to cart"}</button></a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary close-modal-selection">{intl l="Continue shopping"}</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <script>
+        setTotalPrice();
+
+        function changeTotalPrice(prodId) {
+            $("#total_" + prodId).text(parseFloat($("#select_" + prodId).val() * $("#price_" + prodId).val()).toFixed(2));
+            $("#quantity_" + prodId).val($("#select_" + prodId).val());
+
+            setTotalPrice();
+        }
+
+        function setTotalPrice() {
+            total = 0;
+            $(".checkbox_product").each(function () {
+                if ($(this).is(':checked')) {
+                    total += parseFloat($("#total_" + $(this).val()).text());
+                    $("#visible-tr-" + $(this).val()).css("display", "visible");
+                } else
+                {
+                    $("#visible-tr-" + $(this).val()).css("display", "none");
+                }
+            });
+
+            $("#total_price").text(parseFloat(total).toFixed(2));
+        }
+
+        $(".add-total-products").click(function () {
+            $(".checkbox_product").each(function () {
+                if ($(this).is(':checked')) {
+                    $("#form-product-details_" + $(this).val()).submit();
+                }
+            });
+
+            var detectChange = setInterval(function () {
+                var myDisplay = $('.loader').css('display');
+                if (myDisplay == 'none') {
+                    $('#myModal-cart-selection').css('display', "block");
+                    clearInterval(detectChange); //Stop the loop
+                }
+            }, 10);
+        });
+
+        $('.close-modal-selection').click(function () {
+            $('#myModal-cart-selection').css('display', "none");
+        });
+
+        $(window).on('click', function (event) {
+            if (event.target.id == 'myModal-cart-selection') {
+                $('#myModal-cart-selection').css('display', "none");
+            }
+        });
+
+    </script>
+{/block}
