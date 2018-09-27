@@ -6,29 +6,38 @@ use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Model\ConfigQuery;
 
 class ConfigurationController extends BaseAdminController
-{	
+{
+
     public function viewAction()
     {
-    	$email = ConfigQuery::read('office_email');
-    
-        return $this->render('config-email',
-		        		array(
-		        				"office_email" => $email
-		        		));
+        $email = ConfigQuery::read('office_email');
+
+        return $this->render('config-email', array(
+          "office_email" => $email
+        ));
+    }
+
+    public function viewEmailOrderServiceAction()
+    {
+        $email = ConfigQuery::read('office_email_order_service');
+
+        return $this->render('office-email-order-service', array(
+          "office_email_order_service" => $email
+        ));
     }
 
     public function saveAction()
     {
-        $error_msg = $ex = false;
-        $response = null;
-        $form = $this->createForm("email.office");
-        
+        $error_msg = $ex        = false;
+        $response  = null;
+        $form      = $this->createForm("email.office");
+
         try {
-        	$data = $this->validateForm($form)->getData();
-        	
+            $data = $this->validateForm($form)->getData();
+
             // Update office email
             foreach ($data as $name => $value) {
-            	if (! $form->isTemplateDefinedHiddenFieldName($name)) {
+                if (!$form->isTemplateDefinedHiddenFieldName($name)) {
                     ConfigQuery::write($name, $value, false);
                 }
             }
@@ -40,10 +49,7 @@ class ConfigurationController extends BaseAdminController
 
         if (false !== $error_msg) {
             $this->setupFormErrorContext(
-                $this->getTranslator()->trans("Store configuration failed."),
-                $error_msg,
-                $form,
-                $ex
+             $this->getTranslator()->trans("Store configuration failed."), $error_msg, $form, $ex
             );
 
             $response = $this->viewAction();
@@ -51,4 +57,36 @@ class ConfigurationController extends BaseAdminController
 
         return $response;
     }
+
+    public function saveEmailOrderServiceAction()
+    {
+        $error_msg = $ex        = false;
+        $response  = null;
+        $form      = $this->createForm("email.office.order.service");
+
+        try {
+            $data = $this->validateForm($form)->getData();
+
+            foreach ($data as $name => $value) {
+                if (!$form->isTemplateDefinedHiddenFieldName($name)) {
+                    ConfigQuery::write($name, $value, false);
+                }
+            }
+
+            $response = $this->generateSuccessRedirect($form);
+        } catch (\Exception $ex) {
+            $error_msg = $ex->getMessage();
+        }
+
+        if (false !== $error_msg) {
+            $this->setupFormErrorContext(
+             $this->getTranslator()->trans("Store configuration failed."), $error_msg, $form, $ex
+            );
+
+            $response = $this->viewAction();
+        }
+
+        return $response;
+    }
+
 }
