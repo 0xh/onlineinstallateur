@@ -116,34 +116,11 @@
         objCart.removeClass('open');
         $cart.removeClass('open');
     }
-
-    // Sticky header
-    // ----------------------------------------------------------------
-
-    var navbarFixed = $('nav.navbar-fixed');
-
-    // When reload page - check if page has offset
-    if ($(document).scrollTop() > 94) {
-        navbarFixed.addClass('navbar-sticked');
-    }
-    // Add sticky menu on scroll
-    $(document).on('bind ready scroll', function () {
-        var docScroll = $(document).scrollTop();
-        if (docScroll >= 10) {
-            navbarFixed.addClass('navbar-sticked');
-        } else {
-            navbarFixed.removeClass('navbar-sticked');
-        }
-    });
-
+    
     // Tooltip
     // ----------------------------------------------------------------
 
     $('[data-toggle="tooltip"]').tooltip()
-
-    
-
-
 
     // Frontpage slider
     // ----------------------------------------------------------------
@@ -285,115 +262,6 @@
         return false;
     });
 
-    // Product color var
-    // ----------------------------------------------------------------
-
-    $.each($('.product-colors'), function (i, n) {
-        var $btn = $('.color-btn');
-        $btn.on('click', function () {
-            $(this).parent().find($btn).removeClass('checked');
-            $(this).addClass('checked');
-        });
-    });
-
-    // Tabsy images
-    // ----------------------------------------------------------------
-
-    var tabsyImg = $('.tabsy .tabsy-images > div'),
-        tabsyLink = $('.tabsy .tabsy-links figure');
-
-    // apply images to parent background
-    tabsyImg.each(function (i, n) {
-        $(n).css('background-image', 'url(' + $(n).find('img').attr('src') + ')');
-    });
-
-    tabsyLink.bind('mouseenter mouseleave', function () {
-        var self = $(this),
-            tabID = self.attr('data-image');
-        tabsyLink.removeClass('current');
-        tabsyImg.removeClass('current');
-        self.addClass('current');
-        self.closest('.tabsy').find("#" + tabID).addClass('current');
-    });
-
-
-    // Add to favorites list / product list
-    // ----------------------------------------------------------------
-
-    $('.add-favorite').on('click', function () {
-        $(this).toggleClass("added");
-    });
-
-    $('.info-box-addto').on('click', function () {
-        $(this).toggleClass('added');
-    });
-
-    // Filters toggle functions
-    // ----------------------------------------------------------------
-
-    // Check if some filter boxes has class active
-    // then show hidden filters
-    $('.filters .filter-box').each(function () {
-        if ($(this).hasClass('active')) {
-            $(this).find('.filter-content').show();
-        }
-    });
-
-    var $filtersTitle = $('.filters .title');
-
-    // Add emtpy span on title
-    $filtersTitle.append('<span>' + '</span>');
-
-    // Toggle filter function
-    $filtersTitle.on('click', function (e) {
-        var $this = $(this),
-            $parent = $this.parent();
-        $parent.toggleClass('active');
-
-        if ($parent.hasClass('active')) {
-            $parent.find('.filter-content').slideDown(300);
-        }
-        else {
-            $parent.find('.filter-content').slideUp(200);
-        }
-    });
-
-    // Update filter results - close dropdown filters
-    // ----------------------------------------------------------------
-
-    $('.filters .filter-update').on('click', function (e) {
-        $(this).closest('.filter-box')
-            .removeClass('active')
-            .find('.filter-content').slideUp(200);
-    });
-
-    // Only for filters topbar
-    // ----------------------------------------------------------------
-
-    $('.filters input').on('change', function () {
-        if ($(this).is(':checked')) {
-            var $labelText = $(this).parent().find('label').text(),
-                $title = $(this).closest('.filter-box').find('.title');
-            
-            $title.find('span').text($labelText);
-        }
-    });
-
-    // Show hide filters (only for mobile)
-    // ----------------------------------------------------------------
-
-    $('.toggle-filters-mobile').on('click', function () {
-        $('.filters').addClass('active');
-    });
-    $('.toggle-filters-close').on('click', function () {
-        $('.filters').removeClass('active');
-        $('html,body').animate({
-            scrollTop: $('body').offset().top
-        }, 800);
-        return false;
-    });
-
-
     // Strecher accordion
     // ----------------------------------------------------------------
 
@@ -408,33 +276,7 @@
             $(this).siblings().removeClass('inactive');
         }
     });
-
-    // Blog image caption
-    // ----------------------------------------------------------------
-
-    var $blogImage = $('.blog-post-text img');
-    $blogImage.each(function () {
-        var $this = $(this);
-        $this.wrap('<span class="blog-image"></span>');
-        if ($this.attr("alt")) {
-            var caption = this.alt;
-            var link = $this.attr('data');
-            $this.after('<span class="caption">' + caption + '</span>');
-        }
-    });
-
-    // Coupon code 
-    // ----------------------------------------------------------------
-
-    $(".form-coupon").hide();
-    $("#couponCodeID").on('click', function () {
-        if ($(this).is(":checked")) {
-            $(".form-coupon").fadeIn();
-        } else {
-            $(".form-coupon").fadeOut();
-        }
-    });
-
+ 
     // Checkout login / register
     // ----------------------------------------------------------------
 
@@ -453,74 +295,4 @@
         signIn.slideUp();
         signUp.slideDown();
     });
-
-
-
-    // Team members hover effect
-    // ----------------------------------------------------------------
-
-    var $member = $('.team article');
-    $member.bind({
-        mouseenter: function (e) {
-            $member.addClass('inactive');
-            $(this).addClass('active');
-        },
-        mouseleave: function (e) {
-            $member.removeClass('inactive');
-            $(this).removeClass('active');
-        }
-    });
-
-    // Toggle contact form
-    // ----------------------------------------------------------------
-
-    $('.open-form').on('click', function () {
-        var $this = $(this),
-            parent = $this.parent();
-        parent.toggleClass('active');
-        if (parent.hasClass('active')) {
-            $this.text($this.data('text-close'));
-            $('.contact-form').slideDown();
-        }
-        else {
-            $this.text($this.data('text-open'));
-            $('.contact-form').slideUp();
-        }
-
-    });
-
-    // Single page navigation (scroll to)
-    // ----------------------------------------------------------------
-
-
-    if ($('nav').hasClass('navbar-single-page')) {
-
-        var $singleHyperlink = $('.navigation-main a');
-
-        $singleHyperlink.on('click', function () {
-
-            $singleHyperlink.removeClass('current');
-
-            $(this).addClass('current');
-
-            $('html, body').animate({
-                scrollTop: $($(this).attr('href')).offset().top - $('.navigation-main').height()
-            }, 500);
-            return false;
-        });
-
-   
-    }
-
 });
-
-$(window).bind('load', function () {
-	
-    setTimeout(function () {
-        $('.page-loader').addClass('loaded');
-		$('.landing-page').show();
-    }, 1000);
-});
-
-
-

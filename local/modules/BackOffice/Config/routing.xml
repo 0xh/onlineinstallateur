@@ -4,12 +4,20 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="admin.configuration.email" path="/admin/configuration/office-email">
+    <route id="admin.configuration.email" path="/admin/configuration/office-email">
         <default key="_controller">BackOffice\Controller\Admin\ConfigurationController::viewAction</default>
+    </route>
+
+    <route id="admin.configuration.email.order.service" path="/admin/configuration/office-email-order-service">
+        <default key="_controller">BackOffice\Controller\Admin\ConfigurationController::viewEmailOrderServiceAction</default>
     </route>
     
     <route id="admin.configuration.email.save" path="/admin/configuration/office-email/save">
         <default key="_controller">BackOffice\Controller\Admin\ConfigurationController::saveAction</default>
+    </route>
+    
+    <route id="admin.configuration.email.save" path="/admin/configuration/office-email-order-service/save">
+        <default key="_controller">BackOffice\Controller\Admin\ConfigurationController::saveEmailOrderServiceAction</default>
     </route>
 
     <route id="admin.export.order.pdf" path="/admin/export-order-pdf">
