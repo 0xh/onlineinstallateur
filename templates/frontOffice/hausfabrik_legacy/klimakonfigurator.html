@@ -1,0 +1,421 @@
+
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-klimakonfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Klima Konfigurator" d="klimakonfigurator.fo.default"}, 'url'=>{url path="/klimakonfigurator"}]]}
+{/block}
+
+{block name="main-content"}
+    <div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+	<div class="container1">
+
+		<div class="fs-form-wrap" id="fs-form-wrap" style="">
+			<div class="">
+				<h1>IHR ANGEBOT</h1>
+			</div>
+              
+          	{$raum_label = "Raum"}
+         <div  style="float:left; width:90%; height:auto">
+            {form name="konfigurator.klima.berechnung"}
+				<form id="form-konfigurator" class="form-horizontal fs-form fs-form-full " action="{url path="/klimakonfigurator/suggestions"}" method="post" autocomplete="off" style="height:auto" >
+                {form_field field='error_message'}
+                	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
+                {/form_field} 
+                {form_hidden_fields}
+                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                {hook name="konfigurator.form-top"}
+					<ol class="fs-fields">
+						<li>
+							<h3 class="fs-anim-upper">Grundfläche und Raumhöhe</h3>
+							
+							{form_field field="raumanzahl"}
+								<div class="frage">
+                            		<div><label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+									<span><input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="2" step="1" min="1" max="8" style="width:80%;"/></span>
+                            	</div>
+                            {/form_field}
+                            
+							<div class="frage">
+								{form_field field="grundflaeche" value_key=0}
+									<div><label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+								{/form_field}
+							
+								{for $var=0 to 7}
+                            		{form_field field="grundflaeche" value_key=$var}
+										<div class="col-sm-6 fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+												<span class="raumtext">{$raum_label} {$var+1}</span><input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  placeholder="30" step="1" min="1" style="display: inline-block;"/>
+                             					<small>m<sup>2</sup></small>
+                             			</div>
+                             		{/form_field}
+                            	{/for}
+                            </div>
+                            <div style="clear:both"></div>
+                            
+                            
+                            {form_field field="raumhoehe"}
+                            <div class="frage">
+                            	<div><label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+								<input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="width:80%; float:left"/>
+                            </div>
+                            {/form_field}
+                            
+                            <div style="float:left; padding:10px" class="fs-anim-lower">m</div>
+						</li>
+                        
+                        
+                        <li>
+                        	<div class="frage">
+                            {form_field field="fenster" value_key=0}
+								<h3 class="fragelabel fs-anim-upper">{$label}</h3>
+                            {/form_field}
+                            
+                            {for $var=0 to 7}
+                            	{form_field field="fenster" value_key=$var}
+                            		<div class="col-sm-6 fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+                            			<span class="raumtext">{$raum_label} {$var+1}</span><input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="display: inline-block;"/>
+                            			<small>m</small>
+                            		</div>
+                            	{/form_field}
+                            {/for}
+                            </div>
+						</li>
+
+
+						<li>
+							<div class="frage">
+                            {form_field field="decke" value_key=0}
+                            	<h3 class="fragelabel fs-anim-upper">{$label}</h3>
+								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower" >
+                                    <table>
+                                        <tr>
+                                            <th style="width:30%"></th>
+                                    {foreach $choices as $choice}
+                             			<th style="width:30%"><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></th>
+									{/foreach}
+                                        </tr>
+                                    </table>
+								</div>
+							
+                            {/form_field}
+                            
+                            {for $var=0 to 7}
+								{form_field field="decke" value_key=$var}
+									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+                                       <table style="width:100%">
+                                        <tr>
+                                        
+									<td class="raumtext" style="width:30%">{$raum_label} {$var+1}</td>
+                            			{foreach $choices as $choice}
+											<td style="width:30%"><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></td>
+										{/foreach}
+                                            </tr>
+                                    </table>
+									</div>
+                            	{/form_field}
+                            {/for}
+                            </div>
+						</li>
+
+
+						<li>
+							<h3 class="fs-anim-upper">Anzahl der Personen</h3>
+							<div class="frage">
+							{form_field field="personen" value_key=0}
+								<div><label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+							{/form_field}
+							
+							{for $var=0 to 7}
+                            	{form_field field="personen" value_key=$var}
+									<div class="col-sm-6 fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+										<span class="raumtext">{$raum_label} {$var+1}</span><input name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  placeholder="30" step="1" min="1" style="display: inline-block;"/>
+                             		</div>
+                             	{/form_field}
+                            {/for}
+                            </div>
+						</li>
+                        
+                        <li>
+                            <h3 class="fs-anim-upper">Zusätzliche Wärme-Verursacher im Raum</h3>
+                            <div class="frage">
+                            {form_field field="zusaetzliche_waerme" value_key=0}
+								<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q10" >{$label}</label>
+                            {/form_field}
+                            
+                            {for $var=0 to 7}
+                            	{form_field field="zusaetzliche_waerme" value_key=$var}
+                            		<div class="col-sm-6 fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+										<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">     
+                                			<span class="raumtext">{$raum_label} {$var+1}</span><input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number"  style="display: inline-block;"/>
+                                			<small>Watt</small>
+                            			</div>
+                            		</div>
+                            	{/form_field}
+                            {/for}
+                            </div>
+						</li>
+                        
+						<li>
+							<h3 class="fs-anim-upper">Wegstrecke vom Innenteil zum Außenteil</h3>
+							<label class="fs-field-label-sm fs-anim-upper" for="q13" >Bitte geben Sie die Wegstrecke vom Innenteil zum möglichen Standort des Außenteils in Meter an.</label>
+							
+							<div class="frage">
+                            {form_field field="wegstrecke" value_key=0}
+						   		<div><label class="fragelabel fs-field-label-sm fs-anim-upper" for="q6">{$label}</label></div>
+                            {/form_field}
+                              
+                            {for $var=0 to 7}
+                            	{form_field field="wegstrecke" value_key=$var}
+                            		<div class="fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+										<span class="raumtext">{$raum_label} {$var+1}</span><input class="fs-anim-lower"  name="{$name}" id="{$label_attr.for}" value="{$value}" type="number" placeholder="3" step="1" min="1" max="60" style="display: inline-block;"/>
+                            			<small>m<sup>2</sup></small>
+                            		</div>
+                            	{/form_field}
+                            {/for}
+                            </div>
+                            
+                            <div class="frage">
+                            {form_field field="montage-aussenteil"}
+                            	<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
+				            	<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+									<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                            			{foreach $choices as $choice}
+                             				<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+                           				{/foreach}
+                            		</select>
+                            	</div>
+                            {/form_field}
+                            </div>
+                             
+                            <div class="frage">
+                            {form_field field="stromanschluss"}                   
+                            	<label class="fragelabel fs-field-label-sm fs-anim-upper" for="q14" >{$label}</label>
+								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+									<select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                            			{foreach $choices as $choice}
+                             				<option value="{$choice->value}" {if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+                           				{/foreach}
+                            		</select>
+								</div>
+                            {/form_field}
+                            </div>
+						</li>
+
+						<li>  
+							<div class="frage">
+                            {form_field field="kondensatablauf" value_key=0}
+                            	<h3 class="fragelabel fs-anim-upper">{$label}</h3>
+								<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                                    <table style="with:100%">
+                                        <tr>
+                                            <td style="width:30%"></td>
+                            		{foreach $choices as $choice}
+                             			<td style="width:30%"><label for="q8b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></td>
+									{/foreach}
+                                        </tr>
+                                    </table>
+								</div>
+                            {/form_field}
+                            
+                            {for $var=0 to 7}
+								{form_field field="kondensatablauf" value_key=$var}
+									<div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower raum{$var}" {if $var != 0}style="display:none;"{/if}>
+                                    <table style="with:100%"><tr>
+									<td class="raumtext" style="width:30%">{$raum_label} {$var+1}</td>
+                            			{foreach $choices as $choice}
+											<td style="width:30%"><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" data-choicelabel="{$choice->label}" value="{$choice->value}"{if $choice->value == 1} checked{/if}></td>
+										{/foreach}
+                                            </tr> </table>
+									</div>
+                                        
+                            	{/form_field}
+                            {/for}
+                            </div>
+						</li>
+
+                       	<li>
+                            {form_field field="anmerkungen"} 
+                            <div class="frage"> 
+							<label class="fragelabel fs-field-label fs-anim-upper" for="q15">Anmerkungen </label>
+							<textarea class="fs-anim-lower" id="q15" name="q15" placeholder="Anmerkungen"></textarea>
+							</div>
+                            {/form_field}
+						</li>
+						
+					</ol><!-- /fs-fields -->
+                     </form><!-- /fs-form -->
+                {/form}				
+              <div class="row">
+					<div id="review" class="col-sm-3" style="display:none">
+                        <h3>Ihre Daten</h3>
+                    </div>
+                    <div class="col-sm-9 vorschlag-button" style="display:none">      	
+				<button type="submit" class="fs-submit" style="margin:10px; font-size:20px">Vorschlag sehen</button>
+						 
+                   
+                    <div style="clear:left"></div>
+                    
+                    		<section id="products-new" class="konfigurator-ergebniss" style="">	
+							<div class="products-heading">  
+	            				<div id="klimabedarf"></div>        
+							</div>
+							<div id="category-products">
+							
+							</div>
+						</section>	
+			
+						<div id="product_suggestion">
+							<ul id="products"></ul>
+						</div>
+                    </div>
+             </div>
+                    <div style="clear:left"></div>
+						
+
+            </div>
+             
+            
+            <div class="fs-controls fs-show">
+            
+                   <nav class="fs-nav-dots fs-show"></nav>
+                   <span class="fs-numbers">
+                      <span class="fs-number-new">
+                   
+                   </span>
+                   </span>
+                   <button class="fs-continue fs-show">weiter</button>
+               </div> 
+            
+               <!--  <div style="clear:left"></div> -->
+				
+			</div><!-- /fs-form-wrap -->
+		</div><!-- /container -->
+
+    </div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+	{hook name="register.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+ <script src="{javascript file='assets/dist/js/vendors/classie.js'}"></script>
+ <script src="{javascript file='assets/dist/js/vendors/selectFx.js'}"></script>
+ <script src="{javascript file='assets/dist/js/vendors/fullscreenForm.js'}"></script>
+ 
+<script>
+var numberOfRooms = document.getElementById("raumanzahl");
+numberOfRooms.oninput = function(e){
+	if(numberOfRooms.value > 8) numberOfRooms.value = 8;
+	for(i=1;i<numberOfRooms.value;i++){
+		room = document.getElementsByClassName("raum"+i);
+		for(j=0;j<room.length;j++)
+			room[j].style.display = 'block';
+	}
+	for(i=numberOfRooms.value;i<8;i++){
+		room = document.getElementsByClassName("raum"+i);
+		for(j=0;j<room.length;j++)
+			room[j].style.display = 'none';
+	}		
+}
+$(".fs-submit").click(function(e) {
+
+        e.preventDefault();
+    $.ajax({
+                      type: $("#form-konfigurator").attr('method'),
+                      url: $("#form-konfigurator").attr('action'),
+                      data: $("#form-konfigurator").serialize()
+                     })
+	.done(function (data, textStatus, request) {
+		$klimabedarf = request.getResponseHeader('klimabedarftotal');
+		if($klimabedarf != null) 
+			$('#klimabedarf').text("Klimabedarf ist: "+$klimabedarf+"KW");
+		$("#category-products").empty().append(data);
+	})
+	.fail(function (jqXHR, textStatus, errorThrown) {
+		if (typeof jqXHR.responseJSON !== 'undefined') {
+			if (jqXHR.responseJSON.hasOwnProperty('form')) {
+				$('#form_body').html(jqXHR.responseJSON.form);
+			}
+			$('.form_error').html(jqXHR.responseJSON.message);
+		} else {
+			alert(errorThrown);
+		}
+	});
+});
+(function() {
+	var formWrap = document.getElementById( 'fs-form-wrap' );
+
+	[].slice.call( document.querySelectorAll( 'select.cs-select' ) ).forEach( function(el) {	
+		new SelectFx( el, {
+			stickyPlaceholder: false,
+			onChange: function(val){
+				document.querySelector('span.cs-placeholder').style.backgroundColor = val;
+			}
+		});
+	});
+	new FForm( formWrap, {
+		onReview : function() {
+			//classie.add( document.body, 'overview' ); // for demo purposes only
+            $('#review').show();
+            $('#fs-form-wrap').css("margin-top",'0px');
+			$formvalues = $('#form-konfigurator .frage');
+       		//$formvalues = $("#form-konfigurator").serializeArray();
+
+		    $.each( $formvalues, function( i, field ) {
+		    	frage = $(field).find('.fragelabel').text();
+		
+		    	$mehrereantworten = $(field).find(('[class*=" raum"]'));
+		    	
+		    	if($mehrereantworten.length > 0){
+		    		$('#review').append(frage + '<br>');
+		    		$.each($mehrereantworten, function(i, antwortblock){
+		    			//if not hidden
+		    			if($(antwortblock).is(':hidden') == false){
+		    				raumtext = $(antwortblock).find('.raumtext').text();
+		    				
+		    				antwort = $(antwortblock).find(':checked').data('choicelabel');
+					        if(!antwort)
+						       antwort = $(antwortblock).find(':selected').text();
+					        if(!antwort)
+					            antwort = $(antwortblock).find('input').val();
+					        if(!antwort)
+					            antwort = $(antwortblock).find('textarea').val();
+					        
+					        $('#review').append('<strong>' + raumtext + ': ' + antwort + '</strong><br>');
+		    			}
+		    		});
+		    	}
+		    	else{
+			        antwort = $(field).find('span :checked + label').text();
+			        if(!antwort)
+			           antwort = $(field).find('span :selected').text();
+			        if(!antwort)
+				           antwort = $(field).find(':selected').text();
+			        if(!antwort)
+			            antwort = $(field).find('span input').val();
+			        if(!antwort)
+			            antwort = $(field).find('input').val();
+			        if(!antwort)
+			            antwort = $(field).find('span textarea').val();
+			        if(!antwort)
+			            antwort = $(field).find('textarea').val();
+			        $('#review').append( frage + ': <br><strong>' + antwort + '</strong><br><br>');		    		
+		    	}
+		      });  
+		}
+	});
+})();
+</script>
+
+{hook name="register.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}
