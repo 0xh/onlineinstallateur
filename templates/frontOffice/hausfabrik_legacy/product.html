@@ -1,0 +1,824 @@
+{extends file="layout.tpl"}
+
+{block name="init"}
+    {$product_id={product attr="id"}}
+    {$pse_count=1}
+    {$product_virtual={product attr="virtual"}}
+    {$check_availability={config key="check-available-stock" default="1"}}
+    {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+    {$reserve_online_active = {config key="reserve_online_active" default="false"}}
+    {$reserve_online = 0}
+{/block}
+
+{* Body Class *}
+{block name="body-class"}page-product{/block}
+
+{* Page Title *}
+{block name='no-return-functions' append}
+    {loop name="product.seo.title" type="product" id=$product_id limit="1" with_prev_next_info="1"}
+    {$page_title = {$META_TITLE}}
+    {/loop}
+{/block}
+
+{* Meta *}
+{block name="meta"}
+    {loop name="product.seo.meta" type="product" id=$product_id limit="1" with_prev_next_info="1"}
+    {include file="includes/meta-seo.html"}
+    {/loop}
+{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = []}
+    {loop type="product" name="product_breadcrumb" id=$product_id limit="1" with_prev_next_info="1"}
+        {loop name="category_path" type="category-path" category={$DEFAULT_CATEGORY}}
+            {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
+        {/loop}
+        {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
+    {/loop}
+{/block}
+{$SHOW_ORIGINAL_PRICE=false}
+{* Content *}
+{block name="main-content"}
+    {if $product_id}
+    
+    {loop type="module-config" name="fulfilment_module_config" module="multiplefullfilmentcenters" variable="fulfilment_center_reserve" default_value="1"}
+    	{assign var="fulfilment_center_reserve_id" value={$VALUE}}
+    {/loop}
+    {if $fulfilment_center_active == 'true'}
+   		{ifloop rel="product_stock_fulfilment_center"} 
+			{loop type="product_stock_fulfilment_center" name="product_stock_fulfilment_center" id=$product_id center_id=$fulfilment_center_reserve_id}
+		   		{if $PRODUCTSTOCK > 0 && $PRODUCTSTOCK > $RESERVEDSTOCK}
+		   			{$reserve_online = 1}
+		   		{/if}
+			{/loop}
+		{/ifloop} 
+    {/if}
+    
+    <div class="main">
+        {loop name="product.details" type="product" id=$product_id limit="1" with_prev_next_info="1" with_prev_next_visible="1"}
+        {assign var="service_category" value={category attr="parent"}}
+        
+        <article id="product" class="col-main" role="main" itemscope itemtype="http://schema.org/Product">
+            
+            {$pse_count=$PSE_COUNT}
+
+            {* Use the meta tag to specify content that is not visible on the page in any way *}
+            {loop name="brand.feature" type="brand" product={$ID}}
+                <meta itemprop="brand" content="{$TITLE}">
+            {/loop}
+
+            {* Add custom feature if needed
+            {loop name="isbn.feature" type="feature" product={$ID} title="isbn"}
+                {loop name="isbn.value" type="feature_value" feature={$ID} product=$product_id}
+                    <meta itemprop="productID" content="isbn:{$TITLE}">
+                {/loop}
+            {/loop}
+            *}
+            
+            {hook name="product.top" product={$ID}}
+            <div class="row">           
+                    <h1 class="name col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                    	<span itemprop="name">{$TITLE}</span>
+                    	<span id="pse-name" class="pse-name"></span>
+                    </h1>                
+                      
+                    {ifhook rel="comment.rating-stars"}
+	               		{hook name="comment.rating-stars" product_id={$product_id}}
+	            	{/ifhook}
+	        </div> 
+            
+			{if $service_category == #services_category_id#}
+
+        	{else}
+            	{ifhook rel="product.gallery"}
+               		{hook name="product.gallery" product={$ID}}
+            
+            	{/ifhook}
+            	{elsehook rel="product.gallery"}
+
+            	<section id="product-gallery" class="col-xs-12 col-sm-6 col-lg-5 col-xl-5">
+                    
+                	{ifloop rel="image.main"}
+                		<figure class="product-image">
+                    		{loop type="image" name="image.main" product={$ID} width="560" height="445" resize_mode="borders" limit="1"}
+                  
+                        		<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="img-responsive" itemprop="image" data-toggle="magnify">
+								{loop name="badge_info" type="feature" product=$product_id}
+
+								{if $TITLE=="bildbadge"}  
+									{ifloop rel="feature_value_info"}
+										{loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+											<span class="bildbadge">{$DESCRIPTION nofilter}</span>
+										{/loop}
+									{/ifloop}
+								{/if} 
+								{/loop}
+                            {/loop}
+                		</figure>
+                	{/ifloop}
+
+                	{ifloop rel="image.carousel"}
+                	<div id="product-thumbnails" class="carousel slide" style="position:relative;">
+                    	<div class="carousel-inner">
+                        	<div class="item active">
+                            	<ul class="list-inline">
+                                	{loop name="image.carousel" type="image" product={$ID}  width="560" height="445" resize_mode="borders" limit="5"}
+                                	<li>
+                                    	<a href="{$IMAGE_URL nofilter}" class="thumbnail {if $LOOP_COUNT == 1}active{/if}">
+                                        	{loop type="image" name="image.thumbs" id={$ID} product="$OBJECT_ID" width="118" height="85" resize_mode="borders"}
+                                           		<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                                        	{/loop}
+											
+                                    	</a>
+                                	</li>
+                                	{/loop}
+                            	</ul>
+                        	</div>
+                        	{ifloop rel="image.carouselsup"}
+                        	<div class="item">
+                            	<ul class="list-inline">
+                                	{loop name="image.carouselsup" type="image" product={$ID}  width="560" height="445" resize_mode="borders" offset="5"}
+                                    	<li>
+                                        	<a href="{$IMAGE_URL nofilter}" class="thumbnail">
+                                            	{loop type="image" name="image.thumbssup" id={$ID} product="$OBJECT_ID" width="118" height="85" resize_mode="borders"}
+                                                	<img src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                                            	{/loop}
+                                        	</a>
+                                    	</li>
+                                	{/loop}
+                            	</ul>
+                        	</div>
+                        {/ifloop}
+                    </div>
+                    {ifloop rel="image.carouselsup"}
+                        <a class="left carousel-control" href="#product-thumbnails" data-slide="prev"><i class="fa fa-caret-left"></i></a>
+                        <a class="right carousel-control" href="#product-thumbnails" data-slide="next"><i class="fa fa-caret-right"></i></a>
+                    {/ifloop}
+                </div>
+                {/ifloop}
+            </section>
+            {/elsehook}
+
+            <section id="product-details" class="col-xs-12 col-sm-6 col-lg-4 col-xl-4">
+                {hook name="product.details-top" product={$ID}}
+
+                <div class="product-info">
+                   
+                    {if $REF}<span itemprop="sku" class="sku">{intl l='Ref.'}: <span id="pse-ref">{$REF}</span></span>{/if}
+
+					<table class="price-table">
+						<tr>
+					        <td colspan="2">
+					        	{loop name="brand_info" type="brand" product={$ID} limit="1"}
+					            	{loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=130 height=87 resize_mode="borders"}
+					                	<p><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></p>
+					                {/loop}
+					            {/loop}
+					        </td>       
+					    </tr>
+					    <tr>
+					        <td colspan="2">
+						        {loop name="badge_info" type="feature" product=$product_id}
+						        	{if $TITLE=="badge"}   
+						                {ifloop rel="feature_value_info"} 
+						                	{loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+							                    <span class=" badge-hersteller" style="position:relative">{$TITLE}</span>
+							                {/loop}
+						                {/ifloop}
+						             {/if} 
+								{/loop}
+					        </td>
+					    </tr>
+						{if $POSTSCRIPTUM}
+	                    <div class="short-description">
+	                        <p>{$POSTSCRIPTUM nofilter}</p>
+	                    </div>
+	                    {/if}
+                    
+					    {if $WEIGHT}
+					        <tr>
+					        	<td>
+					            	Gewicht:&nbsp; 
+					        	</td>
+						        <td>
+						        	{$WEIGHT}kg
+						        </td>
+						    </tr>
+					    {/if}
+					    <tr>
+						{if $QUANTITY <= 0 || $fulfilment_center_active == "false"}
+						    <td class="highlight" colspan="2">
+						       {hook name="product.details-bottom" product={$ID}}               
+									{if $service_category != #services_category_id#}
+					                	<span class="fa-truck highlightcolor fa"></span> Versand {hook name="product.delivery-delay" product={$ID}}
+					                {/if} 
+						    </td> 
+						 {/if}
+					    </tr>   
+					</table>
+                    <div>
+	                   {assign var="attributes_limit" value=6}
+	                    {loop name="attributes" type="feature" product=$product_id}
+	                    	{if $TITLE != "badge" && $TITLE != "bildbadge"}
+	                    		{ifloop rel="attributes_info"}
+	                    			{assign var="feature_title" value=$TITLE}	
+	                            	{loop name="attributes_info" type="feature_value" feature={$ID} product=$product_id}
+	                            		{if $TITLE != "highlight"}
+	                            		{$sizearr[$feature_title] = $sizearr[$feature_title]|cat: ', '|cat: $TITLE}
+	                                	{/if}
+	                            	{/loop}
+	                    		{/ifloop}
+	                    	{/if}
+	                	{/loop}
+	           
+                		{foreach $sizearr as $value}
+                			 <div class="row-fluid">
+								<div class="col-xs-4 col-sm-4">{$value@key}:</div>
+								<div class="col-xs-8 col-sm-8">{$value|substr:2}</div>
+								<div class="clearfix"></div>
+							</div>
+						{/foreach}
+                	</div>
+
+                </div>
+            </section>
+            
+            <section class="price-block col-xs-12 col-sm-12 col-lg-3 col-xl-3">
+                    {loop type="sale" name="product-sale-info" product={$ID} active="1"}
+                    <div class="product-promo">
+                        <p class="sale-label">{$SALE_LABEL}</p>
+                        <p class="sale-saving"> {intl l="Save %amount%sign on this product" amount={$PRICE_OFFSET_VALUE} sign={$PRICE_OFFSET_SYMBOL}}</p>
+                        {if $HAS_END_DATE}
+                            <p class="sale-period">{intl l="This offer is valid until %date" date={format_date date=$END_DATE output="date"}}</p>
+                        {/if}
+                    </div>
+
+                 {/loop}
+
+                <div class="product-price col-xs-12 col-sm-6 col-lg-12 col-xl-12" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <div class="availability">
+<span class="availibity-label sr-only">{intl l="Availability"}: </span>
+	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
+	                        
+	                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
+                    				<span>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}</span>
+                    				{else}
+                          
+	                
+                    			{/if}
+
+	                        </span>
+</div>
+
+                    <div class="price-container">
+                        {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
+                            <meta itemprop="category" content="{$TITLE}">
+                        {/loop}
+                        {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
+                        <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
+                        {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
+                        <meta itemprop="priceCurrency" content="{currency attr="code"}">
+
+                        {assign var="parent_category" value={category attr="parent"}}
+                        
+                        <span id="pse-promo">
+                            <span class="special-price">
+                            {if $parent_category != #services_category_id# AND $LISTEN_PRICE!=0}
+                            <table class="price-table align-right" >
+
+                                <tr class="align-right">
+                                    <td>     
+                                        <span class="price-label">{intl l="Special Price:"}</span>
+                            	<span id="pse-price" style="display: none;" class="price">{format_money number=$TAXED_PROMO_PRICE symbol={currency attr="symbol"}}</span>
+                                 <span  class="line-through">{format_money number=$LISTEN_PRICE}*</span>
+                                    <span class="listprice">
+                                {format_money number=$BEST_TAXED_PRICE}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    	<div>
+                                			<span>Sie sparen: {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
+                                        		({if $LISTEN_PRICE!=0} 
+                                        		{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%
+                                        		{/if})</span>
+                                        </div>
+                                    </td>
+                                </tr>
+								<tr>
+									<td class="table-height-space-sm"></td>
+								</tr>
+									
+                                <tr id="zwischensumme" style="display:none;">
+                                    <td ><span>Zwischensumme:</span> <span name="price_product_{$product_id}" class="highlighted-price">  {$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+                               <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
+                                </tr>
+                                <tr>
+                                    <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
+                                </tr>
+                            </table>
+                            {else}  
+                                <table class="price-table">
+                                    <tr>
+                                        <td>
+                                        <div style="font-size:20px; font-weight:bold;">
+                                        {$BEST_TAXED_PRICE|string_format:"%.2f"}€</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    <td style="height:50px" colspan="2"></td>
+                                    </tr>
+                                    <tr id="zwischensumme" style="display:none">
+                                     <td><div>Zwischensumme:</div></td>
+                                    <td class="highlighted-price"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+                               <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
+                                </tr>
+                                    <tr>
+                                    <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
+                                    </tr>
+
+                                </table>
+                            {/if}
+                           
+                            </span>
+                            <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
+                            {if $SHOW_ORIGINAL_PRICE!=false}
+                                
+                            {/if}
+                        </span>
+                    </div>
+
+                    <div id="pse-validity" class="validity alert alert-warning" style="display: none;" >
+                        {intl l="Sorry but this combination does not exist."}
+                    </div>
+                </div>
+                
+                <div class="buying-options col-xs-12 col-sm-6 col-lg-12 col-xl-12">
+                   	<div class="order-online">
+                    	<input type="radio" name="buy_format" id="order_online"  value="online" checked="checked"> 
+                    	<label class="c-input-button">
+                    		<span>Online bestellen</span>
+                    	</label>
+                   	</div>
+                   	
+                   	{if $reserve_online_active == 'true'}
+                   		{if $reserve_online}
+                    		<div class="reserve">
+	                    		<input type="radio" name="buy_format" id="reserve_online"  value="reserve"> 
+	                    		<label>Reservieren</label>
+	                    		<br>Zahlen bei der Abholung. <br> <span class="glyphicon glyphicon-map-marker"></span>Abholbereit ab nächsten Werktag
+                    		</div>
+                   		{/if}
+                   	{/if}
+                </div>
+{/if}
+
+                
+
+                {form name="thelia.cart.add" }
+                <form id="form-product-details" action="{url path="/konfigurator/add" }" method="post" class="form-product">
+              
+                    {form_hidden_fields}
+                    <input type="hidden" name="view" value="product">
+                    <input type="hidden" name="product_id" value="{$ID}">
+                    {form_field field="append"}
+                        <input type="hidden" name="{$name}" value="1">
+                    {/form_field}
+
+                    {if $form_error}<div class="alert alert-error">{$form_error_message}</div>{/if}
+
+                    {form_field field="product"}
+                        <input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$ID}" {$attr} >
+                    {/form_field}
+
+                    {* pse *}
+                    {form_field field='product_sale_elements_id'}
+                    <input id="pse-id" class="pse-id" type="hidden" name="{$name}" value="{$PRODUCT_SALE_ELEMENT}" {$attr} >
+                    {/form_field}
+
+                    {if $pse_count > 1}
+                        {* We have more than 1 combination: custom form *}
+                        <fieldset id="pse-options" class="product-options">
+                            {loop name="attributes" type="attribute" product="$product_id" order="manual"}
+                            
+                            <div class="option option-option">
+                                <label for="option-{$ID}" class="option-heading">{$TITLE}</label>
+                                <div class="option-content clearfix">
+                                    <select id="option-{$ID}" name="option-{$ID}" class="form-control input-sm pse-option" data-attribute="{$ID}"></select>
+                                </div>
+                            </div>
+                            {/loop}
+                            <div class="option option-fallback">
+                                <label for="option-fallback" class="option-heading">{intl l="Options"}</label>
+                                <div class="option-content clearfix">
+                                    <select id="option-fallback" name="option-fallback" class="form-control input-sm pse-option pse-fallback" data-attribute="0"></select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    {/if}
+                    
+                    
+
+				
+                    
+			         {assign var="service_title" value="{$TITLE}"}
+			         
+
+                    {loop type="image" name="image.main" product={$ID} resize_mode="borders"  limit="1"}
+                    	{assign var="service_image_url" value="{$IMAGE_URL}"}
+                    {/loop}
+                    
+                    <div {if $service_category == #services_category_id#}
+                            style="margin-left:15px; margin-right:15px;background:url({$service_image_url nofilter}) no-repeat; height:250px; background-size:100%;"
+                         {/if}>
+                        
+                        {if $service_category == #services_category_id#}
+                        <div style="background:#FFF; width:300px;border-radius: 10px;box-shadow: 3px 3px 3px rgba(0,0,0,0.35);text-align:center!important; margin-right: 35px;margin-top:35px; float:right">
+                        <div class="price-container">
+                        {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
+                            <meta itemprop="category" content="{$TITLE}">
+                        {/loop}
+                        {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
+                        <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
+                        {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
+                        <meta itemprop="priceCurrency" content="{currency attr="code"}">
+
+                        {assign var="parent_category" value={category attr="parent"}}
+                        
+                            <h4>{$service_title}</h4>
+                            <h3>{$BEST_TAXED_PRICE|string_format:"%.2f"}€</h3>
+                            <small><br>Alle Preise inkl. 20% MwSt.</small>
+                            <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
+                    </div>
+
+                        {/if}
+                    <fieldset class="product-cart form-inline">
+                        {form_field field='quantity'}
+                        <br>
+                        <div class=" col-xs-12 col-sm-6 col-lg-12 col-xl-12 text-center form-group group-qty {if $error}has-error{elseif $value != "" && !$error}has-success{/if}" 
+                             {if $service_category == #services_category_id#}  style="display:none"{/if}>
+                             <div class="amount-plus-minus">
+                                <div class="amount-text">
+                                   <label for="{$label_attr.for}">{$label}</label>
+                                </div>
+                                <div class="plus-minus-div">
+                                   <button type="button" class="button js-fa-minus">
+                                       <i class="fa fa-minus"></i>
+                                   </button>
+                                   <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value|default:1}" min="1" required>
+                                   <button type="button" class="button js-fa-plus">
+                                        <i class="fa fa-plus"></i>
+                                   </button>
+                               </div>
+                            </div>
+                            {if $error }
+                                <span class="help-block">{$message}</span>
+                            {elseif $value != "" && !$error}
+                                <span class="help-block"><i class="fa fa-check"></i></span>
+                            {/if}
+                        </div>
+                        {/form_field}
+
+                        <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-12 form-group group-btn  align-center" >
+                        <br>
+                            <button id="pse-submit" type="submit" class="btn btn-1 btn_add_to_cart btn-primary btn-service-booking"><i class="fa fa-shopping-cart"></i> {intl l="Add to cart"}</button>
+                        </div>
+                        
+                        {ifhook rel="wish-list.wish-button"}
+		               		{hook name="wish-list.wish-button" product_id={$product_id}}
+		            	{/ifhook}
+                        
+                    </fieldset>
+                     
+                    {if $service_category == #services_category_id# }</div>{/if}
+                    </div>    
+
+					{if $parent_category != #services_category_id#}
+						<div class="products-content services-checkbox">
+							<ul class="thumbnails image_picker_selector">
+								{loop type="service"  name="services_list" product_id=$product_id limit="8"}
+                               	{assign var="service_for_appointment" value = $SERVICE_ID} 
+ 									{include file="includes/product-services.html"  hasServiceDescription=false hasQuickView=false width="200" height="100"}
+ 									<div class="product-service-calendar">
+										{*hook name="productservice.bottom" service="{$SERVICE_ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product="1"*}
+									</div>	
+								{/loop}
+ 							</ul>
+ 						</div>
+					
+					
+
+            {else}       
+            <div class="product-service-calendar col-sm-12">
+				{hook name="productservice.bottom" service="{$ID}" month="{$smarty.now|date_format:"%m"}" year={$smarty.now|date_format:"%Y"} day={$smarty.now|date_format:"%d"} single_product=true btn_booking="btn-service-booking"}
+			</div>
+			<div style="clearfix"></div>
+			
+			{/if}
+			        
+                </form>
+                {/form}
+            </section>
+
+            {strip}
+                {capture "additional"}
+                    {ifloop rel="feature_info"}
+                        <ul>
+                            {loop name="feature_info" type="feature" product={$ID}}
+                            {ifloop rel="feature_value_info"}
+                                <li>
+                                    <strong>{$TITLE}</strong> :
+                                    {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
+                                        {if $LOOP_COUNT > 1}, {else} {/if}
+                                        <span>{if $IS_FREE_TEXT == 1}{$FREE_TEXT_VALUE}{else}{$TITLE}{/if}</span>
+                                    {/loop}
+                                </li>
+                            {/ifloop}
+                            {/loop}
+                        </ul>
+                    {/ifloop}
+                {/capture}
+            {/strip}
+
+            {strip}
+                {capture "highlights"}
+                    {ifloop rel="feature_info"}
+                            {loop name="highlights_info" type="feature" product={$ID} order="manual"}
+                            {assign var="feature_description" value=$DESCRIPTION}
+                            	{loop name="highlights_info_value" type="feature_value" feature={$ID} product=$product_id}
+                            		{if $TITLE == "highlight"}
+                            			<p>{$feature_description nofilter}</p>
+                            		{/if}
+                            	{/loop}
+                            {/loop}
+                    {/ifloop}
+                {/capture}
+            {/strip}
+
+            {strip}
+                {capture "brand_info"}
+                    {loop name="brand_info" type="brand" product={$ID} limit="1"}
+
+<div class="col-sm-3">
+                        {loop name="brand.image" type="image" source="brand" id={$LOGO_IMAGE_ID} width=218 height=146 resize_mode="borders"}
+                            <p><a href="{$URL nofilter}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}"></a></p>
+                        {/loop}
+
+ </div> 
+<div class="col-sm-9">
+                        {if $CHAPO}
+                            <div class="chapo">
+                                {$CHAPO}
+                            </div>
+                        {/if}
+                        {if $DESCRIPTION}
+                            <div class="description">
+                                {$DESCRIPTION nofilter}
+                            </div>
+                        {/if}
+                        {if $POSTSCRIPTUM}
+                            <small class="postscriptum">
+                                {$POSTSCRIPTUM}
+                            </small>
+                        {/if}
+</div>
+<div style="clear:both"></div>
+                    {/loop}
+                {/capture}
+            {/strip}
+
+            {strip}
+                {capture "document"}
+                    {ifloop rel="document"}
+                    
+                    {loop name="document" type="document" product=$ID visible="yes"}
+                       
+                            <span class="fa fa-file-pdf-o"></span> &nbsp;<a href="{$DOCUMENT_URL}" title="{$TITLE}" target="_blank">{$TITLE}</a><br>
+                        
+                    {/loop}
+                    
+                    {/ifloop}
+                {/capture}
+            {/strip}
+
+		<br>
+            <div class="clearfix"></div>
+            <section id="product-tabs" class="">
+                {hookblock name="product.additional" product=$product_id fields="id,class,title,content"}
+                <ul class="nav nav-tabs" role="tablist">
+                    
+
+                    
+                    <li class="active" role="presentation"><a id="tab1" href="#description" data-toggle="tab" role="tab">{intl l="Description"}</a></li>
+                    
+
+                    
+                    {if $smarty.capture.additional ne ""}{/if}
+                    {if $smarty.capture.brand_info ne ""}<li role="presentation"><a id="tab3" href="#brand_info" data-toggle="tab" role="tab">{intl l="Brand information"}</a></li>{/if}
+                    {if $smarty.capture.document ne ""}<li role="presentation"><a id="tab4" href="#document" data-toggle="tab" role="tab">{intl l="Documents"}</a></li>{/if}
+                    {forhook rel="product.additional"}
+                        <li role="presentation"><a id="tab{$id}" href="#{$id}" data-toggle="tab" role="tab">{$title}</a></li>
+                    {/forhook}
+                    
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active in" id="description" itemprop="description" role="tabpanel" aria-labelledby="tab1">
+                        <p>{$DESCRIPTION|default:'' nofilter}</p>
+                         {$smarty.capture.highlights nofilter}
+                    </div>
+                    {if $smarty.capture.additional ne ""}
+                        <div class="tab-pane" id="additional" role="tabpanel" aria-labelledby="tab2">
+                            {$smarty.capture.additional nofilter}
+                        </div>
+                    {/if}
+                    {if $smarty.capture.brand_info ne ""}
+                        <div class="tab-pane" id="brand_info" role="tabpanel" aria-labelledby="tab3">
+                            {$smarty.capture.brand_info nofilter}
+                        </div>
+                    {/if}
+                    {if $smarty.capture.document ne ""}
+                        <div class="tab-pane" id="document" role="tabpanel" aria-labelledby="tab4">
+                            {$smarty.capture.document nofilter}
+                        </div>
+                    {/if}
+                                        
+                    {forhook rel="product.additional"}
+                    <div class="tab-pane" id="{$id}" role="tabpanel" aria-labelledby="tab{$id}">
+                        {$content nofilter}
+                    </div>
+                    {/forhook}
+
+                    
+                </div>
+                
+                   {ifloop rel="accessories"}
+                    <aside id="products-upsell" class="grid" role="complementary" aria-labelledby="products-upsell-label">
+                        <div class="products-heading">
+                            <h3 id="products-upsell-label">{intl l="Product accessories" d="bo.default"}</h3>
+                        </div>
+                        <div class="products-content">
+                            <ul class="list-unstyled row products-grid">
+                                {loop type="accessory" name="accessories" product="$ID" order="random" limit="8"}
+                                    {include file="includes/single-product.html" product_id=$ACCESSORY_ID hasBtn=false hasDescription=false width="218" height="146"}
+                                {/loop}
+                            </ul>
+                        </div>
+                    </aside><!-- #products-upsell -->
+                {/ifloop}
+                {/hookblock}
+            </section>
+            
+            {if $service_category==#services_category_id#}
+            <div class="faq">
+                <div><h3 style="margin:10px">Häufig gestellte Fragen</h3></div>
+                <div class="col-sm-5">
+                 {$FAQ nofilter}
+
+                </div>
+                <div class="col-sm-5">
+                    {$FAQ_COL2 nofilter}
+
+
+                </div>
+                <div class="col-sm-2">
+                    <img src="assets/frontOffice/default/template-assets/assets/dist/img/services/tool.png" style="width:100%">
+                </div>
+            
+           
+            </div>
+        {/if}
+            
+            {hook name="product.bottom" product={$ID}}
+
+{* javascript confiuguration to display pse *}
+{$pse=[]}
+{$combination_label=[]}
+{$combination_values=[]}
+{loop name="pse" type="product_sale_elements" product=$product_id}
+    {$pse[$ID]=["id" => $ID, "isDefault" => $IS_DEFAULT, "isPromo" => $IS_PROMO, "isNew" => $IS_NEW, "ref" => {$REF}, "ean" => {$EAN}, "quantity" => {$QUANTITY}, "price" => {format_money number=$TAXED_PRICE}, "promo" => {format_money number=$TAXED_PROMO_PRICE} ]}
+    {$pse_combination=[]}
+    {loop name="combi" type="attribute_combination" product_sale_elements="$ID" order="manual"}
+        {if ! $combination_label[$ATTRIBUTE_ID]}
+            {$combination_label[$ATTRIBUTE_ID]=["name" => {$ATTRIBUTE_TITLE}, "values" => []]}
+        {/if}
+        {if ! $combination_values[$ATTRIBUTE_AVAILABILITY_ID]}
+            {$combination_label[$ATTRIBUTE_ID]["values"][]=$ATTRIBUTE_AVAILABILITY_ID}
+            {$combination_values[$ATTRIBUTE_AVAILABILITY_ID]=[{$ATTRIBUTE_AVAILABILITY_TITLE}, $ATTRIBUTE_ID]}
+        {/if}
+        {$pse_combination[]=$ATTRIBUTE_AVAILABILITY_ID}
+    {/loop}
+    {$pse[$ID]["combinations"]=$pse_combination}
+{/loop}
+
+<script type="text/javascript">
+    
+
+    
+    // Product sale elements
+    var PSE_FORM = true;
+    var PSE_COUNT = {$pse_count};
+    {if $check_availability == 0 || $product_virtual == 1 }
+        var PSE_CHECK_AVAILABILITY = false;
+    {else}
+        var PSE_CHECK_AVAILABILITY = true;
+    {/if}
+    var PSE_DEFAULT_AVAILABLE_STOCK = {config key="default_available_stock" default="100"};
+    
+    var PSE = {$pse|json_encode nofilter};
+    var PSE_COMBINATIONS = {$combination_label|json_encode nofilter};
+    var PSE_COMBINATIONS_VALUE = {$combination_values|json_encode nofilter};
+</script>
+
+
+        </article><!-- /#product -->
+        
+        <ul class="pager">
+            {if $HAS_PREVIOUS == 1}
+                {loop type="product" name="prev_product" id={$PREVIOUS}}
+                    <li class="previous"><a href="{$URL nofilter}"><i class="fa fa-chevron-left"></i> {intl l="Previous product"}</a></li>
+                {/loop}
+            {/if}
+            {if $HAS_NEXT == 1}
+                {loop type="product" name="next_product" id={$NEXT}}
+                    <li class="next"><a href="{$URL nofilter}"><i class="fa fa-chevron-right"></i> {intl l="Next product"}</a></li>
+                {/loop}
+            {/if}
+        </ul>
+        {/loop}
+
+    </div><!-- /.main -->
+    {else}
+    <div class="main">
+        <article id="content-main" class="col-main" role="main" aria-labelledby="main-label">
+            {include file="includes/empty.html"}
+        </article>
+    </div><!-- /.layout -->
+    {/if}
+{/block}
+
+{block name="stylesheet"}
+{hook name="product.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+
+<script>    
+var formatter = new Intl.NumberFormat('de-DE', {
+	  style: 'currency',
+	  currency: 'EUR',
+	  minimumFractionDigits: 2,
+	});
+	
+$('.products-content').on('click', '.thumbnail', function (event) {
+            $("#zwischensumme").show();
+	if($(this).hasClass("selected")){
+        $("#services-appointments").hide();
+        $(".product-service-calendar").hide();
+
+	$(this).removeClass("selected");
+    //now disable inputs
+     $(this).find($("[name^=service]")).prop('disabled',true);
+    //remove price
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //remove service price from product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
+	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())-parseFloat($serviceObject.text()));
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text()))   );
+	}
+	else  {
+        $("#services-appointments").show();
+        $(".product-service-calendar").show();
+		$(this).addClass("selected");
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //add service price to product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productOriginalPrice = $("[name=org_price_product_"+$productid+"]");
+	    $productOriginalPrice.text(parseFloat($productOriginalPrice.text())+parseFloat($serviceObject.text()));
+	    $productObject.text(formatter.format(parseFloat($productOriginalPrice.text())) );
+	}
+});
+
+$('input[type=radio][name=buy_format]').change(function() {
+    $.ajax({
+        url: '/choose-buy-format',
+        type: 'POST',
+        data: {
+            buyFormat:  $(this).val()
+        }
+    }).done(function(data){
+    	return data;
+    });	
+});
+
+</script>
+{hook name="product.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="product.javascript-initialization"}
+{/block}
