@@ -1,10 +1,3 @@
-.navbar-cart{
-    margin-top: 15px;
-    padding: 0px;
-    height: 48px;
-    max-width: 5%;
-    padding-left: 5%;
-}
 .navbar-cart li{
     float: right;
 }
@@ -14,14 +7,13 @@
 .navbar .navbar-cart li a.cart:before{
    content: none;
 }
-
 .navbar-default .navbar-cart>li{
     height: 48px;
     padding: 0px;
     margin: 0px;
 }
 .navbar-default .navbar-cart>li>a{
-    height: 48px;
+    height: auto;
     padding: 0px;
     margin: 0px;
     padding-top: 4px;
@@ -40,8 +32,16 @@
 .cart .badge,
 .cart-not-empty .badge{
     top: 50%;
-    left: 50%;
-    transform: translate(40%, -250%);
+    left: 50%;   
     padding-top: 0px;
     padding-bottom: 0px;
+}
+@media screen and (min-width: 992px){
+    .navbar-cart{
+        max-width: 40px;
+    }
+    .cart .badge,
+    .cart-not-empty .badge{
+        transform: translate(47%, -228%) !important;
+    }
 }
