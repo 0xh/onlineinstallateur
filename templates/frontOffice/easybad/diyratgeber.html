@@ -2,13 +2,7 @@
 
 {block name="full_with_block"}
     {hook name="full_with_block.diyratgeber"}
-{/block}
-
-{* Body Class *}
-{block name="body-class"}page-doit{/block}
-{block name="main-content"}
-    
-<div class="main" id="diyratgeber">
+    <div class="main" id="diyratgeber">
     <div data-artikelthreecategories="" data-nomorelink="true">  <div class="outer-container bg-gray hr-gradient as-bg">
             <div class="contact_persons">
                 <h3><span>DO IT YOURSELF</span></h3>
@@ -63,9 +57,18 @@
 </div>
 {/block}
 
+{* Breadcrumb *}
+{block name='breadcrumb'}{/block}
+
+{* Body Class *}
+{block name="body-class"}page-doit{/block}
+{block name="main-content"}
+    
+{/block}
+
 {block name="stylesheet"}
 {hook name="register.stylesheet"}
-{stylesheets file='assets/dist/css/custom.css'}
+{stylesheets file='assets/dist/css/easybadsogehts.css'}
 <link rel="stylesheet" href="{$asset_url}">
 {/stylesheets}
 {/block}
