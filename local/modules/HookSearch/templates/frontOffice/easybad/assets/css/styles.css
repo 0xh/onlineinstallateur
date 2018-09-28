@@ -34,6 +34,7 @@
     text-rendering: auto;
     color: #236E83;
     width:80%;
+    margin-bottom: 5px;
 }
 
 #form-search #q::placeholder{
