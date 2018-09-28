@@ -18,7 +18,6 @@
             {assign var=current_slide value=1}
             {assign var=last_slide value=$arrElements|@count}}
             {foreach $arrElements as $element}
-
                 <fieldset row item-number={$current_slide} style="background-image: url({$background_image}); background-size: cover;">
                           {if  $current_slide !=1 }
                               <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
