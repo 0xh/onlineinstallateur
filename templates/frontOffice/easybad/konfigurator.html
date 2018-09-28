@@ -466,9 +466,6 @@
                         </div>
                     </div>
                         </div>
-                 
-                    
-				
                 </div>
                 
                <div class="fs-controls fs-show">
@@ -525,23 +522,6 @@
             $("#warmwasserversorgung-extra").hide();
             }  
 });
-         
-  /* $("#brennstoff_zukunft").change(function(){
-       var radiovaluebrennstoff =  $('.radiovaluebrennstoff:checked').val();
-       var radiovalue =  $('.radiovalue:checked').val();
-      if(radiovaluebrennstoff==4){
-          //alert("waermepumpe")
-          if(warmwasse-uber-heizung==1){
-        $("#warmwasserversorgung-extra").hide();
-        $("#warmwasserversorgung-extra-waermepumpe").show();
-              }
-        }
-       else {
-           
-        $("#warmwasserversorgung-extra-waermepumpe").hide();
-        $("#warmwasserversorgung-extra").hide();
-            }
-});*/
 </script>
 
 <!--Dropzone script start-->
@@ -589,8 +569,6 @@
                      })
                      .done(function (data, textStatus, request) {
                       $waermebedarf = request.getResponseHeader('waermebedarf');
-                      //if($waermebedarf != null) 
-                      // $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
 
                       $("#category-products").empty().append(data);
                      })
@@ -609,82 +587,6 @@
                 
                 
 		    });
-		 
-    /*
- Dropzone.options.formKonfigurator = {
-
-		  // Prevents Dropzone from uploading dropped files immediately
-		  autoProcessQueue: false,
-		  uploadMultiple: true,
-		  addRemoveLinks: true,
-		  parallelUploads: 10,
-		  maxFilesize: 256,
-		  clickable:'#dragdrop',
-		  previewsContainer: '#previews',
-	      dictDefaultMessage: "Drop files here to upload",
-	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
-	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
-	      dictFileTooBig: "File is too big ( { { filesize } } MiB). Max filesize: { { maxFilesize } } MiB.",
-	      dictInvalidFileType: "You can't upload files of this type.",
-	      dictResponseError: "Server responded with { { statusCode } } code.",
-	      dictCancelUpload: "Cancel upload",
-	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
-	      dictRemoveFile: "Remove file",
-	      dictRemoveFileConfirmation: null,
-	      dictMaxFilesExceeded: "You can not upload any more files.",
-	      
-		  init: function() {
-		    var submitButton =document.getElementById("fs-submit");
-         
-		        myDropzone = this; // closure
-
-              
-		    submitButton.addEventListener("click", function(e) {
-               
-		    	e.preventDefault();
-                 if(myDropzone.files.length!=0)
-		      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
-                else {
-                    $.ajax({
-                      type: $("#form-konfigurator").attr('method'),
-                      url: $("#form-konfigurator").attr('action'),
-                      data: $("#form-konfigurator").serialize()
-                     })
-                     .done(function (data, textStatus, request) {
-                      $waermebedarf = request.getResponseHeader('waermebedarf');
-                      if($waermebedarf != null) 
-                       $('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-
-                      $("#category-products").empty().append(data);
-                     })
-                     .fail(function (jqXHR, textStatus, errorThrown) {
-                      if (typeof jqXHR.responseJSON !== 'undefined') {
-                       if (jqXHR.responseJSON.hasOwnProperty('form')) {
-                        $('#form_body').html(jqXHR.responseJSON.form);
-                       }
-                       $('.form_error').html(jqXHR.responseJSON.message);
-                      } else {
-                       alert(errorThrown);
-                      }
-                     });
-                }
-                
-                
-                
-		    });
-		  },
-	     success: function(file,response, e, xhr){
-
-	   $waermebedarf = xhr.getResponseHeader('waermebedarf');
-		if($waermebedarf != null) 
-			$('#waermebedarf').text("Wärmebedarf ist: "+$waermebedarf+"KW");
-	   
-		$("#category-products").empty().append(response);
-	      }
-        /*totalUploadProgress: function(totalUploadProgress, totalBytes,totalBytesSent){
-            
-        }
-		};*/
 </script>
 <!--Dropzone script end-->
 
@@ -692,12 +594,7 @@
 
 
  
-<script>
-/*$('body').on('submit', '.form-horizontal', function (e) {
-	e.preventDefault();
-	
-});*/
-    
+<script> 
     
 (function() {
 	var formWrap = document.getElementById( 'fs-form-wrap' );

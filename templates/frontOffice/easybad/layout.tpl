@@ -444,7 +444,6 @@ web : http://www.hausfabrik.at
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/localization/messages_{$lang_code}.js"></script>
 {/if}
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
 {javascripts file="assets/dist/js/vendors/bootstrap.min.js"}
 <script>if (typeof ($.fn.modal) === 'undefined') {
         document.write('<script src="{$asset_url}"><\/script>');
