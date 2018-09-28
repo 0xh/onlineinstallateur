@@ -611,3 +611,171 @@ section .product-image{
 .border-top{
 	border-top:#CCC solid 1px;
 }
+.outer-container {
+    height: 100%;
+}
+.outer-container
+.intro-container {
+  padding-top: 40px;
+  xxpadding-bottom: 20px;
+  NONOWARUM_min-height: 620px;
+}
+.innerback {
+  background-color: rgba(52, 124, 146, 0.6);
+  height: 100%;
+  min-height: 700px;
+}
+.outer-container.page-section {
+  min-height: initial;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.outer-container.page-section .container .row + .row {
+  margin-top: 0;
+}
+.back {
+  padding-top: 0 !important;
+  color: white;
+  background-image: url('../img/dummy_planungstarten.jpg');
+  background-size: cover;
+  background-position: center;
+}
+div[id^="carouselpicture"]{
+height: 166px; 
+background-size: cover;
+}
+
+#carouselpicture1{
+background-image: url('../img/carouselpicture1.jpg');
+background-size: cover;
+}
+
+#carouselpicture2{
+background-image: url('../img/carouselpicture2.jpg');
+background-size: cover;
+}
+
+#carouselpicture3{
+background-image: url('../img/carouselpicture3.jpg');
+background-size: cover;
+}
+
+.media-object, .thumbnail {
+    display: block;
+}
+.bg-gray {
+    color: white;
+    background-color: #10b4cf;
+}
+div.media{
+height:416px;
+}
+
+#diyratgeber{
+right:0px;
+left:0px;
+overflow:hidden;
+width: fit-content;
+}
+
+.raquo{
+    position: absolute;
+    bottom: 35px;
+    font-size:1.5em;
+    color: #10b4cf;
+    text-decoration: none;
+}
+
+.raquo:hover{
+    text-decoration: underline;
+    color: #10b4cf;
+}
+
+.bg-gray {
+    color: white;
+    background-color: #10b4cf;
+}
+
+.media-wrapper > .media {
+    background-color: white;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0.09em  gray;
+}
+media-object{
+        box-shadow: 0 0 0.09em #808080;
+}
+
+.media .media-heading {
+    color: #1E2831;
+}
+strong, b, .bold {
+    font-weight: 700;
+}
+.media-head{margin:0;text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;    max-width: 286px; line-height: inherit;}
+.media-text{
+    word-wrap: break-word;
+}
+.media > .media-body {
+    color: #4A5C70;
+}
+
+.media-object {
+    display: block;
+    height: 166px;
+    background-size: cover;
+    border: 0;
+}
+
+.page-doit .main-container .container{
+    padding: 0 !important; 
+    margin: 0 !important;
+}
+.page-doit .main-container .container{
+    width: 100% !important;
+}
+
+@media (min-width: 0px){
+.container {
+    width: 100%!important;
+}
+}
+.page-doit h3{
+    font-size: 1.8em;
+}
+
+.page-doit h5{
+    font-size: 0.8em;
+}
+
+.page-doit p{
+    font-size: 1em;
+}
+
+.contact_persons{
+    margin-left:20vw !important;
+    margin-right:20vw !important;
+}
+
+.outer-container{
+    padding-top: 1vw;
+}
+
+.contact_persons > h3 {
+    margin-bottom: 2vw;
+}
+
+.media-wrapper > .media > .media-body {
+    padding: 1vw 0.5vw;
+}
+.produktkataloge-item .media .media-object-wrapper {
+  background-color: #FFFFFF;
+}
+
+.produktkataloge-item .media .media-object-wrapper .image-wrapper {
+  background-size: contain;
+}
+
+.media{
+    height: 50vw;
+}
+
