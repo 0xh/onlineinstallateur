@@ -25,7 +25,7 @@
     border: 0;
     background: #B7E8EF;
     height: 40px;
-    font-size: 20px;
+    font-size: 18px;
     padding: 0 14px;  
     margin-right: 1px;
     -webkit-appearance: textfield;
@@ -43,4 +43,15 @@
     line-height: 40px;
     width: 70%;
     border-bottom: none;
+}
+
+.search-container {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+@media (max-width: 1200px) {
+.navbar.navbar-secondary .search-container{
+    width: 60%;
+}
 }
