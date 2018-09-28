@@ -538,9 +538,9 @@ section .product-image{
     .cart .badge, .cart-not-empty .badge{
         transform: translate(-147%, 7%) !important;
     }
-    .sec-nav .navbar-cart>li>a>img{
-        padding-left: 2vw;
-    }
+/*     .sec-nav .navbar-cart>li>a>img{ */
+/*         padding-left: 2vw; */
+/*     } */
 }
 
 @media screen and (min-width: 992px){
@@ -564,7 +564,7 @@ section .product-image{
 @media screen and (max-width: 750px){
     .navbar-secondary .navbar-customer,
     .navbar-secondary .navbar-car{
-        padding-right: 10px;       
+/*         padding-right: 10px;        */
         min-width: 40px;
     }
 }
