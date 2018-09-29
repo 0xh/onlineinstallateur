@@ -305,6 +305,12 @@ h1.name{
     color: #787882;
 
 }
+
+.navbar-wish-list .dropdown-menu {
+    margin: 0;
+    padding: 20px;
+}
+
 article#product{
     background:#FFF;
     padding:10px
@@ -417,10 +423,6 @@ section .product-image{
     text-transform: uppercase;
 }
 
-.dropdown-menu {
-   border:unset !important;
-}
-
 /*Easybad mobile Menu*/
 .navbar-form {
     box-shadow: unset;
@@ -530,6 +532,7 @@ section .product-image{
         position: absolute;
         right: 15px;
     }
+
     .navbar .navbar-cart .dropdown-menu,
     .navbar .navbar-customer .dropdown-menu, 
     .navbar .wish-container .dropdown-menu{
@@ -538,9 +541,6 @@ section .product-image{
     .cart .badge, .cart-not-empty .badge{
         transform: translate(-147%, 7%) !important;
     }
-/*     .sec-nav .navbar-cart>li>a>img{ */
-/*         padding-left: 2vw; */
-/*     } */
 }
 
 @media screen and (min-width: 992px){
@@ -618,5 +618,5 @@ section .product-image{
     font-size: 1rem;
     line-height: 17px;
     color: #fff;
-    background-color: #ff3c5f;
+    background-color: #58585a;
 }
