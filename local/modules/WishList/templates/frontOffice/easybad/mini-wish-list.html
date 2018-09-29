@@ -9,6 +9,9 @@
 	<li class="dropdown wish-container {if $products_in_wish_list}wish-not-empty{/if}">
 	    <a href="{url path="/wish-list"}" rel="nofollow" class="wish">
 	        <img src="{image file='assets/img/heart.png' source='WishList'}"/>
+	        {if $products_in_wish_list > 0}
+	        <span class="badge-counter">{$products_in_wish_list}</span>
+	        {/if}
 	    </a>
 	    <div class="dropdown-menu wish-content">
 	    	{if $products_in_wish_list == 1}
