@@ -19,8 +19,11 @@
 
         <article class="col-main" role="main" aria-labelledby="main-label">
 
-            <h1 id="main-label" class="page-header">{intl l="My Account"}</h1>
-
+            <h1 id="main-label" class="page-header">
+            	{intl l="My Account"}
+            	<a href="{url path="/logout"}" class="logout">{intl l="Log out!" d="hookcustomer.fo.default"}</a>
+            </h1>
+    
             {hook name="account.top"}
             <div id="account" class="panel-group">
                 <div class="panel panel-default account-info">
