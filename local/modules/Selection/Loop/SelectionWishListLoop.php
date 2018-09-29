@@ -68,15 +68,21 @@ class SelectionWishListLoop extends BaseLoop implements ArraySearchLoopInterface
     public function parseResults(LoopResult $loopResult)
     {
 
+        $selectionIds = array();
         foreach ($loopResult->getResultDataCollection() as $wishlist) {
-
+            $selectionIds[] = $wishlist;
+        }
+        
+        if (!empty($selectionIds)) {
+            $count = count($selectionIds);
+            $selectionIdsList = implode(',', $selectionIds);
+            
             $loopResultRow = new LoopResultRow($wishlist);
-
             $loopResultRow
-             ->set("SELECTION_WISHLIST_SELECTION_LIST", $wishlist)
-//             ->set("SELECTION_WISHLIST_COUNT", $count)
+            ->set("SELECTION_WISHLIST_SELECTION_LIST", $selectionIds)
+            ->set("SELECTION_WISHLIST_COUNT", $count)
             ;
-
+            
             $loopResult->addRow($loopResultRow);
         }
 
