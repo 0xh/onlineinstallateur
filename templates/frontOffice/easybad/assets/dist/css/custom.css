@@ -606,3 +606,17 @@ section .product-image{
 	border-top:#CCC solid 1px;
 }
 
+.badge-counter{
+    position: absolute;	
+    left: 30%;
+    top:40%;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 700;
+    font-size: .75rem;
+    line-height: 17px;
+    color: #fff;
+    background-color: #00a3ba;
+}
