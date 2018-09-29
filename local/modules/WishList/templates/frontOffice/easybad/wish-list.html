@@ -22,28 +22,25 @@
                    	{ifloop rel="selection_wish_list"}
                     <div class=" row " >
                         {loop name="selection_wish_list" type="selection_wish_list"}
-                        {$SELECTION_ID = $SELECTION_WISHLIST_SELECTION_LIST}
-
+                        {foreach from=$SELECTION_WISHLIST_SELECTION_LIST item=selection_id}
                         <div class="col-sm-4 ">
-
                             <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">	
-
                                 <figure class="effect-honey mb-5">
-                                    {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                                    {loop name="inspiration_images" type="selection_image" source="selection" source_id=$selection_id limit="1" visible="true" width=370 height=240 resize_mode="crop"}
                                     <div class="herz"></div>
                                     <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
                                     {ifhook rel="selection-wish-list-selection.wish-button"}
-                                    {hook name="selection-wish-list-selection.wish-button" selection_id={$SELECTION_ID}}
+                                    {hook name="selection-wish-list-selection.wish-button" selection_id={$selection_id}}
                                     {/ifhook}
                                     {/loop}
-                                    {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=383 show_feature_value_selected=true}  
+                                    {loop name="feature_loop" type="selection_feature_av_all" selection_id=$selection_id feature=383 show_feature_value_selected=true}  
                                     {assign var = "feature_title" value = $F_TITLE}    
                                     {assign var = "feature_value" value = $FTITLE}
                                     {/loop} 
                                 </figure>
                             </a>
                         </div>
-
+						{/foreach}
                         {/loop}
                     </div>
                     {/ifloop}

@@ -1,8 +1,13 @@
 <ul class="nav navbar-nav navbar-customer navbar-left">
     {loop type="auth" name="customer_info_block" role="CUSTOMER"}
-    <img src="{image file='assets/img/man.png' source='HookCustomer'}"/>
-    <li><a href="{url path="/logout"}" class="logout">{intl l="Log out!" d="hookcustomer.fo.default"}</a></li>
-    <li><a href="{url path="/account"}" class="account">{intl l="My Account" d="hookcustomer.fo.default"}</a></li>
+    <li class="dropdown">
+    	<a href="{url path="/account"}" class="account login dropdown-toggle">
+    		<img src="{image file='assets/img/man.png' source='HookCustomer'}"/>
+		</a>
+		<div class="dropdown-menu">
+			<a href="{url path="/logout"}" class="logout">{intl l="Log out!" d="hookcustomer.fo.default"}</a>
+		</div>
+	</li>
     {/loop}
     {elseloop rel="customer_info_block"}
         <li class="dropdown">
