@@ -1,5 +1,9 @@
 {extends file="layout.tpl"}
 
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+{/block}
+
 {block name="full_with_block"}
     {hook name="full_with_block.inspiration.page"}
     {loop type="selection_image" name="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true"}
@@ -42,8 +46,8 @@
 
     <div style="text-align: center; background:#fff; padding:10px;">
 
-        <h1>{intl l='PRODUCT OVERVIEW'}</h1>
-        <h2>{intl l='All items in this bathroom in detail'}</h2>
+        <h2>{intl l='PRODUCT OVERVIEW'}</h2>
+        <h3>{intl l='All items in this bathroom in detail'}</h3>
 
         <table style="width:100%; text-align: left;">
             <tr>

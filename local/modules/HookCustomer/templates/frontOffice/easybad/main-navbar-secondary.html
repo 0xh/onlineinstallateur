@@ -1,7 +1,7 @@
-<ul class="nav navbar-nav navbar-customer navbar-left">
+<ul class="nav navbar-nav navbar-cart navbar-customer navbar-left">
     {loop type="auth" name="customer_info_block" role="CUSTOMER"}
-    <li class="dropdown">
-    	<a href="{url path="/account"}" class="account login dropdown-toggle">
+    <li class="dropdown pull-right">
+    	<a href="{url path="/account"}" class="account pull-right login dropdown-toggle">
     		<img src="{image file='assets/img/man.png' source='HookCustomer'}"/>
 		</a>
 		<div class="dropdown-menu">
@@ -10,7 +10,7 @@
 	</li>
     {/loop}
     {elseloop rel="customer_info_block"}
-        <li class="dropdown">
+        <li class="dropdown pull-right">
         <a href="{url path="/login"}" class="login dropdown-toggle">
            <img src="{image file='assets/img/man.png' source='HookCustomer'}"/>
         </a>

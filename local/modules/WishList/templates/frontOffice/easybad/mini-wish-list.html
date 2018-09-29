@@ -13,8 +13,8 @@
 {/ifloop}
 
 
-<ul class="nav navbar-nav navbar-wish-list navbar-left">
-	<li class="dropdown wish-container {if $products_in_wish_list || $products_in_selection_wish_list}wish-not-empty{/if}">
+<ul class="nav navbar-nav navbar-cart navbar-wish-list navbar-left">
+	<li class="dropdown pull-right wish-container {if $products_in_wish_list || $products_in_selection_wish_list}wish-not-empty{/if}">
 	    <a href="{url path="/wish-list"}" rel="nofollow" class="wish">
 	        <img src="{image file='assets/img/heart.png' source='WishList'}"/>
 	        {if $products_in_wish_list > 0 || $products_in_selection_wish_list > 0}
