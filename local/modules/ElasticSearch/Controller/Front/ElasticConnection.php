@@ -216,14 +216,8 @@ class ElasticConnection
                     {"product_title": {"order":"' . $order_by . '"}},
                     "_score"
                 ],
-                 "from" : "' . $start . '","size":"' . $limit . '",
-
-                 "query": {
-                    "multi_match" : {
-                         "query":    "' . $text . '",
-                         "fields": [ "product_title"]
-                          }
-                       }
+                "from" : "' . $start . '","size":"' . $limit . '",
+                "query": '. $this->querySearchJson($text) . '
                 }';
                 break;
             case 'alpha_reverse':
@@ -234,13 +228,8 @@ class ElasticConnection
                     "_score"
                 ],
                  "from" : "' . $start . '","size":"' . $limit . '",
-
-                 "query": {
-                    "multi_match" : {
-                         "query":    "' . $text . '",
-                         "fields": [ "product_title"]
-                          }
-                       }
+                 "query": '. $this->querySearchJson($text) . '
+                     
                 }';
                 break;
             case 'min_price':
@@ -251,12 +240,7 @@ class ElasticConnection
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query": {
-                        "multi_match" : {
-                             "query":    "' . $text . '",
-                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"]
-                              }
-                           }
+                     "query":  '. $this->querySearchJson($text) . '
                  }';
                 break;
             case 'max_price':
@@ -267,12 +251,7 @@ class ElasticConnection
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query": {
-                        "multi_match" : {
-                             "query":    "' . $text . '",
-                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"]
-                              }
-                           }
+                     "query":  '. $this->querySearchJson($text) . '
                 }';
                 break;
             default:
@@ -282,12 +261,7 @@ class ElasticConnection
                         "_score"
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query": {
-                        "multi_match" : {
-                             "query":    "' . $text . '",
-                             "fields": [ "product_title", "product_description" ,"brand_name","category_name","feature_title","feature_desc"]
-                              }
-                           }
+                     "query":  '. $this->querySearchJson($text) . '
                 }';
                 break;
         }
@@ -340,6 +314,57 @@ class ElasticConnection
        }';
 
         return $json;
+        }
+
+        public function querySearchJson($text) {
+        return '{
+                "bool": {
+                  "should": [
+                    {
+                      "regexp": {
+                        "product_title": {
+                          "value": ".*'.$text.'+*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "product_description": {
+                          "value": ".*'.$text.'.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "brand_name": {
+                          "value": ".*'.$text.'.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "category_name": {
+                          "value": ".*'.$text.'.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "feature_title": {
+                          "value": ".*'.$text.'.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "feature_desc": {
+                          "value": ".*'.$text.'.*"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }';
     }
 
 }
