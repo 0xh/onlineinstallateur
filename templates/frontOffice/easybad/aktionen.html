@@ -13,7 +13,7 @@
         <div class="panel-body">
             <div class="owl-icons-wrappeproducts-new-aktionenr">
                 <div class="product-slider">
-                    {loop name="selection_product" type="selection_product_related" selection_id=1}
+                    {loop name="selection_product" type="selection_product_related" selection_id={config key="aktionen_selection_product"}}
                         <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
                                 <div id="category-products">
                                     <div class="products-content">
@@ -38,7 +38,7 @@
         <div class="panel-body">
             <div class="owl-icons-wrapper">               
                 <div class="product-slider">
-                    {loop name="selection_product" type="selection_product_related" selection_id=1}
+                    {loop name="selection_product" type="selection_product_related" selection_id={config key="aktionen_bestseller_selection"}}
                         <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
                             <div id="category-products">
                                 <div class="products-content">
