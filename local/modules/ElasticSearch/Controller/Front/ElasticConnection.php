@@ -217,7 +217,7 @@ class ElasticConnection
                     "_score"
                 ],
                 "from" : "' . $start . '","size":"' . $limit . '",
-                "query": '. $this->querySearchJson($text) . '
+                "query": ' . $this->querySearchJson($text) . '
                 }';
                 break;
             case 'alpha_reverse':
@@ -228,30 +228,30 @@ class ElasticConnection
                     "_score"
                 ],
                  "from" : "' . $start . '","size":"' . $limit . '",
-                 "query": '. $this->querySearchJson($text) . '
-                     
+                 "query": ' . $this->querySearchJson($text) . '
+
                 }';
                 break;
             case 'min_price':
-                $field    = "product_promo_taxed_price";
+                $field    = "product_taxed_price";
                 $order_by = "asc";
                 $json     = '{
                     "sort" : [
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query":  '. $this->querySearchJson($text) . '
+                     "query":  ' . $this->querySearchJson($text) . '
                  }';
                 break;
             case 'max_price':
-                $field    = "product_promo_taxed_price";
+                $field    = "product_taxed_price";
                 $order_by = "desc";
                 $json     = '{
                     "sort" : [
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query":  '. $this->querySearchJson($text) . '
+                     "query":  ' . $this->querySearchJson($text) . '
                 }';
                 break;
             default:
@@ -261,7 +261,7 @@ class ElasticConnection
                         "_score"
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query":  '. $this->querySearchJson($text) . '
+                     "query":  ' . $this->querySearchJson($text) . '
                 }';
                 break;
         }
@@ -314,51 +314,52 @@ class ElasticConnection
        }';
 
         return $json;
-        }
+    }
 
-        public function querySearchJson($text) {
+    public function querySearchJson($text)
+    {
         return '{
                 "bool": {
                   "should": [
                     {
                       "regexp": {
                         "product_title": {
-                          "value": ".*'.$text.'+*"
+                          "value": ".*' . $text . '+*"
                         }
                       }
                     },
                     {
                       "regexp": {
                         "product_description": {
-                          "value": ".*'.$text.'.*"
+                          "value": ".*' . $text . '.*"
                         }
                       }
                     },
                     {
                       "regexp": {
                         "brand_name": {
-                          "value": ".*'.$text.'.*"
+                          "value": ".*' . $text . '.*"
                         }
                       }
                     },
                     {
                       "regexp": {
                         "category_name": {
-                          "value": ".*'.$text.'.*"
+                          "value": ".*' . $text . '.*"
                         }
                       }
                     },
                     {
                       "regexp": {
                         "feature_title": {
-                          "value": ".*'.$text.'.*"
+                          "value": ".*' . $text . '.*"
                         }
                       }
                     },
                     {
                       "regexp": {
                         "feature_desc": {
-                          "value": ".*'.$text.'.*"
+                          "value": ".*' . $text . '.*"
                         }
                       }
                     }
