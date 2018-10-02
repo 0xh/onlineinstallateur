@@ -120,8 +120,7 @@ class IndexProducts extends ProductQuery
                 }
 
                 print_r("Index item with id:" . $item->getVirtualColumn('product_id') . "  ---- ");
-                $result = array(
-                 'product_id'                => $item->getVirtualColumn("product_id"),
+                $result = ['product_id'                => $item->getVirtualColumn("product_id"),
                  'product_title'             => $item->getVirtualColumn("product_title"),
                  'product_description'       => $item->getVirtualColumn("product_description"),
                  "categories"                => array(
@@ -138,17 +137,19 @@ class IndexProducts extends ProductQuery
                  'product_promo_taxed_price' => (float) ((float) $item->getVirtualColumn("product_promo_price") * 1.20),
                  'product_listen_price'      => (float) $item->getVirtualColumn("product_listen_price"),
                  'image'                     => (string) $item->getVirtualColumn("image"),
-                 'is_promo'                  => (int) $item->getVirtualColumn("image") <> NULL ? (int) $item->getVirtualColumn("image") : 0,
+                 'is_promo'                  => (int) $item->getVirtualColumn("image") <> NULL ? 
+                                                (int) $item->getVirtualColumn("image") : 0,
                  'is_active'                 => 1,
-                 'created_at'                => $item->getVirtualColumn("created_at") <> NULL ? date("Y-m-d H:m:s",
-                                                                                                     strtotime((string) $item->getVirtualColumn("created_at"))) : date("Y-m-d H:m:s",
-                                                                                                                                                                       strtotime((string) $item->getVirtualColumn("update_at"))),
+                 'is_selection'             => 0,
+                 'created_at'       => $item->getVirtualColumn("created_at") <> NULL ? date("Y-m-d H:m:s",
+                                        strtotime((string) $item->getVirtualColumn("created_at"))) : date("Y-m-d H:m:s",
+                                        strtotime((string) $item->getVirtualColumn("update_at"))),
                  'update_at'                 => date("Y-m-d H:m:s",
                                                      strtotime((string) $item->getVirtualColumn("update_at"))),
                  'feature'                   => $arrFeautures,
                  "locale"                    => (string) $item->getVirtualColumn("locale"),
                  "country_taxes"             => 20
-                );
+                 ];
 
                 $params = [
                  'index' => 'product_' . $lang,
