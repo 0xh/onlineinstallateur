@@ -1,0 +1,39 @@
+.page-account .col-main #main-label{
+    text-align: center;
+}
+.page-account #account .panel-heading .panel-title>a{
+    background: #347C92;
+}
+.page-account #account .panel-heading .panel-title>a.collapsed{
+    background-color: #10B4CF;
+    color: #fff;
+}
+.page-account #account #account-info .list-info .email:before, 
+.page-account #account #account-info .list-info .mobile:before, 
+.page-account #account #account-info .list-info .tel:before,
+.page-account #account #account-info .group-btn a>i,
+.page-account #account #account-address .btn-link,
+.page-account #account #account-address .btn-primary{
+    color: #347C92;
+}
+.page-account #account #account-address .btn-primary{
+    border-color: unset !important;
+    border-left: 1px solid #10B4CF !important;
+    border-color: #10B4CF !important
+    border: solid 1px #10B4CF !important;
+}
+
+.page-account #account #account-address .btn-primary:focus,
+.page-account #account #account-address .btn-primary:hover{
+    background-color: #347C92;
+    color: #fff;
+}
+
+.page-account #account #account-orders .panel-body .table-orders .label-success{
+    background-color: #10B4CF !important;
+}
+
+.page-account #account #account-orders .btn-link,
+.page-account #account #account-orders .btn-primary{
+    color: #347C92;
+}
