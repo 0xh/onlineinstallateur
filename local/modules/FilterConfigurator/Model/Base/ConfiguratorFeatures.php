@@ -753,7 +753,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO configurator_features (%s) VALUES (%s)',
+            'INSERT INTO filterconfigurator_configurator_features (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

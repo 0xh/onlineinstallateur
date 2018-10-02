@@ -18,7 +18,7 @@ use Propel\Runtime\Exception\PropelException;
 use Thelia\Model\Category;
 
 /**
- * Base class that represents a query for the 'configurator' table.
+ * Base class that represents a query for the 'filterconfigurator_configurator' table.
  *
  * 
  *
@@ -160,7 +160,7 @@ abstract class ConfiguratorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CATEGORY_ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM configurator WHERE ID = :p0';
+        $sql = 'SELECT ID, CATEGORY_ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM filterconfigurator_configurator WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -812,7 +812,7 @@ abstract class ConfiguratorQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the configurator table.
+     * Deletes all rows from the filterconfigurator_configurator table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
