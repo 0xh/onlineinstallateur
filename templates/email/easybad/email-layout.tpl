@@ -393,7 +393,7 @@ body,#bodyTable{
                                                     {if $image == null}
                                                         {$image = {image file='assets/img/logo.gif' failsafe=true}}
                                                     {/if}
-                                                    <img src="{$image}" alt="{$company_name}" border="0" style="border: 0px none;border-color: ;border-style: none;border-width: 0px;height: 75px;width: 135px;margin: 0;padding: 0;line-height: 100%;outline: none;text-decoration: none;" width="135" height="75">
+                                                    <img src="{$image}" alt="{$company_name}" border="0" style="border: 0px none;border-color: ;border-style: none;border-width: 0px;height: 46px;width: 207px;margin: 0;padding: 0;line-height: 100%;outline: none;text-decoration: none;" width="135" height="75">
                                                 </td>
                                             </tr>
                                         </table>

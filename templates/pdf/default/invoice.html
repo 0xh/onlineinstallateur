@@ -17,46 +17,36 @@
         color:#666;
         margin: .5em 0;
     }
-
     h1 {
         font-size: 40px;
     }
-
     h2 {
         font-size: 16px;
     }
-
     h3 {
         font-size: 14px;
     }
-
     h4 {
         color:#58585a;
         font-size: 12px;
     }
-
     p, td {
         color:#58585a;
         font-size: 9px;
     }
-
     p {
         margin: .5em 0;
     }
-
     span {
         font-size: 9px;
     }
-
     table {
         border-collapse: collapse;
         width: 100%;
     }
-
     tr {
         width: 100%;
     }
-
     td {
         vertical-align: top;
     }
@@ -75,22 +65,17 @@
         margin-bottom: 15px;
         
     }
-
     .table-info h3 span {
         font-size: 12px;
         color: #666;
     }
-
     .table-1 td {
         background: #f1f3f4;
         border:solid 1px #bcbdc0;
     }
-
     .table-2 td {
         border:solid 1px #bcbdc0;
     }
-
-
     .table-3-1, .table-3-2 {
         border: solid 1px #bcbdc0;
     }
@@ -101,15 +86,12 @@
         font-size: 9px;
         color: #747475;
     }
-
     .table-3-module h3 {
         margin-top: 1.5em;
     }
-
     .table-3-module span {
         font-size: 11px;
     }
-
     .align-left {
         text-align: left;
     }
@@ -119,12 +101,10 @@
     .align-right{
         text-align: right;
     }
-
     .clear {
         padding: 0.5%;
         border-bottom:solid 1px #dddddd;
     }
-
     .clear-none {
         padding: 0.5%;
     }
@@ -132,317 +112,272 @@
         position:absolute;
         bottom:50px;
         left:20px
-
     }
-	
 	{hook name="invoice.css"}
-
 </style>
 {/literal}
 
-<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="30mm" style="position:relative; padding:20px;">
-    
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="30mm" style="position:relative; padding:20px;"> 
     <page_header>
-		{hook name="invoice.header" order=$order_id}
-        
+		{hook name="invoice.header" order=$order_id}       
     </page_header>
- 
     <page_footer style="padding:20px">
 		{hook name="invoice.footer-top" order=$order_id}
-       <!--table style="padding:20px; margin:5px">
-            <tr>
-                <td><h2>Danke für Ihre Bestellung</h2></td>
-           </tr>
-           <tr>
-                <td>Erste BANK Sparkasse <br>IBAN: AT26 2011 1291 5791 1800<br> BIC:GIBAATWWXXX</td>
-                <td>HAUSFABRIK<br>Marke der Nwing-Networking GmbH <br>UID: ATU64598867<br> FN: 326758 b </td>
-            </tr>
-        </table-->
-       
         <hr style="border:solid  #86AC34 1px;">
         <table style="font-size:11px; padding:10px">
             <tr>
-    <td style="width:25%">
-        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
-        {config key="nwing"}<br/>
-        {config key="store_address1"}<br/>
-        {config key="store_zipcode"}, {config key="store_city"}<br />
-        {if {config key="store_country"}}
-            {loop type="country" name="store_country" id={config key="store_country"}}
-                {$TITLE}
-            {/loop}
-        {/if} 
-    </td>
-                
-    <td style="width:25%">
-        Tel.{config key="store_phone"}<br>
-        {config key="store_email"}<br/>
-        {config key="url_site"}<br />
-    </td>
-
-    <td style="width:25%">
-        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
-        IBAN: {config key="iban"}<br>
-        BIC: {config key="bic"}<br />
-        UID-Nr: {config key="uid-nr"}<br />
-        FN: {config key="fn"}<br />
-    </td>
-    <td style="width:25%">
-          Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
-    </td>
-                
-    </tr>
-    
-</table>
-
-
-
-      
+                <td style="width:25%">
+                    <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
+                    {config key="nwing"}<br/>
+                    {config key="store_address1"}<br/>
+                    {config key="store_zipcode"}, {config key="store_city"}<br />
+                    {if {config key="store_country"}}
+                        {loop type="country" name="store_country" id={config key="store_country"}}
+                            {$TITLE}
+                        {/loop}
+                    {/if} 
+                </td>
+                <td style="width:25%">
+                    Tel.{config key="store_phone"}<br>
+                    {config key="store_email"}<br/>
+                    {config key="url_site"}<br />
+                </td>
+                <td style="width:25%">
+                    <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
+                    IBAN: {config key="iban"}<br>
+                    BIC: {config key="bic"}<br />
+                    UID-Nr: {config key="uid-nr"}<br />
+                    FN: {config key="fn"}<br />
+                </td>
+                <td style="width:25%">
+                      Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
+                </td>
+            </tr>   
+        </table>     
 		{hook name="invoice.footer-bottom" order=$order_id}
     </page_footer>
 
     {$taxes = []}
-
     {loop name="order.invoice" type="order" id=$order_id customer="*"}
-
-	{hook name="invoice.after-information" order=$order_id}
-
-    <table class="table-address">
-        <col style="width: 60%; padding: 3mm;padding-left:10mm" />
-        <col style="width: 40%; padding: 3mm;" />
-
-        
-
-        <tr>
-           <td>
-               <h1>{intl l="INVOICE"}</h1>
-           </td>
+        {hook name="invoice.after-information" order=$order_id}
+        <table class="table-address">
+            <col style="width: 60%; padding: 3mm;padding-left:10mm" />
+            <col style="width: 40%; padding: 3mm;" />
+            <tr>
+                <td>
+                    <h1>{intl l="INVOICE"}</h1>
+                </td>
                 <td style="text-align:right">
-
-			<img src="{image file='assets/img/logo.png'}" style="width:150px;"><br>
-         
-            Marke der Nwing-network GmbH<br>
-            Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
-            Tel: 0800 / 022573 <br>
-            Email: {config key="store_email"}
-        </td>
-        </tr>
-        <tr>
-             <td style="border-left: solid 1mm #86ac34;">
-                <h3>{intl l="Invoice address"}</h3>
-                {format_address order_address=$INVOICE_ADDRESS locale=$locale}
-            </td>
-            <td style="border-left: solid 1mm #86ac34;" >
-                <h3>{intl l="Delivery address"}</h3>
-				{ifhook rel="invoice.delivery-address"}
-                    {* delivery module can customize the delivery address *}
-                    {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
-                {/ifhook}
-                {elsehook rel="invoice.delivery-address"}                
-				    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
-               	{/elsehook}
-            </td>
-           
-        </tr>
-    </table>
+                    <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAQQAAACNCAYAAABRwASuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzkzQkE4QUEzMjRDMTFFNjgyODA5OUY2NDFCNTZGNjMiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzkzQkE4QTkzMjRDMTFFNjgyODA5OUY2NDFCNTZGNjMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjZBM0EzQTA1MEJEMzExRTY4MEU5QjREMzEyNTY4MUY1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjZBM0EzQTA2MEJEMzExRTY4MEU5QjREMzEyNTY4MUY1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+fvCu0QAAGvZJREFUeNrsXQeYHNWRrkm7OzMbtbtakQyYIAMiJ2PgzBHO2ARjYaI5jE024T7fZ2OfOYLts/HhO9/BWWCCDcYYhCQyWJw5cpBABKGcc1itpF1Ju9Jqw8zc+19Xs8N4UvdMz3TP1P999fXuTPd09wv/q6pXr54vkUiQQCAQAH4pAoFAIIQgEAiEEAQCgRCCQCAQQhAIBEIIAoFACEEgEAghCAQCIQSBQCCEIBAIhBAEAoEQgkAgEEIQCARCCAKBQAhBIBAIIQgEAiEEgUAghCAQCIQQBAKBdxBM9+GF48/yxMPv3BqkXY/spX1P20wD24JSm+XBMUqWKOmWosgPoXCcejtraP6z7eRT//sC5clrOvGp50VDEBQd1yn5oRSDNQRCCfIpNnBbimMhBEGh6FDyYyUnSFHkB58/Qf1bghQf8ilSSAghCCoGrUqO478fVdIkRZIHIQQTtGVFHQ31+xU5iIYgqCxzoZH/3lPJBCmS7MA2KP5AQvsR3LglihCCwC4OVvLTlM++peR8KZrsvoOdylyAUzFYmxBCEFQEWpRMyfDd7VI8WTqcMheGdgRo+8YaCtTGhRAEnscYJW8q2T/D9wcouV6KKYP/wJ/QvgNy6Q6KQggCKzhKyUwl43Kcd6O0rfSAmbBlRZgGeoPalyCEIPBkO1Zyh5IZZEwz5sJ+Ss6VYkvRDhQBDO7w07Z1tRSsi4mGIPAcdiXDcbiJjFgDK7hQiu+z0BGKigz61rvToWgyv0CQjLCSM5V8V8npBfzO8WTEJWyVIuXRN5igHmUuDPUHKBQZcuW0oxCCAKhVcqqSC5R8nUZiCwoBTIsvKZkqxWuYC0PbA1pDCIZjriQDIQQBwo0vUTJeSbsDv/95KWLSMwo10Rh1L4vQ9q6QMhfirn1UIYTqA6YNv63kcjKcf05iHyluaAeKE+I+6pxZT7FBv2ujFIUQqguHKbmZDO+/r0T3bKz6Uod2UD9MmxdHlIYQppqGYdeSgRBCdQAxA//FPoJSI17thY/FS4mY0g5m1eujXszkYkKQacfKxSgljyiZXSYyAKo6aQo0gdrGYa0Z9EA7UJqCm8lANITKBRYY/V5JfZmfY1E1VwKmGWNDPlo/s0GTA3wJbicE0RAqD/cqecIFZADMq1rtQBlLkVHDtO7DRtq8KEK1DTHXk4FoCJUF1OXUMpoHqVioZHq1kkG4ZZi2rKyj1dOalKkQM9y4HiAE0RAqhwxedREZAJOrtTICNTAV/LT89Ra9diFYF/cEGXhfQ1CFHAjGyW/aZr6qJQR0vhNd9DxDSv5QWcO+MXzWRHKM9uq72oZhWvryKNq0KEz1o4e0xuClkcWzgNMGy0h1broAeargi4jblJzjsmf6tZLlFcMFqvOHojHyK0LYtraWepbX0Y5MCU58Bl9sXVOrzYZEwlvv6mlCgCq2dXUt9feEVOEP0fDOqrOAsFbgdpc901wlt1SKLwBtrLY+Rju6Q7TuowbtJIzHfMasgS+zNgECQbo0IYQSQwd+eK3Ui4dfuvCZrqQKCEjSWkEkTvFhHy17rYW65tWrgSeoIw1D/vx/w3Nat9dNBiSs3LamTlVezDOOmyLhbCVfdtkzIf5hWiUULkZ37Juw8Pk2WvrKKKV9+ijcPKzNhkqG5zUEvcZ8WZh2P3Yb1SmbDYyeXpUwVDksQdW+Bu87IK9x2fN8U8mTldIxQAh9XSHauraWIm1DOt1ZNSiinicELCvt21BD859u104exIunA/wLDbsM0G5Hb6Ph/oDXKxcJTk93ybN0kZFQZUYldQxj/wQjy1HGQUYIwZ1Gj18N/RsXRA3LNUPdQf3btDBC9bsMUvPndtJgX8DLb/1Vl+g4Lyi5SElfpXUMaJEYYKAZIPxYCMEzNUefzv1mhToHJLDyrWZqPH+Druh4zLMVfXKZ79+j5FoyQqQzAanYxiqZRR5zMoIM4FCE5jmoTEyYD9WC6pmnSxjqHzbIQEV73Al5UJnui459p5LdcpABcCv7FLxHBtG4Pq6e1qwjDrEXoxBCJb4s1L8BY/WZVri9+fYYdfcsw32xlHp3JT9S0p/jXGRcRpbm0Sye8RtAM0A7mffUaOpZUUd1jcNVNXtVVYRgrE+P0aZFEb1Zhl504j3sUWJT7zEyciMi7dr6PM4HGTzOf2PF5ee8UrBYg4CBYsFzbdQ1L0p1TcNUbSEuVRfaZ2gJftq2plbZhnEvVvioEtxjQMk93JmxgWu+YcjXJpGBiWavFCyiXTs/qafO2fUUaR2iakTVEUKCM+B2LYhSf3eIQnWeC6prcPC3MVtwB2sh2Op9tYVrf8Mkkoqo+xsFaW1x/ceNtPLtZh2AVK2oyuXPiE9HOuwNc6M65txjWkLYgd/cyL4BZGT+Cf+fL7D/wrtKvp/h+5DbyQAO5h2bQ7T4pVGUiFFVzSoIIdCI82jDrAYd+ozZBw85jnYU8bfWKLmKOzVmD7ZbvP4yJauUHFei53UEui3Mjho7KkXjVL1LY6o4QQpMBSxWWT29iQI1cS+VxLYi/Aacg5ezafAAWafDw8lYs/CQkpoc5/a6WTuoU+bBhjn1ehVjtc0oCCGk+hKU3bj2g0Y941Db4BmP8sYCroUG8EMmAjsJTLAd/PNKPlLyxTzOh2eu060F6eMkqOs+aNBBav5glbMBVXkKNbMBrP+kXidY8XsjmnmJTS1hIhnxC/+hxOp867msEWC9wpkWrsPsxDJXDghxY/Vi99IwbVllxBskhA+qPKdiwgh57l4SoU3zI57Im6+wlu12Kz4HdGKsOdhs4ToEFN3CfoYpeWoEqVhkg3xKpB0O68Q6K99qMTIfSXZRIQStNrJWgISYWAUZ9MY05Ct5nodNWvZV8qKF38aWbwhL3qDkZ2SEKduFK3d+hiboDxKtfLuJejtrqCYar3rfgRBCkpagp526Q7T8jWadPx9aA2IVUgWf6yXW5eeM/8vjnPeUHEP5RRcC2An6DSUfk5HopFAMWyCukmoH2E1p04IIrf+4gcKjhqo1F2dayL4MDDgYN86LUn3HIEVHp8/PCAdUtHWIwkoGegOZc+o5Dyw7XkyZd29GjgIkXt2Zx28douRuKn72JTzjQveZCjEa2BqkFW82a23Q7XstCiGUCQF2MC57dZSxui1NIxke8Ov49nHndlG0fZD6t4RUgypba3pYyS8yfIeZhFzefRhL2AT2Boee7x7XqcNcryADaISYchQyEJMh4+iBdQ7BcEyvcUBsQqrUNSnNYFuAZk/qUGQQ1KpnGT3TEzJ0emgOj+S4FjtCL3GQDF5S8rLbTMNo+5CON1gzo1HXnZCBEEJOwAzIJJTwaQ0BAU1wQgZr40rKlmtvKxl7MqQiV15DmBJwNu7l4LPdWsqOjhWKqAv4fzCViDr6jKjPGnYZpK65UVo9vVHvl+DzSVsXk6EY7S/u00k3N86P0sIX22ifU7spHvNnzOXoMO4nwwF4StJnH2Q5fzw5nwj1ZipVfkWfsVANwFqELSvqNFnrZczJp/lB6Am9ijE+5KcaRRziSBRCKCqgcq6e1qhnKD5/cg/t2BgqV5bD75IxM2Aui16a4TxEGU5y+FmeoVLsFeEztlTDlDE26sGS5Z6VdTqjNjp8Or+Onl2ojwkZCCE4o6aiMdY1GaHPSNrasne/Xk5dBlJAkNJ5NDLFl2ltAbaJdzIW8z0qznRlVtMAswQY8TURzKrXW63D2QuCQIcnf/bUeEIG4kNwrIEGw0ba97lPjaYtK8MUbi2bo+pVNgcoxXwwcQVrCE4Baxuw87QjWUVgpmFkhy8Am/IsfKGV5k4ZTRuUCeAPxfXn/lDCM1uuCyFUrD/BGLESwz6aPXm0tmERo1CmRvm0kktZW2hK+e56B++LICmENTuSih2qPoKH4COY/2w7zZncrokAOQv0TkoBIQEhBLeRAuxSpSnMmdxBPcsiFGkf1L6FdIIYep26Le6IbfEnMhKVnJT0GTaEPdSh18dCqdMc0wxUR48oMsCOy7MeG0OdM+t1MJGeJaiSnZTEh+BRUkBY82BvkOY/00b7fsWnnY6xwb/lW2wYUzdqWM9UgESgXWA7+yIC4ceNSmrJyI14jAOvjEVSyLX4v06aZGFVTliJOHdKhypLH0VHD2oiFSIQQvAAKRh2LkKeF73Ypqe+0jVcNOxI+5Ae5aJtg9SyV7/eTQrkgE1BTOdZgUheHj22yK/6MBkBTX3OksHQZ8gA2bId0qoEQgjOaQqIaEwkfMZMRJr2G4ok9GxE79oa8vkjtOb9RmrdbweNOayPGncdoKEdAb1mooiBMx1F+p1PlFxNxmyCc2WozQSlGayu045DlIVBBtK+hBA8CgTBZBvlEd0YrDUIAw0eG8d0zaunXQ7vpX1O6SH/gDIjlKZRJFIoNMnpOvZLTHK84EAGrYZmMGdShzavhAxKC3EqllOjSBgLbiKtwzr0dtU7TbRoaquOcQgUL52X3ZyG8D8gE/NupSID7TNYqcjgiQ6947KQgRBC1ZoamEeHoxEmRNecqLFRSHE4YZ2Na94kI93anaUpgCQymNyh8xvqHJdCBkII1csKhgmB3YNWvNVMXfOjVNdSlNWUSy2ej1WUyI2woVRakiaDFYoMpow2NIMGcSCKD0HwqX8B29Zjs9GDL+iklr136h2rC8i7MNPCuf9NmTdcyZvYzEVH2sGarWPzKsWNCyP6fUfIQNqBEILgU/MB0Y9YtbdoahuNO2+DjmlAHgafPX1uOhnrHXJtuvpEoWSAZ0fgEGTz4oieTdF7XmRSTwMJiivCWPVuk5CBEIIgW8eC6bC9q4YWPNdOh126XicCHdzut0MKGLOxCvHGLOcsIGPVZEHPrLdSDyZosSIyLDxCJ8+114G516bhMxAzQQhBkKGDGXkXELaL+fgvnL1JmxOYprSBx3IQwpVUwJZr5tZ4WF8w/1mDDOAXwExJvj4QIQN3QJyKLtcURrYaa6C6FttLBhBM9JcsfoO3CyUDaAII28azIlWZX9YaCCEInAE0hVXTmqlzZoNOCWazo92R5rNuypyoNX8zwZ+gBc+26+AqPV0qEEIQOAeteg+T3jcCoc02nW/QAiakfIb9HTfZYwPSgUPQBOY/BzKIaL+HQAhB4LTpwJ1vYFuQ5j7ZnhTSa9nuRuThkqT/p9glAyzkgj8DOQqwnwV8BiRuACEEQQlJQXXCLavCOppvuN+vU8ZbjGbE7s//yH9jE5c5dskAUYUfPrgbdS8J65WJAiEEQRlIAQlDNi8O08q3m/US6tqmmI5byCRQ6VNIA3EJ1xtdO2P+xcwNpsYInFr6yijauTWoyUFQOZBpRw+SAraa61JqOgKWGncf0NpCupEc5+J7zE4M9gW1qcFqPXwJSHLSqqTHPB8zBcjqRFm2N8Osx5r3GnWWae0zkJkEIQRBmdU6jPoholXvNmcOaVYfIwoQG5SMOaSX2sbu0BrDYG9ABwwpYpikNUQmAnyHzE0gGp3KPJD+d7HZLWYTPLJLtkAIoTq0BHTYUDi3ut67voa2rkaw0E4ac2gfte2/Qzskd24NxCnhi9eqET824NfxA52zourcOr1DVSaiMZLA4N5xiTMQQhC4Cnl49THyQwvoXVdLW1fVUeceO6njkD7qOGi7vh5RhRuUwEkIzQOOy3zSmQsZCCEIPKlOMDE0JBNDmHqWhfW6CORegMmgd0I2iUA6uxCCoEqIoRHEENOrEQHkXBAiEAghVDsx1Mf+5jOBIBMhIJd/u5IXLfwWprCOJ2Mnnx1Fer6jlXQpWVmk38OmIsgENMvm9c1K/o6MrdOKkYYcacouIGPnoz2UqOGaFiuZSsaS5f4Cfx91eBYZ8Qa5dADoCVF+t5kF3vcAbluzi9hWTyRjw5mhpPcIcj0gLHtZEe6Bdn+sksGUsjLndZeTkV6uvwj3OoKMHbZes3n9WL7+fRvXfoHb8vR8CeFBJQdzg12V503Q8B5ScnIBL5mMPfhl/6rkK0X4vQD/FjYXOd3mb+A5JvK7vlDAs7QpmUwjOywhanA1GRmS0SjNaELEC/yAv7eD7yj5d4vXoO6vLLCs3+BO1FYkMsCmM1jCvXuWc1CvF5OxYMsuHlBySB7n3aLk3wp8p98oOYHr3I6OdreSf6CsUSNpcaCSuWSk1T8sX0JIJFVEvojyMVSkRnARH/9eyX48chYC87nqCvgNM7IvUsBvYGu1d/jvXym5S0lnmpHqNiXXsWCz1t/buNeoJGLAaN2SQ0NAGX1cYDl/jTUT8++/FKEthJgM3ueyaOOOAG2hngnsHNb8oFWut6kt76NkhZJvsMZrzuMg6CLGo/JNSn5ORt7J0wrUzgPcHvsLbIvbLWglH/DfN1kxGcyCsBKXOpxUeMXAhUmNYbyNkS4V8SI831DKu1rFLkwGG1ht25LhPDT8M5TszVoNRm3kNLC69sCsx5eVrC2RGXph0t/fKhIhmAPUkgxmCO6BTW4RbPWwTY0yxp2sO4vJBM3nfjKWjP9Eyb1Kri3wnWIFtueYBTL4MMn8SpsDw61rGcC+h5ORvAOd48YK8dncnKT1bMnj/OWs4h3NI5fdRlNfovfrYHNnCptWF+dQ860inOW7yUycUKOPLEE9PqvkGjat3Y5D8yEDNxPCZXz8GavKu7Jvwuu4iJ1S8y1qJVDz+jzwfucn+T5+zn9/s4T3f5yPx5XgXr9IoxG5lQxMjecEypEdy42E0MiEAMcHFt68xJ9/uwIIAebPAFUuruDj60rm8bt+r4T3N026phLcy5ypOtbF9XFEEhkcRyO+K08Rwrl8vIePmOWYpuRSJgsvA/4AOKLaK5AM0PjgoX8k6TPU4X5s8pQCR/Hx4xLcy/QBuDUtzBeTzASU//R8LnIjIVzOxyeSPnuAj9+oEB/CDDLmgSsJ5lTpQ0mf/THlu0KRzSHcxGr8NjJiYZzGQXx834V18SUeRIEjaWRmwTYhFDLLUAhjwvOO4CY4bDYnff4UH6/1eKdZSMbswZ5sDsFjPdbB+5l1Mejwe8E7fxUZMxmvJ33+CZsO15GNZCxZRuVUHMdaQZht+sES1OWP0gxcbtEMTNMA09cfWbnYn4OJG/gYzSGUdCwkEPaiFI3AxFYebWCv7e9xUsAU2WgyohExf45NUhDZiajQH3DjLpbmlkixqTPVH+q5toD7nEnGfPjv0nx3H7/PGQW+CyJW4aBcQ0acwToWzOG/S8YU7Qtcrk4DU46IMH2QCo/qLCaOTdIMzmBNlIpBCOaOwbO5UfXlEJxzlw2tIhVXc+dPV6mmKnpJBajXG8kI2kGAzQ2s0p2i5NfcuFGGz5Ex9VoItifZ1NnqEWo2oiG/WqCZNzHNd08USbtL1naGWCONsVYygwkDxNRJ+UUbpsMAk+de7I84mgVqN6L6EPz0KpsmGIWvcUFbSiSZCe+mMeEsIVNgkjnfi47ZncfogRHuUBa7JsOpZMxj/yqDrfgGjwzwWt9a5kooliMJZtFvWQA4GxGjAAfqWSwIKhpP9qYdzfp9je9Vm0XlR5mvtnGPMUxu6ChL0nyPIKxnuDPtziO8HaBsEN9wXo4B5XdsqqBDf2jxHnh/rMNYnuM8EPdNLmmDA0xW7zBJoj4uU3InGbEr/1IMQjBj0K+k/CPcLmW1PlDgKPNolnNQ2T9l8rDqOPIXQYMpheYwiQUVDick5vOXMtl2Wvy9cFLdrHHomc15+Gyh1fczIVzEnckpwDx5jzWiP7NPyirpgDj/iTWF5E63GxkzYAezOn4f10s5NQPsqXE6D9xxbiMbuYwxm/VjJseJxfIhWHEE1RXgQ2jihgXVb26W80yyuMLGPUxHUyFrLWqSGkgpKhwLaMaxz+HxAtTJsIPP+T0a2VA2E9Bge6nwmIR8BhvY9Fh8NJasB0WhHa5kMsGU6QSWB3kgOoRJ4UDWhsoZpdjNA/dU9qNAS5iXQtSbuN2MK5QQ7KjGhajR4/MYZQAscX2LHTqjLN4jzr6RcQU85wF8XF7CigdBYpv2k8h6EEwiz3q2C6jl+7EGkGvJ+4Nsm5ciivCPSY61YgMzXkfw3/eUkRDMWT2EwGNmYXYawvga/w1na7QYhFAqmCPH5DzONT3Z59m4D6YzWwtg9vFcEQtLXD7P8fEgl5k430npgNlgkv1lJXgu0ynu1JQuTBIsPz6hjFqCuT4F5nOm/B4z2BTHNPdjXiGEA3mk+TPlt5b9aT5eZeNef+KjHYfQ2WRMed5F9lc72sWuJTRV8gX8T/CyL6KRqa5cms5MrreIw8/WkEIMTuAVPu5bpvLHO8Iflstx+gcmL7Tf271ACJclqZT5oJ9V1CNssDMaLuIALuECsmJbmiG5d9p8T0zp3WDzWpPA/uoiQvg6t5/fWrhmQoqJ6OSzAU5GLPaljNSlRoxG8inkApykWNR0G40sDXAtIWCqCNOJr1u4xuycdmIS4JDcxuZDPjYmHDfvMSlgbrerAE3obq4YK2sZsO0aph9/SYYH2S24mo9WNox9ko+XO/hcLWzb72St0ykMJN3PCwAJb+f6OsCthIBEFliwdK/F6zDnCm8wgl2sOjNBPsdz4cDZAi/s59KcB+b9ZyYA2KLIyfBoAe/6n/y8x/Nvwu7eK8v5iLxDWrD/IWMa8mYb93Rq4Q2e+zTWtqxkJ+rhdznJpqqdK5XcEWzfR9i/0etg2zUdy6d7hBA2Jj3rC5Qh5CBTHIKdaccaGyTzfT4+ZuMFJ7D6bmbKsYI53OFw3YUssDffZ+aH886cjdjE93i9CJUCh+hEPl7KsolV2yVc7uhsSPIxhq/5VxpZe28VIYeIwRzh77NxLWza8/k38g2a8TOBn8nXh+mz623Qjo/mOjW1wIk2yipE+WfUWscDxCXcwc60SdZ4djtrLwIpx3zwNvt90P6QVuDUfAkB+QuR5HSDhZshSANTT1aCZ6BuTSV7AR4Y2W9N6jh2GBNRgUexjYUKPYe/g9PwzaQOXMxE5VuYgK7lhnsxd5BkIl1EI3PgPQXcawlfX2xTAybPCiXP27gWWg9maXazcA1GeizfPYVGZjbSaQ8gC8QLrLLxXOiUCCFfYNGcw0A418b9UMdRsp+hHNe3Uv75FCmJxE+kDGnmfAnZk0sgELjEhyAQCIQQBAKBEIJAIBBCEAgEQggCgUAIQSAQCCEIBAIhBIFAIIQgEAiEEAQCgRCCQCAQQhAIBEIIAoFACEEgEAghCAQCgRCCQCAQQhAIBEIIAoFACEEgEFjA/wswAELaQKQs0x9XAAAAAElFTkSuQmCC" style="width:150px;" />
+    			         
+                    Marke der Nwing-network GmbH<br>
+                    Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
+                    Tel: 0800 / 022573 <br>
+                    Email: {config key="store_email"}
+                </td>
+            </tr>
+            <tr>
+                 <td style="border-left: solid 1mm #86ac34;">
+                    <h3>{intl l="Invoice address"}</h3>
+                    {format_address order_address=$INVOICE_ADDRESS locale=$locale}
+                </td>
+                <td style="border-left: solid 1mm #86ac34;" >
+                    <h3>{intl l="Delivery address"}</h3>
+    				{ifhook rel="invoice.delivery-address"}
+                        {* delivery module can customize the delivery address *}
+                        {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
+                    {/ifhook}
+                    {elsehook rel="invoice.delivery-address"}                
+    				    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
+                   	{/elsehook}
+                </td>
+            </tr>
+        </table>
     
         <table>
-    <col style="width: 70%;padding: 3mm; padding-top:10mm" />
-    <col style="width: 30%; padding: 3mm;" />
-    <tr>
-        <td>
-   
-            <table class="table-info">
-                <col style="width: 100%; padding: 0mm;" />
-               
-                <tr>
-                    <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
-                </tr>
-                <tr>
-                    <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
-                </tr>
-                <tr>
-                    <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
-                </tr>
-                {hookblock name="invoice.information" order=$order_id fields="title,value"}
-                {forhook rel="invoice.information"}
-                <tr>
-                    <td><h3>{$title} : <span>{$value}</span></h3></td>
-                </tr>
-                {/forhook}
-                {/hookblock}
-            </table>
-        </td>
-
-
-    </tr>
-</table>
-
-    {hook name="invoice.after-addresses" order=$order_id}
-
-    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;padding: 1mm;">
-        <col style="width: 40%; padding: 1mm;" />
-        <col style="width: 12%; padding: 1mm;" />
-        <col style="width: 15%; padding: 1mm;" />
-        <col style="width: 12%; padding: 1mm;" />
-        <col style="width: 7%; padding: 1mm;" />
-        <col style="width: 14%; padding: 1mm;" />
-
-        {loop type="order_product" name="order-products" order=$ID limit=1}
-
-            {if $TAX_RULE_TITLE|strstr:"19"}
-                {assign "VatTitle" "19% Mehrwertsteuer"}
-            {else}
-                {assign "VatTitle" "20% Mehrwertsteuer"}
-            {/if}
-        {/loop}
-        <tr class="table-1">
-            <td><h4>{intl l="Product"}</h4></td>
-            <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
-            <td><h4 class="align-center">{intl l=$VatTitle}</h4></td>
-            <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
-            <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
-            <td style="background:#86ac34"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
-        </tr>
-        {loop type="order_product" name="order-products" order=$ID}
-            {if $WAS_IN_PROMO == 1}
-                {assign "realPrice" $PROMO_PRICE}
-                {assign "realTax" $PROMO_PRICE_TAX}
-                {assign "realTaxedPrice" $TAXED_PROMO_PRICE}
-                {assign "realTotalPrice" $TOTAL_TAXED_PROMO_PRICE}
-            {else}
-                {assign "realPrice" $PRICE}
-                {assign "realTax" $PRICE_TAX}
-                {assign "realTaxedPrice" $TAXED_PRICE}
-                {assign "realTotalPrice" $TOTAL_TAXED_PRICE}
-            {/if}
-
-            {$taxes[{$TAX_RULE_TITLE}][] = $realTax * $QUANTITY}
-
-            <tr class="table-2">
+            <col style="width: 70%;padding: 3mm; padding-top:10mm" />
+            <col style="width: 30%; padding: 3mm;" />
+            <tr>
                 <td>
-                    <p>{$TITLE}</p>
-                    {ifloop rel="combinations"}
-                    {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
-                        {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
-                    {/loop}
-                    {/ifloop}
-                    
-                    {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
-	                        	{assign var="parent_category" value=$PARENT}
-	                        {/loop}
-
-	                        {if $parent_category == 12}
-	                        	{loop type="bookingsservice" name="calendar_appointment" order_id="$order_id" service_id="$PRODUCT_ID"}
-	                        		{if $BOOKING_START_TS == 0}
-	                        			Kein gebuchter Termin
-	                        		{else}
-	                            		Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
-	                            	{/if}
-	                            {/loop}
-	                         {else}
-	                         <p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
-	                         {/if}
+           
+                    <table class="table-info">
+                        <col style="width: 100%; padding: 0mm;" />
+                       
+                        <tr>
+                            <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
+                        </tr>
+                        <tr>
+                            <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
+                        </tr>
+                        <tr>
+                            <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
+                        </tr>
+                        {hookblock name="invoice.information" order=$order_id fields="title,value"}
+                        {forhook rel="invoice.information"}
+                        <tr>
+                            <td><h3>{$title} : <span>{$value}</span></h3></td>
+                        </tr>
+                        {/forhook}
+                        {/hookblock}
+                    </table>
                 </td>
-                <td><p class="align-right">{format_money number=$realPrice currency_id=$CURRENCY}</p></td>
-                <td><p class="align-right">{format_money number=$realTax currency_id=$CURRENCY}</p></td>
-                <td><p class="align-right">{format_money number=$realTaxedPrice currency_id=$CURRENCY}</p></td>
-                <td><p class="align-center">{$QUANTITY}</p></td>
-                <td><p class="align-right">{format_money number=$realTotalPrice currency_id=$CURRENCY}</p></td>
             </tr>
+        </table>
 
-            {hook name="invoice.order-product" order="{$order_id}" order_product="{$ID}"}
-        {/loop}
-    </table>
+        {hook name="invoice.after-addresses" order=$order_id}
 
-{hook name="invoice.after-products" order=$order_id}
+        <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;padding: 1mm;">
+            <col style="width: 40%; padding: 1mm;" />
+            <col style="width: 12%; padding: 1mm;" />
+            <col style="width: 15%; padding: 1mm;" />
+            <col style="width: 12%; padding: 1mm;" />
+            <col style="width: 7%; padding: 1mm;" />
+            <col style="width: 14%; padding: 1mm;" />
 
-    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
+            {loop type="order_product" name="order-products" order=$ID limit=1}
 
-        <tr>
-            <td class="table-3-module" style="width: 50%; padding: 1mm;" >
+                {if $TAX_RULE_TITLE|strstr:"19"}
+                    {assign "VatTitle" "19% Mehrwertsteuer"}
+                {else}
+                    {assign "VatTitle" "20% Mehrwertsteuer"}
+                {/if}
+            {/loop}
+            <tr class="table-1">
+                <td><h4>{intl l="Product"}</h4></td>
+                <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
+                <td><h4 class="align-center">{intl l=$VatTitle}</h4></td>
+                <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
+                <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
+                <td style="background:#86ac34"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
+            </tr>
+            {loop type="order_product" name="order-products" order=$ID}
+                {if $WAS_IN_PROMO == 1}
+                    {assign "realPrice" $PROMO_PRICE}
+                    {assign "realTax" $PROMO_PRICE_TAX}
+                    {assign "realTaxedPrice" $TAXED_PROMO_PRICE}
+                    {assign "realTotalPrice" $TOTAL_TAXED_PROMO_PRICE}
+                {else}
+                    {assign "realPrice" $PRICE}
+                    {assign "realTax" $PRICE_TAX}
+                    {assign "realTaxedPrice" $TAXED_PRICE}
+                    {assign "realTotalPrice" $TOTAL_TAXED_PRICE}
+                {/if}
 
-                <h3>{intl l="Payment module"}</h3>
-                <p>
-                    <span>{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span>
-                </p>
+                {$taxes[{$TAX_RULE_TITLE}][] = $realTax * $QUANTITY}
 
-                {hook name="invoice.after-payment-module" order=$order_id module_id=$PAYMENT_MODULE}
+                <tr class="table-2">
+                    <td>
+                        <p>{$TITLE}</p>
+                        {ifloop rel="combinations"}
+                        {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
+                            {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
+                        {/loop}
+                        {/ifloop}
+                        
+                        {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
+    	                        	{assign var="parent_category" value=$PARENT}
+    	                        {/loop}
 
+    	                        {if $parent_category == 12}
+    	                        	{loop type="bookingsservice" name="calendar_appointment" order_id="$order_id" service_id="$PRODUCT_ID"}
+    	                        		{if $BOOKING_START_TS == 0}
+    	                        			Kein gebuchter Termin
+    	                        		{else}
+    	                            		Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
+    	                            	{/if}
+    	                            {/loop}
+    	                         {else}
+    	                         <p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
+    	                       {/if}
+                    </td>
+                    <td><p class="align-right">{format_money number=$realPrice currency_id=$CURRENCY}</p></td>
+                    <td><p class="align-right">{format_money number=$realTax currency_id=$CURRENCY}</p></td>
+                    <td><p class="align-right">{format_money number=$realTaxedPrice currency_id=$CURRENCY}</p></td>
+                    <td><p class="align-center">{$QUANTITY}</p></td>
+                    <td><p class="align-right">{format_money number=$realTotalPrice currency_id=$CURRENCY}</p></td>
+                </tr>
 
-                <h3>{intl l="Delivery module"}</h3>
-                <p>
-	                <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
-	            </p>
+                {hook name="invoice.order-product" order="{$order_id}" order_product="{$ID}"}
+            {/loop}
+        </table>
 
-                
-                {hook name="invoice.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
+        {hook name="invoice.after-products" order=$order_id}
 
-            </td>
-            <td style="width: 50%; " >
-                <table class="table-3">
-                    <col style="width: 50%; padding: 1mm;">
-                    <col style="width: 50%; padding: 1mm;">
-                    {if $DISCOUNT!=0}
-                    <tr>
-                        <td class="table-3-1"><p>{intl l="Discount"}</p></td>
-                        <td class="table-3-1 align-right"><p>{format_money number=$DISCOUNT currency_id=$CURRENCY}</p></td>
-                    </tr>
-                    {/if}
-                    <tr>
-                        <td class="table-3-1"><p>{intl l="Gesamtpreis exkl. Mehrwertsteuer"}</p></td>
-                        <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_AMOUNT - $POSTAGE_UNTAXED} currency_id=$CURRENCY}</p></td>
-                    </tr>
-                    {strip}
-                        {capture name="tax"}
-                            {foreach $taxes as $name=>$prices}
-                                {assign var="_price_taxe_" value="0"}
-                                {foreach $prices as $price}
-                                    {$_price_taxe_= $_price_taxe_ + $price}
+        <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
+            <tr>
+                <td class="table-3-module" style="width: 50%; padding: 1mm;" >
+                    <h3>{intl l="Payment module"}</h3>
+                    <p>
+                        <span>{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span>
+                    </p>
+                    {hook name="invoice.after-payment-module" order=$order_id module_id=$PAYMENT_MODULE}
+                    <h3>{intl l="Delivery module"}</h3>
+                    <p>
+    	                <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
+    	            </p>                  
+                    {hook name="invoice.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
+                </td>
+                <td style="width: 50%; " >
+                    <table class="table-3">
+                        <col style="width: 50%; padding: 1mm;">
+                        <col style="width: 50%; padding: 1mm;">
+                        {if $DISCOUNT!=0}
+                        <tr>
+                            <td class="table-3-1"><p>{intl l="Discount"}</p></td>
+                            <td class="table-3-1 align-right"><p>{format_money number=$DISCOUNT currency_id=$CURRENCY}</p></td>
+                        </tr>
+                        {/if}
+                        <tr>
+                            <td class="table-3-1"><p>{intl l="Gesamtpreis exkl. Mehrwertsteuer"}</p></td>
+                            <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_AMOUNT - $POSTAGE_UNTAXED} currency_id=$CURRENCY}</p></td>
+                        </tr>
+                        {strip}
+                            {capture name="tax"}
+                                {foreach $taxes as $name=>$prices}
+                                    {assign var="_price_taxe_" value="0"}
+                                    {foreach $prices as $price}
+                                        {$_price_taxe_= $_price_taxe_ + $price}
+                                    {/foreach}
+                                    {if $_price_taxe_ != 0}
+                                    <!--tr>
+                                        <td class="table-3-2"><p>{$name}</p></td>
+                                        <td class="table-3-2 align-right"><p>{format_money number=$_price_taxe_ currency_id=$CURRENCY}</p></td>
+                                    </tr-->
+                                    {/if}
                                 {/foreach}
-                                {if $_price_taxe_ != 0}
-                                <!--tr>
-                                    <td class="table-3-2"><p>{$name}</p></td>
-                                    <td class="table-3-2 align-right"><p>{format_money number=$_price_taxe_ currency_id=$CURRENCY}</p></td>
-                                </tr-->
+                                {if $POSTAGE_TAX != 0}
+                                <tr>
+                                    <td class="table-3-2"><p>{intl l="Postage"}<br>{$POSTAGE_TAX_RULE_TITLE}</p></td>
+                                    <td class="table-3-2 align-right"><p>{format_money number=$POSTAGE_TAX currency_id=$CURRENCY}</p></td>
+                                </tr>
                                 {/if}
-                            {/foreach}
-                            {if $POSTAGE_TAX != 0}
-                            <tr>
-                                <td class="table-3-2"><p>{intl l="Postage"}<br>{$POSTAGE_TAX_RULE_TITLE}</p></td>
-                                <td class="table-3-2 align-right"><p>{format_money number=$POSTAGE_TAX currency_id=$CURRENCY}</p></td>
-                            </tr>
-                            {/if}
-                        {/capture}
-                    {/strip}
-                    {if $smarty.capture.tax ne ""}
-                    <tr>
-                        <td class="table-3-1"><p>{intl l=$VatTitle}</p></td>
-                        <td class="table-3-1 align-right"><p>{format_money number=$TOTAL_TAX currency_id=$CURRENCY}</p></td>
-                    </tr>
-                    {$smarty.capture.tax nofilter}
-                    {/if}
-                    <!--tr>
-                        <td class="table-3-1"><p>{intl l="Total with tax"}</p></td>
-                        <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_TAXED_AMOUNT - $POSTAGE} currency_id=$CURRENCY}</p></td>
-                    </tr-->
-                    {if $POSTAGE!=0}
-                    <tr>
-                        <td class="table-3-1"><p>{intl l="Postage"}</p></td>
-                        <td class="table-3-1 align-right"><p>{format_money number=$POSTAGE currency_id=$CURRENCY}</p></td>
-                    </tr>
-                    {/if}
-                    <tr>
-                        <td class="table-3-1" style="background:#86ac34;"><h3 style="color:white;">{intl l="Gesamtbetrag"}</h3></td>
-                        <td class="table-3-1 align-right" style="background:#86ac34;"><h3 style="color:white;">{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</h3></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-    
-
-{hook name="invoice.after-summary" order=$order_id}
-
-{/loop}
+                            {/capture}
+                        {/strip}
+                        {if $smarty.capture.tax ne ""}
+                        <tr>
+                            <td class="table-3-1"><p>{intl l=$VatTitle}</p></td>
+                            <td class="table-3-1 align-right"><p>{format_money number=$TOTAL_TAX currency_id=$CURRENCY}</p></td>
+                        </tr>
+                        {$smarty.capture.tax nofilter}
+                        {/if}
+                        <!--tr>
+                            <td class="table-3-1"><p>{intl l="Total with tax"}</p></td>
+                            <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_TAXED_AMOUNT - $POSTAGE} currency_id=$CURRENCY}</p></td>
+                        </tr-->
+                        {if $POSTAGE!=0}
+                        <tr>
+                            <td class="table-3-1"><p>{intl l="Postage"}</p></td>
+                            <td class="table-3-1 align-right"><p>{format_money number=$POSTAGE currency_id=$CURRENCY}</p></td>
+                        </tr>
+                        {/if}
+                        <tr>
+                            <td class="table-3-1" style="background:#86ac34;"><h3 style="color:white;">{intl l="Gesamtbetrag"}</h3></td>
+                            <td class="table-3-1 align-right" style="background:#86ac34;"><h3 style="color:white;">{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</h3></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        {hook name="invoice.after-summary" order=$order_id}
+    {/loop}
 </page>
