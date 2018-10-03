@@ -3,6 +3,8 @@
 namespace SepaImporter\Import;
 
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use RevenueDashboard\Model\Base\WholesalePartnerProduct;
+use SepaImporter\Model\SepaimporterBrandMapping;
 use SepaImporter\Model\SepaimporterBrandMappingQuery;
 use Thelia\Core\Event\Product\ProductCreateEvent;
 use Thelia\Core\Event\Product\ProductUpdateEvent;
@@ -11,6 +13,8 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
+use Thelia\Model\Base\ProductSaleElementsQuery;
+use Thelia\Model\BrandQuery;
 
 /* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
@@ -58,6 +62,12 @@ class XMLImporter extends AbstractImport
     {
         $errors = null;
 
+        //PRODUCT CREATE EVENT care introduce produsul prima data in DB, ca si stand-alone product.
+        //Aici daca vrem sa facem update probabil ar trebui si-un loop pe products care sa vada daca exista in lista iar daca nu exista, sa le puna offline
+        //Aici ar fi buna o legatura/tabela sa vedem care produs vine de la care vendor asa ca sa facem un Querry pe toate product_id-urile din tabela aia
+        //care sa puna produsele offline daca nu exista in xml-ul current.
+        //Nu stiu exact cum sa fac iteratia 1:1 inca dar stiu ca trebuie extra tabele sa tinem informatia cu de unde vine produsul.
+
         $productQuerry   = ProductQuery::create();
         $productQuerry->clear();
 //        $productExists = count($productQuerry->findByRef($this->rowHasField($row, "megabildnr")));
@@ -83,7 +93,11 @@ class XMLImporter extends AbstractImport
 
 
         $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
-
+//         } else
+//            {
+//
+//         }
+        //AICI SE TERMINA IF-ul cu IF PRODUCT EXISTS CA DUPAIA TOT CE-I DUPA SA FIE EVENT TRIGGERED SI SA-SI DEA UPDATE.
 
         Tlog::getInstance()->err("Dupa create event.");
 
@@ -97,13 +111,22 @@ class XMLImporter extends AbstractImport
 
         $product_id = $product->getId();
 
+        //Product Update Event pentru description si poate altele daca o sa mai fie nevoie
         $updateEvent = new ProductUpdateEvent($product_id);
 
+        //Din pacate nu toate au asta deci trebuie sa vedem cum facem, indiferent de algere, as prefera o metoda prin care fetch-uim descrierea de undeva si o punem
+        //intr-o structura ca aia pe care o facusem eu dinamica in excel, banuisc ca cu un pic de timp si de ajutor as putea sa o replicate-uiesc si in PHP ceea ce ar
+        //insemna ca basically o sa pot sa fac o descriere cu toate elementele de UX, gen title bolduit, produktmerkale cu bullet points, eu zic ca orice proces dezvoltam
+        //pentru import ar trebui sa fie asa facut, ne-ar scuti de multa munca pe long-term.
         $updateEvent->setDescription(($this->rowHasField($row, "ausschreibungstext")));
 
         Tlog::getInstance()->err("Dupa set descrip");
 
-        $productPse = \Thelia\Model\Base\ProductSaleElementsQuery::create()
+
+        //Product PSE update pentru PSE table content (inclusiv price chiar daca-i tehnic tablea diferita, aici exista eventul pt ea)+EAN
+        //Daca inteleg cum functioneaza si ii truly un update event, ar trebui sa update-uiasca elementele nu sa creeze unele noi, atunci asta ar rezolva problema cu
+        //price-updates, tot timpul cand s-ar face cron job-ul de rulat XML-ul
+        $productPse = ProductSaleElementsQuery::create()
          ->filterByProductId($product_id)
          ->withColumn('product_sale_elements.id', 'pse_id')
          ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
@@ -127,117 +150,154 @@ class XMLImporter extends AbstractImport
 
         Tlog::getInstance()->err("Dupa PSE");
 
+        //REVENUE DASHBOARD -- ii foarte complex facut dar nu-i folosit deloc deci ar trebui populat
+
+        $revenueDash = WholesalePartnerProduct::create();
+        $revenueDash->setPrice();
+
+
+
+
+
+        /* how to determine Source Name? Hardcoded in importer until we have more than 1 supplier? and then add a general hint/feature/info to the importer when importing
+         * a dropdown meniu in the template for example where you select an option and pass it as a method argument or adding a  certain tag inside the XML but then we would
+         * need to require that from every supplier.
+         */
         $eventBrand = $this->rowHasField($row, "lieferantennam");
 
         $brand_new = SepaimporterBrandMappingQuery::create()
          ->findOneBySourceBrandName($eventBrand);
 
+        $brand_old = SepaimporterBrandMappingQuery::create()
+         ->findOneBySourceBrandName($eventBrand)
+         ->getId();
+
+        $source        = "mysht";
+        $productQuerry = ProductQuery::create();
+
+        $productForBrand = $productQuerry
+         ->findOneByRef($this->rowHasField($row, "megabildnr"));
+
+        if (!$brand_new) {
+            $brandAdd = new SepaimporterBrandMapping();
+            $brandAdd->setSourceBrandName($eventBrand)
+             ->setSourceName($source);
+        } else {
+            $brand = BrandQuery::create()->findOneById($brand_old);
+            $productForBrand->setBrand($brand);
+        }
+        //Cum vad eu aici ar fi ideal sa mai fie inca o coloana in tabla cu perscurtarea, care sa fie dupaia bagata cu werknummer care practic dupaia sa determine reful
+        //dupa ce-i determinata prescurtarea din tablea, practic o sa se ia werknummerul din xml, se face join cu prescurtarea, se verifica daca exista la noi deja si
+        //in principiu asta ar fi un check destul de bun pentru a verifica daca exista produse. In functie de scala la care urcam, ar fi ideal sa putem sa avem o structura
+        //in DB cat mai ok dpdv modularitate, deci la new vendors sa
+
+
         Tlog::getInstance()->err("Dupa set brand!");
-//        } else
-            {
-//            $errors .= "Product reference number " . $ref . " is already in the database ";
-//            $log->debug(" ref number already in the database '" . $ref . "'");
-            }
 
-
-
-        $this->refSearch = $createEvent->getRef();
-
-        if (substr($ref, 0, strlen($this->hanH)) === $this->hanH) {
-            $this->convertRefToHanHRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->han)) === $this->han) {
-            $this->convertRefToHanRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->gro)) === $this->gro) {
-            $this->convertRefToGroRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->lau)) === $this->lau) {
-            $this->convertRefToLauRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->upo)) === $this->upo) {
-            $this->convertRefToUpoRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->klu)) === $this->klu) {
-            $this->convertRefToKluRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->dan)) === $this->dan) {
-            $this->convertRefToDanRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->honvtl)) === $this->honvtl) {
-            $this->convertRefToHonvtlRef($ref);
-        }
-
-        if (substr($ref, 0, strlen($this->vai)) === $this->vai) {
-            $this->convertRefToVaiRef($ref);
-        }
-
-        return $errors;
-    }
-
-    protected function convertRefToHanHRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->hanH, "HAN");
-        $ref             = $this->addZeroToRef($ref);
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToHanRef($ref)
-    {
-        $ref             = $this->addZeroToRef($ref);
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToGroRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->gro, "GRO");
-        $ref             = $this->addZeroToRef($ref);
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToLauRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->lau, "LAU");
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToUpoRef($ref)
-    {
-//        $ref = $this->replaceRef($ref, $this->upo, "UPO");
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToKluRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->klu, "KLU");
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToDanRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->dan, "DAN");
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToHonvtlRef($ref)
-    {
-//        $ref = $this->replaceRef($ref, $this->honvtl, "HONVTL");
-        $this->refSearch = $ref;
-    }
-
-    protected function convertRefToVaiRef($ref)
-    {
-        $ref             = $this->replaceRef($ref, $this->vai, "VAI");
-        $this->refSearch = $ref;
-    }
-
+        //Category
+        //La category daca am primi de la ei o structura de categorii cu nume si Id-uri (Warengruppe/WarrengruppeText) am putea sa incercam sa facem ceva sort of mapping
+        //nu stiu cum s-ar face in php dar eventual un regex facut care sa faca matching intre ele, problema ar fi cand ar aparea noi vendori. Categorile mi se
+        //par problematice pentru ca basically fiecare vendor foloseste ce vrea, cum vrea, ceea ce inseamna ca noi ar trebui sa avem mapping pe toti vendorii mari
+        //partea buna ii ca dupa ce gasim o logica pe care sa o facem, fie ca e pe baza EAN-ului sau Werk-nr-ului comparat cu o alta platforma, gen amazon
+        //ceva solutii de automatizare ar trebui sa se poata face numa ca trebui sa vedem exact ce ar merita si ce nu, dpdv timp si cum s-ar putea face ca eu nu am
+        //knowledge-ul asa de vast.
+//
+//        $this->refSearch = $createEvent->getRef();
+//
+//        if (substr($ref, 0, strlen($this->hanH)) === $this->hanH) {
+//            $this->convertRefToHanHRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->han)) === $this->han) {
+//            $this->convertRefToHanRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->gro)) === $this->gro) {
+//            $this->convertRefToGroRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->lau)) === $this->lau) {
+//            $this->convertRefToLauRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->upo)) === $this->upo) {
+//            $this->convertRefToUpoRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->klu)) === $this->klu) {
+//            $this->convertRefToKluRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->dan)) === $this->dan) {
+//            $this->convertRefToDanRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->honvtl)) === $this->honvtl) {
+//            $this->convertRefToHonvtlRef($ref);
+//        }
+//
+//        if (substr($ref, 0, strlen($this->vai)) === $this->vai) {
+//            $this->convertRefToVaiRef($ref);
+//        }
+//
+//        return $errors;
+//    }
+//
+//    protected function convertRefToHanHRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->hanH, "HAN");
+//        $ref             = $this->addZeroToRef($ref);
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToHanRef($ref)
+//    {
+//        $ref             = $this->addZeroToRef($ref);
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToGroRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->gro, "GRO");
+//        $ref             = $this->addZeroToRef($ref);
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToLauRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->lau, "LAU");
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToUpoRef($ref)
+//    {
+////        $ref = $this->replaceRef($ref, $this->upo, "UPO");
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToKluRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->klu, "KLU");
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToDanRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->dan, "DAN");
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToHonvtlRef($ref)
+//    {
+////        $ref = $this->replaceRef($ref, $this->honvtl, "HONVTL");
+//        $this->refSearch = $ref;
+//    }
+//
+//    protected function convertRefToVaiRef($ref)
+//    {
+//        $ref             = $this->replaceRef($ref, $this->vai, "VAI");
+//        $this->refSearch = $ref;
+//    }
 //
 //
 //
@@ -842,4 +902,6 @@ class XMLImporter extends AbstractImport
 //            }
 //        }
 //
+    }
+
 }
