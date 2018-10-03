@@ -206,6 +206,7 @@ class ElasticConnection
 
     public function fullTextSearch($text = null, $start, $end, $limit, $order = null)
     {
+        $text = strtolower($text);
         $objElasticConnection       = new ElasticConnection();
         $objElasticSearchConnection = $objElasticConnection::getConnection();
         switch ($order) {
