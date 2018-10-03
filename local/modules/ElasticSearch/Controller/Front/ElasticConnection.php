@@ -230,17 +230,21 @@ class ElasticConnection
                 ],
                  "from" : "' . $start . '","size":"' . $limit . '",
                  "query": ' . $this->querySearchJson($text) . '
+
                 }';
                 break;
             case 'min_price':
                 $field    = "product_taxed_price";
                 $order_by = "asc";
+                
                 $json     = '{
                     "sort" : [
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
+                     "query":  ' . $this->querySearchJson($text) . '
                  }';
+                
                 break;
             case 'max_price':
                 $field    = "product_taxed_price";
@@ -251,7 +255,6 @@ class ElasticConnection
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
                      "query":  ' . $this->querySearchJson($text) . '
-
                 }';
                 break;
             default:
@@ -317,6 +320,58 @@ class ElasticConnection
         }
 
         
+    public function querySearchJson($text)
+    {
+        return '{
+                "bool": {
+                  "should": [
+                    {
+                      "regexp": {
+                        "product_title": {
+                          "value": ".*' . $text . '+*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "product_description": {
+                          "value": ".*' . $text . '.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "brand_name": {
+                          "value": ".*' . $text . '.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "category_name": {
+                          "value": ".*' . $text . '.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "feature_title": {
+                          "value": ".*' . $text . '.*"
+                        }
+                      }
+                    },
+                    {
+                      "regexp": {
+                        "feature_desc": {
+                          "value": ".*' . $text . '.*"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }';
+    }
+
     public function querySearchJson($text)
     {
         return '{
