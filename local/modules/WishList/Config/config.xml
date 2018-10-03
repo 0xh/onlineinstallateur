@@ -26,9 +26,10 @@
     </services>
     
     <hooks>
-        <hook id="hookwish.hook.front">
+        <hook id="hookwish.hook.front" class="WishList\Hook\FrontHook">
             <tag name="hook.event_listener" event="main.navbar-secondary" templates="mini-wish-list.html"/>
             <tag name="hook.event_listener" event="wish-list.wish-button" templates="wish-button.html"/>
+            <tag name="hook.event_listener" event="main.content-top" type="front" method="onMainCss" />
         </hook>
     </hooks>
 </config>

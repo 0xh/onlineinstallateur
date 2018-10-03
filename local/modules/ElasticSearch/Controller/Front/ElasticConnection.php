@@ -317,8 +317,9 @@ class ElasticConnection
        }';
 
         return $json;
-    }
+        }
 
+        
     public function querySearchJson($text)
     {
         return '{
@@ -370,5 +371,4 @@ class ElasticConnection
                 }
               }';
     }
-
 }
