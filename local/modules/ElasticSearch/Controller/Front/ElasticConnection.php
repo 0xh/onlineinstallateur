@@ -236,6 +236,7 @@ class ElasticConnection
             case 'min_price':
                 $field    = "product_taxed_price";
                 $order_by = "asc";
+                
                 $json     = '{
                     "sort" : [
                         {"' . $field . '": {"order":"' . $order_by . '"}}
@@ -243,6 +244,7 @@ class ElasticConnection
                      "from" : "' . $start . '","size":"' . $limit . '",
                      "query":  ' . $this->querySearchJson($text) . '
                  }';
+                
                 break;
             case 'max_price':
                 $field    = "product_taxed_price";
