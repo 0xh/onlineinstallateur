@@ -1,4 +1,5 @@
 {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+
 <li class="item {$colClass|default:" col-xs-12 col-sm-6 col-md-4 col-lg-4"}">
     {if $PSE_COUNT > 1}
         {assign var="hasSubmit" value = false}
@@ -30,7 +31,7 @@
                 {if $TITLE=="badge"}  
                     {ifloop rel="feature_value_info"}
                     {loop name="feature_value_info" type="feature_value" feature={$ID} product=$product_id}
-                    <span class="badge badge-hersteller">{$TITLE}</span> 
+                    <span class="badge badge-hersteller">{$TITLE nofilter}</span> 
                     {/loop}
                     {/ifloop}
                 {/if} 
@@ -45,7 +46,7 @@
         </a>
 
         <div class="product-info">
-            <h2 class="name"><a href="{$URLE nofilter}"><span itemprop="name">{$productTitle} </span></a></h2>   
+            <h2 class="name"><a href="{$URLE nofilter}"><span itemprop="name">{$productTitle nofilter} </span></a></h2>   
             <hr class="separation-line separation-line-short">
             {if $hasDescription}
                 <div class="description" itemprop="description">
