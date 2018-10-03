@@ -15,7 +15,7 @@
 {block name="body-class"}page-account{/block}
 
 {block name="main-content"}
-    <div class="main">
+    <div class="main page-account">
 
         <article class="col-main" role="main" aria-labelledby="main-label">
 
@@ -223,6 +223,9 @@
 
 {block name="stylesheet"}
 {hook name="account.stylesheet"}
+{stylesheets file='assets/dist/css/account.css'}
+    <link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}
 {/block}
 
 {block name="after-javascript-include"}

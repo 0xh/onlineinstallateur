@@ -1,0 +1,45 @@
+.page-wish-list #wishlist-box #main-label{
+    color: #4A5C70;
+    font-size: 35px;
+}
+.page-wish-list #wishlist-box #category-products .products-content p{
+    height: 100px;
+    overflow: hidden;
+    color: #305164;
+}
+.page-wish-list #wishlist-box #category-products .products-content .product-info .name>a,
+.page-wish-list #wishlist-box #category-products .products-content .product-info td.product .name>a{
+    color: #305164;
+    font-size: 18px;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+.page-wish-list #wishlist-box #category-products .products-content .product-price .vat-info{
+    font-size: 13px;
+    color: #305164;
+}
+.page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary,
+.page-wish-list #wishlist-box #category-products .products-content .wish-list-button a{
+    text-align: center;
+    background-color: #10B4CF;
+    color: #fff;
+    border-color: unset !important;
+    border: 1px solid #347C92 !important;
+    border-color: #347C92 !important;   
+}
+.page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary:active,
+.page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary:hover,
+.page-wish-list #wishlist-box #category-products .products-content .wish-list-button a:active,
+.page-wish-list #wishlist-box #category-products .products-content .wish-list-button a:hover{
+    background-color: #347C92;
+}
+
+.page-wish-list #wishlist-box #category-products .products-content .badge-hersteller{
+    color: #10B4CF !important;
+}
+
+.page-wish-list #wishlist-box #category-products .products-content .product-price .highlightcolor {
+    color: #347C92 !important;
+}

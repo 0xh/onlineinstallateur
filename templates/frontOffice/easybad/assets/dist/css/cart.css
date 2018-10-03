@@ -1,0 +1,78 @@
+@media screen and (max-width: 991px){
+    
+    .page-cart .main #cart .checkout-progress a{
+        width: 100%;
+        border-left: none;
+    }
+    
+    .page-cart .col-main #main-label{
+        text-align: center;
+    }
+    
+}
+.page-cart .main #cart .checkout-progress a{
+    background-color: #10B4CF;
+    color:#fff;
+    border-right: 1px solid #fff !important;
+}
+
+.page-cart .main #cart .checkout-progress a.active{
+    background: #347C92;
+}
+
+.page-cart .main #cart .checkout-progress .btn-step .step-nb{
+    border-right: 1px solid #fff !important;
+}
+
+.page-cart .main #cart .table-responsive .table-cart thead th.subprice, 
+.page-cart .main #cart .table-responsive .table-order thead th.subprice,
+.page-cart .main #cart .table-responsive .table-cart tbody td.subprice .price,
+.page-cart .main #cart .table-responsive .table-order tbody td.subprice .price,
+.page-cart .main #cart .table-responsive .table-cart .product .btn-link,
+.page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .btn-default,
+.page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .btn-default.active,
+.page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .btn-default:active,
+.page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .btn-default:hover,
+.page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .open>.dropdown-toggle.btn-default,
+.page-cart .main #cart .btn-default,
+.page-cart .main #cart .btn-primary{
+    color: #10B4CF;
+}
+
+.page-cart .main #cart .btn-default,
+.page-cart .main #cart .btn-primary{
+    border-color: unset !important;
+    border-left: 1px solid #10B4CF !important;
+    border-color: #10B4CF !important
+    border: solid 1px #10B4CF !important;
+}
+
+.page-cart .main #cart .btn-default:focus,
+.page-cart .main #cart .btn-primary:focus,
+.page-cart .main #cart .btn-default:hover,
+.page-cart .main #cart .btn-primary:hover{
+    background-color: #347C92;
+    color: #fff;
+}
+
+@media screen and (max-width: 455px){
+    .page-cart .main #cart .btn-default,
+    .page-cart .main #cart .btn-primary{
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .page-cart .main #cart .btn-primary {
+        float: unset !important;
+    }
+    .page-cart .main #cart .btn-default .fa,
+    .page-cart .main #cart .btn-primary .fa{
+        dispaly: none !important;
+    }
+}
+
+.page-cart #products-upsell .products-heading h3{
+    color: #10B4CF;
+}
