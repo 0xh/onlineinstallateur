@@ -27,10 +27,6 @@ use Thelia\Model\BrandQuery;
 /*      file that was distributed with this source code.                             */
 /* * ********************************************************************************** */
 
-/**
- * Class ProductPricesImport
- * @author Benjamin Perche <bperche@openstudio.fr>
- */
 class XMLImporter extends AbstractImport
 {
     /* @var Tlog $log */
@@ -68,12 +64,14 @@ class XMLImporter extends AbstractImport
         //care sa puna produsele offline daca nu exista in xml-ul current.
         //Nu stiu exact cum sa fac iteratia 1:1 inca dar stiu ca trebuie extra tabele sa tinem informatia cu de unde vine produsul.
 
-        $productQuerry   = ProductQuery::create();
+        $productQuerry = ProductQuery::create();
         $productQuerry->clear();
+
 //        $productExists = count($productQuerry->findByRef($this->rowHasField($row, "megabildnr")));
 //
 //        if ($productExists == 0) {
         // @var EventDispatcherInterface $eventDispatcher
+
         $eventDispatcher = $this->getContainer()->get('event_dispatcher');
 
         $createEvent = new ProductCreateEvent();
@@ -118,6 +116,7 @@ class XMLImporter extends AbstractImport
         //intr-o structura ca aia pe care o facusem eu dinamica in excel, banuisc ca cu un pic de timp si de ajutor as putea sa o replicate-uiesc si in PHP ceea ce ar
         //insemna ca basically o sa pot sa fac o descriere cu toate elementele de UX, gen title bolduit, produktmerkale cu bullet points, eu zic ca orice proces dezvoltam
         //pentru import ar trebui sa fie asa facut, ne-ar scuti de multa munca pe long-term.
+
         $updateEvent->setDescription(($this->rowHasField($row, "ausschreibungstext")));
 
         Tlog::getInstance()->err("Dupa set descrip");
@@ -126,6 +125,7 @@ class XMLImporter extends AbstractImport
         //Product PSE update pentru PSE table content (inclusiv price chiar daca-i tehnic tablea diferita, aici exista eventul pt ea)+EAN
         //Daca inteleg cum functioneaza si ii truly un update event, ar trebui sa update-uiasca elementele nu sa creeze unele noi, atunci asta ar rezolva problema cu
         //price-updates, tot timpul cand s-ar face cron job-ul de rulat XML-ul
+
         $productPse = ProductSaleElementsQuery::create()
          ->filterByProductId($product_id)
          ->withColumn('product_sale_elements.id', 'pse_id')
@@ -163,6 +163,8 @@ class XMLImporter extends AbstractImport
          * a dropdown meniu in the template for example where you select an option and pass it as a method argument or adding a  certain tag inside the XML but then we would
          * need to require that from every supplier.
          */
+
+
         $eventBrand = $this->rowHasField($row, "lieferantennam");
 
         $brand_new = SepaimporterBrandMappingQuery::create()
