@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'configurator_i18n' table.
+ * This class defines the structure of the 'filterconfigurator_configurator_i18n' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class ConfiguratorI18nTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'configurator_i18n';
+    const TABLE_NAME = 'filterconfigurator_configurator_i18n';
 
     /**
      * The related Propel class for this table
@@ -73,32 +73,32 @@ class ConfiguratorI18nTableMap extends TableMap
     /**
      * the column name for the ID field
      */
-    const ID = 'configurator_i18n.ID';
+    const ID = 'filterconfigurator_configurator_i18n.ID';
 
     /**
      * the column name for the LOCALE field
      */
-    const LOCALE = 'configurator_i18n.LOCALE';
+    const LOCALE = 'filterconfigurator_configurator_i18n.LOCALE';
 
     /**
      * the column name for the TITLE field
      */
-    const TITLE = 'configurator_i18n.TITLE';
+    const TITLE = 'filterconfigurator_configurator_i18n.TITLE';
 
     /**
      * the column name for the DESCRIPTION field
      */
-    const DESCRIPTION = 'configurator_i18n.DESCRIPTION';
+    const DESCRIPTION = 'filterconfigurator_configurator_i18n.DESCRIPTION';
 
     /**
      * the column name for the CHAPO field
      */
-    const CHAPO = 'configurator_i18n.CHAPO';
+    const CHAPO = 'filterconfigurator_configurator_i18n.CHAPO';
 
     /**
      * the column name for the POSTSCRIPTUM field
      */
-    const POSTSCRIPTUM = 'configurator_i18n.POSTSCRIPTUM';
+    const POSTSCRIPTUM = 'filterconfigurator_configurator_i18n.POSTSCRIPTUM';
 
     /**
      * The default string format for model objects of the related table
@@ -145,13 +145,13 @@ class ConfiguratorI18nTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configurator_i18n');
+        $this->setName('filterconfigurator_configurator_i18n');
         $this->setPhpName('ConfiguratorI18n');
         $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorI18n');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'configurator', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'filterconfigurator_configurator', 'ID', true, null, null);
         $this->addPrimaryKey('LOCALE', 'Locale', 'VARCHAR', true, 5, 'en_US');
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'CLOB', false, null, null);
@@ -443,7 +443,7 @@ class ConfiguratorI18nTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the configurator_i18n table.
+     * Deletes all rows from the filterconfigurator_configurator_i18n table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

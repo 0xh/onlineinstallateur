@@ -997,7 +997,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO configurator_image (%s) VALUES (%s)',
+            'INSERT INTO filterconfigurator_configurator_image (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
