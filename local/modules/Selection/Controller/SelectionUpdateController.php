@@ -309,8 +309,9 @@ class SelectionUpdateController extends AbstractSeoCrudController
      * @return BaseForm
      * @throws PropelException
      */
-    protected function hydrateObjectForm($selection)
-    {
+    protected function hydrateObjectForm( $selection )
+        {
+
         $this->hydrateSeoForm($selection);
         $associatedContainer = $selection->getSelectionContainerAssociatedSelections();
         $container           = null;
@@ -319,14 +320,15 @@ class SelectionUpdateController extends AbstractSeoCrudController
             $container = $associatedContainer[0]->getSelectionContainerId();
         }
         $data = array(
-         'selection_id'           => $selection->getId(),
-         'selection_container'    => $container,
-         'id'                     => $selection->getId(),
-         'locale'                 => $selection->getLocale(),
-         'selection_chapo'        => $selection->getChapo(),
-         'selection_description'  => $selection->getDescription(),
-         'selection_postscriptum' => $selection->getPostscriptum(),
-         'current_id'             => $selection->getId(),
+            'selection_id' => $selection->getId(),
+            'selection_container' => $container,
+            'id' => $selection->getId(),
+            'selection_title' => $selection->getTitle(),
+            'locale' => $selection->getLocale(),
+            'selection_chapo' => $selection->getChapo(),
+            'selection_description' => $selection->getDescription(),
+            'selection_postscriptum' => $selection->getPostscriptum(),
+            'current_id' => $selection->getId(),
         );
 
         return $this->getUpdateForm($data);
@@ -355,7 +357,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
         $event->setChapo($formData['selection_chapo']);
         $event->setDescription($formData['selection_description']);
         $event->setPostscriptum($formData['selection_postscriptum']);
-        $event->setLocale($this->getRequest()->getSession()->get('thelia.current.lang')->getLocale());
+        $event->setLocale($formData['locale']);
         return $event;
     }
 
