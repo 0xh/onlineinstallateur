@@ -1,6 +1,6 @@
 database:
   connection:
     driver: mysql
-    user: root
-    password: admin
+    user: admin
+    password: sR5u84vQ3GnarrHz
     dsn: mysql:host=localhost;dbname=thelia;port=3306
