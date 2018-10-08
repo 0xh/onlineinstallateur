@@ -264,7 +264,7 @@ h1.name{
 
 .nav-darkBlue .navbar-nav > li > a{
     color: white;
-    font-weight: 500;
+    font-weight: normal!important;
     padding: 0 18px;
     display: inline-block;
     cursor: pointer;
@@ -445,6 +445,7 @@ section .product-image{
         padding-top: 10px !important;
         padding-bottom: 10px !important;
         line-height: 2vw !important;
+        font-size: 1.2em !important;
     }
     .nav-darkBlue .navbar-nav > li:hover{
         border-bottom: 0px !important;

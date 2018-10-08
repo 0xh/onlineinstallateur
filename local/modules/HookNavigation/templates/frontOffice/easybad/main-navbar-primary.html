@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default nav-main nav-darkBlue minnu flyout" role="navigation" itemscope itemtype="http://schema.org/SiteNavigationElement">
+<nav class="navbar navbar-default nav-main nav-darkBlue minnu flyout" role="navigation" id="toggleMiniMenu" itemscope itemtype="http://schema.org/SiteNavigationElement">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand visible-xs-block visible-sm-block" href="{navigate to="index"}">{*intl l="categories" d="hooknavigation.fo.default"*}</a>
@@ -148,3 +148,23 @@
     </div>
 </nav>
 *}
+{literal}
+    <script type="text/javascript">
+    (function () {
+        function checkWidth() {
+            var windowWidth = window.innerWidth;
+            if (windowWidth < 992) {
+                
+                $("#toggleMiniMenu").removeClass('minnu');
+            } else {
+               
+               $("#toggleMiniMenu").addClass('minnu');
+            }
+        }
+
+        checkWidth();
+
+        $(window).resize(checkWidth);
+    })();
+    </script>
+{/literal}

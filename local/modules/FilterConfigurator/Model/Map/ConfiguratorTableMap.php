@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'configurator' table.
+ * This class defines the structure of the 'filterconfigurator_configurator' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class ConfiguratorTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'configurator';
+    const TABLE_NAME = 'filterconfigurator_configurator';
 
     /**
      * The related Propel class for this table
@@ -73,32 +73,32 @@ class ConfiguratorTableMap extends TableMap
     /**
      * the column name for the ID field
      */
-    const ID = 'configurator.ID';
+    const ID = 'filterconfigurator_configurator.ID';
 
     /**
      * the column name for the CATEGORY_ID field
      */
-    const CATEGORY_ID = 'configurator.CATEGORY_ID';
+    const CATEGORY_ID = 'filterconfigurator_configurator.CATEGORY_ID';
 
     /**
      * the column name for the VISIBLE field
      */
-    const VISIBLE = 'configurator.VISIBLE';
+    const VISIBLE = 'filterconfigurator_configurator.VISIBLE';
 
     /**
      * the column name for the POSITION field
      */
-    const POSITION = 'configurator.POSITION';
+    const POSITION = 'filterconfigurator_configurator.POSITION';
 
     /**
      * the column name for the CREATED_AT field
      */
-    const CREATED_AT = 'configurator.CREATED_AT';
+    const CREATED_AT = 'filterconfigurator_configurator.CREATED_AT';
 
     /**
      * the column name for the UPDATED_AT field
      */
-    const UPDATED_AT = 'configurator.UPDATED_AT';
+    const UPDATED_AT = 'filterconfigurator_configurator.UPDATED_AT';
 
     /**
      * The default string format for model objects of the related table
@@ -145,7 +145,7 @@ class ConfiguratorTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configurator');
+        $this->setName('filterconfigurator_configurator');
         $this->setPhpName('Configurator');
         $this->setClassName('\\FilterConfigurator\\Model\\Configurator');
         $this->setPackage('FilterConfigurator.Model');
@@ -183,7 +183,7 @@ class ConfiguratorTableMap extends TableMap
         );
     } // getBehaviors()
     /**
-     * Method to invalidate the instance pool of all tables related to configurator     * by a foreign key with ON DELETE CASCADE
+     * Method to invalidate the instance pool of all tables related to filterconfigurator_configurator     * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
@@ -411,7 +411,7 @@ class ConfiguratorTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the configurator table.
+     * Deletes all rows from the filterconfigurator_configurator table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

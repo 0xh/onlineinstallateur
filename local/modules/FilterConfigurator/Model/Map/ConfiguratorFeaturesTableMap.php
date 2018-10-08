@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'configurator_features' table.
+ * This class defines the structure of the 'filterconfigurator_configurator_features' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class ConfiguratorFeaturesTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'configurator_features';
+    const TABLE_NAME = 'filterconfigurator_configurator_features';
 
     /**
      * The related Propel class for this table
@@ -73,17 +73,17 @@ class ConfiguratorFeaturesTableMap extends TableMap
     /**
      * the column name for the ID field
      */
-    const ID = 'configurator_features.ID';
+    const ID = 'filterconfigurator_configurator_features.ID';
 
     /**
      * the column name for the CONFIGURATOR_ID field
      */
-    const CONFIGURATOR_ID = 'configurator_features.CONFIGURATOR_ID';
+    const CONFIGURATOR_ID = 'filterconfigurator_configurator_features.CONFIGURATOR_ID';
 
     /**
      * the column name for the FEATURE_ID field
      */
-    const FEATURE_ID = 'configurator_features.FEATURE_ID';
+    const FEATURE_ID = 'filterconfigurator_configurator_features.FEATURE_ID';
 
     /**
      * The default string format for model objects of the related table
@@ -130,14 +130,14 @@ class ConfiguratorFeaturesTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configurator_features');
+        $this->setName('filterconfigurator_configurator_features');
         $this->setPhpName('ConfiguratorFeatures');
         $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorFeatures');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('CONFIGURATOR_ID', 'ConfiguratorId', 'INTEGER', 'configurator', 'ID', false, null, null);
+        $this->addForeignKey('CONFIGURATOR_ID', 'ConfiguratorId', 'INTEGER', 'filterconfigurator_configurator', 'ID', false, null, null);
         $this->addForeignKey('FEATURE_ID', 'FeatureId', 'INTEGER', 'feature', 'ID', false, null, null);
     } // initialize()
 
@@ -361,7 +361,7 @@ class ConfiguratorFeaturesTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the configurator_features table.
+     * Deletes all rows from the filterconfigurator_configurator_features table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

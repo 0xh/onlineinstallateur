@@ -1,0 +1,432 @@
+{*************************************************************************************/
+/*      This file is part of the Thelia package.                                     */
+/*                                                                                   */
+/*      Copyright (c) OpenStudio                                                     */
+/*      email : dev@thelia.net                                                       */
+/*      web : http://www.thelia.net                                                  */
+/*                                                                                   */
+/*      For the full copyright and license information, please view the LICENSE.txt  */
+/*      file that was distributed with this source code.                             */
+/*************************************************************************************}
+
+{* Set the default translation domain, that will be used by {intl} when the 'd' parameter is not set *}
+{default_translation_domain domain='pdf.default'}
+{literal}
+<style>
+    h1, h2, h3, h4 {
+        color:#666;
+        margin: .5em 0;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    h3 {
+        font-size: 14px;
+    }
+
+    h4 {
+        color:#58585a;
+        font-size: 12px;
+    }
+
+    p, td {
+        color:#58585a;
+        font-size: 9px;
+    }
+
+    p {
+        margin: .5em 0;
+    }
+
+    span {
+        font-size: 9px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    tr {
+        width: 100%;
+    }
+
+    td {
+        vertical-align: top;
+    }
+    .table-info{
+        float:left;
+        width:50%;
+    }
+    .logo{
+        float:left;
+        width:50%;
+    }
+    .table-info h3 {
+        font-size: 15px;
+        color: #58585a;
+        margin-top: 0;
+        margin-bottom: 15px;
+        
+    }
+
+    .table-info h3 span {
+        font-size: 12px;
+        color: #666;
+    }
+
+    .table-1 td {
+        background: #f1f3f4;
+        border:solid 1px #bcbdc0;
+    }
+
+    .table-2 td {
+        border:solid 1px #bcbdc0;
+    }
+
+
+    .table-3-1, .table-3-2 {
+        border: solid 1px #bcbdc0;
+    }
+    .table-3-1 p {
+        font-size: 10px;
+    }
+    .table-3-2 p {
+        font-size: 9px;
+        color: #747475;
+    }
+
+    .table-3-module h3 {
+        margin-top: 1.5em;
+    }
+
+    .table-3-module span {
+        font-size: 11px;
+    }
+    
+    .align-left {
+        text-align: left;
+    }
+    .align-center {
+        text-align: center;
+    }
+    .align-right{
+        text-align: right;
+    }
+    .clear {
+        padding: 0.5%;
+        border-bottom:solid 1px #dddddd;
+    }
+
+    .clear-none {
+        padding: 0.5%;
+    }
+    .table-bottom{
+        position:absolute;
+        bottom:50px;
+        left:20px
+    }
+	
+	{hook name="invoice.css"}
+</style>
+{/literal}
+{foreach from=$orderIds item=foo}
+   
+
+{assign "order_id" $foo}
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="30mm" style="position:relative; padding:20px;">
+    
+    <page_header>
+        {hook name="invoice.header" order=$order_id}
+        
+    </page_header>
+ 
+    <page_footer style="padding:20px">
+        {hook name="invoice.footer-top" order=$order_id}
+       
+        <hr style="border:solid  #10B4CF 1px;">
+        <table style="font-size:11px; padding:10px">
+            <tr>
+    <td style="width:25%">
+        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
+        {config key="nwing"}<br/>
+        {config key="store_address1"}<br/>
+        {config key="store_zipcode"}, {config key="store_city"}<br />
+        {if {config key="store_country"}}
+            {loop type="country" name="store_country" id={config key="store_country"}}
+                {$TITLE}
+            {/loop}
+        {/if} 
+    </td>
+                
+    <td style="width:25%">
+        Tel.{config key="store_phone"}<br>
+        {config key="store_email"}<br/>
+        {config key="url_site"}<br />
+    </td>
+
+    <td style="width:25%">
+        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
+        IBAN: {config key="iban"}<br>
+        BIC: {config key="bic"}<br />
+        UID-Nr: {config key="uid-nr"}<br />
+        FN: {config key="fn"}<br />
+    </td>
+    <td style="width:25%">
+          Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
+    </td>
+                
+    </tr>
+    
+</table>
+
+
+
+      
+        {hook name="invoice.footer-bottom" order=$order_id}
+    </page_footer>
+
+    {$taxes = []}
+
+    {loop name="order.invoice" type="order" id=$order_id customer="*"}
+
+    {hook name="invoice.after-information" order=$order_id}
+
+    <table class="table-address">
+        <col style="width: 60%; padding: 3mm;padding-left:10mm" />
+        <col style="width: 40%; padding: 3mm;" />
+
+        
+
+        <tr>
+           <td>
+               <h1>{intl l="INVOICE"}</h1>
+           </td>
+                <td style="text-align:right">
+
+                <img src="data:image/png;base64, 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" style="width:150px;" />
+
+                Marke der Nwing-network GmbH<br>
+                Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
+                Tel: 0800 / 022573 <br>
+                Email: {config key="store_email"}
+            </td>
+        </tr>
+        <tr>
+             <td style="border-left: solid 1mm #10B4CF;">
+                <h3>{intl l="Invoice address"}</h3>
+                {format_address order_address=$INVOICE_ADDRESS locale=$locale}
+            </td>
+            <td style="border-left: solid 1mm #10B4CF;" >
+                <h3>{intl l="Delivery address"}</h3>
+                {ifhook rel="invoice.delivery-address"}
+                    {* delivery module can customize the delivery address *}
+                    {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
+                {/ifhook}
+                {elsehook rel="invoice.delivery-address"}                
+                    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
+                {/elsehook}
+            </td>
+           
+        </tr>
+    </table>
+    
+        <table>
+    <col style="width: 70%;padding: 3mm; padding-top:10mm" />
+    <col style="width: 30%; padding: 3mm;" />
+    <tr>
+        <td>
+   
+            <table class="table-info">
+                <col style="width: 100%; padding: 0mm;" />
+               
+                <tr>
+                    <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
+                </tr>
+                <tr>
+                    <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
+                </tr>
+                <tr>
+                    <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
+                </tr>
+                {hookblock name="invoice.information" order=$order_id fields="title,value"}
+                {forhook rel="invoice.information"}
+                <tr>
+                    <td><h3>{$title} : <span>{$value}</span></h3></td>
+                </tr>
+                {/forhook}
+                {/hookblock}
+            </table>
+        </td>
+
+
+    </tr>
+</table>
+
+    {hook name="invoice.after-addresses" order=$order_id}
+
+    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;padding: 1mm;">
+        <col style="width: 40%; padding: 1mm;" />
+        <col style="width: 12%; padding: 1mm;" />
+        <col style="width: 15%; padding: 1mm;" />
+        <col style="width: 12%; padding: 1mm;" />
+        <col style="width: 7%; padding: 1mm;" />
+        <col style="width: 14%; padding: 1mm;" />
+
+        <tr class="table-1">
+            <td><h4>{intl l="Product"}</h4></td>
+            <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
+            <td><h4 class="align-center">{intl l="20% Mehrwertsteuer"}</h4></td>
+            <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
+            <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
+            <td style="background:#10B4CF"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
+        </tr>
+        {loop type="order_product" name="order-products" order=$ID}
+            {if $WAS_IN_PROMO == 1}
+                {assign "realPrice" $PROMO_PRICE}
+                {assign "realTax" $PROMO_PRICE_TAX}
+                {assign "realTaxedPrice" $TAXED_PROMO_PRICE}
+                {assign "realTotalPrice" $TOTAL_TAXED_PROMO_PRICE}
+            {else}
+                {assign "realPrice" $PRICE}
+                {assign "realTax" $PRICE_TAX}
+                {assign "realTaxedPrice" $TAXED_PRICE}
+                {assign "realTotalPrice" $TOTAL_TAXED_PRICE}
+            {/if}
+
+            {$taxes[{$TAX_RULE_TITLE}][] = $realTax * $QUANTITY}
+
+            <tr class="table-2">
+                <td>
+                    <p>{$TITLE}</p>
+                    {ifloop rel="combinations"}
+                    {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
+                        {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
+                    {/loop}
+                    {/ifloop}
+                    
+                    {loop name="category" type="category" product=$PRODUCT_ID limit="1"}
+                                {assign var="parent_category" value=$PARENT}
+                            {/loop}
+
+                            {if $parent_category == 12}
+                                {loop type="bookingsservice" name="calendar_appointment" order_id="$order_id" service_id="$PRODUCT_ID"}
+                                    {if $BOOKING_START_TS == 0}
+                                        Kein gebuchter Termin
+                                    {else}
+                                        Termin {$BOOKING_START_TS|date_format:"%d-%m-%Y"} {$BOOKING_START_TS|date_format:"%H:%M"} - {$BOOKING_STOP_TS|date_format:"%H:%M"}
+                                    {/if}
+                                {/loop}
+                             {else}
+                             <p>{hook name="product.delivery-delay" product={$PRODUCT_ID}}</p>
+                             {/if}
+                </td>
+                <td><p class="align-right">{format_money number=$realPrice currency_id=$CURRENCY}</p></td>
+                <td><p class="align-right">{format_money number=$realTax currency_id=$CURRENCY}</p></td>
+                <td><p class="align-right">{format_money number=$realTaxedPrice currency_id=$CURRENCY}</p></td>
+                <td><p class="align-center">{$QUANTITY}</p></td>
+                <td><p class="align-right">{format_money number=$realTotalPrice currency_id=$CURRENCY}</p></td>
+            </tr>
+
+            {hook name="invoice.order-product" order="{$order_id}" order_product="{$ID}"}
+        {/loop}
+    </table>
+
+{hook name="invoice.after-products" order=$order_id}
+
+    <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
+
+        <tr>
+            <td class="table-3-module" style="width: 50%; padding: 1mm;" >
+
+                <h3>{intl l="Payment module"}</h3>
+                <p>
+                    <span>{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span>
+                </p>
+
+                {hook name="invoice.after-payment-module" order=$order_id module_id=$PAYMENT_MODULE}
+
+
+                <h3>{intl l="Delivery module"}</h3>
+                <p>
+                    <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
+                </p>
+
+                
+                {hook name="invoice.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
+
+            </td>
+            <td style="width: 50%; " >
+                <table class="table-3">
+                    <col style="width: 50%; padding: 1mm;">
+                    <col style="width: 50%; padding: 1mm;">
+                    {if $DISCOUNT!=0}
+                    <tr>
+                        <td class="table-3-1"><p>{intl l="Discount"}</p></td>
+                        <td class="table-3-1 align-right"><p>{format_money number=$DISCOUNT currency_id=$CURRENCY}</p></td>
+                    </tr>
+                    {/if}
+                    <tr>
+                        <td class="table-3-1"><p>{intl l="Gesamtpreis exkl. Mehrwertsteuer"}</p></td>
+                        <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_AMOUNT - $POSTAGE_UNTAXED} currency_id=$CURRENCY}</p></td>
+                    </tr>
+                    {strip}
+                        {capture name="tax"}
+                            {foreach $taxes as $name=>$prices}
+                                {assign var="_price_taxe_" value="0"}
+                                {foreach $prices as $price}
+                                    {$_price_taxe_= $_price_taxe_ + $price}
+                                {/foreach}
+                                {if $_price_taxe_ != 0}
+                                <!--tr>
+                                    <td class="table-3-2"><p>{$name}</p></td>
+                                    <td class="table-3-2 align-right"><p>{format_money number=$_price_taxe_ currency_id=$CURRENCY}</p></td>
+                                </tr-->
+                                {/if}
+                            {/foreach}
+                            {if $POSTAGE_TAX != 0}
+                            <tr>
+                                <td class="table-3-2"><p>{intl l="Postage"}<br>{$POSTAGE_TAX_RULE_TITLE}</p></td>
+                                <td class="table-3-2 align-right"><p>{format_money number=$POSTAGE_TAX currency_id=$CURRENCY}</p></td>
+                            </tr>
+                            {/if}
+                        {/capture}
+                    {/strip}
+                    {if $smarty.capture.tax ne ""}
+                    <tr>
+                        <td class="table-3-1"><p>{intl l="Tax"}</p></td>
+                        <td class="table-3-1 align-right"><p>{format_money number=$TOTAL_TAX currency_id=$CURRENCY}</p></td>
+                    </tr>
+                    {$smarty.capture.tax nofilter}
+                    {/if}
+                    <!--tr>
+                        <td class="table-3-1"><p>{intl l="Total with tax"}</p></td>
+                        <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_TAXED_AMOUNT - $POSTAGE} currency_id=$CURRENCY}</p></td>
+                    </tr-->
+                    {if $POSTAGE!=0}
+                    <tr>
+                        <td class="table-3-1"><p>{intl l="Postage"}</p></td>
+                        <td class="table-3-1 align-right"><p>{format_money number=$POSTAGE currency_id=$CURRENCY}</p></td>
+                    </tr>
+                    {/if}
+                    <tr>
+                        <td class="table-3-1" style="background:#10B4CF;"><h3 style="color:white;">{intl l="Gesamtbetrag"}</h3></td>
+                        <td class="table-3-1 align-right" style="background:#10B4CF;"><h3 style="color:white;">{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</h3></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+
+{hook name="invoice.after-summary" order=$order_id}
+
+{/loop}
+</page>
+{/foreach}
