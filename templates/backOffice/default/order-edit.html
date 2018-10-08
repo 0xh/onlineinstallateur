@@ -322,12 +322,11 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
-
                                             {hook name="order-edit.payment-module-bottom" order_id=$order_id module_id=$PAYMENT_MODULE}
 
                                         </div>
 
-                                        {hook name="order-edit.cart-bottom" location="order-edit-cart-bottom" order_id=$order_id}
+                                        {hook name="order-edit.cart-bottom" location="order-edit-cart-bottom" order_id=$order_id delivery_module_id=$DELIVERY_MODULE}
 
                                     </div> <!-- #cart -->
 
@@ -349,8 +348,8 @@
                                                 </form>
                                             </div>
                                         </div>
-										{ifhook rel="product.order-fulfilment-center-address"}
-						               		{hook name="product.order-fulfilment-center-address" orderid=$order_id}	
+						{ifhook rel="product.order-fulfilment-center-address"}
+						    {hook name="product.order-fulfilment-center-address" orderid=$order_id}	
 							            {/ifhook}
 							            {elsehook rel="product.order-fulfilment-center-address"}	
 	                                        {loop name="delivery-module" type="module" id=$DELIVERY_MODULE}

@@ -2,7 +2,7 @@
 
 {* Security *}
 {block name="no-return-functions" prepend}
-    {check_auth role="CUSTOMER" login_tpl="login"}
+{check_auth role="CUSTOMER" login_tpl="login"}
 {/block}
 
 {* Body Class *}
@@ -10,10 +10,10 @@
 
 {* Breadcrumb *}
 {block name='no-return-functions' append}
-    {$breadcrumbs = [
-        ['title' => {intl l="Cart"}, 'url'=>{url path="/cart"}],
-        ['title' => {intl l="Secure Payment"}, 'url'=>{url path="/order/pay"}]
-    ]}
+{$breadcrumbs = [
+['title' => {intl l="Cart"}, 'url'=>{url path="/cart"}],
+['title' => {intl l="Secure Payment"}, 'url'=>{url path="/order/pay"}]
+]}
 {/block}
 
 
@@ -22,174 +22,146 @@
 {block name="main-content" }
 
 
-    <div class="main">
-        <article class="col-main clearfix" role="main" aria-labelledby="main-label">
 
-            <h1 id="main-label" class="page-header">{intl l="Your Cart"}</h1>
+<div class="main">
+    <article class="col-main clearfix" role="main" aria-labelledby="main-label">
 
-            {include file="misc/checkout-progress.tpl" step="last"}
+        <h1 id="main-label" class="page-header">{intl l="Your Cart"}</h1>
 
-            {loop type="order" name="placed-order" id=$placed_order_id}
-            
-                {loop type="order_address" name="order-invoice-address" id=$INVOICE_ADDRESS}
-                    {loop type="country" name="customer.country.info" id=$COUNTRY}
-                        {assign var="countryCode" value="$ISOALPHA2"}
-                    {/loop}
-                {/loop}
-                
-           		{assign var="orderId" value=$placed_order_id}
+        {include file="misc/checkout-progress.tpl" step="last"}
 
-                {loop type="order_product" name="order-products" order=$placed_order_id}
-                    {loop type="product" name="product" ref=$REF}
-                         {loop type="delivery_delay_product" name="delivery_delay_product" product_id=$ID}
-                            {assign var="maxDeliveryDate" value=$DATE_MAX}
-                        {/loop}
-                    {/loop}
-                {/loop}
+        {loop type="order" name="placed-order" id=$placed_order_id}
 
-                {assign var="transactionId" value=$REF} 
-                {assign var="transactionTotal" value=$TOTAL_TAXED_AMOUNT} 
-                {assign var="transactionTax" value=$TOTAL_TAX}
+        {loop type="order_address" name="order-invoice-address" id=$INVOICE_ADDRESS}
+        {loop type="country" name="customer.country.info" id=$COUNTRY}
+        {assign var="countryCode" value="$ISOALPHA2"}
+        {/loop}
+        {/loop}
+
+        {assign var="orderId" value=$placed_order_id}
+
+        {loop type="order_product" name="order-products" order=$placed_order_id}
+        {loop type="product" name="product" ref=$REF}
+        {loop type="delivery_delay_product" name="delivery_delay_product" product_id=$ID}
+        {assign var="maxDeliveryDate" value=$DATE_MAX}
+        {/loop}
+        {/loop}
+        {/loop}
+
+        {assign var="transactionId" value=$REF} 
+        {assign var="transactionTotal" value=$TOTAL_TAXED_AMOUNT} 
+        {assign var="transactionTax" value=$TOTAL_TAX}
 
 
 
-            {loop type="module" name="module-payment" id="$DELIVERY_MODULE"}
-            {assign var="deliverymodule" value="$CODE"} 
-            {/loop}
-            
-            {ifhook rel="order-placed.body"}
-                {hook name="order-placed.body" module="$PAYMENT_MODULE"}
-            {/ifhook}
-            {elsehook rel="order-placed.body"}
-                <div id="payment-success" class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{intl l="You choose"} : <span class="payment-method label label-primary">{loop name="payment-module" type="module" id=$PAYMENT_MODULE}
-                           {assign var="payment_title" value = $TITLE}  {$TITLE}{/loop}</span></h3>
-                    </div>
-                    <div class="panel-body">
-                        <h3>{intl l="Thank you for the trust you place in us."}</h3>
-                        {if $deliverymodule=="LocalPickup"}
-                        
-                        <p>{intl l="We will contact you if your goods are ready for pickup"} : {customer attr="email"}</p>
-                         {else}
-                         <p>{intl l="A summary of your order has been sent to the following address"} : {customer attr="email"}</p>
-                         <p>{intl l="Your order will be confirmed by us upon receipt of your payment."}</p>
-                         {/if}
-                        
-                        <dl class="dl-horizontal">
-                            <dt>{intl l="Order number"} : </dt>
-                            <dd>{$REF}</dd>
-                            <dt>{intl l="Date"} : </dt>
-                            <dd>{format_date date=$CREATE_DATE output="date"}</dd>
-                            <dt>{intl l="Total"} : </dt>
-                            <dd>{format_money number={$TOTAL_TAXED_AMOUNT} currency_id=$CURRENCY}</dd>
-                        </dl>
+        {loop type="module" name="module-payment" id="$DELIVERY_MODULE"}
+        {assign var="deliverymodule" value="$CODE"} 
+        {/loop}
 
-                        {block name='additional-payment-info'}{/block}
-                        {if $deliverymodule=="LocalPickup"}
-	                        {ifhook rel="product.fulfilment-center-address"}
-			               		{hook name="product.fulfilment-center-address" orderid=$placed_order_id}	
-				            {/ifhook}	
-				            {elsehook rel="product.fulfilment-center-address"}	
-				            	<p>{intl l="The pickup address is:"}</p> <strong>{config key="pickupaddress"}</strong>
-				            {/elsehook}	
-                        {else}
-                        	{hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
-                        {/if}
-                    </div>
-                    <div id="customCheckoutDiv" style="width: 500px;margin:auto"></div>
-                    <div id="trustedShopsCheckout" style="display: none;">
-<span id="tsCheckoutOrderNr">{$REF}</span>
-<span id="tsCheckoutBuyerEmail"> {customer attr="email"}</span>
-<span id="tsCheckoutOrderAmount">{$TOTAL_TAXED_AMOUNT}</span>
-<span id="tsCheckoutOrderCurrency">{currency attr="code"}</span>
-<span id="tsCheckoutOrderPaymentType">{$payment_title}</span>
-<span id="tsCheckoutOrderEstDeliveryDate"></span></div> 
-                </div>
-            {/elsehook}
-            {/loop}
+        {ifhook rel="order-placed.body"}
+        {hook name="order-placed.body" module="$PAYMENT_MODULE"}
+        {/ifhook}
+        {elsehook rel="order-placed.body"}
+        <div id="payment-success" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{intl l="You choose"} : <span class="payment-method label label-primary">{loop name="payment-module" type="module" id=$PAYMENT_MODULE}
+                        {assign var="payment_title" value = $TITLE}  {$TITLE}{/loop}</span></h3>
+            </div>
+            <div class="panel-body">
+                <h3>{intl l="Thank you for the trust you place in us."}</h3>
+                {if $deliverymodule=="LocalPickup"}
 
-            <a href="{navigate to="index"}" role="button" class="btn btn-default">{intl l="Go home"}</a>
+                <p>{intl l="We will contact you if your goods are ready for pickup"} : {customer attr="email"}</p>
+                {else}
+                <p>{intl l="A summary of your order has been sent to the following address"} : {customer attr="email"}</p>
+                <p>{intl l="Your order will be confirmed by us upon receipt of your payment."}</p>
+                {/if}
+                <dl class="dl-horizontal">
+                    <dt>{intl l="Order number"} : </dt>
+                    <dd>{$REF}</dd>
+                    <dt>{intl l="Date"} : </dt>
+                    <dd>{format_date date=$CREATE_DATE output="date"}</dd>
+                    <dt>{intl l="Total"} : </dt>
+                    <dd>{format_money number={$TOTAL_TAXED_AMOUNT} currency_id=$CURRENCY}</dd>
+                </dl>
 
-        </article>
+                {block name='additional-payment-info'}{/block}
+                {if $deliverymodule=="LocalPickup"}
+                {ifhook rel="order-delivery.address-localpickup"}
+                {hook name="product.fulfilment-center-address" orderid=$placed_order_id}	
+                {hook name="order-delivery.address-localpickup" orderid=$placed_order_id}
+                {/ifhook}	
+                {elsehook rel="order-delivery.address-localpickup"}	
+                {"ELSE"}
+                <p>{intl l="The pickup address is:"}</p> <strong>{config key="pickupaddress"}</strong>
+                {/elsehook}	
+                {else}
+                {hook name="order-placed.additional-payment-info" module="$PAYMENT_MODULE" placed_order_id=$placed_order_id}
+                {/if}
 
-    </div>
-    
+
+
+            </div>
+            <div id="customCheckoutDiv" style="width: 500px;margin:auto"></div>
+            <div id="trustedShopsCheckout" style="display: none;">
+                <span id="tsCheckoutOrderNr">{$REF}</span>
+                <span id="tsCheckoutBuyerEmail"> {customer attr="email"}</span>
+                <span id="tsCheckoutOrderAmount">{$TOTAL_TAXED_AMOUNT}</span>
+                <span id="tsCheckoutOrderCurrency">{currency attr="code"}</span>
+                <span id="tsCheckoutOrderPaymentType">{$payment_title}</span>
+                <span id="tsCheckoutOrderEstDeliveryDate"></span></div> 
+        </div>
+        {/elsehook}
+        {/loop}
+
+        <a href="{navigate to="index"}" role="button" class="btn btn-default">{intl l="Go home"}</a>
+
+    </article>
+
+</div>
+
 <!-- Google DataLayer START -->
 
-<script type="text/javascript">
+{loop type="order" name="placed-order" id=$placed_order_id}
+{assign var="order_created_timestamp" value=$CREATE_DATE|date_format:'%s'}
+{assign var="placed_order_id" value=$placed_order_id}
+{/loop}
+{assign var="timestamp" value=$smarty.now|date_format:'%s'}
 
-window.dataLayer = window.dataLayer || [];
+{if $timestamp<$order_created_timestamp+60}
 
-dataLayer.push({
-'event':'transaction',
-   'transactionId': '{$transactionId}',
-   'transactionAffiliation': "{customer attr='email'}",
-   'transactionTotal': "{$transactionTotal}",
-   'transactionTax': "{$transactionTax}",
-   'transactionShipping': 4,
-   'transactionProducts': [
-    {loop type="order_product" name="order-products" order=$placed_order_id}
-      {assign var="sku" value=$REF}
-             {assign var="quantity" value=$QUANTITY} 
-             {assign var="price" value=$TAXED_PRICE} 
-             {loop type="product" name="product" id=$PRODUCT_ID}
-                 {loop type="category" name="category" id=$DEFAULT_CATEGORY}
-                    {assign var="category" value=$TITLE}
-                        {loop name="brandloop" type="brand" product=$PRODUCT_ID}
-                                  {assign var="brand" value=$TITLE}
-                         {
-                             'sku':'{$sku}',
-                             'name': '{$sku}',
-                             'category': '{$category}',
-                             'price': "{$price}",
-                             'quantity': "{$quantity}",
-                             'brand' : "{$brand}"
+{hook name="order-placed.javascript-datalayer" mytransactionvariable=$transactionId mytransactiontotal=$transactionTotal mytransactiontax=$transactionTax}
 
-                         },
-                         {/loop}
-                 {/loop}
-             {/loop}
-         {/loop}
-     ]
-});
-
-</script>
+{/if}
 
 <!-- Google DataLayer END-->
-
-
-
-<!-- Google DataLayer END-->
-
-
-
-
-
 <!-- BEGIN GCR Opt-in Module Code -->
 
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer>
 </script>
 
 <script>
-window.renderOptIn = function() { 
-	window.gapi.load('surveyoptin', function() {
-		window.gapi.surveyoptin.render(
-			{   "merchant_id": "113938678", 
-				"order_id": "{$orderId}", 
-				"email": "{customer attr='email'}", 
-				"delivery_country": "{$countryCode}", 
-				"estimated_delivery_date": "{$maxDeliveryDate}"
-			}
-		); 
-	});
-}
-</script>
+  window.renderOptIn = function() {
+    window.gapi.load('surveyoptin', function() {
+      window.gapi.surveyoptin.render({
+        "merchant_id": "113938678",
+        "order_id": "{$orderId}",
+        "email": "{customer attr='email'}",
+        "delivery_country": "{$countryCode}",
+        "estimated_delivery_date": "{$maxDeliveryDate}"
+      });
+    });
+  } 
+  </script>
+
 <!-- END GCR Opt-in Module Code -->
 <!-- BEGIN GCR Language Code -->
 <script>
-	window.___gcfg = { lang: 'de' };
-</script>
+  window.___gcfg = {
+    lang: 'de'
+  }; 
+  </script>
+
 <!-- END GCR Language Code -->
 
 {/block}

@@ -19,3 +19,5 @@ log/.htaccess
 .htaccess
 local/config/cookies/
 /local/media/documents/
+local/config/database.yml
+templates/frontOffice/default/assets/dist/css/custom-tinymce.css

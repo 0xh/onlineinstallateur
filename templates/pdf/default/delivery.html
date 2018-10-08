@@ -73,7 +73,7 @@
         color: #58585a;
         margin-top: 0;
         margin-bottom: 15px;
-        
+
     }
 
     .table-info h3 span {
@@ -109,7 +109,7 @@
     .table-3-module span {
         font-size: 11px;
     }
-    
+
     .align-left {
         text-align: left;
     }
@@ -132,8 +132,8 @@
         bottom:50px;
         left:20px
     }
-	
-	{hook name="invoice.css"}
+
+    {hook name="invoice.css"}
 </style>
 {/literal}
 <page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm">
@@ -141,89 +141,89 @@
         {hook name="delivery.header" order=$order_id}
     </page_header>
 
-     <page_footer style="padding:20px">
-		{hook name="invoice.footer-top" order=$order_id}
-       <!--table style="padding:20px; margin:5px">
-            <tr>
-                <td><h2>Danke für Ihre Bestellung</h2></td>
-           </tr>
-           <tr>
-                <td>Erste BANK Sparkasse <br>IBAN: AT26 2011 1291 5791 1800<br> BIC:GIBAATWWXXX</td>
-                <td>HAUSFABRIK<br>Marke der Nwing-Networking GmbH <br>UID: ATU64598867<br> FN: 326758 b </td>
+    <page_footer style="padding:20px">
+        {hook name="invoice.footer-top" order=$order_id}
+        <!--table style="padding:20px; margin:5px">
+             <tr>
+                 <td><h2>Danke für Ihre Bestellung</h2></td>
             </tr>
-        </table-->
-       
+            <tr>
+                 <td>Erste BANK Sparkasse <br>IBAN: AT26 2011 1291 5791 1800<br> BIC:GIBAATWWXXX</td>
+                 <td>HAUSFABRIK<br>Marke der Nwing-Networking GmbH <br>UID: ATU64598867<br> FN: 326758 b </td>
+             </tr>
+         </table-->
+
         <hr style="border:solid  #86AC34 1px;">
         <table style="font-size:11px; padding:10px">
             <tr>
-    <td style="width:25%">
-        <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
-        {config key="nwing"}<br/>
-        {config key="store_address1"}<br/>
-        {config key="store_zipcode"}, {config key="store_city"}<br />
-        {if {config key="store_country"}}
-            {loop type="country" name="store_country" id={config key="store_country"}}
-                {$TITLE}
-            {/loop}
-        {/if} 
-    </td>
-                
-    <td style="width:25%">
-        Tel.{config key="store_phone"}<br>
-        {config key="store_email"}<br/>
-        {config key="url_site"}<br />
-    </td>
+                <td style="width:25%">
+                    <strong style="text-transform:uppercase">{config key="store_name"}</strong><br>
+                    {config key="nwing"}<br/>
+                    {config key="store_address1"}<br/>
+                    {config key="store_zipcode"}, {config key="store_city"}<br />
+                    {if {config key="store_country"}}
+                    {loop type="country" name="store_country" id={config key="store_country"}}
+                    {$TITLE}
+                    {/loop}
+                    {/if} 
+                </td>
 
-    <td style="width:25%">
-        <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
-        IBAN: {config key="iban"}<br>
-        BIC: {config key="bic"}<br />
-        UID-Nr: {config key="uid-nr"}<br />
-        FN: {config key="fn"}<br />
-    </td>
-    <td style="width:25%">
-          Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
-    </td>
-                
-    </tr>
-    
-</table>
+                <td style="width:25%">
+                    Tel.{config key="store_phone"}<br>
+                    {config key="store_email"}<br/>
+                    {config key="url_site"}<br />
+                </td>
+
+                <td style="width:25%">
+                    <strong>Bankverbindung:</strong><br>{config key="bankname"}<br/>
+                    IBAN: {config key="iban"}<br>
+                    BIC: {config key="bic"}<br />
+                    UID-Nr: {config key="uid-nr"}<br />
+                    FN: {config key="fn"}<br />
+                </td>
+                <td style="width:25%">
+                    Die Ware bleibt bis zur vollständigen Bezahlung unser Eigentum. Zahl- und klagbar in Wien. Bei Zahlungsverzug werden 1% Verzugszinsen pro Monat berechnet.
+                </td>
+
+            </tr>
+
+        </table>
 
 
 
-      
-		{hook name="invoice.footer-bottom" order=$order_id}
+
+        {hook name="invoice.footer-bottom" order=$order_id}
     </page_footer>
 
-{loop name="order.invoice" type="order" id=$order_id customer="*"}
+    {loop name="order.invoice" type="order" id=$order_id customer="*"}
 
-	{hook name="delivery.after-information" order=$order_id}
+    {hook name="delivery.after-information" order=$order_id}
 
     <table class="table-address">
         <col style="width: 60%; padding: 3mm;padding-left:10mm" />
         <col style="width: 40%; padding: 3mm;" />
 
         <tr>
-           <td>
-               <h1>{intl l="DELIVERY"}</h1>
-           </td>
-                <td style="text-align:right">
-            <!-- <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br> -->
-            Marke der Nwing-network GmbH<br>
-            Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
-            Tel: 0800 / 022573 <br>
-            Email: {config key="store_email"}
-        </td>
+            <td>
+                <h1>{intl l="DELIVERY"}</h1>
+            </td>
+            <td style="text-align:right">
+                <!-- <img src="/home/.sites/142/site4416661/web/templates/pdf/default/assets/img/logo.png" style="width:150px"><br> -->
+                Marke der Nwing-network GmbH<br>
+                Breitenfurterstraße 360-368/3/R06, 1230 Wien <br>
+                Tel: 0800 / 022573 <br>
+                Email: {config key="store_email"}
+            </td>
         </tr>
         <tr>
             <td style="border-left: solid 1mm #86ac34;">
                 <h3>{intl l="Delivery address"}</h3>
-				{ifhook rel="invoice.delivery-address"}
-                    {* delivery module can customize the delivery address *}
-                    {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
+                {ifhook rel="invoice.delivery-address"}
+                {* delivery module can customize the delivery address *}
+                {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
                 {/ifhook}
                 {elsehook rel="invoice.delivery-address"}                
-				    {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
+                {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
                	{/elsehook}
             </td>
             <td style="border-left: solid 1mm #86ac34;">
@@ -232,40 +232,40 @@
             </td>
         </tr>
     </table>
-    
 
-    
+
+
     <table>
-    <col style="width: 70%;padding: 3mm; padding-top:10mm" />
-    <col style="width: 30%; padding: 3mm;" />
-    <tr>
-        <td>
-   
-            <table class="table-info">
-                <col style="width: 100%; padding: 0mm;" />
-               
-                <tr>
-                    <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
-                </tr>
-                <tr>
-                    <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
-                </tr>
-                <tr>
-                    <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
-                </tr>
-                {hookblock name="invoice.information" order=$order_id fields="title,value"}
-                {forhook rel="invoice.information"}
-                <tr>
-                    <td><h3>{$title} : <span>{$value}</span></h3></td>
-                </tr>
-                {/forhook}
-                {/hookblock}
-            </table>
-        </td>
+        <col style="width: 70%;padding: 3mm; padding-top:10mm" />
+        <col style="width: 30%; padding: 3mm;" />
+        <tr>
+            <td>
+
+                <table class="table-info">
+                    <col style="width: 100%; padding: 0mm;" />
+
+                    <tr>
+                        <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
+                    </tr>
+                    <tr>
+                        <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
+                    </tr>
+                    {hookblock name="invoice.information" order=$order_id fields="title,value"}
+                    {forhook rel="invoice.information"}
+                    <tr>
+                        <td><h3>{$title} : <span>{$value}</span></h3></td>
+                    </tr>
+                    {/forhook}
+                    {/hookblock}
+                </table>
+            </td>
 
 
-    </tr>
-</table>
+        </tr>
+    </table>
 
 
     {hook name="delivery.after-addresses" order=$order_id}
@@ -292,18 +292,18 @@
             </td>
             <td style="border:solid 1px #dddddd;">
                 <p>{$TITLE}</p>
-                    {ifloop rel="combinations"}
-                    {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
-                        {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
-                    {/loop}
-                    {/ifloop}
+                {ifloop rel="combinations"}
+                {loop type="order_product_attribute_combination" name="combinations" order_product=$ID}
+                {$ATTRIBUTE_TITLE} - {$ATTRIBUTE_AVAILABILITY_TITLE}<br>
+                {/loop}
+                {/ifloop}
             </td>
             <td style="border:solid 1px #dddddd; text-align:center;">
                 <p>{$QUANTITY}</p>
             </td>
         </tr>
 
-            {hook name="delivery.order-product" order="{$order_id}" order_product="{$ID}"}
+        {hook name="delivery.order-product" order="{$order_id}" order_product="{$ID}"}
         {/loop}
     </table>
 
@@ -312,14 +312,15 @@
         <tr>
             <td  class="table-3-module" style="border-left:solid 3px #86AC34; padding-top: 2mm">
                 <h3>{intl l="Delivery module"}</h3>
-               	
-				{ifhook rel="product.order-pdf-fulfilment-center-address"}
-               		{hook name="product.order-pdf-fulfilment-center-address" orderid=$order_id}	
-	            {/ifhook}
-				{elsehook rel="product.order-pdf-fulfilment-center-address"}
-                   	<p>	
-                   		<span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>  
-                   	</p>
+
+                {ifhook rel="product.order-pdf-fulfilment-center-address"}
+                {hook name="product.order-pdf-fulfilment-center-address" orderid=$order_id}	
+                {/ifhook}
+                {elsehook rel="product.order-pdf-fulfilment-center-address"}
+                <p>	
+                    <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>  
+                    {hook name="order-delivery.pdf-localpickup" orderid=$order_id}<br />
+                </p>
                 {/elsehook}
 
                 {hook name="delivery.after-delivery-module" order=$order_id module_id=$DELIVERY_MODULE}
@@ -330,7 +331,7 @@
         </tr>
     </table>
 
-{hook name="delivery.after-summary" order=$order_id}
+    {hook name="delivery.after-summary" order=$order_id}
 
-{/loop}
+    {/loop}
 </page>

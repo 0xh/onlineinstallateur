@@ -60,33 +60,33 @@ CREATE TABLE if not exists `fulfilment_center_products`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- order_local_pickup
+-- order_local_pickup - moved to LocalPickup
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `order_local_pickup`
-(
-    `order_id` INTEGER,
-    `cart_id` INTEGER NOT NULL,
-    `product_id` INTEGER NOT NULL,
-    `fulfilment_center_id` INTEGER NOT NULL,
-    `quantity` INTEGER NOT NULL,
-    PRIMARY KEY (`cart_id`,`product_id`),
-    INDEX `FI_order_local_pickup_order_id` (`order_id`),
-    INDEX `fk_order_local_pickup_product_id` (`product_id`),
-    INDEX `fk_order_local_pickup_fulfilment_center_id` (`fulfilment_center_id`),
-    CONSTRAINT `fk_order_local_pickup_fulfilment_center_id`
-        FOREIGN KEY (`fulfilment_center_id`)
-        REFERENCES `fulfilment_center` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `fk_order_local_pickup_order_id`
-        FOREIGN KEY (`order_id`)
-        REFERENCES `order` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `fk_order_local_pickup_product_id`
-        FOREIGN KEY (`product_id`)
-        REFERENCES `product` (`id`)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+-- CREATE TABLE if not exists `order_local_pickup`
+-- (
+--     `order_id` INTEGER,
+--     `cart_id` INTEGER NOT NULL,
+--     `product_id` INTEGER NOT NULL,
+--     `fulfilment_center_id` INTEGER NOT NULL,
+--     `quantity` INTEGER NOT NULL,
+--     PRIMARY KEY (`cart_id`,`product_id`),
+--     INDEX `FI_order_local_pickup_order_id` (`order_id`),
+--     INDEX `fk_order_local_pickup_product_id` (`product_id`),
+--     INDEX `fk_order_local_pickup_fulfilment_center_id` (`fulfilment_center_id`),
+--     CONSTRAINT `fk_order_local_pickup_fulfilment_center_id`
+--         FOREIGN KEY (`fulfilment_center_id`)
+--         REFERENCES `fulfilment_center` (`id`)
+--         ON DELETE CASCADE,
+--     CONSTRAINT `fk_order_local_pickup_order_id`
+--         FOREIGN KEY (`order_id`)
+--         REFERENCES `order` (`id`)
+--         ON DELETE CASCADE,
+--     CONSTRAINT `fk_order_local_pickup_product_id`
+--         FOREIGN KEY (`product_id`)
+--         REFERENCES `product` (`id`)
+--         ON DELETE CASCADE
+-- ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
