@@ -85,11 +85,16 @@
 
                                                 {render_form_field field="selection_id"}
                                                 {render_form_field field="selection_container"}
-                                                {render_form_field field="selection_title" value=$SELECTION_TITLE}
+                                                {render_form_field field="selection_title"}
                                                 {render_form_field field="selection_chapo"}
                                                 {render_form_field field="selection_description" extra_class="wysiwyg"}
                                                 {render_form_field field="selection_postscriptum"}
 
+                                                {form_field form=$form field="locale"}
+                                                <div class="form-group">
+                                                    <input type="hidden" name="{$name}" id="{$label_attr.for}" class="form-control" value="{$value}" {if $required} required{/if}>
+                                                </div>
+                                {/form_field}
                                             </div>
                                             <div class="col-md-5 col-md-offset-1">
                                                 <div class="row">
