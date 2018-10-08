@@ -87,9 +87,9 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
 
     public function set_address(OrderEvent $event)
     {
-        if ($event->getOrder()->getDeliveryModuleId() === LocalPickup::getModCode()) {
-            $event->setDeliveryAddress(null);
-        }
+//         if ($event->getOrder()->getDeliveryModuleId() === LocalPickup::getModCode()) {
+//             $event->setDeliveryAddress(null);
+//         }
     }
 
     /**
