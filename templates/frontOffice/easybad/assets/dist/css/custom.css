@@ -80,39 +80,15 @@ h1.name{
 }
 
 /*WhisList*/
-.navbar-wish-list{
-    width: 5%;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    padding: 0px;
-    height: 40px;
-}
 .navbar .navbar-wish-list  li a.wish:after,
 .navbar .navbar-wish-list  li a.wish:before{
    content: none;
-}
-
-.navbar-default .navbar-wish-list >li{
-    height: 40px;
-    padding: 0px;
-    margin: 0px;
-    float: right;
-}
-.navbar-default .navbar-wish-list>li>a{
-    height: 40px;
-    padding: 0px;
-    margin: 0px;
-    padding-top: 4px;
-    background-color: #10B4CF;
-}
-.navbar-default .navbar-wish-list>li>a:hover{
-    background-color: #10B4CF !important;
 }
 .navbar .navbar-wish-list>li>a.wish, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account{
     line-height: unset;
     background-color: transparent;
 }
-.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
+.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hover{
     background-color: #10B4CF;
 }
 /*End WhisList*/
@@ -144,7 +120,6 @@ h1.name{
     height: 3.85rem;
     line-height: 1.4;
 }
-
 
 .grid #category-products .item>article .product-info .name:after {
     content: "";
@@ -253,13 +228,14 @@ h1.name{
     box-shadow: unset !important;
     background-color: #10B4CF;
 }
-.navbar.navbar-secondary .container .row{
-    margin-bottom: 15px;
-    margin-top: 15px;
-}
 .sec-nav{
     float: left;
     width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding-left: 15px;
+/*     padding-right: 15px; */
 }
 .navbar-brand {
     min-height: 46px;
@@ -287,9 +263,8 @@ h1.name{
 }
 
 .nav-darkBlue .navbar-nav > li > a{
-    line-height: 25px;
     color: white;
-    font-weight: 500;
+    font-weight: normal!important;
     padding: 0 18px;
     display: inline-block;
     cursor: pointer;
@@ -299,7 +274,22 @@ h1.name{
     border-bottom: 7px solid #DDE2E6;
     text-decoration: none;
 }
-
+.navbar-default .navbar-wish-list>li>a{
+    height: auto;
+    padding: 0px;
+    margin: 0px;
+    padding-top: 7px;
+    background-color: #10B4CF;
+}
+.navbar-default .navbar-wish-list>li>a:hover{
+    background-color: #10B4CF !important;
+}
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover{
+    color: #555 !important;
+    background-color: #fff !important;
+}
 /*End Custom EasyBad*/
 .highlighted-bg {
     color: #fff;
@@ -315,6 +305,12 @@ h1.name{
     color: #787882;
 
 }
+
+.navbar-wish-list .dropdown-menu {
+    margin: 0;
+    padding: 20px;
+}
+
 article#product{
     background:#FFF;
     padding:10px
@@ -376,7 +372,6 @@ section .product-image{
     position:relative;
 }
 
-
 @media screen and (min-width: 768px){
     .category-caption {
         left: 5%;
@@ -414,6 +409,7 @@ section .product-image{
 
 .search-container {
     margin-bottom: 0px!important;
+    margin-top: 10px!important;
 }
 
 @media (min-width: 992px) {
@@ -427,19 +423,14 @@ section .product-image{
     text-transform: uppercase;
 }
 
-.dropdown-menu {
-   border:unset!important;
-}
-
 /*Easybad mobile Menu*/
-.navbar-wish-list .open{
-    float: none !important;
+.navbar-form {
+    box-shadow: unset;
 }
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 992px) {
     .navbar-header{
         display: none;
     }
-
     .navbar-categories{
         display: block;
         width: 100%;
@@ -454,6 +445,7 @@ section .product-image{
         padding-top: 10px !important;
         padding-bottom: 10px !important;
         line-height: 2vw !important;
+        font-size: 1.2em !important;
     }
     .nav-darkBlue .navbar-nav > li:hover{
         border-bottom: 0px !important;
@@ -469,6 +461,54 @@ section .product-image{
     }
     .navbar-wish-list{
         float: left !important;
+    }   
+    .sec-nav .navbar-header-brand{
+        order: 1;
+    }
+    .sec-nav .navbar-customer{
+        order: 2;
+    }
+    .sec-nav .navbar-cart{
+        order: 3;
+    }
+    .sec-nav .navbar-wish-list{
+        order: 4;
+    }
+    .sec-nav .navbar-toggle{
+        order: 5;
+    }
+    .sec-nav .search-container{
+        order: 6;
+    }
+    .sec-nav .navbar-header-brand,
+    .sec-nav .navbar-customer,
+    .sec-nav .navbar-cart,
+    .sec-nav .navbar-wish-list,
+    .sec-nav .navbar-toggle{
+        display: block;      
+        float: right !important;
+        clear: both;
+    }
+    .sec-nav .navbar-toggle{
+        display: block;
+        position: absolute;
+        padding-right: 10px;
+        margin-right: 0px;
+        margin-bottom: 5px;
+        background-color: #347C92;
+    }
+    .navbar-default .navbar-toggle .icon-bar {
+        background-color: #fff;
+    }
+    .navbar-header-brand .navbar-brand{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-top: 5px;
+    }
+    .sec-nav .navbar-toggle{
+        right: 15px
     }
     .search-container{
         padding-left: 0px;
@@ -478,37 +518,41 @@ section .product-image{
         margin-top: 0px;
         margin-left: 0px;
         margin-right: 0px;
-        border-bottom-width: 0px;
         width: 100% !important;
     }
     .search-container #form-search{
         padding-left: 0px;
         width: 100% !important;
+        margin-bottom: 0px;
     }
     .search-container #form-search #q{
-        width: 93.5% !important;
+        width: 100% !important;
     }
     .search-container #form-search .btn-search{
+        display: block;
         position: absolute;
+        right: 15px;
     }
-    .navbar-default .navbar-toggle{
-        margin-top: 25px;
-        margin-bottom: 5px;
-        background-color: #347C92;
+
+    .navbar .navbar-cart .dropdown-menu,
+    .navbar .navbar-customer .dropdown-menu, 
+    .navbar .wish-container .dropdown-menu{
+        display: none
     }
-    .navbar-default .navbar-toggle .icon-bar {
-        background-color: #fff;
+    .cart .badge, .cart-not-empty .badge{
+        transform: translate(-147%, 7%) !important;
     }
 }
+
 @media screen and (min-width: 992px){
     .header .nav-darkBlue{
-        min-height: 40px;
+        min-height: 32px;
     }
     .header .nav-darkBlue ul{
         width: 100%;
         text-align: justify;
         display: table;
-        padding-top: 8px;
+        padding-top: 5px;
     }
     .header .nav-darkBlue ul>li{
         display: table-cell;
@@ -521,11 +565,7 @@ section .product-image{
 @media screen and (max-width: 750px){
     .navbar-secondary .navbar-customer,
     .navbar-secondary .navbar-car{
-        padding-right: 10px;       
-        min-width: 40px;
-    }
-    .navbar-secondary .navbar-wish-list{
-        padding-left: 10px;       
+/*         padding-right: 10px;        */
         min-width: 40px;
     }
 }
@@ -537,11 +577,17 @@ section .product-image{
         float: left;
     }
 }
+
+@media (max-width: 450px){
+    .navbar-header-brand .navbar-brand img{
+        width: 110px;
+        margin-top: 12px;
+    }
+}
+
 /*End Easybad mobile Menu*/
 
-
 /*Inspiration Page*/
-
 .inspiration-header{
 	background- width:100%;
 	max-height:550px;
@@ -559,4 +605,19 @@ section .product-image{
 }
 .border-top{
 	border-top:#CCC solid 1px;
+}
+
+.badge-counter{
+    position: absolute;	
+    left: 50%;
+    top:10%;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1rem;
+    line-height: 17px;
+    color: #fff;
+    background-color: #58585a;
 }

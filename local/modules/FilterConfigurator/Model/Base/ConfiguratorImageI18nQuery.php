@@ -17,7 +17,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'configurator_image_i18n' table.
+ * Base class that represents a query for the 'filterconfigurator_configurator_image_i18n' table.
  *
  * 
  *
@@ -147,7 +147,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM configurator_image_i18n WHERE ID = :p0 AND LOCALE = :p1';
+        $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM filterconfigurator_configurator_image_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
@@ -530,7 +530,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the configurator_image_i18n table.
+     * Deletes all rows from the filterconfigurator_configurator_image_i18n table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

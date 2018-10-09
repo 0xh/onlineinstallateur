@@ -18,10 +18,11 @@
 .carousel_custom_caption h3{
     text-transform: uppercase;
     color: #0b8fad;
-    font-size: 5vw;
+    font-size: 4.2vw;
     font-weight: 600;
     margin-left: 15px;
     text-align: left;
+    word-wrap: break-word;
 }
 
 .carousel_custom_caption .slide_description{
@@ -30,6 +31,7 @@
     margin-left: 15px;
     text-align: left;
     color: #5e6366;
+    word-wrap: break-word;
 }
 .carousel_wrapper .controls{
     width: 79%;

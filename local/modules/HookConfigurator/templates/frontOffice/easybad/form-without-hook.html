@@ -3,7 +3,7 @@
         {form name="hookconfig.form.configure"}
 
         <div class="alert alert-success hide"></div>
-        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post" class="dropzone" enctype="multipart/form-data" id="regiration-form">
+        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post" class="dropzone" enctype="multipart/form-data" id="registration-form">
             {form_hidden_fields form=$form}
             {if $form_error}
                 <div class="alert alert-danger">{$form_error_message}</div>
@@ -18,7 +18,6 @@
             {assign var=current_slide value=1}
             {assign var=last_slide value=$arrElements|@count}}
             {foreach $arrElements as $element}
-
                 <fieldset row item-number={$current_slide} style="background-image: url({$background_image}); background-size: cover;">
                           {if  $current_slide !=1 }
                               <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

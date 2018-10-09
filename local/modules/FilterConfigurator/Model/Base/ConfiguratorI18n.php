@@ -877,7 +877,7 @@ abstract class ConfiguratorI18n implements ActiveRecordInterface
         }
 
         $sql = sprintf(
-            'INSERT INTO configurator_i18n (%s) VALUES (%s)',
+            'INSERT INTO filterconfigurator_configurator_i18n (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );

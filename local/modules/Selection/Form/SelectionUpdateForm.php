@@ -109,6 +109,16 @@ class SelectionUpdateForm extends BaseForm
                 )
             )
             ->add(
+                'locale',
+                'text',
+                [
+                    'label' => Translator::getInstance()->trans('Locale'),
+                    'label_attr' => [
+                        'for' => 'locale'
+                    ]
+                ]
+            )
+            ->add(
                 'save_mode',
                 SubmitType::class,
                 array(

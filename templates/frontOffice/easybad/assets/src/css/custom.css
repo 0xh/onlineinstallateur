@@ -45,6 +45,14 @@ figure.effect-honey h2 i {
   display:block
 }
 
+.inspiration-bath-size-style {
+    opacity: 0;
+}
+
+figure.effect-honey:hover .inspiration-bath-size-style {
+    opacity: 1;
+}
+
 figure.effect-honey h2 i.bath-size-style {
   font-size:14px;
    padding:10px;

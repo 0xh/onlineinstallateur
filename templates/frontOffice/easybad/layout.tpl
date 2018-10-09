@@ -235,15 +235,15 @@ web : http://www.hausfabrik.at
             <div class="navbar navbar-default navbar-secondary" id="navbar-secondary" itemscope itemtype="http://schema.org/SiteNavigationElement">
                 <div class="container">
                     <div class="row">
-                        <div class="navbar-header-brand col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                            <a class="navbar-brand " href="{navigate to="index"}">
-                                <img src="{image file='assets/dist/img/easybadlogo.png'}" alt="{$store_name}">
-                            </a>
-                        </div>
                         {ifhook rel="main.navbar-secondary"}
                         {* Place everything within .nav-collapse to hide it until above 768px *}
-                        <div class="secondary-nav col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="secondary-nav">
                             <nav class="sec-nav"  role="navigation" aria-label="{intl l="Secondary Navigation"}"><!-- add class="navbar-collapse collapse" for mobile menu  -->
+                                <div class="navbar-header-brand">
+                                    <a class="navbar-brand " href="{navigate to="index"}">
+                                        <img src="{image file='assets/dist/img/easybadlogo.png'}" alt="{$store_name}">
+                                    </a>
+                                </div>
                                 {hook name="main.navbar-secondary"}
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary">
                                     <span class="sr-only">{intl l="Toggle navigation" d="hooknavigation.fo.default"}</span>
@@ -444,7 +444,6 @@ web : http://www.hausfabrik.at
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/localization/messages_{$lang_code}.js"></script>
 {/if}
 
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></script>
 {javascripts file="assets/dist/js/vendors/bootstrap.min.js"}
 <script>if (typeof ($.fn.modal) === 'undefined') {
         document.write('<script src="{$asset_url}"><\/script>');

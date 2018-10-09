@@ -84,6 +84,7 @@ $(document).ready(function () {
                 .html(' Frage ' + current_progress + '/' + $(".multistepForm fieldset").length + '&nbsp;&nbsp;&nbsp;');
     }
 
+    Dropzone.autoDiscover = false;
     Dropzone.options.registrationForm = {
 
         // Prevents Dropzone from uploading dropped files immediately
@@ -129,7 +130,7 @@ $(document).ready(function () {
         }
     };
 
-    Dropzone.autoDiscover = false;
+    
     if($("#dropzonePreview").size() > 0)
     $("#registration-form").dropzone();
 });

@@ -1,104 +1,80 @@
 {extends file="layout.tpl"}
 
-{* Body Class *}
-{block name="body-class"}page-konfigurator{/block}
+{block name="full_with_block"}
+    {hook name="full_with_block.diyratgeber"}
+    <div class="main" id="diyratgeber">
+    <div data-artikelthreecategories="" data-nomorelink="true">  <div class="outer-container bg-gray hr-gradient as-bg">
+            <div class="contact_persons">
+                <h3><span>DO IT YOURSELF</span></h3>
+                <div class="row">
+                    <div class="media-wrapper col-sm-4">
+                        <div class="media">
+                            <div id="carouselpicture2">
+                                <img class="media-object" >
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
+                                <h3 class="head media-head">WC-Sitz montieren</h3>
+                                <p class="media-text">Du willst deinen alten WC-Sitz austauschen oder baust ein neues WC? 
+                                    Es gibt eine vielzahl von Modellen, die jedoch alle sehr ähnlich in der Montage sind.
+                                    Mit unserer DIY... </p>
+                                <a href="wc-sitz-montieren" class="raquo">» ARTIKEL LESEN</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media-wrapper col-sm-4">
+                        <div class="media">
+                            <div id="carouselpicture1">
+                                <img class="media-object" >
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
+                                <h3 class="head media-head" >Waschtischarmaturen montieren</h3>
+                                <p  class="media-text">Die alte Armatur macht Probleme und gehört ausgetauscht. Damit dir das einfach gelingt, haben wir eine einfache Schritt-Für-Schritt-Anleitung für dich.</p>
+                                <a href="waschtischarmaturen-montieren" class="raquo">» ARTIKEL LESEN</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="media-wrapper col-sm-4">
+                        <div class="media">
+                            <div id="carouselpicture3">
+                                <img class="media-object"  >
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
+                                <h3 class="head media-head" >Duschschlauch wechseln</h3>
+                                <p class="media-text">Dein Duschschlauch hat ein Loch, ist verkalkt oder nicht mehr schön?
+                                    Mit unseren Tipps kannst du deinen Duschschlauch in nur wenigen Minuten tauschen.
+                                </p>
+                                <a href="duschschlauch-wechseln" class="raquo">» ARTIKEL LESEN</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
 
 {* Breadcrumb *}
-{block name='no-return-functions' append}
-    {$breadcrumbs = [['title' => {intl l="DIY RATGEBER" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/diyratgeber"}]]}
-{/block}
+{block name='breadcrumb'}{/block}
 
+{* Body Class *}
+{block name="body-class"}page-doit{/block}
 {block name="main-content"}
-
-
-
-<div class="main">
-            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
     
-    {hook name="carousel-placement" carousel_id=6}
-    
-<div data-artikelthreecategories="" data-nomorelink="true">  <div class="outer-container bg-gray hr-gradient as-bg">
-    <div class="container contact_persons">
-      <h3><span>DO IT YOURSELF</span></h3>
-      <div class="row">
-        <div class="media-wrapper col-sm-4">
-          <div class="media">
-            <div id="carouselpicture2">
-              <img class="media-object" >
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
-              <h3 class="head" style="margin:0;text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;    max-width: 286px; line-height: inherit;">WC-Sitz montieren</h3>
-              <p data-description="" style="word-wrap: break-word;">Du willst deinen alten WC-Sitz austauschen oder baust ein neues WC? 
-Es gibt eine vielzahl von Modellen, die jedoch alle sehr ähnlich in der Montage sind.
-Mit unserer DIY... </p>
-              <a href="wc-sitz-montieren" class="raquo" style="position: absolute;bottom: 35px;">ARTIKEL LESEN</a>
-            </div>
-          </div>
-        </div>
-        <div class="media-wrapper col-sm-4">
-          <div class="media">
-            <div id="carouselpicture1">
-              <img class="media-object" >
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
-              <h3 class="head" style="margin:0;text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;    max-width: 286px; line-height: inherit;">Waschtischarmaturen montieren</h3>
-              <p data-description="" style="word-wrap: break-word;">Die alte Armatur macht Probleme und gehört ausgetauscht. Damit dir das einfach gelingt, haben wir eine einfache Schritt-Für-Schritt-Anleitung für dich.</p>
-              <a href="waschtischarmaturen-montieren" class="raquo" style="position: absolute;bottom: 35px;">ARTIKEL LESEN</a>
-            </div>
-          </div>
-        </div>
-        <div class="media-wrapper col-sm-4">
-          <div class="media" style="height:416px;">
-            <div id="carouselpicture3">
-              <img class="media-object"  >
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading top"><strong>DO IT YOURSELF</strong></h5>
-              <h3 class="head" style="margin:0;text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: block;    max-width: 286px; line-height: inherit;">Duschschlauch wechseln</h3>
-              <p data-description="" style="word-wrap: break-word;">Dein Duschschlauch hat ein Loch, ist verkalkt oder nicht mehr schön?
-Mit unseren Tipps kannst du deinen Duschschlauch in nur wenigen Minuten tauschen.
-</p>
-              <a href="duschschlauch-wechseln" class="raquo" style="position: absolute;bottom: 35px;">ARTIKEL LESEN</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-    
-           
-</div><!-- /.layout -->
 {/block}
-
-
 
 {block name="stylesheet"}
-
 {hook name="register.stylesheet"}
 {stylesheets file='assets/dist/css/easybadsogehts.css'}
-        <link rel="stylesheet" href="{$asset_url}">
-    {/stylesheets}
-
+<link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}
 {/block}
-
-
 {block name="after-javascript-include"}
-
-
-
-
-
-
-
-
 {hook name="register.after-javascript-include"}
-
 {/block}
-
 {block name="javascript-initialization"}
 {hook name="register.javascript-initialization"}
 {/block}

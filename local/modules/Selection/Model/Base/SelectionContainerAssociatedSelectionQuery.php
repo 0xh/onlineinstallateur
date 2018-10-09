@@ -19,7 +19,7 @@ use Selection\Model\Map\SelectionContainerAssociatedSelectionTableMap;
 /**
  * Base class that represents a query for the 'selection_container_associated_selection' table.
  *
- *
+ * 
  *
  * @method     ChildSelectionContainerAssociatedSelectionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionContainerAssociatedSelectionQuery orderBySelectionContainerId($order = Criteria::ASC) Order by the selection_container_id column
@@ -63,7 +63,7 @@ use Selection\Model\Map\SelectionContainerAssociatedSelectionTableMap;
  */
 abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
 {
-
+    
     /**
      * Initializes internal state of \Selection\Model\Base\SelectionContainerAssociatedSelectionQuery object.
      *
@@ -149,7 +149,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, SELECTION_CONTAINER_ID, SELECTION_ID, CREATED_AT, UPDATED_AT FROM selection_container_associated_selection WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);
+            $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -675,10 +675,10 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-
+            
 
         SelectionContainerAssociatedSelectionTableMap::removeInstanceFromPool($criteria);
-
+        
             $affectedRows += ModelCriteria::delete($con);
             SelectionContainerAssociatedSelectionTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -691,7 +691,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     }
 
     // timestampable behavior
-
+    
     /**
      * Filter by the latest updated
      *
@@ -703,7 +703,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerAssociatedSelectionTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Filter by the latest created
      *
@@ -715,7 +715,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         return $this->addUsingAlias(SelectionContainerAssociatedSelectionTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-
+    
     /**
      * Order by update date desc
      *
@@ -725,7 +725,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerAssociatedSelectionTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by update date asc
      *
@@ -735,7 +735,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(SelectionContainerAssociatedSelectionTableMap::UPDATED_AT);
     }
-
+    
     /**
      * Order by create date desc
      *
@@ -745,7 +745,7 @@ abstract class SelectionContainerAssociatedSelectionQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(SelectionContainerAssociatedSelectionTableMap::CREATED_AT);
     }
-
+    
     /**
      * Order by create date asc
      *

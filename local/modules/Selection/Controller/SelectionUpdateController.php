@@ -331,6 +331,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
      */
     protected function hydrateObjectForm( $selection )
         {
+            /*die("hyd");*/
         $this->hydrateSeoForm($selection);
         $associatedContainer = $selection->getSelectionContainerAssociatedSelections();
         $container = null;
@@ -342,6 +343,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
             'selection_id' => $selection->getId(),
             'selection_container' => $container,
             'id' => $selection->getId(),
+            'selection_title' => $selection->getTitle(),
             'locale' => $selection->getLocale(),
             'selection_chapo' => $selection->getChapo(),
             'selection_description' => $selection->getDescription(),
@@ -375,7 +377,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
         $event->setChapo($formData['selection_chapo']);
         $event->setDescription($formData['selection_description']);
         $event->setPostscriptum($formData['selection_postscriptum']);
-        $event->setLocale($this->getRequest()->getSession()->get('thelia.current.lang')->getLocale());
+        $event->setLocale($formData['locale']);
         return $event;
         }
 

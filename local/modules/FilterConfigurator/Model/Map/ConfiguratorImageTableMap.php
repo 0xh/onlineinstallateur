@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'configurator_image' table.
+ * This class defines the structure of the 'filterconfigurator_configurator_image' table.
  *
  *
  *
@@ -43,7 +43,7 @@ class ConfiguratorImageTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'configurator_image';
+    const TABLE_NAME = 'filterconfigurator_configurator_image';
 
     /**
      * The related Propel class for this table
@@ -73,37 +73,37 @@ class ConfiguratorImageTableMap extends TableMap
     /**
      * the column name for the ID field
      */
-    const ID = 'configurator_image.ID';
+    const ID = 'filterconfigurator_configurator_image.ID';
 
     /**
      * the column name for the CONFIGURATOR_ID field
      */
-    const CONFIGURATOR_ID = 'configurator_image.CONFIGURATOR_ID';
+    const CONFIGURATOR_ID = 'filterconfigurator_configurator_image.CONFIGURATOR_ID';
 
     /**
      * the column name for the FILE field
      */
-    const FILE = 'configurator_image.FILE';
+    const FILE = 'filterconfigurator_configurator_image.FILE';
 
     /**
      * the column name for the VISIBLE field
      */
-    const VISIBLE = 'configurator_image.VISIBLE';
+    const VISIBLE = 'filterconfigurator_configurator_image.VISIBLE';
 
     /**
      * the column name for the POSITION field
      */
-    const POSITION = 'configurator_image.POSITION';
+    const POSITION = 'filterconfigurator_configurator_image.POSITION';
 
     /**
      * the column name for the CREATED_AT field
      */
-    const CREATED_AT = 'configurator_image.CREATED_AT';
+    const CREATED_AT = 'filterconfigurator_configurator_image.CREATED_AT';
 
     /**
      * the column name for the UPDATED_AT field
      */
-    const UPDATED_AT = 'configurator_image.UPDATED_AT';
+    const UPDATED_AT = 'filterconfigurator_configurator_image.UPDATED_AT';
 
     /**
      * The default string format for model objects of the related table
@@ -150,14 +150,14 @@ class ConfiguratorImageTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('configurator_image');
+        $this->setName('filterconfigurator_configurator_image');
         $this->setPhpName('ConfiguratorImage');
         $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorImage');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('CONFIGURATOR_ID', 'ConfiguratorId', 'INTEGER', 'configurator', 'ID', true, null, null);
+        $this->addForeignKey('CONFIGURATOR_ID', 'ConfiguratorId', 'INTEGER', 'filterconfigurator_configurator', 'ID', true, null, null);
         $this->addColumn('FILE', 'File', 'VARCHAR', true, 255, null);
         $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 1);
         $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
@@ -187,7 +187,7 @@ class ConfiguratorImageTableMap extends TableMap
         );
     } // getBehaviors()
     /**
-     * Method to invalidate the instance pool of all tables related to configurator_image     * by a foreign key with ON DELETE CASCADE
+     * Method to invalidate the instance pool of all tables related to filterconfigurator_configurator_image     * by a foreign key with ON DELETE CASCADE
      */
     public static function clearRelatedInstancePool()
     {
@@ -415,7 +415,7 @@ class ConfiguratorImageTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the configurator_image table.
+     * Deletes all rows from the filterconfigurator_configurator_image table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).

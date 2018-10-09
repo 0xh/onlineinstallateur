@@ -129,7 +129,7 @@
 
 .cc_container .cc_btn,.cc_container .cc_btn:visited {
     color: #fff;
-    background-color: #86ac34;
+    background-color: #10B4CF;
     transition: background 200ms ease-in-out,color 200ms ease-in-out,box-shadow 200ms ease-in-out;
     -webkit-transition: background 200ms ease-in-out,color 200ms ease-in-out,box-shadow 200ms ease-in-out;
     border-radius: 5px;
@@ -143,12 +143,12 @@
 
 .cc_container a,.cc_container a:visited {
     text-decoration: none;
-    color: #86ac34;
+    color: #10B4CF;
     transition: 200ms color
 }
 
 .cc_container a:hover,.cc_container a:active {
-    color: #86ac34
+    color: #10B4CF;
 }
 
 @-webkit-keyframes slideDown {

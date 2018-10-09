@@ -34,6 +34,7 @@
                                         {intl l="Expected delivery date: %delivery_date" delivery_date={format_date date=$DELIVERY_DATE output="date"}}
                                     </span>
                                 {/if}
+                                
                                 {hook name="order-delivery.method.help-block" whoisallowed="$ID"}
                             </p>
                         </label>

@@ -1454,7 +1454,7 @@
     return element.dropzone;
   };
 
-  Dropzone.autoDiscover = true;
+  Dropzone.autoDiscover = false;
 
   Dropzone.discover = function() {
 
