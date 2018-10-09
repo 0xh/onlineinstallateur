@@ -4,10 +4,12 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
--- brand_matching_partners
+-- wholesale_partner_brand_matching
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `brand_matching_partners`
+DROP TABLE IF EXISTS `wholesale_partner_brand_matching`;
+
+CREATE TABLE `wholesale_partner_brand_matching`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `brand_intern` INTEGER,
@@ -15,16 +17,43 @@ CREATE TABLE if not exists `brand_matching_partners`
     `partner_id` INTEGER,
     `brand_code` VARCHAR(45),
     PRIMARY KEY (`id`),
-    INDEX `FI_brand_intern` (`brand_intern`),
-    CONSTRAINT `fk_brand_intern`
+    INDEX `FI_brand_internally` (`brand_intern`),
+    CONSTRAINT `fk_brand_internally`
         FOREIGN KEY (`brand_intern`)
         REFERENCES `brand` (`id`)
-)ENGINE=InnoDB;
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
+-- ---------------------------------------------------------------------
+-- wholesale_partner_category_matching
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `wholesale_partner_category_matching`;
+
+CREATE TABLE `wholesale_partner_category_matching`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `category_intern_id` INTEGER,
+    `category_intern_name` VARCHAR(45),
+    `category_extern_id` VARCHAR(45),
+    `category_extern_name` VARCHAR(45),
+    `partner_id` INTEGER,
+    `category_id` VARCHAR(45),
+    PRIMARY KEY (`id`),
+    INDEX `FI_category_intern` (`category_intern_id`),
+    CONSTRAINT `fk_category_intern`
+        FOREIGN KEY (`category_intern_id`)
+        REFERENCES `category` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- wholesale_partner
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner`
+DROP TABLE IF EXISTS `wholesale_partner`;
+
+CREATE TABLE `wholesale_partner`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255),
@@ -47,7 +76,9 @@ CREATE TABLE if not exists `wholesale_partner`
 -- wholesale_partner_contact_person
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner_contact_person`
+DROP TABLE IF EXISTS `wholesale_partner_contact_person`;
+
+CREATE TABLE `wholesale_partner_contact_person`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` INTEGER NOT NULL,
@@ -74,7 +105,9 @@ CREATE TABLE if not exists `wholesale_partner_contact_person`
 -- wholesale_partner_product
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner_product`
+DROP TABLE IF EXISTS `wholesale_partner_product`;
+
+CREATE TABLE `wholesale_partner_product`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `partner_id` INTEGER,
@@ -98,7 +131,9 @@ CREATE TABLE if not exists `wholesale_partner_product`
 -- order_product_revenue
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `order_product_revenue`
+DROP TABLE IF EXISTS `order_product_revenue`;
+
+CREATE TABLE `order_product_revenue`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER,
@@ -113,7 +148,9 @@ CREATE TABLE if not exists `order_product_revenue`
 -- order_revenue
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `order_revenue`
+DROP TABLE IF EXISTS `order_revenue`;
+
+CREATE TABLE `order_revenue`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `order_id` INTEGER,
@@ -133,7 +170,9 @@ CREATE TABLE if not exists `order_revenue`
 -- wholesale_partner_version
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner_version`
+DROP TABLE IF EXISTS `wholesale_partner_version`;
+
+CREATE TABLE `wholesale_partner_version`
 (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(255),
@@ -160,7 +199,9 @@ CREATE TABLE if not exists `wholesale_partner_version`
 -- wholesale_partner_contact_person_version
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner_contact_person_version`
+DROP TABLE IF EXISTS `wholesale_partner_contact_person_version`;
+
+CREATE TABLE `wholesale_partner_contact_person_version`
 (
     `id` INTEGER NOT NULL,
     `title` INTEGER NOT NULL,
@@ -185,7 +226,9 @@ CREATE TABLE if not exists `wholesale_partner_contact_person_version`
 -- wholesale_partner_product_version
 -- ---------------------------------------------------------------------
 
-CREATE TABLE if not exists `wholesale_partner_product_version`
+DROP TABLE IF EXISTS `wholesale_partner_product_version`;
+
+CREATE TABLE `wholesale_partner_product_version`
 (
     `id` INTEGER NOT NULL,
     `partner_id` INTEGER,

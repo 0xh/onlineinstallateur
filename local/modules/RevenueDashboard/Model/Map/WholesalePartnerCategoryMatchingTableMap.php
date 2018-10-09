@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use RevenueDashboard\Model\BrandMatchingPartners;
-use RevenueDashboard\Model\BrandMatchingPartnersQuery;
+use RevenueDashboard\Model\WholesalePartnerCategoryMatching;
+use RevenueDashboard\Model\WholesalePartnerCategoryMatchingQuery;
 
 
 /**
- * This class defines the structure of the 'brand_matching_partners' table.
+ * This class defines the structure of the 'wholesale_partner_category_matching' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use RevenueDashboard\Model\BrandMatchingPartnersQuery;
  * (i.e. if it's a text column type).
  *
  */
-class BrandMatchingPartnersTableMap extends TableMap
+class WholesalePartnerCategoryMatchingTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'RevenueDashboard.Model.Map.BrandMatchingPartnersTableMap';
+    const CLASS_NAME = 'RevenueDashboard.Model.Map.WholesalePartnerCategoryMatchingTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class BrandMatchingPartnersTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'brand_matching_partners';
+    const TABLE_NAME = 'wholesale_partner_category_matching';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\RevenueDashboard\\Model\\BrandMatchingPartners';
+    const OM_CLASS = '\\RevenueDashboard\\Model\\WholesalePartnerCategoryMatching';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'RevenueDashboard.Model.BrandMatchingPartners';
+    const CLASS_DEFAULT = 'RevenueDashboard.Model.WholesalePartnerCategoryMatching';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,32 +68,42 @@ class BrandMatchingPartnersTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'brand_matching_partners.ID';
+    const ID = 'wholesale_partner_category_matching.ID';
 
     /**
-     * the column name for the BRAND_INTERN field
+     * the column name for the CATEGORY_INTERN_ID field
      */
-    const BRAND_INTERN = 'brand_matching_partners.BRAND_INTERN';
+    const CATEGORY_INTERN_ID = 'wholesale_partner_category_matching.CATEGORY_INTERN_ID';
 
     /**
-     * the column name for the BRAND_EXTERN field
+     * the column name for the CATEGORY_INTERN_NAME field
      */
-    const BRAND_EXTERN = 'brand_matching_partners.BRAND_EXTERN';
+    const CATEGORY_INTERN_NAME = 'wholesale_partner_category_matching.CATEGORY_INTERN_NAME';
+
+    /**
+     * the column name for the CATEGORY_EXTERN_ID field
+     */
+    const CATEGORY_EXTERN_ID = 'wholesale_partner_category_matching.CATEGORY_EXTERN_ID';
+
+    /**
+     * the column name for the CATEGORY_EXTERN_NAME field
+     */
+    const CATEGORY_EXTERN_NAME = 'wholesale_partner_category_matching.CATEGORY_EXTERN_NAME';
 
     /**
      * the column name for the PARTNER_ID field
      */
-    const PARTNER_ID = 'brand_matching_partners.PARTNER_ID';
+    const PARTNER_ID = 'wholesale_partner_category_matching.PARTNER_ID';
 
     /**
-     * the column name for the BRAND_CODE field
+     * the column name for the CATEGORY_ID field
      */
-    const BRAND_CODE = 'brand_matching_partners.BRAND_CODE';
+    const CATEGORY_ID = 'wholesale_partner_category_matching.CATEGORY_ID';
 
     /**
      * The default string format for model objects of the related table
@@ -107,12 +117,12 @@ class BrandMatchingPartnersTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'BrandIntern', 'BrandExtern', 'PartnerId', 'BrandCode', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'brandIntern', 'brandExtern', 'partnerId', 'brandCode', ),
-        self::TYPE_COLNAME       => array(BrandMatchingPartnersTableMap::ID, BrandMatchingPartnersTableMap::BRAND_INTERN, BrandMatchingPartnersTableMap::BRAND_EXTERN, BrandMatchingPartnersTableMap::PARTNER_ID, BrandMatchingPartnersTableMap::BRAND_CODE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'BRAND_INTERN', 'BRAND_EXTERN', 'PARTNER_ID', 'BRAND_CODE', ),
-        self::TYPE_FIELDNAME     => array('id', 'brand_intern', 'brand_extern', 'partner_id', 'brand_code', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'CategoryInternId', 'CategoryInternName', 'CategoryExternId', 'CategoryExternName', 'PartnerId', 'CategoryCode', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'categoryInternId', 'categoryInternName', 'categoryExternId', 'categoryExternName', 'partnerId', 'categoryCode', ),
+        self::TYPE_COLNAME       => array(WholesalePartnerCategoryMatchingTableMap::ID, WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID, WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME, WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID, WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME, WholesalePartnerCategoryMatchingTableMap::PARTNER_ID, WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CATEGORY_INTERN_ID', 'CATEGORY_INTERN_NAME', 'CATEGORY_EXTERN_ID', 'CATEGORY_EXTERN_NAME', 'PARTNER_ID', 'CATEGORY_ID', ),
+        self::TYPE_FIELDNAME     => array('id', 'category_intern_id', 'category_intern_name', 'category_extern_id', 'category_extern_name', 'partner_id', 'category_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -122,12 +132,12 @@ class BrandMatchingPartnersTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'BrandIntern' => 1, 'BrandExtern' => 2, 'PartnerId' => 3, 'BrandCode' => 4, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'brandIntern' => 1, 'brandExtern' => 2, 'partnerId' => 3, 'brandCode' => 4, ),
-        self::TYPE_COLNAME       => array(BrandMatchingPartnersTableMap::ID => 0, BrandMatchingPartnersTableMap::BRAND_INTERN => 1, BrandMatchingPartnersTableMap::BRAND_EXTERN => 2, BrandMatchingPartnersTableMap::PARTNER_ID => 3, BrandMatchingPartnersTableMap::BRAND_CODE => 4, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'BRAND_INTERN' => 1, 'BRAND_EXTERN' => 2, 'PARTNER_ID' => 3, 'BRAND_CODE' => 4, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'brand_intern' => 1, 'brand_extern' => 2, 'partner_id' => 3, 'brand_code' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'CategoryInternId' => 1, 'CategoryInternName' => 2, 'CategoryExternId' => 3, 'CategoryExternName' => 4, 'PartnerId' => 5, 'CategoryCode' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'categoryInternId' => 1, 'categoryInternName' => 2, 'categoryExternId' => 3, 'categoryExternName' => 4, 'partnerId' => 5, 'categoryCode' => 6, ),
+        self::TYPE_COLNAME       => array(WholesalePartnerCategoryMatchingTableMap::ID => 0, WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID => 1, WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME => 2, WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID => 3, WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME => 4, WholesalePartnerCategoryMatchingTableMap::PARTNER_ID => 5, WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CATEGORY_INTERN_ID' => 1, 'CATEGORY_INTERN_NAME' => 2, 'CATEGORY_EXTERN_ID' => 3, 'CATEGORY_EXTERN_NAME' => 4, 'PARTNER_ID' => 5, 'CATEGORY_ID' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'category_intern_id' => 1, 'category_intern_name' => 2, 'category_extern_id' => 3, 'category_extern_name' => 4, 'partner_id' => 5, 'category_id' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -140,17 +150,19 @@ class BrandMatchingPartnersTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('brand_matching_partners');
-        $this->setPhpName('BrandMatchingPartners');
-        $this->setClassName('\\RevenueDashboard\\Model\\BrandMatchingPartners');
+        $this->setName('wholesale_partner_category_matching');
+        $this->setPhpName('WholesalePartnerCategoryMatching');
+        $this->setClassName('\\RevenueDashboard\\Model\\WholesalePartnerCategoryMatching');
         $this->setPackage('RevenueDashboard.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('BRAND_INTERN', 'BrandIntern', 'INTEGER', 'brand', 'ID', false, null, null);
-        $this->addColumn('BRAND_EXTERN', 'BrandExtern', 'VARCHAR', false, 45, null);
+        $this->addForeignKey('CATEGORY_INTERN_ID', 'CategoryInternId', 'INTEGER', 'category', 'ID', false, null, null);
+        $this->addColumn('CATEGORY_INTERN_NAME', 'CategoryInternName', 'VARCHAR', false, 45, null);
+        $this->addColumn('CATEGORY_EXTERN_ID', 'CategoryExternId', 'VARCHAR', false, 45, null);
+        $this->addColumn('CATEGORY_EXTERN_NAME', 'CategoryExternName', 'VARCHAR', false, 45, null);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
-        $this->addColumn('BRAND_CODE', 'BrandCode', 'VARCHAR', false, 45, null);
+        $this->addColumn('CATEGORY_ID', 'CategoryCode', 'VARCHAR', false, 45, null);
     } // initialize()
 
     /**
@@ -158,7 +170,7 @@ class BrandMatchingPartnersTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Brand', '\\Thelia\\Model\\Brand', RelationMap::MANY_TO_ONE, array('brand_intern' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Category', '\\Thelia\\Model\\Category', RelationMap::MANY_TO_ONE, array('category_intern_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -217,7 +229,7 @@ class BrandMatchingPartnersTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? BrandMatchingPartnersTableMap::CLASS_DEFAULT : BrandMatchingPartnersTableMap::OM_CLASS;
+        return $withPrefix ? WholesalePartnerCategoryMatchingTableMap::CLASS_DEFAULT : WholesalePartnerCategoryMatchingTableMap::OM_CLASS;
     }
 
     /**
@@ -231,21 +243,21 @@ class BrandMatchingPartnersTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (BrandMatchingPartners object, last column rank)
+     * @return array (WholesalePartnerCategoryMatching object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = BrandMatchingPartnersTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = BrandMatchingPartnersTableMap::getInstanceFromPool($key))) {
+        $key = WholesalePartnerCategoryMatchingTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = WholesalePartnerCategoryMatchingTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + BrandMatchingPartnersTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + WholesalePartnerCategoryMatchingTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = BrandMatchingPartnersTableMap::OM_CLASS;
+            $cls = WholesalePartnerCategoryMatchingTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            BrandMatchingPartnersTableMap::addInstanceToPool($obj, $key);
+            WholesalePartnerCategoryMatchingTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -268,8 +280,8 @@ class BrandMatchingPartnersTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = BrandMatchingPartnersTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = BrandMatchingPartnersTableMap::getInstanceFromPool($key))) {
+            $key = WholesalePartnerCategoryMatchingTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = WholesalePartnerCategoryMatchingTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -278,7 +290,7 @@ class BrandMatchingPartnersTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                BrandMatchingPartnersTableMap::addInstanceToPool($obj, $key);
+                WholesalePartnerCategoryMatchingTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -299,17 +311,21 @@ class BrandMatchingPartnersTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(BrandMatchingPartnersTableMap::ID);
-            $criteria->addSelectColumn(BrandMatchingPartnersTableMap::BRAND_INTERN);
-            $criteria->addSelectColumn(BrandMatchingPartnersTableMap::BRAND_EXTERN);
-            $criteria->addSelectColumn(BrandMatchingPartnersTableMap::PARTNER_ID);
-            $criteria->addSelectColumn(BrandMatchingPartnersTableMap::BRAND_CODE);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::ID);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::PARTNER_ID);
+            $criteria->addSelectColumn(WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.BRAND_INTERN');
-            $criteria->addSelectColumn($alias . '.BRAND_EXTERN');
+            $criteria->addSelectColumn($alias . '.CATEGORY_INTERN_ID');
+            $criteria->addSelectColumn($alias . '.CATEGORY_INTERN_NAME');
+            $criteria->addSelectColumn($alias . '.CATEGORY_EXTERN_ID');
+            $criteria->addSelectColumn($alias . '.CATEGORY_EXTERN_NAME');
             $criteria->addSelectColumn($alias . '.PARTNER_ID');
-            $criteria->addSelectColumn($alias . '.BRAND_CODE');
+            $criteria->addSelectColumn($alias . '.CATEGORY_ID');
         }
     }
 
@@ -322,7 +338,7 @@ class BrandMatchingPartnersTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(BrandMatchingPartnersTableMap::DATABASE_NAME)->getTable(BrandMatchingPartnersTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME)->getTable(WholesalePartnerCategoryMatchingTableMap::TABLE_NAME);
     }
 
     /**
@@ -330,16 +346,16 @@ class BrandMatchingPartnersTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(BrandMatchingPartnersTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(BrandMatchingPartnersTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new BrandMatchingPartnersTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(WholesalePartnerCategoryMatchingTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new WholesalePartnerCategoryMatchingTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a BrandMatchingPartners or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a WholesalePartnerCategoryMatching or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or BrandMatchingPartners object or primary key or array of primary keys
+     * @param mixed               $values Criteria or WholesalePartnerCategoryMatching object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -350,25 +366,25 @@ class BrandMatchingPartnersTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \RevenueDashboard\Model\BrandMatchingPartners) { // it's a model object
+        } elseif ($values instanceof \RevenueDashboard\Model\WholesalePartnerCategoryMatching) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(BrandMatchingPartnersTableMap::DATABASE_NAME);
-            $criteria->add(BrandMatchingPartnersTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
+            $criteria->add(WholesalePartnerCategoryMatchingTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = BrandMatchingPartnersQuery::create()->mergeWith($criteria);
+        $query = WholesalePartnerCategoryMatchingQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { BrandMatchingPartnersTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { WholesalePartnerCategoryMatchingTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { BrandMatchingPartnersTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { WholesalePartnerCategoryMatchingTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -376,20 +392,20 @@ class BrandMatchingPartnersTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the brand_matching_partners table.
+     * Deletes all rows from the wholesale_partner_category_matching table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return BrandMatchingPartnersQuery::create()->doDeleteAll($con);
+        return WholesalePartnerCategoryMatchingQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a BrandMatchingPartners or Criteria object.
+     * Performs an INSERT on the database, given a WholesalePartnerCategoryMatching or Criteria object.
      *
-     * @param mixed               $criteria Criteria or BrandMatchingPartners object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or WholesalePartnerCategoryMatching object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -398,22 +414,22 @@ class BrandMatchingPartnersTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from BrandMatchingPartners object
+            $criteria = $criteria->buildCriteria(); // build Criteria from WholesalePartnerCategoryMatching object
         }
 
-        if ($criteria->containsKey(BrandMatchingPartnersTableMap::ID) && $criteria->keyContainsValue(BrandMatchingPartnersTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.BrandMatchingPartnersTableMap::ID.')');
+        if ($criteria->containsKey(WholesalePartnerCategoryMatchingTableMap::ID) && $criteria->keyContainsValue(WholesalePartnerCategoryMatchingTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.WholesalePartnerCategoryMatchingTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = BrandMatchingPartnersQuery::create()->mergeWith($criteria);
+        $query = WholesalePartnerCategoryMatchingQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -429,7 +445,7 @@ class BrandMatchingPartnersTableMap extends TableMap
         return $pk;
     }
 
-} // BrandMatchingPartnersTableMap
+} // WholesalePartnerCategoryMatchingTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BrandMatchingPartnersTableMap::buildTableMap();
+WholesalePartnerCategoryMatchingTableMap::buildTableMap();

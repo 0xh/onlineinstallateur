@@ -14,17 +14,17 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use RevenueDashboard\Model\BrandMatchingPartnersQuery as ChildBrandMatchingPartnersQuery;
-use RevenueDashboard\Model\Map\BrandMatchingPartnersTableMap;
-use Thelia\Model\BrandQuery;
-use Thelia\Model\Brand as ChildBrand;
+use RevenueDashboard\Model\WholesalePartnerCategoryMatchingQuery as ChildWholesalePartnerCategoryMatchingQuery;
+use RevenueDashboard\Model\Map\WholesalePartnerCategoryMatchingTableMap;
+use Thelia\Model\CategoryQuery;
+use Thelia\Model\Category as ChildCategory;
 
-abstract class BrandMatchingPartners implements ActiveRecordInterface 
+abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\RevenueDashboard\\Model\\Map\\BrandMatchingPartnersTableMap';
+    const TABLE_MAP = '\\RevenueDashboard\\Model\\Map\\WholesalePartnerCategoryMatchingTableMap';
 
 
     /**
@@ -60,16 +60,28 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the brand_intern field.
+     * The value for the category_intern_id field.
      * @var        int
      */
-    protected $brand_intern;
+    protected $category_intern_id;
 
     /**
-     * The value for the brand_extern field.
+     * The value for the category_intern_name field.
      * @var        string
      */
-    protected $brand_extern;
+    protected $category_intern_name;
+
+    /**
+     * The value for the category_extern_id field.
+     * @var        string
+     */
+    protected $category_extern_id;
+
+    /**
+     * The value for the category_extern_name field.
+     * @var        string
+     */
+    protected $category_extern_name;
 
     /**
      * The value for the partner_id field.
@@ -78,15 +90,15 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     protected $partner_id;
 
     /**
-     * The value for the brand_code field.
+     * The value for the category_id field.
      * @var        string
      */
-    protected $brand_code;
+    protected $category_id;
 
     /**
-     * @var        Brand
+     * @var        Category
      */
-    protected $aBrand;
+    protected $aCategory;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -97,7 +109,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of RevenueDashboard\Model\Base\BrandMatchingPartners object.
+     * Initializes internal state of RevenueDashboard\Model\Base\WholesalePartnerCategoryMatching object.
      */
     public function __construct()
     {
@@ -192,9 +204,9 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>BrandMatchingPartners</code> instance.  If
-     * <code>obj</code> is an instance of <code>BrandMatchingPartners</code>, delegates to
-     * <code>equals(BrandMatchingPartners)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>WholesalePartnerCategoryMatching</code> instance.  If
+     * <code>obj</code> is an instance of <code>WholesalePartnerCategoryMatching</code>, delegates to
+     * <code>equals(WholesalePartnerCategoryMatching)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -277,7 +289,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return BrandMatchingPartners The current object, for fluid interface
+     * @return WholesalePartnerCategoryMatching The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -309,7 +321,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return BrandMatchingPartners The current object, for fluid interface
+     * @return WholesalePartnerCategoryMatching The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -366,25 +378,47 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     }
 
     /**
-     * Get the [brand_intern] column value.
+     * Get the [category_intern_id] column value.
      * 
      * @return   int
      */
-    public function getBrandIntern()
+    public function getCategoryInternId()
     {
 
-        return $this->brand_intern;
+        return $this->category_intern_id;
     }
 
     /**
-     * Get the [brand_extern] column value.
+     * Get the [category_intern_name] column value.
      * 
      * @return   string
      */
-    public function getBrandExtern()
+    public function getCategoryInternName()
     {
 
-        return $this->brand_extern;
+        return $this->category_intern_name;
+    }
+
+    /**
+     * Get the [category_extern_id] column value.
+     * 
+     * @return   string
+     */
+    public function getCategoryExternId()
+    {
+
+        return $this->category_extern_id;
+    }
+
+    /**
+     * Get the [category_extern_name] column value.
+     * 
+     * @return   string
+     */
+    public function getCategoryExternName()
+    {
+
+        return $this->category_extern_name;
     }
 
     /**
@@ -399,21 +433,21 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     }
 
     /**
-     * Get the [brand_code] column value.
+     * Get the [category_id] column value.
      * 
      * @return   string
      */
-    public function getBrandCode()
+    public function getCategoryCode()
     {
 
-        return $this->brand_code;
+        return $this->category_id;
     }
 
     /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -423,7 +457,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[BrandMatchingPartnersTableMap::ID] = true;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::ID] = true;
         }
 
 
@@ -431,56 +465,98 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [brand_intern] column.
+     * Set the value of [category_intern_id] column.
      * 
      * @param      int $v new value
-     * @return   \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
-    public function setBrandIntern($v)
+    public function setCategoryInternId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->brand_intern !== $v) {
-            $this->brand_intern = $v;
-            $this->modifiedColumns[BrandMatchingPartnersTableMap::BRAND_INTERN] = true;
+        if ($this->category_intern_id !== $v) {
+            $this->category_intern_id = $v;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID] = true;
         }
 
-        if ($this->aBrand !== null && $this->aBrand->getId() !== $v) {
-            $this->aBrand = null;
+        if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
+            $this->aCategory = null;
         }
 
 
         return $this;
-    } // setBrandIntern()
+    } // setCategoryInternId()
 
     /**
-     * Set the value of [brand_extern] column.
+     * Set the value of [category_intern_name] column.
      * 
      * @param      string $v new value
-     * @return   \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
-    public function setBrandExtern($v)
+    public function setCategoryInternName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->brand_extern !== $v) {
-            $this->brand_extern = $v;
-            $this->modifiedColumns[BrandMatchingPartnersTableMap::BRAND_EXTERN] = true;
+        if ($this->category_intern_name !== $v) {
+            $this->category_intern_name = $v;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME] = true;
         }
 
 
         return $this;
-    } // setBrandExtern()
+    } // setCategoryInternName()
+
+    /**
+     * Set the value of [category_extern_id] column.
+     * 
+     * @param      string $v new value
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
+     */
+    public function setCategoryExternId($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->category_extern_id !== $v) {
+            $this->category_extern_id = $v;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID] = true;
+        }
+
+
+        return $this;
+    } // setCategoryExternId()
+
+    /**
+     * Set the value of [category_extern_name] column.
+     * 
+     * @param      string $v new value
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
+     */
+    public function setCategoryExternName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->category_extern_name !== $v) {
+            $this->category_extern_name = $v;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME] = true;
+        }
+
+
+        return $this;
+    } // setCategoryExternName()
 
     /**
      * Set the value of [partner_id] column.
      * 
      * @param      int $v new value
-     * @return   \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
     public function setPartnerId($v)
     {
@@ -490,7 +566,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
 
         if ($this->partner_id !== $v) {
             $this->partner_id = $v;
-            $this->modifiedColumns[BrandMatchingPartnersTableMap::PARTNER_ID] = true;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::PARTNER_ID] = true;
         }
 
 
@@ -498,25 +574,25 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     } // setPartnerId()
 
     /**
-     * Set the value of [brand_code] column.
+     * Set the value of [category_id] column.
      * 
      * @param      string $v new value
-     * @return   \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
-    public function setBrandCode($v)
+    public function setCategoryCode($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->brand_code !== $v) {
-            $this->brand_code = $v;
-            $this->modifiedColumns[BrandMatchingPartnersTableMap::BRAND_CODE] = true;
+        if ($this->category_id !== $v) {
+            $this->category_id = $v;
+            $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID] = true;
         }
 
 
         return $this;
-    } // setBrandCode()
+    } // setCategoryCode()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -555,20 +631,26 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : BrandMatchingPartnersTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : BrandMatchingPartnersTableMap::translateFieldName('BrandIntern', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->brand_intern = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('CategoryInternId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_intern_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : BrandMatchingPartnersTableMap::translateFieldName('BrandExtern', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->brand_extern = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('CategoryInternName', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_intern_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BrandMatchingPartnersTableMap::translateFieldName('PartnerId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('CategoryExternId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_extern_id = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('CategoryExternName', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_extern_name = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('PartnerId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->partner_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BrandMatchingPartnersTableMap::translateFieldName('BrandCode', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->brand_code = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : WholesalePartnerCategoryMatchingTableMap::translateFieldName('CategoryCode', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->category_id = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -577,10 +659,10 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = BrandMatchingPartnersTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = WholesalePartnerCategoryMatchingTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \RevenueDashboard\Model\BrandMatchingPartners object", 0, $e);
+            throw new PropelException("Error populating \RevenueDashboard\Model\WholesalePartnerCategoryMatching object", 0, $e);
         }
     }
 
@@ -599,8 +681,8 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aBrand !== null && $this->brand_intern !== $this->aBrand->getId()) {
-            $this->aBrand = null;
+        if ($this->aCategory !== null && $this->category_intern_id !== $this->aCategory->getId()) {
+            $this->aCategory = null;
         }
     } // ensureConsistency
 
@@ -625,13 +707,13 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildBrandMatchingPartnersQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildWholesalePartnerCategoryMatchingQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -641,7 +723,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aBrand = null;
+            $this->aCategory = null;
         } // if (deep)
     }
 
@@ -651,8 +733,8 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see BrandMatchingPartners::setDeleted()
-     * @see BrandMatchingPartners::isDeleted()
+     * @see WholesalePartnerCategoryMatching::setDeleted()
+     * @see WholesalePartnerCategoryMatching::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -661,12 +743,12 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildBrandMatchingPartnersQuery::create()
+            $deleteQuery = ChildWholesalePartnerCategoryMatchingQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -703,7 +785,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -723,7 +805,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                BrandMatchingPartnersTableMap::addInstanceToPool($this);
+                WholesalePartnerCategoryMatchingTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -758,11 +840,11 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aBrand !== null) {
-                if ($this->aBrand->isModified() || $this->aBrand->isNew()) {
-                    $affectedRows += $this->aBrand->save($con);
+            if ($this->aCategory !== null) {
+                if ($this->aCategory->isModified() || $this->aCategory->isNew()) {
+                    $affectedRows += $this->aCategory->save($con);
                 }
-                $this->setBrand($this->aBrand);
+                $this->setCategory($this->aCategory);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -796,30 +878,36 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[BrandMatchingPartnersTableMap::ID] = true;
+        $this->modifiedColumns[WholesalePartnerCategoryMatchingTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . BrandMatchingPartnersTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . WholesalePartnerCategoryMatchingTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::ID)) {
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_INTERN)) {
-            $modifiedColumns[':p' . $index++]  = 'BRAND_INTERN';
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_INTERN_ID';
         }
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_EXTERN)) {
-            $modifiedColumns[':p' . $index++]  = 'BRAND_EXTERN';
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_INTERN_NAME';
         }
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::PARTNER_ID)) {
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_EXTERN_ID';
+        }
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_EXTERN_NAME';
+        }
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::PARTNER_ID)) {
             $modifiedColumns[':p' . $index++]  = 'PARTNER_ID';
         }
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_CODE)) {
-            $modifiedColumns[':p' . $index++]  = 'BRAND_CODE';
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CATEGORY_ID';
         }
 
         $sql = sprintf(
-            'INSERT INTO brand_matching_partners (%s) VALUES (%s)',
+            'INSERT INTO wholesale_partner_category_matching (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -831,17 +919,23 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
                     case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_INTERN':                        
-                        $stmt->bindValue($identifier, $this->brand_intern, PDO::PARAM_INT);
+                    case 'CATEGORY_INTERN_ID':                        
+                        $stmt->bindValue($identifier, $this->category_intern_id, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_EXTERN':                        
-                        $stmt->bindValue($identifier, $this->brand_extern, PDO::PARAM_STR);
+                    case 'CATEGORY_INTERN_NAME':                        
+                        $stmt->bindValue($identifier, $this->category_intern_name, PDO::PARAM_STR);
+                        break;
+                    case 'CATEGORY_EXTERN_ID':                        
+                        $stmt->bindValue($identifier, $this->category_extern_id, PDO::PARAM_STR);
+                        break;
+                    case 'CATEGORY_EXTERN_NAME':                        
+                        $stmt->bindValue($identifier, $this->category_extern_name, PDO::PARAM_STR);
                         break;
                     case 'PARTNER_ID':                        
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_CODE':                        
-                        $stmt->bindValue($identifier, $this->brand_code, PDO::PARAM_STR);
+                    case 'CATEGORY_ID':                        
+                        $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -889,7 +983,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = BrandMatchingPartnersTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = WholesalePartnerCategoryMatchingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -909,16 +1003,22 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getBrandIntern();
+                return $this->getCategoryInternId();
                 break;
             case 2:
-                return $this->getBrandExtern();
+                return $this->getCategoryInternName();
                 break;
             case 3:
-                return $this->getPartnerId();
+                return $this->getCategoryExternId();
                 break;
             case 4:
-                return $this->getBrandCode();
+                return $this->getCategoryExternName();
+                break;
+            case 5:
+                return $this->getPartnerId();
+                break;
+            case 6:
+                return $this->getCategoryCode();
                 break;
             default:
                 return null;
@@ -943,17 +1043,19 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['BrandMatchingPartners'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['WholesalePartnerCategoryMatching'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['BrandMatchingPartners'][$this->getPrimaryKey()] = true;
-        $keys = BrandMatchingPartnersTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['WholesalePartnerCategoryMatching'][$this->getPrimaryKey()] = true;
+        $keys = WholesalePartnerCategoryMatchingTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getBrandIntern(),
-            $keys[2] => $this->getBrandExtern(),
-            $keys[3] => $this->getPartnerId(),
-            $keys[4] => $this->getBrandCode(),
+            $keys[1] => $this->getCategoryInternId(),
+            $keys[2] => $this->getCategoryInternName(),
+            $keys[3] => $this->getCategoryExternId(),
+            $keys[4] => $this->getCategoryExternName(),
+            $keys[5] => $this->getPartnerId(),
+            $keys[6] => $this->getCategoryCode(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -961,8 +1063,8 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
-            if (null !== $this->aBrand) {
-                $result['Brand'] = $this->aBrand->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aCategory) {
+                $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -982,7 +1084,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = BrandMatchingPartnersTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = WholesalePartnerCategoryMatchingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1002,16 +1104,22 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setBrandIntern($value);
+                $this->setCategoryInternId($value);
                 break;
             case 2:
-                $this->setBrandExtern($value);
+                $this->setCategoryInternName($value);
                 break;
             case 3:
-                $this->setPartnerId($value);
+                $this->setCategoryExternId($value);
                 break;
             case 4:
-                $this->setBrandCode($value);
+                $this->setCategoryExternName($value);
+                break;
+            case 5:
+                $this->setPartnerId($value);
+                break;
+            case 6:
+                $this->setCategoryCode($value);
                 break;
         } // switch()
     }
@@ -1035,13 +1143,15 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = BrandMatchingPartnersTableMap::getFieldNames($keyType);
+        $keys = WholesalePartnerCategoryMatchingTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setBrandIntern($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setBrandExtern($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPartnerId($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setBrandCode($arr[$keys[4]]);
+        if (array_key_exists($keys[1], $arr)) $this->setCategoryInternId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCategoryInternName($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setCategoryExternId($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCategoryExternName($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPartnerId($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCategoryCode($arr[$keys[6]]);
     }
 
     /**
@@ -1051,13 +1161,15 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(BrandMatchingPartnersTableMap::DATABASE_NAME);
+        $criteria = new Criteria(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::ID)) $criteria->add(BrandMatchingPartnersTableMap::ID, $this->id);
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_INTERN)) $criteria->add(BrandMatchingPartnersTableMap::BRAND_INTERN, $this->brand_intern);
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_EXTERN)) $criteria->add(BrandMatchingPartnersTableMap::BRAND_EXTERN, $this->brand_extern);
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::PARTNER_ID)) $criteria->add(BrandMatchingPartnersTableMap::PARTNER_ID, $this->partner_id);
-        if ($this->isColumnModified(BrandMatchingPartnersTableMap::BRAND_CODE)) $criteria->add(BrandMatchingPartnersTableMap::BRAND_CODE, $this->brand_code);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::ID)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::ID, $this->id);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_ID, $this->category_intern_id);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::CATEGORY_INTERN_NAME, $this->category_intern_name);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_ID, $this->category_extern_id);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::CATEGORY_EXTERN_NAME, $this->category_extern_name);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::PARTNER_ID)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::PARTNER_ID, $this->partner_id);
+        if ($this->isColumnModified(WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID)) $criteria->add(WholesalePartnerCategoryMatchingTableMap::CATEGORY_ID, $this->category_id);
 
         return $criteria;
     }
@@ -1072,8 +1184,8 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(BrandMatchingPartnersTableMap::DATABASE_NAME);
-        $criteria->add(BrandMatchingPartnersTableMap::ID, $this->id);
+        $criteria = new Criteria(WholesalePartnerCategoryMatchingTableMap::DATABASE_NAME);
+        $criteria->add(WholesalePartnerCategoryMatchingTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1114,17 +1226,19 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \RevenueDashboard\Model\BrandMatchingPartners (or compatible) type.
+     * @param      object $copyObj An object of \RevenueDashboard\Model\WholesalePartnerCategoryMatching (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setBrandIntern($this->getBrandIntern());
-        $copyObj->setBrandExtern($this->getBrandExtern());
+        $copyObj->setCategoryInternId($this->getCategoryInternId());
+        $copyObj->setCategoryInternName($this->getCategoryInternName());
+        $copyObj->setCategoryExternId($this->getCategoryExternId());
+        $copyObj->setCategoryExternName($this->getCategoryExternName());
         $copyObj->setPartnerId($this->getPartnerId());
-        $copyObj->setBrandCode($this->getBrandCode());
+        $copyObj->setCategoryCode($this->getCategoryCode());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1140,7 +1254,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \RevenueDashboard\Model\BrandMatchingPartners Clone of current object.
+     * @return                 \RevenueDashboard\Model\WholesalePartnerCategoryMatching Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1154,26 +1268,26 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildBrand object.
+     * Declares an association between this object and a ChildCategory object.
      *
-     * @param                  ChildBrand $v
-     * @return                 \RevenueDashboard\Model\BrandMatchingPartners The current object (for fluent API support)
+     * @param                  ChildCategory $v
+     * @return                 \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setBrand(ChildBrand $v = null)
+    public function setCategory(ChildCategory $v = null)
     {
         if ($v === null) {
-            $this->setBrandIntern(NULL);
+            $this->setCategoryInternId(NULL);
         } else {
-            $this->setBrandIntern($v->getId());
+            $this->setCategoryInternId($v->getId());
         }
 
-        $this->aBrand = $v;
+        $this->aCategory = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildBrand object, it will not be re-added.
+        // If this object has already been added to the ChildCategory object, it will not be re-added.
         if ($v !== null) {
-            $v->addBrandMatchingPartners($this);
+            $v->addWholesalePartnerCategoryMatching($this);
         }
 
 
@@ -1182,26 +1296,26 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildBrand object
+     * Get the associated ChildCategory object
      *
      * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildBrand The associated ChildBrand object.
+     * @return                 ChildCategory The associated ChildCategory object.
      * @throws PropelException
      */
-    public function getBrand(ConnectionInterface $con = null)
+    public function getCategory(ConnectionInterface $con = null)
     {
-        if ($this->aBrand === null && ($this->brand_intern !== null)) {
-            $this->aBrand = BrandQuery::create()->findPk($this->brand_intern, $con);
+        if ($this->aCategory === null && ($this->category_intern_id !== null)) {
+            $this->aCategory = CategoryQuery::create()->findPk($this->category_intern_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aBrand->addBrandMatchingPartnerss($this);
+                $this->aCategory->addWholesalePartnerCategoryMatchings($this);
              */
         }
 
-        return $this->aBrand;
+        return $this->aCategory;
     }
 
     /**
@@ -1210,10 +1324,12 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->brand_intern = null;
-        $this->brand_extern = null;
+        $this->category_intern_id = null;
+        $this->category_intern_name = null;
+        $this->category_extern_id = null;
+        $this->category_extern_name = null;
         $this->partner_id = null;
-        $this->brand_code = null;
+        $this->category_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1235,7 +1351,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aBrand = null;
+        $this->aCategory = null;
     }
 
     /**
@@ -1245,7 +1361,7 @@ abstract class BrandMatchingPartners implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(BrandMatchingPartnersTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(WholesalePartnerCategoryMatchingTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**
