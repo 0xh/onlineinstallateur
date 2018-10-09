@@ -3,9 +3,12 @@
 namespace SepaImporter\Import;
 
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use RevenueDashboard\Events\RevenueDashboardBrandEvent;
+use RevenueDashboard\Events\RevenueDashboardBrandEvents;
+use RevenueDashboard\Events\RevenueDashboardCategoryEvent;
+use RevenueDashboard\Events\RevenueDashboardCategoryEvents;
 use RevenueDashboard\Model\Base\WholesalePartnerProduct;
-use SepaImporter\Model\SepaimporterBrandMapping;
-use SepaImporter\Model\SepaimporterBrandMappingQuery;
+use Symfony\Component\Serializer\Exception\Exception;
 use Thelia\Core\Event\Product\ProductCreateEvent;
 use Thelia\Core\Event\Product\ProductUpdateEvent;
 use Thelia\Core\Event\ProductSaleElement\ProductSaleElementUpdateEvent;
@@ -14,7 +17,12 @@ use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
 use Thelia\Model\Base\ProductSaleElementsQuery;
-use Thelia\Model\BrandQuery;
+use Thelia\Model\LangQuery;
+use Thelia\Model\ProductImage;
+use Thelia\Model\ProductImageI18n;
+use const DS;
+use const THELIA_LOCAL_DIR;
+use function ctype_digit;
 
 /* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
@@ -58,251 +66,195 @@ class XMLImporter extends AbstractImport
     {
         $errors = null;
 
-        //PRODUCT CREATE EVENT care introduce produsul prima data in DB, ca si stand-alone product.
-        //Aici daca vrem sa facem update probabil ar trebui si-un loop pe products care sa vada daca exista in lista iar daca nu exista, sa le puna offline
-        //Aici ar fi buna o legatura/tabela sa vedem care produs vine de la care vendor asa ca sa facem un Querry pe toate product_id-urile din tabela aia
-        //care sa puna produsele offline daca nu exista in xml-ul current.
-        //Nu stiu exact cum sa fac iteratia 1:1 inca dar stiu ca trebuie extra tabele sa tinem informatia cu de unde vine produsul.
-
-        $productQuerry = ProductQuery::create();
+        $productQuerry     = ProductQuery::create();
         $productQuerry->clear();
+        $productExists     = null;
+        $brandRefComponent = null;
+        $categoryComponent = null;
 
-//        $productExists = count($productQuerry->findByRef($this->rowHasField($row, "megabildnr")));
-//
-//        if ($productExists == 0) {
-        // @var EventDispatcherInterface $eventDispatcher
+        Tlog::getInstance()->err("Inainte de BrandCheckEvent");
 
-        $eventDispatcher = $this->getContainer()->get('event_dispatcher');
+        $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
+        $createBrandEvent     = new RevenueDashboardBrandEvent();
+        $createBrandEvent->setBrand_extern($this->rowHasField($row, "lieferantenname"));
+        $eventBrandDispatcher->dispatch(RevenueDashboardBrandEvents::FINDBRAND, $createBrandEvent);
 
-        $createEvent = new ProductCreateEvent();
-
-        $locale = "de_DE";
-
-        Tlog::getInstance()->err("inainte de dollar create event si adding.");
-
-        $createEvent
-         ->setBasePrice(($this->rowHasField($row, "nettopreis")) * 116 / 100)
-         ->setBaseQuantity($this->rowHasField($row, "versandfaehig"))
-         ->setRef($this->rowHasField($row, "megabildnr"))
-         ->setTitle($this->rowHasField($row, "zeile1") + $this->rowHasField($row, "zeile1"))
-         ->setLocale($locale)
-         ->setDefaultCategory(11)
-         ->setCurrencyId(1);
-
-
-        $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
-//         } else
-//            {
-//
-//         }
-        //AICI SE TERMINA IF-ul cu IF PRODUCT EXISTS CA DUPAIA TOT CE-I DUPA SA FIE EVENT TRIGGERED SI SA-SI DEA UPDATE.
-
-        Tlog::getInstance()->err("Dupa create event.");
-
-        Tlog::getInstance()->err("Dupa event dispatcher");
-
-        $product = ProductQuery::create()
-         ->filterByRef($createEvent->getProduct()->getRef())
-         ->withColumn('product.id', 'product_id')
-         ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-         ->findOne();
-
-        $product_id = $product->getId();
-
-        //Product Update Event pentru description si poate altele daca o sa mai fie nevoie
-        $updateEvent = new ProductUpdateEvent($product_id);
-
-        //Din pacate nu toate au asta deci trebuie sa vedem cum facem, indiferent de algere, as prefera o metoda prin care fetch-uim descrierea de undeva si o punem
-        //intr-o structura ca aia pe care o facusem eu dinamica in excel, banuisc ca cu un pic de timp si de ajutor as putea sa o replicate-uiesc si in PHP ceea ce ar
-        //insemna ca basically o sa pot sa fac o descriere cu toate elementele de UX, gen title bolduit, produktmerkale cu bullet points, eu zic ca orice proces dezvoltam
-        //pentru import ar trebui sa fie asa facut, ne-ar scuti de multa munca pe long-term.
-
-        $updateEvent->setDescription(($this->rowHasField($row, "ausschreibungstext")));
-
-        Tlog::getInstance()->err("Dupa set descrip");
-
-
-        //Product PSE update pentru PSE table content (inclusiv price chiar daca-i tehnic tablea diferita, aici exista eventul pt ea)+EAN
-        //Daca inteleg cum functioneaza si ii truly un update event, ar trebui sa update-uiasca elementele nu sa creeze unele noi, atunci asta ar rezolva problema cu
-        //price-updates, tot timpul cand s-ar face cron job-ul de rulat XML-ul
-
-        $productPse = ProductSaleElementsQuery::create()
-         ->filterByProductId($product_id)
-         ->withColumn('product_sale_elements.id', 'pse_id')
-         ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-         ->findOne();
-
-        $pse_id = $productPse->getId();
-
-        $updatePse = new ProductSaleElementUpdateEvent($product, $pse_id);
-
-        $ean_code = ($this->rowHasField($row, "ean"));
-
-//        Tlog::getInstance()->error($ean_code + " EAN CODE " + $pse_id + "PSE ID" + var_dump($updatePse) + " Update PSE ");
-
-        $updatePse->setEanCode($ean_code)
-         ->setListenPrice($this->rowHasField($row, "bruttopreis") * 116 / 100)
-         ->setPrice(($this->rowHasField($row, "nettopreis")) * 116 / 100)
-         ->setReference($this->rowHasField($row, "megabildnr"))
-         ->setCurrencyId(1);
-
-        $eventDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE_PRODUCT_SALE_ELEMENT, $updatePse);
-
-        Tlog::getInstance()->err("Dupa PSE");
-
-        //REVENUE DASHBOARD -- ii foarte complex facut dar nu-i folosit deloc deci ar trebui populat
-
-        $revenueDash = WholesalePartnerProduct::create();
-        $revenueDash->setPrice();
-
-
-
-
-
-        /* how to determine Source Name? Hardcoded in importer until we have more than 1 supplier? and then add a general hint/feature/info to the importer when importing
-         * a dropdown meniu in the template for example where you select an option and pass it as a method argument or adding a  certain tag inside the XML but then we would
-         * need to require that from every supplier.
-         */
-
-
-        $eventBrand = $this->rowHasField($row, "lieferantennam");
-
-        $brand_new = SepaimporterBrandMappingQuery::create()
-         ->findOneBySourceBrandName($eventBrand);
-
-        $brand_old = SepaimporterBrandMappingQuery::create()
-         ->findOneBySourceBrandName($eventBrand)
-         ->getId();
-
-        $source        = "mysht";
-        $productQuerry = ProductQuery::create();
-
-        $productForBrand = $productQuerry
-         ->findOneByRef($this->rowHasField($row, "megabildnr"));
-
-        if (!$brand_new) {
-            $brandAdd = new SepaimporterBrandMapping();
-            $brandAdd->setSourceBrandName($eventBrand)
-             ->setSourceName($source);
+        if ($createBrandEvent->getBrandMatch() != null) {
+            $brandRefComponent = $createBrandEvent->getBrandMatch()->getBrandCode();
         } else {
-            $brand = BrandQuery::create()->findOneById($brand_old);
-            $productForBrand->setBrand($brand);
+            $errors .= "Brand name not found in database, table wholesale_partner_brand_matching" . $this->rowHasField($row, "lieferantenname");
         }
-        //Cum vad eu aici ar fi ideal sa mai fie inca o coloana in tabla cu perscurtarea, care sa fie dupaia bagata cu werknummer care practic dupaia sa determine reful
-        //dupa ce-i determinata prescurtarea din tablea, practic o sa se ia werknummerul din xml, se face join cu prescurtarea, se verifica daca exista la noi deja si
-        //in principiu asta ar fi un check destul de bun pentru a verifica daca exista produse. In functie de scala la care urcam, ar fi ideal sa putem sa avem o structura
-        //in DB cat mai ok dpdv modularitate, deci la new vendors sa
+
+        Tlog::getInstance()->err("Dupa brand check event. " . $brandRefComponent);
+
+        Tlog::getInstance()->err("Inainte de CategoryCheckEvent");
+
+        $eventCategoryDispatcher = $this->getContainer()->get('event_dispatcher');
+        $createCategoryEvent     = new RevenueDashboardCategoryEvent();
+        $createCategoryEvent->setExtern_name($this->rowHasField($row, "warengruppetext"));
+        $eventBrandDispatcher->dispatch(RevenueDashboardCategoryEvents::FINDCATEGORY, $createCategoryEvent);
+
+        if ($createCategoryEvent->getCategoryMatch() != null) {
+            $categoryComponent = $createCategoryEvent->getCategoryMatch()->getCategoryInternId();
+        } else {
+            $errors .= "Category name not found in database, table wholesale_partner_category_matching" . $this->rowHasField($row, "warengruppetext");
+        }
+
+        Tlog::getInstance()->err("Dupa category check event. " . $categoryComponent);
+
+        $refBuild = $brandRefComponent . $this->rowHasField($row, "werknr");
+
+        $productExists = count($productQuerry->findByRef($refBuild));
+
+        Tlog::getInstance()->err("Dupa Ref Build: " . $refBuild . " Urmeaza PExists " . $productExists);
+
+        if ($productExists == 0 && $brandRefComponent != null && $categoryComponent != null) {
+            $eventDispatcher = $this->getContainer()->get('event_dispatcher');
+            $createEvent     = new ProductCreateEvent();
+            $locale          = "de_DE";
+            Tlog::getInstance()->err("inainte de dollar create event si adding.");
+            $createEvent
+             ->setBasePrice(($this->rowHasField($row, "nettopreis")) * 116 / 100)
+             ->setBaseQuantity($this->rowHasField($row, "versandfaehig"))
+             ->setRef($refBuild)
+             ->setTitle($this->rowHasField($row, "zeile1") + $this->rowHasField($row, "zeile1"))
+             ->setLocale($locale)
+             ->setDefaultCategory($categoryComponent)
+             ->setCurrencyId(1);
+
+            Tlog::getInstance()->err("Dupa product create event.");
+
+            $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
+
+            Tlog::getInstance()->err("Dupa event dispatcher");
 
 
-        Tlog::getInstance()->err("Dupa set brand!");
+            $product = ProductQuery::create()
+             ->filterByRef($createEvent->getProduct()->getRef())
+             ->withColumn('product.id', 'product_id')
+             ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+             ->findOne();
 
-        //Category
-        //La category daca am primi de la ei o structura de categorii cu nume si Id-uri (Warengruppe/WarrengruppeText) am putea sa incercam sa facem ceva sort of mapping
-        //nu stiu cum s-ar face in php dar eventual un regex facut care sa faca matching intre ele, problema ar fi cand ar aparea noi vendori. Categorile mi se
-        //par problematice pentru ca basically fiecare vendor foloseste ce vrea, cum vrea, ceea ce inseamna ca noi ar trebui sa avem mapping pe toti vendorii mari
-        //partea buna ii ca dupa ce gasim o logica pe care sa o facem, fie ca e pe baza EAN-ului sau Werk-nr-ului comparat cu o alta platforma, gen amazon
-        //ceva solutii de automatizare ar trebui sa se poata face numa ca trebui sa vedem exact ce ar merita si ce nu, dpdv timp si cum s-ar putea face ca eu nu am
-        //knowledge-ul asa de vast.
+            $product_id = $product->getId();
+
+            //Product Update Event pentru description si poate altele daca o sa mai fie nevoie
+            $updateEvent = new ProductUpdateEvent($product_id);
+
+            //Din pacate nu toate au asta deci trebuie sa vedem cum facem, indiferent de algere, as prefera o metoda prin care fetch-uim descrierea de undeva si o punem
+            //intr-o structura ca aia pe care o facusem eu dinamica in excel, banuisc ca cu un pic de timp si de ajutor as putea sa o replicate-uiesc si in PHP ceea ce ar
+            //insemna ca basically o sa pot sa fac o descriere cu toate elementele de UX, gen title bolduit, produktmerkale cu bullet points, eu zic ca orice proces dezvoltam
+            //pentru import ar trebui sa fie asa facut, ne-ar scuti de multa munca pe long-term.
+
+            $updateEvent->setDescription(($this->rowHasField($row, "ausschreibungstext")));
+
+            Tlog::getInstance()->err("Dupa set descrip");
+
+
+            //Product PSE update pentru PSE table content (inclusiv price chiar daca-i tehnic tablea diferita, aici exista eventul pt ea)+EAN
+            //Daca inteleg cum functioneaza si ii truly un update event, ar trebui sa update-uiasca elementele nu sa creeze unele noi, atunci asta ar rezolva problema cu
+            //price-updates, tot timpul cand s-ar face cron job-ul de rulat XML-ul
+
+            $productPse = ProductSaleElementsQuery::create()
+             ->filterByProductId($product_id)
+             ->withColumn('product_sale_elements.id', 'pse_id')
+             ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+             ->findOne();
+
+            $pse_id = $productPse->getId();
+
+            $updatePse = new ProductSaleElementUpdateEvent($product, $pse_id);
+
+            $ean_code = ($this->rowHasField($row, "ean"));
+
+            Tlog::getInstance()->error($ean_code + " EAN CODE " + $pse_id + "PSE ID" + var_dump($updatePse) + " Update PSE ");
+
+            $updatePse->setEanCode($ean_code)
+             ->setListenPrice($this->rowHasField($row, "bruttopreis") * 116 / 100)
+             ->setPrice(($this->rowHasField($row, "nettopreis")) * 116 / 100)
+             ->setReference($this->rowHasField($row, "megabildnr"))
+             ->setCurrencyId(1);
+
+            $eventDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE_PRODUCT_SALE_ELEMENT, $updatePse);
+
+            Tlog::getInstance()->err("Dupa PSE");
+
+            //REVENUE DASHBOARD -- ii foarte complex facut dar nu-i folosit deloc deci ar trebui populat
+
+            $revenueDash = WholesalePartnerProduct::create();
+            $revenueDash->setPrice();
+
+            $image_from_server = @file_get_contents($this->rowHasField($row, "produktbild"));
+        } else {
+            $errors .= "Product already in database" . $brandRefComponent . $this->rowHasField($row, "megabildnr");
+            Tlog::getInstance()->err("IN Else loop");
+        }
+
+        //AICI SE TERMINA IF-ul cu IF PRODUCT EXISTS CA DUPAIA TOT CE-I DUPA SA FIE EVENT TRIGGERED SI SA-SI DEA UPDATE.
+        die();
+
+//        Possibly useful things.
+//        // check if price has the correct format
+//        $decimals = LangQuery::create()
+//         ->select('decimals')
+//         ->filterByVisible(1)
+//         ->findOne();
 //
-//        $this->refSearch = $createEvent->getRef();
-//
-//        if (substr($ref, 0, strlen($this->hanH)) === $this->hanH) {
-//            $this->convertRefToHanHRef($ref);
+//        if ($price != null) {
+//            $errors .= $this->isPriceFormat($price, $decimals, $ref, $errors);
+//        }
+//        if ($listen_price != null) {
+//            $errors .= $this->isPriceFormat($listen_price, $decimals, $ref, $errors);
 //        }
 //
-//        if (substr($ref, 0, strlen($this->han)) === $this->han) {
-//            $this->convertRefToHanRef($ref);
+//        // check if EAN has a correct format
+//        if ($EAN_code != null) {
+//            if (!ctype_digit($EAN_code)) {
+//                $log->debug('The ean code ' . $EAN_code . ' from the product ' . $ref . ' isn\'t correct.');
+//                $errors .= '<br>The ean code ' . $EAN_code . ' from the product ' . $ref . ' isn\'t correct.';
+//            }
 //        }
-//
-//        if (substr($ref, 0, strlen($this->gro)) === $this->gro) {
-//            $this->convertRefToGroRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->lau)) === $this->lau) {
-//            $this->convertRefToLauRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->upo)) === $this->upo) {
-//            $this->convertRefToUpoRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->klu)) === $this->klu) {
-//            $this->convertRefToKluRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->dan)) === $this->dan) {
-//            $this->convertRefToDanRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->honvtl)) === $this->honvtl) {
-//            $this->convertRefToHonvtlRef($ref);
-//        }
-//
-//        if (substr($ref, 0, strlen($this->vai)) === $this->vai) {
-//            $this->convertRefToVaiRef($ref);
-//        }
-//
-//        return $errors;
-//    }
-//
-//    protected function convertRefToHanHRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->hanH, "HAN");
-//        $ref             = $this->addZeroToRef($ref);
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToHanRef($ref)
-//    {
-//        $ref             = $this->addZeroToRef($ref);
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToGroRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->gro, "GRO");
-//        $ref             = $this->addZeroToRef($ref);
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToLauRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->lau, "LAU");
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToUpoRef($ref)
-//    {
-////        $ref = $this->replaceRef($ref, $this->upo, "UPO");
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToKluRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->klu, "KLU");
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToDanRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->dan, "DAN");
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToHonvtlRef($ref)
-//    {
-////        $ref = $this->replaceRef($ref, $this->honvtl, "HONVTL");
-//        $this->refSearch = $ref;
-//    }
-//
-//    protected function convertRefToVaiRef($ref)
-//    {
-//        $ref             = $this->replaceRef($ref, $this->vai, "VAI");
-//        $this->refSearch = $ref;
-//    }
-//
-//
-//
+        //save images
+        $image_path  = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
+        $image_name  = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $refBuild);
+        $currentDate = date("Y-m-d H:i:s");
+
+        $log->debug(" generic_product_import image");
+
+        try {
+            $log->debug("Importing from Mysht picture");
+            $image_from_server = @file_get_contents($this->rowHasField($row, "produktbild"));
+        } catch (Exception $e) {
+            $log->debug("ProductImageException :" . $e->getMessage());
+        }
+
+        if ($image_from_server) {
+            $log->debug(" generic_product_import image saved to " . $image_path);
+            file_put_contents($image_path . $image_name, $image_from_server);
+
+            $product_image = new ProductImage ();
+            $product_image->setProduct($createEvent);
+            $product_image->setVisible(1);
+            $product_image->setCreatedAt($currentDate);
+            $product_image->setUpdatedAt($currentDate);
+            $product_image->setFile($image_name);
+            $product_image->save();
+
+            $product_image_i18n = new ProductImageI18n();
+            $product_image_i18n->setProductImage($product_image);
+            $product_image_i18n->setTitle($bild_titel);
+            $product_image_i18n->setDescription($bild_beschreibung);
+            $product_image_i18n->setChapo($bild_kurz_beschreibung);
+            $product_image_i18n->setPostscriptum($bild_postscriptum);
+            $product_image_i18n->setLocale("de_DE");
+            $product_image_i18n->save();
+
+            $productThelia->addProductImage($product_image);
+        }
+
+
+
+
+
 //        $log      = $this->getLogger();
 //        $max_time = ini_get("max_execution_time");
 //        ini_set('max_execution_time', 60000);
@@ -354,23 +306,11 @@ class XMLImporter extends AbstractImport
 //        $template_id            = $this->rowHasField($row, "Template_id");
 //        $help                   = $this->rowHasField($row, "Help");
 //
-//        // check if price has the correct format
-//        $decimals = LangQuery::create()
-//         ->select('decimals')
-//         ->filterByVisible(1)
-//         ->findOne();
-//
-//        if ($price != null) {
-//            $errors .= $this->isPriceFormat($price, $decimals, $ref, $errors);
-//        }
 //
 //        if ($promo_price != null) {
 //            $errors .= $this->isPriceFormat($promo_price, $decimals, $ref, $errors);
 //        }
 //
-//        if ($listen_price != null) {
-//            $errors .= $this->isPriceFormat($listen_price, $decimals, $ref, $errors);
-//        }
 //
 //        if ($ek_preis_sht != null) {
 //            $errors .= $this->isPriceFormat($ek_preis_sht, $decimals, $ref, $errors);
@@ -392,13 +332,7 @@ class XMLImporter extends AbstractImport
 //            $errors .= $this->isPriceFormat($preis_reuter, $decimals, $ref, $errors);
 //        }
 //
-//        // check if EAN has a correct format
-//        if ($EAN_code != null) {
-//            if (!ctype_digit($EAN_code)) {
-//                $log->debug('The ean code ' . $EAN_code . ' from the product ' . $ref . ' isn\'t correct.');
-//                $errors .= '<br>The ean code ' . $EAN_code . ' from the product ' . $ref . ' isn\'t correct.';
-//            }
-//        }
+//
 //
 //        // check if brand id, category id, template id exists in DB
 //        $brand = BrandQuery::create()->findOneById($marke_id);
@@ -437,7 +371,6 @@ class XMLImporter extends AbstractImport
 //            $log->debug('The image ' . $bild_file . ' from the product ' . $ref . ' is not in importer folder');
 //            $errors .= '<br>The image ' . $bild_file . ' from the product ' . $ref . ' is not in importer folder';
 //        }
-//
 //
 //        //check for existing services
 //        $productQuerry->clear();
@@ -652,42 +585,7 @@ class XMLImporter extends AbstractImport
 //                $price->save();
 //                $log->debug(" generic_product_import price saved");
 //
-//                //save images
-//                $image_path = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
-//                $image_name = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $bild_file);
 //
-//                $log->debug(" generic_product_import image");
-//
-//                try {
-//                    $log->debug(" generic_product_import image from " . THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "importer" . DS . $bild_file);
-//                    $image_from_server = @file_get_contents(THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "importer" . DS . $bild_file);
-//                } catch (Exception $e) {
-//                    $log->debug("ProductImageException :" . $e->getMessage());
-//                }
-//
-//                if ($image_from_server) {
-//                    $log->debug(" generic_product_import image saved to " . $image_path);
-//                    file_put_contents($image_path . $image_name, $image_from_server);
-//
-//                    $product_image = new ProductImage ();
-//                    $product_image->setProduct($productThelia);
-//                    $product_image->setVisible(1);
-//                    $product_image->setCreatedAt($currentDate);
-//                    $product_image->setUpdatedAt($currentDate);
-//                    $product_image->setFile($image_name);
-//                    $product_image->save();
-//
-//                    $product_image_i18n = new ProductImageI18n();
-//                    $product_image_i18n->setProductImage($product_image);
-//                    $product_image_i18n->setTitle($bild_titel);
-//                    $product_image_i18n->setDescription($bild_beschreibung);
-//                    $product_image_i18n->setChapo($bild_kurz_beschreibung);
-//                    $product_image_i18n->setPostscriptum($bild_postscriptum);
-//                    $product_image_i18n->setLocale("de_DE");
-//                    $product_image_i18n->save();
-//
-//                    $productThelia->addProductImage($product_image);
-//                }
 //            } else {
 //                $errors .= "Product reference number " . $ref . " is already in the database ";
 //                $log->debug(" ref number already in the database '" . $ref . "'");

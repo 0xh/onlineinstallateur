@@ -17,8 +17,8 @@ CREATE TABLE `wholesale_partner_brand_matching`
     `partner_id` INTEGER,
     `brand_code` VARCHAR(45),
     PRIMARY KEY (`id`),
-    INDEX `FI_brand_internally` (`brand_intern`),
-    CONSTRAINT `fk_brand_internally`
+    INDEX `FI_wholesale_partner_brand_matching_brand_id` (`brand_intern`),
+    CONSTRAINT `fk_wholesale_partner_brand_matching_brand_id`
         FOREIGN KEY (`brand_intern`)
         REFERENCES `brand` (`id`)
         ON DELETE CASCADE
@@ -40,8 +40,8 @@ CREATE TABLE `wholesale_partner_category_matching`
     `partner_id` INTEGER,
     `category_id` VARCHAR(45),
     PRIMARY KEY (`id`),
-    INDEX `FI_category_intern` (`category_intern_id`),
-    CONSTRAINT `fk_category_intern`
+    INDEX `FI_wholesale_partner_category_matching_category_id` (`category_intern_id`),
+    CONSTRAINT `fk_wholesale_partner_category_matching_category_id`
         FOREIGN KEY (`category_intern_id`)
         REFERENCES `category` (`id`)
         ON DELETE CASCADE

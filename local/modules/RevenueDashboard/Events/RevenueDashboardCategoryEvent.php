@@ -78,7 +78,7 @@ class RevenueDashboardCategoryEvent extends ActionEvent
         return $this->category_id;
     }
 
-    function getCategoryMatch(): WholesalePartnerCategoryMatching
+    function getCategoryMatch()
     {
         return $this->wholesalepartnercategorymatching;
     }
@@ -121,6 +121,7 @@ class RevenueDashboardCategoryEvent extends ActionEvent
     function setCategoryMatch(WholesalePartnerCategoryMatching $wholesalepartnercategorymatching)
     {
         $this->wholesalepartnercategorymatching = $wholesalepartnercategorymatching;
+        return $this->wholesalepartnercategorymatching = $wholesalepartnercategorymatching;
     }
 
 }
