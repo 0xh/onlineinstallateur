@@ -12,81 +12,81 @@ use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
-use RevenueDashboard\Model\BrandMatchingPartners as ChildBrandMatchingPartners;
-use RevenueDashboard\Model\BrandMatchingPartnersQuery as ChildBrandMatchingPartnersQuery;
-use RevenueDashboard\Model\Map\BrandMatchingPartnersTableMap;
+use RevenueDashboard\Model\WholesalePartnerBrandMatching as ChildWholesalePartnerBrandMatching;
+use RevenueDashboard\Model\WholesalePartnerBrandMatchingQuery as ChildWholesalePartnerBrandMatchingQuery;
+use RevenueDashboard\Model\Map\WholesalePartnerBrandMatchingTableMap;
 use Thelia\Model\Brand;
 
 /**
- * Base class that represents a query for the 'brand_matching_partners' table.
+ * Base class that represents a query for the 'wholesale_partner_brand_matching' table.
  *
  * 
  *
- * @method     ChildBrandMatchingPartnersQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildBrandMatchingPartnersQuery orderByBrandIntern($order = Criteria::ASC) Order by the brand_intern column
- * @method     ChildBrandMatchingPartnersQuery orderByBrandExtern($order = Criteria::ASC) Order by the brand_extern column
- * @method     ChildBrandMatchingPartnersQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
- * @method     ChildBrandMatchingPartnersQuery orderByBrandCode($order = Criteria::ASC) Order by the brand_code column
+ * @method     ChildWholesalePartnerBrandMatchingQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildWholesalePartnerBrandMatchingQuery orderByBrandIntern($order = Criteria::ASC) Order by the brand_intern column
+ * @method     ChildWholesalePartnerBrandMatchingQuery orderByBrandExtern($order = Criteria::ASC) Order by the brand_extern column
+ * @method     ChildWholesalePartnerBrandMatchingQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
+ * @method     ChildWholesalePartnerBrandMatchingQuery orderByBrandCode($order = Criteria::ASC) Order by the brand_code column
  *
- * @method     ChildBrandMatchingPartnersQuery groupById() Group by the id column
- * @method     ChildBrandMatchingPartnersQuery groupByBrandIntern() Group by the brand_intern column
- * @method     ChildBrandMatchingPartnersQuery groupByBrandExtern() Group by the brand_extern column
- * @method     ChildBrandMatchingPartnersQuery groupByPartnerId() Group by the partner_id column
- * @method     ChildBrandMatchingPartnersQuery groupByBrandCode() Group by the brand_code column
+ * @method     ChildWholesalePartnerBrandMatchingQuery groupById() Group by the id column
+ * @method     ChildWholesalePartnerBrandMatchingQuery groupByBrandIntern() Group by the brand_intern column
+ * @method     ChildWholesalePartnerBrandMatchingQuery groupByBrandExtern() Group by the brand_extern column
+ * @method     ChildWholesalePartnerBrandMatchingQuery groupByPartnerId() Group by the partner_id column
+ * @method     ChildWholesalePartnerBrandMatchingQuery groupByBrandCode() Group by the brand_code column
  *
- * @method     ChildBrandMatchingPartnersQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildBrandMatchingPartnersQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildBrandMatchingPartnersQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildWholesalePartnerBrandMatchingQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildWholesalePartnerBrandMatchingQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildWholesalePartnerBrandMatchingQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildBrandMatchingPartnersQuery leftJoinBrand($relationAlias = null) Adds a LEFT JOIN clause to the query using the Brand relation
- * @method     ChildBrandMatchingPartnersQuery rightJoinBrand($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Brand relation
- * @method     ChildBrandMatchingPartnersQuery innerJoinBrand($relationAlias = null) Adds a INNER JOIN clause to the query using the Brand relation
+ * @method     ChildWholesalePartnerBrandMatchingQuery leftJoinBrand($relationAlias = null) Adds a LEFT JOIN clause to the query using the Brand relation
+ * @method     ChildWholesalePartnerBrandMatchingQuery rightJoinBrand($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Brand relation
+ * @method     ChildWholesalePartnerBrandMatchingQuery innerJoinBrand($relationAlias = null) Adds a INNER JOIN clause to the query using the Brand relation
  *
- * @method     ChildBrandMatchingPartners findOne(ConnectionInterface $con = null) Return the first ChildBrandMatchingPartners matching the query
- * @method     ChildBrandMatchingPartners findOneOrCreate(ConnectionInterface $con = null) Return the first ChildBrandMatchingPartners matching the query, or a new ChildBrandMatchingPartners object populated from the query conditions when no match is found
+ * @method     ChildWholesalePartnerBrandMatching findOne(ConnectionInterface $con = null) Return the first ChildWholesalePartnerBrandMatching matching the query
+ * @method     ChildWholesalePartnerBrandMatching findOneOrCreate(ConnectionInterface $con = null) Return the first ChildWholesalePartnerBrandMatching matching the query, or a new ChildWholesalePartnerBrandMatching object populated from the query conditions when no match is found
  *
- * @method     ChildBrandMatchingPartners findOneById(int $id) Return the first ChildBrandMatchingPartners filtered by the id column
- * @method     ChildBrandMatchingPartners findOneByBrandIntern(int $brand_intern) Return the first ChildBrandMatchingPartners filtered by the brand_intern column
- * @method     ChildBrandMatchingPartners findOneByBrandExtern(string $brand_extern) Return the first ChildBrandMatchingPartners filtered by the brand_extern column
- * @method     ChildBrandMatchingPartners findOneByPartnerId(int $partner_id) Return the first ChildBrandMatchingPartners filtered by the partner_id column
- * @method     ChildBrandMatchingPartners findOneByBrandCode(string $brand_code) Return the first ChildBrandMatchingPartners filtered by the brand_code column
+ * @method     ChildWholesalePartnerBrandMatching findOneById(int $id) Return the first ChildWholesalePartnerBrandMatching filtered by the id column
+ * @method     ChildWholesalePartnerBrandMatching findOneByBrandIntern(int $brand_intern) Return the first ChildWholesalePartnerBrandMatching filtered by the brand_intern column
+ * @method     ChildWholesalePartnerBrandMatching findOneByBrandExtern(string $brand_extern) Return the first ChildWholesalePartnerBrandMatching filtered by the brand_extern column
+ * @method     ChildWholesalePartnerBrandMatching findOneByPartnerId(int $partner_id) Return the first ChildWholesalePartnerBrandMatching filtered by the partner_id column
+ * @method     ChildWholesalePartnerBrandMatching findOneByBrandCode(string $brand_code) Return the first ChildWholesalePartnerBrandMatching filtered by the brand_code column
  *
- * @method     array findById(int $id) Return ChildBrandMatchingPartners objects filtered by the id column
- * @method     array findByBrandIntern(int $brand_intern) Return ChildBrandMatchingPartners objects filtered by the brand_intern column
- * @method     array findByBrandExtern(string $brand_extern) Return ChildBrandMatchingPartners objects filtered by the brand_extern column
- * @method     array findByPartnerId(int $partner_id) Return ChildBrandMatchingPartners objects filtered by the partner_id column
- * @method     array findByBrandCode(string $brand_code) Return ChildBrandMatchingPartners objects filtered by the brand_code column
+ * @method     array findById(int $id) Return ChildWholesalePartnerBrandMatching objects filtered by the id column
+ * @method     array findByBrandIntern(int $brand_intern) Return ChildWholesalePartnerBrandMatching objects filtered by the brand_intern column
+ * @method     array findByBrandExtern(string $brand_extern) Return ChildWholesalePartnerBrandMatching objects filtered by the brand_extern column
+ * @method     array findByPartnerId(int $partner_id) Return ChildWholesalePartnerBrandMatching objects filtered by the partner_id column
+ * @method     array findByBrandCode(string $brand_code) Return ChildWholesalePartnerBrandMatching objects filtered by the brand_code column
  *
  */
-abstract class BrandMatchingPartnersQuery extends ModelCriteria
+abstract class WholesalePartnerBrandMatchingQuery extends ModelCriteria
 {
     
     /**
-     * Initializes internal state of \RevenueDashboard\Model\Base\BrandMatchingPartnersQuery object.
+     * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerBrandMatchingQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\RevenueDashboard\\Model\\BrandMatchingPartners', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\RevenueDashboard\\Model\\WholesalePartnerBrandMatching', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildBrandMatchingPartnersQuery object.
+     * Returns a new ChildWholesalePartnerBrandMatchingQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildBrandMatchingPartnersQuery
+     * @return ChildWholesalePartnerBrandMatchingQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \RevenueDashboard\Model\BrandMatchingPartnersQuery) {
+        if ($criteria instanceof \RevenueDashboard\Model\WholesalePartnerBrandMatchingQuery) {
             return $criteria;
         }
-        $query = new \RevenueDashboard\Model\BrandMatchingPartnersQuery();
+        $query = new \RevenueDashboard\Model\WholesalePartnerBrandMatchingQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -109,19 +109,19 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildBrandMatchingPartners|array|mixed the result, formatted by the current formatter
+     * @return ChildWholesalePartnerBrandMatching|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = BrandMatchingPartnersTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = WholesalePartnerBrandMatchingTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(WholesalePartnerBrandMatchingTableMap::DATABASE_NAME);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -140,11 +140,11 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return   ChildBrandMatchingPartners A model object, or null if the key is not found
+     * @return   ChildWholesalePartnerBrandMatching A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, BRAND_INTERN, BRAND_EXTERN, PARTNER_ID, BRAND_CODE FROM brand_matching_partners WHERE ID = :p0';
+        $sql = 'SELECT ID, BRAND_INTERN, BRAND_EXTERN, PARTNER_ID, BRAND_CODE FROM wholesale_partner_brand_matching WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -155,9 +155,9 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            $obj = new ChildBrandMatchingPartners();
+            $obj = new ChildWholesalePartnerBrandMatching();
             $obj->hydrate($row);
-            BrandMatchingPartnersTableMap::addInstanceToPool($obj, (string) $key);
+            WholesalePartnerBrandMatchingTableMap::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -170,7 +170,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildBrandMatchingPartners|array|mixed the result, formatted by the current formatter
+     * @return ChildWholesalePartnerBrandMatching|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,12 +212,12 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -225,12 +225,12 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -249,18 +249,18 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -271,7 +271,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $id, $comparison);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -292,18 +292,18 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByBrandIntern($brandIntern = null, $comparison = null)
     {
         if (is_array($brandIntern)) {
             $useMinMax = false;
             if (isset($brandIntern['min'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_INTERN, $brandIntern['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_INTERN, $brandIntern['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($brandIntern['max'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_INTERN, $brandIntern['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_INTERN, $brandIntern['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -314,7 +314,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_INTERN, $brandIntern, $comparison);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_INTERN, $brandIntern, $comparison);
     }
 
     /**
@@ -330,7 +330,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByBrandExtern($brandExtern = null, $comparison = null)
     {
@@ -343,7 +343,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_EXTERN, $brandExtern, $comparison);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_EXTERN, $brandExtern, $comparison);
     }
 
     /**
@@ -362,18 +362,18 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByPartnerId($partnerId = null, $comparison = null)
     {
         if (is_array($partnerId)) {
             $useMinMax = false;
             if (isset($partnerId['min'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::PARTNER_ID, $partnerId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::PARTNER_ID, $partnerId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($partnerId['max'])) {
-                $this->addUsingAlias(BrandMatchingPartnersTableMap::PARTNER_ID, $partnerId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::PARTNER_ID, $partnerId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -384,7 +384,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::PARTNER_ID, $partnerId, $comparison);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::PARTNER_ID, $partnerId, $comparison);
     }
 
     /**
@@ -400,7 +400,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByBrandCode($brandCode = null, $comparison = null)
     {
@@ -413,7 +413,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_CODE, $brandCode, $comparison);
+        return $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_CODE, $brandCode, $comparison);
     }
 
     /**
@@ -422,20 +422,20 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      * @param \Thelia\Model\Brand|ObjectCollection $brand The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function filterByBrand($brand, $comparison = null)
     {
         if ($brand instanceof \Thelia\Model\Brand) {
             return $this
-                ->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_INTERN, $brand->getId(), $comparison);
+                ->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_INTERN, $brand->getId(), $comparison);
         } elseif ($brand instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(BrandMatchingPartnersTableMap::BRAND_INTERN, $brand->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(WholesalePartnerBrandMatchingTableMap::BRAND_INTERN, $brand->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByBrand() only accepts arguments of type \Thelia\Model\Brand or Collection');
         }
@@ -447,7 +447,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
     public function joinBrand($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
@@ -494,21 +494,21 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   ChildBrandMatchingPartners $brandMatchingPartners Object to remove from the list of results
+     * @param   ChildWholesalePartnerBrandMatching $wholesalePartnerBrandMatching Object to remove from the list of results
      *
-     * @return ChildBrandMatchingPartnersQuery The current query, for fluid interface
+     * @return ChildWholesalePartnerBrandMatchingQuery The current query, for fluid interface
      */
-    public function prune($brandMatchingPartners = null)
+    public function prune($wholesalePartnerBrandMatching = null)
     {
-        if ($brandMatchingPartners) {
-            $this->addUsingAlias(BrandMatchingPartnersTableMap::ID, $brandMatchingPartners->getId(), Criteria::NOT_EQUAL);
+        if ($wholesalePartnerBrandMatching) {
+            $this->addUsingAlias(WholesalePartnerBrandMatchingTableMap::ID, $wholesalePartnerBrandMatching->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the brand_matching_partners table.
+     * Deletes all rows from the wholesale_partner_brand_matching table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -516,7 +516,7 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerBrandMatchingTableMap::DATABASE_NAME);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
@@ -527,8 +527,8 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            BrandMatchingPartnersTableMap::clearInstancePool();
-            BrandMatchingPartnersTableMap::clearRelatedInstancePool();
+            WholesalePartnerBrandMatchingTableMap::clearInstancePool();
+            WholesalePartnerBrandMatchingTableMap::clearRelatedInstancePool();
 
             $con->commit();
         } catch (PropelException $e) {
@@ -540,9 +540,9 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
     }
 
     /**
-     * Performs a DELETE on the database, given a ChildBrandMatchingPartners or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ChildWholesalePartnerBrandMatching or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ChildBrandMatchingPartners object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ChildWholesalePartnerBrandMatching object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -553,13 +553,13 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
      public function delete(ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(BrandMatchingPartnersTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(WholesalePartnerBrandMatchingTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(BrandMatchingPartnersTableMap::DATABASE_NAME);
+        $criteria->setDbName(WholesalePartnerBrandMatchingTableMap::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -569,10 +569,10 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
             $con->beginTransaction();
             
 
-        BrandMatchingPartnersTableMap::removeInstanceFromPool($criteria);
+        WholesalePartnerBrandMatchingTableMap::removeInstanceFromPool($criteria);
         
             $affectedRows += ModelCriteria::delete($con);
-            BrandMatchingPartnersTableMap::clearRelatedInstancePool();
+            WholesalePartnerBrandMatchingTableMap::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -582,4 +582,4 @@ abstract class BrandMatchingPartnersQuery extends ModelCriteria
         }
     }
 
-} // BrandMatchingPartnersQuery
+} // WholesalePartnerBrandMatchingQuery
