@@ -24,7 +24,7 @@
         {$product_order=$order}
         {$ALL_PAGES = $PAGES}
         {$max_page = 5}
-        {$min_page = 5}
+        {$min_page = 5}        
 
         <article class="col-main  {$smarty.get.mode|default:"grid"}"  role="main" aria-labelledby="main-label">
             <h1 id="main-label" class="page-header">{intl l="Search Result for"} <small>{$smarty.get.q}</small></h1>
@@ -113,8 +113,8 @@
 
 
                         {while ($new_page  <= $current_page + $max_page)}                        
-
-                            {if $new_page >= 1}
+{$max_pages}
+                            {if $new_page >= 1 && $new_page < $ALL_PAGES}
                                 <li{if $new_page eq $current_page} class="active"{/if}>
                                     <a href="{url current="1" page=$new_page limit=$limit order=$order}">{$new_page}</a>                            
                                 </li>
