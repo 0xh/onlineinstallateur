@@ -206,9 +206,13 @@ class ElasticConnection
 
     public function fullTextSearch($text = null, $start, $end, $limit, $order = null)
     {
-        $text = strtolower($text);
+        $text                       = strtolower($text);
+        $field                      = null;
         $objElasticConnection       = new ElasticConnection();
         $objElasticSearchConnection = $objElasticConnection::getConnection();
+        if ($order == null) {
+            $order = 'desc';
+        }
         switch ($order) {
             case 'alpha':
                 $order_by = "asc";
@@ -236,15 +240,15 @@ class ElasticConnection
             case 'min_price':
                 $field    = "product_taxed_price";
                 $order_by = "asc";
-                
-                $json     = '{
+
+                $json = '{
                     "sort" : [
                         {"' . $field . '": {"order":"' . $order_by . '"}}
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
                      "query":  ' . $this->querySearchJson($text) . '
                  }';
-                
+
                 break;
             case 'max_price':
                 $field    = "product_taxed_price";
@@ -264,10 +268,15 @@ class ElasticConnection
                         "_score"
                     ],
                      "from" : "' . $start . '","size":"' . $limit . '",
-                     "query":  ' . $this->querySearchJson($text) . '
+                     "query":  ' . $this->querySearchJson($text) . '                     
                 }';
                 break;
         }
+
+        if ($field == NULL) {
+            $field = "product_title";
+        }
+
 
         $params = [
          'index' => 'product_de',
@@ -277,6 +286,19 @@ class ElasticConnection
 
         $result                          = $objElasticSearchConnection->search($params);
         $result['hits']['hits']['total'] = $result['hits']['total'];
+
+        if ($result['hits']['total'] == 0) {
+            $params                          = [
+             'index' => 'product_de',
+             'type'  => 'default',
+             'body'  => ($text == NULL || $text == "") ? $this->matchAll($field, $order_by) : 
+                                                         $this->matchQuery($text,$limit,$start)
+            ];
+            
+            $result                          = $objElasticSearchConnection->search($params);
+            $result['hits']['hits']['total'] = $result['hits']['total'];
+        }
+
         return $result['hits']['hits'];
     }
 
@@ -317,9 +339,8 @@ class ElasticConnection
        }';
 
         return $json;
-        }
+    }
 
-        
     public function querySearchJson($text)
     {
         return '{
@@ -371,4 +392,55 @@ class ElasticConnection
                 }
               }';
     }
+
+    public function matchQuery($text,$limit, $start)
+    {
+        $json = '
+             {
+              "sort": [
+                {
+                  "product_title": {
+                    "order": "desc"
+                  }
+                }
+              ], 
+               "from" : "' . $start . '","size":"' . $limit . '",
+                "query": {
+                    "match_phrase" : {
+                        "product_title" : {
+                            "query" : "'.$text.'",
+                            "analyzer" : "word_join_analyzer"
+                        }
+                    }
+                }               
+            }
+              ';
+        return $json;
+    }
+    
+    
+    public function mulitMatchQuery($text,$limit, $start)
+    {
+        $json = '
+             {
+              "sort": [
+                {
+                  "product_title": {
+                    "order": "desc"
+                  }
+                }
+              ], 
+               "from" : "' . $start . '","size":"' . $limit . '",
+                "query": {
+                    "multi_match" : {                        
+                            "query" : "'.$text.'",
+                            "fields" : ["product_title", "product_description"]
+                        }
+                }
+                
+            }
+              ';
+        return $json;
+    }
+
 }
