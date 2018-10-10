@@ -4,11 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="admin.incorrect.import.product.csv" path="/admin/import/full-product-import/download-csv">
+    <route id="admin.incorrect.import.product.csv" path="/admin/import/full-product-import/download-csv/{csv_file}">
         <default key="_controller">SepaImporter\Controller\Admin\ImporterController::downloadIncorrectProductsCsv</default>
+        <requirement key="csv_file">.*</requirement>
     </route>
     
-    <route id="admin.generic.product.import.csv" path="/admin/import/generic-product-import/download-csv">
+    <route id="admin.generic.product.import.csv" path="/admin/import/generic-product-import/download-csv{csv_file}">
         <default key="_controller">SepaImporter\Controller\Admin\ImporterController::downloadGenericProductImportCsv</default>
+        <requirement key="csv_file">.*</requirement>
     </route>
 </routes>
