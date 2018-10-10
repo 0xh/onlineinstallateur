@@ -1,38 +1,37 @@
 {extends file="admin-layout.tpl"}
 
 {block name="no-return-functions"}
-    {$admin_current_location = 'Revenue Dashboard'}
+    {$admin_current_location = 'tools'}
 {/block}
 
 {block name="page-title"}{intl l='Revenue Dashboard'}{/block}
 
 {block name="main-content"} 
-    {render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
     {assign page {$smarty.get.page|default:1}}
 
     <div class="general-block-decorator dashboard">
         {include file = "menu-links.html"}
 
-        <form action="{url path='/admin/module/revenuedashboard'}" method="get">
+        <form action="{url path='/admin/module/revenue-wholesale-selling-prices'}" method="get">
             <div class="row" style="padding-bottom: 10px;">
                 <div class="col-sm-2">
-                    <h5>{intl l="Start date:"}</h5>
-                    <input type="text" id="datepickerStartDate" name="datepickerStartDate" class="form-control" value="{trim($smarty.get.datepickerStartDate)}">
+                    <h5>{intl l="Product id:"}</h5>
+                    <input type="text" name="product_id" class="form-control" value="{trim($smarty.get.product_id)}" autocomplete="off">
                 </div>
                 <div class="col-sm-2">
-                    <h5>{intl l="End date:"}</h5>
-                    <input type="text" id="datepickerEndDate" name="datepickerEndDate" class="form-control" value="{trim($smarty.get.datepickerEndDate)}">
+                    <h5>{intl l="Title:"}</h5>
+                    <input type="text" name="title" class="form-control" value="{trim($smarty.get.title)}" autocomplete="off">
                 </div>
                 <div class="col-sm-2">
                     <h5>{intl l="Search:"}</h5>
-                    <button type="submit" id="get_update_orders" class="btn btn-info form-control">Search</button>
+                    <button type="submit" class="btn btn-info form-control">Search</button>
                 </div>
             </div>
         </form>
 
         <table class="table table-striped">
             <tr style="font-weight: bold; font-size: 15px;">
-                <td>{intl l="Id"}</td>
+                <td>{intl l="Id"}.</td>
                 <td>{intl l="Product id"}</td>
                 <td>{intl l="Title"}</td>
                 <td>{intl l="Our selling Price with TVA"}</td>
@@ -47,9 +46,8 @@
             </tr>
             {assign var="total" value="0"}
             {loop name="selling.prices.loop" type="selling.prices.loop" page={$page} limit=100}
-            {$total = $total + $revenue}
             <tr>
-                <td>{$id}</td>
+                <td>{$id}.</td>
                 <td>
                     <a href="{url path='/admin/products/update?product_id='}{$product_id}">{$product_id}</a>
                 </td>
@@ -80,7 +78,7 @@
                 file = "includes/pagination.html"
                 loop_ref       = "selling.prices.loop"
                 max_page_count = 100
-                page_url       = {url path="/admin/module/revenue-wholesale-selling-prices" }
+                page_url       = {url path="/admin/module/revenue-wholesale-selling-prices"  product_id=$smarty.get.product_id title=$smarty.get.title }
                     }
                 </td>
             </tr>

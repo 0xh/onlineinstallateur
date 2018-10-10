@@ -64,6 +64,14 @@ class SellingPricesLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
 //         ->where(CrawlerProductListingTableMap::FIRST_PRICE . ">-1")
          ->where(ProductI18nTableMap::LOCALE . "='" . $this->getCurrentRequest()->getSession()->getLang()->getLocale() . "'");
 
+        if ($this->request->get("title")) {
+            $query = $query->where(ProductI18nTableMap::TITLE . " like '%" . $this->request->get("title") . "%'");
+        }
+
+        if ($this->request->get("product_id")) {
+            $query = $query->where(ProductTableMap::ID . " like '%" . $this->request->get("product_id") . "%'");
+        }
+
         return $query;
     }
 
