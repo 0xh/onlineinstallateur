@@ -30,6 +30,7 @@
         <loop name="revenue.customer.title.loop" class="RevenueDashboard\Loop\CustomerTitleInLoop" />
         <loop name="revenue.partner.product.loop" class="RevenueDashboard\Loop\PartnerProductLoop" />
         <loop name="revenue.dashboard.loop" class="RevenueDashboard\Loop\RevenueDashboardLoop" />
+        <loop name="selling.prices.loop" class="RevenueDashboard\Loop\SellingPricesLoop" />
     </loops>
     
     <services> 
