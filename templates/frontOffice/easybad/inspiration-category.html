@@ -63,6 +63,10 @@
 
             {hook name="category.main-top" category="$category_id"}
 
+            {ifhook rel="configurator.description"}
+            	{hook name="configurator.description" category_id=$category_id}
+			{/ifhook}
+
             <div class=" row " >
                 <!-- "386 : (5192|5193), 383 : (5178|5181)" $smarty.get.features --> 
                 {$features=$smarty.get.features}
