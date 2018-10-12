@@ -149,6 +149,24 @@ class FullWidthBlock extends BaseModule
                 "block" => false,
                 "active" => true
             ),
+			array(
+                "type" => TemplateDefinition::FRONT_OFFICE,
+                "code" => "full_with_block.sogehts",
+                "title" => array(
+                    "fr_FR" => "Full with hook for diyratgeber template",
+                    "en_US" => "Full with hook for diyratgeber template",
+                ),
+                "description" => array(
+                    "fr_FR" => "Full with hook for diyratgeber template",
+                    "en_US" => "Full with hook for diyratgeber template",
+                ),
+                "chapo" => array(
+                    "fr_FR" => "Full with hook for diyratgeber template",
+                    "en_US" => "Full with hook for diyratgeber template",
+                ),
+                "block" => false,
+                "active" => true
+            ),
             array(
                 "type" => TemplateDefinition::FRONT_OFFICE,
                 "code" => "full_with_block.inspiration.page",
