@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
     ' content create form' => 'Inhalts-Erstellungsformular',
     ' note: only non-visible documents can be associated.' => ' Hinweis: Nur unsichtbare Dokumente können zugewiesen werden.',
     '"%param" parameter cannot be empty in loop type: %type, name: %name' => '"%param" Parameter darf im Loop-Typ nicht leer sein: %type, Name: %name',
@@ -236,7 +236,7 @@ return [
     'ISO Alpha-2 code' => 'ISO-Alpha-2-code',
     'ISO Alpha-3 code' => 'ISO-Alpha-3 code',
     'ISO Code' => 'ISO-Code',
-    'If a translation is missing or incomplete :' => 'Wenn eine Übersetzung fehlet oder unvollständig ist :',
+    'If a translation is missing or incomplete :' => 'Wenn eine Übersetzung fehlt oder unvollständig ist :',
     'If cart item count is <strong>%operator%</strong> %quantity%' => 'Warenkorb Artikelanzahl ist strong>%operator%</strong> %quantity% ',
     'If cart total amount is <strong>%operator%</strong> %amount% %currency%' => 'Wenn die Warenkorb-Gesamtsumme ist <strong>%operator%</strong> %amount% %currency% ',
     'If checked, this hook will be used by a hook block. If not, by hook function.' => 'Wenn aktiviert, dieses Hook wird durch einen Hook Block benutzt. Wenn nicht, durch eine Hook Funktion',
@@ -703,7 +703,7 @@ return [
     'content area' => 'Inhaltsbereich',
     'content delete form' => 'Inhalts-Löschungsformular',
     'content edit JavaScript' => 'Inhalt-Bearbeitung Javascript',
-    'contents table header' => 'Inhlats-Tabellenkopf',
+    'contents table header' => 'Inhalts-Tabellenkopf',
     'contents table row' => 'Inhalts-Tabellenzeile',
     'context' => 'Kontext',
     'country delete form' => 'Land-Löschungsformular',
@@ -789,4 +789,4 @@ return [
     'update form' => 'Formular aktualisieren',
     'value table header' => 'Angabe-Tabellenkopf',
     'value table row' => 'Angabe-Tabellenzeile',
-];
+);
