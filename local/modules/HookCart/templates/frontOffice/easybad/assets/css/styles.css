@@ -16,8 +16,10 @@
     height: auto;
     padding: 0px;
     margin: 0px;
-    padding-top: 4px;
-    background-color: #10B4CF;
+    display: block;
+    position: relative;
+    top: 45%;
+    background-color: #FFF;
 }
 .navbar-default .navbar-cart>li>a:hover{
     background-color: #10B4CF !important;
@@ -43,5 +45,10 @@
     .cart .badge,
     .cart-not-empty .badge{
         transform: translate(47%, -228%) !important;
+    }
+}
+@media screen and (min-width: 450px){
+    .navbar-default .navbar-cart>li{
+        margin-top: 25px;
     }
 }
