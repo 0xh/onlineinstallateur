@@ -1,0 +1,27 @@
+<?php
+
+return array(
+    'Brands' => 'Brands',
+    'Catalog' => 'Catalog',
+    'Clear caches' => 'Clear caches',
+    'Configuration' => 'Configuration',
+    'Coupons' => 'Coupons',
+    'Customers' => 'Customers',
+    'Export' => 'Export',
+    'Flush assets cache' => 'Flush assets cache',
+    'Flush images and documents cache' => 'Flush images and documents cache',
+    'Flush internal cache' => 'Flush internal cache',
+    'Folders' => 'Folders',
+    'Hi, %firstname %lastname' => 'Hi, %firstname %lastname',
+    'Import' => 'Import',
+    'Logout' => 'Logout',
+    'Modules' => 'Modules',
+    'Orders' => 'Orders',
+    'Profile' => 'Profile',
+    'Sales management' => 'Sales management',
+    'Tools' => 'Tools',
+    'Update category' => 'Update category',
+    'Update content' => 'Update content',
+    'Update folder' => 'Update folder',
+    'Update product' => 'Update product',
+);
