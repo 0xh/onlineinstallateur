@@ -312,6 +312,27 @@
                     Export your BMD orders
                 </description>
             </export_descriptive>
+        </export>        
+        <export id="thelia.export.bmd_order.extended" class="ComparisonPlatformExporter\Export\BMDOrderExtendedExport"
+                        category_id="thelia.export.orders">
+            <export_descriptive locale="en_US">
+                <title>BMD exdended orders</title>
+                <description>
+                    Export your BMD orders
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Commandes BMD</title>
+                <description>
+                    Exporter vos BMD extended commandes
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>BMD extended orders</title>
+                <description>
+                    Export your BMD extended orders
+                </description>
+            </export_descriptive>
         </export>
         <export id="thelia.export.catalog.triworx" class="ComparisonPlatformExporter\Export\TriworxProductExport"
                         category_id="thelia.export.products">
