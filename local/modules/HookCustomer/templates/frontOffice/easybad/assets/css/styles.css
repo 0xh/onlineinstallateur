@@ -43,6 +43,9 @@
 .navbar-customer li a.logout{
     padding-left: 5px;
 }
+.navbar-customer{
+    margin-top: 0px !important;
+}
 /* .navbar-customer li a.login{ */
 /*     padding-right: 12px; */
 /* } */
