@@ -294,7 +294,7 @@ h1.name{
 .highlighted-bg {
     color: #fff;
     font-weight: 500;
-    background-color: #86AC34;
+    background-color: #15589c;
     padding:3px 10px;
 
 }
@@ -331,7 +331,7 @@ article#product{
 }
 
 .teaser-bar {
-    background: radial-gradient(circle,#85AC37 5%,#000 100%);
+    background: radial-gradient(circle,#15589c 5%,#000 100%);
     padding: 0 .625rem;
     color:#FFF;
     border-radius: 5px;
@@ -391,11 +391,11 @@ section .product-image{
 
 }
 .btn-1{
-    background:#85ac37!important;
+    background:#15589c!important;
     color:#000!important;
 }
 .btn-1:hover{
-    background:#85ac37!important;
+    background:#15589c!important;
     color:#000!important;
 }
 
