@@ -1030,18 +1030,10 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setRanking($rank)
          ->setAmazonCategoryId($productCat)
          ->setLowestPrice($priceAmazon['lowestPrice'])
-         ->setListPrice($priceAmazon['listPrice']);
+         ->setListPrice($priceAmazon['listPrice'])
+         ->save();
+         Common::saveInCrawlerProductListing($productId, $platform = "Amazon", $priceAmazon['lowestPrice']);
 
-        if ($priceAmazon['lowestPrice']) {
-            echo "<pre>";
-            var_dump($priceAmazon['lowestPrice']);
-            var_dump($priceAmazon['listPrice']);
-            var_dump($productId);
-            var_dump($eanCode);
-            Common::saveInCrawlerProductListing($productId, $platform = "Amazon", $priceAmazon['lowestPrice']);
-            die;
-        }
-//                ->save();
     }
 
     public function saveProductCategories($productCategories)
