@@ -5,23 +5,23 @@ use Thelia\Controller\Admin\BaseAdminController;
 use FilterConfigurator\FilterConfigurator;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
-use FilterConfigurator\Model\Configurator;
-use FilterConfigurator\Model\ConfiguratorI18n;
-use FilterConfigurator\Model\ConfiguratorImageQuery;
-use FilterConfigurator\Model\ConfiguratorImageI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\FilterConfiguratorI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorImageI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorImageQuery;
+use FilterConfigurator\Model\FilterConfiguratorQuery;
+use FilterConfigurator\Model\FilterConfiguratorI18n;
+use FilterConfigurator\Model\FilterConfiguratorFeatures;
+use FilterConfigurator\Model\FilterConfiguratorImage;
+use FilterConfigurator\Model\FilterConfiguratorImageI18n;
 use Thelia\Files\FileConfiguration;
 use Thelia\Tools\Rest\ResponseRest;
 use Thelia\Core\HttpFoundation\Response;
 use Thelia\Files\Exception\ProcessFileException;
-use FilterConfigurator\Model\ConfiguratorImage;
-use FilterConfigurator\Model\ConfiguratorImageI18n;
 use Propel\Runtime\ActiveQuery\Criteria;
-use FilterConfigurator\Model\ConfiguratorQuery;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Thelia\Tools\URL;
-use FilterConfigurator\Model\ConfiguratorI18nQuery;
-use FilterConfigurator\Model\ConfiguratorFeatures;
-use FilterConfigurator\Model\ConfiguratorFeaturesQuery;
 
 class FilterConfiguratorController extends BaseAdminController
 {
@@ -68,7 +68,7 @@ class FilterConfiguratorController extends BaseAdminController
 	 		$data = $this->validateForm($form)->getData();
 
 	 		if(isset($data["category_id"])){
-	 		    $configurator = ConfiguratorQuery::create()
+	 		    $configurator = FilterConfiguratorQuery::create()
 	 		        ->filterById($data['id'])
 	 		        ->findOneOrCreate();
 	 		    
@@ -77,7 +77,7 @@ class FilterConfiguratorController extends BaseAdminController
 	 		        ->save();
 	 		}
 	 		
-			$configuratorI18n =  ConfiguratorI18nQuery::create()
+	 		$configuratorI18n =  FilterConfiguratorI18nQuery::create()
 				->filterById($data['id'])
 				->filterByLocale($data["locale"])
 				->findOneOrCreate();
@@ -113,11 +113,11 @@ class FilterConfiguratorController extends BaseAdminController
 		    
 			$data = $this->validateForm($form)->getData();
 			
-			$configuratorPosition = ConfiguratorQuery::create()
+			$configuratorPosition = FilterConfiguratorQuery::create()
 				->orderByPosition(Criteria::DESC)
 				->findOne();
 			
-			$configurator =  new Configurator();
+				$configurator =  new FilterConfigurator();
 			
 			$configurator
 				->setVisible(1)
@@ -125,7 +125,7 @@ class FilterConfiguratorController extends BaseAdminController
 				->setCategoryId($data["category_id"])
 				->save();
 			
-			$configuratorI18n =  new ConfiguratorI18n();
+				$configuratorI18n =  new FilterConfiguratorI18n();
 			
 			$configuratorI18n
 				->setId($configurator->getId())
@@ -157,7 +157,7 @@ class FilterConfiguratorController extends BaseAdminController
 				$featuresDb = array();
 				$featuresBack = array();
 				
-			    $configuratorFeatureRelation = ConfiguratorFeaturesQuery::create()
+				$configuratorFeatureRelation = FilterConfiguratorFeaturesQuery::create()
 					->filterByConfiguratorId($key)
 					->find();
 			    
@@ -173,7 +173,7 @@ class FilterConfiguratorController extends BaseAdminController
 				if($delete)
 					foreach($delete as $featureToDelete) {
 						
-						$configuratorFeatures = ConfiguratorFeaturesQuery::create()
+					    $configuratorFeatures = FilterConfiguratorFeaturesQuery::create()
 							->filterByConfiguratorId($key)
 							->filterByFeatureId($featureToDelete)
 							->delete();
@@ -181,7 +181,7 @@ class FilterConfiguratorController extends BaseAdminController
 				
 				if($insert)
 					foreach($insert as $featureToInsert) {
-						$configuratorFeatures = new ConfiguratorFeatures;
+					    $configuratorFeatures = new FilterConfiguratorFeatures();
 						
 						$configuratorFeatures->setConfiguratorId($key)
 							->setFeatureId($featureToInsert)
@@ -208,7 +208,7 @@ class FilterConfiguratorController extends BaseAdminController
 	
 	public function toggleVisibilityImageAction($id)
 	{
-		$configurator =  ConfiguratorImageQuery::create()
+	    $configurator =  FilterConfiguratorImageQuery::create()
 			->filterById($id)
 			->findOne();
 		
@@ -248,7 +248,7 @@ class FilterConfiguratorController extends BaseAdminController
 		try {
 			$data = $this->validateForm($form)->getData();
 			
-			$confImage = ConfiguratorImageQuery::create()
+			$confImage = FilterConfiguratorImageQuery::create()
 				->filterById($id)
 				->findOne();
 			
@@ -266,7 +266,7 @@ class FilterConfiguratorController extends BaseAdminController
 				$confImage->setVisible($data['visible'])
 					->save();
 				
-				$confImageI18n = ConfiguratorImageI18nQuery::create()
+					$confImageI18n = FilterConfiguratorImageI18nQuery::create()
 					->filterById($id)
 					->filterByLocale($data['locale'])
 					->findOneOrCreate();
@@ -298,11 +298,11 @@ class FilterConfiguratorController extends BaseAdminController
 			return $response;
 		}
 		
-		ConfiguratorImageI18nQuery::create()
+		FilterConfiguratorImageI18nQuery::create()
 			->filterById($id)
 			->delete();
 		
-		ConfiguratorImageQuery::create()
+		FilterConfiguratorImageQuery::create()
 			->filterById($id)
 			->delete();
 	}
@@ -434,12 +434,12 @@ class FilterConfiguratorController extends BaseAdminController
 					throw new ProcessFileException($message, 415);
 				}
 				
-				$configuratorImageLastPosition = ConfiguratorImageQuery::create()
+				$configuratorImageLastPosition = FilterConfiguratorImageQuery::create()
 					->filterByConfiguratorId($parentId)
 					->orderByPosition(Criteria::DESC)
 					->findOne();
 				
-				$configuratorImage =  new ConfiguratorImage();
+					$configuratorImage =  new FilterConfiguratorImage();
 				
 				$configuratorImage
 					->setConfiguratorId($parentId)
@@ -448,7 +448,7 @@ class FilterConfiguratorController extends BaseAdminController
 					->setPosition($configuratorImageLastPosition !== null ? $configuratorImageLastPosition->getPosition() + 1 : 1)
 					->save();
 				
-				$configuratorImageI18n =  new ConfiguratorImageI18n();
+					$configuratorImageI18n =  new FilterConfiguratorImageI18n();
 				
 				$configuratorImageI18n
 					->setId($configuratorImage->getId())
@@ -470,13 +470,13 @@ class FilterConfiguratorController extends BaseAdminController
 		$position = $this->getRequest()->request->get('position');
 		$image_id= $this->getRequest()->request->get('image_id');
 		
-		$posImage = ConfiguratorImageQuery::create()
+		$posImage = FilterConfiguratorImageQuery::create()
 			->filterById($image_id)
 			->findOne();
 		
 		$posImage->setPosition($position)->save();
 		
-		$confImages = ConfiguratorImageQuery::create()
+		$confImages = FilterConfiguratorImageQuery::create()
 			->filterByConfiguratorId($id)
 			->orderByPosition(Criteria::ASC)
 			->find();
@@ -518,7 +518,7 @@ class FilterConfiguratorController extends BaseAdminController
 			return $response;
 		}
 		
-		ConfiguratorQuery::create()
+		FilterConfiguratorQuery::create()
 			->filterById($id)
 			->delete();
 		
