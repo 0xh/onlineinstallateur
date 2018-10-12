@@ -40,7 +40,7 @@
                 <td>{intl l="Amazon"}</td>
                 <td>{intl l="Skybad"}</td>
                 <td>{intl l="Reuter"}</td>
-                <td>{intl l="Epoq"}</td>
+                <td>{intl l="Megabad"}</td>
                 <td>{intl l="Geizhals"}</td>
                 <td>{intl l="Edit price"}</td>
             </tr>
@@ -96,9 +96,9 @@
                     {$platform_first_price["Reuter"]|number_format:2:".":","}
                 </td>
                 <td 
-                    {if $platform_first_price["Epoq"] == $min_price} style="background-color: greenyellow;" {/if}
-                    {if $platform_first_price["Epoq"] == $max_price} style="background-color: sandybrown;" {/if}>
-                    {$platform_first_price["Epoq"]|number_format:2:".":","}
+                    {if $platform_first_price["Megabad"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Megabad"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Megabad"]|number_format:2:".":","}
                 </td>
                 <td 
                     {if $platform_first_price["Geizhals"] == $min_price} style="background-color: greenyellow;" {/if}

@@ -23,7 +23,7 @@ class Epoq extends BaseAdminController
     public function getDataEpoq()
     {
         $dataEpoq = new WebBrowserController("epoq-log");
-        $platform = "Epoq";
+        $platform = "Megabad";
 
         $dataEpoq->init();
 
