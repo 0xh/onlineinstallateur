@@ -4,9 +4,9 @@ namespace FilterConfigurator\Model\Base;
 
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\ConfiguratorImageI18n as ChildConfiguratorImageI18n;
-use FilterConfigurator\Model\ConfiguratorImageI18nQuery as ChildConfiguratorImageI18nQuery;
-use FilterConfigurator\Model\Map\ConfiguratorImageI18nTableMap;
+use FilterConfigurator\Model\FilterConfiguratorI18n as ChildFilterConfiguratorI18n;
+use FilterConfigurator\Model\FilterConfiguratorI18nQuery as ChildFilterConfiguratorI18nQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorI18nTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -17,79 +17,79 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'filterconfigurator_configurator_image_i18n' table.
+ * Base class that represents a query for the 'filterconfigurator_configurator_i18n' table.
  *
  * 
  *
- * @method     ChildConfiguratorImageI18nQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildConfiguratorImageI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
- * @method     ChildConfiguratorImageI18nQuery orderByTitle($order = Criteria::ASC) Order by the title column
- * @method     ChildConfiguratorImageI18nQuery orderByDescription($order = Criteria::ASC) Order by the description column
- * @method     ChildConfiguratorImageI18nQuery orderByChapo($order = Criteria::ASC) Order by the chapo column
- * @method     ChildConfiguratorImageI18nQuery orderByPostscriptum($order = Criteria::ASC) Order by the postscriptum column
+ * @method     ChildFilterConfiguratorI18nQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildFilterConfiguratorI18nQuery orderByLocale($order = Criteria::ASC) Order by the locale column
+ * @method     ChildFilterConfiguratorI18nQuery orderByTitle($order = Criteria::ASC) Order by the title column
+ * @method     ChildFilterConfiguratorI18nQuery orderByDescription($order = Criteria::ASC) Order by the description column
+ * @method     ChildFilterConfiguratorI18nQuery orderByChapo($order = Criteria::ASC) Order by the chapo column
+ * @method     ChildFilterConfiguratorI18nQuery orderByPostscriptum($order = Criteria::ASC) Order by the postscriptum column
  *
- * @method     ChildConfiguratorImageI18nQuery groupById() Group by the id column
- * @method     ChildConfiguratorImageI18nQuery groupByLocale() Group by the locale column
- * @method     ChildConfiguratorImageI18nQuery groupByTitle() Group by the title column
- * @method     ChildConfiguratorImageI18nQuery groupByDescription() Group by the description column
- * @method     ChildConfiguratorImageI18nQuery groupByChapo() Group by the chapo column
- * @method     ChildConfiguratorImageI18nQuery groupByPostscriptum() Group by the postscriptum column
+ * @method     ChildFilterConfiguratorI18nQuery groupById() Group by the id column
+ * @method     ChildFilterConfiguratorI18nQuery groupByLocale() Group by the locale column
+ * @method     ChildFilterConfiguratorI18nQuery groupByTitle() Group by the title column
+ * @method     ChildFilterConfiguratorI18nQuery groupByDescription() Group by the description column
+ * @method     ChildFilterConfiguratorI18nQuery groupByChapo() Group by the chapo column
+ * @method     ChildFilterConfiguratorI18nQuery groupByPostscriptum() Group by the postscriptum column
  *
- * @method     ChildConfiguratorImageI18nQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildConfiguratorImageI18nQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildConfiguratorImageI18nQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildFilterConfiguratorI18nQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildFilterConfiguratorI18nQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildFilterConfiguratorI18nQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildConfiguratorImageI18nQuery leftJoinConfiguratorImage($relationAlias = null) Adds a LEFT JOIN clause to the query using the ConfiguratorImage relation
- * @method     ChildConfiguratorImageI18nQuery rightJoinConfiguratorImage($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ConfiguratorImage relation
- * @method     ChildConfiguratorImageI18nQuery innerJoinConfiguratorImage($relationAlias = null) Adds a INNER JOIN clause to the query using the ConfiguratorImage relation
+ * @method     ChildFilterConfiguratorI18nQuery leftJoinFilterConfigurator($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorI18nQuery rightJoinFilterConfigurator($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorI18nQuery innerJoinFilterConfigurator($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfigurator relation
  *
- * @method     ChildConfiguratorImageI18n findOne(ConnectionInterface $con = null) Return the first ChildConfiguratorImageI18n matching the query
- * @method     ChildConfiguratorImageI18n findOneOrCreate(ConnectionInterface $con = null) Return the first ChildConfiguratorImageI18n matching the query, or a new ChildConfiguratorImageI18n object populated from the query conditions when no match is found
+ * @method     ChildFilterConfiguratorI18n findOne(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorI18n matching the query
+ * @method     ChildFilterConfiguratorI18n findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorI18n matching the query, or a new ChildFilterConfiguratorI18n object populated from the query conditions when no match is found
  *
- * @method     ChildConfiguratorImageI18n findOneById(int $id) Return the first ChildConfiguratorImageI18n filtered by the id column
- * @method     ChildConfiguratorImageI18n findOneByLocale(string $locale) Return the first ChildConfiguratorImageI18n filtered by the locale column
- * @method     ChildConfiguratorImageI18n findOneByTitle(string $title) Return the first ChildConfiguratorImageI18n filtered by the title column
- * @method     ChildConfiguratorImageI18n findOneByDescription(string $description) Return the first ChildConfiguratorImageI18n filtered by the description column
- * @method     ChildConfiguratorImageI18n findOneByChapo(string $chapo) Return the first ChildConfiguratorImageI18n filtered by the chapo column
- * @method     ChildConfiguratorImageI18n findOneByPostscriptum(string $postscriptum) Return the first ChildConfiguratorImageI18n filtered by the postscriptum column
+ * @method     ChildFilterConfiguratorI18n findOneById(int $id) Return the first ChildFilterConfiguratorI18n filtered by the id column
+ * @method     ChildFilterConfiguratorI18n findOneByLocale(string $locale) Return the first ChildFilterConfiguratorI18n filtered by the locale column
+ * @method     ChildFilterConfiguratorI18n findOneByTitle(string $title) Return the first ChildFilterConfiguratorI18n filtered by the title column
+ * @method     ChildFilterConfiguratorI18n findOneByDescription(string $description) Return the first ChildFilterConfiguratorI18n filtered by the description column
+ * @method     ChildFilterConfiguratorI18n findOneByChapo(string $chapo) Return the first ChildFilterConfiguratorI18n filtered by the chapo column
+ * @method     ChildFilterConfiguratorI18n findOneByPostscriptum(string $postscriptum) Return the first ChildFilterConfiguratorI18n filtered by the postscriptum column
  *
- * @method     array findById(int $id) Return ChildConfiguratorImageI18n objects filtered by the id column
- * @method     array findByLocale(string $locale) Return ChildConfiguratorImageI18n objects filtered by the locale column
- * @method     array findByTitle(string $title) Return ChildConfiguratorImageI18n objects filtered by the title column
- * @method     array findByDescription(string $description) Return ChildConfiguratorImageI18n objects filtered by the description column
- * @method     array findByChapo(string $chapo) Return ChildConfiguratorImageI18n objects filtered by the chapo column
- * @method     array findByPostscriptum(string $postscriptum) Return ChildConfiguratorImageI18n objects filtered by the postscriptum column
+ * @method     array findById(int $id) Return ChildFilterConfiguratorI18n objects filtered by the id column
+ * @method     array findByLocale(string $locale) Return ChildFilterConfiguratorI18n objects filtered by the locale column
+ * @method     array findByTitle(string $title) Return ChildFilterConfiguratorI18n objects filtered by the title column
+ * @method     array findByDescription(string $description) Return ChildFilterConfiguratorI18n objects filtered by the description column
+ * @method     array findByChapo(string $chapo) Return ChildFilterConfiguratorI18n objects filtered by the chapo column
+ * @method     array findByPostscriptum(string $postscriptum) Return ChildFilterConfiguratorI18n objects filtered by the postscriptum column
  *
  */
-abstract class ConfiguratorImageI18nQuery extends ModelCriteria
+abstract class FilterConfiguratorI18nQuery extends ModelCriteria
 {
     
     /**
-     * Initializes internal state of \FilterConfigurator\Model\Base\ConfiguratorImageI18nQuery object.
+     * Initializes internal state of \FilterConfigurator\Model\Base\FilterConfiguratorI18nQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\ConfiguratorImageI18n', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\FilterConfiguratorI18n', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildConfiguratorImageI18nQuery object.
+     * Returns a new ChildFilterConfiguratorI18nQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildConfiguratorImageI18nQuery
+     * @return ChildFilterConfiguratorI18nQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \FilterConfigurator\Model\ConfiguratorImageI18nQuery) {
+        if ($criteria instanceof \FilterConfigurator\Model\FilterConfiguratorI18nQuery) {
             return $criteria;
         }
-        $query = new \FilterConfigurator\Model\ConfiguratorImageI18nQuery();
+        $query = new \FilterConfigurator\Model\FilterConfiguratorI18nQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -112,19 +112,19 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      * @param array[$id, $locale] $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildConfiguratorImageI18n|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorI18n|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = ConfiguratorImageI18nTableMap::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
+        if ((null !== ($obj = FilterConfiguratorI18nTableMap::getInstanceFromPool(serialize(array((string) $key[0], (string) $key[1]))))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorI18nTableMap::DATABASE_NAME);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -143,11 +143,11 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return   ChildConfiguratorImageI18n A model object, or null if the key is not found
+     * @return   ChildFilterConfiguratorI18n A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM filterconfigurator_configurator_image_i18n WHERE ID = :p0 AND LOCALE = :p1';
+        $sql = 'SELECT ID, LOCALE, TITLE, DESCRIPTION, CHAPO, POSTSCRIPTUM FROM filterconfigurator_configurator_i18n WHERE ID = :p0 AND LOCALE = :p1';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
@@ -159,9 +159,9 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            $obj = new ChildConfiguratorImageI18n();
+            $obj = new ChildFilterConfiguratorI18n();
             $obj->hydrate($row);
-            ConfiguratorImageI18nTableMap::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
+            FilterConfiguratorI18nTableMap::addInstanceToPool($obj, serialize(array((string) $key[0], (string) $key[1])));
         }
         $stmt->closeCursor();
 
@@ -174,7 +174,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildConfiguratorImageI18n|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorI18n|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -216,12 +216,12 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
-        $this->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $key[0], Criteria::EQUAL);
-        $this->addUsingAlias(ConfiguratorImageI18nTableMap::LOCALE, $key[1], Criteria::EQUAL);
+        $this->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $key[0], Criteria::EQUAL);
+        $this->addUsingAlias(FilterConfiguratorI18nTableMap::LOCALE, $key[1], Criteria::EQUAL);
 
         return $this;
     }
@@ -231,7 +231,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
@@ -239,8 +239,8 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             return $this->add(null, '1<>1', Criteria::CUSTOM);
         }
         foreach ($keys as $key) {
-            $cton0 = $this->getNewCriterion(ConfiguratorImageI18nTableMap::ID, $key[0], Criteria::EQUAL);
-            $cton1 = $this->getNewCriterion(ConfiguratorImageI18nTableMap::LOCALE, $key[1], Criteria::EQUAL);
+            $cton0 = $this->getNewCriterion(FilterConfiguratorI18nTableMap::ID, $key[0], Criteria::EQUAL);
+            $cton1 = $this->getNewCriterion(FilterConfiguratorI18nTableMap::LOCALE, $key[1], Criteria::EQUAL);
             $cton0->addAnd($cton1);
             $this->addOr($cton0);
         }
@@ -258,7 +258,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @see       filterByConfiguratorImage()
+     * @see       filterByFilterConfigurator()
      *
      * @param     mixed $id The value to use as filter.
      *              Use scalar values for equality.
@@ -266,18 +266,18 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -288,7 +288,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $id, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -304,7 +304,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByLocale($locale = null, $comparison = null)
     {
@@ -317,7 +317,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::LOCALE, $locale, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::LOCALE, $locale, $comparison);
     }
 
     /**
@@ -333,7 +333,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByTitle($title = null, $comparison = null)
     {
@@ -346,7 +346,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::TITLE, $title, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::TITLE, $title, $comparison);
     }
 
     /**
@@ -362,7 +362,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByDescription($description = null, $comparison = null)
     {
@@ -375,7 +375,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::DESCRIPTION, $description, $comparison);
     }
 
     /**
@@ -391,7 +391,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByChapo($chapo = null, $comparison = null)
     {
@@ -404,7 +404,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::CHAPO, $chapo, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::CHAPO, $chapo, $comparison);
     }
 
     /**
@@ -420,7 +420,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
     public function filterByPostscriptum($postscriptum = null, $comparison = null)
     {
@@ -433,46 +433,46 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageI18nTableMap::POSTSCRIPTUM, $postscriptum, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorI18nTableMap::POSTSCRIPTUM, $postscriptum, $comparison);
     }
 
     /**
-     * Filter the query by a related \FilterConfigurator\Model\ConfiguratorImage object
+     * Filter the query by a related \FilterConfigurator\Model\FilterConfigurator object
      *
-     * @param \FilterConfigurator\Model\ConfiguratorImage|ObjectCollection $configuratorImage The related object(s) to use as filter
+     * @param \FilterConfigurator\Model\FilterConfigurator|ObjectCollection $filterConfigurator The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
-    public function filterByConfiguratorImage($configuratorImage, $comparison = null)
+    public function filterByFilterConfigurator($filterConfigurator, $comparison = null)
     {
-        if ($configuratorImage instanceof \FilterConfigurator\Model\ConfiguratorImage) {
+        if ($filterConfigurator instanceof \FilterConfigurator\Model\FilterConfigurator) {
             return $this
-                ->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $configuratorImage->getId(), $comparison);
-        } elseif ($configuratorImage instanceof ObjectCollection) {
+                ->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $filterConfigurator->getId(), $comparison);
+        } elseif ($filterConfigurator instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ConfiguratorImageI18nTableMap::ID, $configuratorImage->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(FilterConfiguratorI18nTableMap::ID, $filterConfigurator->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByConfiguratorImage() only accepts arguments of type \FilterConfigurator\Model\ConfiguratorImage or Collection');
+            throw new PropelException('filterByFilterConfigurator() only accepts arguments of type \FilterConfigurator\Model\FilterConfigurator or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the ConfiguratorImage relation
+     * Adds a JOIN clause to the query using the FilterConfigurator relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
-    public function joinConfiguratorImage($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinFilterConfigurator($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ConfiguratorImage');
+        $relationMap = $tableMap->getRelation('FilterConfigurator');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -487,14 +487,14 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'ConfiguratorImage');
+            $this->addJoinObject($join, 'FilterConfigurator');
         }
 
         return $this;
     }
 
     /**
-     * Use the ConfiguratorImage relation ConfiguratorImage object
+     * Use the FilterConfigurator relation FilterConfigurator object
      *
      * @see useQuery()
      *
@@ -502,27 +502,27 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \FilterConfigurator\Model\ConfiguratorImageQuery A secondary query class using the current class as primary query
+     * @return   \FilterConfigurator\Model\FilterConfiguratorQuery A secondary query class using the current class as primary query
      */
-    public function useConfiguratorImageQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useFilterConfiguratorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinConfiguratorImage($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ConfiguratorImage', '\FilterConfigurator\Model\ConfiguratorImageQuery');
+            ->joinFilterConfigurator($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FilterConfigurator', '\FilterConfigurator\Model\FilterConfiguratorQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildConfiguratorImageI18n $configuratorImageI18n Object to remove from the list of results
+     * @param   ChildFilterConfiguratorI18n $filterConfiguratorI18n Object to remove from the list of results
      *
-     * @return ChildConfiguratorImageI18nQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorI18nQuery The current query, for fluid interface
      */
-    public function prune($configuratorImageI18n = null)
+    public function prune($filterConfiguratorI18n = null)
     {
-        if ($configuratorImageI18n) {
-            $this->addCond('pruneCond0', $this->getAliasedColName(ConfiguratorImageI18nTableMap::ID), $configuratorImageI18n->getId(), Criteria::NOT_EQUAL);
-            $this->addCond('pruneCond1', $this->getAliasedColName(ConfiguratorImageI18nTableMap::LOCALE), $configuratorImageI18n->getLocale(), Criteria::NOT_EQUAL);
+        if ($filterConfiguratorI18n) {
+            $this->addCond('pruneCond0', $this->getAliasedColName(FilterConfiguratorI18nTableMap::ID), $filterConfiguratorI18n->getId(), Criteria::NOT_EQUAL);
+            $this->addCond('pruneCond1', $this->getAliasedColName(FilterConfiguratorI18nTableMap::LOCALE), $filterConfiguratorI18n->getLocale(), Criteria::NOT_EQUAL);
             $this->combine(array('pruneCond0', 'pruneCond1'), Criteria::LOGICAL_OR);
         }
 
@@ -530,7 +530,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
     }
 
     /**
-     * Deletes all rows from the filterconfigurator_configurator_image_i18n table.
+     * Deletes all rows from the filterconfigurator_configurator_i18n table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -538,7 +538,7 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorI18nTableMap::DATABASE_NAME);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
@@ -549,8 +549,8 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ConfiguratorImageI18nTableMap::clearInstancePool();
-            ConfiguratorImageI18nTableMap::clearRelatedInstancePool();
+            FilterConfiguratorI18nTableMap::clearInstancePool();
+            FilterConfiguratorI18nTableMap::clearRelatedInstancePool();
 
             $con->commit();
         } catch (PropelException $e) {
@@ -562,9 +562,9 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
     }
 
     /**
-     * Performs a DELETE on the database, given a ChildConfiguratorImageI18n or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ChildFilterConfiguratorI18n or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ChildConfiguratorImageI18n object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ChildFilterConfiguratorI18n object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -575,13 +575,13 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
      public function delete(ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorI18nTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+        $criteria->setDbName(FilterConfiguratorI18nTableMap::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -591,10 +591,10 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
             $con->beginTransaction();
             
 
-        ConfiguratorImageI18nTableMap::removeInstanceFromPool($criteria);
+        FilterConfiguratorI18nTableMap::removeInstanceFromPool($criteria);
         
             $affectedRows += ModelCriteria::delete($con);
-            ConfiguratorImageI18nTableMap::clearRelatedInstancePool();
+            FilterConfiguratorI18nTableMap::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -604,4 +604,4 @@ abstract class ConfiguratorImageI18nQuery extends ModelCriteria
         }
     }
 
-} // ConfiguratorImageI18nQuery
+} // FilterConfiguratorI18nQuery

@@ -5,15 +5,15 @@ namespace FilterConfigurator\Model\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\Configurator as ChildConfigurator;
-use FilterConfigurator\Model\ConfiguratorFeatures as ChildConfiguratorFeatures;
-use FilterConfigurator\Model\ConfiguratorFeaturesQuery as ChildConfiguratorFeaturesQuery;
-use FilterConfigurator\Model\ConfiguratorI18n as ChildConfiguratorI18n;
-use FilterConfigurator\Model\ConfiguratorI18nQuery as ChildConfiguratorI18nQuery;
-use FilterConfigurator\Model\ConfiguratorImage as ChildConfiguratorImage;
-use FilterConfigurator\Model\ConfiguratorImageQuery as ChildConfiguratorImageQuery;
-use FilterConfigurator\Model\ConfiguratorQuery as ChildConfiguratorQuery;
-use FilterConfigurator\Model\Map\ConfiguratorTableMap;
+use FilterConfigurator\Model\FilterConfigurator as ChildFilterConfigurator;
+use FilterConfigurator\Model\FilterConfiguratorFeatures as ChildFilterConfiguratorFeatures;
+use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery as ChildFilterConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\FilterConfiguratorI18n as ChildFilterConfiguratorI18n;
+use FilterConfigurator\Model\FilterConfiguratorI18nQuery as ChildFilterConfiguratorI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorImage as ChildFilterConfiguratorImage;
+use FilterConfigurator\Model\FilterConfiguratorImageQuery as ChildFilterConfiguratorImageQuery;
+use FilterConfigurator\Model\FilterConfiguratorQuery as ChildFilterConfiguratorQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -29,12 +29,12 @@ use Propel\Runtime\Util\PropelDateTime;
 use Thelia\Model\CategoryQuery;
 use Thelia\Model\Category as ChildCategory;
 
-abstract class Configurator implements ActiveRecordInterface 
+abstract class FilterConfigurator implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\ConfiguratorTableMap';
+    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\FilterConfiguratorTableMap';
 
 
     /**
@@ -107,22 +107,22 @@ abstract class Configurator implements ActiveRecordInterface
     protected $aCategory;
 
     /**
-     * @var        ObjectCollection|ChildConfiguratorI18n[] Collection to store aggregation of ChildConfiguratorI18n objects.
+     * @var        ObjectCollection|ChildFilterConfiguratorI18n[] Collection to store aggregation of ChildFilterConfiguratorI18n objects.
      */
-    protected $collConfiguratorI18ns;
-    protected $collConfiguratorI18nsPartial;
+    protected $collFilterConfiguratorI18ns;
+    protected $collFilterConfiguratorI18nsPartial;
 
     /**
-     * @var        ObjectCollection|ChildConfiguratorImage[] Collection to store aggregation of ChildConfiguratorImage objects.
+     * @var        ObjectCollection|ChildFilterConfiguratorImage[] Collection to store aggregation of ChildFilterConfiguratorImage objects.
      */
-    protected $collConfiguratorImages;
-    protected $collConfiguratorImagesPartial;
+    protected $collFilterConfiguratorImages;
+    protected $collFilterConfiguratorImagesPartial;
 
     /**
-     * @var        ObjectCollection|ChildConfiguratorFeatures[] Collection to store aggregation of ChildConfiguratorFeatures objects.
+     * @var        ObjectCollection|ChildFilterConfiguratorFeatures[] Collection to store aggregation of ChildFilterConfiguratorFeatures objects.
      */
-    protected $collConfiguratorFeaturess;
-    protected $collConfiguratorFeaturessPartial;
+    protected $collFilterConfiguratorFeaturess;
+    protected $collFilterConfiguratorFeaturessPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -136,19 +136,19 @@ abstract class Configurator implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
      */
-    protected $configuratorI18nsScheduledForDeletion = null;
+    protected $filterConfiguratorI18nsScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
      */
-    protected $configuratorImagesScheduledForDeletion = null;
+    protected $filterConfiguratorImagesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
      */
-    protected $configuratorFeaturessScheduledForDeletion = null;
+    protected $filterConfiguratorFeaturessScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -163,7 +163,7 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
-     * Initializes internal state of FilterConfigurator\Model\Base\Configurator object.
+     * Initializes internal state of FilterConfigurator\Model\Base\FilterConfigurator object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -260,9 +260,9 @@ abstract class Configurator implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Configurator</code> instance.  If
-     * <code>obj</code> is an instance of <code>Configurator</code>, delegates to
-     * <code>equals(Configurator)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>FilterConfigurator</code> instance.  If
+     * <code>obj</code> is an instance of <code>FilterConfigurator</code>, delegates to
+     * <code>equals(FilterConfigurator)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -345,7 +345,7 @@ abstract class Configurator implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return Configurator The current object, for fluid interface
+     * @return FilterConfigurator The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -377,7 +377,7 @@ abstract class Configurator implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return Configurator The current object, for fluid interface
+     * @return FilterConfigurator The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -510,7 +510,7 @@ abstract class Configurator implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -520,7 +520,7 @@ abstract class Configurator implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::ID] = true;
+            $this->modifiedColumns[FilterConfiguratorTableMap::ID] = true;
         }
 
 
@@ -531,7 +531,7 @@ abstract class Configurator implements ActiveRecordInterface
      * Set the value of [category_id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setCategoryId($v)
     {
@@ -541,7 +541,7 @@ abstract class Configurator implements ActiveRecordInterface
 
         if ($this->category_id !== $v) {
             $this->category_id = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::CATEGORY_ID] = true;
+            $this->modifiedColumns[FilterConfiguratorTableMap::CATEGORY_ID] = true;
         }
 
         if ($this->aCategory !== null && $this->aCategory->getId() !== $v) {
@@ -556,7 +556,7 @@ abstract class Configurator implements ActiveRecordInterface
      * Set the value of [visible] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setVisible($v)
     {
@@ -566,7 +566,7 @@ abstract class Configurator implements ActiveRecordInterface
 
         if ($this->visible !== $v) {
             $this->visible = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::VISIBLE] = true;
+            $this->modifiedColumns[FilterConfiguratorTableMap::VISIBLE] = true;
         }
 
 
@@ -577,7 +577,7 @@ abstract class Configurator implements ActiveRecordInterface
      * Set the value of [position] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setPosition($v)
     {
@@ -587,7 +587,7 @@ abstract class Configurator implements ActiveRecordInterface
 
         if ($this->position !== $v) {
             $this->position = $v;
-            $this->modifiedColumns[ConfiguratorTableMap::POSITION] = true;
+            $this->modifiedColumns[FilterConfiguratorTableMap::POSITION] = true;
         }
 
 
@@ -599,7 +599,7 @@ abstract class Configurator implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -607,7 +607,7 @@ abstract class Configurator implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[ConfiguratorTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[FilterConfiguratorTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -620,7 +620,7 @@ abstract class Configurator implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -628,7 +628,7 @@ abstract class Configurator implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[ConfiguratorTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[FilterConfiguratorTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -681,25 +681,25 @@ abstract class Configurator implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ConfiguratorTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : FilterConfiguratorTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ConfiguratorTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : FilterConfiguratorTableMap::translateFieldName('CategoryId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->category_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ConfiguratorTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : FilterConfiguratorTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
             $this->visible = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ConfiguratorTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FilterConfiguratorTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ConfiguratorTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FilterConfiguratorTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ConfiguratorTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FilterConfiguratorTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -712,10 +712,10 @@ abstract class Configurator implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = ConfiguratorTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = FilterConfiguratorTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \FilterConfigurator\Model\Configurator object", 0, $e);
+            throw new PropelException("Error populating \FilterConfigurator\Model\FilterConfigurator object", 0, $e);
         }
     }
 
@@ -760,13 +760,13 @@ abstract class Configurator implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildConfiguratorQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildFilterConfiguratorQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -777,11 +777,11 @@ abstract class Configurator implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCategory = null;
-            $this->collConfiguratorI18ns = null;
+            $this->collFilterConfiguratorI18ns = null;
 
-            $this->collConfiguratorImages = null;
+            $this->collFilterConfiguratorImages = null;
 
-            $this->collConfiguratorFeaturess = null;
+            $this->collFilterConfiguratorFeaturess = null;
 
         } // if (deep)
     }
@@ -792,8 +792,8 @@ abstract class Configurator implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Configurator::setDeleted()
-     * @see Configurator::isDeleted()
+     * @see FilterConfigurator::setDeleted()
+     * @see FilterConfigurator::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -802,12 +802,12 @@ abstract class Configurator implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildConfiguratorQuery::create()
+            $deleteQuery = ChildFilterConfiguratorQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -844,7 +844,7 @@ abstract class Configurator implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -854,16 +854,16 @@ abstract class Configurator implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(ConfiguratorTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(FilterConfiguratorTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(FilterConfiguratorTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(FilterConfiguratorTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -875,7 +875,7 @@ abstract class Configurator implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ConfiguratorTableMap::addInstanceToPool($this);
+                FilterConfiguratorTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -928,51 +928,51 @@ abstract class Configurator implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->configuratorI18nsScheduledForDeletion !== null) {
-                if (!$this->configuratorI18nsScheduledForDeletion->isEmpty()) {
-                    \FilterConfigurator\Model\ConfiguratorI18nQuery::create()
-                        ->filterByPrimaryKeys($this->configuratorI18nsScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->filterConfiguratorI18nsScheduledForDeletion !== null) {
+                if (!$this->filterConfiguratorI18nsScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\FilterConfiguratorI18nQuery::create()
+                        ->filterByPrimaryKeys($this->filterConfiguratorI18nsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->configuratorI18nsScheduledForDeletion = null;
+                    $this->filterConfiguratorI18nsScheduledForDeletion = null;
                 }
             }
 
-                if ($this->collConfiguratorI18ns !== null) {
-            foreach ($this->collConfiguratorI18ns as $referrerFK) {
+                if ($this->collFilterConfiguratorI18ns !== null) {
+            foreach ($this->collFilterConfiguratorI18ns as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->configuratorImagesScheduledForDeletion !== null) {
-                if (!$this->configuratorImagesScheduledForDeletion->isEmpty()) {
-                    \FilterConfigurator\Model\ConfiguratorImageQuery::create()
-                        ->filterByPrimaryKeys($this->configuratorImagesScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->filterConfiguratorImagesScheduledForDeletion !== null) {
+                if (!$this->filterConfiguratorImagesScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\FilterConfiguratorImageQuery::create()
+                        ->filterByPrimaryKeys($this->filterConfiguratorImagesScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->configuratorImagesScheduledForDeletion = null;
+                    $this->filterConfiguratorImagesScheduledForDeletion = null;
                 }
             }
 
-                if ($this->collConfiguratorImages !== null) {
-            foreach ($this->collConfiguratorImages as $referrerFK) {
+                if ($this->collFilterConfiguratorImages !== null) {
+            foreach ($this->collFilterConfiguratorImages as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
                 }
             }
 
-            if ($this->configuratorFeaturessScheduledForDeletion !== null) {
-                if (!$this->configuratorFeaturessScheduledForDeletion->isEmpty()) {
-                    \FilterConfigurator\Model\ConfiguratorFeaturesQuery::create()
-                        ->filterByPrimaryKeys($this->configuratorFeaturessScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->filterConfiguratorFeaturessScheduledForDeletion !== null) {
+                if (!$this->filterConfiguratorFeaturessScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\FilterConfiguratorFeaturesQuery::create()
+                        ->filterByPrimaryKeys($this->filterConfiguratorFeaturessScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->configuratorFeaturessScheduledForDeletion = null;
+                    $this->filterConfiguratorFeaturessScheduledForDeletion = null;
                 }
             }
 
-                if ($this->collConfiguratorFeaturess !== null) {
-            foreach ($this->collConfiguratorFeaturess as $referrerFK) {
+                if ($this->collFilterConfiguratorFeaturess !== null) {
+            foreach ($this->collFilterConfiguratorFeaturess as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -999,28 +999,28 @@ abstract class Configurator implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ConfiguratorTableMap::ID] = true;
+        $this->modifiedColumns[FilterConfiguratorTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ConfiguratorTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FilterConfiguratorTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ConfiguratorTableMap::ID)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(ConfiguratorTableMap::CATEGORY_ID)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::CATEGORY_ID)) {
             $modifiedColumns[':p' . $index++]  = 'CATEGORY_ID';
         }
-        if ($this->isColumnModified(ConfiguratorTableMap::VISIBLE)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::VISIBLE)) {
             $modifiedColumns[':p' . $index++]  = 'VISIBLE';
         }
-        if ($this->isColumnModified(ConfiguratorTableMap::POSITION)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::POSITION)) {
             $modifiedColumns[':p' . $index++]  = 'POSITION';
         }
-        if ($this->isColumnModified(ConfiguratorTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(FilterConfiguratorTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
@@ -1098,7 +1098,7 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1155,11 +1155,11 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Configurator'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['FilterConfigurator'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Configurator'][$this->getPrimaryKey()] = true;
-        $keys = ConfiguratorTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['FilterConfigurator'][$this->getPrimaryKey()] = true;
+        $keys = FilterConfiguratorTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getCategoryId(),
@@ -1177,14 +1177,14 @@ abstract class Configurator implements ActiveRecordInterface
             if (null !== $this->aCategory) {
                 $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collConfiguratorI18ns) {
-                $result['ConfiguratorI18ns'] = $this->collConfiguratorI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFilterConfiguratorI18ns) {
+                $result['FilterConfiguratorI18ns'] = $this->collFilterConfiguratorI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collConfiguratorImages) {
-                $result['ConfiguratorImages'] = $this->collConfiguratorImages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFilterConfiguratorImages) {
+                $result['FilterConfiguratorImages'] = $this->collFilterConfiguratorImages->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collConfiguratorFeaturess) {
-                $result['ConfiguratorFeaturess'] = $this->collConfiguratorFeaturess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFilterConfiguratorFeaturess) {
+                $result['FilterConfiguratorFeaturess'] = $this->collFilterConfiguratorFeaturess->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1204,7 +1204,7 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1260,7 +1260,7 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ConfiguratorTableMap::getFieldNames($keyType);
+        $keys = FilterConfiguratorTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCategoryId($arr[$keys[1]]);
@@ -1277,14 +1277,14 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ConfiguratorTableMap::DATABASE_NAME);
+        $criteria = new Criteria(FilterConfiguratorTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ConfiguratorTableMap::ID)) $criteria->add(ConfiguratorTableMap::ID, $this->id);
-        if ($this->isColumnModified(ConfiguratorTableMap::CATEGORY_ID)) $criteria->add(ConfiguratorTableMap::CATEGORY_ID, $this->category_id);
-        if ($this->isColumnModified(ConfiguratorTableMap::VISIBLE)) $criteria->add(ConfiguratorTableMap::VISIBLE, $this->visible);
-        if ($this->isColumnModified(ConfiguratorTableMap::POSITION)) $criteria->add(ConfiguratorTableMap::POSITION, $this->position);
-        if ($this->isColumnModified(ConfiguratorTableMap::CREATED_AT)) $criteria->add(ConfiguratorTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(ConfiguratorTableMap::UPDATED_AT)) $criteria->add(ConfiguratorTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::ID)) $criteria->add(FilterConfiguratorTableMap::ID, $this->id);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::CATEGORY_ID)) $criteria->add(FilterConfiguratorTableMap::CATEGORY_ID, $this->category_id);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::VISIBLE)) $criteria->add(FilterConfiguratorTableMap::VISIBLE, $this->visible);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::POSITION)) $criteria->add(FilterConfiguratorTableMap::POSITION, $this->position);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::CREATED_AT)) $criteria->add(FilterConfiguratorTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(FilterConfiguratorTableMap::UPDATED_AT)) $criteria->add(FilterConfiguratorTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1299,8 +1299,8 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ConfiguratorTableMap::DATABASE_NAME);
-        $criteria->add(ConfiguratorTableMap::ID, $this->id);
+        $criteria = new Criteria(FilterConfiguratorTableMap::DATABASE_NAME);
+        $criteria->add(FilterConfiguratorTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1341,7 +1341,7 @@ abstract class Configurator implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \FilterConfigurator\Model\Configurator (or compatible) type.
+     * @param      object $copyObj An object of \FilterConfigurator\Model\FilterConfigurator (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1359,21 +1359,21 @@ abstract class Configurator implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getConfiguratorI18ns() as $relObj) {
+            foreach ($this->getFilterConfiguratorI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addConfiguratorI18n($relObj->copy($deepCopy));
+                    $copyObj->addFilterConfiguratorI18n($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getConfiguratorImages() as $relObj) {
+            foreach ($this->getFilterConfiguratorImages() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addConfiguratorImage($relObj->copy($deepCopy));
+                    $copyObj->addFilterConfiguratorImage($relObj->copy($deepCopy));
                 }
             }
 
-            foreach ($this->getConfiguratorFeaturess() as $relObj) {
+            foreach ($this->getFilterConfiguratorFeaturess() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addConfiguratorFeatures($relObj->copy($deepCopy));
+                    $copyObj->addFilterConfiguratorFeatures($relObj->copy($deepCopy));
                 }
             }
 
@@ -1394,7 +1394,7 @@ abstract class Configurator implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \FilterConfigurator\Model\Configurator Clone of current object.
+     * @return                 \FilterConfigurator\Model\FilterConfigurator Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1411,7 +1411,7 @@ abstract class Configurator implements ActiveRecordInterface
      * Declares an association between this object and a ChildCategory object.
      *
      * @param                  ChildCategory $v
-     * @return                 \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @return                 \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      * @throws PropelException
      */
     public function setCategory(ChildCategory $v = null)
@@ -1427,7 +1427,7 @@ abstract class Configurator implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildCategory object, it will not be re-added.
         if ($v !== null) {
-            $v->addConfigurator($this);
+            $v->addFilterConfigurator($this);
         }
 
 
@@ -1451,7 +1451,7 @@ abstract class Configurator implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aCategory->addConfigurators($this);
+                $this->aCategory->addFilterConfigurators($this);
              */
         }
 
@@ -1469,43 +1469,43 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('ConfiguratorI18n' == $relationName) {
-            return $this->initConfiguratorI18ns();
+        if ('FilterConfiguratorI18n' == $relationName) {
+            return $this->initFilterConfiguratorI18ns();
         }
-        if ('ConfiguratorImage' == $relationName) {
-            return $this->initConfiguratorImages();
+        if ('FilterConfiguratorImage' == $relationName) {
+            return $this->initFilterConfiguratorImages();
         }
-        if ('ConfiguratorFeatures' == $relationName) {
-            return $this->initConfiguratorFeaturess();
+        if ('FilterConfiguratorFeatures' == $relationName) {
+            return $this->initFilterConfiguratorFeaturess();
         }
     }
 
     /**
-     * Clears out the collConfiguratorI18ns collection
+     * Clears out the collFilterConfiguratorI18ns collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addConfiguratorI18ns()
+     * @see        addFilterConfiguratorI18ns()
      */
-    public function clearConfiguratorI18ns()
+    public function clearFilterConfiguratorI18ns()
     {
-        $this->collConfiguratorI18ns = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFilterConfiguratorI18ns = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collConfiguratorI18ns collection loaded partially.
+     * Reset is the collFilterConfiguratorI18ns collection loaded partially.
      */
-    public function resetPartialConfiguratorI18ns($v = true)
+    public function resetPartialFilterConfiguratorI18ns($v = true)
     {
-        $this->collConfiguratorI18nsPartial = $v;
+        $this->collFilterConfiguratorI18nsPartial = $v;
     }
 
     /**
-     * Initializes the collConfiguratorI18ns collection.
+     * Initializes the collFilterConfiguratorI18ns collection.
      *
-     * By default this just sets the collConfiguratorI18ns collection to an empty array (like clearcollConfiguratorI18ns());
+     * By default this just sets the collFilterConfiguratorI18ns collection to an empty array (like clearcollFilterConfiguratorI18ns());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1514,219 +1514,219 @@ abstract class Configurator implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initConfiguratorI18ns($overrideExisting = true)
+    public function initFilterConfiguratorI18ns($overrideExisting = true)
     {
-        if (null !== $this->collConfiguratorI18ns && !$overrideExisting) {
+        if (null !== $this->collFilterConfiguratorI18ns && !$overrideExisting) {
             return;
         }
-        $this->collConfiguratorI18ns = new ObjectCollection();
-        $this->collConfiguratorI18ns->setModel('\FilterConfigurator\Model\ConfiguratorI18n');
+        $this->collFilterConfiguratorI18ns = new ObjectCollection();
+        $this->collFilterConfiguratorI18ns->setModel('\FilterConfigurator\Model\FilterConfiguratorI18n');
     }
 
     /**
-     * Gets an array of ChildConfiguratorI18n objects which contain a foreign key that references this object.
+     * Gets an array of ChildFilterConfiguratorI18n objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildConfigurator is new, it will return
+     * If this ChildFilterConfigurator is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildConfiguratorI18n[] List of ChildConfiguratorI18n objects
+     * @return Collection|ChildFilterConfiguratorI18n[] List of ChildFilterConfiguratorI18n objects
      * @throws PropelException
      */
-    public function getConfiguratorI18ns($criteria = null, ConnectionInterface $con = null)
+    public function getFilterConfiguratorI18ns($criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorI18nsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorI18ns || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorI18ns) {
+        $partial = $this->collFilterConfiguratorI18nsPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorI18ns || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorI18ns) {
                 // return empty collection
-                $this->initConfiguratorI18ns();
+                $this->initFilterConfiguratorI18ns();
             } else {
-                $collConfiguratorI18ns = ChildConfiguratorI18nQuery::create(null, $criteria)
-                    ->filterByConfigurator($this)
+                $collFilterConfiguratorI18ns = ChildFilterConfiguratorI18nQuery::create(null, $criteria)
+                    ->filterByFilterConfigurator($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collConfiguratorI18nsPartial && count($collConfiguratorI18ns)) {
-                        $this->initConfiguratorI18ns(false);
+                    if (false !== $this->collFilterConfiguratorI18nsPartial && count($collFilterConfiguratorI18ns)) {
+                        $this->initFilterConfiguratorI18ns(false);
 
-                        foreach ($collConfiguratorI18ns as $obj) {
-                            if (false == $this->collConfiguratorI18ns->contains($obj)) {
-                                $this->collConfiguratorI18ns->append($obj);
+                        foreach ($collFilterConfiguratorI18ns as $obj) {
+                            if (false == $this->collFilterConfiguratorI18ns->contains($obj)) {
+                                $this->collFilterConfiguratorI18ns->append($obj);
                             }
                         }
 
-                        $this->collConfiguratorI18nsPartial = true;
+                        $this->collFilterConfiguratorI18nsPartial = true;
                     }
 
-                    reset($collConfiguratorI18ns);
+                    reset($collFilterConfiguratorI18ns);
 
-                    return $collConfiguratorI18ns;
+                    return $collFilterConfiguratorI18ns;
                 }
 
-                if ($partial && $this->collConfiguratorI18ns) {
-                    foreach ($this->collConfiguratorI18ns as $obj) {
+                if ($partial && $this->collFilterConfiguratorI18ns) {
+                    foreach ($this->collFilterConfiguratorI18ns as $obj) {
                         if ($obj->isNew()) {
-                            $collConfiguratorI18ns[] = $obj;
+                            $collFilterConfiguratorI18ns[] = $obj;
                         }
                     }
                 }
 
-                $this->collConfiguratorI18ns = $collConfiguratorI18ns;
-                $this->collConfiguratorI18nsPartial = false;
+                $this->collFilterConfiguratorI18ns = $collFilterConfiguratorI18ns;
+                $this->collFilterConfiguratorI18nsPartial = false;
             }
         }
 
-        return $this->collConfiguratorI18ns;
+        return $this->collFilterConfiguratorI18ns;
     }
 
     /**
-     * Sets a collection of ConfiguratorI18n objects related by a one-to-many relationship
+     * Sets a collection of FilterConfiguratorI18n objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $configuratorI18ns A Propel collection.
+     * @param      Collection $filterConfiguratorI18ns A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildConfigurator The current object (for fluent API support)
+     * @return   ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function setConfiguratorI18ns(Collection $configuratorI18ns, ConnectionInterface $con = null)
+    public function setFilterConfiguratorI18ns(Collection $filterConfiguratorI18ns, ConnectionInterface $con = null)
     {
-        $configuratorI18nsToDelete = $this->getConfiguratorI18ns(new Criteria(), $con)->diff($configuratorI18ns);
+        $filterConfiguratorI18nsToDelete = $this->getFilterConfiguratorI18ns(new Criteria(), $con)->diff($filterConfiguratorI18ns);
 
         
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->configuratorI18nsScheduledForDeletion = clone $configuratorI18nsToDelete;
+        $this->filterConfiguratorI18nsScheduledForDeletion = clone $filterConfiguratorI18nsToDelete;
 
-        foreach ($configuratorI18nsToDelete as $configuratorI18nRemoved) {
-            $configuratorI18nRemoved->setConfigurator(null);
+        foreach ($filterConfiguratorI18nsToDelete as $filterConfiguratorI18nRemoved) {
+            $filterConfiguratorI18nRemoved->setFilterConfigurator(null);
         }
 
-        $this->collConfiguratorI18ns = null;
-        foreach ($configuratorI18ns as $configuratorI18n) {
-            $this->addConfiguratorI18n($configuratorI18n);
+        $this->collFilterConfiguratorI18ns = null;
+        foreach ($filterConfiguratorI18ns as $filterConfiguratorI18n) {
+            $this->addFilterConfiguratorI18n($filterConfiguratorI18n);
         }
 
-        $this->collConfiguratorI18ns = $configuratorI18ns;
-        $this->collConfiguratorI18nsPartial = false;
+        $this->collFilterConfiguratorI18ns = $filterConfiguratorI18ns;
+        $this->collFilterConfiguratorI18nsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related ConfiguratorI18n objects.
+     * Returns the number of related FilterConfiguratorI18n objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related ConfiguratorI18n objects.
+     * @return int             Count of related FilterConfiguratorI18n objects.
      * @throws PropelException
      */
-    public function countConfiguratorI18ns(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countFilterConfiguratorI18ns(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorI18nsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorI18ns || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorI18ns) {
+        $partial = $this->collFilterConfiguratorI18nsPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorI18ns || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorI18ns) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getConfiguratorI18ns());
+                return count($this->getFilterConfiguratorI18ns());
             }
 
-            $query = ChildConfiguratorI18nQuery::create(null, $criteria);
+            $query = ChildFilterConfiguratorI18nQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByConfigurator($this)
+                ->filterByFilterConfigurator($this)
                 ->count($con);
         }
 
-        return count($this->collConfiguratorI18ns);
+        return count($this->collFilterConfiguratorI18ns);
     }
 
     /**
-     * Method called to associate a ChildConfiguratorI18n object to this object
-     * through the ChildConfiguratorI18n foreign key attribute.
+     * Method called to associate a ChildFilterConfiguratorI18n object to this object
+     * through the ChildFilterConfiguratorI18n foreign key attribute.
      *
-     * @param    ChildConfiguratorI18n $l ChildConfiguratorI18n
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @param    ChildFilterConfiguratorI18n $l ChildFilterConfiguratorI18n
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
-    public function addConfiguratorI18n(ChildConfiguratorI18n $l)
+    public function addFilterConfiguratorI18n(ChildFilterConfiguratorI18n $l)
     {
-        if ($this->collConfiguratorI18ns === null) {
-            $this->initConfiguratorI18ns();
-            $this->collConfiguratorI18nsPartial = true;
+        if ($this->collFilterConfiguratorI18ns === null) {
+            $this->initFilterConfiguratorI18ns();
+            $this->collFilterConfiguratorI18nsPartial = true;
         }
 
-        if (!in_array($l, $this->collConfiguratorI18ns->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddConfiguratorI18n($l);
+        if (!in_array($l, $this->collFilterConfiguratorI18ns->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFilterConfiguratorI18n($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ConfiguratorI18n $configuratorI18n The configuratorI18n object to add.
+     * @param FilterConfiguratorI18n $filterConfiguratorI18n The filterConfiguratorI18n object to add.
      */
-    protected function doAddConfiguratorI18n($configuratorI18n)
+    protected function doAddFilterConfiguratorI18n($filterConfiguratorI18n)
     {
-        $this->collConfiguratorI18ns[]= $configuratorI18n;
-        $configuratorI18n->setConfigurator($this);
+        $this->collFilterConfiguratorI18ns[]= $filterConfiguratorI18n;
+        $filterConfiguratorI18n->setFilterConfigurator($this);
     }
 
     /**
-     * @param  ConfiguratorI18n $configuratorI18n The configuratorI18n object to remove.
-     * @return ChildConfigurator The current object (for fluent API support)
+     * @param  FilterConfiguratorI18n $filterConfiguratorI18n The filterConfiguratorI18n object to remove.
+     * @return ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function removeConfiguratorI18n($configuratorI18n)
+    public function removeFilterConfiguratorI18n($filterConfiguratorI18n)
     {
-        if ($this->getConfiguratorI18ns()->contains($configuratorI18n)) {
-            $this->collConfiguratorI18ns->remove($this->collConfiguratorI18ns->search($configuratorI18n));
-            if (null === $this->configuratorI18nsScheduledForDeletion) {
-                $this->configuratorI18nsScheduledForDeletion = clone $this->collConfiguratorI18ns;
-                $this->configuratorI18nsScheduledForDeletion->clear();
+        if ($this->getFilterConfiguratorI18ns()->contains($filterConfiguratorI18n)) {
+            $this->collFilterConfiguratorI18ns->remove($this->collFilterConfiguratorI18ns->search($filterConfiguratorI18n));
+            if (null === $this->filterConfiguratorI18nsScheduledForDeletion) {
+                $this->filterConfiguratorI18nsScheduledForDeletion = clone $this->collFilterConfiguratorI18ns;
+                $this->filterConfiguratorI18nsScheduledForDeletion->clear();
             }
-            $this->configuratorI18nsScheduledForDeletion[]= clone $configuratorI18n;
-            $configuratorI18n->setConfigurator(null);
+            $this->filterConfiguratorI18nsScheduledForDeletion[]= clone $filterConfiguratorI18n;
+            $filterConfiguratorI18n->setFilterConfigurator(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collConfiguratorImages collection
+     * Clears out the collFilterConfiguratorImages collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addConfiguratorImages()
+     * @see        addFilterConfiguratorImages()
      */
-    public function clearConfiguratorImages()
+    public function clearFilterConfiguratorImages()
     {
-        $this->collConfiguratorImages = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFilterConfiguratorImages = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collConfiguratorImages collection loaded partially.
+     * Reset is the collFilterConfiguratorImages collection loaded partially.
      */
-    public function resetPartialConfiguratorImages($v = true)
+    public function resetPartialFilterConfiguratorImages($v = true)
     {
-        $this->collConfiguratorImagesPartial = $v;
+        $this->collFilterConfiguratorImagesPartial = $v;
     }
 
     /**
-     * Initializes the collConfiguratorImages collection.
+     * Initializes the collFilterConfiguratorImages collection.
      *
-     * By default this just sets the collConfiguratorImages collection to an empty array (like clearcollConfiguratorImages());
+     * By default this just sets the collFilterConfiguratorImages collection to an empty array (like clearcollFilterConfiguratorImages());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1735,216 +1735,216 @@ abstract class Configurator implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initConfiguratorImages($overrideExisting = true)
+    public function initFilterConfiguratorImages($overrideExisting = true)
     {
-        if (null !== $this->collConfiguratorImages && !$overrideExisting) {
+        if (null !== $this->collFilterConfiguratorImages && !$overrideExisting) {
             return;
         }
-        $this->collConfiguratorImages = new ObjectCollection();
-        $this->collConfiguratorImages->setModel('\FilterConfigurator\Model\ConfiguratorImage');
+        $this->collFilterConfiguratorImages = new ObjectCollection();
+        $this->collFilterConfiguratorImages->setModel('\FilterConfigurator\Model\FilterConfiguratorImage');
     }
 
     /**
-     * Gets an array of ChildConfiguratorImage objects which contain a foreign key that references this object.
+     * Gets an array of ChildFilterConfiguratorImage objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildConfigurator is new, it will return
+     * If this ChildFilterConfigurator is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildConfiguratorImage[] List of ChildConfiguratorImage objects
+     * @return Collection|ChildFilterConfiguratorImage[] List of ChildFilterConfiguratorImage objects
      * @throws PropelException
      */
-    public function getConfiguratorImages($criteria = null, ConnectionInterface $con = null)
+    public function getFilterConfiguratorImages($criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorImagesPartial && !$this->isNew();
-        if (null === $this->collConfiguratorImages || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorImages) {
+        $partial = $this->collFilterConfiguratorImagesPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorImages || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorImages) {
                 // return empty collection
-                $this->initConfiguratorImages();
+                $this->initFilterConfiguratorImages();
             } else {
-                $collConfiguratorImages = ChildConfiguratorImageQuery::create(null, $criteria)
-                    ->filterByConfigurator($this)
+                $collFilterConfiguratorImages = ChildFilterConfiguratorImageQuery::create(null, $criteria)
+                    ->filterByFilterConfigurator($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collConfiguratorImagesPartial && count($collConfiguratorImages)) {
-                        $this->initConfiguratorImages(false);
+                    if (false !== $this->collFilterConfiguratorImagesPartial && count($collFilterConfiguratorImages)) {
+                        $this->initFilterConfiguratorImages(false);
 
-                        foreach ($collConfiguratorImages as $obj) {
-                            if (false == $this->collConfiguratorImages->contains($obj)) {
-                                $this->collConfiguratorImages->append($obj);
+                        foreach ($collFilterConfiguratorImages as $obj) {
+                            if (false == $this->collFilterConfiguratorImages->contains($obj)) {
+                                $this->collFilterConfiguratorImages->append($obj);
                             }
                         }
 
-                        $this->collConfiguratorImagesPartial = true;
+                        $this->collFilterConfiguratorImagesPartial = true;
                     }
 
-                    reset($collConfiguratorImages);
+                    reset($collFilterConfiguratorImages);
 
-                    return $collConfiguratorImages;
+                    return $collFilterConfiguratorImages;
                 }
 
-                if ($partial && $this->collConfiguratorImages) {
-                    foreach ($this->collConfiguratorImages as $obj) {
+                if ($partial && $this->collFilterConfiguratorImages) {
+                    foreach ($this->collFilterConfiguratorImages as $obj) {
                         if ($obj->isNew()) {
-                            $collConfiguratorImages[] = $obj;
+                            $collFilterConfiguratorImages[] = $obj;
                         }
                     }
                 }
 
-                $this->collConfiguratorImages = $collConfiguratorImages;
-                $this->collConfiguratorImagesPartial = false;
+                $this->collFilterConfiguratorImages = $collFilterConfiguratorImages;
+                $this->collFilterConfiguratorImagesPartial = false;
             }
         }
 
-        return $this->collConfiguratorImages;
+        return $this->collFilterConfiguratorImages;
     }
 
     /**
-     * Sets a collection of ConfiguratorImage objects related by a one-to-many relationship
+     * Sets a collection of FilterConfiguratorImage objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $configuratorImages A Propel collection.
+     * @param      Collection $filterConfiguratorImages A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildConfigurator The current object (for fluent API support)
+     * @return   ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function setConfiguratorImages(Collection $configuratorImages, ConnectionInterface $con = null)
+    public function setFilterConfiguratorImages(Collection $filterConfiguratorImages, ConnectionInterface $con = null)
     {
-        $configuratorImagesToDelete = $this->getConfiguratorImages(new Criteria(), $con)->diff($configuratorImages);
+        $filterConfiguratorImagesToDelete = $this->getFilterConfiguratorImages(new Criteria(), $con)->diff($filterConfiguratorImages);
 
         
-        $this->configuratorImagesScheduledForDeletion = $configuratorImagesToDelete;
+        $this->filterConfiguratorImagesScheduledForDeletion = $filterConfiguratorImagesToDelete;
 
-        foreach ($configuratorImagesToDelete as $configuratorImageRemoved) {
-            $configuratorImageRemoved->setConfigurator(null);
+        foreach ($filterConfiguratorImagesToDelete as $filterConfiguratorImageRemoved) {
+            $filterConfiguratorImageRemoved->setFilterConfigurator(null);
         }
 
-        $this->collConfiguratorImages = null;
-        foreach ($configuratorImages as $configuratorImage) {
-            $this->addConfiguratorImage($configuratorImage);
+        $this->collFilterConfiguratorImages = null;
+        foreach ($filterConfiguratorImages as $filterConfiguratorImage) {
+            $this->addFilterConfiguratorImage($filterConfiguratorImage);
         }
 
-        $this->collConfiguratorImages = $configuratorImages;
-        $this->collConfiguratorImagesPartial = false;
+        $this->collFilterConfiguratorImages = $filterConfiguratorImages;
+        $this->collFilterConfiguratorImagesPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related ConfiguratorImage objects.
+     * Returns the number of related FilterConfiguratorImage objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related ConfiguratorImage objects.
+     * @return int             Count of related FilterConfiguratorImage objects.
      * @throws PropelException
      */
-    public function countConfiguratorImages(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countFilterConfiguratorImages(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorImagesPartial && !$this->isNew();
-        if (null === $this->collConfiguratorImages || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorImages) {
+        $partial = $this->collFilterConfiguratorImagesPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorImages || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorImages) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getConfiguratorImages());
+                return count($this->getFilterConfiguratorImages());
             }
 
-            $query = ChildConfiguratorImageQuery::create(null, $criteria);
+            $query = ChildFilterConfiguratorImageQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByConfigurator($this)
+                ->filterByFilterConfigurator($this)
                 ->count($con);
         }
 
-        return count($this->collConfiguratorImages);
+        return count($this->collFilterConfiguratorImages);
     }
 
     /**
-     * Method called to associate a ChildConfiguratorImage object to this object
-     * through the ChildConfiguratorImage foreign key attribute.
+     * Method called to associate a ChildFilterConfiguratorImage object to this object
+     * through the ChildFilterConfiguratorImage foreign key attribute.
      *
-     * @param    ChildConfiguratorImage $l ChildConfiguratorImage
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @param    ChildFilterConfiguratorImage $l ChildFilterConfiguratorImage
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
-    public function addConfiguratorImage(ChildConfiguratorImage $l)
+    public function addFilterConfiguratorImage(ChildFilterConfiguratorImage $l)
     {
-        if ($this->collConfiguratorImages === null) {
-            $this->initConfiguratorImages();
-            $this->collConfiguratorImagesPartial = true;
+        if ($this->collFilterConfiguratorImages === null) {
+            $this->initFilterConfiguratorImages();
+            $this->collFilterConfiguratorImagesPartial = true;
         }
 
-        if (!in_array($l, $this->collConfiguratorImages->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddConfiguratorImage($l);
+        if (!in_array($l, $this->collFilterConfiguratorImages->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFilterConfiguratorImage($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ConfiguratorImage $configuratorImage The configuratorImage object to add.
+     * @param FilterConfiguratorImage $filterConfiguratorImage The filterConfiguratorImage object to add.
      */
-    protected function doAddConfiguratorImage($configuratorImage)
+    protected function doAddFilterConfiguratorImage($filterConfiguratorImage)
     {
-        $this->collConfiguratorImages[]= $configuratorImage;
-        $configuratorImage->setConfigurator($this);
+        $this->collFilterConfiguratorImages[]= $filterConfiguratorImage;
+        $filterConfiguratorImage->setFilterConfigurator($this);
     }
 
     /**
-     * @param  ConfiguratorImage $configuratorImage The configuratorImage object to remove.
-     * @return ChildConfigurator The current object (for fluent API support)
+     * @param  FilterConfiguratorImage $filterConfiguratorImage The filterConfiguratorImage object to remove.
+     * @return ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function removeConfiguratorImage($configuratorImage)
+    public function removeFilterConfiguratorImage($filterConfiguratorImage)
     {
-        if ($this->getConfiguratorImages()->contains($configuratorImage)) {
-            $this->collConfiguratorImages->remove($this->collConfiguratorImages->search($configuratorImage));
-            if (null === $this->configuratorImagesScheduledForDeletion) {
-                $this->configuratorImagesScheduledForDeletion = clone $this->collConfiguratorImages;
-                $this->configuratorImagesScheduledForDeletion->clear();
+        if ($this->getFilterConfiguratorImages()->contains($filterConfiguratorImage)) {
+            $this->collFilterConfiguratorImages->remove($this->collFilterConfiguratorImages->search($filterConfiguratorImage));
+            if (null === $this->filterConfiguratorImagesScheduledForDeletion) {
+                $this->filterConfiguratorImagesScheduledForDeletion = clone $this->collFilterConfiguratorImages;
+                $this->filterConfiguratorImagesScheduledForDeletion->clear();
             }
-            $this->configuratorImagesScheduledForDeletion[]= clone $configuratorImage;
-            $configuratorImage->setConfigurator(null);
+            $this->filterConfiguratorImagesScheduledForDeletion[]= clone $filterConfiguratorImage;
+            $filterConfiguratorImage->setFilterConfigurator(null);
         }
 
         return $this;
     }
 
     /**
-     * Clears out the collConfiguratorFeaturess collection
+     * Clears out the collFilterConfiguratorFeaturess collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addConfiguratorFeaturess()
+     * @see        addFilterConfiguratorFeaturess()
      */
-    public function clearConfiguratorFeaturess()
+    public function clearFilterConfiguratorFeaturess()
     {
-        $this->collConfiguratorFeaturess = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFilterConfiguratorFeaturess = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collConfiguratorFeaturess collection loaded partially.
+     * Reset is the collFilterConfiguratorFeaturess collection loaded partially.
      */
-    public function resetPartialConfiguratorFeaturess($v = true)
+    public function resetPartialFilterConfiguratorFeaturess($v = true)
     {
-        $this->collConfiguratorFeaturessPartial = $v;
+        $this->collFilterConfiguratorFeaturessPartial = $v;
     }
 
     /**
-     * Initializes the collConfiguratorFeaturess collection.
+     * Initializes the collFilterConfiguratorFeaturess collection.
      *
-     * By default this just sets the collConfiguratorFeaturess collection to an empty array (like clearcollConfiguratorFeaturess());
+     * By default this just sets the collFilterConfiguratorFeaturess collection to an empty array (like clearcollFilterConfiguratorFeaturess());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1953,185 +1953,185 @@ abstract class Configurator implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initConfiguratorFeaturess($overrideExisting = true)
+    public function initFilterConfiguratorFeaturess($overrideExisting = true)
     {
-        if (null !== $this->collConfiguratorFeaturess && !$overrideExisting) {
+        if (null !== $this->collFilterConfiguratorFeaturess && !$overrideExisting) {
             return;
         }
-        $this->collConfiguratorFeaturess = new ObjectCollection();
-        $this->collConfiguratorFeaturess->setModel('\FilterConfigurator\Model\ConfiguratorFeatures');
+        $this->collFilterConfiguratorFeaturess = new ObjectCollection();
+        $this->collFilterConfiguratorFeaturess->setModel('\FilterConfigurator\Model\FilterConfiguratorFeatures');
     }
 
     /**
-     * Gets an array of ChildConfiguratorFeatures objects which contain a foreign key that references this object.
+     * Gets an array of ChildFilterConfiguratorFeatures objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildConfigurator is new, it will return
+     * If this ChildFilterConfigurator is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildConfiguratorFeatures[] List of ChildConfiguratorFeatures objects
+     * @return Collection|ChildFilterConfiguratorFeatures[] List of ChildFilterConfiguratorFeatures objects
      * @throws PropelException
      */
-    public function getConfiguratorFeaturess($criteria = null, ConnectionInterface $con = null)
+    public function getFilterConfiguratorFeaturess($criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorFeaturessPartial && !$this->isNew();
-        if (null === $this->collConfiguratorFeaturess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorFeaturess) {
+        $partial = $this->collFilterConfiguratorFeaturessPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorFeaturess || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorFeaturess) {
                 // return empty collection
-                $this->initConfiguratorFeaturess();
+                $this->initFilterConfiguratorFeaturess();
             } else {
-                $collConfiguratorFeaturess = ChildConfiguratorFeaturesQuery::create(null, $criteria)
-                    ->filterByConfigurator($this)
+                $collFilterConfiguratorFeaturess = ChildFilterConfiguratorFeaturesQuery::create(null, $criteria)
+                    ->filterByFilterConfigurator($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collConfiguratorFeaturessPartial && count($collConfiguratorFeaturess)) {
-                        $this->initConfiguratorFeaturess(false);
+                    if (false !== $this->collFilterConfiguratorFeaturessPartial && count($collFilterConfiguratorFeaturess)) {
+                        $this->initFilterConfiguratorFeaturess(false);
 
-                        foreach ($collConfiguratorFeaturess as $obj) {
-                            if (false == $this->collConfiguratorFeaturess->contains($obj)) {
-                                $this->collConfiguratorFeaturess->append($obj);
+                        foreach ($collFilterConfiguratorFeaturess as $obj) {
+                            if (false == $this->collFilterConfiguratorFeaturess->contains($obj)) {
+                                $this->collFilterConfiguratorFeaturess->append($obj);
                             }
                         }
 
-                        $this->collConfiguratorFeaturessPartial = true;
+                        $this->collFilterConfiguratorFeaturessPartial = true;
                     }
 
-                    reset($collConfiguratorFeaturess);
+                    reset($collFilterConfiguratorFeaturess);
 
-                    return $collConfiguratorFeaturess;
+                    return $collFilterConfiguratorFeaturess;
                 }
 
-                if ($partial && $this->collConfiguratorFeaturess) {
-                    foreach ($this->collConfiguratorFeaturess as $obj) {
+                if ($partial && $this->collFilterConfiguratorFeaturess) {
+                    foreach ($this->collFilterConfiguratorFeaturess as $obj) {
                         if ($obj->isNew()) {
-                            $collConfiguratorFeaturess[] = $obj;
+                            $collFilterConfiguratorFeaturess[] = $obj;
                         }
                     }
                 }
 
-                $this->collConfiguratorFeaturess = $collConfiguratorFeaturess;
-                $this->collConfiguratorFeaturessPartial = false;
+                $this->collFilterConfiguratorFeaturess = $collFilterConfiguratorFeaturess;
+                $this->collFilterConfiguratorFeaturessPartial = false;
             }
         }
 
-        return $this->collConfiguratorFeaturess;
+        return $this->collFilterConfiguratorFeaturess;
     }
 
     /**
-     * Sets a collection of ConfiguratorFeatures objects related by a one-to-many relationship
+     * Sets a collection of FilterConfiguratorFeatures objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $configuratorFeaturess A Propel collection.
+     * @param      Collection $filterConfiguratorFeaturess A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildConfigurator The current object (for fluent API support)
+     * @return   ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function setConfiguratorFeaturess(Collection $configuratorFeaturess, ConnectionInterface $con = null)
+    public function setFilterConfiguratorFeaturess(Collection $filterConfiguratorFeaturess, ConnectionInterface $con = null)
     {
-        $configuratorFeaturessToDelete = $this->getConfiguratorFeaturess(new Criteria(), $con)->diff($configuratorFeaturess);
+        $filterConfiguratorFeaturessToDelete = $this->getFilterConfiguratorFeaturess(new Criteria(), $con)->diff($filterConfiguratorFeaturess);
 
         
-        $this->configuratorFeaturessScheduledForDeletion = $configuratorFeaturessToDelete;
+        $this->filterConfiguratorFeaturessScheduledForDeletion = $filterConfiguratorFeaturessToDelete;
 
-        foreach ($configuratorFeaturessToDelete as $configuratorFeaturesRemoved) {
-            $configuratorFeaturesRemoved->setConfigurator(null);
+        foreach ($filterConfiguratorFeaturessToDelete as $filterConfiguratorFeaturesRemoved) {
+            $filterConfiguratorFeaturesRemoved->setFilterConfigurator(null);
         }
 
-        $this->collConfiguratorFeaturess = null;
-        foreach ($configuratorFeaturess as $configuratorFeatures) {
-            $this->addConfiguratorFeatures($configuratorFeatures);
+        $this->collFilterConfiguratorFeaturess = null;
+        foreach ($filterConfiguratorFeaturess as $filterConfiguratorFeatures) {
+            $this->addFilterConfiguratorFeatures($filterConfiguratorFeatures);
         }
 
-        $this->collConfiguratorFeaturess = $configuratorFeaturess;
-        $this->collConfiguratorFeaturessPartial = false;
+        $this->collFilterConfiguratorFeaturess = $filterConfiguratorFeaturess;
+        $this->collFilterConfiguratorFeaturessPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related ConfiguratorFeatures objects.
+     * Returns the number of related FilterConfiguratorFeatures objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related ConfiguratorFeatures objects.
+     * @return int             Count of related FilterConfiguratorFeatures objects.
      * @throws PropelException
      */
-    public function countConfiguratorFeaturess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countFilterConfiguratorFeaturess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorFeaturessPartial && !$this->isNew();
-        if (null === $this->collConfiguratorFeaturess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorFeaturess) {
+        $partial = $this->collFilterConfiguratorFeaturessPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorFeaturess || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorFeaturess) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getConfiguratorFeaturess());
+                return count($this->getFilterConfiguratorFeaturess());
             }
 
-            $query = ChildConfiguratorFeaturesQuery::create(null, $criteria);
+            $query = ChildFilterConfiguratorFeaturesQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByConfigurator($this)
+                ->filterByFilterConfigurator($this)
                 ->count($con);
         }
 
-        return count($this->collConfiguratorFeaturess);
+        return count($this->collFilterConfiguratorFeaturess);
     }
 
     /**
-     * Method called to associate a ChildConfiguratorFeatures object to this object
-     * through the ChildConfiguratorFeatures foreign key attribute.
+     * Method called to associate a ChildFilterConfiguratorFeatures object to this object
+     * through the ChildFilterConfiguratorFeatures foreign key attribute.
      *
-     * @param    ChildConfiguratorFeatures $l ChildConfiguratorFeatures
-     * @return   \FilterConfigurator\Model\Configurator The current object (for fluent API support)
+     * @param    ChildFilterConfiguratorFeatures $l ChildFilterConfiguratorFeatures
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
      */
-    public function addConfiguratorFeatures(ChildConfiguratorFeatures $l)
+    public function addFilterConfiguratorFeatures(ChildFilterConfiguratorFeatures $l)
     {
-        if ($this->collConfiguratorFeaturess === null) {
-            $this->initConfiguratorFeaturess();
-            $this->collConfiguratorFeaturessPartial = true;
+        if ($this->collFilterConfiguratorFeaturess === null) {
+            $this->initFilterConfiguratorFeaturess();
+            $this->collFilterConfiguratorFeaturessPartial = true;
         }
 
-        if (!in_array($l, $this->collConfiguratorFeaturess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddConfiguratorFeatures($l);
+        if (!in_array($l, $this->collFilterConfiguratorFeaturess->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFilterConfiguratorFeatures($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ConfiguratorFeatures $configuratorFeatures The configuratorFeatures object to add.
+     * @param FilterConfiguratorFeatures $filterConfiguratorFeatures The filterConfiguratorFeatures object to add.
      */
-    protected function doAddConfiguratorFeatures($configuratorFeatures)
+    protected function doAddFilterConfiguratorFeatures($filterConfiguratorFeatures)
     {
-        $this->collConfiguratorFeaturess[]= $configuratorFeatures;
-        $configuratorFeatures->setConfigurator($this);
+        $this->collFilterConfiguratorFeaturess[]= $filterConfiguratorFeatures;
+        $filterConfiguratorFeatures->setFilterConfigurator($this);
     }
 
     /**
-     * @param  ConfiguratorFeatures $configuratorFeatures The configuratorFeatures object to remove.
-     * @return ChildConfigurator The current object (for fluent API support)
+     * @param  FilterConfiguratorFeatures $filterConfiguratorFeatures The filterConfiguratorFeatures object to remove.
+     * @return ChildFilterConfigurator The current object (for fluent API support)
      */
-    public function removeConfiguratorFeatures($configuratorFeatures)
+    public function removeFilterConfiguratorFeatures($filterConfiguratorFeatures)
     {
-        if ($this->getConfiguratorFeaturess()->contains($configuratorFeatures)) {
-            $this->collConfiguratorFeaturess->remove($this->collConfiguratorFeaturess->search($configuratorFeatures));
-            if (null === $this->configuratorFeaturessScheduledForDeletion) {
-                $this->configuratorFeaturessScheduledForDeletion = clone $this->collConfiguratorFeaturess;
-                $this->configuratorFeaturessScheduledForDeletion->clear();
+        if ($this->getFilterConfiguratorFeaturess()->contains($filterConfiguratorFeatures)) {
+            $this->collFilterConfiguratorFeaturess->remove($this->collFilterConfiguratorFeaturess->search($filterConfiguratorFeatures));
+            if (null === $this->filterConfiguratorFeaturessScheduledForDeletion) {
+                $this->filterConfiguratorFeaturessScheduledForDeletion = clone $this->collFilterConfiguratorFeaturess;
+                $this->filterConfiguratorFeaturessScheduledForDeletion->clear();
             }
-            $this->configuratorFeaturessScheduledForDeletion[]= $configuratorFeatures;
-            $configuratorFeatures->setConfigurator(null);
+            $this->filterConfiguratorFeaturessScheduledForDeletion[]= $filterConfiguratorFeatures;
+            $filterConfiguratorFeatures->setFilterConfigurator(null);
         }
 
         return $this;
@@ -2141,25 +2141,25 @@ abstract class Configurator implements ActiveRecordInterface
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Configurator is new, it will return
-     * an empty collection; or if this Configurator has previously
-     * been saved, it will retrieve related ConfiguratorFeaturess from storage.
+     * Otherwise if this FilterConfigurator is new, it will return
+     * an empty collection; or if this FilterConfigurator has previously
+     * been saved, it will retrieve related FilterConfiguratorFeaturess from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Configurator.
+     * actually need in FilterConfigurator.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return Collection|ChildConfiguratorFeatures[] List of ChildConfiguratorFeatures objects
+     * @return Collection|ChildFilterConfiguratorFeatures[] List of ChildFilterConfiguratorFeatures objects
      */
-    public function getConfiguratorFeaturessJoinFeature($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getFilterConfiguratorFeaturessJoinFeature($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
-        $query = ChildConfiguratorFeaturesQuery::create(null, $criteria);
+        $query = ChildFilterConfiguratorFeaturesQuery::create(null, $criteria);
         $query->joinWith('Feature', $joinBehavior);
 
-        return $this->getConfiguratorFeaturess($query, $con);
+        return $this->getFilterConfiguratorFeaturess($query, $con);
     }
 
     /**
@@ -2193,26 +2193,26 @@ abstract class Configurator implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collConfiguratorI18ns) {
-                foreach ($this->collConfiguratorI18ns as $o) {
+            if ($this->collFilterConfiguratorI18ns) {
+                foreach ($this->collFilterConfiguratorI18ns as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collConfiguratorImages) {
-                foreach ($this->collConfiguratorImages as $o) {
+            if ($this->collFilterConfiguratorImages) {
+                foreach ($this->collFilterConfiguratorImages as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collConfiguratorFeaturess) {
-                foreach ($this->collConfiguratorFeaturess as $o) {
+            if ($this->collFilterConfiguratorFeaturess) {
+                foreach ($this->collFilterConfiguratorFeaturess as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collConfiguratorI18ns = null;
-        $this->collConfiguratorImages = null;
-        $this->collConfiguratorFeaturess = null;
+        $this->collFilterConfiguratorI18ns = null;
+        $this->collFilterConfiguratorImages = null;
+        $this->collFilterConfiguratorFeaturess = null;
         $this->aCategory = null;
     }
 
@@ -2223,7 +2223,7 @@ abstract class Configurator implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ConfiguratorTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(FilterConfiguratorTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -2231,11 +2231,11 @@ abstract class Configurator implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildConfigurator The current object (for fluent API support)
+     * @return     ChildFilterConfigurator The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[ConfiguratorTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[FilterConfiguratorTableMap::UPDATED_AT] = true;
     
         return $this;
     }

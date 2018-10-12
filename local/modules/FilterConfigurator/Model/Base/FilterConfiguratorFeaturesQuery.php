@@ -4,9 +4,9 @@ namespace FilterConfigurator\Model\Base;
 
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\ConfiguratorFeatures as ChildConfiguratorFeatures;
-use FilterConfigurator\Model\ConfiguratorFeaturesQuery as ChildConfiguratorFeaturesQuery;
-use FilterConfigurator\Model\Map\ConfiguratorFeaturesTableMap;
+use FilterConfigurator\Model\FilterConfiguratorFeatures as ChildFilterConfiguratorFeatures;
+use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery as ChildFilterConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorFeaturesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -22,67 +22,67 @@ use Thelia\Model\Feature;
  *
  * 
  *
- * @method     ChildConfiguratorFeaturesQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildConfiguratorFeaturesQuery orderByConfiguratorId($order = Criteria::ASC) Order by the configurator_id column
- * @method     ChildConfiguratorFeaturesQuery orderByFeatureId($order = Criteria::ASC) Order by the feature_id column
+ * @method     ChildFilterConfiguratorFeaturesQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildFilterConfiguratorFeaturesQuery orderByConfiguratorId($order = Criteria::ASC) Order by the configurator_id column
+ * @method     ChildFilterConfiguratorFeaturesQuery orderByFeatureId($order = Criteria::ASC) Order by the feature_id column
  *
- * @method     ChildConfiguratorFeaturesQuery groupById() Group by the id column
- * @method     ChildConfiguratorFeaturesQuery groupByConfiguratorId() Group by the configurator_id column
- * @method     ChildConfiguratorFeaturesQuery groupByFeatureId() Group by the feature_id column
+ * @method     ChildFilterConfiguratorFeaturesQuery groupById() Group by the id column
+ * @method     ChildFilterConfiguratorFeaturesQuery groupByConfiguratorId() Group by the configurator_id column
+ * @method     ChildFilterConfiguratorFeaturesQuery groupByFeatureId() Group by the feature_id column
  *
- * @method     ChildConfiguratorFeaturesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildConfiguratorFeaturesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildConfiguratorFeaturesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildFilterConfiguratorFeaturesQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildFilterConfiguratorFeaturesQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildFilterConfiguratorFeaturesQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildConfiguratorFeaturesQuery leftJoinConfigurator($relationAlias = null) Adds a LEFT JOIN clause to the query using the Configurator relation
- * @method     ChildConfiguratorFeaturesQuery rightJoinConfigurator($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Configurator relation
- * @method     ChildConfiguratorFeaturesQuery innerJoinConfigurator($relationAlias = null) Adds a INNER JOIN clause to the query using the Configurator relation
+ * @method     ChildFilterConfiguratorFeaturesQuery leftJoinFilterConfigurator($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorFeaturesQuery rightJoinFilterConfigurator($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorFeaturesQuery innerJoinFilterConfigurator($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfigurator relation
  *
- * @method     ChildConfiguratorFeaturesQuery leftJoinFeature($relationAlias = null) Adds a LEFT JOIN clause to the query using the Feature relation
- * @method     ChildConfiguratorFeaturesQuery rightJoinFeature($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Feature relation
- * @method     ChildConfiguratorFeaturesQuery innerJoinFeature($relationAlias = null) Adds a INNER JOIN clause to the query using the Feature relation
+ * @method     ChildFilterConfiguratorFeaturesQuery leftJoinFeature($relationAlias = null) Adds a LEFT JOIN clause to the query using the Feature relation
+ * @method     ChildFilterConfiguratorFeaturesQuery rightJoinFeature($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Feature relation
+ * @method     ChildFilterConfiguratorFeaturesQuery innerJoinFeature($relationAlias = null) Adds a INNER JOIN clause to the query using the Feature relation
  *
- * @method     ChildConfiguratorFeatures findOne(ConnectionInterface $con = null) Return the first ChildConfiguratorFeatures matching the query
- * @method     ChildConfiguratorFeatures findOneOrCreate(ConnectionInterface $con = null) Return the first ChildConfiguratorFeatures matching the query, or a new ChildConfiguratorFeatures object populated from the query conditions when no match is found
+ * @method     ChildFilterConfiguratorFeatures findOne(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorFeatures matching the query
+ * @method     ChildFilterConfiguratorFeatures findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorFeatures matching the query, or a new ChildFilterConfiguratorFeatures object populated from the query conditions when no match is found
  *
- * @method     ChildConfiguratorFeatures findOneById(int $id) Return the first ChildConfiguratorFeatures filtered by the id column
- * @method     ChildConfiguratorFeatures findOneByConfiguratorId(int $configurator_id) Return the first ChildConfiguratorFeatures filtered by the configurator_id column
- * @method     ChildConfiguratorFeatures findOneByFeatureId(int $feature_id) Return the first ChildConfiguratorFeatures filtered by the feature_id column
+ * @method     ChildFilterConfiguratorFeatures findOneById(int $id) Return the first ChildFilterConfiguratorFeatures filtered by the id column
+ * @method     ChildFilterConfiguratorFeatures findOneByConfiguratorId(int $configurator_id) Return the first ChildFilterConfiguratorFeatures filtered by the configurator_id column
+ * @method     ChildFilterConfiguratorFeatures findOneByFeatureId(int $feature_id) Return the first ChildFilterConfiguratorFeatures filtered by the feature_id column
  *
- * @method     array findById(int $id) Return ChildConfiguratorFeatures objects filtered by the id column
- * @method     array findByConfiguratorId(int $configurator_id) Return ChildConfiguratorFeatures objects filtered by the configurator_id column
- * @method     array findByFeatureId(int $feature_id) Return ChildConfiguratorFeatures objects filtered by the feature_id column
+ * @method     array findById(int $id) Return ChildFilterConfiguratorFeatures objects filtered by the id column
+ * @method     array findByConfiguratorId(int $configurator_id) Return ChildFilterConfiguratorFeatures objects filtered by the configurator_id column
+ * @method     array findByFeatureId(int $feature_id) Return ChildFilterConfiguratorFeatures objects filtered by the feature_id column
  *
  */
-abstract class ConfiguratorFeaturesQuery extends ModelCriteria
+abstract class FilterConfiguratorFeaturesQuery extends ModelCriteria
 {
     
     /**
-     * Initializes internal state of \FilterConfigurator\Model\Base\ConfiguratorFeaturesQuery object.
+     * Initializes internal state of \FilterConfigurator\Model\Base\FilterConfiguratorFeaturesQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\ConfiguratorFeatures', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\FilterConfiguratorFeatures', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildConfiguratorFeaturesQuery object.
+     * Returns a new ChildFilterConfiguratorFeaturesQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildConfiguratorFeaturesQuery
+     * @return ChildFilterConfiguratorFeaturesQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \FilterConfigurator\Model\ConfiguratorFeaturesQuery) {
+        if ($criteria instanceof \FilterConfigurator\Model\FilterConfiguratorFeaturesQuery) {
             return $criteria;
         }
-        $query = new \FilterConfigurator\Model\ConfiguratorFeaturesQuery();
+        $query = new \FilterConfigurator\Model\FilterConfiguratorFeaturesQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -105,19 +105,19 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildConfiguratorFeatures|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorFeatures|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = ConfiguratorFeaturesTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = FilterConfiguratorFeaturesTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -136,7 +136,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return   ChildConfiguratorFeatures A model object, or null if the key is not found
+     * @return   ChildFilterConfiguratorFeatures A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
@@ -151,9 +151,9 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            $obj = new ChildConfiguratorFeatures();
+            $obj = new ChildFilterConfiguratorFeatures();
             $obj->hydrate($row);
-            ConfiguratorFeaturesTableMap::addInstanceToPool($obj, (string) $key);
+            FilterConfiguratorFeaturesTableMap::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -166,7 +166,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildConfiguratorFeatures|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorFeatures|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -208,12 +208,12 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -221,12 +221,12 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -245,18 +245,18 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -267,7 +267,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $id, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -280,7 +280,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * $query->filterByConfiguratorId(array('min' => 12)); // WHERE configurator_id > 12
      * </code>
      *
-     * @see       filterByConfigurator()
+     * @see       filterByFilterConfigurator()
      *
      * @param     mixed $configuratorId The value to use as filter.
      *              Use scalar values for equality.
@@ -288,18 +288,18 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterByConfiguratorId($configuratorId = null, $comparison = null)
     {
         if (is_array($configuratorId)) {
             $useMinMax = false;
             if (isset($configuratorId['min'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($configuratorId['max'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -310,7 +310,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configuratorId, $comparison);
     }
 
     /**
@@ -331,18 +331,18 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterByFeatureId($featureId = null, $comparison = null)
     {
         if (is_array($featureId)) {
             $useMinMax = false;
             if (isset($featureId['min'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::FEATURE_ID, $featureId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $featureId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($featureId['max'])) {
-                $this->addUsingAlias(ConfiguratorFeaturesTableMap::FEATURE_ID, $featureId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $featureId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -353,46 +353,46 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorFeaturesTableMap::FEATURE_ID, $featureId, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $featureId, $comparison);
     }
 
     /**
-     * Filter the query by a related \FilterConfigurator\Model\Configurator object
+     * Filter the query by a related \FilterConfigurator\Model\FilterConfigurator object
      *
-     * @param \FilterConfigurator\Model\Configurator|ObjectCollection $configurator The related object(s) to use as filter
+     * @param \FilterConfigurator\Model\FilterConfigurator|ObjectCollection $filterConfigurator The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
-    public function filterByConfigurator($configurator, $comparison = null)
+    public function filterByFilterConfigurator($filterConfigurator, $comparison = null)
     {
-        if ($configurator instanceof \FilterConfigurator\Model\Configurator) {
+        if ($filterConfigurator instanceof \FilterConfigurator\Model\FilterConfigurator) {
             return $this
-                ->addUsingAlias(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configurator->getId(), $comparison);
-        } elseif ($configurator instanceof ObjectCollection) {
+                ->addUsingAlias(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $filterConfigurator->getId(), $comparison);
+        } elseif ($filterConfigurator instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $configurator->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $filterConfigurator->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByConfigurator() only accepts arguments of type \FilterConfigurator\Model\Configurator or Collection');
+            throw new PropelException('filterByFilterConfigurator() only accepts arguments of type \FilterConfigurator\Model\FilterConfigurator or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Configurator relation
+     * Adds a JOIN clause to the query using the FilterConfigurator relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
-    public function joinConfigurator($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinFilterConfigurator($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Configurator');
+        $relationMap = $tableMap->getRelation('FilterConfigurator');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -407,14 +407,14 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Configurator');
+            $this->addJoinObject($join, 'FilterConfigurator');
         }
 
         return $this;
     }
 
     /**
-     * Use the Configurator relation Configurator object
+     * Use the FilterConfigurator relation FilterConfigurator object
      *
      * @see useQuery()
      *
@@ -422,13 +422,13 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \FilterConfigurator\Model\ConfiguratorQuery A secondary query class using the current class as primary query
+     * @return   \FilterConfigurator\Model\FilterConfiguratorQuery A secondary query class using the current class as primary query
      */
-    public function useConfiguratorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useFilterConfiguratorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinConfigurator($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Configurator', '\FilterConfigurator\Model\ConfiguratorQuery');
+            ->joinFilterConfigurator($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FilterConfigurator', '\FilterConfigurator\Model\FilterConfiguratorQuery');
     }
 
     /**
@@ -437,20 +437,20 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * @param \Thelia\Model\Feature|ObjectCollection $feature The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function filterByFeature($feature, $comparison = null)
     {
         if ($feature instanceof \Thelia\Model\Feature) {
             return $this
-                ->addUsingAlias(ConfiguratorFeaturesTableMap::FEATURE_ID, $feature->getId(), $comparison);
+                ->addUsingAlias(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $feature->getId(), $comparison);
         } elseif ($feature instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ConfiguratorFeaturesTableMap::FEATURE_ID, $feature->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $feature->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByFeature() only accepts arguments of type \Thelia\Model\Feature or Collection');
         }
@@ -462,7 +462,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
     public function joinFeature($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
@@ -509,14 +509,14 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   ChildConfiguratorFeatures $configuratorFeatures Object to remove from the list of results
+     * @param   ChildFilterConfiguratorFeatures $filterConfiguratorFeatures Object to remove from the list of results
      *
-     * @return ChildConfiguratorFeaturesQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorFeaturesQuery The current query, for fluid interface
      */
-    public function prune($configuratorFeatures = null)
+    public function prune($filterConfiguratorFeatures = null)
     {
-        if ($configuratorFeatures) {
-            $this->addUsingAlias(ConfiguratorFeaturesTableMap::ID, $configuratorFeatures->getId(), Criteria::NOT_EQUAL);
+        if ($filterConfiguratorFeatures) {
+            $this->addUsingAlias(FilterConfiguratorFeaturesTableMap::ID, $filterConfiguratorFeatures->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -531,7 +531,7 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
@@ -542,8 +542,8 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ConfiguratorFeaturesTableMap::clearInstancePool();
-            ConfiguratorFeaturesTableMap::clearRelatedInstancePool();
+            FilterConfiguratorFeaturesTableMap::clearInstancePool();
+            FilterConfiguratorFeaturesTableMap::clearRelatedInstancePool();
 
             $con->commit();
         } catch (PropelException $e) {
@@ -555,9 +555,9 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
     }
 
     /**
-     * Performs a DELETE on the database, given a ChildConfiguratorFeatures or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ChildFilterConfiguratorFeatures or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ChildConfiguratorFeatures object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ChildFilterConfiguratorFeatures object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -568,13 +568,13 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
      public function delete(ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+        $criteria->setDbName(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -584,10 +584,10 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
             $con->beginTransaction();
             
 
-        ConfiguratorFeaturesTableMap::removeInstanceFromPool($criteria);
+        FilterConfiguratorFeaturesTableMap::removeInstanceFromPool($criteria);
         
             $affectedRows += ModelCriteria::delete($con);
-            ConfiguratorFeaturesTableMap::clearRelatedInstancePool();
+            FilterConfiguratorFeaturesTableMap::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -597,4 +597,4 @@ abstract class ConfiguratorFeaturesQuery extends ModelCriteria
         }
     }
 
-} // ConfiguratorFeaturesQuery
+} // FilterConfiguratorFeaturesQuery

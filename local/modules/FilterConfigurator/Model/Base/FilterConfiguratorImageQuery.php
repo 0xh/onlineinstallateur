@@ -4,9 +4,9 @@ namespace FilterConfigurator\Model\Base;
 
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\ConfiguratorImage as ChildConfiguratorImage;
-use FilterConfigurator\Model\ConfiguratorImageQuery as ChildConfiguratorImageQuery;
-use FilterConfigurator\Model\Map\ConfiguratorImageTableMap;
+use FilterConfigurator\Model\FilterConfiguratorImage as ChildFilterConfiguratorImage;
+use FilterConfigurator\Model\FilterConfiguratorImageQuery as ChildFilterConfiguratorImageQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorImageTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,83 +21,83 @@ use Propel\Runtime\Exception\PropelException;
  *
  * 
  *
- * @method     ChildConfiguratorImageQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildConfiguratorImageQuery orderByConfiguratorId($order = Criteria::ASC) Order by the configurator_id column
- * @method     ChildConfiguratorImageQuery orderByFile($order = Criteria::ASC) Order by the file column
- * @method     ChildConfiguratorImageQuery orderByVisible($order = Criteria::ASC) Order by the visible column
- * @method     ChildConfiguratorImageQuery orderByPosition($order = Criteria::ASC) Order by the position column
- * @method     ChildConfiguratorImageQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
- * @method     ChildConfiguratorImageQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method     ChildFilterConfiguratorImageQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildFilterConfiguratorImageQuery orderByConfiguratorId($order = Criteria::ASC) Order by the configurator_id column
+ * @method     ChildFilterConfiguratorImageQuery orderByFile($order = Criteria::ASC) Order by the file column
+ * @method     ChildFilterConfiguratorImageQuery orderByVisible($order = Criteria::ASC) Order by the visible column
+ * @method     ChildFilterConfiguratorImageQuery orderByPosition($order = Criteria::ASC) Order by the position column
+ * @method     ChildFilterConfiguratorImageQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
+ * @method     ChildFilterConfiguratorImageQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
- * @method     ChildConfiguratorImageQuery groupById() Group by the id column
- * @method     ChildConfiguratorImageQuery groupByConfiguratorId() Group by the configurator_id column
- * @method     ChildConfiguratorImageQuery groupByFile() Group by the file column
- * @method     ChildConfiguratorImageQuery groupByVisible() Group by the visible column
- * @method     ChildConfiguratorImageQuery groupByPosition() Group by the position column
- * @method     ChildConfiguratorImageQuery groupByCreatedAt() Group by the created_at column
- * @method     ChildConfiguratorImageQuery groupByUpdatedAt() Group by the updated_at column
+ * @method     ChildFilterConfiguratorImageQuery groupById() Group by the id column
+ * @method     ChildFilterConfiguratorImageQuery groupByConfiguratorId() Group by the configurator_id column
+ * @method     ChildFilterConfiguratorImageQuery groupByFile() Group by the file column
+ * @method     ChildFilterConfiguratorImageQuery groupByVisible() Group by the visible column
+ * @method     ChildFilterConfiguratorImageQuery groupByPosition() Group by the position column
+ * @method     ChildFilterConfiguratorImageQuery groupByCreatedAt() Group by the created_at column
+ * @method     ChildFilterConfiguratorImageQuery groupByUpdatedAt() Group by the updated_at column
  *
- * @method     ChildConfiguratorImageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildConfiguratorImageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildConfiguratorImageQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildFilterConfiguratorImageQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildFilterConfiguratorImageQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildFilterConfiguratorImageQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildConfiguratorImageQuery leftJoinConfigurator($relationAlias = null) Adds a LEFT JOIN clause to the query using the Configurator relation
- * @method     ChildConfiguratorImageQuery rightJoinConfigurator($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Configurator relation
- * @method     ChildConfiguratorImageQuery innerJoinConfigurator($relationAlias = null) Adds a INNER JOIN clause to the query using the Configurator relation
+ * @method     ChildFilterConfiguratorImageQuery leftJoinFilterConfigurator($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorImageQuery rightJoinFilterConfigurator($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfigurator relation
+ * @method     ChildFilterConfiguratorImageQuery innerJoinFilterConfigurator($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfigurator relation
  *
- * @method     ChildConfiguratorImageQuery leftJoinConfiguratorImageI18n($relationAlias = null) Adds a LEFT JOIN clause to the query using the ConfiguratorImageI18n relation
- * @method     ChildConfiguratorImageQuery rightJoinConfiguratorImageI18n($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ConfiguratorImageI18n relation
- * @method     ChildConfiguratorImageQuery innerJoinConfiguratorImageI18n($relationAlias = null) Adds a INNER JOIN clause to the query using the ConfiguratorImageI18n relation
+ * @method     ChildFilterConfiguratorImageQuery leftJoinFilterConfiguratorImageI18n($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfiguratorImageI18n relation
+ * @method     ChildFilterConfiguratorImageQuery rightJoinFilterConfiguratorImageI18n($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfiguratorImageI18n relation
+ * @method     ChildFilterConfiguratorImageQuery innerJoinFilterConfiguratorImageI18n($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfiguratorImageI18n relation
  *
- * @method     ChildConfiguratorImage findOne(ConnectionInterface $con = null) Return the first ChildConfiguratorImage matching the query
- * @method     ChildConfiguratorImage findOneOrCreate(ConnectionInterface $con = null) Return the first ChildConfiguratorImage matching the query, or a new ChildConfiguratorImage object populated from the query conditions when no match is found
+ * @method     ChildFilterConfiguratorImage findOne(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorImage matching the query
+ * @method     ChildFilterConfiguratorImage findOneOrCreate(ConnectionInterface $con = null) Return the first ChildFilterConfiguratorImage matching the query, or a new ChildFilterConfiguratorImage object populated from the query conditions when no match is found
  *
- * @method     ChildConfiguratorImage findOneById(int $id) Return the first ChildConfiguratorImage filtered by the id column
- * @method     ChildConfiguratorImage findOneByConfiguratorId(int $configurator_id) Return the first ChildConfiguratorImage filtered by the configurator_id column
- * @method     ChildConfiguratorImage findOneByFile(string $file) Return the first ChildConfiguratorImage filtered by the file column
- * @method     ChildConfiguratorImage findOneByVisible(int $visible) Return the first ChildConfiguratorImage filtered by the visible column
- * @method     ChildConfiguratorImage findOneByPosition(int $position) Return the first ChildConfiguratorImage filtered by the position column
- * @method     ChildConfiguratorImage findOneByCreatedAt(string $created_at) Return the first ChildConfiguratorImage filtered by the created_at column
- * @method     ChildConfiguratorImage findOneByUpdatedAt(string $updated_at) Return the first ChildConfiguratorImage filtered by the updated_at column
+ * @method     ChildFilterConfiguratorImage findOneById(int $id) Return the first ChildFilterConfiguratorImage filtered by the id column
+ * @method     ChildFilterConfiguratorImage findOneByConfiguratorId(int $configurator_id) Return the first ChildFilterConfiguratorImage filtered by the configurator_id column
+ * @method     ChildFilterConfiguratorImage findOneByFile(string $file) Return the first ChildFilterConfiguratorImage filtered by the file column
+ * @method     ChildFilterConfiguratorImage findOneByVisible(int $visible) Return the first ChildFilterConfiguratorImage filtered by the visible column
+ * @method     ChildFilterConfiguratorImage findOneByPosition(int $position) Return the first ChildFilterConfiguratorImage filtered by the position column
+ * @method     ChildFilterConfiguratorImage findOneByCreatedAt(string $created_at) Return the first ChildFilterConfiguratorImage filtered by the created_at column
+ * @method     ChildFilterConfiguratorImage findOneByUpdatedAt(string $updated_at) Return the first ChildFilterConfiguratorImage filtered by the updated_at column
  *
- * @method     array findById(int $id) Return ChildConfiguratorImage objects filtered by the id column
- * @method     array findByConfiguratorId(int $configurator_id) Return ChildConfiguratorImage objects filtered by the configurator_id column
- * @method     array findByFile(string $file) Return ChildConfiguratorImage objects filtered by the file column
- * @method     array findByVisible(int $visible) Return ChildConfiguratorImage objects filtered by the visible column
- * @method     array findByPosition(int $position) Return ChildConfiguratorImage objects filtered by the position column
- * @method     array findByCreatedAt(string $created_at) Return ChildConfiguratorImage objects filtered by the created_at column
- * @method     array findByUpdatedAt(string $updated_at) Return ChildConfiguratorImage objects filtered by the updated_at column
+ * @method     array findById(int $id) Return ChildFilterConfiguratorImage objects filtered by the id column
+ * @method     array findByConfiguratorId(int $configurator_id) Return ChildFilterConfiguratorImage objects filtered by the configurator_id column
+ * @method     array findByFile(string $file) Return ChildFilterConfiguratorImage objects filtered by the file column
+ * @method     array findByVisible(int $visible) Return ChildFilterConfiguratorImage objects filtered by the visible column
+ * @method     array findByPosition(int $position) Return ChildFilterConfiguratorImage objects filtered by the position column
+ * @method     array findByCreatedAt(string $created_at) Return ChildFilterConfiguratorImage objects filtered by the created_at column
+ * @method     array findByUpdatedAt(string $updated_at) Return ChildFilterConfiguratorImage objects filtered by the updated_at column
  *
  */
-abstract class ConfiguratorImageQuery extends ModelCriteria
+abstract class FilterConfiguratorImageQuery extends ModelCriteria
 {
     
     /**
-     * Initializes internal state of \FilterConfigurator\Model\Base\ConfiguratorImageQuery object.
+     * Initializes internal state of \FilterConfigurator\Model\Base\FilterConfiguratorImageQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\ConfiguratorImage', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\FilterConfigurator\\Model\\FilterConfiguratorImage', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildConfiguratorImageQuery object.
+     * Returns a new ChildFilterConfiguratorImageQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildConfiguratorImageQuery
+     * @return ChildFilterConfiguratorImageQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \FilterConfigurator\Model\ConfiguratorImageQuery) {
+        if ($criteria instanceof \FilterConfigurator\Model\FilterConfiguratorImageQuery) {
             return $criteria;
         }
-        $query = new \FilterConfigurator\Model\ConfiguratorImageQuery();
+        $query = new \FilterConfigurator\Model\FilterConfiguratorImageQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -120,19 +120,19 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildConfiguratorImage|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorImage|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = ConfiguratorImageTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = FilterConfiguratorImageTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -151,7 +151,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return   ChildConfiguratorImage A model object, or null if the key is not found
+     * @return   ChildFilterConfiguratorImage A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
@@ -166,9 +166,9 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            $obj = new ChildConfiguratorImage();
+            $obj = new ChildFilterConfiguratorImage();
             $obj->hydrate($row);
-            ConfiguratorImageTableMap::addInstanceToPool($obj, (string) $key);
+            FilterConfiguratorImageTableMap::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -181,7 +181,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildConfiguratorImage|array|mixed the result, formatted by the current formatter
+     * @return ChildFilterConfiguratorImage|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -223,12 +223,12 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -236,12 +236,12 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -260,18 +260,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -282,7 +282,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::ID, $id, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -295,7 +295,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      * $query->filterByConfiguratorId(array('min' => 12)); // WHERE configurator_id > 12
      * </code>
      *
-     * @see       filterByConfigurator()
+     * @see       filterByFilterConfigurator()
      *
      * @param     mixed $configuratorId The value to use as filter.
      *              Use scalar values for equality.
@@ -303,18 +303,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByConfiguratorId($configuratorId = null, $comparison = null)
     {
         if (is_array($configuratorId)) {
             $useMinMax = false;
             if (isset($configuratorId['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($configuratorId['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -325,7 +325,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $configuratorId, $comparison);
     }
 
     /**
@@ -341,7 +341,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByFile($file = null, $comparison = null)
     {
@@ -354,7 +354,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::FILE, $file, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::FILE, $file, $comparison);
     }
 
     /**
@@ -373,18 +373,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByVisible($visible = null, $comparison = null)
     {
         if (is_array($visible)) {
             $useMinMax = false;
             if (isset($visible['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::VISIBLE, $visible['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::VISIBLE, $visible['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($visible['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::VISIBLE, $visible['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::VISIBLE, $visible['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -395,7 +395,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::VISIBLE, $visible, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::VISIBLE, $visible, $comparison);
     }
 
     /**
@@ -414,18 +414,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByPosition($position = null, $comparison = null)
     {
         if (is_array($position)) {
             $useMinMax = false;
             if (isset($position['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::POSITION, $position['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::POSITION, $position['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($position['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::POSITION, $position['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::POSITION, $position['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -436,7 +436,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::POSITION, $position, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::POSITION, $position, $comparison);
     }
 
     /**
@@ -457,18 +457,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByCreatedAt($createdAt = null, $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
             if (isset($createdAt['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($createdAt['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -479,7 +479,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::CREATED_AT, $createdAt, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -500,18 +500,18 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function filterByUpdatedAt($updatedAt = null, $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
             if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(ConfiguratorImageTableMap::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(FilterConfiguratorImageTableMap::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -522,46 +522,46 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ConfiguratorImageTableMap::UPDATED_AT, $updatedAt, $comparison);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**
-     * Filter the query by a related \FilterConfigurator\Model\Configurator object
+     * Filter the query by a related \FilterConfigurator\Model\FilterConfigurator object
      *
-     * @param \FilterConfigurator\Model\Configurator|ObjectCollection $configurator The related object(s) to use as filter
+     * @param \FilterConfigurator\Model\FilterConfigurator|ObjectCollection $filterConfigurator The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
-    public function filterByConfigurator($configurator, $comparison = null)
+    public function filterByFilterConfigurator($filterConfigurator, $comparison = null)
     {
-        if ($configurator instanceof \FilterConfigurator\Model\Configurator) {
+        if ($filterConfigurator instanceof \FilterConfigurator\Model\FilterConfigurator) {
             return $this
-                ->addUsingAlias(ConfiguratorImageTableMap::CONFIGURATOR_ID, $configurator->getId(), $comparison);
-        } elseif ($configurator instanceof ObjectCollection) {
+                ->addUsingAlias(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $filterConfigurator->getId(), $comparison);
+        } elseif ($filterConfigurator instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(ConfiguratorImageTableMap::CONFIGURATOR_ID, $configurator->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $filterConfigurator->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
-            throw new PropelException('filterByConfigurator() only accepts arguments of type \FilterConfigurator\Model\Configurator or Collection');
+            throw new PropelException('filterByFilterConfigurator() only accepts arguments of type \FilterConfigurator\Model\FilterConfigurator or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the Configurator relation
+     * Adds a JOIN clause to the query using the FilterConfigurator relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
-    public function joinConfigurator($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinFilterConfigurator($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Configurator');
+        $relationMap = $tableMap->getRelation('FilterConfigurator');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -576,14 +576,14 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'Configurator');
+            $this->addJoinObject($join, 'FilterConfigurator');
         }
 
         return $this;
     }
 
     /**
-     * Use the Configurator relation Configurator object
+     * Use the FilterConfigurator relation FilterConfigurator object
      *
      * @see useQuery()
      *
@@ -591,50 +591,50 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \FilterConfigurator\Model\ConfiguratorQuery A secondary query class using the current class as primary query
+     * @return   \FilterConfigurator\Model\FilterConfiguratorQuery A secondary query class using the current class as primary query
      */
-    public function useConfiguratorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useFilterConfiguratorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinConfigurator($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Configurator', '\FilterConfigurator\Model\ConfiguratorQuery');
+            ->joinFilterConfigurator($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FilterConfigurator', '\FilterConfigurator\Model\FilterConfiguratorQuery');
     }
 
     /**
-     * Filter the query by a related \FilterConfigurator\Model\ConfiguratorImageI18n object
+     * Filter the query by a related \FilterConfigurator\Model\FilterConfiguratorImageI18n object
      *
-     * @param \FilterConfigurator\Model\ConfiguratorImageI18n|ObjectCollection $configuratorImageI18n  the related object to use as filter
+     * @param \FilterConfigurator\Model\FilterConfiguratorImageI18n|ObjectCollection $filterConfiguratorImageI18n  the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
-    public function filterByConfiguratorImageI18n($configuratorImageI18n, $comparison = null)
+    public function filterByFilterConfiguratorImageI18n($filterConfiguratorImageI18n, $comparison = null)
     {
-        if ($configuratorImageI18n instanceof \FilterConfigurator\Model\ConfiguratorImageI18n) {
+        if ($filterConfiguratorImageI18n instanceof \FilterConfigurator\Model\FilterConfiguratorImageI18n) {
             return $this
-                ->addUsingAlias(ConfiguratorImageTableMap::ID, $configuratorImageI18n->getId(), $comparison);
-        } elseif ($configuratorImageI18n instanceof ObjectCollection) {
+                ->addUsingAlias(FilterConfiguratorImageTableMap::ID, $filterConfiguratorImageI18n->getId(), $comparison);
+        } elseif ($filterConfiguratorImageI18n instanceof ObjectCollection) {
             return $this
-                ->useConfiguratorImageI18nQuery()
-                ->filterByPrimaryKeys($configuratorImageI18n->getPrimaryKeys())
+                ->useFilterConfiguratorImageI18nQuery()
+                ->filterByPrimaryKeys($filterConfiguratorImageI18n->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByConfiguratorImageI18n() only accepts arguments of type \FilterConfigurator\Model\ConfiguratorImageI18n or Collection');
+            throw new PropelException('filterByFilterConfiguratorImageI18n() only accepts arguments of type \FilterConfigurator\Model\FilterConfiguratorImageI18n or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the ConfiguratorImageI18n relation
+     * Adds a JOIN clause to the query using the FilterConfiguratorImageI18n relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
-    public function joinConfiguratorImageI18n($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinFilterConfiguratorImageI18n($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('ConfiguratorImageI18n');
+        $relationMap = $tableMap->getRelation('FilterConfiguratorImageI18n');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -649,14 +649,14 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'ConfiguratorImageI18n');
+            $this->addJoinObject($join, 'FilterConfiguratorImageI18n');
         }
 
         return $this;
     }
 
     /**
-     * Use the ConfiguratorImageI18n relation ConfiguratorImageI18n object
+     * Use the FilterConfiguratorImageI18n relation FilterConfiguratorImageI18n object
      *
      * @see useQuery()
      *
@@ -664,26 +664,26 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \FilterConfigurator\Model\ConfiguratorImageI18nQuery A secondary query class using the current class as primary query
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImageI18nQuery A secondary query class using the current class as primary query
      */
-    public function useConfiguratorImageI18nQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useFilterConfiguratorImageI18nQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinConfiguratorImageI18n($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'ConfiguratorImageI18n', '\FilterConfigurator\Model\ConfiguratorImageI18nQuery');
+            ->joinFilterConfiguratorImageI18n($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FilterConfiguratorImageI18n', '\FilterConfigurator\Model\FilterConfiguratorImageI18nQuery');
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildConfiguratorImage $configuratorImage Object to remove from the list of results
+     * @param   ChildFilterConfiguratorImage $filterConfiguratorImage Object to remove from the list of results
      *
-     * @return ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
-    public function prune($configuratorImage = null)
+    public function prune($filterConfiguratorImage = null)
     {
-        if ($configuratorImage) {
-            $this->addUsingAlias(ConfiguratorImageTableMap::ID, $configuratorImage->getId(), Criteria::NOT_EQUAL);
+        if ($filterConfiguratorImage) {
+            $this->addUsingAlias(FilterConfiguratorImageTableMap::ID, $filterConfiguratorImage->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
@@ -698,7 +698,7 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
@@ -709,8 +709,8 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            ConfiguratorImageTableMap::clearInstancePool();
-            ConfiguratorImageTableMap::clearRelatedInstancePool();
+            FilterConfiguratorImageTableMap::clearInstancePool();
+            FilterConfiguratorImageTableMap::clearRelatedInstancePool();
 
             $con->commit();
         } catch (PropelException $e) {
@@ -722,9 +722,9 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
     }
 
     /**
-     * Performs a DELETE on the database, given a ChildConfiguratorImage or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ChildFilterConfiguratorImage or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ChildConfiguratorImage object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ChildFilterConfiguratorImage object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -735,13 +735,13 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      public function delete(ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(ConfiguratorImageTableMap::DATABASE_NAME);
+        $criteria->setDbName(FilterConfiguratorImageTableMap::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -751,10 +751,10 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
             $con->beginTransaction();
             
 
-        ConfiguratorImageTableMap::removeInstanceFromPool($criteria);
+        FilterConfiguratorImageTableMap::removeInstanceFromPool($criteria);
         
             $affectedRows += ModelCriteria::delete($con);
-            ConfiguratorImageTableMap::clearRelatedInstancePool();
+            FilterConfiguratorImageTableMap::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -771,11 +771,11 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of the latest update in days
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(ConfiguratorImageTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
     
     /**
@@ -783,51 +783,51 @@ abstract class ConfiguratorImageQuery extends ModelCriteria
      *
      * @param      int $nbDays Maximum age of in days
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(ConfiguratorImageTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        return $this->addUsingAlias(FilterConfiguratorImageTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
     
     /**
      * Order by update date desc
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(ConfiguratorImageTableMap::UPDATED_AT);
+        return $this->addDescendingOrderByColumn(FilterConfiguratorImageTableMap::UPDATED_AT);
     }
     
     /**
      * Order by update date asc
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(ConfiguratorImageTableMap::UPDATED_AT);
+        return $this->addAscendingOrderByColumn(FilterConfiguratorImageTableMap::UPDATED_AT);
     }
     
     /**
      * Order by create date desc
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(ConfiguratorImageTableMap::CREATED_AT);
+        return $this->addDescendingOrderByColumn(FilterConfiguratorImageTableMap::CREATED_AT);
     }
     
     /**
      * Order by create date asc
      *
-     * @return     ChildConfiguratorImageQuery The current query, for fluid interface
+     * @return     ChildFilterConfiguratorImageQuery The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(ConfiguratorImageTableMap::CREATED_AT);
+        return $this->addAscendingOrderByColumn(FilterConfiguratorImageTableMap::CREATED_AT);
     }
 
-} // ConfiguratorImageQuery
+} // FilterConfiguratorImageQuery

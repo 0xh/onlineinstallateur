@@ -2,8 +2,8 @@
 
 namespace FilterConfigurator\Model\Map;
 
-use FilterConfigurator\Model\ConfiguratorImage;
-use FilterConfigurator\Model\ConfiguratorImageQuery;
+use FilterConfigurator\Model\FilterConfiguratorImage;
+use FilterConfigurator\Model\FilterConfiguratorImageQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class ConfiguratorImageTableMap extends TableMap
+class FilterConfiguratorImageTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'FilterConfigurator.Model.Map.ConfiguratorImageTableMap';
+    const CLASS_NAME = 'FilterConfigurator.Model.Map.FilterConfiguratorImageTableMap';
 
     /**
      * The default database name for this class
@@ -48,12 +48,12 @@ class ConfiguratorImageTableMap extends TableMap
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\FilterConfigurator\\Model\\ConfiguratorImage';
+    const OM_CLASS = '\\FilterConfigurator\\Model\\FilterConfiguratorImage';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'FilterConfigurator.Model.ConfiguratorImage';
+    const CLASS_DEFAULT = 'FilterConfigurator.Model.FilterConfiguratorImage';
 
     /**
      * The total number of columns
@@ -119,7 +119,7 @@ class ConfiguratorImageTableMap extends TableMap
     protected static $fieldNames = array (
         self::TYPE_PHPNAME       => array('Id', 'ConfiguratorId', 'File', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
         self::TYPE_STUDLYPHPNAME => array('id', 'configuratorId', 'file', 'visible', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(ConfiguratorImageTableMap::ID, ConfiguratorImageTableMap::CONFIGURATOR_ID, ConfiguratorImageTableMap::FILE, ConfiguratorImageTableMap::VISIBLE, ConfiguratorImageTableMap::POSITION, ConfiguratorImageTableMap::CREATED_AT, ConfiguratorImageTableMap::UPDATED_AT, ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorImageTableMap::ID, FilterConfiguratorImageTableMap::CONFIGURATOR_ID, FilterConfiguratorImageTableMap::FILE, FilterConfiguratorImageTableMap::VISIBLE, FilterConfiguratorImageTableMap::POSITION, FilterConfiguratorImageTableMap::CREATED_AT, FilterConfiguratorImageTableMap::UPDATED_AT, ),
         self::TYPE_RAW_COLNAME   => array('ID', 'CONFIGURATOR_ID', 'FILE', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
         self::TYPE_FIELDNAME     => array('id', 'configurator_id', 'file', 'visible', 'position', 'created_at', 'updated_at', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
@@ -134,7 +134,7 @@ class ConfiguratorImageTableMap extends TableMap
     protected static $fieldKeys = array (
         self::TYPE_PHPNAME       => array('Id' => 0, 'ConfiguratorId' => 1, 'File' => 2, 'Visible' => 3, 'Position' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
         self::TYPE_STUDLYPHPNAME => array('id' => 0, 'configuratorId' => 1, 'file' => 2, 'visible' => 3, 'position' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        self::TYPE_COLNAME       => array(ConfiguratorImageTableMap::ID => 0, ConfiguratorImageTableMap::CONFIGURATOR_ID => 1, ConfiguratorImageTableMap::FILE => 2, ConfiguratorImageTableMap::VISIBLE => 3, ConfiguratorImageTableMap::POSITION => 4, ConfiguratorImageTableMap::CREATED_AT => 5, ConfiguratorImageTableMap::UPDATED_AT => 6, ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorImageTableMap::ID => 0, FilterConfiguratorImageTableMap::CONFIGURATOR_ID => 1, FilterConfiguratorImageTableMap::FILE => 2, FilterConfiguratorImageTableMap::VISIBLE => 3, FilterConfiguratorImageTableMap::POSITION => 4, FilterConfiguratorImageTableMap::CREATED_AT => 5, FilterConfiguratorImageTableMap::UPDATED_AT => 6, ),
         self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CONFIGURATOR_ID' => 1, 'FILE' => 2, 'VISIBLE' => 3, 'POSITION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
         self::TYPE_FIELDNAME     => array('id' => 0, 'configurator_id' => 1, 'file' => 2, 'visible' => 3, 'position' => 4, 'created_at' => 5, 'updated_at' => 6, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
@@ -151,8 +151,8 @@ class ConfiguratorImageTableMap extends TableMap
     {
         // attributes
         $this->setName('filterconfigurator_configurator_image');
-        $this->setPhpName('ConfiguratorImage');
-        $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorImage');
+        $this->setPhpName('FilterConfiguratorImage');
+        $this->setClassName('\\FilterConfigurator\\Model\\FilterConfiguratorImage');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(true);
         // columns
@@ -170,8 +170,8 @@ class ConfiguratorImageTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Configurator', '\\FilterConfigurator\\Model\\Configurator', RelationMap::MANY_TO_ONE, array('configurator_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('ConfiguratorImageI18n', '\\FilterConfigurator\\Model\\ConfiguratorImageI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'ConfiguratorImageI18ns');
+        $this->addRelation('FilterConfigurator', '\\FilterConfigurator\\Model\\FilterConfigurator', RelationMap::MANY_TO_ONE, array('configurator_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('FilterConfiguratorImageI18n', '\\FilterConfigurator\\Model\\FilterConfiguratorImageI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'FilterConfiguratorImageI18ns');
     } // buildRelations()
 
     /**
@@ -193,7 +193,7 @@ class ConfiguratorImageTableMap extends TableMap
     {
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                ConfiguratorImageI18nTableMap::clearInstancePool();
+                FilterConfiguratorImageI18nTableMap::clearInstancePool();
             }
 
     /**
@@ -252,7 +252,7 @@ class ConfiguratorImageTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? ConfiguratorImageTableMap::CLASS_DEFAULT : ConfiguratorImageTableMap::OM_CLASS;
+        return $withPrefix ? FilterConfiguratorImageTableMap::CLASS_DEFAULT : FilterConfiguratorImageTableMap::OM_CLASS;
     }
 
     /**
@@ -266,21 +266,21 @@ class ConfiguratorImageTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (ConfiguratorImage object, last column rank)
+     * @return array (FilterConfiguratorImage object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = ConfiguratorImageTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = ConfiguratorImageTableMap::getInstanceFromPool($key))) {
+        $key = FilterConfiguratorImageTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FilterConfiguratorImageTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + ConfiguratorImageTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FilterConfiguratorImageTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ConfiguratorImageTableMap::OM_CLASS;
+            $cls = FilterConfiguratorImageTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            ConfiguratorImageTableMap::addInstanceToPool($obj, $key);
+            FilterConfiguratorImageTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -303,8 +303,8 @@ class ConfiguratorImageTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = ConfiguratorImageTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = ConfiguratorImageTableMap::getInstanceFromPool($key))) {
+            $key = FilterConfiguratorImageTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FilterConfiguratorImageTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -313,7 +313,7 @@ class ConfiguratorImageTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ConfiguratorImageTableMap::addInstanceToPool($obj, $key);
+                FilterConfiguratorImageTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -334,13 +334,13 @@ class ConfiguratorImageTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::ID);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::CONFIGURATOR_ID);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::FILE);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::VISIBLE);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::POSITION);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::CREATED_AT);
-            $criteria->addSelectColumn(ConfiguratorImageTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::ID);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::CONFIGURATOR_ID);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::FILE);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::VISIBLE);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::POSITION);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::CREATED_AT);
+            $criteria->addSelectColumn(FilterConfiguratorImageTableMap::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CONFIGURATOR_ID');
@@ -361,7 +361,7 @@ class ConfiguratorImageTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(ConfiguratorImageTableMap::DATABASE_NAME)->getTable(ConfiguratorImageTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorImageTableMap::DATABASE_NAME)->getTable(FilterConfiguratorImageTableMap::TABLE_NAME);
     }
 
     /**
@@ -369,16 +369,16 @@ class ConfiguratorImageTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(ConfiguratorImageTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(ConfiguratorImageTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new ConfiguratorImageTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorImageTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(FilterConfiguratorImageTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new FilterConfiguratorImageTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a ConfiguratorImage or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a FilterConfiguratorImage or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ConfiguratorImage object or primary key or array of primary keys
+     * @param mixed               $values Criteria or FilterConfiguratorImage object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -389,25 +389,25 @@ class ConfiguratorImageTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \FilterConfigurator\Model\ConfiguratorImage) { // it's a model object
+        } elseif ($values instanceof \FilterConfigurator\Model\FilterConfiguratorImage) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ConfiguratorImageTableMap::DATABASE_NAME);
-            $criteria->add(ConfiguratorImageTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(FilterConfiguratorImageTableMap::DATABASE_NAME);
+            $criteria->add(FilterConfiguratorImageTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = ConfiguratorImageQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorImageQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { ConfiguratorImageTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { FilterConfiguratorImageTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { ConfiguratorImageTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { FilterConfiguratorImageTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -422,13 +422,13 @@ class ConfiguratorImageTableMap extends TableMap
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return ConfiguratorImageQuery::create()->doDeleteAll($con);
+        return FilterConfiguratorImageQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a ConfiguratorImage or Criteria object.
+     * Performs an INSERT on the database, given a FilterConfiguratorImage or Criteria object.
      *
-     * @param mixed               $criteria Criteria or ConfiguratorImage object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or FilterConfiguratorImage object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -437,22 +437,22 @@ class ConfiguratorImageTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from ConfiguratorImage object
+            $criteria = $criteria->buildCriteria(); // build Criteria from FilterConfiguratorImage object
         }
 
-        if ($criteria->containsKey(ConfiguratorImageTableMap::ID) && $criteria->keyContainsValue(ConfiguratorImageTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ConfiguratorImageTableMap::ID.')');
+        if ($criteria->containsKey(FilterConfiguratorImageTableMap::ID) && $criteria->keyContainsValue(FilterConfiguratorImageTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FilterConfiguratorImageTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = ConfiguratorImageQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorImageQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -468,7 +468,7 @@ class ConfiguratorImageTableMap extends TableMap
         return $pk;
     }
 
-} // ConfiguratorImageTableMap
+} // FilterConfiguratorImageTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-ConfiguratorImageTableMap::buildTableMap();
+FilterConfiguratorImageTableMap::buildTableMap();

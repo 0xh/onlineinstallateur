@@ -1,15 +1,15 @@
 <?php
 namespace FilterConfigurator\Loop;
 
-use FilterConfigurator\Model\Base\ConfiguratorQuery;
-use FilterConfigurator\Model\Map\ConfiguratorI18nTableMap;
-use FilterConfigurator\Model\Map\ConfiguratorTableMap;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Element\PropelSearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Core\Template\Loop\Argument\Argument;
+use FilterConfigurator\Model\FilterConfiguratorQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorI18nTableMap;
+use FilterConfigurator\Model\Map\FilterConfiguratorTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
 
 class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInterface{
@@ -43,10 +43,10 @@ class ProductFilterConfigurator extends BaseLoop implements PropelSearchLoopInte
     //  list the filter configurators
     public function buildModelCriteria()
     {
-        $search = ConfiguratorQuery::create()
-            ->addJoin(ConfiguratorTableMap::ID, ConfiguratorI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-            ->withColumn(ConfiguratorI18nTableMap::TITLE, 'TITLE' )
-            ->where('`configurator_i18n`.LOCALE'.Criteria::EQUAL.'"'.$this->getLocale().'"');
+        $search = FilterConfiguratorQuery::create()
+        ->addJoin(FilterConfiguratorTableMap::ID, FilterConfiguratorI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
+        ->withColumn(FilterConfiguratorI18nTableMap::TITLE, 'TITLE' )
+        ->where(FilterConfiguratorI18nTableMap::LOCALE.Criteria::EQUAL.'"'.$this->getLocale().'"');
             
         return $search;
     }

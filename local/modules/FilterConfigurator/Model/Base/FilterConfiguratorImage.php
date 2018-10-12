@@ -5,13 +5,13 @@ namespace FilterConfigurator\Model\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\Configurator as ChildConfigurator;
-use FilterConfigurator\Model\ConfiguratorImage as ChildConfiguratorImage;
-use FilterConfigurator\Model\ConfiguratorImageI18n as ChildConfiguratorImageI18n;
-use FilterConfigurator\Model\ConfiguratorImageI18nQuery as ChildConfiguratorImageI18nQuery;
-use FilterConfigurator\Model\ConfiguratorImageQuery as ChildConfiguratorImageQuery;
-use FilterConfigurator\Model\ConfiguratorQuery as ChildConfiguratorQuery;
-use FilterConfigurator\Model\Map\ConfiguratorImageTableMap;
+use FilterConfigurator\Model\FilterConfigurator as ChildFilterConfigurator;
+use FilterConfigurator\Model\FilterConfiguratorImage as ChildFilterConfiguratorImage;
+use FilterConfigurator\Model\FilterConfiguratorImageI18n as ChildFilterConfiguratorImageI18n;
+use FilterConfigurator\Model\FilterConfiguratorImageI18nQuery as ChildFilterConfiguratorImageI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorImageQuery as ChildFilterConfiguratorImageQuery;
+use FilterConfigurator\Model\FilterConfiguratorQuery as ChildFilterConfiguratorQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorImageTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -25,12 +25,12 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
-abstract class ConfiguratorImage implements ActiveRecordInterface 
+abstract class FilterConfiguratorImage implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\ConfiguratorImageTableMap';
+    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\FilterConfiguratorImageTableMap';
 
 
     /**
@@ -103,15 +103,15 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     protected $updated_at;
 
     /**
-     * @var        Configurator
+     * @var        FilterConfigurator
      */
-    protected $aConfigurator;
+    protected $aFilterConfigurator;
 
     /**
-     * @var        ObjectCollection|ChildConfiguratorImageI18n[] Collection to store aggregation of ChildConfiguratorImageI18n objects.
+     * @var        ObjectCollection|ChildFilterConfiguratorImageI18n[] Collection to store aggregation of ChildFilterConfiguratorImageI18n objects.
      */
-    protected $collConfiguratorImageI18ns;
-    protected $collConfiguratorImageI18nsPartial;
+    protected $collFilterConfiguratorImageI18ns;
+    protected $collFilterConfiguratorImageI18nsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -125,7 +125,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
      */
-    protected $configuratorImageI18nsScheduledForDeletion = null;
+    protected $filterConfiguratorImageI18nsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -139,7 +139,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     }
 
     /**
-     * Initializes internal state of FilterConfigurator\Model\Base\ConfiguratorImage object.
+     * Initializes internal state of FilterConfigurator\Model\Base\FilterConfiguratorImage object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -236,9 +236,9 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>ConfiguratorImage</code> instance.  If
-     * <code>obj</code> is an instance of <code>ConfiguratorImage</code>, delegates to
-     * <code>equals(ConfiguratorImage)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>FilterConfiguratorImage</code> instance.  If
+     * <code>obj</code> is an instance of <code>FilterConfiguratorImage</code>, delegates to
+     * <code>equals(FilterConfiguratorImage)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -321,7 +321,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return ConfiguratorImage The current object, for fluid interface
+     * @return FilterConfiguratorImage The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -353,7 +353,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return ConfiguratorImage The current object, for fluid interface
+     * @return FilterConfiguratorImage The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -497,7 +497,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -507,7 +507,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[ConfiguratorImageTableMap::ID] = true;
+            $this->modifiedColumns[FilterConfiguratorImageTableMap::ID] = true;
         }
 
 
@@ -518,7 +518,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * Set the value of [configurator_id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setConfiguratorId($v)
     {
@@ -528,11 +528,11 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($this->configurator_id !== $v) {
             $this->configurator_id = $v;
-            $this->modifiedColumns[ConfiguratorImageTableMap::CONFIGURATOR_ID] = true;
+            $this->modifiedColumns[FilterConfiguratorImageTableMap::CONFIGURATOR_ID] = true;
         }
 
-        if ($this->aConfigurator !== null && $this->aConfigurator->getId() !== $v) {
-            $this->aConfigurator = null;
+        if ($this->aFilterConfigurator !== null && $this->aFilterConfigurator->getId() !== $v) {
+            $this->aFilterConfigurator = null;
         }
 
 
@@ -543,7 +543,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * Set the value of [file] column.
      * 
      * @param      string $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setFile($v)
     {
@@ -553,7 +553,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($this->file !== $v) {
             $this->file = $v;
-            $this->modifiedColumns[ConfiguratorImageTableMap::FILE] = true;
+            $this->modifiedColumns[FilterConfiguratorImageTableMap::FILE] = true;
         }
 
 
@@ -564,7 +564,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * Set the value of [visible] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setVisible($v)
     {
@@ -574,7 +574,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($this->visible !== $v) {
             $this->visible = $v;
-            $this->modifiedColumns[ConfiguratorImageTableMap::VISIBLE] = true;
+            $this->modifiedColumns[FilterConfiguratorImageTableMap::VISIBLE] = true;
         }
 
 
@@ -585,7 +585,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * Set the value of [position] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setPosition($v)
     {
@@ -595,7 +595,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($this->position !== $v) {
             $this->position = $v;
-            $this->modifiedColumns[ConfiguratorImageTableMap::POSITION] = true;
+            $this->modifiedColumns[FilterConfiguratorImageTableMap::POSITION] = true;
         }
 
 
@@ -607,7 +607,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -615,7 +615,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[ConfiguratorImageTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[FilterConfiguratorImageTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -628,7 +628,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -636,7 +636,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[ConfiguratorImageTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[FilterConfiguratorImageTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -685,28 +685,28 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ConfiguratorImageTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ConfiguratorImageTableMap::translateFieldName('ConfiguratorId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('ConfiguratorId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->configurator_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ConfiguratorImageTableMap::translateFieldName('File', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('File', TableMap::TYPE_PHPNAME, $indexType)];
             $this->file = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ConfiguratorImageTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
             $this->visible = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ConfiguratorImageTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : ConfiguratorImageTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : ConfiguratorImageTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : FilterConfiguratorImageTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -719,10 +719,10 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = ConfiguratorImageTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = FilterConfiguratorImageTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \FilterConfigurator\Model\ConfiguratorImage object", 0, $e);
+            throw new PropelException("Error populating \FilterConfigurator\Model\FilterConfiguratorImage object", 0, $e);
         }
     }
 
@@ -741,8 +741,8 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aConfigurator !== null && $this->configurator_id !== $this->aConfigurator->getId()) {
-            $this->aConfigurator = null;
+        if ($this->aFilterConfigurator !== null && $this->configurator_id !== $this->aFilterConfigurator->getId()) {
+            $this->aFilterConfigurator = null;
         }
     } // ensureConsistency
 
@@ -767,13 +767,13 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildConfiguratorImageQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildFilterConfiguratorImageQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -783,8 +783,8 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aConfigurator = null;
-            $this->collConfiguratorImageI18ns = null;
+            $this->aFilterConfigurator = null;
+            $this->collFilterConfiguratorImageI18ns = null;
 
         } // if (deep)
     }
@@ -795,8 +795,8 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see ConfiguratorImage::setDeleted()
-     * @see ConfiguratorImage::isDeleted()
+     * @see FilterConfiguratorImage::setDeleted()
+     * @see FilterConfiguratorImage::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -805,12 +805,12 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildConfiguratorImageQuery::create()
+            $deleteQuery = ChildFilterConfiguratorImageQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -847,7 +847,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorImageTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -857,16 +857,16 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(ConfiguratorImageTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(FilterConfiguratorImageTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(ConfiguratorImageTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(FilterConfiguratorImageTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(ConfiguratorImageTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(FilterConfiguratorImageTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -878,7 +878,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ConfiguratorImageTableMap::addInstanceToPool($this);
+                FilterConfiguratorImageTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -913,11 +913,11 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aConfigurator !== null) {
-                if ($this->aConfigurator->isModified() || $this->aConfigurator->isNew()) {
-                    $affectedRows += $this->aConfigurator->save($con);
+            if ($this->aFilterConfigurator !== null) {
+                if ($this->aFilterConfigurator->isModified() || $this->aFilterConfigurator->isNew()) {
+                    $affectedRows += $this->aFilterConfigurator->save($con);
                 }
-                $this->setConfigurator($this->aConfigurator);
+                $this->setFilterConfigurator($this->aFilterConfigurator);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -931,17 +931,17 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->configuratorImageI18nsScheduledForDeletion !== null) {
-                if (!$this->configuratorImageI18nsScheduledForDeletion->isEmpty()) {
-                    \FilterConfigurator\Model\ConfiguratorImageI18nQuery::create()
-                        ->filterByPrimaryKeys($this->configuratorImageI18nsScheduledForDeletion->getPrimaryKeys(false))
+            if ($this->filterConfiguratorImageI18nsScheduledForDeletion !== null) {
+                if (!$this->filterConfiguratorImageI18nsScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\FilterConfiguratorImageI18nQuery::create()
+                        ->filterByPrimaryKeys($this->filterConfiguratorImageI18nsScheduledForDeletion->getPrimaryKeys(false))
                         ->delete($con);
-                    $this->configuratorImageI18nsScheduledForDeletion = null;
+                    $this->filterConfiguratorImageI18nsScheduledForDeletion = null;
                 }
             }
 
-                if ($this->collConfiguratorImageI18ns !== null) {
-            foreach ($this->collConfiguratorImageI18ns as $referrerFK) {
+                if ($this->collFilterConfiguratorImageI18ns !== null) {
+            foreach ($this->collFilterConfiguratorImageI18ns as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -968,31 +968,31 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ConfiguratorImageTableMap::ID] = true;
+        $this->modifiedColumns[FilterConfiguratorImageTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ConfiguratorImageTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FilterConfiguratorImageTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ConfiguratorImageTableMap::ID)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::CONFIGURATOR_ID)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::CONFIGURATOR_ID)) {
             $modifiedColumns[':p' . $index++]  = 'CONFIGURATOR_ID';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::FILE)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::FILE)) {
             $modifiedColumns[':p' . $index++]  = 'FILE';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::VISIBLE)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::VISIBLE)) {
             $modifiedColumns[':p' . $index++]  = 'VISIBLE';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::POSITION)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::POSITION)) {
             $modifiedColumns[':p' . $index++]  = 'POSITION';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(ConfiguratorImageTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
@@ -1073,7 +1073,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorImageTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorImageTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1133,11 +1133,11 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['ConfiguratorImage'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['FilterConfiguratorImage'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['ConfiguratorImage'][$this->getPrimaryKey()] = true;
-        $keys = ConfiguratorImageTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['FilterConfiguratorImage'][$this->getPrimaryKey()] = true;
+        $keys = FilterConfiguratorImageTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getConfiguratorId(),
@@ -1153,11 +1153,11 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
-            if (null !== $this->aConfigurator) {
-                $result['Configurator'] = $this->aConfigurator->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aFilterConfigurator) {
+                $result['FilterConfigurator'] = $this->aFilterConfigurator->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->collConfiguratorImageI18ns) {
-                $result['ConfiguratorImageI18ns'] = $this->collConfiguratorImageI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collFilterConfiguratorImageI18ns) {
+                $result['FilterConfiguratorImageI18ns'] = $this->collFilterConfiguratorImageI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1177,7 +1177,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorImageTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorImageTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1236,7 +1236,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ConfiguratorImageTableMap::getFieldNames($keyType);
+        $keys = FilterConfiguratorImageTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setConfiguratorId($arr[$keys[1]]);
@@ -1254,15 +1254,15 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ConfiguratorImageTableMap::DATABASE_NAME);
+        $criteria = new Criteria(FilterConfiguratorImageTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ConfiguratorImageTableMap::ID)) $criteria->add(ConfiguratorImageTableMap::ID, $this->id);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::CONFIGURATOR_ID)) $criteria->add(ConfiguratorImageTableMap::CONFIGURATOR_ID, $this->configurator_id);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::FILE)) $criteria->add(ConfiguratorImageTableMap::FILE, $this->file);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::VISIBLE)) $criteria->add(ConfiguratorImageTableMap::VISIBLE, $this->visible);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::POSITION)) $criteria->add(ConfiguratorImageTableMap::POSITION, $this->position);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::CREATED_AT)) $criteria->add(ConfiguratorImageTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(ConfiguratorImageTableMap::UPDATED_AT)) $criteria->add(ConfiguratorImageTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::ID)) $criteria->add(FilterConfiguratorImageTableMap::ID, $this->id);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::CONFIGURATOR_ID)) $criteria->add(FilterConfiguratorImageTableMap::CONFIGURATOR_ID, $this->configurator_id);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::FILE)) $criteria->add(FilterConfiguratorImageTableMap::FILE, $this->file);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::VISIBLE)) $criteria->add(FilterConfiguratorImageTableMap::VISIBLE, $this->visible);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::POSITION)) $criteria->add(FilterConfiguratorImageTableMap::POSITION, $this->position);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::CREATED_AT)) $criteria->add(FilterConfiguratorImageTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(FilterConfiguratorImageTableMap::UPDATED_AT)) $criteria->add(FilterConfiguratorImageTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1277,8 +1277,8 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ConfiguratorImageTableMap::DATABASE_NAME);
-        $criteria->add(ConfiguratorImageTableMap::ID, $this->id);
+        $criteria = new Criteria(FilterConfiguratorImageTableMap::DATABASE_NAME);
+        $criteria->add(FilterConfiguratorImageTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1319,7 +1319,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \FilterConfigurator\Model\ConfiguratorImage (or compatible) type.
+     * @param      object $copyObj An object of \FilterConfigurator\Model\FilterConfiguratorImage (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1338,9 +1338,9 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getConfiguratorImageI18ns() as $relObj) {
+            foreach ($this->getFilterConfiguratorImageI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addConfiguratorImageI18n($relObj->copy($deepCopy));
+                    $copyObj->addFilterConfiguratorImageI18n($relObj->copy($deepCopy));
                 }
             }
 
@@ -1361,7 +1361,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \FilterConfigurator\Model\ConfiguratorImage Clone of current object.
+     * @return                 \FilterConfigurator\Model\FilterConfiguratorImage Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1375,13 +1375,13 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildConfigurator object.
+     * Declares an association between this object and a ChildFilterConfigurator object.
      *
-     * @param                  ChildConfigurator $v
-     * @return                 \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @param                  ChildFilterConfigurator $v
+     * @return                 \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setConfigurator(ChildConfigurator $v = null)
+    public function setFilterConfigurator(ChildFilterConfigurator $v = null)
     {
         if ($v === null) {
             $this->setConfiguratorId(NULL);
@@ -1389,12 +1389,12 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
             $this->setConfiguratorId($v->getId());
         }
 
-        $this->aConfigurator = $v;
+        $this->aFilterConfigurator = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildConfigurator object, it will not be re-added.
+        // If this object has already been added to the ChildFilterConfigurator object, it will not be re-added.
         if ($v !== null) {
-            $v->addConfiguratorImage($this);
+            $v->addFilterConfiguratorImage($this);
         }
 
 
@@ -1403,26 +1403,26 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildConfigurator object
+     * Get the associated ChildFilterConfigurator object
      *
      * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildConfigurator The associated ChildConfigurator object.
+     * @return                 ChildFilterConfigurator The associated ChildFilterConfigurator object.
      * @throws PropelException
      */
-    public function getConfigurator(ConnectionInterface $con = null)
+    public function getFilterConfigurator(ConnectionInterface $con = null)
     {
-        if ($this->aConfigurator === null && ($this->configurator_id !== null)) {
-            $this->aConfigurator = ChildConfiguratorQuery::create()->findPk($this->configurator_id, $con);
+        if ($this->aFilterConfigurator === null && ($this->configurator_id !== null)) {
+            $this->aFilterConfigurator = ChildFilterConfiguratorQuery::create()->findPk($this->configurator_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aConfigurator->addConfiguratorImages($this);
+                $this->aFilterConfigurator->addFilterConfiguratorImages($this);
              */
         }
 
-        return $this->aConfigurator;
+        return $this->aFilterConfigurator;
     }
 
 
@@ -1436,37 +1436,37 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('ConfiguratorImageI18n' == $relationName) {
-            return $this->initConfiguratorImageI18ns();
+        if ('FilterConfiguratorImageI18n' == $relationName) {
+            return $this->initFilterConfiguratorImageI18ns();
         }
     }
 
     /**
-     * Clears out the collConfiguratorImageI18ns collection
+     * Clears out the collFilterConfiguratorImageI18ns collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addConfiguratorImageI18ns()
+     * @see        addFilterConfiguratorImageI18ns()
      */
-    public function clearConfiguratorImageI18ns()
+    public function clearFilterConfiguratorImageI18ns()
     {
-        $this->collConfiguratorImageI18ns = null; // important to set this to NULL since that means it is uninitialized
+        $this->collFilterConfiguratorImageI18ns = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collConfiguratorImageI18ns collection loaded partially.
+     * Reset is the collFilterConfiguratorImageI18ns collection loaded partially.
      */
-    public function resetPartialConfiguratorImageI18ns($v = true)
+    public function resetPartialFilterConfiguratorImageI18ns($v = true)
     {
-        $this->collConfiguratorImageI18nsPartial = $v;
+        $this->collFilterConfiguratorImageI18nsPartial = $v;
     }
 
     /**
-     * Initializes the collConfiguratorImageI18ns collection.
+     * Initializes the collFilterConfiguratorImageI18ns collection.
      *
-     * By default this just sets the collConfiguratorImageI18ns collection to an empty array (like clearcollConfiguratorImageI18ns());
+     * By default this just sets the collFilterConfiguratorImageI18ns collection to an empty array (like clearcollFilterConfiguratorImageI18ns());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1475,188 +1475,188 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initConfiguratorImageI18ns($overrideExisting = true)
+    public function initFilterConfiguratorImageI18ns($overrideExisting = true)
     {
-        if (null !== $this->collConfiguratorImageI18ns && !$overrideExisting) {
+        if (null !== $this->collFilterConfiguratorImageI18ns && !$overrideExisting) {
             return;
         }
-        $this->collConfiguratorImageI18ns = new ObjectCollection();
-        $this->collConfiguratorImageI18ns->setModel('\FilterConfigurator\Model\ConfiguratorImageI18n');
+        $this->collFilterConfiguratorImageI18ns = new ObjectCollection();
+        $this->collFilterConfiguratorImageI18ns->setModel('\FilterConfigurator\Model\FilterConfiguratorImageI18n');
     }
 
     /**
-     * Gets an array of ChildConfiguratorImageI18n objects which contain a foreign key that references this object.
+     * Gets an array of ChildFilterConfiguratorImageI18n objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildConfiguratorImage is new, it will return
+     * If this ChildFilterConfiguratorImage is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param      Criteria $criteria optional Criteria object to narrow the query
      * @param      ConnectionInterface $con optional connection object
-     * @return Collection|ChildConfiguratorImageI18n[] List of ChildConfiguratorImageI18n objects
+     * @return Collection|ChildFilterConfiguratorImageI18n[] List of ChildFilterConfiguratorImageI18n objects
      * @throws PropelException
      */
-    public function getConfiguratorImageI18ns($criteria = null, ConnectionInterface $con = null)
+    public function getFilterConfiguratorImageI18ns($criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorImageI18nsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorImageI18ns || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorImageI18ns) {
+        $partial = $this->collFilterConfiguratorImageI18nsPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorImageI18ns || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorImageI18ns) {
                 // return empty collection
-                $this->initConfiguratorImageI18ns();
+                $this->initFilterConfiguratorImageI18ns();
             } else {
-                $collConfiguratorImageI18ns = ChildConfiguratorImageI18nQuery::create(null, $criteria)
-                    ->filterByConfiguratorImage($this)
+                $collFilterConfiguratorImageI18ns = ChildFilterConfiguratorImageI18nQuery::create(null, $criteria)
+                    ->filterByFilterConfiguratorImage($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collConfiguratorImageI18nsPartial && count($collConfiguratorImageI18ns)) {
-                        $this->initConfiguratorImageI18ns(false);
+                    if (false !== $this->collFilterConfiguratorImageI18nsPartial && count($collFilterConfiguratorImageI18ns)) {
+                        $this->initFilterConfiguratorImageI18ns(false);
 
-                        foreach ($collConfiguratorImageI18ns as $obj) {
-                            if (false == $this->collConfiguratorImageI18ns->contains($obj)) {
-                                $this->collConfiguratorImageI18ns->append($obj);
+                        foreach ($collFilterConfiguratorImageI18ns as $obj) {
+                            if (false == $this->collFilterConfiguratorImageI18ns->contains($obj)) {
+                                $this->collFilterConfiguratorImageI18ns->append($obj);
                             }
                         }
 
-                        $this->collConfiguratorImageI18nsPartial = true;
+                        $this->collFilterConfiguratorImageI18nsPartial = true;
                     }
 
-                    reset($collConfiguratorImageI18ns);
+                    reset($collFilterConfiguratorImageI18ns);
 
-                    return $collConfiguratorImageI18ns;
+                    return $collFilterConfiguratorImageI18ns;
                 }
 
-                if ($partial && $this->collConfiguratorImageI18ns) {
-                    foreach ($this->collConfiguratorImageI18ns as $obj) {
+                if ($partial && $this->collFilterConfiguratorImageI18ns) {
+                    foreach ($this->collFilterConfiguratorImageI18ns as $obj) {
                         if ($obj->isNew()) {
-                            $collConfiguratorImageI18ns[] = $obj;
+                            $collFilterConfiguratorImageI18ns[] = $obj;
                         }
                     }
                 }
 
-                $this->collConfiguratorImageI18ns = $collConfiguratorImageI18ns;
-                $this->collConfiguratorImageI18nsPartial = false;
+                $this->collFilterConfiguratorImageI18ns = $collFilterConfiguratorImageI18ns;
+                $this->collFilterConfiguratorImageI18nsPartial = false;
             }
         }
 
-        return $this->collConfiguratorImageI18ns;
+        return $this->collFilterConfiguratorImageI18ns;
     }
 
     /**
-     * Sets a collection of ConfiguratorImageI18n objects related by a one-to-many relationship
+     * Sets a collection of FilterConfiguratorImageI18n objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $configuratorImageI18ns A Propel collection.
+     * @param      Collection $filterConfiguratorImageI18ns A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
-     * @return   ChildConfiguratorImage The current object (for fluent API support)
+     * @return   ChildFilterConfiguratorImage The current object (for fluent API support)
      */
-    public function setConfiguratorImageI18ns(Collection $configuratorImageI18ns, ConnectionInterface $con = null)
+    public function setFilterConfiguratorImageI18ns(Collection $filterConfiguratorImageI18ns, ConnectionInterface $con = null)
     {
-        $configuratorImageI18nsToDelete = $this->getConfiguratorImageI18ns(new Criteria(), $con)->diff($configuratorImageI18ns);
+        $filterConfiguratorImageI18nsToDelete = $this->getFilterConfiguratorImageI18ns(new Criteria(), $con)->diff($filterConfiguratorImageI18ns);
 
         
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
-        $this->configuratorImageI18nsScheduledForDeletion = clone $configuratorImageI18nsToDelete;
+        $this->filterConfiguratorImageI18nsScheduledForDeletion = clone $filterConfiguratorImageI18nsToDelete;
 
-        foreach ($configuratorImageI18nsToDelete as $configuratorImageI18nRemoved) {
-            $configuratorImageI18nRemoved->setConfiguratorImage(null);
+        foreach ($filterConfiguratorImageI18nsToDelete as $filterConfiguratorImageI18nRemoved) {
+            $filterConfiguratorImageI18nRemoved->setFilterConfiguratorImage(null);
         }
 
-        $this->collConfiguratorImageI18ns = null;
-        foreach ($configuratorImageI18ns as $configuratorImageI18n) {
-            $this->addConfiguratorImageI18n($configuratorImageI18n);
+        $this->collFilterConfiguratorImageI18ns = null;
+        foreach ($filterConfiguratorImageI18ns as $filterConfiguratorImageI18n) {
+            $this->addFilterConfiguratorImageI18n($filterConfiguratorImageI18n);
         }
 
-        $this->collConfiguratorImageI18ns = $configuratorImageI18ns;
-        $this->collConfiguratorImageI18nsPartial = false;
+        $this->collFilterConfiguratorImageI18ns = $filterConfiguratorImageI18ns;
+        $this->collFilterConfiguratorImageI18nsPartial = false;
 
         return $this;
     }
 
     /**
-     * Returns the number of related ConfiguratorImageI18n objects.
+     * Returns the number of related FilterConfiguratorImageI18n objects.
      *
      * @param      Criteria $criteria
      * @param      boolean $distinct
      * @param      ConnectionInterface $con
-     * @return int             Count of related ConfiguratorImageI18n objects.
+     * @return int             Count of related FilterConfiguratorImageI18n objects.
      * @throws PropelException
      */
-    public function countConfiguratorImageI18ns(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countFilterConfiguratorImageI18ns(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collConfiguratorImageI18nsPartial && !$this->isNew();
-        if (null === $this->collConfiguratorImageI18ns || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collConfiguratorImageI18ns) {
+        $partial = $this->collFilterConfiguratorImageI18nsPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorImageI18ns || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorImageI18ns) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getConfiguratorImageI18ns());
+                return count($this->getFilterConfiguratorImageI18ns());
             }
 
-            $query = ChildConfiguratorImageI18nQuery::create(null, $criteria);
+            $query = ChildFilterConfiguratorImageI18nQuery::create(null, $criteria);
             if ($distinct) {
                 $query->distinct();
             }
 
             return $query
-                ->filterByConfiguratorImage($this)
+                ->filterByFilterConfiguratorImage($this)
                 ->count($con);
         }
 
-        return count($this->collConfiguratorImageI18ns);
+        return count($this->collFilterConfiguratorImageI18ns);
     }
 
     /**
-     * Method called to associate a ChildConfiguratorImageI18n object to this object
-     * through the ChildConfiguratorImageI18n foreign key attribute.
+     * Method called to associate a ChildFilterConfiguratorImageI18n object to this object
+     * through the ChildFilterConfiguratorImageI18n foreign key attribute.
      *
-     * @param    ChildConfiguratorImageI18n $l ChildConfiguratorImageI18n
-     * @return   \FilterConfigurator\Model\ConfiguratorImage The current object (for fluent API support)
+     * @param    ChildFilterConfiguratorImageI18n $l ChildFilterConfiguratorImageI18n
+     * @return   \FilterConfigurator\Model\FilterConfiguratorImage The current object (for fluent API support)
      */
-    public function addConfiguratorImageI18n(ChildConfiguratorImageI18n $l)
+    public function addFilterConfiguratorImageI18n(ChildFilterConfiguratorImageI18n $l)
     {
-        if ($this->collConfiguratorImageI18ns === null) {
-            $this->initConfiguratorImageI18ns();
-            $this->collConfiguratorImageI18nsPartial = true;
+        if ($this->collFilterConfiguratorImageI18ns === null) {
+            $this->initFilterConfiguratorImageI18ns();
+            $this->collFilterConfiguratorImageI18nsPartial = true;
         }
 
-        if (!in_array($l, $this->collConfiguratorImageI18ns->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddConfiguratorImageI18n($l);
+        if (!in_array($l, $this->collFilterConfiguratorImageI18ns->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFilterConfiguratorImageI18n($l);
         }
 
         return $this;
     }
 
     /**
-     * @param ConfiguratorImageI18n $configuratorImageI18n The configuratorImageI18n object to add.
+     * @param FilterConfiguratorImageI18n $filterConfiguratorImageI18n The filterConfiguratorImageI18n object to add.
      */
-    protected function doAddConfiguratorImageI18n($configuratorImageI18n)
+    protected function doAddFilterConfiguratorImageI18n($filterConfiguratorImageI18n)
     {
-        $this->collConfiguratorImageI18ns[]= $configuratorImageI18n;
-        $configuratorImageI18n->setConfiguratorImage($this);
+        $this->collFilterConfiguratorImageI18ns[]= $filterConfiguratorImageI18n;
+        $filterConfiguratorImageI18n->setFilterConfiguratorImage($this);
     }
 
     /**
-     * @param  ConfiguratorImageI18n $configuratorImageI18n The configuratorImageI18n object to remove.
-     * @return ChildConfiguratorImage The current object (for fluent API support)
+     * @param  FilterConfiguratorImageI18n $filterConfiguratorImageI18n The filterConfiguratorImageI18n object to remove.
+     * @return ChildFilterConfiguratorImage The current object (for fluent API support)
      */
-    public function removeConfiguratorImageI18n($configuratorImageI18n)
+    public function removeFilterConfiguratorImageI18n($filterConfiguratorImageI18n)
     {
-        if ($this->getConfiguratorImageI18ns()->contains($configuratorImageI18n)) {
-            $this->collConfiguratorImageI18ns->remove($this->collConfiguratorImageI18ns->search($configuratorImageI18n));
-            if (null === $this->configuratorImageI18nsScheduledForDeletion) {
-                $this->configuratorImageI18nsScheduledForDeletion = clone $this->collConfiguratorImageI18ns;
-                $this->configuratorImageI18nsScheduledForDeletion->clear();
+        if ($this->getFilterConfiguratorImageI18ns()->contains($filterConfiguratorImageI18n)) {
+            $this->collFilterConfiguratorImageI18ns->remove($this->collFilterConfiguratorImageI18ns->search($filterConfiguratorImageI18n));
+            if (null === $this->filterConfiguratorImageI18nsScheduledForDeletion) {
+                $this->filterConfiguratorImageI18nsScheduledForDeletion = clone $this->collFilterConfiguratorImageI18ns;
+                $this->filterConfiguratorImageI18nsScheduledForDeletion->clear();
             }
-            $this->configuratorImageI18nsScheduledForDeletion[]= clone $configuratorImageI18n;
-            $configuratorImageI18n->setConfiguratorImage(null);
+            $this->filterConfiguratorImageI18nsScheduledForDeletion[]= clone $filterConfiguratorImageI18n;
+            $filterConfiguratorImageI18n->setFilterConfiguratorImage(null);
         }
 
         return $this;
@@ -1694,15 +1694,15 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collConfiguratorImageI18ns) {
-                foreach ($this->collConfiguratorImageI18ns as $o) {
+            if ($this->collFilterConfiguratorImageI18ns) {
+                foreach ($this->collFilterConfiguratorImageI18ns as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collConfiguratorImageI18ns = null;
-        $this->aConfigurator = null;
+        $this->collFilterConfiguratorImageI18ns = null;
+        $this->aFilterConfigurator = null;
     }
 
     /**
@@ -1712,7 +1712,7 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ConfiguratorImageTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(FilterConfiguratorImageTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1720,11 +1720,11 @@ abstract class ConfiguratorImage implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildConfiguratorImage The current object (for fluent API support)
+     * @return     ChildFilterConfiguratorImage The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[ConfiguratorImageTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[FilterConfiguratorImageTableMap::UPDATED_AT] = true;
     
         return $this;
     }

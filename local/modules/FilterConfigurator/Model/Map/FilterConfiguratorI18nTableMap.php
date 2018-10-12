@@ -2,8 +2,8 @@
 
 namespace FilterConfigurator\Model\Map;
 
-use FilterConfigurator\Model\ConfiguratorImageI18n;
-use FilterConfigurator\Model\ConfiguratorImageI18nQuery;
+use FilterConfigurator\Model\FilterConfiguratorI18n;
+use FilterConfigurator\Model\FilterConfiguratorI18nQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'filterconfigurator_configurator_image_i18n' table.
+ * This class defines the structure of the 'filterconfigurator_configurator_i18n' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class ConfiguratorImageI18nTableMap extends TableMap
+class FilterConfiguratorI18nTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'FilterConfigurator.Model.Map.ConfiguratorImageI18nTableMap';
+    const CLASS_NAME = 'FilterConfigurator.Model.Map.FilterConfiguratorI18nTableMap';
 
     /**
      * The default database name for this class
@@ -43,17 +43,17 @@ class ConfiguratorImageI18nTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'filterconfigurator_configurator_image_i18n';
+    const TABLE_NAME = 'filterconfigurator_configurator_i18n';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\FilterConfigurator\\Model\\ConfiguratorImageI18n';
+    const OM_CLASS = '\\FilterConfigurator\\Model\\FilterConfiguratorI18n';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'FilterConfigurator.Model.ConfiguratorImageI18n';
+    const CLASS_DEFAULT = 'FilterConfigurator.Model.FilterConfiguratorI18n';
 
     /**
      * The total number of columns
@@ -73,32 +73,32 @@ class ConfiguratorImageI18nTableMap extends TableMap
     /**
      * the column name for the ID field
      */
-    const ID = 'filterconfigurator_configurator_image_i18n.ID';
+    const ID = 'filterconfigurator_configurator_i18n.ID';
 
     /**
      * the column name for the LOCALE field
      */
-    const LOCALE = 'filterconfigurator_configurator_image_i18n.LOCALE';
+    const LOCALE = 'filterconfigurator_configurator_i18n.LOCALE';
 
     /**
      * the column name for the TITLE field
      */
-    const TITLE = 'filterconfigurator_configurator_image_i18n.TITLE';
+    const TITLE = 'filterconfigurator_configurator_i18n.TITLE';
 
     /**
      * the column name for the DESCRIPTION field
      */
-    const DESCRIPTION = 'filterconfigurator_configurator_image_i18n.DESCRIPTION';
+    const DESCRIPTION = 'filterconfigurator_configurator_i18n.DESCRIPTION';
 
     /**
      * the column name for the CHAPO field
      */
-    const CHAPO = 'filterconfigurator_configurator_image_i18n.CHAPO';
+    const CHAPO = 'filterconfigurator_configurator_i18n.CHAPO';
 
     /**
      * the column name for the POSTSCRIPTUM field
      */
-    const POSTSCRIPTUM = 'filterconfigurator_configurator_image_i18n.POSTSCRIPTUM';
+    const POSTSCRIPTUM = 'filterconfigurator_configurator_i18n.POSTSCRIPTUM';
 
     /**
      * The default string format for model objects of the related table
@@ -114,7 +114,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
     protected static $fieldNames = array (
         self::TYPE_PHPNAME       => array('Id', 'Locale', 'Title', 'Description', 'Chapo', 'Postscriptum', ),
         self::TYPE_STUDLYPHPNAME => array('id', 'locale', 'title', 'description', 'chapo', 'postscriptum', ),
-        self::TYPE_COLNAME       => array(ConfiguratorImageI18nTableMap::ID, ConfiguratorImageI18nTableMap::LOCALE, ConfiguratorImageI18nTableMap::TITLE, ConfiguratorImageI18nTableMap::DESCRIPTION, ConfiguratorImageI18nTableMap::CHAPO, ConfiguratorImageI18nTableMap::POSTSCRIPTUM, ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorI18nTableMap::ID, FilterConfiguratorI18nTableMap::LOCALE, FilterConfiguratorI18nTableMap::TITLE, FilterConfiguratorI18nTableMap::DESCRIPTION, FilterConfiguratorI18nTableMap::CHAPO, FilterConfiguratorI18nTableMap::POSTSCRIPTUM, ),
         self::TYPE_RAW_COLNAME   => array('ID', 'LOCALE', 'TITLE', 'DESCRIPTION', 'CHAPO', 'POSTSCRIPTUM', ),
         self::TYPE_FIELDNAME     => array('id', 'locale', 'title', 'description', 'chapo', 'postscriptum', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
@@ -129,7 +129,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
     protected static $fieldKeys = array (
         self::TYPE_PHPNAME       => array('Id' => 0, 'Locale' => 1, 'Title' => 2, 'Description' => 3, 'Chapo' => 4, 'Postscriptum' => 5, ),
         self::TYPE_STUDLYPHPNAME => array('id' => 0, 'locale' => 1, 'title' => 2, 'description' => 3, 'chapo' => 4, 'postscriptum' => 5, ),
-        self::TYPE_COLNAME       => array(ConfiguratorImageI18nTableMap::ID => 0, ConfiguratorImageI18nTableMap::LOCALE => 1, ConfiguratorImageI18nTableMap::TITLE => 2, ConfiguratorImageI18nTableMap::DESCRIPTION => 3, ConfiguratorImageI18nTableMap::CHAPO => 4, ConfiguratorImageI18nTableMap::POSTSCRIPTUM => 5, ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorI18nTableMap::ID => 0, FilterConfiguratorI18nTableMap::LOCALE => 1, FilterConfiguratorI18nTableMap::TITLE => 2, FilterConfiguratorI18nTableMap::DESCRIPTION => 3, FilterConfiguratorI18nTableMap::CHAPO => 4, FilterConfiguratorI18nTableMap::POSTSCRIPTUM => 5, ),
         self::TYPE_RAW_COLNAME   => array('ID' => 0, 'LOCALE' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'CHAPO' => 4, 'POSTSCRIPTUM' => 5, ),
         self::TYPE_FIELDNAME     => array('id' => 0, 'locale' => 1, 'title' => 2, 'description' => 3, 'chapo' => 4, 'postscriptum' => 5, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
@@ -145,13 +145,13 @@ class ConfiguratorImageI18nTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('filterconfigurator_configurator_image_i18n');
-        $this->setPhpName('ConfiguratorImageI18n');
-        $this->setClassName('\\FilterConfigurator\\Model\\ConfiguratorImageI18n');
+        $this->setName('filterconfigurator_configurator_i18n');
+        $this->setPhpName('FilterConfiguratorI18n');
+        $this->setClassName('\\FilterConfigurator\\Model\\FilterConfiguratorI18n');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'filterconfigurator_configurator_image', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'filterconfigurator_configurator', 'ID', true, null, null);
         $this->addPrimaryKey('LOCALE', 'Locale', 'VARCHAR', true, 5, 'en_US');
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
         $this->addColumn('DESCRIPTION', 'Description', 'CLOB', false, null, null);
@@ -164,7 +164,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('ConfiguratorImage', '\\FilterConfigurator\\Model\\ConfiguratorImage', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('FilterConfigurator', '\\FilterConfigurator\\Model\\FilterConfigurator', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -175,7 +175,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
      * to the cache in order to ensure that the same objects are always returned by find*()
      * and findPk*() calls.
      *
-     * @param \FilterConfigurator\Model\ConfiguratorImageI18n $obj A \FilterConfigurator\Model\ConfiguratorImageI18n object.
+     * @param \FilterConfigurator\Model\FilterConfiguratorI18n $obj A \FilterConfigurator\Model\FilterConfiguratorI18n object.
      * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
      */
     public static function addInstanceToPool($obj, $key = null)
@@ -196,12 +196,12 @@ class ConfiguratorImageI18nTableMap extends TableMap
      * methods in your stub classes -- you may need to explicitly remove objects
      * from the cache in order to prevent returning objects that no longer exist.
      *
-     * @param mixed $value A \FilterConfigurator\Model\ConfiguratorImageI18n object or a primary key value.
+     * @param mixed $value A \FilterConfigurator\Model\FilterConfiguratorI18n object or a primary key value.
      */
     public static function removeInstanceFromPool($value)
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
-            if (is_object($value) && $value instanceof \FilterConfigurator\Model\ConfiguratorImageI18n) {
+            if (is_object($value) && $value instanceof \FilterConfigurator\Model\FilterConfiguratorI18n) {
                 $key = serialize(array((string) $value->getId(), (string) $value->getLocale()));
 
             } elseif (is_array($value) && count($value) === 2) {
@@ -212,7 +212,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
 
                 return;
             } else {
-                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \FilterConfigurator\Model\ConfiguratorImageI18n object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
+                $e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or \FilterConfigurator\Model\FilterConfiguratorI18n object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value, true)));
                 throw $e;
             }
 
@@ -272,7 +272,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? ConfiguratorImageI18nTableMap::CLASS_DEFAULT : ConfiguratorImageI18nTableMap::OM_CLASS;
+        return $withPrefix ? FilterConfiguratorI18nTableMap::CLASS_DEFAULT : FilterConfiguratorI18nTableMap::OM_CLASS;
     }
 
     /**
@@ -286,21 +286,21 @@ class ConfiguratorImageI18nTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (ConfiguratorImageI18n object, last column rank)
+     * @return array (FilterConfiguratorI18n object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = ConfiguratorImageI18nTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = ConfiguratorImageI18nTableMap::getInstanceFromPool($key))) {
+        $key = FilterConfiguratorI18nTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FilterConfiguratorI18nTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + ConfiguratorImageI18nTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FilterConfiguratorI18nTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = ConfiguratorImageI18nTableMap::OM_CLASS;
+            $cls = FilterConfiguratorI18nTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            ConfiguratorImageI18nTableMap::addInstanceToPool($obj, $key);
+            FilterConfiguratorI18nTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -323,8 +323,8 @@ class ConfiguratorImageI18nTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = ConfiguratorImageI18nTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = ConfiguratorImageI18nTableMap::getInstanceFromPool($key))) {
+            $key = FilterConfiguratorI18nTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FilterConfiguratorI18nTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -333,7 +333,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                ConfiguratorImageI18nTableMap::addInstanceToPool($obj, $key);
+                FilterConfiguratorI18nTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -354,12 +354,12 @@ class ConfiguratorImageI18nTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::ID);
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::LOCALE);
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::TITLE);
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::DESCRIPTION);
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::CHAPO);
-            $criteria->addSelectColumn(ConfiguratorImageI18nTableMap::POSTSCRIPTUM);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::ID);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::LOCALE);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::TITLE);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::DESCRIPTION);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::CHAPO);
+            $criteria->addSelectColumn(FilterConfiguratorI18nTableMap::POSTSCRIPTUM);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.LOCALE');
@@ -379,7 +379,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(ConfiguratorImageI18nTableMap::DATABASE_NAME)->getTable(ConfiguratorImageI18nTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorI18nTableMap::DATABASE_NAME)->getTable(FilterConfiguratorI18nTableMap::TABLE_NAME);
     }
 
     /**
@@ -387,16 +387,16 @@ class ConfiguratorImageI18nTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(ConfiguratorImageI18nTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(ConfiguratorImageI18nTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new ConfiguratorImageI18nTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorI18nTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(FilterConfiguratorI18nTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new FilterConfiguratorI18nTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a ConfiguratorImageI18n or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a FilterConfiguratorI18n or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ConfiguratorImageI18n object or primary key or array of primary keys
+     * @param mixed               $values Criteria or FilterConfiguratorI18n object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -407,17 +407,17 @@ class ConfiguratorImageI18nTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorI18nTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \FilterConfigurator\Model\ConfiguratorImageI18n) { // it's a model object
+        } elseif ($values instanceof \FilterConfigurator\Model\FilterConfiguratorI18n) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $criteria = new Criteria(FilterConfiguratorI18nTableMap::DATABASE_NAME);
             // primary key is composite; we therefore, expect
             // the primary key passed to be an array of pkey values
             if (count($values) == count($values, COUNT_RECURSIVE)) {
@@ -425,17 +425,17 @@ class ConfiguratorImageI18nTableMap extends TableMap
                 $values = array($values);
             }
             foreach ($values as $value) {
-                $criterion = $criteria->getNewCriterion(ConfiguratorImageI18nTableMap::ID, $value[0]);
-                $criterion->addAnd($criteria->getNewCriterion(ConfiguratorImageI18nTableMap::LOCALE, $value[1]));
+                $criterion = $criteria->getNewCriterion(FilterConfiguratorI18nTableMap::ID, $value[0]);
+                $criterion->addAnd($criteria->getNewCriterion(FilterConfiguratorI18nTableMap::LOCALE, $value[1]));
                 $criteria->addOr($criterion);
             }
         }
 
-        $query = ConfiguratorImageI18nQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorI18nQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { ConfiguratorImageI18nTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { FilterConfiguratorI18nTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { ConfiguratorImageI18nTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { FilterConfiguratorI18nTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -443,20 +443,20 @@ class ConfiguratorImageI18nTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the filterconfigurator_configurator_image_i18n table.
+     * Deletes all rows from the filterconfigurator_configurator_i18n table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return ConfiguratorImageI18nQuery::create()->doDeleteAll($con);
+        return FilterConfiguratorI18nQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a ConfiguratorImageI18n or Criteria object.
+     * Performs an INSERT on the database, given a FilterConfiguratorI18n or Criteria object.
      *
-     * @param mixed               $criteria Criteria or ConfiguratorImageI18n object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or FilterConfiguratorI18n object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -465,18 +465,18 @@ class ConfiguratorImageI18nTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorImageI18nTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorI18nTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from ConfiguratorImageI18n object
+            $criteria = $criteria->buildCriteria(); // build Criteria from FilterConfiguratorI18n object
         }
 
 
         // Set the correct dbName
-        $query = ConfiguratorImageI18nQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorI18nQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -492,7 +492,7 @@ class ConfiguratorImageI18nTableMap extends TableMap
         return $pk;
     }
 
-} // ConfiguratorImageI18nTableMap
+} // FilterConfiguratorI18nTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-ConfiguratorImageI18nTableMap::buildTableMap();
+FilterConfiguratorI18nTableMap::buildTableMap();

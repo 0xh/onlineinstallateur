@@ -4,10 +4,10 @@ namespace FilterConfigurator\Model\Base;
 
 use \Exception;
 use \PDO;
-use FilterConfigurator\Model\Configurator as ChildConfigurator;
-use FilterConfigurator\Model\ConfiguratorFeaturesQuery as ChildConfiguratorFeaturesQuery;
-use FilterConfigurator\Model\ConfiguratorQuery as ChildConfiguratorQuery;
-use FilterConfigurator\Model\Map\ConfiguratorFeaturesTableMap;
+use FilterConfigurator\Model\FilterConfigurator as ChildFilterConfigurator;
+use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery as ChildFilterConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\FilterConfiguratorQuery as ChildFilterConfiguratorQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorFeaturesTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -21,12 +21,12 @@ use Propel\Runtime\Parser\AbstractParser;
 use Thelia\Model\Feature as ChildFeature;
 use Thelia\Model\FeatureQuery;
 
-abstract class ConfiguratorFeatures implements ActiveRecordInterface 
+abstract class FilterConfiguratorFeatures implements ActiveRecordInterface 
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\ConfiguratorFeaturesTableMap';
+    const TABLE_MAP = '\\FilterConfigurator\\Model\\Map\\FilterConfiguratorFeaturesTableMap';
 
 
     /**
@@ -74,9 +74,9 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
     protected $feature_id;
 
     /**
-     * @var        Configurator
+     * @var        FilterConfigurator
      */
-    protected $aConfigurator;
+    protected $aFilterConfigurator;
 
     /**
      * @var        Feature
@@ -92,7 +92,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of FilterConfigurator\Model\Base\ConfiguratorFeatures object.
+     * Initializes internal state of FilterConfigurator\Model\Base\FilterConfiguratorFeatures object.
      */
     public function __construct()
     {
@@ -187,9 +187,9 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>ConfiguratorFeatures</code> instance.  If
-     * <code>obj</code> is an instance of <code>ConfiguratorFeatures</code>, delegates to
-     * <code>equals(ConfiguratorFeatures)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>FilterConfiguratorFeatures</code> instance.  If
+     * <code>obj</code> is an instance of <code>FilterConfiguratorFeatures</code>, delegates to
+     * <code>equals(FilterConfiguratorFeatures)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -272,7 +272,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return ConfiguratorFeatures The current object, for fluid interface
+     * @return FilterConfiguratorFeatures The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -304,7 +304,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return ConfiguratorFeatures The current object, for fluid interface
+     * @return FilterConfiguratorFeatures The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -386,7 +386,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * Set the value of [id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorFeatures The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorFeatures The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -396,7 +396,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[ConfiguratorFeaturesTableMap::ID] = true;
+            $this->modifiedColumns[FilterConfiguratorFeaturesTableMap::ID] = true;
         }
 
 
@@ -407,7 +407,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * Set the value of [configurator_id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorFeatures The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorFeatures The current object (for fluent API support)
      */
     public function setConfiguratorId($v)
     {
@@ -417,11 +417,11 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
 
         if ($this->configurator_id !== $v) {
             $this->configurator_id = $v;
-            $this->modifiedColumns[ConfiguratorFeaturesTableMap::CONFIGURATOR_ID] = true;
+            $this->modifiedColumns[FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID] = true;
         }
 
-        if ($this->aConfigurator !== null && $this->aConfigurator->getId() !== $v) {
-            $this->aConfigurator = null;
+        if ($this->aFilterConfigurator !== null && $this->aFilterConfigurator->getId() !== $v) {
+            $this->aFilterConfigurator = null;
         }
 
 
@@ -432,7 +432,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * Set the value of [feature_id] column.
      * 
      * @param      int $v new value
-     * @return   \FilterConfigurator\Model\ConfiguratorFeatures The current object (for fluent API support)
+     * @return   \FilterConfigurator\Model\FilterConfiguratorFeatures The current object (for fluent API support)
      */
     public function setFeatureId($v)
     {
@@ -442,7 +442,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
 
         if ($this->feature_id !== $v) {
             $this->feature_id = $v;
-            $this->modifiedColumns[ConfiguratorFeaturesTableMap::FEATURE_ID] = true;
+            $this->modifiedColumns[FilterConfiguratorFeaturesTableMap::FEATURE_ID] = true;
         }
 
         if ($this->aFeature !== null && $this->aFeature->getId() !== $v) {
@@ -490,13 +490,13 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ConfiguratorFeaturesTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : FilterConfiguratorFeaturesTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ConfiguratorFeaturesTableMap::translateFieldName('ConfiguratorId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : FilterConfiguratorFeaturesTableMap::translateFieldName('ConfiguratorId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->configurator_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ConfiguratorFeaturesTableMap::translateFieldName('FeatureId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : FilterConfiguratorFeaturesTableMap::translateFieldName('FeatureId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->feature_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -506,10 +506,10 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = ConfiguratorFeaturesTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = FilterConfiguratorFeaturesTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \FilterConfigurator\Model\ConfiguratorFeatures object", 0, $e);
+            throw new PropelException("Error populating \FilterConfigurator\Model\FilterConfiguratorFeatures object", 0, $e);
         }
     }
 
@@ -528,8 +528,8 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aConfigurator !== null && $this->configurator_id !== $this->aConfigurator->getId()) {
-            $this->aConfigurator = null;
+        if ($this->aFilterConfigurator !== null && $this->configurator_id !== $this->aFilterConfigurator->getId()) {
+            $this->aFilterConfigurator = null;
         }
         if ($this->aFeature !== null && $this->feature_id !== $this->aFeature->getId()) {
             $this->aFeature = null;
@@ -557,13 +557,13 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildConfiguratorFeaturesQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildFilterConfiguratorFeaturesQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -573,7 +573,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aConfigurator = null;
+            $this->aFilterConfigurator = null;
             $this->aFeature = null;
         } // if (deep)
     }
@@ -584,8 +584,8 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see ConfiguratorFeatures::setDeleted()
-     * @see ConfiguratorFeatures::isDeleted()
+     * @see FilterConfiguratorFeatures::setDeleted()
+     * @see FilterConfiguratorFeatures::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -594,12 +594,12 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildConfiguratorFeaturesQuery::create()
+            $deleteQuery = ChildFilterConfiguratorFeaturesQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -636,7 +636,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -656,7 +656,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                ConfiguratorFeaturesTableMap::addInstanceToPool($this);
+                FilterConfiguratorFeaturesTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -691,11 +691,11 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
-            if ($this->aConfigurator !== null) {
-                if ($this->aConfigurator->isModified() || $this->aConfigurator->isNew()) {
-                    $affectedRows += $this->aConfigurator->save($con);
+            if ($this->aFilterConfigurator !== null) {
+                if ($this->aFilterConfigurator->isModified() || $this->aFilterConfigurator->isNew()) {
+                    $affectedRows += $this->aFilterConfigurator->save($con);
                 }
-                $this->setConfigurator($this->aConfigurator);
+                $this->setFilterConfigurator($this->aFilterConfigurator);
             }
 
             if ($this->aFeature !== null) {
@@ -736,19 +736,19 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[ConfiguratorFeaturesTableMap::ID] = true;
+        $this->modifiedColumns[FilterConfiguratorFeaturesTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ConfiguratorFeaturesTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . FilterConfiguratorFeaturesTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::ID)) {
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID)) {
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID)) {
             $modifiedColumns[':p' . $index++]  = 'CONFIGURATOR_ID';
         }
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::FEATURE_ID)) {
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::FEATURE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'FEATURE_ID';
         }
 
@@ -817,7 +817,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -865,11 +865,11 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['ConfiguratorFeatures'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['FilterConfiguratorFeatures'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['ConfiguratorFeatures'][$this->getPrimaryKey()] = true;
-        $keys = ConfiguratorFeaturesTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['FilterConfiguratorFeatures'][$this->getPrimaryKey()] = true;
+        $keys = FilterConfiguratorFeaturesTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getConfiguratorId(),
@@ -881,8 +881,8 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
-            if (null !== $this->aConfigurator) {
-                $result['Configurator'] = $this->aConfigurator->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->aFilterConfigurator) {
+                $result['FilterConfigurator'] = $this->aFilterConfigurator->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aFeature) {
                 $result['Feature'] = $this->aFeature->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -905,7 +905,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = ConfiguratorFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = FilterConfiguratorFeaturesTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -952,7 +952,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = ConfiguratorFeaturesTableMap::getFieldNames($keyType);
+        $keys = FilterConfiguratorFeaturesTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setConfiguratorId($arr[$keys[1]]);
@@ -966,11 +966,11 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(ConfiguratorFeaturesTableMap::DATABASE_NAME);
+        $criteria = new Criteria(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::ID)) $criteria->add(ConfiguratorFeaturesTableMap::ID, $this->id);
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID)) $criteria->add(ConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $this->configurator_id);
-        if ($this->isColumnModified(ConfiguratorFeaturesTableMap::FEATURE_ID)) $criteria->add(ConfiguratorFeaturesTableMap::FEATURE_ID, $this->feature_id);
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::ID)) $criteria->add(FilterConfiguratorFeaturesTableMap::ID, $this->id);
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID)) $criteria->add(FilterConfiguratorFeaturesTableMap::CONFIGURATOR_ID, $this->configurator_id);
+        if ($this->isColumnModified(FilterConfiguratorFeaturesTableMap::FEATURE_ID)) $criteria->add(FilterConfiguratorFeaturesTableMap::FEATURE_ID, $this->feature_id);
 
         return $criteria;
     }
@@ -985,8 +985,8 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(ConfiguratorFeaturesTableMap::DATABASE_NAME);
-        $criteria->add(ConfiguratorFeaturesTableMap::ID, $this->id);
+        $criteria = new Criteria(FilterConfiguratorFeaturesTableMap::DATABASE_NAME);
+        $criteria->add(FilterConfiguratorFeaturesTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1027,7 +1027,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \FilterConfigurator\Model\ConfiguratorFeatures (or compatible) type.
+     * @param      object $copyObj An object of \FilterConfigurator\Model\FilterConfiguratorFeatures (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1051,7 +1051,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \FilterConfigurator\Model\ConfiguratorFeatures Clone of current object.
+     * @return                 \FilterConfigurator\Model\FilterConfiguratorFeatures Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1065,13 +1065,13 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildConfigurator object.
+     * Declares an association between this object and a ChildFilterConfigurator object.
      *
-     * @param                  ChildConfigurator $v
-     * @return                 \FilterConfigurator\Model\ConfiguratorFeatures The current object (for fluent API support)
+     * @param                  ChildFilterConfigurator $v
+     * @return                 \FilterConfigurator\Model\FilterConfiguratorFeatures The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setConfigurator(ChildConfigurator $v = null)
+    public function setFilterConfigurator(ChildFilterConfigurator $v = null)
     {
         if ($v === null) {
             $this->setConfiguratorId(NULL);
@@ -1079,12 +1079,12 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
             $this->setConfiguratorId($v->getId());
         }
 
-        $this->aConfigurator = $v;
+        $this->aFilterConfigurator = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildConfigurator object, it will not be re-added.
+        // If this object has already been added to the ChildFilterConfigurator object, it will not be re-added.
         if ($v !== null) {
-            $v->addConfiguratorFeatures($this);
+            $v->addFilterConfiguratorFeatures($this);
         }
 
 
@@ -1093,33 +1093,33 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildConfigurator object
+     * Get the associated ChildFilterConfigurator object
      *
      * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildConfigurator The associated ChildConfigurator object.
+     * @return                 ChildFilterConfigurator The associated ChildFilterConfigurator object.
      * @throws PropelException
      */
-    public function getConfigurator(ConnectionInterface $con = null)
+    public function getFilterConfigurator(ConnectionInterface $con = null)
     {
-        if ($this->aConfigurator === null && ($this->configurator_id !== null)) {
-            $this->aConfigurator = ChildConfiguratorQuery::create()->findPk($this->configurator_id, $con);
+        if ($this->aFilterConfigurator === null && ($this->configurator_id !== null)) {
+            $this->aFilterConfigurator = ChildFilterConfiguratorQuery::create()->findPk($this->configurator_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aConfigurator->addConfiguratorFeaturess($this);
+                $this->aFilterConfigurator->addFilterConfiguratorFeaturess($this);
              */
         }
 
-        return $this->aConfigurator;
+        return $this->aFilterConfigurator;
     }
 
     /**
      * Declares an association between this object and a ChildFeature object.
      *
      * @param                  ChildFeature $v
-     * @return                 \FilterConfigurator\Model\ConfiguratorFeatures The current object (for fluent API support)
+     * @return                 \FilterConfigurator\Model\FilterConfiguratorFeatures The current object (for fluent API support)
      * @throws PropelException
      */
     public function setFeature(ChildFeature $v = null)
@@ -1135,7 +1135,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildFeature object, it will not be re-added.
         if ($v !== null) {
-            $v->addConfiguratorFeatures($this);
+            $v->addFilterConfiguratorFeatures($this);
         }
 
 
@@ -1159,7 +1159,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aFeature->addConfiguratorFeaturess($this);
+                $this->aFeature->addFilterConfiguratorFeaturess($this);
              */
         }
 
@@ -1195,7 +1195,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aConfigurator = null;
+        $this->aFilterConfigurator = null;
         $this->aFeature = null;
     }
 
@@ -1206,7 +1206,7 @@ abstract class ConfiguratorFeatures implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(ConfiguratorFeaturesTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(FilterConfiguratorFeaturesTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**
