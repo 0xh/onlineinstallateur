@@ -40,8 +40,9 @@ class SellingPricesLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
              ->set("product_id", $listing->getVirtualColumn("PRODUCT_ID"))
              ->set("purchase_price", $listing->getVirtualColumn("purchase_price"))
              ->set("sale_prices", $listing->getFirstPrice())
-             ->set("platform", $listing->getPlatform())
              ->set("delivery_cost", $listing->getVirtualColumn("delivery_cost"))
+             ->set("platform_concat", $listing->getVirtualColumn("platform_concat"))
+             ->set("first_price_concat", $listing->getVirtualColumn("first_price_concat"))
              ->set("title", $listing->getVirtualColumn("TITLE"));
 
             $loopResult->addRow($loopResultRow);
@@ -53,6 +54,7 @@ class SellingPricesLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
     public function buildModelCriteria()
     {
         $query = CrawlerProductListingQuery::create()
+         ->groupByProductBaseId()
          ->addJoin(CrawlerProductListingTableMap::PRODUCT_BASE_ID, CrawlerProductBaseTableMap::ID)
          ->addJoin(CrawlerProductBaseTableMap::PRODUCT_ID, ProductTableMap::ID)
          ->addJoin(ProductTableMap::ID, ProductI18nTableMap::ID)
@@ -61,6 +63,8 @@ class SellingPricesLoop extends BaseI18nLoop implements PropelSearchLoopInterfac
          ->withColumn(WholesalePartnerProductTableMap::DELIVERY_COST, 'delivery_cost')
          ->withColumn(CrawlerProductBaseTableMap::PRODUCT_ID, 'PRODUCT_ID')
          ->withColumn(ProductI18nTableMap::TITLE, 'TITLE')
+         ->withColumn('GROUP_CONCAT(' . CrawlerProductListingTableMap::PLATFORM . ')', 'platform_concat')
+         ->withColumn('GROUP_CONCAT(' . CrawlerProductListingTableMap::FIRST_PRICE . ')', 'first_price_concat')
 //         ->where(CrawlerProductListingTableMap::FIRST_PRICE . ">-1")
          ->where(ProductI18nTableMap::LOCALE . "='" . $this->getCurrentRequest()->getSession()->getLang()->getLocale() . "'");
 

@@ -57,15 +57,62 @@
                     {$BEST_TAXED_PRICE|number_format:2:".":","}
                     {/loop}
                 </td>
+                {assign var="first_price" value=","|explode:$first_price_concat}
+                {assign var="platform" value=","|explode:$platform_concat}
+                {assign var="platform_first_price" value=""}
+                {foreach from=$platform key=k item=foo}
+                    {$platform_first_price[$foo] = $first_price[$k]}
+                {/foreach}
+                {assign var="min_price" value=0}
+                {assign var="max_price" value=0}
+                {foreach from=$platform_first_price item=foo}
+                    {if $foo < $min_price}
+                        {$min_price = $foo}
+                    {/if}
+
+                    {if $foo > $max_price}
+                        {$max_price = $foo}
+                    {/if}
+                {/foreach}
                 <td>{$purchase_price|number_format:2:".":","}</td>
-                <td>{if $platform == "Google"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
-                <td>{if $platform == "Amazon"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
-                <td>{if $platform == "Skybad"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
-                <td>{if $platform == "Reuter"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
-                <td>{if $platform == "Epoq"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
-                <td>{if $platform == "Geizhals"}{$sale_prices|number_format:2:".":","}{else}0{/if}</td>
+                <td 
+                    {if $platform_first_price["Google"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Google"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Google"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Amazon"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Amazon"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Amazon"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Skybad"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Skybad"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Skybad"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Reuter"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Reuter"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Reuter"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Epoq"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Epoq"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Epoq"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Geizhals"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Geizhals"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Geizhals"]|number_format:2:".":","}
+                </td>
                 <td>
-                    <input type="text" value="{($purchase_price + $purchase_price*16/100 + $delivery_cost)*20/100}" /> 
+                    <form action="{url path='/admin/module/revenue-wholesale-selling-update-price/'}" method="post">
+                        <input type="hidden" name="update-product-id" value="{$product_id}"/>
+                        {assign var="calc_price" value=($purchase_price + $purchase_price*16/100 + $delivery_cost) + ($purchase_price + $purchase_price*16/100 + $delivery_cost)*20/100}
+                        <input type="text" class="update-product-price-edit-{$product_id}" onchange="changePrice({$product_id});" name="update-product-price-edit" style="width: 95px;" value="{if $calc_price < $min_price}{$min_price}{else}{$calc_price}{/if}" /> 
+                        <input type="hidden" class="update-product-price-{$product_id}" name="update-product-price" style="width: 95px;" value="{($purchase_price + $purchase_price*16/100 + $delivery_cost)}" /> 
+                        <input type="submit" class="btn btn-success" value="Update" />
+                    </form>
                 </td>
             </tr>
             {/loop}
@@ -84,4 +131,13 @@
             </tr>
         </tfoot>
     </div>
+
+    <script>
+        function changePrice(prodId) {
+            $(".update-product-price-edit-" + prodId).val();
+            $(".update-product-price-" + prodId).val(5 / 6 * $(".update-product-price-edit-" + prodId).val());
+
+        }
+
+    </script>            
 {/block}

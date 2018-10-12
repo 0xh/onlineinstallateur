@@ -8,15 +8,11 @@
 
 namespace RevenueDashboard\Controller\Admin;
 
-use Exception;
-use RevenueDashboard\RevenueDashboard;
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Core\Security\AccessManager;
-use Thelia\Core\Security\Resource\AdminResources;
-use Thelia\Core\Thelia;
-use Thelia\Form\Exception\FormValidationException;
+use Thelia\Model\Map\ProductPriceTableMap;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Thelia\Model\ProductPriceQuery;
 use Thelia\Tools\URL;
-use Thelia\Tools\Version\Version;
 
 /**
  * Description of SellingPricesController
@@ -31,25 +27,19 @@ class SellingPricesController extends BaseAdminController
         return $this->render("selling-prices");
     }
 
-    public function getProducts()
+    public function updatePrice()
     {
+        $product = ProductPriceQuery::create()
+         ->addJoin(ProductPriceTableMap::PRODUCT_SALE_ELEMENTS_ID, ProductSaleElementsTableMap::ID)
+         ->where(ProductSaleElementsTableMap::PRODUCT_ID . " = " . $this->getRequest()->get("update-product-id"))
+         ->findOne();
 
-        $products = \Thelia\Model\ProductQuery::create()
-         ->limit(10)
-         ->addJoin(\Thelia\Model\Map\ProductTableMap::ID, \Thelia\Model\Map\ProductI18nTableMap::ID)
-         ->withColumn(\Thelia\Model\Map\ProductI18nTableMap::TITLE, 'productName')
-         ->where(\Thelia\Model\Map\ProductI18nTableMap::LOCALE . " = 'en_US'");
-
-        $prods = array();
-        foreach ($products as $prd) {
-            array_push($prods, $prd->getId() . ";" . $prd->getTitle());
-            break;
+        if ($product) {
+            $product->setPrice($this->getRequest()->get("update-product-price"));
+            $product->save();
         }
 
-        print_r($prods);
-//        echo '<pre>';
-//        var_dump($prods);
-        die;
+        return $this->generateRedirect(URL::getInstance()->absoluteUrl("/admin/module/revenue-wholesale-selling-prices?product_id=" . $this->getRequest()->get("update-product-id")));
     }
 
 }
