@@ -51,7 +51,7 @@
 
 
 .multistepForm .fs-radio-group p {
-    display: inline-grid;
+    display: inline-block;
     color: #000;
     padding: 4px 11px;
     font-family: Arial;
@@ -105,13 +105,13 @@
 }
 .frontIcons {
     color: #000;
-    display: inline-grid;
+    display: inline-block;
     width: 23%;
     float: none;
     font-family: 'traumbad' !important;
     line-height: 1;
-	padding:3px;
-    border: 4px /* 19 */ solid #FFF;
+	padding:25px;
+    border: 4px / 19 / solid #FFF;
 	border-radius:15px;
     margin-left: 1%;
     min-height: 210px;
