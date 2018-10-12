@@ -2,9 +2,9 @@
 namespace FilterConfigurator\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
-use FilterConfigurator\FilterConfigurator;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
+use FilterConfigurator\Model\FilterConfigurator;
 use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery;
 use FilterConfigurator\Model\FilterConfiguratorI18nQuery;
 use FilterConfigurator\Model\FilterConfiguratorImageI18nQuery;
@@ -91,7 +91,7 @@ class FilterConfiguratorController extends BaseAdminController
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
-					$this->getTranslator()->trans("Error on edit configurator : %message", ["message"=>$e->getMessage()], FilterConfigurator::DOMAIN_NAME),
+					$this->getTranslator()->trans("Error on edit configurator : %message", ["message"=>$e->getMessage()], \FilterConfigurator\FilterConfigurator::DOMAIN_NAME),
 					$e->getMessage(),
 					$form
 					);
@@ -138,7 +138,7 @@ class FilterConfiguratorController extends BaseAdminController
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
-					$this->getTranslator()->trans("Error on new configurator : %message", ["message"=>$e->getMessage()], FilterConfigurator::DOMAIN_NAME),
+			    $this->getTranslator()->trans("Error on new configurator : %message", ["message"=>$e->getMessage()], \FilterConfigurator\FilterConfigurator::DOMAIN_NAME),
 					$e->getMessage(),
 					$form
 					);
@@ -283,7 +283,7 @@ class FilterConfiguratorController extends BaseAdminController
 			return $this->generateSuccessRedirect($form);
 		} catch (\Exception $e) {
 			$this->setupFormErrorContext(
-					$this->getTranslator()->trans("Error on edit image for configurator : %message", ["message"=>$e->getMessage()], FilterConfigurator::DOMAIN_NAME),
+			    $this->getTranslator()->trans("Error on edit image for configurator : %message", ["message"=>$e->getMessage()], \FilterConfigurator\FilterConfigurator::DOMAIN_NAME),
 					$e->getMessage(),
 					$form
 					);
