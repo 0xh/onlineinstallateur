@@ -18,7 +18,6 @@ use Carousel\Model\CarouselName;
 use Carousel\Model\CarouselNameQuery;
 use Carousel\Model\CarouselQuery;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Event\File\FileCreateOrUpdateEvent;
@@ -26,8 +25,6 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Form\Exception\FormValidationException;
-use Thelia\Log\Tlog;
-use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
 use Thelia\Tools\URL;
 

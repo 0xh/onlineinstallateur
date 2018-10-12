@@ -2,9 +2,9 @@
 
 namespace Carousel\Controller\Admin;
 
-use Carousel\Carousel;
 use Carousel\Model\CarouselNameQuery;
 use Carousel\Model\CarouselHookQuery;
+use HookConfigurator\HookConfigurator;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
