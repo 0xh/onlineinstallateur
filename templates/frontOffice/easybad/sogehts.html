@@ -1,7 +1,5 @@
 {extends file="layout.tpl"}
 
-
-
 {* Body Class *}
 {block name="body-class"}page-konfigurator{/block}
 
@@ -13,8 +11,12 @@
 {block name="full_with_block"}
     {hook name="full_with_block.sogehts"}
     
-    <div class="outer-container back object html">
-  <div class="innerback" style="min-height: 600px;">
+    <div class="outer-container back object html" style="padding-top: 0 !important;
+    color: white;
+    background-image: url({image file='assets/dist/img/dummy_planungstarten.jpg'});
+    background-size: cover;
+    background-position: center;">
+  <div class="innerback" style="min-height: 600px;    background-color: rgba(52, 124, 146, 0.6);">
     <div class="container">
       <h2 class="text-center" style="margin-top: 42px;margin-bottom:15px; color: white;">
         DEIN BADPROJEKT MIT EASYBAD!
@@ -66,7 +68,7 @@
         <div class="col-xs-12"> 
           <div class="col-xs-4"> 
             <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
-              <iframe style="position:absolute;width:298px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="card-body" style="margin-top:170px">
                 <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">Lass Dich online inspirieren:</h5>
                 <p class="card-text">Mit unseren Badideen kannst du dir einen ersten persönlichen Eindruck verschaffen.</p>
@@ -75,7 +77,7 @@
           </div>
           <div class="col-xs-4">
             <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
-              <iframe style="position:absolute;width:299px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="card-body" style="margin-top:170px">
                 <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">Plane Deine eigenens Bad!</h5>
                 <p class="card-text">Unser Badplaner - die unkomplizierte Lösung zur Verwirklichung deiner Ideen.</p>
@@ -84,7 +86,7 @@
           </div>
           <div class="col-xs-4">
             <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
-              <iframe style="position:absolute;width:298px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
               <div class="card-body" style="margin-top:170px">
                 <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">komponenten bestellen!</h5>
                 <p class="card-text">Wir liefern dir deine Produkte für dein Traumbad in kürzester Zeit nach Hause.</p>
@@ -212,21 +214,7 @@
               </div>
             </div>
          </div>
-       </div>
-       <div class="row">
-        <p class="text-center" style="margin-top: 40px;margin-bottom: 5px; font-size: 22px;text-transform:uppercase;">
-          Noch Fragen? Dann starte den Chat
-        </p>
-        <div class="row" style="padding-left: 10%;padding-right: 10%;">
-          <div class="col-xs-8">
-            <input type="text" class="form-control" style="background-color:#ffffff;color:#E6E6E6;" value="Stell deine Frage hier und starte den Chat...">
-          </div>
-          <div class="col-xs-4">
-            <a href="/Badplaner/Ausstattung"><button type="button" class="btn btn-secondary btn-full" style="background-color: #10B4CF; color: #ffffff">CHAT STARTEN</button></a>
-        </div>
-        </div>
-      </div>   
-   <div style="text-align:center;font-size:14px;margin-top:70px;margin-bottom:35px;color:#10B4CF;">» MEHR INFORMATIONEN</div>  
+       </div>   
 </div>
 <!-- fünfter Container-->
 <div class="outer-container object html" style="background-color:#FFFFFF;padding-top:20px; ">
