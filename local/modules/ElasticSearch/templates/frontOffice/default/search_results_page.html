@@ -1,6 +1,7 @@
 {extends file="layout.tpl"}
 
 
+
 {block name="body-class"}page-search{/block}
 
 {* Breadcrumb *}
@@ -10,17 +11,20 @@
 ]}
 {/block}
 
+    
 {block name="main-content"}
+    
+    
     <div class="main">
 
         {* {$limit={$smarty.get.limit|default:100}} *}
 
-        {$limit={$RESULTS['limit']}}
-        {$end={$RESULTS['end']}}
-        {$start={$RESULTS['start']}}
-        {$order={$RESULTS['order']}}
-        {$amount={$RESULTS['total']}}
-        {$current_page={$RESULTS['current_page']}}
+        {$limit={$RESULTS_ITEMS['limit']}}
+        {$end={$RESULTS_ITEMS['end']}}
+        {$start={$RESULTS_ITEMS['start']}}
+        {$order={$RESULTS_ITEMS['order']}}
+        {$amount={$RESULTS_ITEMS['total']}}
+        {$current_page={$RESULTS_ITEMS['current_page']}}
         {$product_order=$order}
         {$ALL_PAGES = $PAGES}
         {$max_page = 5}
@@ -69,10 +73,31 @@
                 </div><!-- /.sorter -->
             </div>
 
+           <div id="category-products">
+                <div class="products-content">
+                    <ul class="list-unstyled row">
+                        {foreach from=$RESULTS_ITEMS item=PRODUCT}
+                            {if $PRODUCT|@count  ge 2 }
+                                {include file="single-product.html"
+                              product_price={$PRODUCT["_source"]["product_price"]}
+                              product_listen_price = {$PRODUCT["_source"]["product_listen_price"]}
+                              product_taxed_price={$PRODUCT["_source"]["product_taxed_price"]}
+                              product_promo_price={$PRODUCT["_source"]["taxedPrice"]}
+                              product_promo_taxed_price = {$PRODUCT["_source"]["product_promo_taxed_price"]}
+                              product_id={$PRODUCT["_source"]["product_id"]}
+                              product_title={$PRODUCT["_source"]["product_title"]}
+                              hasBtn=true hasDescription=true width="819" height="819"}
+                            {/if}
+                        {foreachelse}
+                            <h2 class="text-center">{intl l="No results found"} </h2>
+                        {/foreach}
+            </div>
+                        
+                        
             <div id="category-products">
                 <div class="products-content">
                     <ul class="list-unstyled row">
-                        {foreach from=$RESULTS item=PRODUCT}
+                        {foreach from=$RESULTS_ITEMS item=PRODUCT}
                             {if $PRODUCT|@count  ge 2 }
                                 {include file="single-product.html"
                               product_price={$PRODUCT["_source"]["product_price"]}

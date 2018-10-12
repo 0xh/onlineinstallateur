@@ -33,6 +33,7 @@ class IndexElasticSearch extends ContainerAwareCommand
 
 
         $qObject = new IndexProducts();
+        $qObjectSelection = new IndexSelection();
         switch ($input->getArgument("action")) {
             case 'generate':
                 switch ($input->getArgument("lang")) {
@@ -64,6 +65,18 @@ class IndexElasticSearch extends ContainerAwareCommand
                     case 'de':
                         $locale = "de_De";
                         $qObject->deleteAllDocumentsFromIndex($input->getArgument("lang"), $locale);
+                        break;
+
+                    default:
+                        echo "Uknow language!!! \n ex: php Thelia elasticsearch generate de \n -where: \n - 'generate': is the action \n - 'de' is the language)!!!! \n";
+                        break;
+                }
+                break; //delete aciton
+            case 'index-selection':
+                switch ($input->getArgument("lang")) {
+                    case 'de':
+                        $locale = "de_De";
+                        $qObjectSelection->indexAllSelection($input->getArgument("lang"), $locale);
                         break;
 
                     default:
