@@ -1,7 +1,7 @@
 {extends file="admin-layout.tpl"}
 
 {block name="no-return-functions"}
-{$admin_current_location = 'Partners Contact'}
+    {$admin_current_location = 'tools'}
 {/block}
 
 {block name="page-title"}{intl l='Partners Contact'}{/block}
@@ -9,14 +9,7 @@
 {block name="main-content"} 
 {render action='RevenueDashboard\Controller\Admin\WholesalePartnerContactController::blockJs'}
 <div class="general-block-decorator dashboard">
-    <ul class="breadcrumb">
-        <li><a href="{url path='/admin/modules'}">{intl l="Modules"}</a></li>
-        <li><a href="{url path='/admin/module/revenuedashboard'}">{intl l="Revenue Dashboard"}</a></li>
-        <li><a href="{url path='/admin/module/revenue-wholesale-partner'}">{intl l="Partner"}</a></li>
-        <li><a href="{url path='/admin/module/revenue-wholesale-partner-contact'}">{intl l="Partner Contact"}</a></li>
-        <li><a href="{url path='/admin/module/revenue-wholesale-partner-product'}">{intl l="Partner Product"}</a></li>
-    </ul>
-
+    {include file = "menu-links.html"}
 
     <table class="table table-striped">
         <tbody>
