@@ -90,6 +90,16 @@
         </default>
     </route>
         
+    <route id="id.revenue.wholesale.product.selling.prices" path="/admin/module/revenue-wholesale-selling-prices">
+        <default key="_controller">RevenueDashboard\Controller\Admin\SellingPricesController::viewSellingPrices
+        </default>
+    </route>
+        
+    <route id="id.revenue.wholesale.product.update.price" path="/admin/module/revenue-wholesale-selling-update-price">
+        <default key="_controller">RevenueDashboard\Controller\Admin\SellingPricesController::updatePrice
+        </default>
+    </route>
+        
     <route id="id.revenue.order.update.product.revenue" path="/admin/module/update-order-product-revenue/{orderId}/{productRef}/{price}/{purchePrice}/{partnerId}/{prodId}">
         <default key="_controller">RevenueDashboard\Controller\Admin\OrderProductRevenueController::updateOrderProductRevenue
         </default>

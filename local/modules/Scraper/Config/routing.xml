@@ -8,4 +8,16 @@
         <default key="_controller">Scraper\Controller\WebBrowserController::test</default>
     </route>
 
+    <route id="scraper.skybad" path="/admin/scraper-skybad">
+        <default key="_controller">Scraper\Controller\Scrapers\Skybad::getDataSkybad</default>
+    </route>
+
+    <route id="scraper.reuter" path="/admin/scraper-reuter">
+        <default key="_controller">Scraper\Controller\Scrapers\Reuter::getDataReuter</default>
+    </route>
+
+    <route id="scraper.epoq" path="/admin/scraper-epoq">
+        <default key="_controller">Scraper\Controller\Scrapers\Epoq::getDataEpoq</default>
+    </route>
+
 </routes>
