@@ -298,9 +298,22 @@ class ElasticConnection
                 'body'  => ($text == NULL || $text == "") ? $json  : 
                             $this->mulitMatchQuery($text, $order_by,$start,$limit,0)
             ];
-
+            
+            
             $result                          = $objElasticSearchConnection->search($params);
             $result['hits']['hits']['total'] = $result['hits']['total'];
+            
+            if ($result['hits']['hits']['total'] ==0 )
+            {
+                $params = [
+                 'index' => 'product_de',
+                 'type'  => 'default',
+                    'body'  => $json
+                ];
+
+                $result                          = $objElasticSearchConnection->search($params);
+                $result['hits']['hits']['total'] = $result['hits']['total'];
+           }
             
         return  array("selections" => $result_selection['hits']['hits'], "items"=>$result['hits']['hits']);
     }
