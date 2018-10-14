@@ -8,6 +8,10 @@
 
 namespace Scraper\Controller;
 
+use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\Security\AccessManager;
+use Thelia\Core\Security\Resource\AdminResources;
+
 /**
  * Description of OptionsController
  *
