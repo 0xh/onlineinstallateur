@@ -27,8 +27,7 @@ class Common extends BaseAdminController
     public static function getProductsExternId()
     {
         $prods      = ProductQuery::create()
-         ->where(ProductTableMap::VISIBLE . " = 1")
-        ->limit(10);
+         ->where(ProductTableMap::VISIBLE . " = 1");
         $arrayProds = array();
         foreach ($prods as $prod) {
             array_push($arrayProds, array("extern_id" => substr($prod->getRef(), 3), "prod_id" => $prod->getId()));
