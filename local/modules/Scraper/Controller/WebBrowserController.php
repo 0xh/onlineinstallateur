@@ -207,7 +207,7 @@ class WebBrowserController extends BaseAdminController {
         if ($err) {
             $this->setLogger()->error("Error response #: " . $err);
         } else {
-            $this->setLogger()->error("Success response #: " . $response);
+           // $this->setLogger()->error("Success response #: " . $response);
         }
 
         return $response;
