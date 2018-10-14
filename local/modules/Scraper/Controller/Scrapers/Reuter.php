@@ -17,42 +17,33 @@ use Thelia\Controller\Admin\BaseAdminController;
  *
  * @author Catana Florin
  */
-class Reuter extends BaseAdminController
+class Reuter extends PriceScraper
 {
-
     public function getDataReuter()
     {
-        $dataReuter = new WebBrowserController("reuter-log");
-        $platform   = "Reuter";
+        $this->getData('reuter');
+        die('end-reuter');
+    }
+    
+    public function getPriceForProduct($webBrowser, $prodId)
+    {
+        $searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
+        $resultSelector = '.c-product-tile__link';
 
-        $dataReuter->init();
+        $searchPageResult = $webBrowser->getPage($searchUrl);
 
-        $prodIds = Common::getProductsExternId();
+        $html           = new SimpleHtmlDomController();
+        $html->load($searchPageResult);
+        $productResults = $html->find($resultSelector);
 
-        foreach ($prodIds as $prodId) {
+        $priceFromReuter = 0;
 
-            $searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
-            $resultSelector = '.c-product-tile__link';
-
-            $searchPageResult = $dataReuter->getPage($searchUrl);
-
-            $html           = new SimpleHtmlDomController();
-            $html->load($searchPageResult);
-            $productResults = $html->find($resultSelector);
-
-            $priceFromReuter = 0;
-
-            foreach ($productResults as $value) {
-                $priceFromReuter = $value->parent->attr["qa-data-price"];
-                $priceFromReuter = floatval($priceFromReuter);
-                break;
-            }
-
-            $dataReuter->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $priceFromReuter));
+        foreach ($productResults as $value) {
+            $priceFromReuter = $value->parent->attr["qa-data-price"];
+            $priceFromReuter = floatval($priceFromReuter);
+            break;
         }
-
-        $dataReuter->close();
-        die("end");
+        return $priceFromReuter;
     }
 
 }

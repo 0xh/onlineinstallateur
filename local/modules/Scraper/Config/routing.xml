@@ -16,8 +16,8 @@
         <default key="_controller">Scraper\Controller\Scrapers\Reuter::getDataReuter</default>
     </route>
 
-    <route id="scraper.epoq" path="/admin/scraper-epoq">
-        <default key="_controller">Scraper\Controller\Scrapers\Epoq::getDataEpoq</default>
+    <route id="scraper.epoq" path="/admin/scraper-megabad">
+        <default key="_controller">Scraper\Controller\Scrapers\Megabad::getDataMegabad</default>
     </route>
 
 </routes>
