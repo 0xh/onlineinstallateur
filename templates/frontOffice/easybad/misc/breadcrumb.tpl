@@ -1,9 +1,9 @@
 <nav class="nav-breadcrumb" role="navigation" aria-labelledby="breadcrumb-label">
-    <strong id="breadcrumb-label" class="sr-only">{intl l="You are here:"}</strong>
+    <strong id="breadcrumb-label" class="sr-only">{intl l="You are here:" d="fo.easybad"}</strong>
 
     <ul class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList" >
         <li itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement" ><a href="{navigate to="index"}" itemprop="item">
-            <span itemprop="name">{intl l="Home"}</span></a>
+                <span itemprop="name">{intl l="Home" d="fo.easybad"}</span></a>
             <meta itemprop="position" content="1">
         </li>
         {foreach $breadcrumbs as $breadcrumb}

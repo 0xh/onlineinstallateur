@@ -10,7 +10,7 @@
 {* Breadcrumb *}
 {block name='no-return-functions' append}
     {$breadcrumbs = [
-        ['title' => {intl l="Cart"}, 'url'=>{url path="/cart"}]
+        ['title' => {intl l="Cart" d="fo.easybad"}, 'url'=>{url path="/cart"}]
     ]}
 {/block}
 
@@ -18,12 +18,12 @@
     <div class="main">
         <article id="cart" class="col-main" role="main" aria-labelledby="main-label">
 
-            <h1 id="main-label" class="page-header">{intl l="Your Cart"}</h1>
+            <h1 id="main-label" class="page-header">{intl l="Your Cart" d="fo.easybad"}</h1>
 
 
             {ifloop rel="cartloop"}
             {include file="misc/checkout-progress.tpl" step="cart"}
-            <div id="errorStock" class="alert alert-warning" style="display:none;">{intl l="We apologize but some of the ordered products are not available any more."}</div>
+            <div id="errorStock" class="alert alert-warning" style="display:none;">{intl l="We apologize but some of the ordered products are not available any more." d="fo.easybad"}</div>
             {hook name="cart.top"}
 
             <div class="table-responsive">
@@ -39,20 +39,20 @@
                     <tr>
                         <th class="image">&nbsp;</th>
                         <th class="product">
-                            <span class="hidden-xs">{intl l="Product Name"}</span>
-                            <span class="visible-xs">{intl l="Name"}</span>
+                            <span class="hidden-xs">{intl l="Product Name" d="fo.easybad"}</span>
+                            <span class="visible-xs">{intl l="Name" d="fo.easybad"}</span>
                         </th>
                         <th class="unitprice">
-                            <span class="hidden-xs">{intl l="Unit Price incl. taxes"}</span>
-                            <span class="visible-xs">{intl l="Price"}</span>
+                            <span class="hidden-xs">{intl l="Unit Price incl. taxes" d="fo.easybad"}</span>
+                            <span class="visible-xs">{intl l="Price" d="fo.easybad"}</span>
                         </th>
                         <th class="qty">
-                            <span class="hidden-xs">{intl l="Quantity"}</span>
-                            <span class="visible-xs">{intl l="Qty"}</span>
+                            <span class="hidden-xs">{intl l="Quantity" d="fo.easybad"}</span>
+                            <span class="visible-xs">{intl l="Qty" d="fo.easybad"}</span>
                         </th>
                         <th class="subprice">
-                            <span class="hidden-xs">{intl l="Total incl. taxes"}</span>
-                            <span class="visible-xs">{intl l="Total"}</span>
+                            <span class="hidden-xs">{intl l="Total incl. taxes" d="fo.easybad"}</span>
+                            <span class="visible-xs">{intl l="Total" d="fo.easybad"}</span>
                         </th>
                     </tr>
                     </thead>
@@ -77,15 +77,15 @@
                                 <h3 class="name"><a href="{$PRODUCT_URL nofilter}">{$TITLE}</a></h3>
                                 <div class="product-options">
                                     <dl class="dl-horizontal">
-                                        <dt>{intl l="Available"} :</dt>
+                                        <dt>{intl l="Available" d="fo.easybad"} :</dt>
                                         {if $STOCK > 0}
-                                            <dd>{intl l="In Stock"}</dd>
+                                            <dd>{intl l="In Stock" d="fo.easybad"}</dd>
                                         {else}
                                             {$errorStock="TRUE"}
-                                            <dd>{intl l="Out of Stock"}</dd>
+                                            <dd>{intl l="Out of Stock" d="fo.easybad"}</dd>
                                         {/if}
                                         
-                                        <dt>{intl l="No."}</dt>
+                                        <dt>{intl l="No." d="fo.easybad"}</dt>
                                         <dd>{$REF}</dd>
                                         {loop type="attribute_combination" name="product_options" product_sale_elements="$PRODUCT_SALE_ELEMENTS_ID" order="manual"}
                                             <dt>{$ATTRIBUTE_TITLE}</dt>
@@ -104,12 +104,12 @@
 	                               			{/loop}
                                			{else}
 	                                        <dt>
-	                               				{intl l='Delivery time :'}
+                                                {intl l='Delivery time :' d="fo.easybad"}
 	                                        </dt>
 	                                         <dd>
 	                                         {loop type="product" name="the-loop-name" id={$PRODUCT_ID}}
 	                                         	{if $QUANTITY > 0}
-	                                         		{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}
+                                                    {intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}" d="fo.easybad"}
 	                                         	{else}
 	                                    			{hook name="product.delivery-delay" product={$PRODUCT_ID}}
 	                                    		{/if}
@@ -122,18 +122,24 @@
 
                                     
                                 </div>
-                                <a href="{token_url path="/cart/delete/%item_id" item_id=$ITEM_ID success_url={url path='/cart'}}" class="btn btn-link"><i class="fa fa-trash"></i> {intl l="Remove"}</a>
+                                <a href="{token_url path="/cart/delete/%item_id" item_id=$ITEM_ID success_url={url path='/cart'}}" class="btn btn-link"><i class="fa fa-trash"></i> {intl l="Remove" d="fo.easybad"}</a>
                             </td>
                             <td class="unitprice">
                                 {if $IS_PROMO == 1}
                                     {assign "real_price" $PROMO_TAXED_PRICE}
                                     {assign "real_total_price" $TOTAL_PROMO_TAXED_PRICE}
-                                    <div class="special-price"><span class="price">{format_money number=$PROMO_TAXED_PRICE}</span></div>
-                                    <small class="old-price">{intl l="instead of"} <span class="price">{format_money number=$TAXED_PRICE}</span></small>
+                                    <div class="special-price">
+                                        <span class="price">{format_money number=$PROMO_TAXED_PRICE}</span></div>
+                                        <small class="old-price">{intl l="instead of" d="fo.easybad"} 
+                                            <span class="price">{format_money number=$TAXED_PRICE}</span>
+                                        </small>
                                 {else}
                                     {assign "real_price" $TAXED_PRICE}
                                     {assign "real_total_price" $TOTAL_TAXED_PRICE}
-                                    <div class="special-price"><span class="price">{format_money number=$TAXED_PRICE}</span></div>
+                                    <div class="special-price">
+                                        <span class="price">{format_money number=$TAXED_PRICE}
+                                        </span>
+                                    </div>
                                 {/if}
                             </td>
                             <td class="qty">
@@ -149,10 +155,11 @@
                                                     {/for}
                                                 </select>
                                             {else}
-                                                <input name="quantity" class="form-control" type="number" min="1" max="{$STOCK}" value ="{$QUANTITY}">
+                                                <input name="quantity" class="form-control" type="number" 
+                                                       min="1" max="{$STOCK}" value ="{$QUANTITY}">
                                             {/if}
                                         </div>
-                                        <!--button type="submit" title="{intl l="Update Quantity"}" class="btn btn-primary sr-only">{intl l="+"}</button-->
+                                        <!--button type="submit" title="{intl l="Update Quantity" d="fo.easybad"}" class="btn btn-primary sr-only">{intl l="+" d="fo.easybad"}</button-->
                                     </form>
                                 </div>
                             </td>
@@ -170,16 +177,16 @@
                             <td class="product" colspan="2">
                                 <form action="{url path="/cart/country"}" class="form-inline" method="post">
                                     <h3>
-                                        {intl l="Estimated shipping "}
+                                        {intl l="Estimated shipping" d="fo.easybad"}
                                         {if $is_customizable == false}
                                             {loop type="country" name="countryLoop" id="$country_id"}
-                                            {intl l="for"} {$TITLE}
+                                            {intl l="for" d="fo.easybad"} {$TITLE}
                                             {/loop}
                                         {/if}
                                     </h3>
                                     {if $is_customizable}
                                     <div>
-                                        <label for="cart-country">{intl l="Select your country:"}</label>
+                                        <label for="cart-country">{intl l="Select your country:" d="fo.easybad"}</label>
                                         <select id="cart-country" name="country">
                                         {loop type="country" name="countryLoop" with_area="true"}
                                             <option value="{$ID}" {if $ID == $country_id }selected="selected" {/if}>{$TITLE}</option>
@@ -194,7 +201,7 @@
                                     </div>
                                     {else}
                                     <div class="alert alert-danger">
-                                        {intl l="No deliveries available for this cart and this country"}
+                                        {intl l="No deliveries available for this cart and this country" d="fo.easybad"}
                                     </div>
                                     {/if}
                                 </form>
@@ -227,10 +234,10 @@
                                 {form_field field='coupon-code'}
                                     <div class="{if $form_error}has-error{/if}">
                                         <div class="input-group">
-                                            <label class="control-label sr-only" for="code">{intl l='Code :'}</label>
-                                            <input id="coupon" class="form-control" type="text" name="{$name}" value="{$value}" placeholder="{intl l='Coupon code'}" required>
+                                            <label class="control-label sr-only" for="code">{intl l='Code :' d="fo.easybad"}</label>
+                                            <input id="coupon" class="form-control" type="text" name="{$name}" value="{$value}" placeholder="{intl l='Coupon code' d="fo.easybad"}" required>
                                             <span class="input-group-btn">
-                                                <button type="submit" class="btn btn-default">{intl l="Ok"}</button>
+                                                <button type="submit" class="btn btn-default">{intl l="Ok" d="fo.easybad"}</button>
                                             </span>
                                         </div>
                                         {if $form_error_message}<span class="help-block">{$form_error_message nofilter}</span>{/if}
@@ -244,13 +251,13 @@
                     {if $discount}
                         <tr>
                             <td colspan="3" class="empty">&nbsp;</td>
-                            <th class="discount">{intl l="Discount"}</th>
+                            <th class="discount">{intl l="Discount" d="fo.easybad"}</th>
                             <td><span class="price">{format_money number=$discount}</span></td>
                         </tr>
                     {/if}
                     <tr>
                         <td colspan="3" class="empty">&nbsp;</td>
-                        <th class="total">{intl l="Total incl. taxes"}</th>
+                        <th class="total">{intl l="Total incl. taxes" d="fo.easybad"}</th>
                         <td class="total">
                             <div class="total-price">
                                 {assign var="totalAmount" value={cart attr='total_taxed_price'} + $postageAmount }
@@ -268,7 +275,7 @@
             {/ifloop}
             {elseloop rel="cartloop"}
                 <div class="cart-warning alert alert-warning">
-                    <strong>{intl l="Warning"}!</strong> {intl l="You have no items in your shopping cart."}
+                    <strong>{intl l="Warning" d="fo.easybad"}!</strong> {intl l="You have no items in your shopping cart." d="fo.easybad"}
                 </div>
             {/elseloop}
 
@@ -279,7 +286,7 @@
         {ifloop rel="product_upsell"}
             <aside id="products-upsell" class="grid" role="complementary" aria-labelledby="products-upsell-label">
                 <div class="products-heading">
-                    <h3 id="products-upsell-label">{intl l="Upsell Products"}</h3>
+                    <h3 id="products-upsell-label">{intl l="Upsell Products" d="fo.easybad"}</h3>
                 </div>
 
                 <div class="products-content">
