@@ -47,7 +47,7 @@
         transform: translate(47%, -228%) !important;
     }
 }
-@media screen and (min-width: 450px){
+@media screen and (min-width: 391px){
     .navbar-default .navbar-cart>li{
         margin-top: 25px;
     }
