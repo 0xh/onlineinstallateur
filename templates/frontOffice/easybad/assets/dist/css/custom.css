@@ -190,13 +190,12 @@ h1.name{
 
 /*Custom EasyBad*/
 .main-header-top-bar{
-    background-color: #EEEFF4;
-    color:#000;
+    background-color: #295da7;
 }
 .main-header-top-bar .text_light,
 .main-header-top-bar .text_heavy,
 .main-header-top-bar .hotline-holder{
-    color: #0E95B3;
+    color: #FFF;
     font-size: 20px;
     line-height: 30px;
 }
@@ -226,7 +225,7 @@ h1.name{
 }
 .navbar.navbar-secondary{
     box-shadow: unset !important;
-    background-color: #10B4CF;
+    background-color: #FFF;
 }
 .sec-nav{
     float: left;
@@ -245,7 +244,7 @@ h1.name{
 }
 .header .nav-darkBlue{
     height: auto;
-    background: #347C92;
+    background: #000;
     color: white;
 }
 .nav-darkBlue .navbar-nav > ul{
@@ -294,7 +293,7 @@ h1.name{
 .highlighted-bg {
     color: #fff;
     font-weight: 500;
-    background-color: #86AC34;
+    background-color: #15589c;
     padding:3px 10px;
 
 }
@@ -331,7 +330,7 @@ article#product{
 }
 
 .teaser-bar {
-    background: radial-gradient(circle,#85AC37 5%,#000 100%);
+    background: radial-gradient(circle,#15589c 5%,#000 100%);
     padding: 0 .625rem;
     color:#FFF;
     border-radius: 5px;
@@ -391,11 +390,11 @@ section .product-image{
 
 }
 .btn-1{
-    background:#85ac37!important;
+    background:#15589c!important;
     color:#000!important;
 }
 .btn-1:hover{
-    background:#85ac37!important;
+    background:#15589c!important;
     color:#000!important;
 }
 
@@ -495,7 +494,10 @@ section .product-image{
         padding-right: 10px;
         margin-right: 0px;
         margin-bottom: 5px;
-        background-color: #347C92;
+        background-color: #696969;
+    }
+    .sec-nav .navbar-toggle:hover{
+        background-color: #696969;   
     }
     .navbar-default .navbar-toggle .icon-bar {
         background-color: #fff;
@@ -508,7 +510,8 @@ section .product-image{
         margin-top: 5px;
     }
     .sec-nav .navbar-toggle{
-        right: 15px
+        right: 15px;
+        top: 45px;
     }
     .search-container{
         padding-left: 0px;
@@ -620,4 +623,70 @@ section .product-image{
     line-height: 17px;
     color: #fff;
     background-color: #58585a;
+}
+
+figure.effect-honey {
+  background: #10B4CF;
+  overflow: hidden;
+  cursor: pointer;
+}
+figure.effect-honey img {
+  opacity: 0.9;
+  transition: opacity 0.35s;
+}
+figure.effect-honey:hover img {
+  opacity: 0.1;
+}
+figure.effect-honey h2 {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.5em;
+  height: 100%;
+  width: 100%;
+  text-align: center; 
+  transform: translate3d(0, 20px, 0);
+}
+figure.effect-honey h2 i {
+  font-style: normal;
+  opacity: 0;
+  transition: opacity 0.35s, transform 0.35s;
+  transform: translate3d(0, -50px, 0);
+  font-size:14px;
+  text-align: center; 
+  display:block
+}
+
+.inspiration-bath-size-style {
+    opacity: 0;
+}
+
+figure.effect-honey:hover .inspiration-bath-size-style {
+    opacity: 1;
+}
+
+figure.effect-honey h2 i.bath-size-style {
+  font-size:14px;
+   padding:10px;
+   margin:10px
+}
+figure.effect-honey h2 i.bath-price {
+  font-size:40px;
+  color:#fff;
+  border:4px solid #FFF;
+  padding:10px;
+  max-width:220px;
+  margin:10px auto;
+}
+
+figure.effect-honey figcaption::before,
+figure.effect-honey h2 {
+  transition: transform 0.35s;
+}
+figure.effect-honey:hover figcaption::before,
+figure.effect-honey:hover h2,
+figure.effect-honey:hover h2 i{
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }

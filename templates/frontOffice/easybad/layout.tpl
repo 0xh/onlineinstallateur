@@ -55,7 +55,6 @@ web : http://www.hausfabrik.at
         <link rel="stylesheet" href="{$asset_url}">
         {/stylesheets}
 
-
         {stylesheets file='assets/dist/css/minnu.css'}
         <link rel="stylesheet" href="{$asset_url}">
         {/stylesheets}

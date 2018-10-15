@@ -40,7 +40,7 @@ CREATE TABLE `filterconfigurator_configurator_i18n`
     `chapo` TEXT,
     `postscriptum` TEXT,
     PRIMARY KEY (`id`,`locale`),
-    CONSTRAINT `fk_configurator_i18n`
+    CONSTRAINT `fk_filterconfigurator_configurator_i18n`
         FOREIGN KEY (`id`)
         REFERENCES `filterconfigurator_configurator` (`id`)
         ON DELETE CASCADE
@@ -63,7 +63,7 @@ CREATE TABLE `filterconfigurator_configurator_image`
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
     INDEX `idx_configurator_image_id` (`configurator_id`),
-    CONSTRAINT `fk_configurator_image_id`
+    CONSTRAINT `fk_filterconfigurator_configurator_image_id`
         FOREIGN KEY (`configurator_id`)
         REFERENCES `filterconfigurator_configurator` (`id`)
         ON DELETE CASCADE
@@ -84,7 +84,7 @@ CREATE TABLE `filterconfigurator_configurator_image_i18n`
     `chapo` TEXT,
     `postscriptum` TEXT,
     PRIMARY KEY (`id`,`locale`),
-    CONSTRAINT `fk_configurator_image_i18n_id`
+    CONSTRAINT `fk_filterconfigurator_configurator_image_i18n_id`
         FOREIGN KEY (`id`)
         REFERENCES `filterconfigurator_configurator_image` (`id`)
         ON DELETE CASCADE
@@ -102,13 +102,13 @@ CREATE TABLE `filterconfigurator_configurator_features`
     `configurator_id` INTEGER,
     `feature_id` INTEGER,
     PRIMARY KEY (`id`),
-    INDEX `FI_conf_configurator_id` (`configurator_id`),
-    INDEX `FI_conf_feature_id` (`feature_id`),
-    CONSTRAINT `fk_conf_configurator_id`
+    INDEX `FI_filterconfigurator_conf_configurator_id` (`configurator_id`),
+    INDEX `FI_filterconfigurator_conf_feature_id` (`feature_id`),
+    CONSTRAINT `fk_filterconfigurator_conf_configurator_id`
         FOREIGN KEY (`configurator_id`)
         REFERENCES `filterconfigurator_configurator` (`id`)
         ON DELETE CASCADE,
-    CONSTRAINT `fk_conf_feature_id`
+    CONSTRAINT `fk_filterconfigurator_conf_feature_id`
         FOREIGN KEY (`feature_id`)
         REFERENCES `feature` (`id`)
         ON DELETE CASCADE

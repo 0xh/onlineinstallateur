@@ -2,10 +2,8 @@
 
 namespace Carousel\Hook\Front;
 
-use Carousel\Model\CarouselQuery;
 use Carousel\Model\CarouselHookQuery;
 use Carousel\Model\CarouselNameQuery;
-use Carousel\Controller\Front\ConfigController;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Log\Tlog;
@@ -26,6 +24,7 @@ class FrontHook extends BaseHook
 
     public function displayCarouselOnHook(HookRenderEvent $event)
     {
+        Tlog::getInstance()->error("carousel got here onhook");
         $carouselIDs = self::getIdHook($event->getCode());
 
         foreach ($carouselIDs as $carouselID) {

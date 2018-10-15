@@ -18,3 +18,4 @@ local/config/database.yml
 templates/frontOffice/default/assets/dist/css/custom-tinymce.css
 /local/media/
 /web/media/
+local/modules/Scraper/Log/

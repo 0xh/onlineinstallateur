@@ -1,11 +1,10 @@
 <?php
 namespace FilterConfigurator\Loop;
 
-use FilterConfigurator\Model\Base\ConfiguratorQuery;
-use FilterConfigurator\Model\Map\ConfiguratorI18nTableMap;
-use FilterConfigurator\Model\Map\ConfiguratorImageTableMap;
-use FilterConfigurator\Model\Map\ConfiguratorTableMap;
-use Propel\Runtime\ActiveQuery\ModelCriteria;
+use FilterConfigurator\Model\FilterConfiguratorQuery;
+use FilterConfigurator\Model\Map\FilterConfiguratorI18nTableMap;
+use FilterConfigurator\Model\Map\FilterConfiguratorImageTableMap;
+use FilterConfigurator\Model\Map\FilterConfiguratorTableMap;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -49,16 +48,16 @@ class FilterCategoryConfiguratorDetails extends BaseI18nLoop implements PropelSe
         
         $locale =$this->getCurrentRequest()->getSession()->getLang()->getLocale();
         
-        $search = ConfiguratorQuery::create()
-            ->addJoin(ConfiguratorTableMap::ID, ConfiguratorImageTableMap::CONFIGURATOR_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-            ->addJoin(ConfiguratorTableMap::ID, ConfiguratorI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
-            ->withColumn(ConfiguratorImageTableMap::ID, 'id_image' )
-            ->withColumn(ConfiguratorI18nTableMap::TITLE, 'title' )
-            ->withColumn(ConfiguratorI18nTableMap::DESCRIPTION, 'description' )
-            ->where(ConfiguratorTableMap::CATEGORY_ID.' = ?', $catId, \PDO::PARAM_STR)
-            ->where(ConfiguratorI18nTableMap::LOCALE.' = ?', $locale, \PDO::PARAM_STR)
-            ->where(ConfiguratorImageTableMap::POSITION.' = 1')
-            ->where(ConfiguratorImageTableMap::VISIBLE.' = 1');
+        $search = FilterConfiguratorQuery::create()
+        ->addJoin(FilterConfiguratorTableMap::ID, FilterConfiguratorImageTableMap::CONFIGURATOR_ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
+        ->addJoin(FilterConfiguratorTableMap::ID, FilterConfiguratorI18nTableMap::ID, \Propel\Runtime\ActiveQuery\Criteria::LEFT_JOIN)
+        ->withColumn(FilterConfiguratorImageTableMap::ID, 'id_image' )
+        ->withColumn(FilterConfiguratorI18nTableMap::TITLE, 'title' )
+        ->withColumn(FilterConfiguratorI18nTableMap::DESCRIPTION, 'description' )
+        ->where(FilterConfiguratorTableMap::CATEGORY_ID.' = ?', $catId, \PDO::PARAM_STR)
+        ->where(FilterConfiguratorI18nTableMap::LOCALE.' = ?', $locale, \PDO::PARAM_STR)
+        ->where(FilterConfiguratorImageTableMap::POSITION.' = 1')
+        ->where(FilterConfiguratorImageTableMap::VISIBLE.' = 1');
             
         return $search;
     }
