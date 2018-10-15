@@ -1,0 +1,166 @@
+<li class="item {$colClass|default:col-md} ">
+{if $SET_PSE_COUNT > 1}
+	{assign var="setHasSubmit" value = false} 
+{else} 
+	{assign var="setHasSubmit" value = true} 
+{/if} 
+{if	not $product_id} 
+	{assign var="set_id" value=$SET_ID} 
+{/if}
+	<article class="row" style="padding-left:15px; margin-bottom:35px;width:80%" itemscope itemtype="http://schema.org/Product">
+		{hook name="klimaset.top" set="$SET_ID"} 
+		<table border="0" cellpadding="1" celspacing="0" >	
+			<tbody >
+			<!-- <p>Set id {$SET_ID} {$SET_PSE_COUNT}, priority {$PRIORITY},efficiency {$EFFICIENCY}, complete power {$POWER}, composed image {$COMPOSED_IMAGE}, storage {$STORAGE}</p> -->
+			{$ROOMLABEL}<br>
+			{if $SET_ID != null}
+				{loop type="klima_products" name="product_list" setid=$SET_ID limit="8" }
+					{assign var="innen_price" value=$BEST_TAXED_PRICE}
+					{include file="klima_product-suggestion.html" product=$ID hasBtn=true hasDescription=true hasQuickView=true width="300" height="230"}
+				{/loop}
+			{else}
+			    no innen gerät gefunden <br>
+			{/if} 
+			
+			{if $SERVICE_INNER != null} 
+				{loop type="product" name="service_inner" id=$SERVICE_INNER limit="8" }
+					{assign var="service_price" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+			{else}
+			   no montage service gefunden <br>
+			{/if}
+			
+			{if $KAELTEMITTELLEITUNG != null}
+				{*loop type="product" name="kaeltemittellung" id=$KAELTEMITTELLEITUNG limit="8" }
+					{assign var="kaeltemittellung" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop*}
+			{else}
+				no kältemittelleitung wurde gefunden
+			{/if}
+			
+			{if $SERVICEMATERIAL != null}
+				{loop type="product" name="servicematerial" id=$SERVICEMATERIAL limit="8" }
+				{assign var="servicematerial" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop}
+			{else}
+				no servicematerial würde gefunden
+			{/if}
+			
+			{if $WANDKONSOLE != null}
+				{*loop type="product" name="wandkonsole" id=$WANDKONSOLE limit="8" }
+					{assign var="wandkonsole" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop*}
+			{/if}
+			
+			{if $PUMPE != null}
+				{*loop type="product" name="pumpe" id=$PUMPE limit="8" }
+					{assign var="pumpe" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop*}
+			{/if}
+			
+			{if $PUMPE_ZUBEHOER}
+				{*loop type="product" name="pumpe_zubehoer" id=$PUMPE_ZUBEHOER limit="8" }
+					{assign var="service_inner" value=$BEST_TAXED_PRICE}
+					{include file="klima_zubehoer-suggestion.html" product=$ID hasBtn=true}
+				{/loop*}
+			{/if}
+			
+		//disclaimer: Das Konfgurator Ergebnis beinhaltet keine außerordentlichen Umbaumaßnahmen. Irrtum und Fehler vorbehalten. Das Angebot wurde anhand Ihrer Angaben erstellt.
+		{assign var="set_price" value=($innen_price + $service_price + $kaeltemittellung + $servicematerial + $wandkonsole + $pumpe + $service_inner)}
+			<tr>
+				<td style="text-align:right;border-top:1px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;">SUMME exkl. Mwst.</td>
+				<td style="text-align:right;border-top:1px solid black;"><span class="price"> {$set_price}€</span></td>
+			</tr>
+		
+			<tr>
+				<td style="text-align:right;"></td>
+				<td style="text-align:left;"></td>
+				<td style="text-align:left;">zzgl. 20% Mwst.</td>
+				<td style="text-align:right;"><span class="price">{$SET_BEST_TAXED_PRICE*0.2}€</span></td>
+			</tr>
+			<tr>
+				<td style="text-align:right;border-top:1px solid black;border-bottom:2px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;border-bottom:2px solid black;"></td>
+				<td style="text-align:left;border-top:1px solid black;border-bottom:2px solid black;">SUMME inkl. Mwst.</td>
+				<td style="text-align:right;border-top:1px solid black;border-bottom:2px solid black;"><span class="price">{$SET_BEST_TAXED_PRICE*1.2}€</span></td>
+			</tr>
+			</tbody>
+		</table>
+		
+			{* Stock *} {assign var="set_current_stock_content" value = "in_stock"}
+			{if {config key="check-available-stock"} != 0} 
+				{if $SET_VIRTUAL == 0 &&$SET_QUANTITY <= 0} 
+					{assign var="set_current_stock_content" value ="out_stock"} 
+				{/if} 
+			{/if}
+		
+				{if $hasBtn == true} 
+					{if $setHasSubmit == true && $set_current_stock_content == "in_stock"} 
+						{form name="thelia.cart.add" }
+						<form id="form-product-details{$set_id}" action="{url path="/konfigurator/add" }" method="post" class="form-product">
+						{form_hidden_fields} 
+							<input type="hidden" name="view" value="product"> 
+							<input type="hidden" name="product_id" value="{$set_id}"> 
+							{form_field field="append"} 
+								<input type="hidden" name="{$name}" value="1"> 
+							{/form_field} 
+							{if $form_error}
+								<div class="alert alert-error">{$form_error_message}</div>
+							{/if} 
+							{form_field field='product_sale_elements_id'} 
+								<input type="hidden" class="pse-id" name="{$name}" value="{$SET_PRODUCT_SALE_ELEMENT}"{$attr}> 
+							{/form_field}
+							{form_field field="product"} 
+								<input id="{$label_attr.for}" type="hidden" name="{$name}" value="{$set_id}"{$attr} >
+							{/form_field}
+
+						<fieldset class="product-cart form-inline col-sm-3">
+							{form_field field='quantity'}
+							<div
+								class="form-group group-qty hide {if $error}has-error{elseif $value != "" && !$error}has-success{/if}">
+								<label for="{$label_attr.for}">{$label}</label> 
+								<input	type="number" name="{$name}" id="{$label_attr.for}"	class="form-control" value="{$value|default:1}" min="0" required>
+								{if $error } 
+									<span class="help-block">
+										<i class="fa fa-remove"></i> {$message}
+									</span> 
+								{elseif $value != "" && !$error} 
+									<span class="help-block">
+										<i class="fa fa"></i>
+									</span>
+								{/if}
+							</div>
+
+							{/form_field}
+							<div>
+								<div class="product-btn">
+									<button type="submit" class="btn btn-primary btn-block">
+										<i class="fa fa-shopping-cart"></i> {intl l="Add to cart" d="klimakonfigurator.fo.default"}
+									</button>
+								</div>
+							</div>
+						</fieldset>
+						</form>
+						{/form}
+				 		{else}
+							<div>
+								<div class="product-btn">
+									<a href="/?view=product&lang=de_DE&product_id=2301" class="btn btn-primary btn-block">
+									<i class="fa fa-eye"></i> {intl l="View product"}
+									</a>
+								</div>
+							</div>
+						{/if} 
+				{/if}				
+				
+						
+		{hook name="klimaset.bottom" product="{$product_id}"}
+	</article> <!-- /product -->
+</li>

@@ -1,0 +1,133 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+{block name="main-content"}
+
+<!-- Die besten Schnäppchen -->
+<!--======= Carousel icons -->
+    <div class="panel panel-default" id="carousel-icons">
+        <div>
+            <h2 class="title">{intl l="Die besten Schnäppchen"} ★</h2>
+        </div>
+        <div class="panel-body">
+            <div class="owl-icons-wrappeproducts-new-aktionenr">
+                <div class="product-slider">
+                    {loop name="selection_product" type="selection_product_related" selection_id={config key="aktionen_selection_product"}}
+                        <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+                                <div id="category-products">
+                                    <div class="products-content">
+                                        {loop name="product.details" type="product" id=$PRODUCT_ID}
+                                            {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="436" height="292" colClass="slider-spacing"}
+                                        {/loop}
+                                    </div>
+                                </div>
+                        </article>
+                    {/loop}
+                </div>
+            </div>
+        </div>
+    </div>
+<!--End Die besten Schnäppchen -->
+
+<!-- Unsere Bestseller -->
+    <div class="panel panel-default" id="carousel-icons">
+        <div>
+            <h2 class="title">{intl l="Unsere Bestseller"}</h2>
+        </div>
+        <div class="panel-body">
+            <div class="owl-icons-wrapper">               
+                <div class="product-slider">
+                    {loop name="selection_product" type="selection_product_related" selection_id={config key="aktionen_bestseller_selection"}}
+                        <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+                            <div id="category-products">
+                                <div class="products-content">
+                                    {loop name="product.details" type="product" id=$PRODUCT_ID}
+                                        {include file="includes/single-product.html" hasBtn=false hasDescription=false hasQuickView=false width="436" height="292" colClass="slider-spacing"}
+                                    {/loop}
+                                </div>
+                            </div>
+                        </article>
+                    {/loop}
+                </div>
+            </div>
+        </div>
+    </div>
+<!--End Unsere Bestseller -->
+
+<!-- Products new -->
+{ifloop rel="product_new"}
+    <section id="products-new-aktionen" class="grid">
+        <div class="products-heading">
+            <h2 class="title">{intl l="Latest"}</h2>
+            <a href="{url path="/view_all"  type="new"}" class="btn-all">{intl l="+ View All"}</a>
+            <div class="short-description" itemprop="description"></div>
+        </div>
+        <div class="products-content">
+            <ul class="list-unstyled products-grid row">
+                {loop name="product_new" type="product" limit="4" new="yes"}
+                   {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false}
+                {/loop}
+            </ul>
+        </div>
+    </section><!-- #products-new -->
+{/ifloop}
+<!--End Products new -->
+
+<!-- Products Offer -->
+{ifloop rel="current-sales"}
+    <section id="products-offer" class="grid ">
+    {loop name="current-sales" type="sale" limit="2"}
+        <section id="product-sale-{$ID}">
+            <div class="products-heading ">
+                <h2 class="title">{$SALE_LABEL}</h2>
+                <div class="short-description" itemprop="description">{$CHAPO}</div>
+            </div>
+
+            <div class="products-content">
+                <ul class="products-grid list-unstyled row">
+                    {loop name="products_in_sale" type="product" limit="4" sale=$ID}
+                        {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false}
+                    {/loop}
+                </ul>
+            </div>
+        </section><!-- #products-sale-XX -->
+    {/loop}
+    </section>
+{/ifloop}
+{* Display "regular" promos, if any, only if we don't have active sales *}
+
+{*elseloop rel="current-sales"*}
+    {ifloop rel="product_promo"}
+        <section id="product_promo_products-offer" class="grid">
+            <div class="products-heading">
+                <h2 class="title">{intl l="Offers" }</h2>
+                <a href="{url path="/view_all" type="offers"}" class="btn-all">{intl l=" +View All"}</a>
+             <div class="short-description" itemprop="description">{$CHAPO}</div>
+            </div>
+
+            <div class="products-content">
+                <ul class="products-grid list-unstyled row">
+                    {loop name="product_promo" type="product" limit="4" promo="yes" order="updated_reverse"}
+                        {include file="includes/single-product.html" colClass="col-md-3 col-sm-4" product_id=$ID hasBtn=false hasDescription=false width="436" height="292"}
+                    {/loop}
+                </ul>
+            </div>
+        </section><!-- #products-offer -->
+    {/ifloop}
+{*/elseloop*}
+<!--End Products Offer -->
+
+{/block}
+
+{block name="stylesheet"}
+    {stylesheets file='assets/dist/css/aktionen.css'}
+            <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+{/block}
+{block name="after-javascript-include"}
+{hook name="register.after-javascript-include"}
+{/block}
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}

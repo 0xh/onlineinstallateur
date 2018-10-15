@@ -17,7 +17,8 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
 use Thelia\Module\BaseModule;
 
-class RevenueDashboard extends BaseModule {
+class RevenueDashboard extends BaseModule
+{
 
     /** @var string */
     const DOMAIN_NAME = 'revenuedashboard';
@@ -29,22 +30,28 @@ class RevenueDashboard extends BaseModule {
      * Have fun !
      */
 
-    public function postActivation(ConnectionInterface $con = null) {
+    public function postActivation(ConnectionInterface $con = null)
+    {
+
         $database = new Database($con);
+
         $database->insertSql(null, [
-            __DIR__ . "/Config/thelia.sql"
+         __DIR__ . "/Config/thelia.sql"
         ]);
+
         $database->insertSql(null, [
-            __DIR__ . "/Config/hook.sql"
+         __DIR__ . "/Config/hook.sql"
         ]);
         return true;
     }
 
-    public function preDeactivation(ConnectionInterface $con = null) {
+    public function preDeactivation(ConnectionInterface $con = null)
+    {
         $database = new Database($con);
         $database->insertSql(null, [
-            __DIR__ . "/Config/deleteTable.sql"
+         __DIR__ . "/Config/deleteTable.sql"
         ]);
         return true;
     }
+
 }

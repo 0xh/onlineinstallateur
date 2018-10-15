@@ -1,0 +1,17 @@
+{function name=timeslottype slot=1}
+	{if $slot == 1}pjAsTimeAvailable
+		{elseif $slot == 2}pjAsTimeBooked
+		{elseif $slot == 3} pjAsTimeSelected
+		{elseif $slot == 4} pjAsTimeBooked
+		{elseif $slot == 5} pjAsTimeUnavailable
+		{elseif $slot == 6} pjAsTimeUnavailable
+	{/if}
+{/function}
+
+<div class="timetable">
+    {foreach from=$day_hours_array item=timeslot}
+    <div class="col-sm-3 timeslot text-uppercase pjAsTime {{timeslottype slot=$timeslot.type}|regex_replace:'/[\r\t\n ]/':''}">
+        <a href="#" class="asSlotBlock asSlotAvailable" data-start="{$timeslot.start}" data-start_ts="{$timeslot.start_ts}" data-end="{$timeslot.end}" data-end_ts="{$timeslot.end_ts}" data-employee_id="{$timeslot.employee_id}" data-service_id="{$service_id}">{$timeslot.start}-{$timeslot.end}</a>
+    </div>
+   {/foreach}
+</div>

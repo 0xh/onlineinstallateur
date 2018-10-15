@@ -1,0 +1,283 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="So Geht's" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/sogehts"}]]}
+{/block}
+
+{block name="full_with_block"}
+    {hook name="full_with_block.sogehts"}
+    
+    <div class="outer-container back object html" style="padding-top: 0 !important;
+    color: white;
+    background-image: url({image file='assets/dist/img/dummy_planungstarten.jpg'});
+    background-size: cover;
+    background-position: center;">
+  <div class="innerback" style="min-height: 600px;    background-color: rgba(52, 124, 146, 0.6);">
+    <div class="container">
+      <h2 class="text-center" style="margin-top: 42px;margin-bottom:15px; color: white;">
+        DEIN BADPROJEKT MIT EASYBAD!
+      </h2>
+      <div class="row">
+        <p class="text-center" style="margin-bottom: 35px; font-size: 22px;">
+          Deine Idee, Dein Plan, Dein Projekt!
+        </p>
+      </div>
+      <div class="row" style="margin-left: 10%;">
+        <div class="">
+          
+            <style>
+              .nrkreis  {
+                width:40px;
+                height:40px;
+                line-height:40px;
+                border-radius:50%;
+                background:white;
+                font-size:25px;
+                color:#347C92;
+                text-align:center;
+                font-weight:bold;
+              }
+            </style>
+          
+           <div class="col-xs-1" style="padding-right: 130px;">
+            <div class="nrkreis">1</div>
+          </div>
+           <div class="col-xs-3">
+             <div>
+              <img src="{image file='assets/dist/img/arrow.png'}" >
+            </div>   
+          </div>
+           <div class="col-xs-1" style="padding-left: 20px;padding-right: 100px;">
+            <div class="nrkreis">2</div>
+          </div>
+           <div class="col-xs-3">
+            <div>
+              <img src="{image file='assets/dist/img/arrow.png'}" >
+            </div>   
+          </div>
+           <div class="col-xs-1" style="">
+            <div class="nrkreis">3</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12"> 
+          <div class="col-xs-4"> 
+            <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <div class="card-body" style="margin-top:170px">
+                <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">Lass Dich online inspirieren:</h5>
+                <p class="card-text">Mit unseren Badideen kannst du dir einen ersten persönlichen Eindruck verschaffen.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <div class="card-body" style="margin-top:170px">
+                <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">Plane Deine eigenens Bad!</h5>
+                <p class="card-text">Unser Badplaner - die unkomplizierte Lösung zur Verwirklichung deiner Ideen.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="card" style="text-align: center; background-color: #4A5C70; padding:10px; border-radius:10px 10px 10px 10px;position:relative">
+              <iframe style="position:absolute;width:360px; height:168px;left:0;top:0;border-radius:10px 10px 0 0" src="https://www.youtube.com/embed/6SbDYEpCPXA?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+              <div class="card-body" style="margin-top:170px">
+                <h5 class="text-center" style="margin-top:20px;text-transform: uppercase;font-weight:bold;">komponenten bestellen!</h5>
+                <p class="card-text">Wir liefern dir deine Produkte für dein Traumbad in kürzester Zeit nach Hause.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    <!-- zweiter Container-->
+<div class="outer-container object html" style="background-color:#E6E6E6;padding-top:20px; ">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom:15px;color:#4A5C70">
+       HOL DIR DEINE INSPIRATION
+      </h2>
+      <div class="row">
+        <p class="text-center" style="margin-bottom: 5px; font-size: 22px;">
+          Tausend und eine Badidee als Inspirationsgeber.
+        </p>
+      </div>
+      <div class="row" style="margin-top:25px;">
+        <p class="text-center" style="margin-bottom: 1px;font-size: 22px;color:#347C92;">
+          Aktuelle Trends von erfahrenen Architekten
+        </p>
+        <p class="text-center" style="margin-bottom: 1px;font-size: 22px;color:#347C92;">
+          Komplette Artikelliste einfach bestellen
+        </p>
+        <p class="text-center" style="margin-bottom: 5px; font-size: 22px;color:#347C92;">
+          Jedes Design kann im Badplaner adaptiert werden
+        </p>
+      </div>
+        <div class="row" style="margin-top:25px;">
+          <div class="col-xs-12">
+
+    <div class="main row">
+        <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+            <div class=" row " >
+                {$features=$smarty.get.features}
+
+                {loop name="inspirations" type="selection_list" feature_availability="{$features|replace:'_':' : '}" visible="true" limit="3"}  
+
+                <div class="col-sm-4 ">
+                    <figure class="effect-honey mb-5">
+                        {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                        <div class="herz"></div>
+                        <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                        {ifhook rel="selection-wish-list-selection.wish-button"}
+                        {hook name="selection-wish-list-selection.wish-button" selection_id={$SELECTION_ID}}
+                        {/ifhook}
+                        {/loop}
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}     
+                        {assign var = "bath_size" value = $FTITLE}
+                        {/loop} 
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=386 show_feature_value_selected=true}     
+                        {assign var = "bath_style" value = $FTITLE}
+                        {/loop} 
+                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}  
+                        {assign var = "feature_title" value = $F_TITLE}    
+                        {assign var = "feature_value" value = $FTITLE}
+                        {/loop} 
+                        <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">
+                            <h2>
+                                <span class="inspiration-bath-size-style">{intl  l="Serie"} {$SELECTION_TITLE}</span>
+                                <i class="bath-size-style">{$bath_size}|{$bath_style}</i>
+                                {assign var = "selection_total" value=0}
+                                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
+                                {$selection_total=$selection_total+$selection_price}
+                                {/loop}   
+                                <i class="bath-price">{$selection_total|number_format:0:",":"."} €</i>
+                            </h2> 
+                        </a>
+                    </figure>
+                </div>
+                {/loop} 
+            </div>
+        </article>
+    </div>
+          </div>
+        </div>
+    </div>
+</div>
+<!-- vierter Container-->
+<div class="outer-container object html" style="background-color:#E6E6E6;padding-top:20px; ">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom:15px;color:#4A5C70">
+         BESTELLEN UND LIEFERN LASSEN
+      </h2>
+      <div class="row">
+        <p class="text-center" style="margin-bottom: 5px; font-size: 22px;">
+          Wir liefern dir deine Produkte in kürzester Zeit nach Hause.
+        </p>
+      </div>
+        <div class="row" style="margin-top:25px;">
+          <div class="col-xs-12">
+             <div class="col-xs-4">
+                <div class="card" style="text-align: center; padding:10px;">
+                    <img class="card-img-top" src="{image file='assets/dist/img/carticon.JPEG'}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="text-center" style="font-size:18px;margin-top:20px;text-transform: uppercase;font-weight:bold;">PRODUKTE BESTELLEN</h5>
+                      <p class="card-text">mit Bestpreis-Garantie</p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="card" style="text-align: center; padding:10px;">
+                    <img class="card-img-top" src="{image file='assets/dist/img/cardicon.JPEG'}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="text-center" style="font-size:18px;margin-top:20px;text-transform: uppercase;font-weight:bold;">PAYMENT SERVICE</h5>
+                      <p class="card-text">ohne Risiko</p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-xs-4">
+                <div class="card" style="text-align: center; padding:10px;">
+                    <img class="card-img-top" src="{image file='assets/dist/img/packageicon.JPEG'}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="text-center" style="font-size:18px;margin-top:20px;text-transform: uppercase;font-weight:bold;">GRATIS LIEFERUNG</h5>
+                      <p class="card-text">frei Haus</p>
+                    </div>
+                 </div>
+              </div>
+            </div>
+         </div>
+       </div>   
+</div>
+<!-- fünfter Container-->
+<div class="outer-container object html" style="background-color:#FFFFFF;padding-top:20px; ">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom:15px;color:#4A5C70">
+        SERVICE
+      </h2>
+      <div class="row">
+        <p class="text-center" style="margin-bottom: 5px; font-size: 22px;">
+          Riesen Markenauswahl sofort verfügbar
+        </p>
+      </div>
+      <div class="row" style="margin-top:25px;margin-left: 70px;">
+        <div class="col-xs-4"> 
+          <div class="card-body">  
+            <div class="col-xs-4"><img src= "{image file='assets/dist/img/cartcheckicon.JPEG'}" alst="Bestellcheck"></div>
+            <div class="col-xs-8" style="margin-top: 25px;font-size: 12px;color:#347C92;">
+              Bestellcheck
+            </div>  
+          </div>
+        </div>
+        <div class="col-xs-4"> 
+          <div class="card-body">  
+            <div class="col-xs-4"><img src="{image file='assets/dist/img/discounticon.JPEG'}" alst="bestpreis"></div>
+            <div class="col-xs-8" style="margin-top: 25px;font-size: 12px;color:#347C92;">
+              Bestpreis-Garantie
+            </div>  
+          </div>
+        </div>
+        <div class="col-xs-4"> 
+          <div class="card-body">  
+            <div class="col-xs-4"><img src="{image file='assets/dist/img/paymentcareful.JPEG'}" alst="kaufenohnerisiko"></div>
+            <div class="col-xs-8" style="margin-top: 25px;font-size: 12px;color:#347C92;">
+              Kaufen ohne Risiko
+            </div>  
+          </div>
+        </div>
+      </div>
+      <div class="row" style="">
+         <img src="{image file='assets/dist/img/logoslist.JPEG'}" alt="logolist">
+      </div> 
+    </div>
+
+  
+           
+</div><!-- /.layout -->
+{/block}	
+
+{block name="main-content"}
+{/block}
+
+{block name="stylesheet"}
+    {hook name="category.stylesheet"}
+    {hook name="register.stylesheet"}
+    {stylesheets file='assets/src/css/custom.css'}
+    <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+{/block}
+
+{block name="after-javascript-include"}
+    {hook name="category.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+    {hook name="category.javascript-initialization"}
+{/block}

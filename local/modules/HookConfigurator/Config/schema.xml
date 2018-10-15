@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+    
+    <table name="configurator" namespace="HookConfigurator\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="name" size="255" type="VARCHAR" />
+        <column name="parameters" type="LONGVARCHAR" />
+        <behavior name="timestampable" />
+    </table>
+    
+    <table name="configurator_hook" namespace="HookConfigurator\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="configurator_id" type="INTEGER" />
+        <column name="hook_id" type="INTEGER" />
+        <column name="hook_code" size="255" type="VARCHAR" />
+        <foreign-key foreignTable="configurator" name="fk_configurator_hook" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="configurator_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="hook" name="fk_configurator_hook_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="hook_id"/>
+        </foreign-key>
+    </table>
+    
+    <table name="configurator_email" namespace="HookConfigurator\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column defaultValue="0" name="with_search_result" required="true" type="TINYINT" />
+        <column defaultValue="1" name="id_category_search" required="true" type="INTEGER" />
+        <column defaultValue="1" name="visible_form_contact" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_vorname" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_vorname" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_nachname" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_nachname" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_str" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_str" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_plz" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_plz" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_ort" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_ort" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_telefon" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_telefon" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_email" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_email" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_terms" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_terms" required="true" type="TINYINT" />
+        <column defaultValue="1" name="required_send" required="true" type="TINYINT" />
+        <column defaultValue="1" name="visible_send" required="true" type="TINYINT" />
+        <column defaultValue="1" name="send_email" required="true" type="TINYINT" />
+        <column name="template_email_name_customer" size="255" type="VARCHAR" />
+        <column name="template_email_name_admin" size="255" type="VARCHAR" />
+        <column name="template_redirect_search" size="255" type="VARCHAR" />
+    </table>
+    
+    <table name="configurator_elements" namespace="HookConfigurator\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="configurator_id" primaryKey="true" required="true" type="INTEGER" />
+        <column defaultValue="1" name="visible" required="true" type="TINYINT" />
+        <column name="question" size="255" type="VARCHAR" />
+        <column name="type" size="10" type="VARCHAR" />
+        <column name="parameters" type="LONGVARCHAR" />
+        <foreign-key foreignTable="configurator" name="fk_configurator" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="configurator_id"/>
+        </foreign-key>
+    </table>
+    
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

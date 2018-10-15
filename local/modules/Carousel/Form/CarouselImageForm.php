@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace Carousel\Form;
 
@@ -24,27 +25,6 @@ use Thelia\Form\BaseForm;
  */
 class CarouselImageForm extends BaseForm
 {
-    /**
-     * @inheritdoc
-     */
-    protected function buildForm()
-    {
-        $translator = Translator::getInstance();
-        $this->formBuilder
-            ->add(
-                'file',
-                'file',
-                [
-                    'constraints' => [
-                        new Image()
-                    ],
-                    'label' => $translator->trans('Carousel image', [], Carousel::DOMAIN_NAME),
-                    'label_attr' => [
-                        'for' => 'file'
-                    ]
-                ]
-            );
-    }
 
     /**
      * @return string the name of you form. This name must be unique
@@ -53,4 +33,25 @@ class CarouselImageForm extends BaseForm
     {
         return 'carousel_image';
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function buildForm()
+    {
+        $translator = Translator::getInstance();
+        $this->formBuilder
+         ->add(
+          'file', 'file', [
+          'constraints' => [
+           new Image()
+          ],
+          'label'       => $translator->trans('Carousel image', [], Carousel::DOMAIN_NAME),
+          'label_attr'  => [
+           'for' => 'file'
+          ]
+          ]
+        );
+    }
+
 }

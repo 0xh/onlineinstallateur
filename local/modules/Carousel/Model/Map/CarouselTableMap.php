@@ -58,7 +58,7 @@ class CarouselTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 11;
 
     /**
      * The number of lazy-loaded columns
@@ -68,12 +68,22 @@ class CarouselTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /**
      * the column name for the ID field
      */
     const ID = 'carousel.ID';
+
+    /**
+     * the column name for the CAROUSEL_ID field
+     */
+    const CAROUSEL_ID = 'carousel.CAROUSEL_ID';
+
+    /**
+     * the column name for the VISIBLE field
+     */
+    const VISIBLE = 'carousel.VISIBLE';
 
     /**
      * the column name for the FILE field
@@ -91,11 +101,6 @@ class CarouselTableMap extends TableMap
     const URL = 'carousel.URL';
 
     /**
-     * the column name for the VISIBLE field
-     */
-    const VISIBLE = 'carousel.VISIBLE';
-
-    /**
      * the column name for the CREATED_AT field
      */
     const CREATED_AT = 'carousel.CREATED_AT';
@@ -104,6 +109,21 @@ class CarouselTableMap extends TableMap
      * the column name for the UPDATED_AT field
      */
     const UPDATED_AT = 'carousel.UPDATED_AT';
+
+    /**
+     * the column name for the VERSION field
+     */
+    const VERSION = 'carousel.VERSION';
+
+    /**
+     * the column name for the VERSION_CREATED_AT field
+     */
+    const VERSION_CREATED_AT = 'carousel.VERSION_CREATED_AT';
+
+    /**
+     * the column name for the VERSION_CREATED_BY field
+     */
+    const VERSION_CREATED_BY = 'carousel.VERSION_CREATED_BY';
 
     /**
      * The default string format for model objects of the related table
@@ -126,12 +146,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'File', 'Position', 'Url', 'Visible', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'file', 'position', 'url', 'visible', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID, CarouselTableMap::FILE, CarouselTableMap::POSITION, CarouselTableMap::URL, CarouselTableMap::VISIBLE, CarouselTableMap::CREATED_AT, CarouselTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'FILE', 'POSITION', 'URL', 'VISIBLE', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'file', 'position', 'url', 'visible', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'CarouselId', 'Visible', 'File', 'Position', 'Url', 'CreatedAt', 'UpdatedAt', 'Version', 'VersionCreatedAt', 'VersionCreatedBy', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'carouselId', 'visible', 'file', 'position', 'url', 'createdAt', 'updatedAt', 'version', 'versionCreatedAt', 'versionCreatedBy', ),
+        self::TYPE_COLNAME       => array(CarouselTableMap::ID, CarouselTableMap::CAROUSEL_ID, CarouselTableMap::VISIBLE, CarouselTableMap::FILE, CarouselTableMap::POSITION, CarouselTableMap::URL, CarouselTableMap::CREATED_AT, CarouselTableMap::UPDATED_AT, CarouselTableMap::VERSION, CarouselTableMap::VERSION_CREATED_AT, CarouselTableMap::VERSION_CREATED_BY, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CAROUSEL_ID', 'VISIBLE', 'FILE', 'POSITION', 'URL', 'CREATED_AT', 'UPDATED_AT', 'VERSION', 'VERSION_CREATED_AT', 'VERSION_CREATED_BY', ),
+        self::TYPE_FIELDNAME     => array('id', 'carousel_id', 'visible', 'file', 'position', 'url', 'created_at', 'updated_at', 'version', 'version_created_at', 'version_created_by', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -141,12 +161,12 @@ class CarouselTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'File' => 1, 'Position' => 2, 'Url' => 3, 'Visible' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'visible' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        self::TYPE_COLNAME       => array(CarouselTableMap::ID => 0, CarouselTableMap::FILE => 1, CarouselTableMap::POSITION => 2, CarouselTableMap::URL => 3, CarouselTableMap::VISIBLE => 4, CarouselTableMap::CREATED_AT => 5, CarouselTableMap::UPDATED_AT => 6, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FILE' => 1, 'POSITION' => 2, 'URL' => 3, 'VISIBLE' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'file' => 1, 'position' => 2, 'url' => 3, 'visible' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'CarouselId' => 1, 'Visible' => 2, 'File' => 3, 'Position' => 4, 'Url' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, 'Version' => 8, 'VersionCreatedAt' => 9, 'VersionCreatedBy' => 10, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'carouselId' => 1, 'visible' => 2, 'file' => 3, 'position' => 4, 'url' => 5, 'createdAt' => 6, 'updatedAt' => 7, 'version' => 8, 'versionCreatedAt' => 9, 'versionCreatedBy' => 10, ),
+        self::TYPE_COLNAME       => array(CarouselTableMap::ID => 0, CarouselTableMap::CAROUSEL_ID => 1, CarouselTableMap::VISIBLE => 2, CarouselTableMap::FILE => 3, CarouselTableMap::POSITION => 4, CarouselTableMap::URL => 5, CarouselTableMap::CREATED_AT => 6, CarouselTableMap::UPDATED_AT => 7, CarouselTableMap::VERSION => 8, CarouselTableMap::VERSION_CREATED_AT => 9, CarouselTableMap::VERSION_CREATED_BY => 10, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CAROUSEL_ID' => 1, 'VISIBLE' => 2, 'FILE' => 3, 'POSITION' => 4, 'URL' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, 'VERSION' => 8, 'VERSION_CREATED_AT' => 9, 'VERSION_CREATED_BY' => 10, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'carousel_id' => 1, 'visible' => 2, 'file' => 3, 'position' => 4, 'url' => 5, 'created_at' => 6, 'updated_at' => 7, 'version' => 8, 'version_created_at' => 9, 'version_created_by' => 10, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -166,12 +186,16 @@ class CarouselTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('CAROUSEL_ID', 'CarouselId', 'INTEGER', 'carousel_name', 'ID', true, null, null);
+        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 1);
         $this->addColumn('FILE', 'File', 'VARCHAR', false, 255, null);
         $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
         $this->addColumn('URL', 'Url', 'VARCHAR', false, 255, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('VERSION', 'Version', 'INTEGER', false, null, 0);
+        $this->addColumn('VERSION_CREATED_AT', 'VersionCreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('VERSION_CREATED_BY', 'VersionCreatedBy', 'VARCHAR', false, 100, null);
     } // initialize()
 
     /**
@@ -179,7 +203,9 @@ class CarouselTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('CarouselName', '\\Carousel\\Model\\CarouselName', RelationMap::MANY_TO_ONE, array('carousel_id' => 'id', ), 'CASCADE', null);
         $this->addRelation('CarouselI18n', '\\Carousel\\Model\\CarouselI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CarouselI18ns');
+        $this->addRelation('CarouselVersion', '\\Carousel\\Model\\CarouselVersion', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'CarouselVersions');
     } // buildRelations()
 
     /**
@@ -193,6 +219,7 @@ class CarouselTableMap extends TableMap
         return array(
             'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
             'i18n' => array('i18n_table' => '%TABLE%_i18n', 'i18n_phpname' => '%PHPNAME%I18n', 'i18n_columns' => 'alt, title, description, chapo, postscriptum', 'locale_column' => 'locale', 'locale_length' => '5', 'default_locale' => '', 'locale_alias' => '', ),
+            'versionable' => array('version_column' => 'version', 'version_table' => '', 'log_created_at' => 'true', 'log_created_by' => 'true', 'log_comment' => 'false', 'version_created_at_column' => 'version_created_at', 'version_created_by_column' => 'version_created_by', 'version_comment_column' => 'version_comment', ),
         );
     } // getBehaviors()
     /**
@@ -203,6 +230,7 @@ class CarouselTableMap extends TableMap
         // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
                 CarouselI18nTableMap::clearInstancePool();
+                CarouselVersionTableMap::clearInstancePool();
             }
 
     /**
@@ -344,20 +372,28 @@ class CarouselTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(CarouselTableMap::ID);
+            $criteria->addSelectColumn(CarouselTableMap::CAROUSEL_ID);
+            $criteria->addSelectColumn(CarouselTableMap::VISIBLE);
             $criteria->addSelectColumn(CarouselTableMap::FILE);
             $criteria->addSelectColumn(CarouselTableMap::POSITION);
             $criteria->addSelectColumn(CarouselTableMap::URL);
-            $criteria->addSelectColumn(CarouselTableMap::VISIBLE);
             $criteria->addSelectColumn(CarouselTableMap::CREATED_AT);
             $criteria->addSelectColumn(CarouselTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(CarouselTableMap::VERSION);
+            $criteria->addSelectColumn(CarouselTableMap::VERSION_CREATED_AT);
+            $criteria->addSelectColumn(CarouselTableMap::VERSION_CREATED_BY);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.CAROUSEL_ID');
+            $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.FILE');
             $criteria->addSelectColumn($alias . '.POSITION');
             $criteria->addSelectColumn($alias . '.URL');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.VERSION');
+            $criteria->addSelectColumn($alias . '.VERSION_CREATED_AT');
+            $criteria->addSelectColumn($alias . '.VERSION_CREATED_BY');
         }
     }
 

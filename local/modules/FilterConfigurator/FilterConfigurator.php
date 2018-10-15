@@ -25,10 +25,15 @@ class FilterConfigurator extends BaseModule
     {
     	$database = new Database($con);
     	
-    	$database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
-    	$database->insertSql(null, [
-    			__DIR__ . "/Config/thelia.sql"
-    	]);
+//    	$database->insertSql(null, [__DIR__ . "/Config/insert_hooks.sql"]);
+//        
+//    	$database->insertSql(null, [
+//    			__DIR__ . "/Config/thelia.sql"
+//    	]);
+        
+        $database->insertSql(null, array(__DIR__ . "/Config/thelia.sql"));
+        
+            \Thelia\Log\Tlog::getInstance()->error("Intra in metoda post activation");
     	return true;
     }
 }

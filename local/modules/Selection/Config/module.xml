@@ -6,14 +6,14 @@
     <descriptive locale="en_US">
         <title>Selection of product and/or content</title>
     </descriptive>
-    <descriptive locale="fr_FR">
-        <title>Selection de produits et/ou de contenus</title>
+    <descriptive locale="de_DE">
+        <title>Selection of product and/or content</title>
     </descriptive>
     <languages>
         <language>en_US</language>
-        <language>fr_FR</language>
+        <language>de_DE</language>
     </languages>
-    <version>1.1.2</version>
+    <version>1.1.5</version>
     <authors>
         <author>
             <name>Maxime BRUCHET</name>

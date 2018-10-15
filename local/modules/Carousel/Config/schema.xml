@@ -6,6 +6,8 @@
 
     <table name="carousel">
         <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="carousel_id" type="INTEGER" required="true" />
+        <column defaultValue="1" name="visible" required="true" type="TINYINT" />
         <column name="file" type="VARCHAR" size="255" />
         <column name="position" type="INTEGER" />
         <column name="alt" size="255" type="VARCHAR" />
@@ -13,12 +15,45 @@
         <column name="title" size="255" type="VARCHAR" />
         <column name="description" type="CLOB" />
         <column name="chapo" type="LONGVARCHAR" />
-        <column name="visible" required="true" type="TINYINT" />
         <column name="postscriptum" type="LONGVARCHAR" />
+        <index>
+            <index-column name="carousel_id" />
+        </index> 
+        <foreign-key foreignTable="carousel_name" name="fk_carousel_name_id" onDelete="CASCADE">
+            <reference foreign="id" local="carousel_id" />
+        </foreign-key>   
         <behavior name="timestampable" />
         <behavior name="i18n">
             <parameter name="i18n_columns" value="alt, title, description, chapo, postscriptum" />
         </behavior>
+        <behavior name="versionable">
+            <parameter name="log_created_at" value="true" />
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+    </table>
+    
+    <table name="carousel_hook">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="carousel_id" type="INTEGER" />
+        <column name="hook_id" type="INTEGER" />
+        <column name="hook_code" size="255" type="VARCHAR" />
+        <foreign-key foreignTable="carousel_name" name="fk_carousel_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="carousel_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="hook" name="fk_carousel_hook_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="hook_id"/>
+        </foreign-key>
+    </table>
+
+    <table name="carousel_name">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="name" type="VARCHAR" size="255" />
+        <column name="template" size="255" type="VARCHAR" />
+        <behavior name="versionable">
+            <parameter name="log_created_at" value="true" />
+            <parameter name="log_created_by" value="true" />
+        </behavior>
+        <behavior name="timestampable" />
     </table>
 
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />

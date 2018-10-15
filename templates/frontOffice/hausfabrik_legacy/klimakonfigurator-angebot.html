@@ -1,0 +1,283 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-konfigurator{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Ihr persönliches Angebot" d="hookkonfigurator.fo.default"}, 'url'=>{url path="/klimakonfigurator-angebot"}]]}
+{/block}
+
+{block name="main-content"}
+    <div class="main">
+            <!--h1 id="main-label" class="page-header">{intl l="Dein Angebot" d="hookkonfigurator.fo.default"}</h1-->
+
+	<div class="container1">
+	 {block name="klima-angebot-form"}    
+		<div>
+            {form name="klima.angebot"}
+				<form id="form-klimaangebot"   
+     class="form-horizontal fs-form fs-form-full dropzone" action="{url path="/klimakonfigurator-angebot/sendmail"}" method="post" autocomplete="off" enctype="multipart/form-data">
+                {form_field field='error_message'}
+                	<input type="hidden" name="{$name}" value="{intl l="missing or invalid data"}" />
+                {/form_field} 
+                {form_hidden_fields}
+                {if $form_error}<div class="alert alert-danger">{$form_error_message}</div>{/if}
+                 
+					<fieldset id="register-info" class="panel panel-default">
+                    <div class="panel-heading">
+                        1. {intl l="Persönliche Informationen"}
+                    </div>
+
+                    <div class="panel-body">
+                    <div class="col-sm-7">
+                        {form_field field="firstname"}
+                        <div class="form-group group-firstname{if $error} has-error{/if}">
+                            <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                            <div class="control-input col-sm-5">
+                                <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder firstname"}" value="{$value}" {if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                    {assign var="error_focus" value="true"}
+                                {/if}
+                            </div>
+                            
+                        </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="lastname"}
+                            <div class="form-group group-lastname{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder lastname"}" value="{$value}" {if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="email"}
+                        <div class="form-group group-email{if $error} has-error{/if}">
+                            <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+
+                            <div class="control-input col-sm-5">
+                                <input type="email" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="255" placeholder="{intl l="Placeholder email"}" value="{$smarty.get.email|default:$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                {if $error }
+                                    <span class="help-block">{$message}</span>
+                                    {assign var="error_focus" value="true"}
+                                {/if}
+                            </div>
+                        </div><!--/.form-group-->
+                        {/form_field}
+                       
+                        {form_field field="phone"}
+                            <div class="form-group group-phone{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder phone"}" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="cellphone"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label col-sm-4" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input col-sm-5">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="{intl l="Placeholder cellphone"}" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                    </div>
+                    <div class="col-sm-5"><img src="{image file='assets/dist/img/angebot.png'}" alt="Persönliches Angebot"></div>
+                    </div>
+                    
+                </fieldset>
+                <fieldset  class="panel panel-default">
+                     <div class="panel-heading">
+                        2. {intl l="Wohnungsplan/Fotobegehung"}
+                    </div>
+                    <div class="panel-body" id="imsirun">
+                    {form_field field="image_upload"}
+						<div class="fallback">
+    						<input name="file" type="file" id="{$label_attr.for}" multiple />
+  						</div>
+  						<div class="dz-default dz-message">
+  							<span>Fotos hier ablegen</span>
+  						</div>
+  						<div id="previews" >
+  						</div>
+                    {/form_field}
+                    </div>  
+                </fieldset>
+                <fieldset  class="panel panel-default">
+                     <div class="panel-heading">
+                        3. {intl l="Zusätzliche Daten"}
+                    </div>
+                    <div class="panel-body">
+                    {form_field field="building_etage"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label" for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="5" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="etage"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}{if $required} <span class="required">*</span>{/if}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="3" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="gebaeudeart"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                    <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                        {form_field field="marke"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                                <div class="control-input">
+                                    <input type="text" name="{$name}" id="{$label_attr.for}" class="form-control" maxlength="20" placeholder="z.B Gree" value="{$value}"{if $required} aria-required="true" required{/if}{if !isset($error_focus) && $error} autofocus{/if}>
+                                    {if $error }
+                                        <span class="help-block">{$message}</span>
+                                        {assign var="error_focus" value="true"}
+                                    {/if}
+                                </div>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                         {form_field field="geraetetyp"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label><br>
+    				                    <select name="{$name}" id="{$label_attr.for}{$choice->value}" class="fs-anim-lower">
+                              					{foreach $choices as $choice}
+                            						<option value="{$choice->value}"{if $value === {$choice->value}} checked{/if}>{$choice->label}</option>
+							 					{/foreach}
+                            				</select>
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        {form_field field="distance"}
+                            <div class="form-group group-cellphone{if $error} has-error{/if}">
+                                <label class="control-label " for="{$label_attr.for}">{$label}</label>
+                               <br>
+    				                    {foreach $choices as $choice}
+                                		<span><input id="{$label_attr.for}{$choice->value}" name="{$name}" type="radio" value="{$choice->value}"{if $value === {$choice->value}} checked{/if}><label for="q7b" class="radio-conversion fs-field-label-sm">{$choice->label}</label></span>
+                                	{/foreach}
+                               
+                            </div><!--/.form-group-->
+                        {/form_field}
+                        
+                    <div class="form-group group-btn">
+                    <div class="control-btn col-sm-5 col-sm-offset-3">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-chevron-right"></i> {intl l="Senden"}</button>
+                    </div>
+                </div><!--/.form-group-->
+                    </div>  
+                </fieldset>
+                    
+
+				</form><!-- /fs-form -->
+                {/form}
+			</div><!-- /fs-form-wrap -->
+        {/block}
+		</div><!-- /container -->
+            
+            <form 
+     ></form>
+            
+		<section id="products-new">	
+			<div class="products-heading">  
+            	<div id="waermebedarf"></div>        
+			</div>
+			<div id="category-products">
+            </div><!-- /#category-products -->
+		</section><!-- #products-heizung -->	
+		
+		<div id="product_suggestion">
+			<ul id="products"></ul>
+		</div>
+    </div><!-- /.layout -->
+{/block}
+
+{block name="stylesheet"}
+    {stylesheets file='assets/dist/css/dropzone.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+	{hook name="register.stylesheet"}
+{/block}
+
+{block name="after-javascript-include"}
+ <script>
+ Dropzone.options.formKlimaangebot = {
+
+		  // Prevents Dropzone from uploading dropped files immediately
+		  autoProcessQueue: false,
+		  uploadMultiple: true,
+		  addRemoveLinks: true,
+		  parallelUploads: 10,
+		  maxFilesize: 256,
+		  clickable: false,
+		  previewsContainer: '#previews',
+		  hiddenInputContainer: "#imsirun",
+		  capture:"#imsirun",
+	      dictDefaultMessage: "Drop files here to upload",
+	      dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+	      dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
+	      dictFileTooBig: "File is too big ( { { filesize } } MiB). Max filesize: { { maxFilesize } } MiB.",
+	      dictInvalidFileType: "You can't upload files of this type.",
+	      dictResponseError: "Server responded with { { statusCode } } code.",
+	      dictCancelUpload: "Cancel upload",
+	      dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+	      dictRemoveFile: "Remove file",
+	      dictRemoveFileConfirmation: null,
+	      dictMaxFilesExceeded: "You can not upload any more files.",
+	      
+		  init: function() {
+              alert("ani")
+		    var submitButton = document.querySelector("#form-klimaangebot");
+		        myDropzone = this; // closure
+
+		    submitButton.addEventListener("click", function(e) {
+		    	e.preventDefault();
+		      myDropzone.processQueue(); // Tell Dropzone to process all queued files.
+		    });
+		  },
+	      success: function(file,response){
+	    	  document.open();
+	    	    document.write(response);
+	    	    document.close();
+	    	    window.history.pushState( { "html":response,"pageTitle":response.pageTitle } ,"", "/klimakonfigurator-angebot/success");
+	      }
+		};
+</script>
+
+
+{hook name="register.after-javascript-include"}
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="register.javascript-initialization"}
+{/block}

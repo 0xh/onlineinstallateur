@@ -1,6 +1,7 @@
-SET FOREIGN_KEY_CHECKS = 0;
-
-DROP TABLE IF EXISTS `carousel`;
-DROP TABLE IF EXISTS `carousel_i18n`;
-
-SET FOREIGN_KEY_CHECKS = 1;
+-- SET FOREIGN_KEY_CHECKS = 0;
+-- 
+-- DROP TABLE IF EXISTS `carousel`;
+-- DROP TABLE IF EXISTS `carousel_name`;
+-- DROP TABLE IF EXISTS `carousel_i18n`;
+-- 
+-- SET FOREIGN_KEY_CHECKS = 1;

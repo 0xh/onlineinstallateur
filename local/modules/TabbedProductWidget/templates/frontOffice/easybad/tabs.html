@@ -1,0 +1,67 @@
+{stylesheets source="TabbedProductWidget" file='assets/css/tabstyles.css'}
+  <link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}
+
+<div class="allTabs">
+    <div class="tabs">
+        <div class="cat-container container">
+           {$tabbedProductCategories = {config key="tabbed_product_categories" default="false"}}
+		   {if $tabbedProductCategories != "false"}
+    			{$catIndex = explode(',',$tabbedProductCategories)}
+	            <ul class="nav nav-tabs">
+	                {loop type="category" name="categories" id="$tabbedProductCategories" need_count_child="no"}
+	                    {if $catIndex|@count == 0 }
+	                        <li class="active" ><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {else}
+	                        <li><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {/if}
+	                    {$catIndex[] = $ID}
+	                {/loop}
+	            </ul>
+    		{else}
+	            <ul class="nav nav-tabs">
+	                {loop type="category" name="categories" parent="0" need_count_child="no"}
+	                    {if $catIndex|@count == 0 }
+	                        <li class="active" ><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {else}
+	                        <li><a data-toggle="tab" href="#category_{$ID}">{$TITLE}</a></li>
+	                    {/if}
+	                    {$catIndex[] = $ID}
+	                {/loop}
+	            </ul>
+            {/if}
+        </div>
+    </div>
+
+    <div class="prducts-container container">
+        <div class="tab-content">
+            {foreach $catIndex as $value}           
+                {if $value@key == 0}
+                    <div id="category_{$value}" class="tab-pane fade in active">
+                        <div id="category-products">
+                            <div class="products-content">
+                                <ul class="list-unstyled products-grid row">
+                                    {loop name="products_tabs" type="product" limit="4" category="$value"}
+                                        {include file="includes/single-product.html" colClass="col-xs-12 col-sm-6 col-md-4 col-lg-3" product_id=$ID hasBtn=false hasDescription=false width="245" height="245"}
+                                    {/loop}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {else}
+                    <div id="category_{$value}" class="tab-pane fade">
+                        <div id="category-products">
+                            <div class="products-content">
+                                <ul class="list-unstyled products-grid row">
+                                    {loop name="products_tabs" type="product" limit="4" category="$value"}
+                                        {include file="includes/single-product.html" colClass="col-xs-12 col-sm-6 col-md-4 col-lg-3" product_id=$ID hasBtn=false hasDescription=false width="245" height="245"}
+                                    {/loop}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
+            {/foreach}
+        </div>
+    </div>
+</div>

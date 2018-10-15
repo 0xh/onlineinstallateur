@@ -1,0 +1,143 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='Revenue Dashboard'}{/block}
+
+{block name="main-content"} 
+    {assign page {$smarty.get.page|default:1}}
+
+    <div class="general-block-decorator dashboard">
+        {include file = "menu-links.html"}
+
+        <form action="{url path='/admin/module/revenue-wholesale-selling-prices'}" method="get">
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-sm-2">
+                    <h5>{intl l="Product id:"}</h5>
+                    <input type="text" name="product_id" class="form-control" value="{trim($smarty.get.product_id)}" autocomplete="off">
+                </div>
+                <div class="col-sm-2">
+                    <h5>{intl l="Title:"}</h5>
+                    <input type="text" name="title" class="form-control" value="{trim($smarty.get.title)}" autocomplete="off">
+                </div>
+                <div class="col-sm-2">
+                    <h5>{intl l="Search:"}</h5>
+                    <button type="submit" class="btn btn-info form-control">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <tr style="font-weight: bold; font-size: 15px;">
+                <td>{intl l="Id"}.</td>
+                <td>{intl l="Product id"}</td>
+                <td>{intl l="Title"}</td>
+                <td>{intl l="Our selling Price with TVA"}</td>
+                <td>{intl l="Purchase price"}</td>
+                <td>{intl l="Google"}</td>
+                <td>{intl l="Amazon"}</td>
+                <td>{intl l="Skybad"}</td>
+                <td>{intl l="Reuter"}</td>
+                <td>{intl l="Megabad"}</td>
+                <td>{intl l="Geizhals"}</td>
+                <td>{intl l="Edit price"}</td>
+            </tr>
+            {assign var="total" value="0"}
+            {loop name="selling.prices.loop" type="selling.prices.loop" page={$page} limit=100}
+            <tr>
+                <td>{$id}.</td>
+                <td>
+                    <a href="{url path='/admin/products/update?product_id='}{$product_id}">{$product_id}</a>
+                </td>
+                <td>{$title}</td>
+                <td>
+                    {loop type="product" name="the-loop-product" id=$product_id}
+                    {$BEST_TAXED_PRICE|number_format:2:".":","}
+                    {/loop}
+                </td>
+                {assign var="first_price" value=","|explode:$first_price_concat}
+                {assign var="platform" value=","|explode:$platform_concat}
+                {assign var="platform_first_price" value=""}
+                {foreach from=$platform key=k item=foo}
+                    {$platform_first_price[$foo] = $first_price[$k]}
+                {/foreach}
+                {assign var="min_price" value=0}
+                {assign var="max_price" value=0}
+                {foreach from=$platform_first_price item=foo}
+                    {if $foo < $min_price}
+                        {$min_price = $foo}
+                    {/if}
+
+                    {if $foo > $max_price}
+                        {$max_price = $foo}
+                    {/if}
+                {/foreach}
+                <td>{$purchase_price|number_format:2:".":","}</td>
+                <td 
+                    {if $platform_first_price["Google"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Google"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Google"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Amazon"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Amazon"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Amazon"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Skybad"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Skybad"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Skybad"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Reuter"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Reuter"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Reuter"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Megabad"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Megabad"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Megabad"]|number_format:2:".":","}
+                </td>
+                <td 
+                    {if $platform_first_price["Geizhals"] == $min_price} style="background-color: greenyellow;" {/if}
+                    {if $platform_first_price["Geizhals"] == $max_price} style="background-color: sandybrown;" {/if}>
+                    {$platform_first_price["Geizhals"]|number_format:2:".":","}
+                </td>
+                <td>
+                    <form action="{url path='/admin/module/revenue-wholesale-selling-update-price/'}" method="post">
+                        <input type="hidden" name="update-product-id" value="{$product_id}"/>
+                        {assign var="calc_price" value=($purchase_price + $purchase_price*16/100 + $delivery_cost) + ($purchase_price + $purchase_price*16/100 + $delivery_cost)*20/100}
+                        <input type="text" class="update-product-price-edit-{$product_id}" onchange="changePrice({$product_id});" name="update-product-price-edit" style="width: 95px;" value="{if $calc_price < $min_price}{$min_price}{else}{$calc_price}{/if}" /> 
+                        <input type="hidden" class="update-product-price-{$product_id}" name="update-product-price" style="width: 95px;" value="{($purchase_price + $purchase_price*16/100 + $delivery_cost)}" /> 
+                        <input type="submit" class="btn btn-success" value="Update" />
+                    </form>
+                </td>
+            </tr>
+            {/loop}
+        </table>
+
+        <tfoot>
+            <tr>
+                <td colspan="100">
+                    {include
+                file = "includes/pagination.html"
+                loop_ref       = "selling.prices.loop"
+                max_page_count = 100
+                page_url       = {url path="/admin/module/revenue-wholesale-selling-prices"  product_id=$smarty.get.product_id title=$smarty.get.title }
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </div>
+
+    <script>
+        function changePrice(prodId) {
+            $(".update-product-price-edit-" + prodId).val();
+            $(".update-product-price-" + prodId).val(5 / 6 * $(".update-product-price-edit-" + prodId).val());
+
+        }
+
+    </script>            
+{/block}

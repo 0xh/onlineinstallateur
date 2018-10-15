@@ -1,0 +1,28 @@
+<li>
+    {form_field field="{$element.name}"} 
+    <div class="frage {$element.name}">
+        <h3>
+            <label class="question_label" for="q15">{intl l="{$label}"}{if $element.required eq true }*{/if}</label>
+        </h3>
+        <span>
+            <p><span style="display: block; float: left;">€: {$element.attr.min}</span> <span style="display: block; float: right;">€: {$element.attr.max}</span></p>
+            <input type="range" min="{$element.attr.min}" max="{$element.attr.max}" value="{($element.attr.max/2)|string_format:"%d"}" name="{$name}" class="slider" oninput="setValue({$element.name})" id="myRange_{$element.name}" {if $element.required eq true }required{/if}>
+            <p style="margin-top: 20px; color: #79b5fd; font-weight: 500; font-size: 30px;">€: <span id="value_selected_{$element.name}">{($element.attr.max/2)|string_format:"%d"}</span></p>
+            <input type="button" name="next" class="simpleNext btn" value="{intl l='Weiter'}" />
+        </span>
+    </div>
+    {/form_field}
+</li>
+
+<script>
+    function setValue(id) {
+        var slider = document.getElementById("myRange_" + id);
+        var output = document.getElementById("value_selected_" + id);
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+        }
+    }
+
+</script>

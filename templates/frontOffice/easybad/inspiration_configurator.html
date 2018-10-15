@@ -1,0 +1,69 @@
+{extends file='layout.tpl'}
+
+{block name="init"}
+{$category_id={category attr="id"}}
+{/block}
+
+
+{* Body Class *}
+{block name="body-class"}page-category{/block}
+
+{* Page Title *}
+{block name='no-return-functions' append}
+{if $category_id}
+    {loop name="category.seo.title" type="category" id=$category_id limit="1"}
+        {$page_title = {$META_TITLE}}
+    {/loop}
+{/if}
+{/block}
+
+{* Meta *}
+{block name="meta"}
+{if $category_id}
+    {loop name="category.seo.meta" type="category" id=$category_id limit="1"}
+        {include file="includes/meta-seo.html"}
+    {/loop}
+{/if}
+{/block}
+
+{* Feeds *}
+{block name="feeds"}
+{if $category_id}
+    <link rel="alternate" type="application/rss+xml" title="{intl l='All products in'} {category attr='title'}" href="{url path="/feed/catalog/%lang/%category_id" lang={lang attr="locale"} category_id={category attr="id"}}" />
+{/if}
+{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+{if $category_id}
+    {$breadcrumbs = []}
+    {loop name="category_path" type="category-path" category=$category_id}
+        {$breadcrumbs[] = ['title' => {$TITLE}, 'url'=> {$URL nofilter}]}
+    {/loop}
+{/if}
+{/block}
+
+{block name="full_with_block"}
+	{hook name="full_with_block.configurator.inspiration"}
+{/block}
+
+{* Content *}
+{block name="main-content"}
+
+
+{/block}
+
+
+{block name="stylesheet"}
+{hook name="category.stylesheet"}
+{hook name="criteria-search.search-css"}
+
+{/block}
+
+{block name="after-javascript-include"}
+
+{/block}
+
+{block name="javascript-initialization"}
+{hook name="category.javascript-initialization"}
+{/block}

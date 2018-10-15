@@ -7,7 +7,7 @@ use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Loop\Argument\Argument;
-use FilterConfigurator\Model\ConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery;
 
 class FilterConfiguratorRelation extends BaseLoop implements ArraySearchLoopInterface
 {
@@ -23,7 +23,7 @@ class FilterConfiguratorRelation extends BaseLoop implements ArraySearchLoopInte
 	{
 		$configurator = array();
 	
-		$search = ConfiguratorFeaturesQuery::create()
+		$search = FilterConfiguratorFeaturesQuery::create()
 			->filterByConfiguratorId($this->getConfiguratorId())
 			->filterByFeatureId($this->getFeatureId())
 			->findOne();

@@ -73,16 +73,10 @@ abstract class SelectionI18n implements ActiveRecordInterface
     protected $title;
 
     /**
-     * The value for the header field.
+     * The value for the description field.
      * @var        string
      */
-    protected $header;
-
-    /**
-     * The value for the footer field.
-     * @var        string
-     */
-    protected $footer;
+    protected $description;
 
     /**
      * The value for the chapo field.
@@ -432,25 +426,14 @@ abstract class SelectionI18n implements ActiveRecordInterface
     }
 
     /**
-     * Get the [header] column value.
+     * Get the [description] column value.
      * 
      * @return   string
      */
-    public function getHeader()
+    public function getDescription()
     {
 
-        return $this->header;
-    }
-
-    /**
-     * Get the [footer] column value.
-     * 
-     * @return   string
-     */
-    public function getFooter()
-    {
-
-        return $this->footer;
+        return $this->description;
     }
 
     /**
@@ -576,46 +559,25 @@ abstract class SelectionI18n implements ActiveRecordInterface
     } // setTitle()
 
     /**
-     * Set the value of [header] column.
+     * Set the value of [description] column.
      * 
      * @param      string $v new value
      * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
      */
-    public function setHeader($v)
+    public function setDescription($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->header !== $v) {
-            $this->header = $v;
-            $this->modifiedColumns[SelectionI18nTableMap::HEADER] = true;
+        if ($this->description !== $v) {
+            $this->description = $v;
+            $this->modifiedColumns[SelectionI18nTableMap::DESCRIPTION] = true;
         }
 
 
         return $this;
-    } // setHeader()
-
-    /**
-     * Set the value of [footer] column.
-     * 
-     * @param      string $v new value
-     * @return   \Selection\Model\SelectionI18n The current object (for fluent API support)
-     */
-    public function setFooter($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->footer !== $v) {
-            $this->footer = $v;
-            $this->modifiedColumns[SelectionI18nTableMap::FOOTER] = true;
-        }
-
-
-        return $this;
-    } // setFooter()
+    } // setDescription()
 
     /**
      * Set the value of [chapo] column.
@@ -772,25 +734,22 @@ abstract class SelectionI18n implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SelectionI18nTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
             $this->title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionI18nTableMap::translateFieldName('Header', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->header = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SelectionI18nTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionI18nTableMap::translateFieldName('Footer', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->footer = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SelectionI18nTableMap::translateFieldName('Chapo', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SelectionI18nTableMap::translateFieldName('Chapo', TableMap::TYPE_PHPNAME, $indexType)];
             $this->chapo = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : SelectionI18nTableMap::translateFieldName('Postscriptum', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SelectionI18nTableMap::translateFieldName('Postscriptum', TableMap::TYPE_PHPNAME, $indexType)];
             $this->postscriptum = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : SelectionI18nTableMap::translateFieldName('MetaTitle', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : SelectionI18nTableMap::translateFieldName('MetaTitle', TableMap::TYPE_PHPNAME, $indexType)];
             $this->meta_title = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SelectionI18nTableMap::translateFieldName('MetaDescription', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : SelectionI18nTableMap::translateFieldName('MetaDescription', TableMap::TYPE_PHPNAME, $indexType)];
             $this->meta_description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : SelectionI18nTableMap::translateFieldName('MetaKeywords', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : SelectionI18nTableMap::translateFieldName('MetaKeywords', TableMap::TYPE_PHPNAME, $indexType)];
             $this->meta_keywords = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -800,7 +759,7 @@ abstract class SelectionI18n implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = SelectionI18nTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = SelectionI18nTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \Selection\Model\SelectionI18n object", 0, $e);
@@ -1030,11 +989,8 @@ abstract class SelectionI18n implements ActiveRecordInterface
         if ($this->isColumnModified(SelectionI18nTableMap::TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'TITLE';
         }
-        if ($this->isColumnModified(SelectionI18nTableMap::HEADER)) {
-            $modifiedColumns[':p' . $index++]  = 'HEADER';
-        }
-        if ($this->isColumnModified(SelectionI18nTableMap::FOOTER)) {
-            $modifiedColumns[':p' . $index++]  = 'FOOTER';
+        if ($this->isColumnModified(SelectionI18nTableMap::DESCRIPTION)) {
+            $modifiedColumns[':p' . $index++]  = 'DESCRIPTION';
         }
         if ($this->isColumnModified(SelectionI18nTableMap::CHAPO)) {
             $modifiedColumns[':p' . $index++]  = 'CHAPO';
@@ -1071,11 +1027,8 @@ abstract class SelectionI18n implements ActiveRecordInterface
                     case 'TITLE':                        
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
                         break;
-                    case 'HEADER':                        
-                        $stmt->bindValue($identifier, $this->header, PDO::PARAM_STR);
-                        break;
-                    case 'FOOTER':                        
-                        $stmt->bindValue($identifier, $this->footer, PDO::PARAM_STR);
+                    case 'DESCRIPTION':                        
+                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                     case 'CHAPO':                        
                         $stmt->bindValue($identifier, $this->chapo, PDO::PARAM_STR);
@@ -1157,24 +1110,21 @@ abstract class SelectionI18n implements ActiveRecordInterface
                 return $this->getTitle();
                 break;
             case 3:
-                return $this->getHeader();
+                return $this->getDescription();
                 break;
             case 4:
-                return $this->getFooter();
-                break;
-            case 5:
                 return $this->getChapo();
                 break;
-            case 6:
+            case 5:
                 return $this->getPostscriptum();
                 break;
-            case 7:
+            case 6:
                 return $this->getMetaTitle();
                 break;
-            case 8:
+            case 7:
                 return $this->getMetaDescription();
                 break;
-            case 9:
+            case 8:
                 return $this->getMetaKeywords();
                 break;
             default:
@@ -1209,13 +1159,12 @@ abstract class SelectionI18n implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getLocale(),
             $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getHeader(),
-            $keys[4] => $this->getFooter(),
-            $keys[5] => $this->getChapo(),
-            $keys[6] => $this->getPostscriptum(),
-            $keys[7] => $this->getMetaTitle(),
-            $keys[8] => $this->getMetaDescription(),
-            $keys[9] => $this->getMetaKeywords(),
+            $keys[3] => $this->getDescription(),
+            $keys[4] => $this->getChapo(),
+            $keys[5] => $this->getPostscriptum(),
+            $keys[6] => $this->getMetaTitle(),
+            $keys[7] => $this->getMetaDescription(),
+            $keys[8] => $this->getMetaKeywords(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1270,24 +1219,21 @@ abstract class SelectionI18n implements ActiveRecordInterface
                 $this->setTitle($value);
                 break;
             case 3:
-                $this->setHeader($value);
+                $this->setDescription($value);
                 break;
             case 4:
-                $this->setFooter($value);
-                break;
-            case 5:
                 $this->setChapo($value);
                 break;
-            case 6:
+            case 5:
                 $this->setPostscriptum($value);
                 break;
-            case 7:
+            case 6:
                 $this->setMetaTitle($value);
                 break;
-            case 8:
+            case 7:
                 $this->setMetaDescription($value);
                 break;
-            case 9:
+            case 8:
                 $this->setMetaKeywords($value);
                 break;
         } // switch()
@@ -1317,13 +1263,12 @@ abstract class SelectionI18n implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setLocale($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setHeader($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setFooter($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setChapo($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setPostscriptum($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setMetaTitle($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setMetaDescription($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setMetaKeywords($arr[$keys[9]]);
+        if (array_key_exists($keys[3], $arr)) $this->setDescription($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setChapo($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPostscriptum($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setMetaTitle($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setMetaDescription($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setMetaKeywords($arr[$keys[8]]);
     }
 
     /**
@@ -1338,8 +1283,7 @@ abstract class SelectionI18n implements ActiveRecordInterface
         if ($this->isColumnModified(SelectionI18nTableMap::ID)) $criteria->add(SelectionI18nTableMap::ID, $this->id);
         if ($this->isColumnModified(SelectionI18nTableMap::LOCALE)) $criteria->add(SelectionI18nTableMap::LOCALE, $this->locale);
         if ($this->isColumnModified(SelectionI18nTableMap::TITLE)) $criteria->add(SelectionI18nTableMap::TITLE, $this->title);
-        if ($this->isColumnModified(SelectionI18nTableMap::HEADER)) $criteria->add(SelectionI18nTableMap::HEADER, $this->header);
-        if ($this->isColumnModified(SelectionI18nTableMap::FOOTER)) $criteria->add(SelectionI18nTableMap::FOOTER, $this->footer);
+        if ($this->isColumnModified(SelectionI18nTableMap::DESCRIPTION)) $criteria->add(SelectionI18nTableMap::DESCRIPTION, $this->description);
         if ($this->isColumnModified(SelectionI18nTableMap::CHAPO)) $criteria->add(SelectionI18nTableMap::CHAPO, $this->chapo);
         if ($this->isColumnModified(SelectionI18nTableMap::POSTSCRIPTUM)) $criteria->add(SelectionI18nTableMap::POSTSCRIPTUM, $this->postscriptum);
         if ($this->isColumnModified(SelectionI18nTableMap::META_TITLE)) $criteria->add(SelectionI18nTableMap::META_TITLE, $this->meta_title);
@@ -1418,8 +1362,7 @@ abstract class SelectionI18n implements ActiveRecordInterface
         $copyObj->setId($this->getId());
         $copyObj->setLocale($this->getLocale());
         $copyObj->setTitle($this->getTitle());
-        $copyObj->setHeader($this->getHeader());
-        $copyObj->setFooter($this->getFooter());
+        $copyObj->setDescription($this->getDescription());
         $copyObj->setChapo($this->getChapo());
         $copyObj->setPostscriptum($this->getPostscriptum());
         $copyObj->setMetaTitle($this->getMetaTitle());
@@ -1511,8 +1454,7 @@ abstract class SelectionI18n implements ActiveRecordInterface
         $this->id = null;
         $this->locale = null;
         $this->title = null;
-        $this->header = null;
-        $this->footer = null;
+        $this->description = null;
         $this->chapo = null;
         $this->postscriptum = null;
         $this->meta_title = null;

@@ -1,0 +1,81 @@
+{extends file="layout.tpl"}
+
+{block name="main-content"}
+    <div class="row">
+        <h3>{intl l='Ihr individuelles Angebot'}</h3>
+        <p>{intl l='Ihre Antworten werden an unseren Experten übermittelt und Sie werden bald kontaktiert.'}</p>
+        <form action="{url path='/success'}" method="post">    
+            {form name="hookconfig.form.contact"}
+            {form_hidden_fields}
+            <input type="hidden" name="product_id" value="{$product_id}">
+            <div class="row">
+
+                <div class="col-md-6">                 
+                    {form_field field="vorname"} 
+                    <label class="" for="q15">{intl l="{$label}"}*</label>
+                    <div class="inputholder">
+                        <input type="text" class="ht-input" id="{$label_attr.for}" name="{$name}" placeholder="" required></textarea>  
+                    </div>
+                    {/form_field}
+                </div>
+                <div class="col-md-6">                
+                    {form_field field="nachname"} 
+                    <label class="" for="q15">{intl l="{$label}"}*</label>
+                    <div class="inputholder">
+                        <input type="text" class="ht-input" id="{$label_attr.for}" name="{$name}" placeholder="" required></textarea>
+                    </div>                    
+                    {/form_field}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6"> 
+                    {form_field field="telefon"} 
+                    <label class="" for="q15">{intl l="{$label}"}*</label>
+                    <div class="inputholder">
+                        <input type="text" class="ht-input" id="{$label_attr.for}" name="{$name}" placeholder="" required></textarea>
+                    </div>
+                    {/form_field}
+                </div>
+                <div class="col-md-6"> 
+                    {form_field field="email"} 
+                    <label class="" for="q15">{intl l="{$label}"}*</label>
+                    <div class="inputholder">
+                        <input type="email" class="ht-input" id="{$label_attr.for}" name="{$name}" placeholder="" required></textarea>
+                    </div>
+                    {/form_field}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"> 
+                    {form_field field="angaben"} 
+                    <label class="" for="q15">{intl l="{$label}"}*</label>
+                    <div class="inputholder">
+                        <textarea class="inputTextarea ht-textarea"  rows="5" cols="50"  id="{$label_attr.for}" name="{$name}" placeholder="{$element.placeholder}" required></textarea>
+                    </div>
+                    {/form_field}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    {form_field field="terms"} 
+                    <div class="inputholder">
+                        <input type="checkbox" class="" id="{$label_attr.for}" name="{$name}" placeholder="{$element.placeholder}" required> <label class="" for="q15">{intl l="{$label}"}*</label>
+                    </div>
+                    {/form_field}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"> 
+                    {form_field field="Send"} 
+                    <div class="text-right ">        
+                        <input   class="btn ht-button" type="submit" name="submit" value="{intl l='Angebot anfordern'}" id="push_configurator_data">
+                    </div>
+                    {/form_field}
+                </div>
+            </div>
+            {/form}
+        </form>
+    </div>
+{/block}
+

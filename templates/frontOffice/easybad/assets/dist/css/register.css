@@ -1,0 +1,43 @@
+.page-register .content_register #main-label{
+    text-align: center;
+    font-weight: 300;
+    color: #1E2831;
+    font-size: 32px;
+}
+.page-register .content_register #form-register #register-info .panel-heading,
+.page-register .content_register #form-register #register-delivery .panel-heading,
+.page-register .content_register #form-register #register-login .panel-heading{
+    background-color: #10B4CF;
+    color:#fff;
+}
+
+.page-register .content_register #form-register label{
+    color:#10B4CF;
+}
+
+.page-register .content_register #form-register .group-newsletter,
+.page-register .content_register #form-register .group-btn .control-btn{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.page-register .content_register #form-register .group-newsletter .control-input,
+.page-register .content_register #form-register .group-btn .control-btn,
+.page-register .content_register #form-register .btn-primary{
+    text-align: center;
+}
+
+.page-register .content_register #form-register .btn-primary{
+    background-color: #347C92;
+    color: #fff;
+    border-color: unset !important;
+    border-left: 1px solid #10B4CF !important;
+    border-color: #10B4CF !important
+    border: solid 1px #10B4CF !important;
+    width: 50%;
+}
+
+.page-register .content_register #form-register .btn-primary:focus,
+.page-register .content_register #form-register .btn-primary:hover{
+    background-color: #347C92;
+    color: #fff;
+}

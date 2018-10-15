@@ -31,7 +31,6 @@ use Thelia\Module\DeliveryModuleInterface;
 use Thelia\Module\Exception\DeliveryException;
 use TheliaSmarty\Template\AbstractSmartyPlugin;
 use TheliaSmarty\Template\SmartyPluginDescriptor;
-use Thelia\Log\Tlog;
 
 /**
  * Class CartPostage
@@ -222,7 +221,6 @@ class CartPostage extends AbstractSmartyPlugin
                         $this->postageTax = $postage->getAmountTax();
                         $this->postageTaxRuleTitle = $postage->getTaxRuleTitle();
                         $this->deliveryId = $deliveryModule->getId();
-                        Tlog::getInstance()->error("deliverymoduleid ".$deliveryModule->getId());
                     }
                 }
             } catch (DeliveryException $ex) {
