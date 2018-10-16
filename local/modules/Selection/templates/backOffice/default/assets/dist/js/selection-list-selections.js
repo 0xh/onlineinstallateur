@@ -30,4 +30,14 @@ $(function () {
             location.href = url;
         }
     });
+    
+    $(".selectionTypeToggle").on('switch-change', function(event, data) {
+        $.ajax({
+           url : "{url path='admin/selection/toggle-type'}",
+           data : {
+               selection_id : $(this).data('id'),
+               action : 'typeToggle'
+           }
+        });
+    });
 });

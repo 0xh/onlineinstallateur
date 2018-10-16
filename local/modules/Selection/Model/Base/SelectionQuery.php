@@ -24,12 +24,14 @@ use Selection\Model\Map\SelectionTableMap;
  *
  * @method     ChildSelectionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildSelectionQuery orderByVisible($order = Criteria::ASC) Order by the visible column
+ * @method     ChildSelectionQuery orderByType($order = Criteria::ASC) Order by the type column
  * @method     ChildSelectionQuery orderByPosition($order = Criteria::ASC) Order by the position column
  * @method     ChildSelectionQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildSelectionQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method     ChildSelectionQuery groupById() Group by the id column
  * @method     ChildSelectionQuery groupByVisible() Group by the visible column
+ * @method     ChildSelectionQuery groupByType() Group by the type column
  * @method     ChildSelectionQuery groupByPosition() Group by the position column
  * @method     ChildSelectionQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildSelectionQuery groupByUpdatedAt() Group by the updated_at column
@@ -63,12 +65,14 @@ use Selection\Model\Map\SelectionTableMap;
  *
  * @method     ChildSelection findOneById(int $id) Return the first ChildSelection filtered by the id column
  * @method     ChildSelection findOneByVisible(int $visible) Return the first ChildSelection filtered by the visible column
+ * @method     ChildSelection findOneByType(int $type) Return the first ChildSelection filtered by the type column
  * @method     ChildSelection findOneByPosition(int $position) Return the first ChildSelection filtered by the position column
  * @method     ChildSelection findOneByCreatedAt(string $created_at) Return the first ChildSelection filtered by the created_at column
  * @method     ChildSelection findOneByUpdatedAt(string $updated_at) Return the first ChildSelection filtered by the updated_at column
  *
  * @method     array findById(int $id) Return ChildSelection objects filtered by the id column
  * @method     array findByVisible(int $visible) Return ChildSelection objects filtered by the visible column
+ * @method     array findByType(int $type) Return ChildSelection objects filtered by the type column
  * @method     array findByPosition(int $position) Return ChildSelection objects filtered by the position column
  * @method     array findByCreatedAt(string $created_at) Return ChildSelection objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildSelection objects filtered by the updated_at column
@@ -160,7 +164,7 @@ abstract class SelectionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, VISIBLE, POSITION, CREATED_AT, UPDATED_AT FROM selection WHERE ID = :p0';
+        $sql = 'SELECT ID, VISIBLE, TYPE, POSITION, CREATED_AT, UPDATED_AT FROM selection WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -329,6 +333,47 @@ abstract class SelectionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SelectionTableMap::VISIBLE, $visible, $comparison);
+    }
+
+    /**
+     * Filter the query on the type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByType(1234); // WHERE type = 1234
+     * $query->filterByType(array(12, 34)); // WHERE type IN (12, 34)
+     * $query->filterByType(array('min' => 12)); // WHERE type > 12
+     * </code>
+     *
+     * @param     mixed $type The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSelectionQuery The current query, for fluid interface
+     */
+    public function filterByType($type = null, $comparison = null)
+    {
+        if (is_array($type)) {
+            $useMinMax = false;
+            if (isset($type['min'])) {
+                $this->addUsingAlias(SelectionTableMap::TYPE, $type['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($type['max'])) {
+                $this->addUsingAlias(SelectionTableMap::TYPE, $type['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SelectionTableMap::TYPE, $type, $comparison);
     }
 
     /**

@@ -51,6 +51,7 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
             Argument::createBooleanTypeArgument('without_container'),
             Argument::createBooleanOrBothTypeArgument('visible', true),
             Argument::createAnyTypeArgument('title'),
+            Argument::createAnyTypeArgument('selection_type'),
             Argument::createIntListTypeArgument('position'),
             Argument::createIntListTypeArgument('exclude'),
             new Argument(
@@ -113,6 +114,10 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
                     Criteria::IN
                 );
             }
+        }
+        
+        if (null !== $type = $this->getSelectionType()) {
+            $search->filterByType($type);
         }
 
         $visible = $this->getVisible();
@@ -187,7 +192,6 @@ class SelectionLoop extends BaseI18nLoop implements PropelSearchLoopInterface
                     $search->orderByPosition(Criteria::ASC);
             }
         }
-Tlog::getInstance()->error("almost at selection");
         return $search;
     }
     
@@ -216,11 +220,7 @@ Tlog::getInstance()->error("almost at selection");
                         );
                     $featureAvJoin->setJoinType(Criteria::LEFT_JOIN);
                     $search->addJoinObject($featureAvJoin, $featureAlias);
-                    
-                    
-                 //   $search->join
-                    //$search->joinFeatureProduct($featureAlias, Criteria::LEFT_JOIN)
-               //     ->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_ID = ?", $feature, null, \PDO::PARAM_INT);
+
                     if ($feature_av != '*') {
                         $search->addJoinCondition($featureAlias, "`$featureAlias`.FEATURE_AV_ID = ?", $feature_av, null, \PDO::PARAM_INT);
                     }
@@ -265,6 +265,7 @@ Tlog::getInstance()->error("almost at selection");
                 ->set("SELECTION_META_DESCRIPTION", $selection->geti18n_META_DESCRIPTION())
                 ->set("SELECTION_POSTSCRIPTUM", $selection->geti18n_POSTSCRIPTUM())
                 ->set("SELECTION_CHAPO", $selection->geti18n_CHAPO())
+                ->set("SELECTION_TYPE", $selection->getType())
                 ->set("SELECTION_CONTAINER_ID", $selection->getSelectionContainerAssociatedSelections()
                 );
 

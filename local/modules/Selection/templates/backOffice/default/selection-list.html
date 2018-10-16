@@ -31,6 +31,12 @@
         {include file="selection-list-selections.html"}
 {/block}
 
+{block name="javascript-initialization"}
+<script type="text/javascript">
+{include file="assets/dist/js/selection-list-containers.js"}
+{include file="assets/dist/js/selection-list-selections.js"}
+</script>
+{/block}
 {block name="javascript-last-call"}
     {hook name="wysiwyg.js"}
 
@@ -45,7 +51,4 @@
     {javascripts file='assets/js/jquery-ui-1.10.3.custom.min.js'}
         <script src="{$asset_url}"></script>
     {/javascripts}
-
-    {include file="selection-list-containers.js"}
-    {include file="selection-list-selections.js"}
 {/block}

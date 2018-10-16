@@ -13,6 +13,7 @@ CREATE TABLE `selection`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `visible` TINYINT NOT NULL,
+    `type` TINYINT DEFAULT 1 NOT NULL,
     `position` INTEGER,
     `created_at` DATETIME,
     `updated_at` DATETIME,

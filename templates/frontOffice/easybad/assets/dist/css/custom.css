@@ -581,10 +581,9 @@ section .product-image{
     }
 }
 
-@media (max-width: 450px){
+@media (max-width: 390px){
     .navbar-header-brand .navbar-brand img{
         width: 110px;
-        margin-top: 12px;
     }
 }
 
@@ -689,4 +688,14 @@ figure.effect-honey:hover h2,
 figure.effect-honey:hover h2 i{
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+@media screen and (max-width: 390px){
+    .sec-nav .navbar-toggle{
+        top: 19px !important;
+    }
+}
+@media screen and (max-width: 390px){
+    .sec-nav .navbar-toggle{
+        top: 19px !important;
+    }
 }

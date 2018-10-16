@@ -104,8 +104,6 @@
     <route id="admin.selection.container.set-default" path="/admin/selection/container/toggle-online">
         <default key="_controller">Selection\Controller\SelectionContainerUpdateController::setToggleVisibilityAction</default>
     </route>
-
-
     <!-- ***** Root to function which save SEO content-->
 
     <route id="admin.selection.seo.save" path="/admin/selection/seo/save">
@@ -201,6 +199,10 @@
     <!-- Visiblity of a selection-->
     <route id="admin.selection.set-default" path="/admin/selection/toggle-online">
         <default key="_controller">Selection\Controller\SelectionUpdateController::setToggleVisibilityAction</default>
+    </route>
+    
+    <route id="admin.selection.set-type" path="/admin/selection/toggle-type">
+        <default key="_controller">Selection\Controller\SelectionUpdateController::setToggleTypeAction</default>
     </route>
 
     <route id="admin.selection.update-position" path="/admin/selection/update-position">

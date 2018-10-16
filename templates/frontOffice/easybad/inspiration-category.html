@@ -71,8 +71,8 @@
                 <!-- "386 : (5192|5193), 383 : (5178|5181)" $smarty.get.features --> 
                 {$features=$smarty.get.features}
 
-                {loop name="inspirations" type="selection_list" feature_availability="{$features|replace:'_':' : '}" visible="true"}  
-
+                {loop name="inspirations" type="selection_list" selection_type="0" feature_availability="{$features|replace:'_':' : '}" visible="true"}  
+ 
                 <div class="col-sm-4 ">
                     <figure class="effect-honey mb-5">
                         {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}

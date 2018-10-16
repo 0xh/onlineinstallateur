@@ -390,7 +390,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
     protected function getExistingObject()
     {
         $selection = SelectionQuery::create()
-         ->findPk($this->getRequest()->get('selectionId', 0));
+          ->findPk($this->getRequest()->get('selection_id', 0));
 
         if (null !== $selection) {
             $selection->setLocale($this->getCurrentEditionLocale());
@@ -471,7 +471,30 @@ class SelectionUpdateController extends AbstractSeoCrudController
 
         // Ajax response -> no action
         return $this->nullResponse();
-    }
+        }
+        
+        public function setToggleTypeAction()
+        {
+            // Check current user authorization
+            if (null !== $response = $this->checkAuth($this->resourceCode, array(), AccessManager::UPDATE)) {
+                return $response;
+            }
+            
+            $selection = $this->getExistingObject();
+            
+            try
+            {
+                $selection->setType($selection->getType() ? '0':'1');
+                $selection->save();
+            } catch (\Exception $ex)
+            {
+                // Any error
+                return $this->errorPage($ex);
+            }
+            
+            // Ajax response -> no action
+            return $this->nullResponse();
+        }
 
     protected function createUpdateProductPositionEvent($positionChangeMode, $positionValue)
     {
