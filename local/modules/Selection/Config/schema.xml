@@ -6,6 +6,7 @@
     <table name="selection" namespace="Selection\Model">
         <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER"/>
         <column name="visible" required="true" type="TINYINT"/>
+        <column name="type" required="true" defaultValue="1" type="TINYINT"/>
         <column name="title" type="VARCHAR" size="255" />
         <column name="description" type="LONGVARCHAR"  />
         <column name="chapo" type="LONGVARCHAR" />

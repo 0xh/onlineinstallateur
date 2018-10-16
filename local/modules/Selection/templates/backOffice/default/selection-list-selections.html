@@ -39,6 +39,7 @@
                                 }
                             </th>
                             <th class="text-center">{intl l='Online' d='selection.bo.default'}</th>
+                            <th class="text-center">{intl l='Type' d='selection.bo.default'}</th>
                             <th class="actions text-center">{intl l='Actions' d='selection.bo.default'}</th>
                         </tr>
                         </thead>
@@ -82,7 +83,18 @@
                                         </div>
                                     {/elseloop}
                                 </td>
-
+                                <td class="text-center">
+                                    {loop type="auth" name="can_change" role="ADMIN" resource="admin.selection" access="UPDATE"}
+                                        <div class="make-switch switch-small selectionTypeToggle" data-id="{$SELECTION_ID}"  data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                            <input type="checkbox" class="selectionTypeToggle" {if $SELECTION_TYPE == 1}checked="checked"{/if}>
+                                        </div>
+                                    {/loop}
+                                    {elseloop rel="can_change"}
+                                        <div class="make-switch switch-small" data-on="success" data-off="danger" data-on-label="<i class='glyphicon glyphicon-ok'></i>" data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                                            <input type="checkbox" class="disabled" disabled="disabled" {if $SELECTION_TYPE == 1}checked="checked"{/if}>
+                                        </div>
+                                    {/elseloop}
+                                </td>
                                 <td class="actions text-center">
                                     <div class="btn-toolbar btn toolbar-primary">
                                         <span class="glyphicon glyphicon-cog"></span>
