@@ -690,3 +690,59 @@ figure.effect-honey:hover h2 i{
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
+
+
+
+/*Internet Explorer 11 CSS*/
+
+
+
+.icon-delivery::before{
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.icon-calendar::before{
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.icon-punktual::before {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.icon-jahre::before {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.icon-beratung::before {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+.shop-lieferung::before {
+    -webkit-transform: scaleX(-1) !important;
+    transform: scaleX(-1) !important;
+}
+
+@media (min-width: 992px) {  
+.navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account {
+    
+    line-height: 0px;
+}
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+ .form-product .product-cart { 
+ min-width: 300px;
+ padding-right: 20px;
+  }
+
+ 
+ .text-intro { 
+ font-size: 15px !important;
+  }
+ }
+ 
