@@ -77,7 +77,6 @@ return array(
     'Download' => 'Herunterladen',
     'Edit' => 'Ändern',
     'Edit this address' => 'Diese Adresse ändern',
-    'Estimated shipping ' => 'Erwartenden Versandkosten',
     'Forgot your Password?' => 'Haben Sie Ihr Passwort vergessen ?',
     'From %price' => 'Ab %price',
     'Go back to the previous page' => 'Zurück auf die vorherige Seite',

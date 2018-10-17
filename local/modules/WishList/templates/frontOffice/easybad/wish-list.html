@@ -6,7 +6,7 @@
 {* Breadcrumb *}
 {block name='no-return-functions' append}
     {$breadcrumbs = [
-        ['title' => {intl l="Wish List" d="wishlist.fo.default"}, 'url'=>{url path="/wish-list"}]
+        ['title' => {intl l="Wish List" d="wishlist.fo.easybad"}, 'url'=>{url path="/wish-list"}]
     ]}
 {/block}
 
@@ -15,7 +15,7 @@
 
     {loop type="module" name="selection" code="selection" active="1"}
     <div id="wishlist-box" class="col-main col-md-12 grid">
-        <h1 id="main-label" class="page-header">{intl l="Selection Wish list" d="wishlist.fo.default"}</h1>
+        <h1 id="main-label" class="page-header">{intl l="Selection Wish list" d="wishlist.fo.easybad"}</h1>
         <div id="category-products">
             <div class="products-content">
                 <ul class="list-unstyled row">
@@ -45,7 +45,7 @@
                     </div>
                     {/ifloop}
                     {elseloop rel="selection_wish_list"}
-                    <p>{intl l="You have no selection items in your wishlist." d="selection_wish_list.fo.default"}</p>
+                    <p>{intl l="You have no selection items in your wishlist." d="selection_wish_list.fo.easybad"}</p>
                     {/elseloop}	
                 </ul>
             </div>
@@ -54,7 +54,7 @@
     {/loop}
 
     <div id="wishlist-box" class="col-main col-md-12 grid">
-        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.default"}</h1>
+        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.easybad"}</h1>
         <div id="category-products">
             <div class="products-content">
                 <ul class="list-unstyled row">
@@ -68,7 +68,7 @@
                     {/loop}
                     {/ifloop}
                     {elseloop rel="wishlist"}
-                    <p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
+                    <p>{intl l="You have no items in your wishlist." d="wishlist.fo.easybad"}</p>
                     {/elseloop}	
                 </ul>
             </div>

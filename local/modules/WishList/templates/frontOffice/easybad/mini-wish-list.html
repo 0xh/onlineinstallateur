@@ -23,15 +23,15 @@
 	    </a>
 	    <div class="dropdown-menu wish-content">
 	    	{if $products_in_wish_list == 1}
-	        	<p>{intl l="You have %nr item in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
+	        	<p>{intl l="You have %nr item in your wishlist." d="wishlist.fo.easybad" nr=$products_in_wish_list}</p>
 	        {elseif $products_in_wish_list > 1}
-	        	<p>{intl l="You have %nr items in your wishlist." d="wishlist.fo.default" nr=$products_in_wish_list}</p>
+	        	<p>{intl l="You have %nr items in your wishlist." d="wishlist.fo.easybad" nr=$products_in_wish_list}</p>
 	        {else}
-	        	<p>{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</p>
+	        	<p>{intl l="You have no items in your wishlist." d="wishlist.fo.easybad"}</p>
 	        {/if}
-	        <span class="wishlist_message_item hide">{intl l="You have %nr item in your wishlist." d="wishlist.fo.default"}</span>
-	        <span class="wishlist_message_items hide">{intl l="You have %nr items in your wishlist." d="wishlist.fo.default"}</span>
-	        <span class="wishlist_message_no_items hide">{intl l="You have no items in your wishlist." d="wishlist.fo.default"}</span>
+	        <span class="wishlist_message_item hide">{intl l="You have %nr item in your wishlist." d="wishlist.fo.easybad"}</span>
+	        <span class="wishlist_message_items hide">{intl l="You have %nr items in your wishlist." d="wishlist.fo.easybad"}</span>
+	        <span class="wishlist_message_no_items hide">{intl l="You have no items in your wishlist." d="wishlist.fo.easybad"}</span>
 	    </div>
 	</li>
 </ul>
