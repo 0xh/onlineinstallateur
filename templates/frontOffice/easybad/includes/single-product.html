@@ -112,9 +112,7 @@
                     {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
                         <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> 
                                     {intl l="{config key='stock_available_default_message'
-                                     default='Can be shipped shortly'} d='fo.easybad'"}</small></em></span>
-
-
+                                     default='Can be shipped shortly'}" d="fo.easybad"}</small></em></span>
                     {else}
                         {if $QUANTITY > 0}
                             <span class="in ">{intl l='In Stock' d="fo.easybad"}</span> 
