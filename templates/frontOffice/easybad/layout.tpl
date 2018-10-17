@@ -9,7 +9,7 @@ web : http://www.hausfabrik.at
 {* Declare assets directory, relative to template base directory *}
 {declare_assets directory='assets/dist'}
 {* Set the default translation domain, that will be used by {intl} when the 'd' parameter is not set *}
-{default_translation_domain domain='fo.default'}
+{default_translation_domain domain='fo.easybad'}
 
 {* -- Define some stuff for Smarty ------------------------------------------ *}
 {config_load file='variables.conf'}
@@ -245,7 +245,7 @@ web : http://www.hausfabrik.at
                                 </div>
                                 {hook name="main.navbar-secondary"}
                                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary">
-                                    <span class="sr-only">{intl l="Toggle navigation" d="hooknavigation.fo.default"}</span>
+                                    <span class="sr-only">{intl l="Toggle navigation" d="hooknavigation.fo.easybad"}</span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
                                     <span class="icon-bar"></span>
