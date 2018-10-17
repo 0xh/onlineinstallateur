@@ -27,7 +27,7 @@
                             </h6>
                             {$APPOINTMENT_DATE}
                             
-                            <a href="{token_url path="/cart/delete/$ITEM_ID"}" class="btn btn-remove" data-tip="tooltip" data-title="Delete" data-original-title=""><i class="fa fa-trash"></i> <span>{intl l="Remove" d="hookcart.fo.default"}</span></a>
+                            <a href="{token_url path="/cart/delete/$ITEM_ID"}" class="btn btn-remove" data-tip="tooltip" data-title="Delete" data-original-title=""><i class="fa fa-trash"></i> <span>{intl l="Remove"  d="fo.easybad"}</span></a>
                         </td>
                         <td>
                         
@@ -84,7 +84,7 @@
             <img src="{image file='assets/img/cart.png' source='HookCart'}"/>
         </a>
         <div class="dropdown-menu cart-content">
-            <p>{intl l="You have no items in your shopping cart." d="hookcart.fo.default"}</p>
+            <p>{intl l="You have no items in your shopping cart." d="hookcart.fo.easybad"}</p>
         </div>
     </li>
 {/elseloop}
