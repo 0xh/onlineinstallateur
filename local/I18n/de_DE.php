@@ -19,9 +19,12 @@ return [
     'Total' => 'Gesamtsumme',
     'Upsell Products' => 'Weitere Produkte',
     'You have no selection items in your wishlist.' => ' Sie haben keinen Artikel auf Ihrer Wunschliste.',
+    'fo.default' => [
+        '{config key=\'stock_available_default_message\' default=\'Can be shipped shortly\'}' => 'Kurzfristig lieferbar',
+    ],
     'fo.easybad' => [
+        'Can be shipped shortly' => 'Kurzfristig lieferbar',
         'Continue Shopping' => 'Weitere Artikeln aussuchen',
-        'Estimated shipping ' => 'Erwartenden Versandkosten',
         'Proceed checkout' => 'Zur Kasse',
         'Product Name' => 'Produktname',
         'Quantity' => 'Menge',
@@ -29,6 +32,7 @@ return [
         'Remove this address' => 'Diese Adresse entfernen',
         'Upsell Products' => 'Weitere Produkte',
         'update' => 'Aktualisieren',
+        '{config key=\'stock_available_default_message\' default=\'Can be shipped shortly\'}' => 'Kurzfristig lieferbar',
     ],
     'selection.fo.easybad' => [
         'Add to cart' => 'In den Warenkorb',
@@ -43,6 +47,12 @@ return [
     'update' => 'Aktualisieren',
     'wishlist.fo.easybad' => [
         'Selection Wish list' => ' Auswahl Wunschliste',
+        'You have no items in your wishlist.' => ' Sie haben keinen Artikel auf Ihrer Wunschliste.',
         'You have no selection items in your wishlist.' => ' Sie haben keinen Artikel auf Ihrer Wunschliste.',
     ],
+    '{config key=\'stock_available_default_message\'
+                                     default=\'Can be shipped shortly\'}' => 'Kurzfristig lieferbar',
+    '{config key=\'stock_available_default_message\'
+                                     default=\'Can be shipped shortly\'} d=\'fo.easybad\'' => 'Kurzfristig lieferbar',
+    '{config key=\'stock_available_default_message\' default=\'Can be shipped shortly\'}' => 'Kurzfristig lieferbar',
 ];
