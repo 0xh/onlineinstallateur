@@ -41,7 +41,7 @@
                         <div id="category-products">
                             <div class="products-content">
                                 <ul class="list-unstyled products-grid row">
-                                    {loop name="products_tabs" type="product" limit="4" category="$value"}
+                                    {loop name="products_tabs" type="product" limit="4" category="$value" order="manual"}
                                         {include file="includes/single-product.html" colClass="col-xs-12 col-sm-6 col-md-4 col-lg-3" product_id=$ID hasBtn=false hasDescription=false width="245" height="245"}
                                     {/loop}
                                 </ul>
@@ -53,7 +53,7 @@
                         <div id="category-products">
                             <div class="products-content">
                                 <ul class="list-unstyled products-grid row">
-                                    {loop name="products_tabs" type="product" limit="4" category="$value"}
+                                    {loop name="products_tabs" type="product" limit="4" category="$value" order="manual"}
                                         {include file="includes/single-product.html" colClass="col-xs-12 col-sm-6 col-md-4 col-lg-3" product_id=$ID hasBtn=false hasDescription=false width="245" height="245"}
                                     {/loop}
                                 </ul>
