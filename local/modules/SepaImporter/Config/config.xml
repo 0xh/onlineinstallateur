@@ -10,6 +10,10 @@
         </service>
     </services>
     
+     <commands>
+        <command class="SepaImporter\Commands\SelfImport"/>
+    </commands>
+    
     <import_categories>
         <import_category id="thelia.import.features">
             <title locale="fr_FR">features</title>
@@ -278,18 +282,20 @@
                 <title>Import Full Product from XML </title>
                 <description>
                   <![CDATA[
-                    Importer.2 supports the following structure:</br>
-                    Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurze_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
-                    Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
-                    Bild_kurz_beschreibung, Bild_postscriptum, Bild_file, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-                    Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
+                    MySHT XML Importer.
                     
-                    Indications:
+                    Accepts XML type files, sets multiple product variables:
                     <ul>
-                        <li>Decimal numbers must use "." as separator : 12.34</li>
-                        <li>Values are always numbers(even constraint values)</li>
-                        <li>"False" and "true" must be replaced with 0 and 1</li>
-                        <li>Fulfilment_center - id</li>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
                     </ul>
                     ]]>
                 </description>
@@ -298,18 +304,20 @@
                 <title>Import Full Product from XML</title>
                 <description>
 <![CDATA[
-                    Importer.2 supports the following structure:</br>
-                    Produkt_id, Extern_id, Ref, Marke_id, Kategorie_id, Template_id, Produkt_titel, Kurze_beschreibung, Beschreibung, Postscriptum, Meta_titel, 
-                    Meta_beschreibung, Meta_keywords, Menge, Fulfilment_center, Ist_in_Angebot, Ist_neu, Gewicht, EAN_code, Bild_name, Bild_titel, Bild_beschreibung,
-                    Bild_kurz_beschreibung, Bild_postscriptum, Bild_file, Price, Promo_price, Listen_price, Ek_preis_sht, Ek_preis_gc, Ek_preis_oag, 
-                    Ek_preis_holter, Preis_reuter, Vergleich_ek, Aufschlag, Help</br>
+                    MySHT XML Importer.
                     
-                    Indications:
+                    Accepts XML type files, sets multiple product variables:
                     <ul>
-                        <li>Decimal numbers must use "." as separator : 12.34</li>
-                        <li>Values are always numbers(even constraint values)</li>
-                        <li>"False" and "true" must be replaced with 0 and 1</li>
-                        <li>Fulfilment_center - id</li>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
                     </ul>
                     ]]>
                 </description>
