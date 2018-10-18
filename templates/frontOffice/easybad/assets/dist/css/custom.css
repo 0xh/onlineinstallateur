@@ -694,6 +694,11 @@ figure.effect-honey:hover h2 i{
         top: 19px !important;
     }
 }
+@media screen and (max-width: 390px){
+    .sec-nav .navbar-toggle{
+        top: 19px !important;
+    }
+}
 
 /*Internet Explorer 11 CSS*/
 .icon-delivery::before{
@@ -743,6 +748,10 @@ figure.effect-honey:hover h2 i{
  .text-intro { 
  font-size: 15px !important;
   }
+<<<<<<< HEAD
  }
  
 >>>>>>> HFP-349_Testing_Hausfabrik_sepa_at
+=======
+ }
+>>>>>>> 51ebabc52cd6746febf2740873e2f96bcc354ecb
