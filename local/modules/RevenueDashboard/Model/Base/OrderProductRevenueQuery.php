@@ -7,11 +7,16 @@ use \PDO;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
+use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 use RevenueDashboard\Model\OrderProductRevenue as ChildOrderProductRevenue;
 use RevenueDashboard\Model\OrderProductRevenueQuery as ChildOrderProductRevenueQuery;
 use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
+use Thelia\Model\Order;
+use Thelia\Model\Product;
 
 /**
  * Base class that represents a query for the 'order_product_revenue' table.
@@ -35,6 +40,14 @@ use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
  * @method     ChildOrderProductRevenueQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildOrderProductRevenueQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildOrderProductRevenueQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method     ChildOrderProductRevenueQuery leftJoinOrder($relationAlias = null) Adds a LEFT JOIN clause to the query using the Order relation
+ * @method     ChildOrderProductRevenueQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
+ * @method     ChildOrderProductRevenueQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
+ *
+ * @method     ChildOrderProductRevenueQuery leftJoinProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the Product relation
+ * @method     ChildOrderProductRevenueQuery rightJoinProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Product relation
+ * @method     ChildOrderProductRevenueQuery innerJoinProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the Product relation
  *
  * @method     ChildOrderProductRevenue findOne(ConnectionInterface $con = null) Return the first ChildOrderProductRevenue matching the query
  * @method     ChildOrderProductRevenue findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOrderProductRevenue matching the query, or a new ChildOrderProductRevenue object populated from the query conditions when no match is found
@@ -280,6 +293,8 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
      * $query->filterByOrderId(array('min' => 12)); // WHERE order_id > 12
      * </code>
      *
+     * @see       filterByOrder()
+     *
      * @param     mixed $orderId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -461,6 +476,156 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderProductRevenueTableMap::PARTNER_ID, $partnerId, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Thelia\Model\Order object
+     *
+     * @param \Thelia\Model\Order|ObjectCollection $order The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
+     */
+    public function filterByOrder($order, $comparison = null)
+    {
+        if ($order instanceof \Thelia\Model\Order) {
+            return $this
+                ->addUsingAlias(OrderProductRevenueTableMap::ORDER_ID, $order->getId(), $comparison);
+        } elseif ($order instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(OrderProductRevenueTableMap::ORDER_ID, $order->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByOrder() only accepts arguments of type \Thelia\Model\Order or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Order relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
+     */
+    public function joinOrder($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Order');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Order');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Order relation Order object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Thelia\Model\OrderQuery A secondary query class using the current class as primary query
+     */
+    public function useOrderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinOrder($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Order', '\Thelia\Model\OrderQuery');
+    }
+
+    /**
+     * Filter the query by a related \Thelia\Model\Product object
+     *
+     * @param \Thelia\Model\Product|ObjectCollection $product The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
+     */
+    public function filterByProduct($product, $comparison = null)
+    {
+        if ($product instanceof \Thelia\Model\Product) {
+            return $this
+                ->addUsingAlias(OrderProductRevenueTableMap::PRODUCT_REF, $product->getRef(), $comparison);
+        } elseif ($product instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(OrderProductRevenueTableMap::PRODUCT_REF, $product->toKeyValue('PrimaryKey', 'Ref'), $comparison);
+        } else {
+            throw new PropelException('filterByProduct() only accepts arguments of type \Thelia\Model\Product or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Product relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
+     */
+    public function joinProduct($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Product');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Product');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Product relation Product object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Thelia\Model\ProductQuery A secondary query class using the current class as primary query
+     */
+    public function useProductQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinProduct($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Product', '\Thelia\Model\ProductQuery');
     }
 
     /**

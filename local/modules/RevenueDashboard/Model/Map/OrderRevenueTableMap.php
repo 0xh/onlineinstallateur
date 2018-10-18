@@ -177,7 +177,7 @@ class OrderRevenueTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('ORDER_ID', 'OrderId', 'INTEGER', false, null, null);
+        $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', false, null, null);
         $this->addColumn('DELIVERY_COST', 'DeliveryCost', 'DECIMAL', false, 16, 0);
         $this->addColumn('DELIVERY_METHOD', 'DeliveryMethod', 'VARCHAR', false, 255, null);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
@@ -194,6 +194,7 @@ class OrderRevenueTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
