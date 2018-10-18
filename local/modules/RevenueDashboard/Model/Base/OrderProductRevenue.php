@@ -16,6 +16,10 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use RevenueDashboard\Model\OrderProductRevenueQuery as ChildOrderProductRevenueQuery;
 use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
+use Thelia\Model\Order as ChildOrder;
+use Thelia\Model\Product as ChildProduct;
+use Thelia\Model\OrderQuery;
+use Thelia\Model\ProductQuery;
 
 abstract class OrderProductRevenue implements ActiveRecordInterface 
 {
@@ -88,6 +92,16 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
      * @var        int
      */
     protected $partner_id;
+
+    /**
+     * @var        Order
+     */
+    protected $aOrder;
+
+    /**
+     * @var        Product
+     */
+    protected $aProduct;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -473,6 +487,10 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $this->modifiedColumns[OrderProductRevenueTableMap::ORDER_ID] = true;
         }
 
+        if ($this->aOrder !== null && $this->aOrder->getId() !== $v) {
+            $this->aOrder = null;
+        }
+
 
         return $this;
     } // setOrderId()
@@ -492,6 +510,10 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($this->product_ref !== $v) {
             $this->product_ref = $v;
             $this->modifiedColumns[OrderProductRevenueTableMap::PRODUCT_REF] = true;
+        }
+
+        if ($this->aProduct !== null && $this->aProduct->getRef() !== $v) {
+            $this->aProduct = null;
         }
 
 
@@ -653,6 +675,12 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aOrder !== null && $this->order_id !== $this->aOrder->getId()) {
+            $this->aOrder = null;
+        }
+        if ($this->aProduct !== null && $this->product_ref !== $this->aProduct->getRef()) {
+            $this->aProduct = null;
+        }
     } // ensureConsistency
 
     /**
@@ -692,6 +720,8 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aOrder = null;
+            $this->aProduct = null;
         } // if (deep)
     }
 
@@ -802,6 +832,25 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aOrder !== null) {
+                if ($this->aOrder->isModified() || $this->aOrder->isNew()) {
+                    $affectedRows += $this->aOrder->save($con);
+                }
+                $this->setOrder($this->aOrder);
+            }
+
+            if ($this->aProduct !== null) {
+                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
+                    $affectedRows += $this->aProduct->save($con);
+                }
+                $this->setProduct($this->aProduct);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -984,10 +1033,11 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['OrderProductRevenue'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -1007,6 +1057,14 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
         
+        if ($includeForeignObjects) {
+            if (null !== $this->aOrder) {
+                $result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aProduct) {
+                $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -1202,6 +1260,110 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildOrder object.
+     *
+     * @param                  ChildOrder $v
+     * @return                 \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setOrder(ChildOrder $v = null)
+    {
+        if ($v === null) {
+            $this->setOrderId(NULL);
+        } else {
+            $this->setOrderId($v->getId());
+        }
+
+        $this->aOrder = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildOrder object, it will not be re-added.
+        if ($v !== null) {
+            $v->addOrderProductRevenue($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildOrder object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildOrder The associated ChildOrder object.
+     * @throws PropelException
+     */
+    public function getOrder(ConnectionInterface $con = null)
+    {
+        if ($this->aOrder === null && ($this->order_id !== null)) {
+            $this->aOrder = OrderQuery::create()->findPk($this->order_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aOrder->addOrderProductRevenues($this);
+             */
+        }
+
+        return $this->aOrder;
+    }
+
+    /**
+     * Declares an association between this object and a ChildProduct object.
+     *
+     * @param                  ChildProduct $v
+     * @return                 \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProduct(ChildProduct $v = null)
+    {
+        if ($v === null) {
+            $this->setProductRef(NULL);
+        } else {
+            $this->setProductRef($v->getRef());
+        }
+
+        $this->aProduct = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildProduct object, it will not be re-added.
+        if ($v !== null) {
+            $v->addOrderProductRevenue($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildProduct object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildProduct The associated ChildProduct object.
+     * @throws PropelException
+     */
+    public function getProduct(ConnectionInterface $con = null)
+    {
+        if ($this->aProduct === null && (($this->product_ref !== "" && $this->product_ref !== null))) {
+            $this->aProduct = ProductQuery::create()
+                ->filterByOrderProductRevenue($this) // here
+                ->findOne($con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProduct->addOrderProductRevenues($this);
+             */
+        }
+
+        return $this->aProduct;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1234,6 +1396,8 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aOrder = null;
+        $this->aProduct = null;
     }
 
     /**

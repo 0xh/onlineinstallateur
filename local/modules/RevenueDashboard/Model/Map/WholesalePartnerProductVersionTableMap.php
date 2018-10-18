@@ -58,7 +58,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 17;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 17;
 
     /**
      * the column name for the ID field
@@ -84,6 +84,11 @@ class WholesalePartnerProductVersionTableMap extends TableMap
      * the column name for the PRODUCT_ID field
      */
     const PRODUCT_ID = 'wholesale_partner_product_version.PRODUCT_ID';
+
+    /**
+     * the column name for the PARTNER_PRODUCT_REF field
+     */
+    const PARTNER_PRODUCT_REF = 'wholesale_partner_product_version.PARTNER_PRODUCT_REF';
 
     /**
      * the column name for the PRICE field
@@ -146,6 +151,11 @@ class WholesalePartnerProductVersionTableMap extends TableMap
     const VERSION_CREATED_BY = 'wholesale_partner_product_version.VERSION_CREATED_BY';
 
     /**
+     * the column name for the PRODUCT_ID_VERSION field
+     */
+    const PRODUCT_ID_VERSION = 'wholesale_partner_product_version.PRODUCT_ID_VERSION';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -157,12 +167,12 @@ class WholesalePartnerProductVersionTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'PartnerId', 'ProductId', 'Price', 'PackageSize', 'DeliveryCost', 'Discount', 'DiscountDescription', 'ProfileWebsite', 'Position', 'Department', 'Comment', 'ValidUntil', 'Version', 'VersionCreatedBy', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'partnerId', 'productId', 'price', 'packageSize', 'deliveryCost', 'discount', 'discountDescription', 'profileWebsite', 'position', 'department', 'comment', 'validUntil', 'version', 'versionCreatedBy', ),
-        self::TYPE_COLNAME       => array(WholesalePartnerProductVersionTableMap::ID, WholesalePartnerProductVersionTableMap::PARTNER_ID, WholesalePartnerProductVersionTableMap::PRODUCT_ID, WholesalePartnerProductVersionTableMap::PRICE, WholesalePartnerProductVersionTableMap::PACKAGE_SIZE, WholesalePartnerProductVersionTableMap::DELIVERY_COST, WholesalePartnerProductVersionTableMap::DISCOUNT, WholesalePartnerProductVersionTableMap::DISCOUNT_DESCRIPTION, WholesalePartnerProductVersionTableMap::PROFILE_WEBSITE, WholesalePartnerProductVersionTableMap::POSITION, WholesalePartnerProductVersionTableMap::DEPARTMENT, WholesalePartnerProductVersionTableMap::COMMENT, WholesalePartnerProductVersionTableMap::VALID_UNTIL, WholesalePartnerProductVersionTableMap::VERSION, WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'PARTNER_ID', 'PRODUCT_ID', 'PRICE', 'PACKAGE_SIZE', 'DELIVERY_COST', 'DISCOUNT', 'DISCOUNT_DESCRIPTION', 'PROFILE_WEBSITE', 'POSITION', 'DEPARTMENT', 'COMMENT', 'VALID_UNTIL', 'VERSION', 'VERSION_CREATED_BY', ),
-        self::TYPE_FIELDNAME     => array('id', 'partner_id', 'product_id', 'price', 'package_size', 'delivery_cost', 'discount', 'discount_description', 'profile_website', 'position', 'department', 'comment', 'valid_until', 'version', 'version_created_by', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        self::TYPE_PHPNAME       => array('Id', 'PartnerId', 'ProductId', 'PartnerProdRef', 'Price', 'PackageSize', 'DeliveryCost', 'Discount', 'DiscountDescription', 'ProfileWebsite', 'Position', 'Department', 'Comment', 'ValidUntil', 'Version', 'VersionCreatedBy', 'ProductIdVersion', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'partnerId', 'productId', 'partnerProdRef', 'price', 'packageSize', 'deliveryCost', 'discount', 'discountDescription', 'profileWebsite', 'position', 'department', 'comment', 'validUntil', 'version', 'versionCreatedBy', 'productIdVersion', ),
+        self::TYPE_COLNAME       => array(WholesalePartnerProductVersionTableMap::ID, WholesalePartnerProductVersionTableMap::PARTNER_ID, WholesalePartnerProductVersionTableMap::PRODUCT_ID, WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF, WholesalePartnerProductVersionTableMap::PRICE, WholesalePartnerProductVersionTableMap::PACKAGE_SIZE, WholesalePartnerProductVersionTableMap::DELIVERY_COST, WholesalePartnerProductVersionTableMap::DISCOUNT, WholesalePartnerProductVersionTableMap::DISCOUNT_DESCRIPTION, WholesalePartnerProductVersionTableMap::PROFILE_WEBSITE, WholesalePartnerProductVersionTableMap::POSITION, WholesalePartnerProductVersionTableMap::DEPARTMENT, WholesalePartnerProductVersionTableMap::COMMENT, WholesalePartnerProductVersionTableMap::VALID_UNTIL, WholesalePartnerProductVersionTableMap::VERSION, WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY, WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'PARTNER_ID', 'PRODUCT_ID', 'PARTNER_PRODUCT_REF', 'PRICE', 'PACKAGE_SIZE', 'DELIVERY_COST', 'DISCOUNT', 'DISCOUNT_DESCRIPTION', 'PROFILE_WEBSITE', 'POSITION', 'DEPARTMENT', 'COMMENT', 'VALID_UNTIL', 'VERSION', 'VERSION_CREATED_BY', 'PRODUCT_ID_VERSION', ),
+        self::TYPE_FIELDNAME     => array('id', 'partner_id', 'product_id', 'partner_product_ref', 'price', 'package_size', 'delivery_cost', 'discount', 'discount_description', 'profile_website', 'position', 'department', 'comment', 'valid_until', 'version', 'version_created_by', 'product_id_version', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -172,12 +182,12 @@ class WholesalePartnerProductVersionTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'PartnerId' => 1, 'ProductId' => 2, 'Price' => 3, 'PackageSize' => 4, 'DeliveryCost' => 5, 'Discount' => 6, 'DiscountDescription' => 7, 'ProfileWebsite' => 8, 'Position' => 9, 'Department' => 10, 'Comment' => 11, 'ValidUntil' => 12, 'Version' => 13, 'VersionCreatedBy' => 14, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'partnerId' => 1, 'productId' => 2, 'price' => 3, 'packageSize' => 4, 'deliveryCost' => 5, 'discount' => 6, 'discountDescription' => 7, 'profileWebsite' => 8, 'position' => 9, 'department' => 10, 'comment' => 11, 'validUntil' => 12, 'version' => 13, 'versionCreatedBy' => 14, ),
-        self::TYPE_COLNAME       => array(WholesalePartnerProductVersionTableMap::ID => 0, WholesalePartnerProductVersionTableMap::PARTNER_ID => 1, WholesalePartnerProductVersionTableMap::PRODUCT_ID => 2, WholesalePartnerProductVersionTableMap::PRICE => 3, WholesalePartnerProductVersionTableMap::PACKAGE_SIZE => 4, WholesalePartnerProductVersionTableMap::DELIVERY_COST => 5, WholesalePartnerProductVersionTableMap::DISCOUNT => 6, WholesalePartnerProductVersionTableMap::DISCOUNT_DESCRIPTION => 7, WholesalePartnerProductVersionTableMap::PROFILE_WEBSITE => 8, WholesalePartnerProductVersionTableMap::POSITION => 9, WholesalePartnerProductVersionTableMap::DEPARTMENT => 10, WholesalePartnerProductVersionTableMap::COMMENT => 11, WholesalePartnerProductVersionTableMap::VALID_UNTIL => 12, WholesalePartnerProductVersionTableMap::VERSION => 13, WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY => 14, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PARTNER_ID' => 1, 'PRODUCT_ID' => 2, 'PRICE' => 3, 'PACKAGE_SIZE' => 4, 'DELIVERY_COST' => 5, 'DISCOUNT' => 6, 'DISCOUNT_DESCRIPTION' => 7, 'PROFILE_WEBSITE' => 8, 'POSITION' => 9, 'DEPARTMENT' => 10, 'COMMENT' => 11, 'VALID_UNTIL' => 12, 'VERSION' => 13, 'VERSION_CREATED_BY' => 14, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'partner_id' => 1, 'product_id' => 2, 'price' => 3, 'package_size' => 4, 'delivery_cost' => 5, 'discount' => 6, 'discount_description' => 7, 'profile_website' => 8, 'position' => 9, 'department' => 10, 'comment' => 11, 'valid_until' => 12, 'version' => 13, 'version_created_by' => 14, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'PartnerId' => 1, 'ProductId' => 2, 'PartnerProdRef' => 3, 'Price' => 4, 'PackageSize' => 5, 'DeliveryCost' => 6, 'Discount' => 7, 'DiscountDescription' => 8, 'ProfileWebsite' => 9, 'Position' => 10, 'Department' => 11, 'Comment' => 12, 'ValidUntil' => 13, 'Version' => 14, 'VersionCreatedBy' => 15, 'ProductIdVersion' => 16, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'partnerId' => 1, 'productId' => 2, 'partnerProdRef' => 3, 'price' => 4, 'packageSize' => 5, 'deliveryCost' => 6, 'discount' => 7, 'discountDescription' => 8, 'profileWebsite' => 9, 'position' => 10, 'department' => 11, 'comment' => 12, 'validUntil' => 13, 'version' => 14, 'versionCreatedBy' => 15, 'productIdVersion' => 16, ),
+        self::TYPE_COLNAME       => array(WholesalePartnerProductVersionTableMap::ID => 0, WholesalePartnerProductVersionTableMap::PARTNER_ID => 1, WholesalePartnerProductVersionTableMap::PRODUCT_ID => 2, WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF => 3, WholesalePartnerProductVersionTableMap::PRICE => 4, WholesalePartnerProductVersionTableMap::PACKAGE_SIZE => 5, WholesalePartnerProductVersionTableMap::DELIVERY_COST => 6, WholesalePartnerProductVersionTableMap::DISCOUNT => 7, WholesalePartnerProductVersionTableMap::DISCOUNT_DESCRIPTION => 8, WholesalePartnerProductVersionTableMap::PROFILE_WEBSITE => 9, WholesalePartnerProductVersionTableMap::POSITION => 10, WholesalePartnerProductVersionTableMap::DEPARTMENT => 11, WholesalePartnerProductVersionTableMap::COMMENT => 12, WholesalePartnerProductVersionTableMap::VALID_UNTIL => 13, WholesalePartnerProductVersionTableMap::VERSION => 14, WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY => 15, WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION => 16, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'PARTNER_ID' => 1, 'PRODUCT_ID' => 2, 'PARTNER_PRODUCT_REF' => 3, 'PRICE' => 4, 'PACKAGE_SIZE' => 5, 'DELIVERY_COST' => 6, 'DISCOUNT' => 7, 'DISCOUNT_DESCRIPTION' => 8, 'PROFILE_WEBSITE' => 9, 'POSITION' => 10, 'DEPARTMENT' => 11, 'COMMENT' => 12, 'VALID_UNTIL' => 13, 'VERSION' => 14, 'VERSION_CREATED_BY' => 15, 'PRODUCT_ID_VERSION' => 16, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'partner_id' => 1, 'product_id' => 2, 'partner_product_ref' => 3, 'price' => 4, 'package_size' => 5, 'delivery_cost' => 6, 'discount' => 7, 'discount_description' => 8, 'profile_website' => 9, 'position' => 10, 'department' => 11, 'comment' => 12, 'valid_until' => 13, 'version' => 14, 'version_created_by' => 15, 'product_id_version' => 16, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
     );
 
     /**
@@ -199,6 +209,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
         $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'wholesale_partner_product', 'ID', true, null, null);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
         $this->addColumn('PRODUCT_ID', 'ProductId', 'INTEGER', false, null, null);
+        $this->addColumn('PARTNER_PRODUCT_REF', 'PartnerProdRef', 'VARCHAR', false, 255, null);
         $this->addColumn('PRICE', 'Price', 'DECIMAL', false, 16, 0);
         $this->addColumn('PACKAGE_SIZE', 'PackageSize', 'INTEGER', false, null, null);
         $this->addColumn('DELIVERY_COST', 'DeliveryCost', 'DECIMAL', false, 16, 0);
@@ -211,6 +222,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
         $this->addColumn('VALID_UNTIL', 'ValidUntil', 'TIMESTAMP', false, null, null);
         $this->addPrimaryKey('VERSION', 'Version', 'INTEGER', true, null, 0);
         $this->addColumn('VERSION_CREATED_BY', 'VersionCreatedBy', 'VARCHAR', false, 100, null);
+        $this->addColumn('PRODUCT_ID_VERSION', 'ProductIdVersion', 'INTEGER', false, null, 0);
     } // initialize()
 
     /**
@@ -288,11 +300,11 @@ class WholesalePartnerProductVersionTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 13 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 14 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 13 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)]));
+        return serialize(array((string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], (string) $row[TableMap::TYPE_NUM == $indexType ? 14 + $offset : static::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)]));
     }
 
     /**
@@ -411,6 +423,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::ID);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PARTNER_ID);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PRODUCT_ID);
+            $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PRICE);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PACKAGE_SIZE);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::DELIVERY_COST);
@@ -423,10 +436,12 @@ class WholesalePartnerProductVersionTableMap extends TableMap
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::VALID_UNTIL);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::VERSION);
             $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY);
+            $criteria->addSelectColumn(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.PARTNER_ID');
             $criteria->addSelectColumn($alias . '.PRODUCT_ID');
+            $criteria->addSelectColumn($alias . '.PARTNER_PRODUCT_REF');
             $criteria->addSelectColumn($alias . '.PRICE');
             $criteria->addSelectColumn($alias . '.PACKAGE_SIZE');
             $criteria->addSelectColumn($alias . '.DELIVERY_COST');
@@ -439,6 +454,7 @@ class WholesalePartnerProductVersionTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.VALID_UNTIL');
             $criteria->addSelectColumn($alias . '.VERSION');
             $criteria->addSelectColumn($alias . '.VERSION_CREATED_BY');
+            $criteria->addSelectColumn($alias . '.PRODUCT_ID_VERSION');
         }
     }
 

@@ -81,6 +81,7 @@
         <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
         <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
         <column name="product_id" phpName="ProductId" type="INTEGER"/>
+        <column name="partner_product_ref" phpName="PartnerProdRef" type="VARCHAR" size="255"/>
         <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="package_size" phpName="PackageSize" type="INTEGER"/>
         <column name="delivery_cost" phpName="DeliveryCost" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
@@ -91,6 +92,9 @@
         <column name="department" phpName="Department"  type="VARCHAR" size="255"/>
         <column name="comment" phpName="Comment"  type="VARCHAR" size="255"/>
         <column name="valid_until" type="TIMESTAMP" />
+        <foreign-key foreignTable="product" name="fk_wholesale_partner_product_product_id" onDelete="CASCADE">
+	      <reference local="product_id" foreign="id"/>
+	    </foreign-key>
         <vendor type="mysql">
             <parameter name="Engine" value="InnoDB"/>
         </vendor>
@@ -107,6 +111,12 @@
         <column name="price" phpName="Price" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="purchase_price" phpName="PurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="partner_id" phpName="PartnerId" type="INTEGER"/>
+        <foreign-key foreignTable="order" name="fk_order_product_revenue_order_id" onDelete="CASCADE">
+	      <reference local="order_id" foreign="id"/>
+	    </foreign-key>
+        <foreign-key foreignTable="product" name="fk_order_product_revenue_product_ref" onDelete="CASCADE">
+	      <reference local="product_ref" foreign="ref"/>
+	    </foreign-key>
         <vendor type="mysql">
             <parameter name="Engine" value="InnoDB"/>
         </vendor>
@@ -124,6 +134,9 @@
         <column name="total_purchase_price" phpName="TotalPurchasePrice" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="revenue" phpName="Revenue" type="DECIMAL" size="16" scale="2" defaultValue="0.00"/>
         <column name="comment" phpName="Comment" type="VARCHAR" size="255"/>
+        <foreign-key foreignTable="order" name="fk_order_revenue_order_id" onDelete="CASCADE">
+	      <reference local="order_id" foreign="id"/>
+	    </foreign-key>
         <vendor type="mysql">
             <parameter name="Engine" value="InnoDB"/>
         </vendor>

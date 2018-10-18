@@ -23,6 +23,9 @@ use RevenueDashboard\Model\WholesalePartnerProductVersion as ChildWholesalePartn
 use RevenueDashboard\Model\WholesalePartnerProductVersionQuery as ChildWholesalePartnerProductVersionQuery;
 use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
 use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
+use Thelia\Model\Product as ChildProduct;
+use Thelia\Model\ProductQuery;
+use Thelia\Model\ProductVersionQuery;
 
 abstract class WholesalePartnerProduct implements ActiveRecordInterface 
 {
@@ -75,6 +78,12 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
      * @var        int
      */
     protected $product_id;
+
+    /**
+     * The value for the partner_product_ref field.
+     * @var        string
+     */
+    protected $partner_product_ref;
 
     /**
      * The value for the price field.
@@ -151,6 +160,11 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
      * @var        string
      */
     protected $version_created_by;
+
+    /**
+     * @var        Product
+     */
+    protected $aProduct;
 
     /**
      * @var        ObjectCollection|ChildWholesalePartnerProductVersion[] Collection to store aggregation of ChildWholesalePartnerProductVersion objects.
@@ -488,6 +502,17 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     }
 
     /**
+     * Get the [partner_product_ref] column value.
+     * 
+     * @return   string
+     */
+    public function getPartnerProdRef()
+    {
+
+        return $this->partner_product_ref;
+    }
+
+    /**
      * Get the [price] column value.
      * 
      * @return   string
@@ -687,9 +712,34 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             $this->modifiedColumns[WholesalePartnerProductTableMap::PRODUCT_ID] = true;
         }
 
+        if ($this->aProduct !== null && $this->aProduct->getId() !== $v) {
+            $this->aProduct = null;
+        }
+
 
         return $this;
     } // setProductId()
+
+    /**
+     * Set the value of [partner_product_ref] column.
+     * 
+     * @param      string $v new value
+     * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
+     */
+    public function setPartnerProdRef($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->partner_product_ref !== $v) {
+            $this->partner_product_ref = $v;
+            $this->modifiedColumns[WholesalePartnerProductTableMap::PARTNER_PRODUCT_REF] = true;
+        }
+
+
+        return $this;
+    } // setPartnerProdRef()
 
     /**
      * Set the value of [price] column.
@@ -1005,43 +1055,46 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : WholesalePartnerProductTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WholesalePartnerProductTableMap::translateFieldName('PartnerProdRef', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->partner_product_ref = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WholesalePartnerProductTableMap::translateFieldName('PackageSize', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : WholesalePartnerProductTableMap::translateFieldName('PackageSize', TableMap::TYPE_PHPNAME, $indexType)];
             $this->package_size = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : WholesalePartnerProductTableMap::translateFieldName('DeliveryCost', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : WholesalePartnerProductTableMap::translateFieldName('DeliveryCost', TableMap::TYPE_PHPNAME, $indexType)];
             $this->delivery_cost = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Discount', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Discount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->discount = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : WholesalePartnerProductTableMap::translateFieldName('DiscountDescription', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : WholesalePartnerProductTableMap::translateFieldName('DiscountDescription', TableMap::TYPE_PHPNAME, $indexType)];
             $this->discount_description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : WholesalePartnerProductTableMap::translateFieldName('ProfileWebsite', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : WholesalePartnerProductTableMap::translateFieldName('ProfileWebsite', TableMap::TYPE_PHPNAME, $indexType)];
             $this->profile_website = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Department', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Department', TableMap::TYPE_PHPNAME, $indexType)];
             $this->department = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->comment = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : WholesalePartnerProductTableMap::translateFieldName('ValidUntil', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : WholesalePartnerProductTableMap::translateFieldName('ValidUntil', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->valid_until = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : WholesalePartnerProductTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : WholesalePartnerProductTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : WholesalePartnerProductTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_created_by = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -1051,7 +1104,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = WholesalePartnerProductTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = WholesalePartnerProductTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \RevenueDashboard\Model\WholesalePartnerProduct object", 0, $e);
@@ -1073,6 +1126,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aProduct !== null && $this->product_id !== $this->aProduct->getId()) {
+            $this->aProduct = null;
+        }
     } // ensureConsistency
 
     /**
@@ -1112,6 +1168,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aProduct = null;
             $this->collWholesalePartnerProductVersions = null;
 
         } // if (deep)
@@ -1234,6 +1291,18 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aProduct !== null) {
+                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
+                    $affectedRows += $this->aProduct->save($con);
+                }
+                $this->setProduct($this->aProduct);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1297,6 +1366,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'PRODUCT_ID';
         }
+        if ($this->isColumnModified(WholesalePartnerProductTableMap::PARTNER_PRODUCT_REF)) {
+            $modifiedColumns[':p' . $index++]  = 'PARTNER_PRODUCT_REF';
+        }
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PRICE';
         }
@@ -1352,6 +1424,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
                         break;
                     case 'PRODUCT_ID':                        
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                        break;
+                    case 'PARTNER_PRODUCT_REF':                        
+                        $stmt->bindValue($identifier, $this->partner_product_ref, PDO::PARAM_STR);
                         break;
                     case 'PRICE':                        
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
@@ -1461,39 +1536,42 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
                 return $this->getProductId();
                 break;
             case 3:
-                return $this->getPrice();
+                return $this->getPartnerProdRef();
                 break;
             case 4:
-                return $this->getPackageSize();
+                return $this->getPrice();
                 break;
             case 5:
-                return $this->getDeliveryCost();
+                return $this->getPackageSize();
                 break;
             case 6:
-                return $this->getDiscount();
+                return $this->getDeliveryCost();
                 break;
             case 7:
-                return $this->getDiscountDescription();
+                return $this->getDiscount();
                 break;
             case 8:
-                return $this->getProfileWebsite();
+                return $this->getDiscountDescription();
                 break;
             case 9:
-                return $this->getPosition();
+                return $this->getProfileWebsite();
                 break;
             case 10:
-                return $this->getDepartment();
+                return $this->getPosition();
                 break;
             case 11:
-                return $this->getComment();
+                return $this->getDepartment();
                 break;
             case 12:
-                return $this->getValidUntil();
+                return $this->getComment();
                 break;
             case 13:
-                return $this->getVersion();
+                return $this->getValidUntil();
                 break;
             case 14:
+                return $this->getVersion();
+                break;
+            case 15:
                 return $this->getVersionCreatedBy();
                 break;
             default:
@@ -1528,18 +1606,19 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPartnerId(),
             $keys[2] => $this->getProductId(),
-            $keys[3] => $this->getPrice(),
-            $keys[4] => $this->getPackageSize(),
-            $keys[5] => $this->getDeliveryCost(),
-            $keys[6] => $this->getDiscount(),
-            $keys[7] => $this->getDiscountDescription(),
-            $keys[8] => $this->getProfileWebsite(),
-            $keys[9] => $this->getPosition(),
-            $keys[10] => $this->getDepartment(),
-            $keys[11] => $this->getComment(),
-            $keys[12] => $this->getValidUntil(),
-            $keys[13] => $this->getVersion(),
-            $keys[14] => $this->getVersionCreatedBy(),
+            $keys[3] => $this->getPartnerProdRef(),
+            $keys[4] => $this->getPrice(),
+            $keys[5] => $this->getPackageSize(),
+            $keys[6] => $this->getDeliveryCost(),
+            $keys[7] => $this->getDiscount(),
+            $keys[8] => $this->getDiscountDescription(),
+            $keys[9] => $this->getProfileWebsite(),
+            $keys[10] => $this->getPosition(),
+            $keys[11] => $this->getDepartment(),
+            $keys[12] => $this->getComment(),
+            $keys[13] => $this->getValidUntil(),
+            $keys[14] => $this->getVersion(),
+            $keys[15] => $this->getVersionCreatedBy(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1547,6 +1626,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
+            if (null !== $this->aProduct) {
+                $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collWholesalePartnerProductVersions) {
                 $result['WholesalePartnerProductVersions'] = $this->collWholesalePartnerProductVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1594,39 +1676,42 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
                 $this->setProductId($value);
                 break;
             case 3:
-                $this->setPrice($value);
+                $this->setPartnerProdRef($value);
                 break;
             case 4:
-                $this->setPackageSize($value);
+                $this->setPrice($value);
                 break;
             case 5:
-                $this->setDeliveryCost($value);
+                $this->setPackageSize($value);
                 break;
             case 6:
-                $this->setDiscount($value);
+                $this->setDeliveryCost($value);
                 break;
             case 7:
-                $this->setDiscountDescription($value);
+                $this->setDiscount($value);
                 break;
             case 8:
-                $this->setProfileWebsite($value);
+                $this->setDiscountDescription($value);
                 break;
             case 9:
-                $this->setPosition($value);
+                $this->setProfileWebsite($value);
                 break;
             case 10:
-                $this->setDepartment($value);
+                $this->setPosition($value);
                 break;
             case 11:
-                $this->setComment($value);
+                $this->setDepartment($value);
                 break;
             case 12:
-                $this->setValidUntil($value);
+                $this->setComment($value);
                 break;
             case 13:
-                $this->setVersion($value);
+                $this->setValidUntil($value);
                 break;
             case 14:
+                $this->setVersion($value);
+                break;
+            case 15:
                 $this->setVersionCreatedBy($value);
                 break;
         } // switch()
@@ -1656,18 +1741,19 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPartnerId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setProductId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPrice($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPackageSize($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDeliveryCost($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setDiscount($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setDiscountDescription($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setProfileWebsite($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPosition($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setDepartment($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setComment($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setValidUntil($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setVersion($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setVersionCreatedBy($arr[$keys[14]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPartnerProdRef($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPrice($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPackageSize($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDeliveryCost($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDiscount($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setDiscountDescription($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProfileWebsite($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPosition($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setDepartment($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setComment($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setValidUntil($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setVersion($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setVersionCreatedBy($arr[$keys[15]]);
     }
 
     /**
@@ -1682,6 +1768,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductTableMap::ID)) $criteria->add(WholesalePartnerProductTableMap::ID, $this->id);
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PARTNER_ID)) $criteria->add(WholesalePartnerProductTableMap::PARTNER_ID, $this->partner_id);
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PRODUCT_ID)) $criteria->add(WholesalePartnerProductTableMap::PRODUCT_ID, $this->product_id);
+        if ($this->isColumnModified(WholesalePartnerProductTableMap::PARTNER_PRODUCT_REF)) $criteria->add(WholesalePartnerProductTableMap::PARTNER_PRODUCT_REF, $this->partner_product_ref);
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PRICE)) $criteria->add(WholesalePartnerProductTableMap::PRICE, $this->price);
         if ($this->isColumnModified(WholesalePartnerProductTableMap::PACKAGE_SIZE)) $criteria->add(WholesalePartnerProductTableMap::PACKAGE_SIZE, $this->package_size);
         if ($this->isColumnModified(WholesalePartnerProductTableMap::DELIVERY_COST)) $criteria->add(WholesalePartnerProductTableMap::DELIVERY_COST, $this->delivery_cost);
@@ -1759,6 +1846,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         $copyObj->setPartnerId($this->getPartnerId());
         $copyObj->setProductId($this->getProductId());
+        $copyObj->setPartnerProdRef($this->getPartnerProdRef());
         $copyObj->setPrice($this->getPrice());
         $copyObj->setPackageSize($this->getPackageSize());
         $copyObj->setDeliveryCost($this->getDeliveryCost());
@@ -1811,6 +1899,57 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $this->copyInto($copyObj, $deepCopy);
 
         return $copyObj;
+    }
+
+    /**
+     * Declares an association between this object and a ChildProduct object.
+     *
+     * @param                  ChildProduct $v
+     * @return                 \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setProduct(ChildProduct $v = null)
+    {
+        if ($v === null) {
+            $this->setProductId(NULL);
+        } else {
+            $this->setProductId($v->getId());
+        }
+
+        $this->aProduct = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildProduct object, it will not be re-added.
+        if ($v !== null) {
+            $v->addWholesalePartnerProduct($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildProduct object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildProduct The associated ChildProduct object.
+     * @throws PropelException
+     */
+    public function getProduct(ConnectionInterface $con = null)
+    {
+        if ($this->aProduct === null && ($this->product_id !== null)) {
+            $this->aProduct = ProductQuery::create()->findPk($this->product_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aProduct->addWholesalePartnerProducts($this);
+             */
+        }
+
+        return $this->aProduct;
     }
 
 
@@ -2058,6 +2197,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $this->id = null;
         $this->partner_id = null;
         $this->product_id = null;
+        $this->partner_product_ref = null;
         $this->price = null;
         $this->package_size = null;
         $this->delivery_cost = null;
@@ -2098,6 +2238,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         } // if ($deep)
 
         $this->collWholesalePartnerProductVersions = null;
+        $this->aProduct = null;
     }
 
     /**
@@ -2142,6 +2283,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if (ChildWholesalePartnerProductQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
             return true;
         }
+        if (null !== ($object = $this->getProduct($con)) && $object->isVersioningNecessary($con)) {
+            return true;
+        }
+    
     
         return false;
     }
@@ -2161,6 +2306,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $version->setId($this->getId());
         $version->setPartnerId($this->getPartnerId());
         $version->setProductId($this->getProductId());
+        $version->setPartnerProdRef($this->getPartnerProdRef());
         $version->setPrice($this->getPrice());
         $version->setPackageSize($this->getPackageSize());
         $version->setDeliveryCost($this->getDeliveryCost());
@@ -2174,6 +2320,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $version->setVersion($this->getVersion());
         $version->setVersionCreatedBy($this->getVersionCreatedBy());
         $version->setWholesalePartnerProduct($this);
+        if (($related = $this->getProduct($con)) && $related->getVersion()) {
+            $version->setProductIdVersion($related->getVersion());
+        }
         $version->save($con);
     
         return $version;
@@ -2213,6 +2362,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $this->setId($version->getId());
         $this->setPartnerId($version->getPartnerId());
         $this->setProductId($version->getProductId());
+        $this->setPartnerProdRef($version->getPartnerProdRef());
         $this->setPrice($version->getPrice());
         $this->setPackageSize($version->getPackageSize());
         $this->setDeliveryCost($version->getDeliveryCost());
@@ -2225,6 +2375,20 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $this->setValidUntil($version->getValidUntil());
         $this->setVersion($version->getVersion());
         $this->setVersionCreatedBy($version->getVersionCreatedBy());
+        if ($fkValue = $version->getProductId()) {
+            if (isset($loadedObjects['ChildProduct']) && isset($loadedObjects['ChildProduct'][$fkValue]) && isset($loadedObjects['ChildProduct'][$fkValue][$version->getProductIdVersion()])) {
+                $related = $loadedObjects['ChildProduct'][$fkValue][$version->getProductIdVersion()];
+            } else {
+                $related = new ChildProduct();
+                $relatedVersion = ProductVersionQuery::create()
+                    ->filterById($fkValue)
+                    ->filterByVersion($version->getProductIdVersion())
+                    ->findOne($con);
+                $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
+                $related->setNew(false);
+            }
+            $this->setProduct($related);
+        }
     
         return $this;
     }
