@@ -8,6 +8,7 @@ use RevenueDashboard\Events\RevenueDashboardBrandEvents;
 use RevenueDashboard\Events\RevenueDashboardCategoryEvent;
 use RevenueDashboard\Events\RevenueDashboardCategoryEvents;
 use RevenueDashboard\Model\WholesalePartnerProduct;
+use RevenueDashboard\Model\WholesalePartnerProductQuery;
 use Symfony\Component\Serializer\Exception\Exception;
 use Thelia\Core\Event\Product\ProductCreateEvent;
 use Thelia\Core\Event\Product\ProductUpdateEvent;
@@ -16,7 +17,6 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
-use Thelia\Model\ProductSaleElements;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\ProductImage;
 use Thelia\Model\ProductImageI18n;
@@ -78,6 +78,8 @@ class XMLImporter extends AbstractImport
         $brandRefId         = null;
         $matchingSuccessful = FALSE;
         $refBuild           = null;
+        $wPIdMatch          = FALSE;
+        $wholesaleProduct   = null;
 
 
         //USED
@@ -91,6 +93,18 @@ class XMLImporter extends AbstractImport
         $ean_code_import            = $this->rowHasField($row, "ean");
         $product_picture_link       = $this->rowHasField($row, "produktbild");
         $product_description_import = $this->rowHasField($row, "ausschreibungstext");
+        $partner_product_ref        = $this->rowHasField($row, "matchcode");
+
+        if ($partner_product_ref == null) {
+            $partner_product_ref = $this->rowHasField($row, "Matchcode");
+            $log->debug("Import ref is for updating from csv not xml.");
+        }
+
+        if ($stock_import == null) {
+            $stock_import = $this->rowHasField($row, "Verf.Menge");
+            $log->debug("Import menge is for updating from csv not xml.");
+        }
+
 
         //NOT USED
 //        $kurze_beschreibung = $this->rowHasField($row, "Kurze_beschreibung");
@@ -154,7 +168,21 @@ class XMLImporter extends AbstractImport
             $log->debug("There's no brand_import !");
         }
 
-        $log->debug("After variable initialisation, before brand create!");
+        if ($partner_product_ref) {
+            $wholesaleProduct = WholesalePartnerProductQuery::create()
+             ->findOneByPartnerProdRef($partner_product_ref);
+        } else {
+            $log->debug("NO matchcode! ");
+        }
+
+        if ($wholesaleProduct) {
+            $wPId      = $wholesaleProduct->getProductId();
+            $wPIdMatch = TRUE;
+            $log->debug("After WPPQ , before brand create! WPP id: " . $wPId);
+        } else {
+            $log->debug("No match found for partner_product_ref ");
+        }
+
 
         $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
         $createBrandEvent     = new RevenueDashboardBrandEvent();
@@ -164,13 +192,11 @@ class XMLImporter extends AbstractImport
         if ($createBrandEvent->getBrandMatch() != null) {
             $brandRefComponent = $createBrandEvent->getBrandMatch()->getBrandCode();
             $brandRefId        = $createBrandEvent->getBrandMatch()->getBrandIntern();
+            $log->debug("Brand check event results " . " Brand is: " . $brandRefComponent . " Brand code is: " . $brandRefId . " Future REF is : " . $brandRefComponent . $material_number_import);
         } else {
             $errors .= "Brand name not found in database, table wholesale_partner_brand_matching " . $brand_import . PHP_EOL;
+            $log->debug("Brand not found!");
         }
-
-        $log->debug("After brand check event. Brand check event results: " . " Brand is: " . $brandRefComponent . " Brand code is: " . $brandRefId . " Future REF is : " . $brandRefComponent . $material_number_import);
-
-        $log->debug("Before category check event");
 
         $eventCategoryDispatcher = $this->getContainer()->get('event_dispatcher');
         $createCategoryEvent     = new RevenueDashboardCategoryEvent();
@@ -179,16 +205,15 @@ class XMLImporter extends AbstractImport
 
         if ($createCategoryEvent->getCategoryMatch() != null) {
             $categoryComponent = $createCategoryEvent->getCategoryMatch()->getCategoryInternId();
+            $log->debug("Category check event results, category id: " . $categoryComponent);
         } else {
             $errors .= " Category name not found in database, table wholesale_partner_category_matching " . $category_import . PHP_EOL;
+            $log->debug("Category not found!");
         }
-
-        $log->debug("After category check event. Brand check event results: " . " Category id is: " . $categoryComponent);
 
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
-            $log->debug("After Ref Build: " . $refBuild . " Product Exists?: " . $productExists);
         }
 
         $productExists = count($productQuerry->findByRef($refBuild));
@@ -196,6 +221,10 @@ class XMLImporter extends AbstractImport
 
 
         if ($productExists == 0 && $matchingSuccessful) {
+            $time_before_newProduct        = microtime(true);
+            $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
+            $log->debug("Exec-time before new product " . $execution_time_before_product . " ms.");
+
             $log->debug("Product does not exist, creating product! ");
             $eventDispatcher = $this->getContainer()->get('event_dispatcher');
             $createEvent     = new ProductCreateEvent();
@@ -214,17 +243,15 @@ class XMLImporter extends AbstractImport
 
             $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
 
-            $log->debug("After Product create event dispatcher");
-
             $product = ProductQuery::create()
              ->filterByRef($createEvent->getProduct()->getRef())
              ->withColumn('product.id', 'product_id')
              ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
              ->findOne();
 
-            $log->debug($createEvent->getProduct()->getRef() . "GETREF");
+            $log->debug("New Product Ref: " . $createEvent->getProduct()->getRef());
             $product_id = $product->getId();
-            $log->debug($product_id . "DASA");
+            $log->debug("New Product id: " . $product_id);
 
             $productPse = ProductSaleElementsQuery::create()
              ->filterByProductId($product_id)
@@ -232,23 +259,28 @@ class XMLImporter extends AbstractImport
              ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
              ->findOne();
 
-//            $log->debug($productPse);
             $pse_id = $productPse->getId();
 
             $updatePse = new ProductSaleElementUpdateEvent($product, $pse_id);
 
-            $log->debug("After Update PSE");
-            $log->debug("EAN CODE:" . $ean_code_import);
-            $log->debug("PSE ID: " . $pse_id);
+
+            $log->debug("New Product Ref PSE ID: " . $pse_id);
 
             if ($netto_price_import != null) {
                 $updatePse->setPrice($netto_price_import);
+                $log->debug("New Product price :" . $updatePse->getPrice());
             }
             if ($brutto_price_import != null) {
                 $updatePse->setListenPrice($brutto_price_import);
+                $log->debug("New Product Listen price :" . $updatePse->getListenPrice());
             }
 
-            $updatePse->setEanCode($ean_code_import)
+            if ($ean_code_import != null) {
+                $updatePse->setEanCode($ean_code_import);
+                $log->debug("New Product EAN :" . $updatePse->getEanCode());
+            }
+
+            $updatePse
              ->setReference($refBuild)
              ->setSalePrice(0)
              ->setTaxRuleId(1)
@@ -257,17 +289,13 @@ class XMLImporter extends AbstractImport
              ->setIsdefault(1)
              ->setCurrencyId(1);
 
-            //eventurile pun pe NULL tot ce nu dai
             $eventDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE_PRODUCT_SALE_ELEMENT, $updatePse);
 
-            $log->debug("After PSE dispatch");
-            //Product Update Event pentru description si poate altele daca o sa mai fie nevoie
             $eventProductUpdateDispatcher = $this->getContainer()->get('event_dispatcher');
 
             $updateEvent = new ProductUpdateEvent($product_id);
 
             $updateEvent
-             ->setDescription($product_description_import)
              ->setLocale($locale)
              ->setBasePrice($netto_price_import)
              ->setBaseQuantity($stock_import)
@@ -280,20 +308,25 @@ class XMLImporter extends AbstractImport
              ->setTemplateId(1)
              ->setBrandId($brandRefId);
 
-            $log->debug("After set descrip" . $updateEvent->getDescription() . " " . $product_id);
+
+
+            if ($product_description_import != null) {
+                $updateEvent->setDescription($product_description_import);
+                $log->debug("New Product descrip: " . $updateEvent->getDescription() . " on product_id: " . $product_id);
+            }
+
             $eventProductUpdateDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE, $updateEvent);
 
-            //REVENUE DASHBOARD -- ii foarte complex facut dar nu-i folosit deloc deci ar trebui populat
 
             $revenueDash = new WholesalePartnerProduct();
 
             if ($netto_price_import != null) {
-                $revenueDash->setPrice($netto_price_import);
+                $revenueDash->setPartnerProdRef($partner_product_ref)
+                 ->setProductId($product_id)
+                 ->setPrice($netto_price_import)
+                 ->save();
+                $log->debug("New wholesale partner product price: " . $revenueDash->getPrice());
             }
-
-
-            //save images
-            $log->debug("Save images part");
 
             $image_path  = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
             $image_name  = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $refBuild) . ".jpg";
@@ -301,14 +334,16 @@ class XMLImporter extends AbstractImport
 
             try {
                 $log->debug("Importing from Mysht picture");
-                $image_from_server = @file_get_contents($product_picture_link);
+                $time_after_before_picture     = microtime(true);
+                $execution_time_before_picture = round(($time_after_before_picture - $time_start) * 1000);
+                $log->debug("Exec-time before picture " . $execution_time_before_picture . " ms.");
+                $image_from_server             = @file_get_contents($product_picture_link);
             } catch (Exception $e) {
                 $log->debug("ProductImageException :" . $e->getMessage());
             }
 
             if ($image_from_server) {
-                $log->debug("Image saved. ");
-                $log->debug("Importing image saved to " . $image_path . $image_name);
+                $log->debug("New Product importing image saved to " . $image_path . $image_name);
                 file_put_contents($image_path . $image_name, $image_from_server);
 
                 $product_image = new ProductImage ();
@@ -332,45 +367,72 @@ class XMLImporter extends AbstractImport
             } else {
                 $log->debug(" Image not saved.");
             }
-        } else if ($matchingSuccessful) {
-            $errors .= " Product already in database, Updating prices and quantity for Ref: " . $refBuild . "." . PHP_EOL;
-            $log->debug("Product already exists. Updating!");
 
-            $log->debug("REF IS: " . $refBuild);
+            $time_after_newProduct        = microtime(true);
+            $execution_time_after_product = round(($time_after_newProduct - $time_start) * 1000);
+            $log->debug("Exec-time after new product " . $execution_time_after_product . " ms.");
+        } else if ($wPIdMatch) {
+            $time_before_update           = microtime(true);
+            $execution_time_before_update = round(($time_before_update - $time_start) * 1000);
+            $log->debug("Exec-time before product update " . $execution_time_before_update . " ms.");
 
-            $product = ProductQuery::create()
-             ->findOneByRef($refBuild);
+            $newProdId = $wholesaleProduct->getProductId();
 
+            $product    = ProductQuery::create()
+             ->findOneById($newProdId);
             $product_id = $product->getId();
-            $log->debug("Product id is: " . $product_id);
+            $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
 
             $productPse = ProductSaleElementsQuery::create()
              ->findOneByProductId($product_id);
 
             $pse_id = $productPse->getId();
-            $log->debug("Pse Id from PSE query is: " . $pse_id);
+            $log->debug("In WPID MATCH, pse_id: " . $pse_id);
 
             $productPseImport = $productPse;
             $productPseImport->setQuantity($stock_import)
              ->save();
 
-            $log->debug("Product Pse Is " . $productPse->getId() . " Prod quantity is: " . $productPseImport->getQuantity());
+            $log->debug("Modified quantity, new quantity: " . $productPseImport->getQuantity());
 
-
-            $priceQ = ProductPriceQuery::create()
-             ->filterByProductSaleElementsId($pse_id)
-             ->findOneByCurrencyId(1);
-
-            $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
-
-            $priceQ->setPrice($netto_price_import)
-             ->setListenPrice($brutto_price_import)
-             ->save();
-
-            $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
+            $time_after_update           = microtime(true);
+            $execution_time_after_update = round(($time_after_update - $time_start) * 1000);
+            $log->debug("Exec-time after product update " . $execution_time_after_update . " ms.");
+//        } else if ($wPIdMatch && $brutto_price_import != null) {
+//            $errors .= " Product already in database and no match found for WPP: " . $refBuild . "." . PHP_EOL;
+//            $product = ProductQuery::create()
+//             ->findOneById($refBuild);
+//
+//            $product_id = $product->getId();
+//            $log->debug("Product id is: " . $product_id);
+//
+//            $productPse = ProductSaleElementsQuery::create()
+//             ->findOneByProductId($product_id);
+//
+//            $pse_id = $productPse->getId();
+//            $log->debug("Pse Id from PSE query is: " . $pse_id);
+//
+//            $productPseImport = $productPse;
+//            $productPseImport->setQuantity($stock_import)
+//             ->save();
+//
+//            $log->debug("Product Pse Is " . $productPse->getId() . " Prod quantity is: " . $productPseImport->getQuantity());
+//
+//
+//            $priceQ = ProductPriceQuery::create()
+//             ->filterByProductSaleElementsId($pse_id)
+//             ->findOneByCurrencyId(1);
+//
+//            $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
+//
+//            $priceQ->setPrice($netto_price_import)
+//             ->setListenPrice($brutto_price_import)
+//             ->save();
+//
+//            $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
         } else {
             $log->debug("NO match");
-            $errors .= " Product does not exist! " . $refBuild . "." . PHP_EOL;
+            $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
         }
 
         ini_set('max_execution_time', $max_time);
