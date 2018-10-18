@@ -15,6 +15,7 @@ use Propel\Runtime\Exception\PropelException;
 use RevenueDashboard\Model\WholesalePartnerProduct as ChildWholesalePartnerProduct;
 use RevenueDashboard\Model\WholesalePartnerProductQuery as ChildWholesalePartnerProductQuery;
 use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
+use Thelia\Model\Product;
 
 /**
  * Base class that represents a query for the 'wholesale_partner_product' table.
@@ -24,6 +25,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
  * @method     ChildWholesalePartnerProductQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerProductQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
  * @method     ChildWholesalePartnerProductQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
+ * @method     ChildWholesalePartnerProductQuery orderByPartnerProdRef($order = Criteria::ASC) Order by the partner_product_ref column
  * @method     ChildWholesalePartnerProductQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     ChildWholesalePartnerProductQuery orderByPackageSize($order = Criteria::ASC) Order by the package_size column
  * @method     ChildWholesalePartnerProductQuery orderByDeliveryCost($order = Criteria::ASC) Order by the delivery_cost column
@@ -40,6 +42,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
  * @method     ChildWholesalePartnerProductQuery groupById() Group by the id column
  * @method     ChildWholesalePartnerProductQuery groupByPartnerId() Group by the partner_id column
  * @method     ChildWholesalePartnerProductQuery groupByProductId() Group by the product_id column
+ * @method     ChildWholesalePartnerProductQuery groupByPartnerProdRef() Group by the partner_product_ref column
  * @method     ChildWholesalePartnerProductQuery groupByPrice() Group by the price column
  * @method     ChildWholesalePartnerProductQuery groupByPackageSize() Group by the package_size column
  * @method     ChildWholesalePartnerProductQuery groupByDeliveryCost() Group by the delivery_cost column
@@ -57,6 +60,10 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
  * @method     ChildWholesalePartnerProductQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildWholesalePartnerProductQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method     ChildWholesalePartnerProductQuery leftJoinProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the Product relation
+ * @method     ChildWholesalePartnerProductQuery rightJoinProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Product relation
+ * @method     ChildWholesalePartnerProductQuery innerJoinProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the Product relation
+ *
  * @method     ChildWholesalePartnerProductQuery leftJoinWholesalePartnerProductVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the WholesalePartnerProductVersion relation
  * @method     ChildWholesalePartnerProductQuery rightJoinWholesalePartnerProductVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the WholesalePartnerProductVersion relation
  * @method     ChildWholesalePartnerProductQuery innerJoinWholesalePartnerProductVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the WholesalePartnerProductVersion relation
@@ -67,6 +74,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
  * @method     ChildWholesalePartnerProduct findOneById(int $id) Return the first ChildWholesalePartnerProduct filtered by the id column
  * @method     ChildWholesalePartnerProduct findOneByPartnerId(int $partner_id) Return the first ChildWholesalePartnerProduct filtered by the partner_id column
  * @method     ChildWholesalePartnerProduct findOneByProductId(int $product_id) Return the first ChildWholesalePartnerProduct filtered by the product_id column
+ * @method     ChildWholesalePartnerProduct findOneByPartnerProdRef(string $partner_product_ref) Return the first ChildWholesalePartnerProduct filtered by the partner_product_ref column
  * @method     ChildWholesalePartnerProduct findOneByPrice(string $price) Return the first ChildWholesalePartnerProduct filtered by the price column
  * @method     ChildWholesalePartnerProduct findOneByPackageSize(int $package_size) Return the first ChildWholesalePartnerProduct filtered by the package_size column
  * @method     ChildWholesalePartnerProduct findOneByDeliveryCost(string $delivery_cost) Return the first ChildWholesalePartnerProduct filtered by the delivery_cost column
@@ -83,6 +91,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductTableMap;
  * @method     array findById(int $id) Return ChildWholesalePartnerProduct objects filtered by the id column
  * @method     array findByPartnerId(int $partner_id) Return ChildWholesalePartnerProduct objects filtered by the partner_id column
  * @method     array findByProductId(int $product_id) Return ChildWholesalePartnerProduct objects filtered by the product_id column
+ * @method     array findByPartnerProdRef(string $partner_product_ref) Return ChildWholesalePartnerProduct objects filtered by the partner_product_ref column
  * @method     array findByPrice(string $price) Return ChildWholesalePartnerProduct objects filtered by the price column
  * @method     array findByPackageSize(int $package_size) Return ChildWholesalePartnerProduct objects filtered by the package_size column
  * @method     array findByDeliveryCost(string $delivery_cost) Return ChildWholesalePartnerProduct objects filtered by the delivery_cost column
@@ -190,7 +199,7 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY FROM wholesale_partner_product WHERE ID = :p0';
+        $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PARTNER_PRODUCT_REF, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY FROM wholesale_partner_product WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -371,6 +380,8 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
      * $query->filterByProductId(array('min' => 12)); // WHERE product_id > 12
      * </code>
      *
+     * @see       filterByProduct()
+     *
      * @param     mixed $productId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
@@ -400,6 +411,35 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(WholesalePartnerProductTableMap::PRODUCT_ID, $productId, $comparison);
+    }
+
+    /**
+     * Filter the query on the partner_product_ref column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPartnerProdRef('fooValue');   // WHERE partner_product_ref = 'fooValue'
+     * $query->filterByPartnerProdRef('%fooValue%'); // WHERE partner_product_ref LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $partnerProdRef The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildWholesalePartnerProductQuery The current query, for fluid interface
+     */
+    public function filterByPartnerProdRef($partnerProdRef = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($partnerProdRef)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $partnerProdRef)) {
+                $partnerProdRef = str_replace('*', '%', $partnerProdRef);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(WholesalePartnerProductTableMap::PARTNER_PRODUCT_REF, $partnerProdRef, $comparison);
     }
 
     /**
@@ -822,6 +862,81 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(WholesalePartnerProductTableMap::VERSION_CREATED_BY, $versionCreatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Thelia\Model\Product object
+     *
+     * @param \Thelia\Model\Product|ObjectCollection $product The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildWholesalePartnerProductQuery The current query, for fluid interface
+     */
+    public function filterByProduct($product, $comparison = null)
+    {
+        if ($product instanceof \Thelia\Model\Product) {
+            return $this
+                ->addUsingAlias(WholesalePartnerProductTableMap::PRODUCT_ID, $product->getId(), $comparison);
+        } elseif ($product instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(WholesalePartnerProductTableMap::PRODUCT_ID, $product->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByProduct() only accepts arguments of type \Thelia\Model\Product or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Product relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildWholesalePartnerProductQuery The current query, for fluid interface
+     */
+    public function joinProduct($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Product');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Product');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Product relation Product object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Thelia\Model\ProductQuery A secondary query class using the current class as primary query
+     */
+    public function useProductQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinProduct($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Product', '\Thelia\Model\ProductQuery');
     }
 
     /**

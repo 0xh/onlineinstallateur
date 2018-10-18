@@ -17,8 +17,8 @@ CREATE TABLE `wholesale_partner_brand_matching`
     `partner_id` INTEGER,
     `brand_code` VARCHAR(45),
     PRIMARY KEY (`id`),
-    INDEX `FI_brand_internally` (`brand_intern`),
-    CONSTRAINT `fk_brand_internally`
+    INDEX `FI_wholesale_partner_brand_matching_brand_id` (`brand_intern`),
+    CONSTRAINT `fk_wholesale_partner_brand_matching_brand_id`
         FOREIGN KEY (`brand_intern`)
         REFERENCES `brand` (`id`)
         ON DELETE CASCADE
@@ -40,8 +40,8 @@ CREATE TABLE `wholesale_partner_category_matching`
     `partner_id` INTEGER,
     `category_id` VARCHAR(45),
     PRIMARY KEY (`id`),
-    INDEX `FI_category_intern` (`category_intern_id`),
-    CONSTRAINT `fk_category_intern`
+    INDEX `FI_wholesale_partner_category_matching_category_id` (`category_intern_id`),
+    CONSTRAINT `fk_wholesale_partner_category_matching_category_id`
         FOREIGN KEY (`category_intern_id`)
         REFERENCES `category` (`id`)
         ON DELETE CASCADE
@@ -112,6 +112,7 @@ CREATE TABLE `wholesale_partner_product`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `partner_id` INTEGER,
     `product_id` INTEGER,
+    `partner_product_ref` VARCHAR(255),
     `price` DECIMAL(16,2) DEFAULT 0.00,
     `package_size` INTEGER,
     `delivery_cost` DECIMAL(16,2) DEFAULT 0.00,
@@ -124,7 +125,12 @@ CREATE TABLE `wholesale_partner_product`
     `valid_until` DATETIME,
     `version` INTEGER DEFAULT 0,
     `version_created_by` VARCHAR(100),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `FI_wholesale_partner_product_product_id` (`product_id`),
+    CONSTRAINT `fk_wholesale_partner_product_product_id`
+        FOREIGN KEY (`product_id`)
+        REFERENCES `product` (`id`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -141,7 +147,17 @@ CREATE TABLE `order_product_revenue`
     `price` DECIMAL(16,2) DEFAULT 0.00,
     `purchase_price` DECIMAL(16,2) DEFAULT 0.00,
     `partner_id` INTEGER,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `FI_order_product_revenue_order_id` (`order_id`),
+    INDEX `FI_order_product_revenue_product_ref` (`product_ref`),
+    CONSTRAINT `fk_order_product_revenue_order_id`
+        FOREIGN KEY (`order_id`)
+        REFERENCES `order` (`id`)
+        ON DELETE CASCADE,
+    CONSTRAINT `fk_order_product_revenue_product_ref`
+        FOREIGN KEY (`product_ref`)
+        REFERENCES `product` (`ref`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -163,7 +179,12 @@ CREATE TABLE `order_revenue`
     `total_purchase_price` DECIMAL(16,2) DEFAULT 0.00,
     `revenue` DECIMAL(16,2) DEFAULT 0.00,
     `comment` VARCHAR(255),
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `FI_order_revenue_order_id` (`order_id`),
+    CONSTRAINT `fk_order_revenue_order_id`
+        FOREIGN KEY (`order_id`)
+        REFERENCES `order` (`id`)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -233,6 +254,7 @@ CREATE TABLE `wholesale_partner_product_version`
     `id` INTEGER NOT NULL,
     `partner_id` INTEGER,
     `product_id` INTEGER,
+    `partner_product_ref` VARCHAR(255),
     `price` DECIMAL(16,2) DEFAULT 0.00,
     `package_size` INTEGER,
     `delivery_cost` DECIMAL(16,2) DEFAULT 0.00,
@@ -245,6 +267,7 @@ CREATE TABLE `wholesale_partner_product_version`
     `valid_until` DATETIME,
     `version` INTEGER DEFAULT 0 NOT NULL,
     `version_created_by` VARCHAR(100),
+    `product_id_version` INTEGER DEFAULT 0,
     PRIMARY KEY (`id`,`version`),
     CONSTRAINT `wholesale_partner_product_version_FK_1`
         FOREIGN KEY (`id`)
