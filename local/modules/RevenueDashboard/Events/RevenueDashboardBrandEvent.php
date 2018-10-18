@@ -37,7 +37,7 @@ class RevenueDashboardBrandEvent extends ActionEvent
     /** @var WholesalePartnerBrandMatching */
     protected $wholesalepartnerbrandmatching;
 
-    function getBrandMatch(): WholesalePartnerBrandMatching
+    function getBrandMatch()
     {
         return $this->wholesalepartnerbrandmatching;
     }
@@ -45,6 +45,7 @@ class RevenueDashboardBrandEvent extends ActionEvent
     function setBrandMatch(WholesalePartnerBrandMatching $wholesalepartnerbrandmatching)
     {
         $this->wholesalepartnerbrandmatching = $wholesalepartnerbrandmatching;
+        return $this->wholesalepartnerbrandmatching = $wholesalepartnerbrandmatching;
     }
 
     function getId()

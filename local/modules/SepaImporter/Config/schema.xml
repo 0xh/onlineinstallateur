@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+    <table name="sepaimporter_brand_mapping" namespace="SepaImporter\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER"/>
+        <column name="brand_id" required="true" type="INTEGER"/>
+        <column name="source_brand_name" type="LONGVARCHAR" />
+        <column name="source_name" type="LONGVARCHAR" />
+        <foreign-key foreignTable="brand" name="fk_sepaimporter_brand_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="brand_id" />
+        </foreign-key>
+    </table>
+
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

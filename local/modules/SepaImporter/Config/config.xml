@@ -10,6 +10,10 @@
         </service>
     </services>
     
+     <commands>
+        <command class="SepaImporter\Commands\SelfImport"/>
+    </commands>
+    
     <import_categories>
         <import_category id="thelia.import.features">
             <title locale="fr_FR">features</title>
@@ -272,5 +276,52 @@
                 </description>
             </import_descriptive>
         </import>
+         <import id="thelia.import.from.xml" class="SepaImporter\Import\XMLImporter"
+                category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Import Full Product from XML </title>
+                <description>
+                  <![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Import Full Product from XML</title>
+                <description>
+<![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+         </import>
     </imports>
 </config>
