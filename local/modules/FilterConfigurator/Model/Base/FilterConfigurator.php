@@ -8,6 +8,8 @@ use \PDO;
 use FilterConfigurator\Model\FilterConfigurator as ChildFilterConfigurator;
 use FilterConfigurator\Model\FilterConfiguratorFeatures as ChildFilterConfiguratorFeatures;
 use FilterConfigurator\Model\FilterConfiguratorFeaturesQuery as ChildFilterConfiguratorFeaturesQuery;
+use FilterConfigurator\Model\FilterConfiguratorHook as ChildFilterConfiguratorHook;
+use FilterConfigurator\Model\FilterConfiguratorHookQuery as ChildFilterConfiguratorHookQuery;
 use FilterConfigurator\Model\FilterConfiguratorI18n as ChildFilterConfiguratorI18n;
 use FilterConfigurator\Model\FilterConfiguratorI18nQuery as ChildFilterConfiguratorI18nQuery;
 use FilterConfigurator\Model\FilterConfiguratorImage as ChildFilterConfiguratorImage;
@@ -107,6 +109,12 @@ abstract class FilterConfigurator implements ActiveRecordInterface
     protected $aCategory;
 
     /**
+     * @var        ObjectCollection|ChildFilterConfiguratorHook[] Collection to store aggregation of ChildFilterConfiguratorHook objects.
+     */
+    protected $collFilterConfiguratorHooks;
+    protected $collFilterConfiguratorHooksPartial;
+
+    /**
      * @var        ObjectCollection|ChildFilterConfiguratorI18n[] Collection to store aggregation of ChildFilterConfiguratorI18n objects.
      */
     protected $collFilterConfiguratorI18ns;
@@ -131,6 +139,12 @@ abstract class FilterConfigurator implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $filterConfiguratorHooksScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
@@ -777,6 +791,8 @@ abstract class FilterConfigurator implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aCategory = null;
+            $this->collFilterConfiguratorHooks = null;
+
             $this->collFilterConfiguratorI18ns = null;
 
             $this->collFilterConfiguratorImages = null;
@@ -926,6 +942,23 @@ abstract class FilterConfigurator implements ActiveRecordInterface
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->filterConfiguratorHooksScheduledForDeletion !== null) {
+                if (!$this->filterConfiguratorHooksScheduledForDeletion->isEmpty()) {
+                    \FilterConfigurator\Model\FilterConfiguratorHookQuery::create()
+                        ->filterByPrimaryKeys($this->filterConfiguratorHooksScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->filterConfiguratorHooksScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collFilterConfiguratorHooks !== null) {
+            foreach ($this->collFilterConfiguratorHooks as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             if ($this->filterConfiguratorI18nsScheduledForDeletion !== null) {
@@ -1177,6 +1210,9 @@ abstract class FilterConfigurator implements ActiveRecordInterface
             if (null !== $this->aCategory) {
                 $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
+            if (null !== $this->collFilterConfiguratorHooks) {
+                $result['FilterConfiguratorHooks'] = $this->collFilterConfiguratorHooks->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
             if (null !== $this->collFilterConfiguratorI18ns) {
                 $result['FilterConfiguratorI18ns'] = $this->collFilterConfiguratorI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -1359,6 +1395,12 @@ abstract class FilterConfigurator implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
+            foreach ($this->getFilterConfiguratorHooks() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addFilterConfiguratorHook($relObj->copy($deepCopy));
+                }
+            }
+
             foreach ($this->getFilterConfiguratorI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addFilterConfiguratorI18n($relObj->copy($deepCopy));
@@ -1469,6 +1511,9 @@ abstract class FilterConfigurator implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
+        if ('FilterConfiguratorHook' == $relationName) {
+            return $this->initFilterConfiguratorHooks();
+        }
         if ('FilterConfiguratorI18n' == $relationName) {
             return $this->initFilterConfiguratorI18ns();
         }
@@ -1478,6 +1523,249 @@ abstract class FilterConfigurator implements ActiveRecordInterface
         if ('FilterConfiguratorFeatures' == $relationName) {
             return $this->initFilterConfiguratorFeaturess();
         }
+    }
+
+    /**
+     * Clears out the collFilterConfiguratorHooks collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addFilterConfiguratorHooks()
+     */
+    public function clearFilterConfiguratorHooks()
+    {
+        $this->collFilterConfiguratorHooks = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collFilterConfiguratorHooks collection loaded partially.
+     */
+    public function resetPartialFilterConfiguratorHooks($v = true)
+    {
+        $this->collFilterConfiguratorHooksPartial = $v;
+    }
+
+    /**
+     * Initializes the collFilterConfiguratorHooks collection.
+     *
+     * By default this just sets the collFilterConfiguratorHooks collection to an empty array (like clearcollFilterConfiguratorHooks());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initFilterConfiguratorHooks($overrideExisting = true)
+    {
+        if (null !== $this->collFilterConfiguratorHooks && !$overrideExisting) {
+            return;
+        }
+        $this->collFilterConfiguratorHooks = new ObjectCollection();
+        $this->collFilterConfiguratorHooks->setModel('\FilterConfigurator\Model\FilterConfiguratorHook');
+    }
+
+    /**
+     * Gets an array of ChildFilterConfiguratorHook objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildFilterConfigurator is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildFilterConfiguratorHook[] List of ChildFilterConfiguratorHook objects
+     * @throws PropelException
+     */
+    public function getFilterConfiguratorHooks($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFilterConfiguratorHooksPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorHooks || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorHooks) {
+                // return empty collection
+                $this->initFilterConfiguratorHooks();
+            } else {
+                $collFilterConfiguratorHooks = ChildFilterConfiguratorHookQuery::create(null, $criteria)
+                    ->filterByFilterConfigurator($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collFilterConfiguratorHooksPartial && count($collFilterConfiguratorHooks)) {
+                        $this->initFilterConfiguratorHooks(false);
+
+                        foreach ($collFilterConfiguratorHooks as $obj) {
+                            if (false == $this->collFilterConfiguratorHooks->contains($obj)) {
+                                $this->collFilterConfiguratorHooks->append($obj);
+                            }
+                        }
+
+                        $this->collFilterConfiguratorHooksPartial = true;
+                    }
+
+                    reset($collFilterConfiguratorHooks);
+
+                    return $collFilterConfiguratorHooks;
+                }
+
+                if ($partial && $this->collFilterConfiguratorHooks) {
+                    foreach ($this->collFilterConfiguratorHooks as $obj) {
+                        if ($obj->isNew()) {
+                            $collFilterConfiguratorHooks[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collFilterConfiguratorHooks = $collFilterConfiguratorHooks;
+                $this->collFilterConfiguratorHooksPartial = false;
+            }
+        }
+
+        return $this->collFilterConfiguratorHooks;
+    }
+
+    /**
+     * Sets a collection of FilterConfiguratorHook objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $filterConfiguratorHooks A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildFilterConfigurator The current object (for fluent API support)
+     */
+    public function setFilterConfiguratorHooks(Collection $filterConfiguratorHooks, ConnectionInterface $con = null)
+    {
+        $filterConfiguratorHooksToDelete = $this->getFilterConfiguratorHooks(new Criteria(), $con)->diff($filterConfiguratorHooks);
+
+        
+        $this->filterConfiguratorHooksScheduledForDeletion = $filterConfiguratorHooksToDelete;
+
+        foreach ($filterConfiguratorHooksToDelete as $filterConfiguratorHookRemoved) {
+            $filterConfiguratorHookRemoved->setFilterConfigurator(null);
+        }
+
+        $this->collFilterConfiguratorHooks = null;
+        foreach ($filterConfiguratorHooks as $filterConfiguratorHook) {
+            $this->addFilterConfiguratorHook($filterConfiguratorHook);
+        }
+
+        $this->collFilterConfiguratorHooks = $filterConfiguratorHooks;
+        $this->collFilterConfiguratorHooksPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related FilterConfiguratorHook objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related FilterConfiguratorHook objects.
+     * @throws PropelException
+     */
+    public function countFilterConfiguratorHooks(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collFilterConfiguratorHooksPartial && !$this->isNew();
+        if (null === $this->collFilterConfiguratorHooks || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collFilterConfiguratorHooks) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getFilterConfiguratorHooks());
+            }
+
+            $query = ChildFilterConfiguratorHookQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByFilterConfigurator($this)
+                ->count($con);
+        }
+
+        return count($this->collFilterConfiguratorHooks);
+    }
+
+    /**
+     * Method called to associate a ChildFilterConfiguratorHook object to this object
+     * through the ChildFilterConfiguratorHook foreign key attribute.
+     *
+     * @param    ChildFilterConfiguratorHook $l ChildFilterConfiguratorHook
+     * @return   \FilterConfigurator\Model\FilterConfigurator The current object (for fluent API support)
+     */
+    public function addFilterConfiguratorHook(ChildFilterConfiguratorHook $l)
+    {
+        if ($this->collFilterConfiguratorHooks === null) {
+            $this->initFilterConfiguratorHooks();
+            $this->collFilterConfiguratorHooksPartial = true;
+        }
+
+        if (!in_array($l, $this->collFilterConfiguratorHooks->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddFilterConfiguratorHook($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param FilterConfiguratorHook $filterConfiguratorHook The filterConfiguratorHook object to add.
+     */
+    protected function doAddFilterConfiguratorHook($filterConfiguratorHook)
+    {
+        $this->collFilterConfiguratorHooks[]= $filterConfiguratorHook;
+        $filterConfiguratorHook->setFilterConfigurator($this);
+    }
+
+    /**
+     * @param  FilterConfiguratorHook $filterConfiguratorHook The filterConfiguratorHook object to remove.
+     * @return ChildFilterConfigurator The current object (for fluent API support)
+     */
+    public function removeFilterConfiguratorHook($filterConfiguratorHook)
+    {
+        if ($this->getFilterConfiguratorHooks()->contains($filterConfiguratorHook)) {
+            $this->collFilterConfiguratorHooks->remove($this->collFilterConfiguratorHooks->search($filterConfiguratorHook));
+            if (null === $this->filterConfiguratorHooksScheduledForDeletion) {
+                $this->filterConfiguratorHooksScheduledForDeletion = clone $this->collFilterConfiguratorHooks;
+                $this->filterConfiguratorHooksScheduledForDeletion->clear();
+            }
+            $this->filterConfiguratorHooksScheduledForDeletion[]= $filterConfiguratorHook;
+            $filterConfiguratorHook->setFilterConfigurator(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this FilterConfigurator is new, it will return
+     * an empty collection; or if this FilterConfigurator has previously
+     * been saved, it will retrieve related FilterConfiguratorHooks from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in FilterConfigurator.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildFilterConfiguratorHook[] List of ChildFilterConfiguratorHook objects
+     */
+    public function getFilterConfiguratorHooksJoinHook($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildFilterConfiguratorHookQuery::create(null, $criteria);
+        $query->joinWith('Hook', $joinBehavior);
+
+        return $this->getFilterConfiguratorHooks($query, $con);
     }
 
     /**
@@ -2193,6 +2481,11 @@ abstract class FilterConfigurator implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collFilterConfiguratorHooks) {
+                foreach ($this->collFilterConfiguratorHooks as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
             if ($this->collFilterConfiguratorI18ns) {
                 foreach ($this->collFilterConfiguratorI18ns as $o) {
                     $o->clearAllReferences($deep);
@@ -2210,6 +2503,7 @@ abstract class FilterConfigurator implements ActiveRecordInterface
             }
         } // if ($deep)
 
+        $this->collFilterConfiguratorHooks = null;
         $this->collFilterConfiguratorI18ns = null;
         $this->collFilterConfiguratorImages = null;
         $this->collFilterConfiguratorFeaturess = null;

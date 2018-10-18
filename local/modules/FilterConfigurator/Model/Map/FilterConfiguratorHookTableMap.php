@@ -2,8 +2,8 @@
 
 namespace FilterConfigurator\Model\Map;
 
-use FilterConfigurator\Model\FilterConfigurator;
-use FilterConfigurator\Model\FilterConfiguratorQuery;
+use FilterConfigurator\Model\FilterConfiguratorHook;
+use FilterConfigurator\Model\FilterConfiguratorHookQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'filterconfigurator_configurator' table.
+ * This class defines the structure of the 'filterconfigurator_configurator_hook' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class FilterConfiguratorTableMap extends TableMap
+class FilterConfiguratorHookTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'FilterConfigurator.Model.Map.FilterConfiguratorTableMap';
+    const CLASS_NAME = 'FilterConfigurator.Model.Map.FilterConfiguratorHookTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class FilterConfiguratorTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'filterconfigurator_configurator';
+    const TABLE_NAME = 'filterconfigurator_configurator_hook';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\FilterConfigurator\\Model\\FilterConfigurator';
+    const OM_CLASS = '\\FilterConfigurator\\Model\\FilterConfiguratorHook';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'FilterConfigurator.Model.FilterConfigurator';
+    const CLASS_DEFAULT = 'FilterConfigurator.Model.FilterConfiguratorHook';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,37 +68,27 @@ class FilterConfiguratorTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'filterconfigurator_configurator.ID';
+    const ID = 'filterconfigurator_configurator_hook.ID';
 
     /**
-     * the column name for the CATEGORY_ID field
+     * the column name for the FILTER_CONFIGURATOR_ID field
      */
-    const CATEGORY_ID = 'filterconfigurator_configurator.CATEGORY_ID';
+    const FILTER_CONFIGURATOR_ID = 'filterconfigurator_configurator_hook.FILTER_CONFIGURATOR_ID';
 
     /**
-     * the column name for the VISIBLE field
+     * the column name for the HOOK_ID field
      */
-    const VISIBLE = 'filterconfigurator_configurator.VISIBLE';
+    const HOOK_ID = 'filterconfigurator_configurator_hook.HOOK_ID';
 
     /**
-     * the column name for the POSITION field
+     * the column name for the HOOK_CODE field
      */
-    const POSITION = 'filterconfigurator_configurator.POSITION';
-
-    /**
-     * the column name for the CREATED_AT field
-     */
-    const CREATED_AT = 'filterconfigurator_configurator.CREATED_AT';
-
-    /**
-     * the column name for the UPDATED_AT field
-     */
-    const UPDATED_AT = 'filterconfigurator_configurator.UPDATED_AT';
+    const HOOK_CODE = 'filterconfigurator_configurator_hook.HOOK_CODE';
 
     /**
      * The default string format for model objects of the related table
@@ -112,12 +102,12 @@ class FilterConfiguratorTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'CategoryId', 'Visible', 'Position', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'categoryId', 'visible', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(FilterConfiguratorTableMap::ID, FilterConfiguratorTableMap::CATEGORY_ID, FilterConfiguratorTableMap::VISIBLE, FilterConfiguratorTableMap::POSITION, FilterConfiguratorTableMap::CREATED_AT, FilterConfiguratorTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'CATEGORY_ID', 'VISIBLE', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'category_id', 'visible', 'position', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'FilterConfiguratorId', 'HookId', 'HookCode', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'filterConfiguratorId', 'hookId', 'hookCode', ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorHookTableMap::ID, FilterConfiguratorHookTableMap::FILTER_CONFIGURATOR_ID, FilterConfiguratorHookTableMap::HOOK_ID, FilterConfiguratorHookTableMap::HOOK_CODE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'FILTER_CONFIGURATOR_ID', 'HOOK_ID', 'HOOK_CODE', ),
+        self::TYPE_FIELDNAME     => array('id', 'filter_configurator_id', 'hook_id', 'hook_code', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -127,12 +117,12 @@ class FilterConfiguratorTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'CategoryId' => 1, 'Visible' => 2, 'Position' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'categoryId' => 1, 'visible' => 2, 'position' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
-        self::TYPE_COLNAME       => array(FilterConfiguratorTableMap::ID => 0, FilterConfiguratorTableMap::CATEGORY_ID => 1, FilterConfiguratorTableMap::VISIBLE => 2, FilterConfiguratorTableMap::POSITION => 3, FilterConfiguratorTableMap::CREATED_AT => 4, FilterConfiguratorTableMap::UPDATED_AT => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CATEGORY_ID' => 1, 'VISIBLE' => 2, 'POSITION' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'category_id' => 1, 'visible' => 2, 'position' => 3, 'created_at' => 4, 'updated_at' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'FilterConfiguratorId' => 1, 'HookId' => 2, 'HookCode' => 3, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'filterConfiguratorId' => 1, 'hookId' => 2, 'hookCode' => 3, ),
+        self::TYPE_COLNAME       => array(FilterConfiguratorHookTableMap::ID => 0, FilterConfiguratorHookTableMap::FILTER_CONFIGURATOR_ID => 1, FilterConfiguratorHookTableMap::HOOK_ID => 2, FilterConfiguratorHookTableMap::HOOK_CODE => 3, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'FILTER_CONFIGURATOR_ID' => 1, 'HOOK_ID' => 2, 'HOOK_CODE' => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'filter_configurator_id' => 1, 'hook_id' => 2, 'hook_code' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -145,18 +135,16 @@ class FilterConfiguratorTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('filterconfigurator_configurator');
-        $this->setPhpName('FilterConfigurator');
-        $this->setClassName('\\FilterConfigurator\\Model\\FilterConfigurator');
+        $this->setName('filterconfigurator_configurator_hook');
+        $this->setPhpName('FilterConfiguratorHook');
+        $this->setClassName('\\FilterConfigurator\\Model\\FilterConfiguratorHook');
         $this->setPackage('FilterConfigurator.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addForeignKey('CATEGORY_ID', 'CategoryId', 'INTEGER', 'category', 'ID', false, null, null);
-        $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, 0);
-        $this->addColumn('POSITION', 'Position', 'INTEGER', true, null, 0);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('FILTER_CONFIGURATOR_ID', 'FilterConfiguratorId', 'INTEGER', 'filterconfigurator_configurator', 'ID', false, null, null);
+        $this->addForeignKey('HOOK_ID', 'HookId', 'INTEGER', 'hook', 'ID', false, null, null);
+        $this->addColumn('HOOK_CODE', 'HookCode', 'VARCHAR', false, 255, null);
     } // initialize()
 
     /**
@@ -164,37 +152,9 @@ class FilterConfiguratorTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Category', '\\Thelia\\Model\\Category', RelationMap::MANY_TO_ONE, array('category_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('FilterConfiguratorHook', '\\FilterConfigurator\\Model\\FilterConfiguratorHook', RelationMap::ONE_TO_MANY, array('id' => 'filter_configurator_id', ), 'CASCADE', 'RESTRICT', 'FilterConfiguratorHooks');
-        $this->addRelation('FilterConfiguratorI18n', '\\FilterConfigurator\\Model\\FilterConfiguratorI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null, 'FilterConfiguratorI18ns');
-        $this->addRelation('FilterConfiguratorImage', '\\FilterConfigurator\\Model\\FilterConfiguratorImage', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'FilterConfiguratorImages');
-        $this->addRelation('FilterConfiguratorFeatures', '\\FilterConfigurator\\Model\\FilterConfiguratorFeatures', RelationMap::ONE_TO_MANY, array('id' => 'configurator_id', ), 'CASCADE', null, 'FilterConfiguratorFeaturess');
+        $this->addRelation('FilterConfigurator', '\\FilterConfigurator\\Model\\FilterConfigurator', RelationMap::MANY_TO_ONE, array('filter_configurator_id' => 'id', ), 'CASCADE', 'RESTRICT');
+        $this->addRelation('Hook', '\\Thelia\\Model\\Hook', RelationMap::MANY_TO_ONE, array('hook_id' => 'id', ), 'CASCADE', 'RESTRICT');
     } // buildRelations()
-
-    /**
-     *
-     * Gets the list of behaviors registered for this table
-     *
-     * @return array Associative array (name => parameters) of behaviors
-     */
-    public function getBehaviors()
-    {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-        );
-    } // getBehaviors()
-    /**
-     * Method to invalidate the instance pool of all tables related to filterconfigurator_configurator     * by a foreign key with ON DELETE CASCADE
-     */
-    public static function clearRelatedInstancePool()
-    {
-        // Invalidate objects in ".$this->getClassNameFromBuilder($joinedTableTableMapBuilder)." instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-                FilterConfiguratorHookTableMap::clearInstancePool();
-                FilterConfiguratorI18nTableMap::clearInstancePool();
-                FilterConfiguratorImageTableMap::clearInstancePool();
-                FilterConfiguratorFeaturesTableMap::clearInstancePool();
-            }
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -252,7 +212,7 @@ class FilterConfiguratorTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? FilterConfiguratorTableMap::CLASS_DEFAULT : FilterConfiguratorTableMap::OM_CLASS;
+        return $withPrefix ? FilterConfiguratorHookTableMap::CLASS_DEFAULT : FilterConfiguratorHookTableMap::OM_CLASS;
     }
 
     /**
@@ -266,21 +226,21 @@ class FilterConfiguratorTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (FilterConfigurator object, last column rank)
+     * @return array (FilterConfiguratorHook object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = FilterConfiguratorTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = FilterConfiguratorTableMap::getInstanceFromPool($key))) {
+        $key = FilterConfiguratorHookTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = FilterConfiguratorHookTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + FilterConfiguratorTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + FilterConfiguratorHookTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = FilterConfiguratorTableMap::OM_CLASS;
+            $cls = FilterConfiguratorHookTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            FilterConfiguratorTableMap::addInstanceToPool($obj, $key);
+            FilterConfiguratorHookTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -303,8 +263,8 @@ class FilterConfiguratorTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = FilterConfiguratorTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = FilterConfiguratorTableMap::getInstanceFromPool($key))) {
+            $key = FilterConfiguratorHookTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = FilterConfiguratorHookTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -313,7 +273,7 @@ class FilterConfiguratorTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                FilterConfiguratorTableMap::addInstanceToPool($obj, $key);
+                FilterConfiguratorHookTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -334,19 +294,15 @@ class FilterConfiguratorTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::ID);
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::CATEGORY_ID);
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::VISIBLE);
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::POSITION);
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::CREATED_AT);
-            $criteria->addSelectColumn(FilterConfiguratorTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(FilterConfiguratorHookTableMap::ID);
+            $criteria->addSelectColumn(FilterConfiguratorHookTableMap::FILTER_CONFIGURATOR_ID);
+            $criteria->addSelectColumn(FilterConfiguratorHookTableMap::HOOK_ID);
+            $criteria->addSelectColumn(FilterConfiguratorHookTableMap::HOOK_CODE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.CATEGORY_ID');
-            $criteria->addSelectColumn($alias . '.VISIBLE');
-            $criteria->addSelectColumn($alias . '.POSITION');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.FILTER_CONFIGURATOR_ID');
+            $criteria->addSelectColumn($alias . '.HOOK_ID');
+            $criteria->addSelectColumn($alias . '.HOOK_CODE');
         }
     }
 
@@ -359,7 +315,7 @@ class FilterConfiguratorTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorTableMap::DATABASE_NAME)->getTable(FilterConfiguratorTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorHookTableMap::DATABASE_NAME)->getTable(FilterConfiguratorHookTableMap::TABLE_NAME);
     }
 
     /**
@@ -367,16 +323,16 @@ class FilterConfiguratorTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(FilterConfiguratorTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new FilterConfiguratorTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(FilterConfiguratorHookTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(FilterConfiguratorHookTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new FilterConfiguratorHookTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a FilterConfigurator or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a FilterConfiguratorHook or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or FilterConfigurator object or primary key or array of primary keys
+     * @param mixed               $values Criteria or FilterConfiguratorHook object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -387,25 +343,25 @@ class FilterConfiguratorTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorHookTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \FilterConfigurator\Model\FilterConfigurator) { // it's a model object
+        } elseif ($values instanceof \FilterConfigurator\Model\FilterConfiguratorHook) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(FilterConfiguratorTableMap::DATABASE_NAME);
-            $criteria->add(FilterConfiguratorTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(FilterConfiguratorHookTableMap::DATABASE_NAME);
+            $criteria->add(FilterConfiguratorHookTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = FilterConfiguratorQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorHookQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { FilterConfiguratorTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { FilterConfiguratorHookTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { FilterConfiguratorTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { FilterConfiguratorHookTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -413,20 +369,20 @@ class FilterConfiguratorTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the filterconfigurator_configurator table.
+     * Deletes all rows from the filterconfigurator_configurator_hook table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return FilterConfiguratorQuery::create()->doDeleteAll($con);
+        return FilterConfiguratorHookQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a FilterConfigurator or Criteria object.
+     * Performs an INSERT on the database, given a FilterConfiguratorHook or Criteria object.
      *
-     * @param mixed               $criteria Criteria or FilterConfigurator object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or FilterConfiguratorHook object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -435,22 +391,22 @@ class FilterConfiguratorTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(FilterConfiguratorHookTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from FilterConfigurator object
+            $criteria = $criteria->buildCriteria(); // build Criteria from FilterConfiguratorHook object
         }
 
-        if ($criteria->containsKey(FilterConfiguratorTableMap::ID) && $criteria->keyContainsValue(FilterConfiguratorTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FilterConfiguratorTableMap::ID.')');
+        if ($criteria->containsKey(FilterConfiguratorHookTableMap::ID) && $criteria->keyContainsValue(FilterConfiguratorHookTableMap::ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.FilterConfiguratorHookTableMap::ID.')');
         }
 
 
         // Set the correct dbName
-        $query = FilterConfiguratorQuery::create()->mergeWith($criteria);
+        $query = FilterConfiguratorHookQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -466,7 +422,7 @@ class FilterConfiguratorTableMap extends TableMap
         return $pk;
     }
 
-} // FilterConfiguratorTableMap
+} // FilterConfiguratorHookTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-FilterConfiguratorTableMap::buildTableMap();
+FilterConfiguratorHookTableMap::buildTableMap();
