@@ -60,7 +60,9 @@ class RevenueDashboardAction implements EventSubscriberInterface
         $response = $brandMatchingQuery
          ->findOneByBrandExtern($event->getBrand_extern());
 
-        $event->setBrandMatch($response);
+        if ($response != null) {
+            $event->setBrandMatch($response);
+        }
     }
 
     public function findCategory(RevenueDashboardCategoryEvent $event)
@@ -69,19 +71,23 @@ class RevenueDashboardAction implements EventSubscriberInterface
 
         $responseById = null;
         if ($event->getExtern_id() !== null) {
+
             $responseById = $categoryMatchingQuery
              ->findOneByCategoryExternId($event->getExtern_id());
         }
 
         $responseByName = null;
         if ($event->getExtern_name() !== null) {
+
             $responseByName = $categoryMatchingQuery
              ->findOneByCategoryExternName($event->getExtern_name());
         }
 
-        if ($responseById == null) {
+
+        if ($responseByName != null) {
             $event->setCategoryMatch($responseByName);
-        } else {
+        }
+        if ($responseById != null) {
             $event->setCategoryMatch($responseById);
         }
     }
