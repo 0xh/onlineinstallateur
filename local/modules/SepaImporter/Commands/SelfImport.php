@@ -19,6 +19,10 @@ class SelfImport extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Hello world !");
+
+        //CURL FGET.
+        //dezarhivare
+        //apelez downloadGenericPorductImportCsv
     }
 
 }
