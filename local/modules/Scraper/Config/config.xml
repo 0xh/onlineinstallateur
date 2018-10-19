@@ -17,9 +17,7 @@
     </forms>
 
     <commands>
-        <!--
-        <command class="Scraper\Command\MySuperCommand" />
-        -->
+       <command class="Scraper\Command\ScraperCron" />
     </commands>
 
     <!--
