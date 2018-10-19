@@ -35,9 +35,10 @@ class RevenueDashboard extends BaseModule
 
         $database = new Database($con);
 
-        $database->insertSql(null, [
-         __DIR__ . "/Config/thelia.sql"
-        ]);
+        if (!self::getConfigValue('is_initialized', false)) {
+            $database->insertSql(null, [__DIR__ . "/Config/thelia.sql"]);
+            self::setConfigValue('is_initialized', true);
+        }
 
         $database->insertSql(null, [
          __DIR__ . "/Config/hook.sql"
