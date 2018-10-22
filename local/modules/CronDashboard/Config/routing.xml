@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">  
+
+    <!-- ******************************* Root link to cron list ******************************* -->
+    <route id="cron.list" path="/admin/crondashboard">
+        <default key="_controller">CronDashboard\Controller\CronDashboardController::viewAction</default>
+    </route>
+
+	<!-- ******************************* Create cron entry ******************************* -->
+    <route id="cron.create" path="/admin/crondashboard/cronjob/create">
+        <default key="_controller">CronDashboard\Controller\CronDashboardController::createCronJobEntry</default>
+    </route>
+
+    <!-- ***** Default page of management update-->
+    <route id="cron.update" path="/admin/crondashboard/cronjob/update/{cronjobId}" methods="get">
+        <default key="_controller">CronDashboard\Controller\CronDashboardController::updateAction</default>
+        <requirement key="cronjobId">\d+</requirement>
+    </route>
+
+    <route id="cron.save" path="/admin/crondashboard/cronjob/save/{cronjobId}" methods="post">
+        <default key="_controller">CronDashboard\Controller\CronDashboardController::processUpdateAction</default>
+        <requirement key="comment_id">\d+</requirement>
+    </route>
+
+</routes>

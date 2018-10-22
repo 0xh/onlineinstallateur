@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <loops>
+        <loop name="crondashboard.cronjob.loop" class="CronDashboard\Loop\CronjobLoop" />
+    </loops>
+
+    <forms>
+        <form name="admin.crondashboard.cronjob.create" class="CronDashboard\Form\CronjobCreateForm"/>
+        <form name="admin.crondashboard.cronjob.update" class="CronDashboard\Form\CronjobModificationForm"/>
+    </forms>
+
+    <commands>
+        <!--
+        <command class="CronDashboard\Command\MySuperCommand" />
+        -->
+    </commands>
+
+    <hooks>
+        <hook id="cron.dashboard.hook.back" class="CronDashboard\Hook\Admin\BackHook">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
+        </hook>
+    </hooks>
+    
+</config>
