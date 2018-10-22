@@ -23,7 +23,9 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'assets/src/css/thelia.css': 'assets/src/less/thelia.less',
-                    'assets/dist/css/thelia.min.css': 'assets/src/less/thelia.less'
+                    'assets/dist/css/thelia.min.css': 'assets/src/less/thelia.less',
+                    'assets/dist/css/custom.css': 'assets/src/less/theme/easybad.less'
+                     
                 }
             }
         },
@@ -160,6 +162,8 @@ module.exports = function (grunt) {
                         dest: 'assets/src/less/vendors/fontawesome',
                         src: ['bower_components/fontawesome/less/*.less']
                     }
+
+
                 ]
             },
             images: {
