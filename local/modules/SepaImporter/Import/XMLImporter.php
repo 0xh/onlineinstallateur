@@ -16,7 +16,6 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
-use Thelia\Model\ProductSaleElements;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\ProductImage;
 use Thelia\Model\ProductImageI18n;
@@ -196,6 +195,7 @@ class XMLImporter extends AbstractImport
 
 
         if ($productExists == 0 && $matchingSuccessful) {
+            Tlog::getInstance()->err("CREATED PRODUCT");
             $log->debug("Product does not exist, creating product! ");
             $eventDispatcher = $this->getContainer()->get('event_dispatcher');
             $createEvent     = new ProductCreateEvent();
@@ -222,7 +222,7 @@ class XMLImporter extends AbstractImport
              ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
              ->findOne();
 
-            $log->debug($createEvent->getProduct()->getRef() . "GETREF");
+            $log->debug($createEvent->getProduct()->getRef() . " GETREF");
             $product_id = $product->getId();
             $log->debug($product_id . "DASA");
 
@@ -287,9 +287,18 @@ class XMLImporter extends AbstractImport
 
             $revenueDash = new WholesalePartnerProduct();
 
+            $revenueDash->setPartnerId(1);
+            $revenueDash->setProductId($product_id);
+
             if ($netto_price_import != null) {
                 $revenueDash->setPrice($netto_price_import);
             }
+            $revenueDash->save();
+
+            Tlog::getInstance()->error($revenueDash->getProductId());
+
+
+
 
 
             //save images
@@ -333,6 +342,7 @@ class XMLImporter extends AbstractImport
                 $log->debug(" Image not saved.");
             }
         } else if ($matchingSuccessful) {
+            Tlog::getInstance()->err("Prouct already existed, updating.");
             $errors .= " Product already in database, Updating prices and quantity for Ref: " . $refBuild . "." . PHP_EOL;
             $log->debug("Product already exists. Updating!");
 
@@ -369,6 +379,7 @@ class XMLImporter extends AbstractImport
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
         } else {
+            Tlog::getInstance()->err("No product created, product didn't exist, no brand/cat match.");
             $log->debug("NO match");
             $errors .= " Product does not exist! " . $refBuild . "." . PHP_EOL;
         }
