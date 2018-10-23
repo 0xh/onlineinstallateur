@@ -45,6 +45,7 @@
 .allTabs .nav-tabs>li.active>a:focus,
 .allTabs .nav-tabs>li.active>a:hover{
     background-color: unset;
+    border: none;
 }
 @media screen and (max-width: 996px){
     .allTabs .nav-tabs li a{
