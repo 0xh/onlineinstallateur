@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
 
-	<loops>
+    <loops>
         <loop name="feature_av" class="FilterConfigurator\Loop\FeatureAv" />
         <loop name="image_configurator" class="FilterConfigurator\Loop\Image" />
         <loop name="product_filter_configuration" class="FilterConfigurator\Loop\ProductFilterConfigurator" />
@@ -13,18 +13,27 @@
         <loop name="category_configurator" class="FilterConfigurator\Loop\FilterCategoryConfigurator" />
         <loop name="category_configurator_details" class="FilterConfigurator\Loop\FilterCategoryConfiguratorDetails" />
         <loop name="filter_features_value" class="FilterConfigurator\Loop\FilterFeaturesValue" />
+        <loop name="filter_configurator_hook_loop" class="FilterConfigurator\Loop\FilterConfiguratorHookLoop" />
+        <loop name="filter_configurator_features_loop" class="FilterConfigurator\Loop\FilterConfiguratorFeaturesLoop" />
     </loops>
 
     <forms>
-         <form name="attributeav.modification" class="FilterConfigurator\Form\AttributeAvModificationForm"/>
-         <form name="filter.configurator" class="FilterConfigurator\Form\FilterConfiguratorForm"/>
-         <form name="filter.configurator.image" class="FilterConfigurator\Form\ImageModificationForm"/>
+        <form name="attributeav.modification" class="FilterConfigurator\Form\AttributeAvModificationForm"/>
+        <form name="filter.configurator" class="FilterConfigurator\Form\FilterConfiguratorForm"/>
+        <form name="filter.configurator.hook.form" class="FilterConfigurator\Form\FilterConfiguratorHookForm"/>
+        <form name="filter.configurator.image" class="FilterConfigurator\Form\ImageModificationForm"/>
     </forms>
 	
-	<hooks>
-        <hook id="feature.configurator" class="FilterConfigurator\Hook\Front\FrontHook" scope="request">
+    <hooks>
+        <hook id="feature.configurator" class="FilterConfigurator\Hook\Front\FrontHook">
             <tag name="hook.event_listener" event="configurator.description" type="front" method="configuratorDescription" />
             <tag name="hook.event_listener" event="configurator.filters" type="front" method="configuratorFilters" />
+            <tag name="hook.event_listener" event="configurator.filters.selection" type="front" method="configuratorFiltersSelection" />
+            <tag name="hook.event_listener" event="main.body-bottom"  type='front' method="onMainCss"/>
+            <tag name="hook.event_listener" event="main.body-bottom"  type='front' method="onMainJs"/>
+        </hook>
+        <hook id="filter.configurator.configuration.hook" class="FilterConfigurator\Hook\Admin\HookManager" scope="request">
+            <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
         </hook>
     </hooks>
 </config>

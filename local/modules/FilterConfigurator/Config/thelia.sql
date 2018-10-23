@@ -18,10 +18,37 @@ CREATE TABLE `filterconfigurator_configurator`
     `created_at` DATETIME,
     `updated_at` DATETIME,
     PRIMARY KEY (`id`),
-    INDEX `FI_configurator_category` (`category_id`),
-    CONSTRAINT `fk_configurator_category`
+    INDEX `FI_filterconfigurator_configurator_category` (`category_id`),
+    CONSTRAINT `fk_filterconfigurator_configurator_category`
         FOREIGN KEY (`category_id`)
         REFERENCES `category` (`id`)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- filterconfigurator_configurator_hook
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `filterconfigurator_configurator_hook`;
+
+CREATE TABLE `filterconfigurator_configurator_hook`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `filter_configurator_id` INTEGER,
+    `hook_id` INTEGER,
+    `hook_code` VARCHAR(255),
+    PRIMARY KEY (`id`),
+    INDEX `FI_filter_configurator_hook` (`filter_configurator_id`),
+    INDEX `FI_filter_configurator_hook_id` (`hook_id`),
+    CONSTRAINT `fk_filter_configurator_hook`
+        FOREIGN KEY (`filter_configurator_id`)
+        REFERENCES `filterconfigurator_configurator` (`id`)
+        ON UPDATE RESTRICT
+        ON DELETE CASCADE,
+    CONSTRAINT `fk_filter_configurator_hook_id`
+        FOREIGN KEY (`hook_id`)
+        REFERENCES `hook` (`id`)
+        ON UPDATE RESTRICT
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

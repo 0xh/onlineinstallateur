@@ -44,6 +44,10 @@ use Thelia\Model\Category;
  * @method     ChildFilterConfiguratorQuery rightJoinCategory($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Category relation
  * @method     ChildFilterConfiguratorQuery innerJoinCategory($relationAlias = null) Adds a INNER JOIN clause to the query using the Category relation
  *
+ * @method     ChildFilterConfiguratorQuery leftJoinFilterConfiguratorHook($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfiguratorHook relation
+ * @method     ChildFilterConfiguratorQuery rightJoinFilterConfiguratorHook($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfiguratorHook relation
+ * @method     ChildFilterConfiguratorQuery innerJoinFilterConfiguratorHook($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfiguratorHook relation
+ *
  * @method     ChildFilterConfiguratorQuery leftJoinFilterConfiguratorI18n($relationAlias = null) Adds a LEFT JOIN clause to the query using the FilterConfiguratorI18n relation
  * @method     ChildFilterConfiguratorQuery rightJoinFilterConfiguratorI18n($relationAlias = null) Adds a RIGHT JOIN clause to the query using the FilterConfiguratorI18n relation
  * @method     ChildFilterConfiguratorQuery innerJoinFilterConfiguratorI18n($relationAlias = null) Adds a INNER JOIN clause to the query using the FilterConfiguratorI18n relation
@@ -574,6 +578,79 @@ abstract class FilterConfiguratorQuery extends ModelCriteria
         return $this
             ->joinCategory($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'Category', '\Thelia\Model\CategoryQuery');
+    }
+
+    /**
+     * Filter the query by a related \FilterConfigurator\Model\FilterConfiguratorHook object
+     *
+     * @param \FilterConfigurator\Model\FilterConfiguratorHook|ObjectCollection $filterConfiguratorHook  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildFilterConfiguratorQuery The current query, for fluid interface
+     */
+    public function filterByFilterConfiguratorHook($filterConfiguratorHook, $comparison = null)
+    {
+        if ($filterConfiguratorHook instanceof \FilterConfigurator\Model\FilterConfiguratorHook) {
+            return $this
+                ->addUsingAlias(FilterConfiguratorTableMap::ID, $filterConfiguratorHook->getFilterConfiguratorId(), $comparison);
+        } elseif ($filterConfiguratorHook instanceof ObjectCollection) {
+            return $this
+                ->useFilterConfiguratorHookQuery()
+                ->filterByPrimaryKeys($filterConfiguratorHook->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByFilterConfiguratorHook() only accepts arguments of type \FilterConfigurator\Model\FilterConfiguratorHook or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the FilterConfiguratorHook relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildFilterConfiguratorQuery The current query, for fluid interface
+     */
+    public function joinFilterConfiguratorHook($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('FilterConfiguratorHook');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'FilterConfiguratorHook');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the FilterConfiguratorHook relation FilterConfiguratorHook object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \FilterConfigurator\Model\FilterConfiguratorHookQuery A secondary query class using the current class as primary query
+     */
+    public function useFilterConfiguratorHookQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinFilterConfiguratorHook($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'FilterConfiguratorHook', '\FilterConfigurator\Model\FilterConfiguratorHookQuery');
     }
 
     /**
