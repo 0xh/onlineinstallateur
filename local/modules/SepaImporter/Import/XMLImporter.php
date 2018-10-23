@@ -321,7 +321,7 @@ class XMLImporter extends AbstractImport
             $revenueDash = new WholesalePartnerProduct();
 
             if ($netto_price_import != null) {
-                $revenueDash->setPartnerProdRef($partner_product_ref)
+                $revenueDash->setPartnerProdRef($refBuild)
                  ->setProductId($product_id)
                  ->setPrice($netto_price_import)
                  ->setPartnerId(1)
