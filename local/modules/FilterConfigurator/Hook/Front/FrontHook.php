@@ -30,8 +30,6 @@ class FrontHook extends BaseHook
 
     public function configuratorFiltersSelection(HookRenderEvent $event)
     {
-
-
         $id = self::getIdForFilterConfigurator($event->getCode());
 
         $event->add($this->render(
