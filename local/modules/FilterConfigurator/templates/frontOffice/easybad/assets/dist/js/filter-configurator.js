@@ -51,8 +51,8 @@ $(document).ready(function () {
             }
         }
 
-//        window.history.pushState("object or string", "Title", "?features=" + str + "");
-        window.history.replaceState("object or string", "Title", "?" + new Date().getTime() + "&features=" + str + "");
+        window.history.pushState("object or string", "Title", "?features=" + str + "");
+//        window.history.replaceState("object or string", "Title", "?" + new Date().getTime() + "&features=" + str + "");
         location.reload();
 
 //        $.ajax({
