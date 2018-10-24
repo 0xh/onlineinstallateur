@@ -74,6 +74,12 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
     protected $product_id;
 
     /**
+     * The value for the partner_product_ref field.
+     * @var        string
+     */
+    protected $partner_product_ref;
+
+    /**
      * The value for the price field.
      * Note: this column has a database default value of: '0.00'
      * @var        string
@@ -150,6 +156,13 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
     protected $version_created_by;
 
     /**
+     * The value for the product_id_version field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $product_id_version;
+
+    /**
      * @var        WholesalePartnerProduct
      */
     protected $aWholesalePartnerProduct;
@@ -174,6 +187,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         $this->delivery_cost = '0.00';
         $this->discount = '0.00';
         $this->version = 0;
+        $this->product_id_version = 0;
     }
 
     /**
@@ -470,6 +484,17 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
     }
 
     /**
+     * Get the [partner_product_ref] column value.
+     * 
+     * @return   string
+     */
+    public function getPartnerProdRef()
+    {
+
+        return $this->partner_product_ref;
+    }
+
+    /**
      * Get the [price] column value.
      * 
      * @return   string
@@ -611,6 +636,17 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
     }
 
     /**
+     * Get the [product_id_version] column value.
+     * 
+     * @return   int
+     */
+    public function getProductIdVersion()
+    {
+
+        return $this->product_id_version;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -676,6 +712,27 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
 
         return $this;
     } // setProductId()
+
+    /**
+     * Set the value of [partner_product_ref] column.
+     * 
+     * @param      string $v new value
+     * @return   \RevenueDashboard\Model\WholesalePartnerProductVersion The current object (for fluent API support)
+     */
+    public function setPartnerProdRef($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->partner_product_ref !== $v) {
+            $this->partner_product_ref = $v;
+            $this->modifiedColumns[WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF] = true;
+        }
+
+
+        return $this;
+    } // setPartnerProdRef()
 
     /**
      * Set the value of [price] column.
@@ -930,6 +987,27 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
     } // setVersionCreatedBy()
 
     /**
+     * Set the value of [product_id_version] column.
+     * 
+     * @param      int $v new value
+     * @return   \RevenueDashboard\Model\WholesalePartnerProductVersion The current object (for fluent API support)
+     */
+    public function setProductIdVersion($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->product_id_version !== $v) {
+            $this->product_id_version = $v;
+            $this->modifiedColumns[WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION] = true;
+        }
+
+
+        return $this;
+    } // setProductIdVersion()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -952,6 +1030,10 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
             }
 
             if ($this->version !== 0) {
+                return false;
+            }
+
+            if ($this->product_id_version !== 0) {
                 return false;
             }
 
@@ -991,44 +1073,50 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ProductId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->product_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('PartnerProdRef', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->partner_product_ref = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('PackageSize', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('PackageSize', TableMap::TYPE_PHPNAME, $indexType)];
             $this->package_size = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('DeliveryCost', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('DeliveryCost', TableMap::TYPE_PHPNAME, $indexType)];
             $this->delivery_cost = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Discount', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Discount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->discount = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('DiscountDescription', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('DiscountDescription', TableMap::TYPE_PHPNAME, $indexType)];
             $this->discount_description = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ProfileWebsite', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ProfileWebsite', TableMap::TYPE_PHPNAME, $indexType)];
             $this->profile_website = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Department', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Department', TableMap::TYPE_PHPNAME, $indexType)];
             $this->department = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Comment', TableMap::TYPE_PHPNAME, $indexType)];
             $this->comment = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ValidUntil', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ValidUntil', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->valid_until = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
             $this->version_created_by = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : WholesalePartnerProductVersionTableMap::translateFieldName('ProductIdVersion', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->product_id_version = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1037,7 +1125,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = WholesalePartnerProductVersionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = WholesalePartnerProductVersionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \RevenueDashboard\Model\WholesalePartnerProductVersion object", 0, $e);
@@ -1267,6 +1355,9 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRODUCT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'PRODUCT_ID';
         }
+        if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF)) {
+            $modifiedColumns[':p' . $index++]  = 'PARTNER_PRODUCT_REF';
+        }
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PRICE';
         }
@@ -1303,6 +1394,9 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_BY';
         }
+        if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION)) {
+            $modifiedColumns[':p' . $index++]  = 'PRODUCT_ID_VERSION';
+        }
 
         $sql = sprintf(
             'INSERT INTO wholesale_partner_product_version (%s) VALUES (%s)',
@@ -1322,6 +1416,9 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
                         break;
                     case 'PRODUCT_ID':                        
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
+                        break;
+                    case 'PARTNER_PRODUCT_REF':                        
+                        $stmt->bindValue($identifier, $this->partner_product_ref, PDO::PARAM_STR);
                         break;
                     case 'PRICE':                        
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
@@ -1358,6 +1455,9 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
                         break;
                     case 'VERSION_CREATED_BY':                        
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
+                        break;
+                    case 'PRODUCT_ID_VERSION':                        
+                        $stmt->bindValue($identifier, $this->product_id_version, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1424,40 +1524,46 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
                 return $this->getProductId();
                 break;
             case 3:
-                return $this->getPrice();
+                return $this->getPartnerProdRef();
                 break;
             case 4:
-                return $this->getPackageSize();
+                return $this->getPrice();
                 break;
             case 5:
-                return $this->getDeliveryCost();
+                return $this->getPackageSize();
                 break;
             case 6:
-                return $this->getDiscount();
+                return $this->getDeliveryCost();
                 break;
             case 7:
-                return $this->getDiscountDescription();
+                return $this->getDiscount();
                 break;
             case 8:
-                return $this->getProfileWebsite();
+                return $this->getDiscountDescription();
                 break;
             case 9:
-                return $this->getPosition();
+                return $this->getProfileWebsite();
                 break;
             case 10:
-                return $this->getDepartment();
+                return $this->getPosition();
                 break;
             case 11:
-                return $this->getComment();
+                return $this->getDepartment();
                 break;
             case 12:
-                return $this->getValidUntil();
+                return $this->getComment();
                 break;
             case 13:
-                return $this->getVersion();
+                return $this->getValidUntil();
                 break;
             case 14:
+                return $this->getVersion();
+                break;
+            case 15:
                 return $this->getVersionCreatedBy();
+                break;
+            case 16:
+                return $this->getProductIdVersion();
                 break;
             default:
                 return null;
@@ -1491,18 +1597,20 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getPartnerId(),
             $keys[2] => $this->getProductId(),
-            $keys[3] => $this->getPrice(),
-            $keys[4] => $this->getPackageSize(),
-            $keys[5] => $this->getDeliveryCost(),
-            $keys[6] => $this->getDiscount(),
-            $keys[7] => $this->getDiscountDescription(),
-            $keys[8] => $this->getProfileWebsite(),
-            $keys[9] => $this->getPosition(),
-            $keys[10] => $this->getDepartment(),
-            $keys[11] => $this->getComment(),
-            $keys[12] => $this->getValidUntil(),
-            $keys[13] => $this->getVersion(),
-            $keys[14] => $this->getVersionCreatedBy(),
+            $keys[3] => $this->getPartnerProdRef(),
+            $keys[4] => $this->getPrice(),
+            $keys[5] => $this->getPackageSize(),
+            $keys[6] => $this->getDeliveryCost(),
+            $keys[7] => $this->getDiscount(),
+            $keys[8] => $this->getDiscountDescription(),
+            $keys[9] => $this->getProfileWebsite(),
+            $keys[10] => $this->getPosition(),
+            $keys[11] => $this->getDepartment(),
+            $keys[12] => $this->getComment(),
+            $keys[13] => $this->getValidUntil(),
+            $keys[14] => $this->getVersion(),
+            $keys[15] => $this->getVersionCreatedBy(),
+            $keys[16] => $this->getProductIdVersion(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1557,40 +1665,46 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
                 $this->setProductId($value);
                 break;
             case 3:
-                $this->setPrice($value);
+                $this->setPartnerProdRef($value);
                 break;
             case 4:
-                $this->setPackageSize($value);
+                $this->setPrice($value);
                 break;
             case 5:
-                $this->setDeliveryCost($value);
+                $this->setPackageSize($value);
                 break;
             case 6:
-                $this->setDiscount($value);
+                $this->setDeliveryCost($value);
                 break;
             case 7:
-                $this->setDiscountDescription($value);
+                $this->setDiscount($value);
                 break;
             case 8:
-                $this->setProfileWebsite($value);
+                $this->setDiscountDescription($value);
                 break;
             case 9:
-                $this->setPosition($value);
+                $this->setProfileWebsite($value);
                 break;
             case 10:
-                $this->setDepartment($value);
+                $this->setPosition($value);
                 break;
             case 11:
-                $this->setComment($value);
+                $this->setDepartment($value);
                 break;
             case 12:
-                $this->setValidUntil($value);
+                $this->setComment($value);
                 break;
             case 13:
-                $this->setVersion($value);
+                $this->setValidUntil($value);
                 break;
             case 14:
+                $this->setVersion($value);
+                break;
+            case 15:
                 $this->setVersionCreatedBy($value);
+                break;
+            case 16:
+                $this->setProductIdVersion($value);
                 break;
         } // switch()
     }
@@ -1619,18 +1733,20 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPartnerId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setProductId($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setPrice($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPackageSize($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setDeliveryCost($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setDiscount($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setDiscountDescription($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setProfileWebsite($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setPosition($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setDepartment($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setComment($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setValidUntil($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setVersion($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setVersionCreatedBy($arr[$keys[14]]);
+        if (array_key_exists($keys[3], $arr)) $this->setPartnerProdRef($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPrice($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPackageSize($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setDeliveryCost($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setDiscount($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setDiscountDescription($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setProfileWebsite($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setPosition($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setDepartment($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setComment($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setValidUntil($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setVersion($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setVersionCreatedBy($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setProductIdVersion($arr[$keys[16]]);
     }
 
     /**
@@ -1645,6 +1761,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::ID)) $criteria->add(WholesalePartnerProductVersionTableMap::ID, $this->id);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PARTNER_ID)) $criteria->add(WholesalePartnerProductVersionTableMap::PARTNER_ID, $this->partner_id);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRODUCT_ID)) $criteria->add(WholesalePartnerProductVersionTableMap::PRODUCT_ID, $this->product_id);
+        if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF)) $criteria->add(WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF, $this->partner_product_ref);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRICE)) $criteria->add(WholesalePartnerProductVersionTableMap::PRICE, $this->price);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PACKAGE_SIZE)) $criteria->add(WholesalePartnerProductVersionTableMap::PACKAGE_SIZE, $this->package_size);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::DELIVERY_COST)) $criteria->add(WholesalePartnerProductVersionTableMap::DELIVERY_COST, $this->delivery_cost);
@@ -1657,6 +1774,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::VALID_UNTIL)) $criteria->add(WholesalePartnerProductVersionTableMap::VALID_UNTIL, $this->valid_until);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::VERSION)) $criteria->add(WholesalePartnerProductVersionTableMap::VERSION, $this->version);
         if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY)) $criteria->add(WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY, $this->version_created_by);
+        if ($this->isColumnModified(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION)) $criteria->add(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION, $this->product_id_version);
 
         return $criteria;
     }
@@ -1730,6 +1848,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         $copyObj->setId($this->getId());
         $copyObj->setPartnerId($this->getPartnerId());
         $copyObj->setProductId($this->getProductId());
+        $copyObj->setPartnerProdRef($this->getPartnerProdRef());
         $copyObj->setPrice($this->getPrice());
         $copyObj->setPackageSize($this->getPackageSize());
         $copyObj->setDeliveryCost($this->getDeliveryCost());
@@ -1742,6 +1861,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         $copyObj->setValidUntil($this->getValidUntil());
         $copyObj->setVersion($this->getVersion());
         $copyObj->setVersionCreatedBy($this->getVersionCreatedBy());
+        $copyObj->setProductIdVersion($this->getProductIdVersion());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1828,6 +1948,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         $this->id = null;
         $this->partner_id = null;
         $this->product_id = null;
+        $this->partner_product_ref = null;
         $this->price = null;
         $this->package_size = null;
         $this->delivery_cost = null;
@@ -1840,6 +1961,7 @@ abstract class WholesalePartnerProductVersion implements ActiveRecordInterface
         $this->valid_until = null;
         $this->version = null;
         $this->version_created_by = null;
+        $this->product_id_version = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

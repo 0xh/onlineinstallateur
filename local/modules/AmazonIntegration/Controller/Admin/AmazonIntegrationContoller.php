@@ -2,71 +2,74 @@
 
 namespace AmazonIntegration\Controller\Admin;
 
+use AmazonIntegration\AmazonIntegration;
 use AmazonIntegration\Model\AmazonOrderProduct;
 use AmazonIntegration\Model\AmazonOrders;
 use AmazonIntegration\Model\AmazonOrdersQuery;
-use AmazonIntegration\Model\ProductAmazonQuery;
+use AmazonIntegration\Model\AmazonProductCategory;
+use AmazonIntegration\Model\AmazonProductCategoryQuery;
 use AmazonIntegration\Model\Map\AmazonOrdersTableMap;
-use function Composer\Autoload\includeFile;
+use AmazonIntegration\Model\ProductAmazon;
+use AmazonIntegration\Model\ProductAmazonQuery;
 use Propel\Runtime\Propel;
-use Thelia\Model\Map\ProductTableMap;
-use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Scraper\Controller\Scrapers\Common;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
+use Thelia\Model\Address;
+use Thelia\Model\AddressQuery;
+use Thelia\Model\CategoryI18nQuery;
 use Thelia\Model\CountryQuery;
 use Thelia\Model\CurrencyQuery;
 use Thelia\Model\Customer;
 use Thelia\Model\CustomerQuery;
 use Thelia\Model\LangQuery;
+use Thelia\Model\Map\ProductSaleElementsTableMap;
+use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Order;
 use Thelia\Model\OrderAddress;
 use Thelia\Model\OrderAddressQuery;
 use Thelia\Model\OrderProduct;
+use Thelia\Model\OrderProductTax;
+use Thelia\Model\OrderQuery;
 use Thelia\Model\Product;
-use Thelia\Model\ProductI18n;
-use AmazonIntegration\Model\ProductAmazon;
 use Thelia\Model\ProductCategory;
-use Thelia\Model\CategoryI18nQuery;
+use Thelia\Model\ProductI18n;
 use Thelia\Model\ProductPrice;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\ProductSaleElements;
 use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Tools\I18n;
-use Thelia\Model\AddressQuery;
-use Thelia\Model\Address;
-use Thelia\Model\OrderProductTax;
-use Thelia\Model\OrderQuery;
-use AmazonIntegration\Form\GetRankingsForm;
-use AmazonIntegration\AmazonIntegration;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Thelia\Tools\URL;
-use AmazonIntegration\Model\AmazonProductCategory;
-use AmazonIntegration\Model\AmazonProductCategoryQuery;
 
-class AmazonIntegrationContoller extends BaseAdminController {
+class AmazonIntegrationContoller extends BaseAdminController
+{
     /* @var Tlog $log */
 
     protected static $logger;
 
-    public function blockJs() {
+    public function blockJs()
+    {
         return $this->render("AmazonIntegrationTemplate-js");
     }
 
-    public function viewAction() {
+    public function viewAction()
+    {
         return $this->render("AmazonIntegrationTemplate");
     }
 
-    public function saveAsinFromAmazon() {
+    public function saveAsinFromAmazon()
+    {
         $productSaleElements = new ProductSaleElementsQuery();
-        $eanArray = array();
+        $eanArray            = array();
 
         $prods = $productSaleElements->findByEanCode("*");
         foreach ($prods as $value) {
             if ($value->getEanCode()) {
                 array_push($eanArray, array(
-                    "eanCode" => $value->getEanCode(),
-                    "productId" => $value->getProductId(),
-                    "ref" => $value->getRef()
+                 "eanCode"   => $value->getEanCode(),
+                 "productId" => $value->getProductId(),
+                 "ref"       => $value->getRef()
                 ));
             }
         }
@@ -79,31 +82,31 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
         // object or array of parameters
         foreach ($eanArray as $value) {
-        	
-        	$idList->setId(array(
-        			$value['eanCode']
-        	));
-        	
-        	$request->setIdList($idList);
-        	
-        	$result = invokeGetMatchingProductForId($service, $request);
-        	
-        	if ($result) {
-        		if (isset($result->GetMatchingProductForIdResult->Products)) {
-        			foreach ($result->GetMatchingProductForIdResult->Products->Product as $prd) {
-        				if (isset($prd->Identifiers))
-        					$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->Identifiers->MarketplaceASIN->ASIN);
-        					else
-        						if (isset($prd->MarketplaceASIN))
-        							$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->MarketplaceASIN->ASIN);
-        			}
-        		} else
-        			$this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], "");
-        	} else {
-        		echo ('error decoding json');
-        	}
-        	
-        	sleep(2);
+
+            $idList->setId(array(
+             $value['eanCode']
+            ));
+
+            $request->setIdList($idList);
+
+            $result = invokeGetMatchingProductForId($service, $request);
+
+            if ($result) {
+                if (isset($result->GetMatchingProductForIdResult->Products)) {
+                    foreach ($result->GetMatchingProductForIdResult->Products->Product as $prd) {
+                        if (isset($prd->Identifiers))
+                            $this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->Identifiers->MarketplaceASIN->ASIN);
+                        else
+                        if (isset($prd->MarketplaceASIN))
+                            $this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], $prd->MarketplaceASIN->ASIN);
+                    }
+                } else
+                    $this->addAsinFromAmazon($value['eanCode'], $value['productId'], $value['ref'], "");
+            } else {
+                echo ('error decoding json');
+            }
+
+            sleep(2);
         }
 
         ini_set('max_execution_time', $max_time);
@@ -111,7 +114,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
         die("Finish insert ASIN from Amazon.");
     }
 
-    public function addAsinFromAmazon($eanCode, $productId, $ref, $asinCode) {
+    public function addAsinFromAmazon($eanCode, $productId, $ref, $asinCode)
+    {
         $prodAmazon = new ProductAmazon();
         $prodAmazon->setEanCode($eanCode);
         $prodAmazon->setProductId($productId);
@@ -121,21 +125,24 @@ class AmazonIntegrationContoller extends BaseAdminController {
         $prodAmazon->clear();
     }
 
-    public function getServiceForOrdersAction() {
+    public function getServiceForOrdersAction()
+    {
         include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetServiceStatusSample.php';
 
         echo json_encode($orders);
         die();
     }
 
-    public function getServiceForProductsAction() {
+    public function getServiceForProductsAction()
+    {
         include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetServiceStatusSample.php';
 
         echo json_encode($productService);
         die();
     }
 
-    public function saveAmazonOrders() {
+    public function saveAmazonOrders()
+    {
         $_SESSION['ordersWithTotalZero'] = false;
 
         $arrDate = array();
@@ -179,23 +186,23 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
             if ($orders) {
                 foreach ($orders as $i => $order) {
-                	
-                	if($order->OrderStatus == 'Pending' || $order->OrderStatus == 'Unshipped') {
-                		//$_SESSION['ordersWithTotalZero'] = true;
-                		break;
-                	}
-                	$this->getLogger()->error("amazonOrderId ".isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
-                	
-                	if (isset($order->ShippingAddress->CountryCode)) {
-                		$countryId = CountryQuery::create()->select('id')
-                		->filterByIsoalpha2($order->ShippingAddress->CountryCode)
-                		->findOne();
-                	} else {
-                		$countryId = '13';
-                	}
-                	
-                	// Insert new customers from Amazon or get the id
-                	$customerId = $this->createCustomer($order, $con, $countryId);
+
+                    if ($order->OrderStatus == 'Pending' || $order->OrderStatus == 'Unshipped') {
+                        //$_SESSION['ordersWithTotalZero'] = true;
+                        break;
+                    }
+                    $this->getLogger()->error("amazonOrderId " . isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
+
+                    if (isset($order->ShippingAddress->CountryCode)) {
+                        $countryId = CountryQuery::create()->select('id')
+                         ->filterByIsoalpha2($order->ShippingAddress->CountryCode)
+                         ->findOne();
+                    } else {
+                        $countryId = '13';
+                    }
+
+                    // Insert new customers from Amazon or get the id
+                    $customerId = $this->createCustomer($order, $con, $countryId);
 
                     /*
                      * Check if amazon order exists in amazon_orders table
@@ -235,7 +242,7 @@ class AmazonIntegrationContoller extends BaseAdminController {
                     if ($checkAmazonOrder) {
 
                         if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
-                                $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
+                         $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
 
                             $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
                             if (isset($order->OrderTotal)) {
@@ -246,8 +253,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
                             $checkAmazonOrder->save($con);
 
                             $updateOrderStatus = OrderQuery::create()
-                                    ->filterById($checkAmazonOrder->getOrderId())
-                                    ->findOne();
+                             ->filterById($checkAmazonOrder->getOrderId())
+                             ->findOne();
                             if ($updateOrderStatus)
                                 $updateOrderStatus->setStatusId($statusId)->save($con);
                         }
@@ -258,9 +265,9 @@ class AmazonIntegrationContoller extends BaseAdminController {
                         // Insert order from amazon in order table
                         $arrCreateOrder = $this->createOrder($order, $customerId, $orderAddressId, $con, $statusId);
 
-                        $lang = $arrCreateOrder['lang'];
-                        $newOrder = $arrCreateOrder['order'];
-                        $orderId = $newOrder->getId();
+                        $lang        = $arrCreateOrder['lang'];
+                        $newOrder    = $arrCreateOrder['order'];
+                        $orderId     = $newOrder->getId();
                         $marketplace = $arrCreateOrder['marketplace'];
 
                         // Insert order from amazon to amazon_orders table
@@ -309,8 +316,8 @@ class AmazonIntegrationContoller extends BaseAdminController {
                         }
 
                         $newOrder->setPostage($totalPostage)
-                                ->setPostageTax($taxPostage)
-                                ->save($con);
+                         ->setPostageTax($taxPostage)
+                         ->save($con);
                     }
                 }
 
@@ -338,32 +345,33 @@ class AmazonIntegrationContoller extends BaseAdminController {
         die(' customer, order address and amazon Order');
     }
 
-    public function saveProducts($orderProduct, $lang, $con) {
+    public function saveProducts($orderProduct, $lang, $con)
+    {
 
-    	$currentDate = date("Y-m-d H:i:s");
-    	
+        $currentDate = date("Y-m-d H:i:s");
+
         $newProduct = new Product();
         $newProduct
-                ->setRef($orderProduct->SellerSKU)
-                ->setVisible(0)
-                ->setVirtual(0)
-                ->setTaxRuleId(1)
-                ->setCreatedAt($currentDate)
-                ->setUpdatedAt($currentDate)
-                ->setVersion(1)
-                ->setVersionCreatedAt($currentDate)
-                ->setVersionCreatedBy('amazon_integration')
-                ->save($con);
+         ->setRef($orderProduct->SellerSKU)
+         ->setVisible(0)
+         ->setVirtual(0)
+         ->setTaxRuleId(1)
+         ->setCreatedAt($currentDate)
+         ->setUpdatedAt($currentDate)
+         ->setVersion(1)
+         ->setVersionCreatedAt($currentDate)
+         ->setVersionCreatedBy('amazon_integration')
+         ->save($con);
 
         $pse = new ProductSaleElements();
         $pse
-                ->setProductId($newProduct->getId())
-                ->setRef($orderProduct->SellerSKU)
-                ->setQuantity(0)
-                ->setCreatedAt($currentDate)
-                ->setUpdatedAt($currentDate)
-                ->setIsDefault(1)
-                ->save($con);
+         ->setProductId($newProduct->getId())
+         ->setRef($orderProduct->SellerSKU)
+         ->setQuantity(0)
+         ->setCreatedAt($currentDate)
+         ->setUpdatedAt($currentDate)
+         ->setIsDefault(1)
+         ->save($con);
 
         if (isset($orderProduct->ItemPrice->Amount) && isset($orderProduct->QuantityOrdered)) {
             if ($orderProduct->QuantityOrdered > 0)
@@ -375,43 +383,44 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
         $productPrice = new ProductPrice();
         $productPrice
-                ->setProductSaleElementsId($pse->getId())
-                ->setPrice($unitPrice)
-                ->setFromDefaultCurrency(0)
-                ->setCurrencyId(1)
-                ->setCreatedAt($currentDate)
-                ->setUpdatedAt($currentDate)
-                ->save($con);
+         ->setProductSaleElementsId($pse->getId())
+         ->setPrice($unitPrice)
+         ->setFromDefaultCurrency(0)
+         ->setCurrencyId(1)
+         ->setCreatedAt($currentDate)
+         ->setUpdatedAt($currentDate)
+         ->save($con);
 
         if (isset($lang))
-            $langLocale = $lang->getLocale();
+            $langLocale  = $lang->getLocale();
         else
-            $langLocale = "de_DE";
+            $langLocale  = "de_DE";
         $productI18n = new ProductI18n();
         $productI18n
-                ->setId($newProduct->getId())
-                ->setLocale($langLocale)
-                ->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
-                ->save($con);
+         ->setId($newProduct->getId())
+         ->setLocale($langLocale)
+         ->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
+         ->save($con);
 
         // insert in product_category 
         $categoryId = CategoryI18nQuery::create()
-                ->select('id')
-                ->filterByTitle('From Amazon')
-                ->findOne();
+         ->select('id')
+         ->filterByTitle('From Amazon')
+         ->findOne();
 
         $productCategory = new ProductCategory();
         $productCategory
-                ->setProductId($newProduct->getId())
-                ->setCategoryId(isset($categoryId) ? $categoryId : 1)
-                ->setDefaultCategory(1)
-                ->setPosition(1)
-                ->save($con);
+         ->setProductId($newProduct->getId())
+         ->setCategoryId(isset($categoryId) ? $categoryId : 1)
+         ->setDefaultCategory(1)
+         ->setPosition(1)
+         ->save($con);
 
         return $newProduct->getId();
     }
 
-    public function createCustomer($order, $con, $countryId) {
+    public function createCustomer($order, $con, $countryId)
+    {
 
         /*
          * Verify (by email) if customer exists in customer thelia table
@@ -428,11 +437,11 @@ class AmazonIntegrationContoller extends BaseAdminController {
         }
 
         $checkCustomerId = CustomerQuery::create()->select('id')
-                ->filterByEmail($buyerEmail)
-                ->findOne();
+         ->filterByEmail($buyerEmail)
+         ->findOne();
 
         if (isset($order->BuyerName)) {
-            $name = preg_split('/\s+/', $order->BuyerName);
+            $name      = preg_split('/\s+/', $order->BuyerName);
             $firstName = $name[0];
             if (isset($name[1])) {
                 if (isset($name[2]))
@@ -444,10 +453,10 @@ class AmazonIntegrationContoller extends BaseAdminController {
             }
         } else if ($buyerEmail == 'amazoncanceled@hausfabrik.at') {
             $firstName = 'canceled';
-            $lastName = 'canceled';
+            $lastName  = 'canceled';
         } else {
             $firstName = '';
-            $lastName = '';
+            $lastName  = '';
         }
 
         if ($checkCustomerId) {
@@ -457,17 +466,17 @@ class AmazonIntegrationContoller extends BaseAdminController {
             $customer = new Customer();
 
             $customer->setTitleId(1)
-                    ->setFirstname($firstName)
-                    ->setLastname($lastName)
-                    ->setEmail($buyerEmail);
+             ->setFirstname($firstName)
+             ->setLastname($lastName)
+             ->setEmail($buyerEmail);
             $customer->save($con);
 
             $customerId = $customer->getId();
         }
 
         $checkCustomerAddress = AddressQuery::create()->select('id')
-                ->filterByCustomerId($customerId)
-                ->findOne();
+         ->filterByCustomerId($customerId)
+         ->findOne();
 
         if (!$checkCustomerAddress && $order->OrderStatus != 'Canceled') {
             $customerAddress = new Address();
@@ -478,16 +487,16 @@ class AmazonIntegrationContoller extends BaseAdminController {
                 $address = '';
 
             $customerAddress->setLabel('Hauptadresse')
-                    ->setCustomerId($customerId)
-                    ->setTitleId(1)
-                    ->setCompany(isset($order->BuyerTaxInfo->CompanyLegalName) ? $order->BuyerTaxInfo->CompanyLegalName : '')
-                    ->setFirstname($firstName)
-                    ->setLastname($lastName)
-                    ->setAddress1($address)
-                    ->setCity(isset($order->ShippingAddress->City) ? $order->ShippingAddress->City : '')
-                    ->setZipcode(isset($order->ShippingAddress->PostalCode) ? $order->ShippingAddress->PostalCode : '')
-                    ->setCountryId($countryId)
-                    ->setIsDefault(1)
+             ->setCustomerId($customerId)
+             ->setTitleId(1)
+             ->setCompany(isset($order->BuyerTaxInfo->CompanyLegalName) ? $order->BuyerTaxInfo->CompanyLegalName : '')
+             ->setFirstname($firstName)
+             ->setLastname($lastName)
+             ->setAddress1($address)
+             ->setCity(isset($order->ShippingAddress->City) ? $order->ShippingAddress->City : '')
+             ->setZipcode(isset($order->ShippingAddress->PostalCode) ? $order->ShippingAddress->PostalCode : '')
+             ->setCountryId($countryId)
+             ->setIsDefault(1)
             ;
             $customerAddress->save($con);
         }
@@ -495,19 +504,20 @@ class AmazonIntegrationContoller extends BaseAdminController {
         return $customerId;
     }
 
-    public function createOrderAddress($order, $con, $countryId) {
+    public function createOrderAddress($order, $con, $countryId)
+    {
 
         // check if exist canceled destination order address - unique for all canceled orders
         $checkOrderAddress = OrderAddressQuery::create()->select('id')
-                ->filterByAddress1('canceled destination')
-                ->findOne();
+         ->filterByAddress1('canceled destination')
+         ->findOne();
 
         if ($order->OrderStatus == 'Canceled' && $checkOrderAddress) {
             $orderAddressId = $checkOrderAddress;
         } else {
             // Insert shipping address from amazon to order address thelia
             if (isset($order->ShippingAddress->Name)) {
-                $name = preg_split('/\s+/', $order->ShippingAddress->Name);
+                $name      = preg_split('/\s+/', $order->ShippingAddress->Name);
                 $firstName = $name[0];
                 if (isset($name[1])) {
                     if (isset($name[2]))
@@ -519,10 +529,10 @@ class AmazonIntegrationContoller extends BaseAdminController {
                 }
             } else if ($order->OrderStatus == 'Canceled') {
                 $firstName = 'canceled';
-                $lastName = 'canceled';
+                $lastName  = 'canceled';
             } else {
                 $firstName = '';
-                $lastName = '';
+                $lastName  = '';
             }
 
             if (isset($order->ShippingAddress->AddressLine2))
@@ -534,12 +544,12 @@ class AmazonIntegrationContoller extends BaseAdminController {
 
             $orderAddress = new OrderAddress();
             $orderAddress->setCustomerTitleId('1')
-                    ->setFirstName($firstName)
-                    ->setLastname($lastName)
-                    ->setAddress1($address)
-                    ->setCity(isset($order->ShippingAddress->City) ? $order->ShippingAddress->City : '')
-                    ->setZipcode(isset($order->ShippingAddress->PostalCode) ? $order->ShippingAddress->PostalCode : '')
-                    ->setCountryId($countryId);
+             ->setFirstName($firstName)
+             ->setLastname($lastName)
+             ->setAddress1($address)
+             ->setCity(isset($order->ShippingAddress->City) ? $order->ShippingAddress->City : '')
+             ->setZipcode(isset($order->ShippingAddress->PostalCode) ? $order->ShippingAddress->PostalCode : '')
+             ->setCountryId($countryId);
             $orderAddress->save($con);
 
             $orderAddressId = $orderAddress->getId();
@@ -548,29 +558,30 @@ class AmazonIntegrationContoller extends BaseAdminController {
         return $orderAddressId;
     }
 
-    public function createOrder($order, $customerId, $orderAddressId, $con, $statusId) {
+    public function createOrder($order, $customerId, $orderAddressId, $con, $statusId)
+    {
 
         $salesChannelId = explode(".", $order->SalesChannel);
 
         $lang = LangQuery::create()
-                ->filterByCode($salesChannelId[1])
-                ->findOne();
+         ->filterByCode($salesChannelId[1])
+         ->findOne();
 
         if ($lang)
             $langId = $lang->getId();
         else
             $langId = '1';
 
-        $currencyId = '1';
+        $currencyId   = '1';
         $currencyRate = '1';
 
         if (isset($order->OrderTotal->CurrencyCode)) {
             $currency = CurrencyQuery::create()
-                    ->filterByCode($order->OrderTotal->CurrencyCode)
-                    ->findOne();
+             ->filterByCode($order->OrderTotal->CurrencyCode)
+             ->findOne();
 
             if ($currency) {
-                $currencyId = $currency->getId();
+                $currencyId   = $currency->getId();
                 $currencyRate = $currency->getRate();
             }
         }
@@ -578,120 +589,122 @@ class AmazonIntegrationContoller extends BaseAdminController {
         $marketplace = strtoupper($salesChannelId[1]);
 
         $this->getRequest()->getSession()->set(
-                "marketplace", $marketplace
+         "marketplace", $marketplace
         );
 
         $newOrder = new Order();
         $newOrder
-                ->setCustomerId($customerId)
-                ->setCurrencyId($currencyId)
-                ->setCurrencyRate($currencyRate)
-                ->setStatusId($statusId)
-                ->setLangId($langId)
-                ->setPaymentModuleId('41')
-                ->setDeliveryOrderAddressId($orderAddressId)
-                ->setInvoiceOrderAddressId($orderAddressId)
-                ->setDeliveryModuleId('2')
-                ->setPostage('')
-                ->setPostageTax('')
-                ->setInvoiceDate($order->PurchaseDate)
-                ->setVersionCreatedBy('amazonimporter.1')
-                ->setDispatcher($this->getDispatcher())
+         ->setCustomerId($customerId)
+         ->setCurrencyId($currencyId)
+         ->setCurrencyRate($currencyRate)
+         ->setStatusId($statusId)
+         ->setLangId($langId)
+         ->setPaymentModuleId('41')
+         ->setDeliveryOrderAddressId($orderAddressId)
+         ->setInvoiceOrderAddressId($orderAddressId)
+         ->setDeliveryModuleId('2')
+         ->setPostage('')
+         ->setPostageTax('')
+         ->setInvoiceDate($order->PurchaseDate)
+         ->setVersionCreatedBy('amazonimporter.1')
+         ->setDispatcher($this->getDispatcher())
         ;
 
         $newOrder->save($con);
 
         return array(
-            'lang' => $lang,
-            'order' => $newOrder,
-            'marketplace' => $marketplace
+         'lang'        => $lang,
+         'order'       => $newOrder,
+         'marketplace' => $marketplace
         );
     }
 
-    public function createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con) {
+    public function createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con)
+    {
 
         $amazonOrder = new AmazonOrders();
 
         $amazonOrder->setId(isset($order->AmazonOrderId) ? $order->AmazonOrderId : '')
-                ->setSellerOrderId(isset($order->SellerOrderId) ? $order->SellerOrderId : '')
-                ->setPurchaseDate(isset($order->PurchaseDate) ? $order->PurchaseDate : '')
-                ->setLastUpdateDate(isset($order->LastUpdateDate) ? $order->LastUpdateDate : '')
-                ->setOrderStatus(isset($order->OrderStatus) ? $order->OrderStatus : '')
-                ->setFulfillmentChannel(isset($order->FulfillmentChannel) ? $order->FulfillmentChannel : '')
-                ->setSalesChannel(isset($order->SalesChannel) ? $order->SalesChannel : '')
-                ->setOrderChannel(isset($order->OrderChannel) ? $order->OrderChannel : '')
-                ->setShipServiceLevel(isset($order->ShipServiceLevel) ? $order->ShipServiceLevel : '')
-                ->setOrderTotalCurrencyCode(isset($order->OrderTotal->CurrencyCode) ? $order->OrderTotal->CurrencyCode : '')
-                ->setOrderTotalAmount(isset($order->OrderTotal->Amount) ? $order->OrderTotal->Amount : '')
-                ->setNumberOfItemsShipped(isset($order->NumberOfItemsShipped) ? $order->NumberOfItemsShipped : '')
-                ->setNumberOfItemsUnshipped(isset($order->NumberOfItemsUnshipped) ? $order->NumberOfItemsUnshipped : '')
-                ->setPaymentExecutionDetailCurrencyCode(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->CurrencyCode) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->CurrencyCode : '')
-                ->setPaymentExecutionDetailTotalAmount(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->Amount) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->Amount : '')
-                ->setPaymentExecutionDetailPaymentMethod(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->PaymentMethod) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->PaymentMethod : '')
-                ->setPaymentMethod(isset($order->PaymentMethod) ? $order->PaymentMethod : '')
-                ->setPaymentMethodDetail(isset($order->PaymentMethodDetails->PaymentMethodDetail) ? $order->PaymentMethodDetails->PaymentMethodDetail : '')
-                ->setMarketplaceId(isset($order->MarketplaceId) ? $order->MarketplaceId : '')
-                ->setBuyerCounty(isset($order->BuyerCounty) ? $order->BuyerCounty : '')
-                ->setBuyerTaxInfoCompany(isset($order->BuyerTaxInfo->CompanyLegalName) ? $order->BuyerTaxInfo->CompanyLegalName : '')
-                ->setBuyerTaxInfoTaxingRegion(isset($order->BuyerTaxInfo->TaxingRegion) ? $order->BuyerTaxInfo->TaxingRegion : '')
-                ->setBuyerTaxInfoTaxName(isset($order->BuyerTaxInfo->TaxClassifications->TaxClassification->Name) ? $order->BuyerTaxInfo->TaxClassifications->TaxClassification->Name : '')
-                ->setBuyerTaxInfoTaxValue(isset($order->BuyerTaxInfo->TaxClassifications->TaxClassification->Value) ? $order->BuyerTaxInfo->TaxClassifications->TaxClassification->Value : '')
-                ->setShipmentServiceLevelCategory(isset($order->ShipmentServiceLevelCategory) ? $order->ShipmentServiceLevelCategory : '')
-                ->setShippedByAmazonTfm(isset($order->ShippedByAmazonTFM) && ($order->ShippedByAmazonTFM == true) ? 1 : 0)
-                ->setTfmShipmentStatus(isset($order->TFMShipmentStatus) ? $order->TFMShipmentStatus : '')
-                ->setCbaDisplayableShippingLabel(isset($order->CbaDisplayableShippingLabel) ? $order->CbaDisplayableShippingLabel : '')
-                ->setOrderType(isset($order->OrderType) ? $order->OrderType : '')
-                ->setEarliestShipDate(isset($order->EarliestShipDate) ? $order->EarliestShipDate : '')
-                ->setLatestShipDate(isset($order->LatestShipDate) ? $order->LatestShipDate : '')
-                ->setEarliestDeliveryDate(isset($order->EarliestDeliveryDate) ? $order->EarliestDeliveryDate : '')
-                ->setLatestDeliveryDate(isset($order->LatestDeliveryDate) ? $order->LatestDeliveryDate : '')
-                ->setIsBusinessOrder(isset($order->IsBusinessOrder) && $order->IsBusinessOrder == true ? 1 : 0)
-                ->setPurchaseOrderNumber(isset($order->PurchaseOrderNumber) ? $order->PurchaseOrderNumber : '')
-                ->setIsPrime(isset($order->IsPrime) && $order->IsPrime == true ? 1 : 0)
-                ->setIsPremiumOrder(isset($order->IsPremiumOrder) && $order->IsPremiumOrder == true ? 1 : 0)
-                ->setReplacedOrderId(isset($order->ReplacedOrderId) ? $order->ReplacedOrderId : '')
-                ->setIsReplacementOrder(isset($order->IsReplacementOrder) && $order->IsReplacementOrder == true ? 1 : 0)
-                ->setOrderAddressId($orderAddressId)
-                ->setCustomerId($customerId)
-                ->setOrderId($orderId);
+         ->setSellerOrderId(isset($order->SellerOrderId) ? $order->SellerOrderId : '')
+         ->setPurchaseDate(isset($order->PurchaseDate) ? $order->PurchaseDate : '')
+         ->setLastUpdateDate(isset($order->LastUpdateDate) ? $order->LastUpdateDate : '')
+         ->setOrderStatus(isset($order->OrderStatus) ? $order->OrderStatus : '')
+         ->setFulfillmentChannel(isset($order->FulfillmentChannel) ? $order->FulfillmentChannel : '')
+         ->setSalesChannel(isset($order->SalesChannel) ? $order->SalesChannel : '')
+         ->setOrderChannel(isset($order->OrderChannel) ? $order->OrderChannel : '')
+         ->setShipServiceLevel(isset($order->ShipServiceLevel) ? $order->ShipServiceLevel : '')
+         ->setOrderTotalCurrencyCode(isset($order->OrderTotal->CurrencyCode) ? $order->OrderTotal->CurrencyCode : '')
+         ->setOrderTotalAmount(isset($order->OrderTotal->Amount) ? $order->OrderTotal->Amount : '')
+         ->setNumberOfItemsShipped(isset($order->NumberOfItemsShipped) ? $order->NumberOfItemsShipped : '')
+         ->setNumberOfItemsUnshipped(isset($order->NumberOfItemsUnshipped) ? $order->NumberOfItemsUnshipped : '')
+         ->setPaymentExecutionDetailCurrencyCode(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->CurrencyCode) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->CurrencyCode : '')
+         ->setPaymentExecutionDetailTotalAmount(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->Amount) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->Payment->Amount : '')
+         ->setPaymentExecutionDetailPaymentMethod(isset($order->PaymentExecutionDetail->PaymentExecutionDetailItem->PaymentMethod) ? $order->PaymentExecutionDetail->PaymentExecutionDetailItem->PaymentMethod : '')
+         ->setPaymentMethod(isset($order->PaymentMethod) ? $order->PaymentMethod : '')
+         ->setPaymentMethodDetail(isset($order->PaymentMethodDetails->PaymentMethodDetail) ? $order->PaymentMethodDetails->PaymentMethodDetail : '')
+         ->setMarketplaceId(isset($order->MarketplaceId) ? $order->MarketplaceId : '')
+         ->setBuyerCounty(isset($order->BuyerCounty) ? $order->BuyerCounty : '')
+         ->setBuyerTaxInfoCompany(isset($order->BuyerTaxInfo->CompanyLegalName) ? $order->BuyerTaxInfo->CompanyLegalName : '')
+         ->setBuyerTaxInfoTaxingRegion(isset($order->BuyerTaxInfo->TaxingRegion) ? $order->BuyerTaxInfo->TaxingRegion : '')
+         ->setBuyerTaxInfoTaxName(isset($order->BuyerTaxInfo->TaxClassifications->TaxClassification->Name) ? $order->BuyerTaxInfo->TaxClassifications->TaxClassification->Name : '')
+         ->setBuyerTaxInfoTaxValue(isset($order->BuyerTaxInfo->TaxClassifications->TaxClassification->Value) ? $order->BuyerTaxInfo->TaxClassifications->TaxClassification->Value : '')
+         ->setShipmentServiceLevelCategory(isset($order->ShipmentServiceLevelCategory) ? $order->ShipmentServiceLevelCategory : '')
+         ->setShippedByAmazonTfm(isset($order->ShippedByAmazonTFM) && ($order->ShippedByAmazonTFM == true) ? 1 : 0)
+         ->setTfmShipmentStatus(isset($order->TFMShipmentStatus) ? $order->TFMShipmentStatus : '')
+         ->setCbaDisplayableShippingLabel(isset($order->CbaDisplayableShippingLabel) ? $order->CbaDisplayableShippingLabel : '')
+         ->setOrderType(isset($order->OrderType) ? $order->OrderType : '')
+         ->setEarliestShipDate(isset($order->EarliestShipDate) ? $order->EarliestShipDate : '')
+         ->setLatestShipDate(isset($order->LatestShipDate) ? $order->LatestShipDate : '')
+         ->setEarliestDeliveryDate(isset($order->EarliestDeliveryDate) ? $order->EarliestDeliveryDate : '')
+         ->setLatestDeliveryDate(isset($order->LatestDeliveryDate) ? $order->LatestDeliveryDate : '')
+         ->setIsBusinessOrder(isset($order->IsBusinessOrder) && $order->IsBusinessOrder == true ? 1 : 0)
+         ->setPurchaseOrderNumber(isset($order->PurchaseOrderNumber) ? $order->PurchaseOrderNumber : '')
+         ->setIsPrime(isset($order->IsPrime) && $order->IsPrime == true ? 1 : 0)
+         ->setIsPremiumOrder(isset($order->IsPremiumOrder) && $order->IsPremiumOrder == true ? 1 : 0)
+         ->setReplacedOrderId(isset($order->ReplacedOrderId) ? $order->ReplacedOrderId : '')
+         ->setIsReplacementOrder(isset($order->IsReplacementOrder) && $order->IsReplacementOrder == true ? 1 : 0)
+         ->setOrderAddressId($orderAddressId)
+         ->setCustomerId($customerId)
+         ->setOrderId($orderId);
 
         $amazonOrder->save($con);
     }
 
-    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId) {
+    public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId)
+    {
 
         $productId = ProductAmazonQuery::create()
-                ->select('product_id')
-                ->filterByASIN($orderProduct->ASIN)
-                ->findOne();
+         ->select('product_id')
+         ->filterByASIN($orderProduct->ASIN)
+         ->findOne();
 
         if (!$productId) {
             if (isset($orderProduct->SellerSKU)) {
                 $productId = ProductQuery::create()
-                        ->select('id')
-                        ->filterByRef($orderProduct->SellerSKU)
-                        ->findOne();
+                 ->select('id')
+                 ->filterByRef($orderProduct->SellerSKU)
+                 ->findOne();
             }
 
             if (!$productId)
                 $productId = $this->saveProducts($orderProduct, $lang, $con);
 
             $productUpdateAsin = ProductAmazonQuery::create()
-                    ->filterByProductId($productId)
-                    ->findOne();
+             ->filterByProductId($productId)
+             ->findOne();
 
             if ($productUpdateAsin)
                 $productUpdateAsin->setASIN($orderProduct->ASIN)
-                        ->save($con);
+                 ->save($con);
         }
 
         $productSaleElement = ProductSaleElementsQuery::create()
-                ->filterByProductId($productId)
-                ->findOne();
+         ->filterByProductId($productId)
+         ->findOne();
 
         $product = ProductQuery::create()
-                ->filterById($productId)
-                ->findOne();
+         ->filterById($productId)
+         ->findOne();
 
         /* get translation */
         /** @var ProductI18n $productI18n */
@@ -717,105 +730,106 @@ class AmazonIntegrationContoller extends BaseAdminController {
         }
 
         if ($countryId == '5') {
-            $tax = round(($unitPrice / 1.19) * 0.19, 2);
+            $tax             = round(($unitPrice / 1.19) * 0.19, 2);
             $priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '19%  VAT';
+            $taxTitle        = '19%  VAT';
         } else {
-            $tax = round(($unitPrice / 1.2) * 0.2, 2);
+            $tax             = round(($unitPrice / 1.2) * 0.2, 2);
             $priceWithoutTax = $unitPrice - $tax;
-            $taxTitle = '20%  VAT';
+            $taxTitle        = '20%  VAT';
         }
 
         $newOrderProduct = new OrderProduct();
         $newOrderProduct
-                ->setOrderId($orderId)
-                ->setProductRef($product->getRef())
-                ->setProductSaleElementsRef($productSaleElement->getRef())
-                ->setProductSaleElementsId($productSaleElement->getId())
-                ->setTitle($productI18n->getTitle())
-                ->setChapo($productI18n->getChapo())
-                ->setDescription($productI18n->getDescription())
-                ->setPostscriptum($productI18n->getPostscriptum())
-                ->setVirtual('')
-                ->setVirtualDocument('')
-                ->setQuantity(isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
-                ->setPrice($priceWithoutTax)
-                ->setPromoPrice($priceWithoutTax)
-                ->setWasNew('')
-                ->setWasInPromo('')
-                ->setWeight($productSaleElement->getWeight())
-                ->setTaxRuleTitle($taxTitle)
-                ->setTaxRuleDescription('')
-                ->setEanCode($productSaleElement->getEanCode())
-                ->save($con);
+         ->setOrderId($orderId)
+         ->setProductRef($product->getRef())
+         ->setProductSaleElementsRef($productSaleElement->getRef())
+         ->setProductSaleElementsId($productSaleElement->getId())
+         ->setTitle($productI18n->getTitle())
+         ->setChapo($productI18n->getChapo())
+         ->setDescription($productI18n->getDescription())
+         ->setPostscriptum($productI18n->getPostscriptum())
+         ->setVirtual('')
+         ->setVirtualDocument('')
+         ->setQuantity(isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
+         ->setPrice($priceWithoutTax)
+         ->setPromoPrice($priceWithoutTax)
+         ->setWasNew('')
+         ->setWasInPromo('')
+         ->setWeight($productSaleElement->getWeight())
+         ->setTaxRuleTitle($taxTitle)
+         ->setTaxRuleDescription('')
+         ->setEanCode($productSaleElement->getEanCode())
+         ->save($con);
 
         $orderProductId = $newOrderProduct->getId();
 
         // Insert product in order_product_tax
         $orderProductTax = new OrderProductTax();
         $orderProductTax
-                ->setOrderProductId($orderProductId)
-                ->setTitle($taxTitle)
-                ->setAmount($tax)
-                ->setPromoAmount($tax)
-                ->save($con);
+         ->setOrderProductId($orderProductId)
+         ->setTitle($taxTitle)
+         ->setAmount($tax)
+         ->setPromoAmount($tax)
+         ->save($con);
 
         // Insert products from amazon to amazon_orders_product table
         $amazonOrderProduct = new AmazonOrderProduct();
         $amazonOrderProduct
-                ->setOrderItemId(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
-                ->setAmazonOrderId($amazonOrderId)
-                ->setAsin(isset($orderProduct->ASIN) ? $orderProduct->ASIN : '')
-                ->setSellerSku(isset($orderProduct->SellerSKU) ? $orderProduct->SellerSKU : '')
-                ->setOrderItemId(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
-                ->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
-                ->setQuantityOrdered(isset($orderProduct->QuantityOrdered) ? $orderProduct->QuantityOrdered : '')
-                ->setQuantityShipped(isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
-                ->setPointsGrantedNumber(isset($orderProduct->PointsGranted->PointsNumber) ? $orderProduct->PointsGranted->PointsNumber : '')
-                ->setPointsGrantedCurrencyCode(isset($orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode) ? $orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode : '')
-                ->setPointsGrantedAmount(isset($orderProduct->PointsGranted->PointsMonetaryValue->Amount) ? $orderProduct->PointsGranted->PointsMonetaryValue->Amount : '')
-                ->setItemPriceCurrencyCode(isset($orderProduct->ItemPrice->CurrencyCode) ? $orderProduct->ItemPrice->CurrencyCode : '')
-                ->setItemPriceAmount(isset($orderProduct->ItemPrice->Amount) ? $orderProduct->ItemPrice->Amount : '')
-                ->setShippingPriceCurrencyCode(isset($orderProduct->ShippingPrice->CurrencyCode) ? $orderProduct->ShippingPrice->CurrencyCode : '')
-                ->setShippingPriceAmount(isset($orderProduct->ShippingPrice->Amount) ? $orderProduct->ShippingPrice->Amount : '')
-                ->setGiftWrapPriceCurrencyCode(isset($orderProduct->GiftWrapPrice->CurrencyCode) ? $orderProduct->GiftWrapPrice->CurrencyCode : '')
-                ->setGiftWrapPriceAmount(isset($orderProduct->GiftWrapPrice->Amount) ? $orderProduct->GiftWrapPrice->Amount : '')
-                ->setItemTaxCurrencyCode(isset($orderProduct->ItemTax->CurrencyCode) ? $orderProduct->ItemTax->CurrencyCode : '')
-                ->setItemTaxAmount(isset($orderProduct->ItemTax->Amount) ? $orderProduct->ItemTax->Amount : '')
-                ->setShippingTaxCurrencyCode(isset($orderProduct->ShippingTax->CurrencyCode) ? $orderProduct->ShippingTax->CurrencyCode : '')
-                ->setShippingTaxAmount(isset($orderProduct->ShippingTax->Amount) ? $orderProduct->ShippingTax->Amount : '')
-                ->setGiftWrapTaxCurrencyCode(isset($orderProduct->GiftWrapTax->CurrencyCode) ? $orderProduct->GiftWrapTax->CurrencyCode : '')
-                ->setGiftWrapTaxAmount(isset($orderProduct->GiftWrapTax->Amount) ? $orderProduct->GiftWrapTax->Amount : '')
-                ->setShippingDiscountCurrencyCode(isset($orderProduct->ShippingDiscount->CurrencyCode) ? $orderProduct->ShippingDiscount->CurrencyCode : '')
-                ->setShippingDiscountAmount(isset($orderProduct->ShippingDiscount->Amount) ? $orderProduct->ShippingDiscount->Amount : '')
-                ->setPromotionDiscountCurrencyCode(isset($orderProduct->PromotionDiscount->CurrencyCode) ? $orderProduct->PromotionDiscount->CurrencyCode : '')
-                ->setPromotionDiscountAmount(isset($orderProduct->PromotionDiscount->Amount) ? $orderProduct->PromotionDiscount->Amount : '')
-                ->setPromotionId(isset($orderProduct->PromotionIds->PromotionId) ? $orderProduct->PromotionIds->PromotionId : '')
-                ->setCodFeeCurrencyCode(isset($orderProduct->CODFee->CurrencyCode) ? $orderProduct->CODFee->CurrencyCode : '')
-                ->setCodFeeAmount(isset($orderProduct->CODFee->Amount) ? $orderProduct->CODFee->Amount : '')
-                ->setCodFeeDiscountCurrencyCode(isset($orderProduct->CODFeeDiscount->CurrencyCode) ? $orderProduct->CODFeeDiscount->CurrencyCode : '')
-                ->setCodFeeDiscountAmount(isset($orderProduct->CODFeeDiscount->Amount) ? $orderProduct->CODFeeDiscount->Amount : '')
-                ->setGiftMessageText(isset($orderProduct->GiftMessageText) ? $orderProduct->GiftMessageText : '')
-                ->setGiftWrapLevel(isset($orderProduct->GiftWrapLevel) ? $$orderProduct->GiftWrapLevel : '')
-                ->setInvoiceRequirement(isset($orderProduct->InvoiceData->InvoiceRequirement) ? $orderProduct->InvoiceData->InvoiceRequirement : '')
-                ->setBuyerSelectedInvoiceCategory(isset($orderProduct->InvoiceData->BuyerSelectedInvoiceCategory) ? $orderProduct->InvoiceData->BuyerSelectedInvoiceCategory : '')
-                ->setInvoiceTitle(isset($orderProduct->InvoiceData->InvoiceTitle) ? $orderProduct->InvoiceData->InvoiceTitle : '')
-                ->setInvoiceInformation(isset($orderProduct->InvoiceData->InvoiceInformation) ? $orderProduct->InvoiceData->InvoiceInformation : '')
-                ->setConditionNote(isset($orderProduct->ConditionNote) ? $orderProduct->ConditionNote : '')
-                ->setConditionId(isset($orderProduct->ConditionId) ? $orderProduct->ConditionId : '')
-                ->setConditionSubtypeId(isset($orderProduct->ConditionSubtypeId) ? $orderProduct->ConditionSubtypeId : '')
-                ->setScheduledDeliveryStartDate(isset($orderProduct->ScheduledDeliveryStartDate) ? $orderProduct->ScheduledDeliveryStartDate : '')
-                ->setScheduledDeliveryEndDate(isset($orderProduct->ScheduledDeliveryEndDate) ? $orderProduct->ScheduledDeliveryEndDate : '')
-                ->setPriceDesignation(isset($orderProduct->PriceDesignation) ? $orderProduct->PriceDesignation : '')
-                ->setBuyerCustomizedURL(isset($orderProduct->BuyerCustomizedInfo->CustomizedURL) ? $orderProduct->BuyerCustomizedInfo->CustomizedURL : '')
-                ->setOrderProductId($orderProductId)
-                ->setAmazonOrderId($amazonOrderId)
+         ->setOrderItemId(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
+         ->setAmazonOrderId($amazonOrderId)
+         ->setAsin(isset($orderProduct->ASIN) ? $orderProduct->ASIN : '')
+         ->setSellerSku(isset($orderProduct->SellerSKU) ? $orderProduct->SellerSKU : '')
+         ->setOrderItemId(isset($orderProduct->OrderItemId) ? $orderProduct->OrderItemId : '')
+         ->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
+         ->setQuantityOrdered(isset($orderProduct->QuantityOrdered) ? $orderProduct->QuantityOrdered : '')
+         ->setQuantityShipped(isset($orderProduct->QuantityShipped) ? $orderProduct->QuantityShipped : '')
+         ->setPointsGrantedNumber(isset($orderProduct->PointsGranted->PointsNumber) ? $orderProduct->PointsGranted->PointsNumber : '')
+         ->setPointsGrantedCurrencyCode(isset($orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode) ? $orderProduct->PointsGranted->PointsMonetaryValue->CurrencyCode : '')
+         ->setPointsGrantedAmount(isset($orderProduct->PointsGranted->PointsMonetaryValue->Amount) ? $orderProduct->PointsGranted->PointsMonetaryValue->Amount : '')
+         ->setItemPriceCurrencyCode(isset($orderProduct->ItemPrice->CurrencyCode) ? $orderProduct->ItemPrice->CurrencyCode : '')
+         ->setItemPriceAmount(isset($orderProduct->ItemPrice->Amount) ? $orderProduct->ItemPrice->Amount : '')
+         ->setShippingPriceCurrencyCode(isset($orderProduct->ShippingPrice->CurrencyCode) ? $orderProduct->ShippingPrice->CurrencyCode : '')
+         ->setShippingPriceAmount(isset($orderProduct->ShippingPrice->Amount) ? $orderProduct->ShippingPrice->Amount : '')
+         ->setGiftWrapPriceCurrencyCode(isset($orderProduct->GiftWrapPrice->CurrencyCode) ? $orderProduct->GiftWrapPrice->CurrencyCode : '')
+         ->setGiftWrapPriceAmount(isset($orderProduct->GiftWrapPrice->Amount) ? $orderProduct->GiftWrapPrice->Amount : '')
+         ->setItemTaxCurrencyCode(isset($orderProduct->ItemTax->CurrencyCode) ? $orderProduct->ItemTax->CurrencyCode : '')
+         ->setItemTaxAmount(isset($orderProduct->ItemTax->Amount) ? $orderProduct->ItemTax->Amount : '')
+         ->setShippingTaxCurrencyCode(isset($orderProduct->ShippingTax->CurrencyCode) ? $orderProduct->ShippingTax->CurrencyCode : '')
+         ->setShippingTaxAmount(isset($orderProduct->ShippingTax->Amount) ? $orderProduct->ShippingTax->Amount : '')
+         ->setGiftWrapTaxCurrencyCode(isset($orderProduct->GiftWrapTax->CurrencyCode) ? $orderProduct->GiftWrapTax->CurrencyCode : '')
+         ->setGiftWrapTaxAmount(isset($orderProduct->GiftWrapTax->Amount) ? $orderProduct->GiftWrapTax->Amount : '')
+         ->setShippingDiscountCurrencyCode(isset($orderProduct->ShippingDiscount->CurrencyCode) ? $orderProduct->ShippingDiscount->CurrencyCode : '')
+         ->setShippingDiscountAmount(isset($orderProduct->ShippingDiscount->Amount) ? $orderProduct->ShippingDiscount->Amount : '')
+         ->setPromotionDiscountCurrencyCode(isset($orderProduct->PromotionDiscount->CurrencyCode) ? $orderProduct->PromotionDiscount->CurrencyCode : '')
+         ->setPromotionDiscountAmount(isset($orderProduct->PromotionDiscount->Amount) ? $orderProduct->PromotionDiscount->Amount : '')
+         ->setPromotionId(isset($orderProduct->PromotionIds->PromotionId) ? $orderProduct->PromotionIds->PromotionId : '')
+         ->setCodFeeCurrencyCode(isset($orderProduct->CODFee->CurrencyCode) ? $orderProduct->CODFee->CurrencyCode : '')
+         ->setCodFeeAmount(isset($orderProduct->CODFee->Amount) ? $orderProduct->CODFee->Amount : '')
+         ->setCodFeeDiscountCurrencyCode(isset($orderProduct->CODFeeDiscount->CurrencyCode) ? $orderProduct->CODFeeDiscount->CurrencyCode : '')
+         ->setCodFeeDiscountAmount(isset($orderProduct->CODFeeDiscount->Amount) ? $orderProduct->CODFeeDiscount->Amount : '')
+         ->setGiftMessageText(isset($orderProduct->GiftMessageText) ? $orderProduct->GiftMessageText : '')
+         ->setGiftWrapLevel(isset($orderProduct->GiftWrapLevel) ? $$orderProduct->GiftWrapLevel : '')
+         ->setInvoiceRequirement(isset($orderProduct->InvoiceData->InvoiceRequirement) ? $orderProduct->InvoiceData->InvoiceRequirement : '')
+         ->setBuyerSelectedInvoiceCategory(isset($orderProduct->InvoiceData->BuyerSelectedInvoiceCategory) ? $orderProduct->InvoiceData->BuyerSelectedInvoiceCategory : '')
+         ->setInvoiceTitle(isset($orderProduct->InvoiceData->InvoiceTitle) ? $orderProduct->InvoiceData->InvoiceTitle : '')
+         ->setInvoiceInformation(isset($orderProduct->InvoiceData->InvoiceInformation) ? $orderProduct->InvoiceData->InvoiceInformation : '')
+         ->setConditionNote(isset($orderProduct->ConditionNote) ? $orderProduct->ConditionNote : '')
+         ->setConditionId(isset($orderProduct->ConditionId) ? $orderProduct->ConditionId : '')
+         ->setConditionSubtypeId(isset($orderProduct->ConditionSubtypeId) ? $orderProduct->ConditionSubtypeId : '')
+         ->setScheduledDeliveryStartDate(isset($orderProduct->ScheduledDeliveryStartDate) ? $orderProduct->ScheduledDeliveryStartDate : '')
+         ->setScheduledDeliveryEndDate(isset($orderProduct->ScheduledDeliveryEndDate) ? $orderProduct->ScheduledDeliveryEndDate : '')
+         ->setPriceDesignation(isset($orderProduct->PriceDesignation) ? $orderProduct->PriceDesignation : '')
+         ->setBuyerCustomizedURL(isset($orderProduct->BuyerCustomizedInfo->CustomizedURL) ? $orderProduct->BuyerCustomizedInfo->CustomizedURL : '')
+         ->setOrderProductId($orderProductId)
+         ->setAmazonOrderId($amazonOrderId)
         ;
 
         $amazonOrderProduct->save($con);
     }
 
-    public function getLogger() {
+    public function getLogger()
+    {
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
 
@@ -829,93 +843,95 @@ class AmazonIntegrationContoller extends BaseAdminController {
         return self::$logger;
     }
 
-    public function getAllProductsForRanking() {
+    public function getAllProductsForRanking()
+    {
         $products = ProductSaleElementsQuery::create()
-                ->addJoin(ProductSaleElementsTableMap::PRODUCT_ID, ProductTableMap::ID)
-                ->where(ProductSaleElementsTableMap::EAN_CODE . " is not NULL and " . ProductSaleElementsTableMap::EAN_CODE . " <> ''")
-                ->where(ProductTableMap::VISIBLE . " = 1 ");
+         ->addJoin(ProductSaleElementsTableMap::PRODUCT_ID, ProductTableMap::ID)
+         ->where(ProductSaleElementsTableMap::EAN_CODE . " is not NULL and " . ProductSaleElementsTableMap::EAN_CODE . " <> ''")
+         ->where(ProductTableMap::VISIBLE . " = 1 ");
 
         $allProdOnline = "";
         foreach ($products as $product) {
             if (strlen($product->getRef()) < 13)
-                $allProdOnline .= $product->getEanCode(). " ";
+                $allProdOnline .= $product->getEanCode() . " ";
         }
         $allProdOnline = rtrim($allProdOnline);
         $this->saveRankingProducts($allProdOnline);
-        
-        $params = array();
+
+        $params        = array();
         $params["tab"] = $this->getRequest()->get("tab", 'amazon-feeds');
-        
+
         return RedirectResponse::create(
-        		URL::getInstance()->absoluteUrl(
-        				'/admin/module/amazonintegration/', $params
-        				)
-        		);
+          URL::getInstance()->absoluteUrl(
+           '/admin/module/amazonintegration/', $params
+          )
+        );
     }
 
-    public function saveRankingProducts($allProdOnline = null) {
+    public function saveRankingProducts($allProdOnline = null)
+    {
         if (!$allProdOnline) {
-        	$this->getLogger()->error("AMAZON - get ean from input ");
+            $this->getLogger()->error("AMAZON - get ean from input ");
             $form = $this->createForm("amazonintegration.rankings.form");
         } else {
-        	$this->getLogger()->error("AMAZON - get ean from hausfabrik database");
+            $this->getLogger()->error("AMAZON - get ean from hausfabrik database");
             $form = null;
         }
 
         try {
             if (!$allProdOnline) {
-                $data = $this->validateForm($form)->getData();
+                $data      = $this->validateForm($form)->getData();
                 $reference = $data['reference'];
             } else {
                 $reference = $allProdOnline;
             }
 
             $refArray = explode(' ', $reference);
-            
+
             $idType = 'EAN';
 
             include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
 
             $max_time = ini_get("max_execution_time");
             ini_set('max_execution_time', 3000);
-            
+
             // object or array of parameters
             foreach ($refArray as $ref) {
-            	$this->getLogger()->error("AMAZON - get informations for ean - ". $ref);
+                $this->getLogger()->error("AMAZON - get informations for ean - " . $ref);
 
                 $idList->setId(array($ref));
                 $request->setIdList($idList);
-                
+
                 $this->getLogger()->error($request);
                 $result = invokeGetMatchingProductForId($service, $request);
 
                 if ($result) {
-                	$this->getLogger()->error("AMAZON - is result for ean - ". $ref);
+                    $this->getLogger()->error("AMAZON - is result for ean - " . $ref);
                     include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetProductCategoriesForASINSample.php';
                     if (isset($result->GetMatchingProductForIdResult->Products)) {
                         foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
-                        	$this->getLogger()->error("AMAZON - result product for ean - ". $ref);
-                        	$this->getLogger()->error($prd);
-                        	
-                        	if(is_array($prd)) {
-                        		$prd = $prd[0];
-                        	}
-                        	
+                            $this->getLogger()->error("AMAZON - result product for ean - " . $ref);
+                            $this->getLogger()->error($prd);
+
+                            if (is_array($prd)) {
+                                $prd = $prd[0];
+                            }
+
                             if ($idType == 'SellerSKU') {
                                 $pse = ProductSaleElementsQuery::create()
-                                        ->filterByRef($ref)
-                                        ->findOne();
+                                 ->filterByRef($ref)
+                                 ->findOne();
                                 if ($pse) {
-                                    $eanCode = $pse->getEanCode();
+                                    $eanCode   = $pse->getEanCode();
                                     $productId = $pse->getProductId();
                                 } else {
-                                    $eanCode = '';
+                                    $eanCode   = '';
                                     $productId = '';
                                 }
                             } elseif ($idType == 'EAN') {
                                 $pse = ProductSaleElementsQuery::create()
-                                        ->filterByEanCode($ref)
-                                        ->findOne();
+                                 ->filterByEanCode($ref)
+                                 ->findOne();
 
                                 if ($pse) {
                                     $productId = $pse->getProductId();
@@ -934,127 +950,127 @@ class AmazonIntegrationContoller extends BaseAdminController {
                                 else
                                     $asin = '';
                             }
-                            $this->getLogger()->error("AMAZON asin - ".$asin.' for ean '.$ref);
+                            $this->getLogger()->error("AMAZON asin - " . $asin . ' for ean ' . $ref);
                             // get price from amazon
-                            $amazonAPI = new AmazonAWSController;
+                            $amazonAPI   = new AmazonAWSController;
                             $priceAmazon = $amazonAPI->getLowestPrice($eanCode);
-                            $this->getLogger()->error("AMAZON - lowest price - ". $priceAmazon['lowestPrice']);
-                            $this->getLogger()->error("AMAZON - list price - ". $priceAmazon['listPrice']);
+                            $this->getLogger()->error("AMAZON - lowest price - " . $priceAmazon['lowestPrice']);
+                            $this->getLogger()->error("AMAZON - list price - " . $priceAmazon['listPrice']);
 
                             if (isset($prd->SalesRankings->SalesRank)) {
-                            	$this->getLogger()->error("AMAZON - '.$ref.' has salesRank");
+                                $this->getLogger()->error("AMAZON - '.$ref.' has salesRank");
                                 if (is_array($prd->SalesRankings->SalesRank)) {
                                     foreach ($prd->SalesRankings->SalesRank as $ranks) {
                                         $this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId, $priceAmazon);
                                     }
                                 }
-                              
+
                                 $requestCat->setASIN($asin);
                                 $productCategories = invokeGetProductCategoriesForASIN($service, $requestCat);
-                                
+
                                 if ($productCategories) {
-                                	$this->getLogger()->error("AMAZON - product categories");
-                                	$this->getLogger()->error($productCategories);
+                                    $this->getLogger()->error("AMAZON - product categories");
+                                    $this->getLogger()->error($productCategories);
                                     if (is_array($productCategories->GetProductCategoriesForASINResult->Self)) {
-                                    	$this->getLogger()->error('AMAZON - productCategories is an array');
+                                        $this->getLogger()->error('AMAZON - productCategories is an array');
                                         foreach ($productCategories->GetProductCategoriesForASINResult->Self as $prodCat) {
-                                        	$this->getLogger()->error('AMAZON - product category');
-                                        	$this->getLogger()->error($prodCat);
-                                        	
+                                            $this->getLogger()->error('AMAZON - product category');
+                                            $this->getLogger()->error($prodCat);
+
                                             $this->saveProductCategories($prodCat);
                                         }
                                     } else {
-                                    	$this->getLogger()->error('AMAZON - productCategories is an object');
+                                        $this->getLogger()->error('AMAZON - productCategories is an object');
                                         $this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
                                     }
-                                }                                
-                            }
-                            else {
+                                }
+                            } else {
                                 $this->getLogger()->error($ref . " doesn't have SalesRankings");
                             }
                         }
                     } else {
-                        if(ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
+                        if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
                             $this->saveRanking($ref, null, $ref, null, '', '', null);
                         $this->getLogger()->error($ref . " is an invalid EAN for the marketplace ");
                     }
                 } else {
-                    if(ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
+                    if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
                         $this->saveRanking($ref, null, $ref, null, '', '', null);
                     echo ('error decoding json');
                 }
-                
+
                 sleep(4);
             }
 
             ini_set('max_execution_time', $max_time);
-            $params = array();
+            $params        = array();
             $params["tab"] = $this->getRequest()->get("tab", 'amazon-feeds');
 
             return RedirectResponse::create(
-                            URL::getInstance()->absoluteUrl(
-                                    '/admin/module/amazonintegration/', $params
-                            )
+              URL::getInstance()->absoluteUrl(
+               '/admin/module/amazonintegration/', $params
+              )
             );
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                    $this->getTranslator()->trans("Error on insert ref : %message", ["message" => $e->getMessage()], AmazonIntegration::DOMAIN_NAME), $e->getMessage(), $form
+             $this->getTranslator()->trans("Error on insert ref : %message", ["message" => $e->getMessage()], AmazonIntegration::DOMAIN_NAME), $e->getMessage(), $form
             );
 
             return self::viewAction();
         }
-
     }
 
-    public function saveRanking($eanCode, $productId, $ref, $asin, $rank, $productCat, $priceAmazon) {
+    public function saveRanking($eanCode, $productId, $ref, $asin, $rank, $productCat, $priceAmazon)
+    {
         $prodAmazon = new ProductAmazon();
         $prodAmazon->setEanCode($eanCode)
-                ->setProductId($productId)
-                ->setRef($ref)
-                ->setASIN($asin)
-                ->setRanking($rank)
-                ->setAmazonCategoryId($productCat)
-                ->setLowestPrice($priceAmazon['lowestPrice'])
-                ->setListPrice($priceAmazon['listPrice'])
-                ->save();
+         ->setProductId($productId)
+         ->setRef($ref)
+         ->setASIN($asin)
+         ->setRanking($rank)
+         ->setAmazonCategoryId($productCat)
+         ->setLowestPrice($priceAmazon['lowestPrice'])
+         ->setListPrice($priceAmazon['listPrice'])
+         ->save();
+         Common::saveInCrawlerProductListing($productId, $platform = "Amazon", $priceAmazon['lowestPrice']);
     }
 
-    public function saveProductCategories($productCategories) {
+    public function saveProductCategories($productCategories)
+    {
         if (isset($productCategories->ProductCategoryId)) {
-        	$this->getLogger()->error('Amazon categories - product category id - '.$productCategories->ProductCategoryId);
+            $this->getLogger()->error('Amazon categories - product category id - ' . $productCategories->ProductCategoryId);
             $checkProductCategory = AmazonProductCategoryQuery::create()
-                    ->filterByCategoryId($productCategories->ProductCategoryId)
-                    ->findOne();
+             ->filterByCategoryId($productCategories->ProductCategoryId)
+             ->findOne();
 
             if (!$checkProductCategory) {
-            	$this->getLogger()->error('Amazon categories - product category id is not in database - '.$productCategories->ProductCategoryId);
+                $this->getLogger()->error('Amazon categories - product category id is not in database - ' . $productCategories->ProductCategoryId);
                 if (isset($productCategories->Parent)) {
                     $parentId = $productCategories->Parent->ProductCategoryId;
                 } else {
                     $parentId = 0;
                 }
-                   
-                $prodCat = $productCategories->ProductCategoryId;
+
+                $prodCat     = $productCategories->ProductCategoryId;
                 $prodCatName = $productCategories->ProductCategoryName;
-                    
-                    $this->getLogger()->error('Amazon categories - parent id: '.$parentId);
-                    $this->getLogger()->error('Amazon categories - prod cat id '.$prodCat);
-                    $this->getLogger()->error('Amazon categories - prod cat name '.$prodCatName);
-                    
-                $prodCategoryAmazon = new AmazonProductCategory();                
+
+                $this->getLogger()->error('Amazon categories - parent id: ' . $parentId);
+                $this->getLogger()->error('Amazon categories - prod cat id ' . $prodCat);
+                $this->getLogger()->error('Amazon categories - prod cat name ' . $prodCatName);
+
+                $prodCategoryAmazon = new AmazonProductCategory();
                 $prodCategoryAmazon->setCategoryId($prodCat)
-                        ->setParentId($parentId)
-                        ->setName($prodCatName)
-                		->save();
-                
+                 ->setParentId($parentId)
+                 ->setName($prodCatName)
+                 ->save();
+
                 $this->getLogger()->error($prodCategoryAmazon);
-                
+
                 if (isset($productCategories->Parent)) {
                     $this->saveProductCategories($productCategories->Parent);
                 }
-            }
-            else {
-            	$this->getLogger()->error('the category '.$productCategories->ProductCategoryId. ' already exists in DB');
+            } else {
+                $this->getLogger()->error('the category ' . $productCategories->ProductCategoryId . ' already exists in DB');
             }
         }
     }

@@ -1,0 +1,589 @@
+@font-face {
+    font-family: 'traumbad';
+    src:  url('../fonts/traumbad/traumbad.eot?wdhxkv');
+    src:  url('../fonts/traumbad/traumbad.eot?wdhxkv#iefix') format('embedded-opentype'),
+        url('../fonts/traumbad/traumbad.ttf?wdhxkv') format('truetype'),
+        url('../fonts/traumbad/traumbad.woff?wdhxkv') format('woff'),
+        url('../fonts/traumbad/traumbad.svg?wdhxkv#traumbad') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+#regiration-form fieldset:not(:first-of-type) {
+    display: none;
+}
+.multistepForm {
+    background-color: white;
+}
+.multistepForm ol {
+    list-style-type: none;
+    padding-left: 0px;
+}
+.multistepForm .frage {
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    min-height: 350px;
+    text-align:center
+}
+.multistepForm .fragelabel {
+    display: block;
+    float: none;
+    text-align: center;
+    width: 100%;
+}
+.multistepForm .fragelabel h3 {
+    margin-top: 0px;
+}
+.multistepForm .fs-radio-group {
+    display: block;
+    float: none;
+    text-align: center;
+    margin: auto;
+    width: 90%;
+    padding: 10px;
+}
+
+.multistepForm .fs-radio-group input[type="radio"] {
+    display: none;
+}
+.multistepForm .fs-radio-group p {
+    display: inline-grid;
+    color: #000;
+    padding: 4px 11px;
+    font-family: Arial;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.configHeader {
+    min-height: 85px;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 85%;
+    margin: auto;
+}
+.configHeader p {
+    color: #000;
+    font-size: 1.6em!important;
+    font-weight: 600!important;
+    text-transform: uppercase;
+    padding: 0.8em 0 0.4em 0!important;
+    font-family: Montserrat,Arial,Helvetica,Geneva,sans-serif;
+    display: block;
+    float: none;
+    text-align: center;
+}
+.question_label {
+    font-size: 20px !important;
+    padding-bottom: 15px !important;
+    font-weight: 400;
+    line-height: 1.5em;
+    color:#000;
+    font-family: 'Montserrat',Helvetica,Arial,Lucida,sans-serif;
+}
+.frontIcons {
+    color: #61b0aa;
+    display: inline-grid;
+    width: 23%;
+    float: none;
+    font-family: 'traumbad' !important;
+    line-height: 1;
+    padding-right: 3px;
+    padding-left: 3px;
+    border: 4px /* 19 */ solid #ececec;
+    margin-left: 1%;
+    min-height: 210px;
+    max-height: 210px;
+    overflow: hidden;
+    margin-top: 1%;
+}
+.frontIcons p {
+    margin: 0px;
+}
+/*.frontIcons:hover,*/
+.multistepForm .selected {
+    border: 4px /* 19 */ solid #61b0aa;
+    color: #61b0aa;
+    cursor: pointer;
+}
+.frontIcons:hover span {
+    color: #61b0aa; 
+    cursor: pointer;  
+}
+.IconHolder {
+    line-height: 1;
+}
+.frontIcons label {
+    width: 100%;
+}
+
+.frage span.textarea {
+    padding-top: 0px;
+}
+
+.contactform span label {
+    width: 44%;
+    float: left;
+    text-align: right;
+    padding-right: 1%;
+    padding-top: 12px;
+}
+
+.contactform span .inputholder {
+    width: 54%;
+    float: right;
+    text-align: left;
+    padding-left: 1%;
+}
+
+.contactform .inputholder input {
+    text-align: center;
+    border: 1px solid #bbb;
+    color: #4e4e4e;
+    background-color: #fff;
+    padding: 12px;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+}
+
+fieldset .previous {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 90px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-size: 25px;
+    background-color: #61b0aa;
+    min-width: 40px;
+    border-radius: 50%;
+}
+
+fieldset .previous span {
+    padding-top: 8px;
+}
+
+fieldset .previous .white {
+    color: #fff;
+}
+
+.frage .simpleNext, .form_upload .simpleNext, .contactform .parentholder .simpleNext,.pushdata .pushformdata {
+    min-width: 170px;
+    background-color: #61b0aa;
+    color: #fff;
+    font-weight: bolder;
+    padding: 6px;
+    text-align: center;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: bolder;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.form_upload .dragdrop {
+    position: absolute;
+    left: 12%;
+    padding: 0;
+    width: 90%;
+    height: 180%;
+    outline: none;
+    opacity: 0;
+}
+
+.form_upload p {
+    width: 60%;
+    height: 100%;
+    text-align: center;
+    line-height: 170px;
+    color: #61b0aa;
+    font-family: Arial;
+    margin-left: 10%;
+    margin-right: 10%;
+    border: 4px dashed #61b0aa;
+}
+
+.form_upload button {
+    color: #fff;
+    background: #16a085;
+    border: none;
+    width: 200px;
+    height: 35px;
+    border-radius: 4px;
+    transition: all .2s ease;
+    outline: none;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    display: none;
+}
+
+.form_upload button:active {
+    border:0;
+}
+
+.Q4 span, .Q5 span, .frage span.textarea {
+    display: block;
+    padding-top: 50px;
+    text-align: center;
+}
+
+.Q4 span input,.Q5 span input, .inputText {
+    text-align: center;
+    border: 1px solid #bbb;
+    color: #4e4e4e;
+    background-color: #fff;
+    padding: 12px;
+    -webkit-rtl-ordering: logical;
+    cursor: text;
+}
+
+.frage span.textarea textarea {
+    width: 80%;
+    padding: 20px;
+    position: relative;
+    border: 4px /* 23 */ solid #ececec;
+    border-radius: 4px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.frage span textarea {
+    background: transparent;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 4px;
+    border: none;
+    color: #4e4e4e;
+}
+
+.contactform span {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    min-height: 40px;
+}
+
+.contactform .inputholder input[type='checkbox']{
+    margin-top: 14px;
+}
+.multistepForm .progress-bar{
+    background-color: #61b0aa;
+    text-align: right;
+}
+
+.previous_hide {
+    opacity: 0;
+    border: none;
+    padding: 0;
+    font-size: 25px;
+}
+
+.previous_hide span {
+    padding-top: 8px;
+}
+
+.frage .simpleNext, .form_upload .simpleNext, .contactform .parentholder .simpleNext,.pushdata .pushformdata {
+    min-width: 170px;
+    background-color: #61b0aa;
+    color: #fff;
+    font-weight: bolder;
+    padding: 6px;
+}
+
+.frage .simpleNext:hover, .form_upload .simpleNext:hover, .contactform .parentholder .simpleNext:hover, .pushdata .pushformdata:hover {
+    border-radius: 30px;
+    color: #fff;
+    font-weight: bolder;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.form_upload {
+    text-align: center;
+    display: block;
+    min-height: 100px;
+}
+
+.form_upload button:hover {
+    border-radius: 30px;
+    color: #fff;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.form_upload .simpleNext {
+    position: absolute;
+    /*top: 150%;*/
+    display: block;
+    left: 15%;
+    width: 50%;
+}
+
+.form_upload .buttonholder {
+    width: 49%;
+    display: block;
+    float: left;
+    text-align: right;
+    padding-right: 1%;
+}
+
+.form_upload {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    left: 10%
+}
+
+.form_upload p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 150px;
+    line-height: 170px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.contactform .parentholder {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.pushdata {
+    text-align: center;
+}
+
+.pushdata .pushformdata {
+    margin-top: 10%;
+}
+
+@media screen and (max-width: 1024px) and (min-width: 600px){
+    .frontIcons{
+        /*display: inline-table;*/
+        width: 47%;
+        margin-top: 1%;
+    }
+    .previous{
+        top: 20px;
+        min-width: 40px;
+        border-radius: 50%;
+    }
+}
+@media screen and (max-width: 600px){
+    .frontIcons{
+        width: 98%;
+        margin-bottom: 2%;
+    }
+    .previous{
+        top: 0px;
+        border-radius: 50%;
+        min-width: 40px;
+    }
+}
+
+@media screen and (max-width: 600px){
+    .IconHolder:before{
+        font-size: 9em;
+    }
+    .contactform span label{
+        width: 99%;
+        text-align: left;
+    }
+    .contactform span .inputholder{
+        width: 99%;
+        text-align: center;
+    }
+    .contactform span .inputholder input{
+        width: 80%;
+    }
+    .contactform span .inputholder input[type='checkbox']{
+        left: auto;
+        right: 30%;
+    }
+}
+@media screen and (max-width: 350px){
+    .form_upload p{
+        font-size: 8px;
+    }
+}
+@media screen and (max-width: 450px){
+    .form_upload p{
+        font-size: 9px;
+    }
+}
+
+.IconHolder:before {
+    content: attr(data-icon);
+}
+
+.IconHolder:before{
+    font-size: 10em;
+}
+
+.frage > span:not(.form_upload) {
+    display: inline-grid;
+    width: 60%;
+    top: 49%;
+    /*    display: inline-grid;
+        width: 60%;
+        position: absolute;*/
+    left: 20%;
+}
+
+.span-btn-submit {
+    top: initial !important;
+}
+
+.frage > span.textarea {
+    padding-top: 25px;
+    display: inline-grid;
+    top: 30%;
+    margin-top: 20px;
+}
+
+.frage > span.textarea > input[type="button"], .frage > span > input[type="button"] {
+    margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+    fieldset .previous {
+        position: absolute;
+        top: 50%;
+        left: 40px;
+    }
+}
+
+@media (max-width: 476px) {
+    .frage > span:not(.form_upload) {
+        left: 30%;
+    }
+
+    .frage > span.textarea {
+        left: 20%;
+    }
+}
+
+@media (max-width: 545px) {
+    .frage > span.textarea {
+        padding-top: 25px;
+        display: inline-grid;
+        top: 30%;
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 418px) {
+    .form_upload .simpleNext {
+        top: 150%;
+        left: 10%;
+    }
+}
+
+.fs-fields {
+    margin: 0px;
+}
+
+.checkbox, .radio {
+    /*display: table-cell;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#content {
+    min-width: 360px;
+}
+
+.btn-send-submit, .btn-send-submit:hover {
+    min-width: 170px;
+    background-color: #61b0aa;
+    color: #fff;
+    font-weight: bolder;
+    padding: 6px;
+    text-align: center;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: #e7e7e7;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    margin-top: 50px;
+}
+
+.frontIcons:hover .tooltiptext {
+    visibility: visible;
+}
+
+.btn-weiter {
+    cursor: pointer;
+    display: block;
+    margin-top: 25px;
+    min-width: 170px;
+    background-color: #61b0aa;
+    color: #fff;
+    font-weight: bolder;
+    padding: 6px;
+    text-align: center;
+    border-radius: 30px;
+    font-size: 14px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 5px;   
+    background: #79b5fd;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    border-style: groove;
+    border-width: 1px;
+    border-color: gray;
+    background: white;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.fs-field-label-sm {
+    margin-top: -15px;
+}
+
+.multiple-image-choice {
+    visibility: hidden;
+}
+
+#alert-from-front {
+    display: none;
+}

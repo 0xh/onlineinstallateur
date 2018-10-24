@@ -1,0 +1,218 @@
+<nav class="navbar navbar-default nav-main nav-darkBlue minnu flyout" role="navigation" id="toggleMiniMenu" itemscope itemtype="http://schema.org/SiteNavigationElement">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand visible-xs-block visible-sm-block" href="{navigate to="index"}">{*intl l="categories" d="hooknavigation.fo.default"*}</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-primary">
+            <ul class="nav navbar-nav navbar-categories">
+                {loop type="category" name="category.navigation" parent="0" need_count_child="yes"}
+                {if $CHILD_COUNT > 0}
+                <li class="dropdown mega-minnu " style="float:unset">
+                    <a href="{$URL}"  style="color:white;background-color: transparent;">{$TITLE}</a>
+                    <ul class="dropdown-menu minnu-menu" role="menu">
+
+                        {assign var="parent_id" value=$ID}
+                        {assign var="MAX_SUB_CAT" value={($CHILD_COUNT / 3)|round:0}}
+                        {assign var="SUB_CAT_OFFSET" value=0 }
+
+
+                        {if $MAX_SUB_CAT < 4}
+                        {if $CHILD_COUNT <6}
+                        <div class="col-sm-3">
+                            {loop type="category" name="sub-cat" parent="{$ID}"}
+                            <li>
+                                <a href="{$URL}"><strong>{$TITLE}</strong></a>
+                            </li> 
+                            {loop type="category" name="sub-sub-cat" parent="{$ID}" limit="5"}
+                            <li>
+                                <a href="{$URL}">{$TITLE}</a>
+                            </li>    
+                            {/loop}
+                            </br> 
+                            {/loop}
+                        </div>
+
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID}  limit="1" offset="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
+                            {/loop}
+                        </div>
+
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="2" limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border"></a>
+                            {/loop}
+                        </div>
+
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="3"  limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
+                            {/loop}
+                        </div>
+                        {else}
+                        {assign var="MAX_SUB_CAT" value={($CHILD_COUNT / 2)|round:0}}
+                        {for $fori=0 to 1}
+                        <div class="col-sm-3">
+                            {loop type="category" name="sub-cat" parent="{$ID}" offset=$MAX_SUB_CAT*$fori limit="$MAX_SUB_CAT"}
+                            <li>
+                                <a href="{$URL}"><strong>{$TITLE}</strong></a>
+                            </li> 
+                            {loop type="category" name="sub-sub-cat" parent="{$ID}" limit="5"}
+                            <li>
+                                <a href="{$URL}">{$TITLE}</a>
+                            </li>    
+                            {/loop}
+                            </br> 
+                            {/loop}
+                        </div>
+                        {/for}
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID}  limit="1" offset="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
+                            {/loop}
+                            </br>
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="2" limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border"></a>
+                            {/loop}
+                        </div>
+
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="3" limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
+                            {/loop}
+                            </br>
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="4" limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border"></a>
+                            {/loop}
+                        </div>
+                        {/if}
+                        {else}
+                        {for $fori=0 to 2}
+                        <div class="col-sm-3">
+                            {loop type="category" name="sub-cat" parent="{$ID}" offset=$MAX_SUB_CAT*$fori limit="$MAX_SUB_CAT"}
+                            <li>
+                                <a href="{$URL}"><strong>{$TITLE}</strong></a>
+                            </li> 
+                            {loop type="category" name="sub-sub-cat" parent="{$ID}" limit="5"}
+                            <li>
+                                <a href="{$URL}">{$TITLE}</a>
+                            </li>    
+                            {/loop}
+                            </br> 
+                            {/loop}
+                        </div>
+                        {/for}
+                        <div class="col-sm-3">
+                            {loop name="category.image" type="image" source="category" source_id={$ID}  limit="1" offset="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border" ></a>
+                            {/loop}
+                            </br>
+                            {loop name="category.image" type="image" source="category" source_id={$ID} offset="2" limit="1"}
+                            <a href="{$TITLE}"><img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}" class="menu-block-border"></a>
+                            {/loop}
+                        </div>
+                        {/if}    
+                    </ul>
+                </li>
+                {else}
+                <li class="dropdown mega-minnu " style="float:unset">
+                    <a href="{$URL}"  style="color:white;background-color: transparent;">{$TITLE}</a>
+           			{if $TITLE == "Bad Sets"}
+                    <ul class="dropdown-menu minnu-menu" role="menu">
+                        <div class="main row">
+					        <article class="col-main {$smarty.get.mode|default:"grid"}" role="main">
+					            <div class=" row " >
+					                {$features=$smarty.get.features}
+					
+					                {loop name="inspirations" type="selection_list" feature_availability="{$features|replace:'_':' : '}" visible="true" limit="3"}  
+					
+					                <div class="col-sm-4 ">
+					                    <figure class="effect-honey mb-5">
+					                        {loop name="inspiration_images" type="selection_image" source="selection" source_id=$SELECTION_ID limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+					                        <div class="herz"></div>
+					                        <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+					                        {ifhook rel="selection-wish-list-selection.wish-button"}
+					                        {hook name="selection-wish-list-selection.wish-button" selection_id={$SELECTION_ID}}
+					                        {/ifhook}
+					                        {/loop}
+					                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}     
+					                        {assign var = "bath_size" value = $FTITLE}
+					                        {/loop} 
+					                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=386 show_feature_value_selected=true}     
+					                        {assign var = "bath_style" value = $FTITLE}
+					                        {/loop} 
+					                        {loop name="feature_loop" type="selection_feature_av_all" selection_id=$SELECTION_ID feature=385 show_feature_value_selected=true}  
+					                        {assign var = "feature_title" value = $F_TITLE}    
+					                        {assign var = "feature_value" value = $FTITLE}
+					                        {/loop} 
+					                        <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">
+					                            <h2>
+					                                <span class="inspiration-bath-size-style">{intl  l="Serie"} {$SELECTION_TITLE}</span>
+					                                <i class="bath-size-style">{$bath_size}|{$bath_style}</i>
+					                                {assign var = "selection_total" value=0}
+					                                {loop type="selection_product_total" name="selection_product_total" selection_id=$SELECTION_ID}
+					                                {assign var = "selection_price" value = $SELECTION_PRODUCT_PRICE}
+					                                {$selection_total=$selection_total+$selection_price}
+					                                {/loop}   
+					                                <i class="bath-price">{$selection_total|number_format:0:",":"."} €</i>
+					                            </h2> 
+					                        </a>
+					                    </figure>
+					                </div>
+					                {/loop} 
+					            </div>
+					        </article>
+					    </div>
+                    </ul>
+                {/if}
+                </li>
+                {/if}
+                {/loop}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{* classic navbar without dropdown
+<nav class="navbar navbar-default nav-main" role="navigation" itemscope itemtype="http://schema.org/SiteNavigationElement">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-primary">
+                <span class="sr-only">{intl l="Toggle navigation" d="hooknavigation.fo.default"}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand visible-xs-block visible-sm-block" href="{navigate to="index"}">{intl l="Kategorien" d="hooknavigation.fo.default"}</a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-primary">
+            <ul class="nav navbar-nav navbar-categories">
+                <li><a href="{navigate to="index"}" class="home">{intl l="Home" d="hooknavigation.fo.default"}</a></li>
+                {loop type="category" name="category.navigation" parent="0"}
+                <li><a href="{$URL}">{$TITLE}</a></li>
+                {/loop}
+            </ul>
+        </div>
+    </div>
+</nav>
+*}
+{literal}
+    <script type="text/javascript">
+    (function () {
+        function checkWidth() {
+            var windowWidth = window.innerWidth;
+            if (windowWidth < 992) {
+                
+                $("#toggleMiniMenu").removeClass('minnu');
+            } else {
+               
+               $("#toggleMiniMenu").addClass('minnu');
+            }
+        }
+
+        checkWidth();
+
+        $(window).resize(checkWidth);
+    })();
+    </script>
+{/literal}

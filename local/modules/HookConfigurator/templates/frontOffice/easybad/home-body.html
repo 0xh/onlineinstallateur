@@ -1,0 +1,35 @@
+{ifloop rel="product_list"}
+<section id="configurator-results">
+    {$limit={$smarty.get.limit|default:12}}
+    {$page={$smarty.get.page|default:1}}
+    {$order={$smarty.get.order|default:'alpha'}}
+    {$category_id=$category|default:'1'}
+    {$features={$smarty.get.features|replace:'_':':'|default:''}}
+    {$cat_url=$categori_url|default:"/"}
+    {hook name="criteria-search.search-page" criteria=$search_criteria show_top_toolbar=false show_pagination=true category=$category_id brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo page=$page order=$order}
+
+    {if $smarty.get.features}
+        <h2> {intl l='Wir können Ihnen gerne die Folgenden Paketen vorschlagen:'} </h2> 
+    {/if}
+    <article class="col-main  {$smarty.get.mode|default:"grid"}"  >
+        <div id="category-products">
+            <div class="products-content">
+                <ul class="list-unstyled"> 
+                    {include file="criteria-search/search-results.html" show_top_toolbar=false show_pagination=true feature_availability=$features search_feature_loop=true criteria=$search_criteria category_id=$category_id brands=$search_brands price_min=$search_price_min price_max=$search_price_max limit=$limit  new=$search_new promo=$search_promo limit=$limit page=$page order=$order}
+                </ul>
+            </div>
+        </div>
+    </article>
+</section>
+{/ifloop}
+{elseloop  rel="product_list"} 
+<span class="text">  
+    <h1><span class="glyphicon glyphicon-exclamation-sign left"></span> {intl l="Hinweis!"} </h1> 
+    <p>{intl l="Die Suche wurde gemäß den eingegebenen Parametern durchgeführt, aber wir können leider keinen geeigneten Ergebnissen vorschlagen !"} </p>
+    <ul class="pager">
+        <li class="previous">
+            <a href="{$cat_url}"><i class="fa fa-chevron-right"></i> {intl l="zurück zum Konfigurator"}</a>
+        <li>
+        </li>            
+</span>
+{/elseloop}

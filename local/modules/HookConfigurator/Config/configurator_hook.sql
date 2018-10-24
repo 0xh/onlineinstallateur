@@ -1,0 +1,2 @@
+-- INSERT INTO `configurator_hook`(`configurator_id`) VALUES (null);
+INSERT INTO `configurator_email` (`id`, `required_vorname`, `visible_vorname`, `required_nachname`, `visible_nachname`, `required_str`, `visible_str`, `required_plz`, `visible_plz`, `required_ort`, `visible_ort`, `required_telefon`, `visible_telefon`, `required_email`, `visible_email`, `required_terms`, `visible_terms`, `required_send`, `visible_send`, `send_email`) VALUES (NULL, '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');

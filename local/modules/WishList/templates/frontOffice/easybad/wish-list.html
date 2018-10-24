@@ -1,0 +1,82 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-wish-list{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [
+        ['title' => {intl l="Wish List" d="wishlist.fo.easybad"}, 'url'=>{url path="/wish-list"}]
+    ]}
+{/block}
+
+{* Content *}
+{block name="main-content"}
+
+    {loop type="module" name="selection" code="selection" active="1"}
+    <div id="wishlist-box" class="col-main col-md-12 grid">
+        <h1 id="main-label" class="page-header">{intl l="Selection Wish list" d="wishlist.fo.easybad"}</h1>
+        <div id="category-products">
+            <div class="products-content">
+                <ul class="list-unstyled row">
+                   	{ifloop rel="selection_wish_list"}
+                    <div class=" row " >
+                        {loop name="selection_wish_list" type="selection_wish_list"}
+                        {foreach from=$SELECTION_WISHLIST_SELECTION_LIST item=selection_id}
+                        <div class="col-sm-4 ">
+                            <a href="/inspiration/bad-anzeigen/{$SELECTION_ID}">	
+                                <figure class="effect-honey mb-5">
+                                    {loop name="inspiration_images" type="selection_image" source="selection" source_id=$selection_id limit="1" visible="true" width=370 height=240 resize_mode="crop"}
+                                    <div class="herz"></div>
+                                    <img itemprop="image" src="{$IMAGE_URL nofilter}" alt="{$TITLE}">
+                                    {ifhook rel="selection-wish-list-selection.wish-button"}
+                                    {hook name="selection-wish-list-selection.wish-button" selection_id={$selection_id}}
+                                    {/ifhook}
+                                    {/loop}
+                                    {loop name="feature_loop" type="selection_feature_av_all" selection_id=$selection_id feature=383 show_feature_value_selected=true}  
+                                    {assign var = "feature_title" value = $F_TITLE}    
+                                    {assign var = "feature_value" value = $FTITLE}
+                                    {/loop} 
+                                </figure>
+                            </a>
+                        </div>
+						{/foreach}
+                        {/loop}
+                    </div>
+                    {/ifloop}
+                    {elseloop rel="selection_wish_list"}
+                    <p>{intl l="You have no selection items in your wishlist." d="selection_wish_list.fo.easybad"}</p>
+                    {/elseloop}	
+                </ul>
+            </div>
+        </div>
+    </div>
+    {/loop}
+
+    <div id="wishlist-box" class="col-main col-md-12 grid">
+        <h1 id="main-label" class="page-header">{intl l="Wish list" d="wishlist.fo.easybad"}</h1>
+        <div id="category-products">
+            <div class="products-content">
+                <ul class="list-unstyled row">
+                   	{ifloop rel="wishlist"}
+                    {loop name="wishlist" type="wishlist"}
+                    {loop name="products-in-wishlist" type="product" id="{$WISHLIST_PRODUCT_LIST}"}
+                    {loop name="product.details" type="product" id=$ID limit="1"}
+                    {include file="includes/single-product.html" hasBtn=true hasDescription=false hasQuickView=false width="819" height="819"}
+                    {/loop}
+                    {/loop}
+                    {/loop}
+                    {/ifloop}
+                    {elseloop rel="wishlist"}
+                    <p>{intl l="You have no items in your wishlist." d="wishlist.fo.easybad"}</p>
+                    {/elseloop}	
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{/block}
+Assets: {$asset_url}
+{stylesheets source="WishList" file='assets/css/wishlist.css'}
+  <link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}

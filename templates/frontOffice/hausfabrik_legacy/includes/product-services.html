@@ -1,0 +1,91 @@
+
+<li class="item {$colClass} thumbnail bottom5">
+{if $SERVICE_PSE_COUNT > 1}
+	{assign var="hasSubmit" value = false} 
+{else} 
+	{assign var="hasSubmit" value = true} 
+{/if} 
+{assign var="serviceTitle" value="{$SERVICE_TITLE}"} 
+{if	not $service_id} 
+	{assign var="service_id" value=$SERVICE_ID} 
+{/if}
+<article class="row pointer" itemscope itemtype="http://schema.org/Product">
+
+	{hook name="singleproduct.top" product="{$service_id}"} 
+	
+	
+	{loop name="product_thumbnail" type="image" product=$service_id  resize_mode="borders" limit="1"}
+		<img itemprop="image" src="{$IMAGE_URL nofilter}" class="img-responsive img-services" alt="{$serviceTitle}">
+	{/loop}
+	{elseloop rel="product_thumbnail"} <img itemprop="image" src="{image file='assets/dist/img/218x146.png'}" class="img-responsive img-services" alt="{$serviceTitle}">
+	{/elseloop}
+	
+	
+			<div class="product-info">
+				<h3 class="name text-center">
+					<span itemprop="name">{$serviceTitle}</span>
+				</h3>
+				{if $hasServiceDescription}
+				<div class="short-description" itemprop="description">
+					<p>{$SERVICE_DESCRIPTION nofilter}</p>
+				</div>
+				{/if}
+			</div>
+			{* Stock *} 
+			{assign var="current_stock_content" value = "in_stock"}
+			{assign var="current_stock_href" value = "http://schema.org/InStock"}
+			{if {config key="check-available-stock"} != 0} 
+				{if $SERVICE_VIRTUAL == 0 && $SERVICE_QUANTITY <= 0} 
+					{assign var="current_stock_content" value ="out_stock"} 
+					{assign var="current_stock_href" value ="http://schema.org/OutOfStock"}
+				{/if}
+			{/if}
+
+			<div class="product-price text-center">
+				<div class="price-container row" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+					<meta itemprop="category" content="{category attr="title"}">
+					{* List of condition : NewCondition, DamagedCondition,UsedCondition, RefurbishedCondition *}
+					<meta itemprop="itemCondition" itemscope itemtype="http://schema.org/NewCondition">
+					{* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
+					<meta itemprop="priceCurrency" content="{currency attr="symbol"}">
+					<link itemprop="availability" href="{$current_stock_href}" content="{$current_stock_content}" />
+					{if $IS_PROMO } 
+						{assign var="combination_count" value={count type="product_sale_elements" promo="1" product=$ID}}
+						<span class="special-price col-xs-6">
+							<span itemprop="price" class="price-label">{intl l="Special Price:"} 
+							</span>
+							<span class="price"> 
+								{if $combination_count > 1} {intl l="From %price" price={format_money number=$SERVICE_BEST_TAXED_PRICE symbol={currency attr="symbol"}}} 
+								{else} 
+								{format_money number=$SERVICE_BEST_TAXED_PRICE symbol={currency attr="symbol"}}
+								{/if} 
+							</span>
+							<div name="price_service_o" product="{$product_id}" style="display:none;">{$SERVICE_BEST_TAXED_PRICE}</div>
+						</span>
+						{if $SERVICE_SHOW_ORIGINAL_PRICE} 
+							<span class="old-price col-xs-6">
+							<span class="price-label">{intl l="Regular Price:"} 
+							</span>
+							<span class="price">{format_money number=$SERVICE_TAXED_PRICE symbol={currency attr="symbol"}}
+							</span>
+							</span> 
+						{/if} 
+						{else} 
+						<span class="regular-price col-xs-12">
+						<span itemprop="price" class="price" name="price_service" >
+						{format_money number=$SERVICE_BEST_TAXED_PRICE symbol={currency attr="symbol"}}
+						</span>
+                        <small><br></small>
+						<div name="price_service_o" product="{$product_id}" style="display:none;">{$SERVICE_BEST_TAXED_PRICE}</div>
+						</span>
+						{/if}
+				</div>
+						<input type="hidden" name="service_id[{$RESULT_NUMBER}]" value="{$service_id}" disabled> 
+						<input type="hidden" class="pse-id" name="service_product_sale_id[{$RESULT_NUMBER}]" value="{$SERVICE_SALE_ELEMENT}" disabled> 
+			</div>
+			<a href="{$SERVICE_URL nofilter}" target="_blank" itemprop="url" tabindex="-1" class="product-image{if $hasQuickView == true} product-quickview{/if} "><div class="text-center underline">Details</div></a>
+
+
+	</article> <!-- /product -->
+</li>
+

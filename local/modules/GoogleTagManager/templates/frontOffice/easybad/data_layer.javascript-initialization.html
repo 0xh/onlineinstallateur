@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+            'event':'transaction',
+            'transactionId': '{$transactionId}',
+            'transactionAffiliation': "{customer attr='email'}",
+            'userId': "{customer attr='ref'}",  
+            'transactionTotal': {$transactionTotal},
+            'transactionTax': {$transactionTax},
+            'transactionShipping': 4,
+            'transactionProducts': [
+            {loop type = "order_product" name = "order-products" order = $placed_order_id}
+                {assign var = "sku" value = $REF}
+                {assign var = "quantity" value = $QUANTITY}
+                {assign var = "price" value = $TAXED_PRICE}
+                    {loop type = "product" name = "product" id = $PRODUCT_ID}
+                        {loop type = "category" name = "category" id = $DEFAULT_CATEGORY}
+                             {assign var = "category" value = $TITLE}
+                                 {loop name = "brandloop" type = "brand" product = $PRODUCT_ID}
+                                    {assign var = "brand" value = $TITLE}
+                                        {
+                                                'sku':'{$sku}',
+                                                'name': '{$sku}',
+                                                'price': {$price},
+                                                'quantity': "{$quantity}",
+                                                'brand' : "{$brand}",
+                                                'category': '{$category}',
+
+                                        },
+                                {/loop}
+                         {/loop}
+                    {/loop}
+            {/loop}
+            ]
+        });
+</script>

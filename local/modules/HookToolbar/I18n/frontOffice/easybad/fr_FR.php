@@ -1,0 +1,27 @@
+<?php
+
+return array(
+    'Brands' => 'Marques et fournisseurs',
+    'Catalog' => 'Catégories',
+    'Clear caches' => 'Vider les caches',
+    'Configuration' => 'Configuration',
+    'Coupons' => 'Codes promo',
+    'Customers' => 'Clients',
+    'Export' => 'Export',
+    'Flush assets cache' => 'Vider le cache des assets',
+    'Flush images and documents cache' => 'Vider le cache des images et documents ',
+    'Flush internal cache' => 'Vider le cache interne',
+    'Folders' => 'Dossiers',
+    'Hi, %firstname %lastname' => 'Bonjour %firstname %lastname',
+    'Import' => 'Import',
+    'Logout' => 'Déconnexion',
+    'Modules' => 'Modules',
+    'Orders' => 'Commandes',
+    'Profile' => 'Profil',
+    'Sales management' => 'Gestion des promotions',
+    'Tools' => 'Outils',
+    'Update category' => 'Modifier la catégorie',
+    'Update content' => 'Modifier le contenu',
+    'Update folder' => 'Modifier le dossier',
+    'Update product' => 'Modifier le produit',
+);

@@ -1,0 +1,57 @@
+.navbar-customer{  
+}
+.navbar-customer li{
+    float: right;
+}
+.navbar-default .navbar-nav>li>a:after,
+.navbar-default .navbar-nav>li>a:before,
+.navbar .navbar-customer li a.login:after,
+.navbar .navbar-customer li a.login:before{
+   content: none;
+}
+
+.navbar-default .navbar-customer>li{
+    height: 40px;
+    padding: 0px;
+    margin: 0px;
+}
+.navbar-default .navbar-customer>li>a{
+    height: auto;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 8px;
+    padding-top: 4px;
+    background-color: #10B4CF;
+}
+.navbar-default .navbar-customer>li>a:hover{
+    background-color: #10B4CF !important;
+}
+.navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account{
+    line-height: unset;
+    background-color: transparent;
+}
+.navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
+    background-color: #10B4CF;
+}
+.navbar-customer img{
+    vertical-align: middle;
+    display: block;
+    position: relative;
+/*     left: 40%; */
+}
+
+.navbar-customer li a.logout{
+    padding-left: 5px;
+}
+.navbar-customer{
+    margin-top: 0px !important;
+}
+/* .navbar-customer li a.login{ */
+/*     padding-right: 12px; */
+/* } */
+
+/* @media (max-width: 991px) { */
+/* 	.navbar-customer img{ */
+/* 	    left: 80%; */
+/* 	} */
+}

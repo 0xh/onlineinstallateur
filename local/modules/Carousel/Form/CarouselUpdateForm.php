@@ -15,6 +15,8 @@ namespace Carousel\Form;
 use Carousel\Carousel;
 use Carousel\Model\CarouselQuery;
 use Thelia\Form\BaseForm;
+use Thelia\Core\Translation\Translator;
+use Thelia\Log\Tlog;
 
 /**
  * Class CarouselUpdateForm
@@ -53,25 +55,7 @@ class CarouselUpdateForm extends BaseForm
                         )
                     ]
                 ]
-                )->add(
-                    'visible' . $id,
-                    'text',
-                    [
-                        'label' => $this->translator->trans('Image visibility in carousel', [], Carousel::DOMAIN_NAME),
-                        'label_attr' => [
-                            'for' => 'visible' . $id
-                        ],
-                        'required' => false,
-                        'attr' => [
-                            'placeholder' => $this->translator->trans(
-                                'Image visibility in carousel',
-                                [],
-                                Carousel::DOMAIN_NAME
-                                )
-                        ]
-                    ]
-                    )
-            ->add(
+            )->add(
                 'alt' . $id,
                 'text',
                 [
@@ -88,6 +72,23 @@ class CarouselUpdateForm extends BaseForm
                         )
                     ]
                 ]
+            )->add(
+                    'visible' . $id,
+                    'text',
+                    [
+                        'label' => $this->translator->trans('Image visibility in carousel', [], Carousel::DOMAIN_NAME),
+                        'label_attr' => [
+                            'for' => 'visible' . $id
+                        ],
+                        'required' => false,
+                        'attr' => [
+                            'placeholder' => $this->translator->trans(
+                                'Image visibility in carousel',
+                                [],
+                                Carousel::DOMAIN_NAME
+                                )
+                        ]
+                    ]
             )->add(
                 'url' . $id,
                 'url',

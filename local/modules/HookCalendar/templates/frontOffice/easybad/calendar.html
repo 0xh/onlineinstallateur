@@ -1,0 +1,534 @@
+{$locale = setlocale( $smarty.const.LC_ALL, array("de_DE.utf8", "de_DE", "de"))|intval}
+
+<div class="panel panel-default pjAsContainer pjAsAside calendarFor{$service_id}">
+<!-- 	<div class="panel-heading pjAsHead">
+		<h2 class="pjAsHeadTitle">Planen Sie Ihren Termin</h2>/.pjAsHeadTitle
+        	<h4>Wählen Sie 3 bevorzugte Termine</h4>
+            <p style="text-transform: none;">Unser Mitarbeiter wird Ihnen einen Termin innerhalb 24 Stunden per E-mail bestätigen.</p>
+	</div> -->
+	<!-- /.panel-heading pjAsHead -->
+<h4>Sie können hier den Termin buchen:</h4>
+<div class="pjAsCalendarInline col-sm-3">
+<h3>1. Postleitzahl </h3>
+    <p>Geben Sie bitte Ihre Postleitzahl ein:</p>
+	<div class="zipcode">
+    <span class="glyphicon glyphicon-map-marker prefix"></span><input type="number" id="service_zipcode" name="service_zipcode" class="service_zipcode" >
+    </div>
+
+    <div class="error" style="display:none; color:#FF0000; padding-top:5px; font-size:11px">Für Ihre Region können wir den Online Kalender leider noch nicht anbieten. Sie können die Dienstleistung jedoch innerhalb Österreichs buchen und wir melden uns bei Ihnen um einen Termin zu vereinbaren.</div>
+</div>
+	<div class="pjAsCalendarInline col-sm-5 disabledservice calendarsteps">
+        <h3>2. Termin </h3>
+        <p>Bitte wählen Sie Ihr Datum und Uhrzeit: <!--Geben Sie bitte Termindatum und Terminzeit ein:--></p>
+		<div class="pjIcCalendar">
+			<div class="pj-calendar">
+
+			<div class="form-horizontal asEmployeeInfo">
+ 			<div class="form-group" style="display: block">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-sx-12">
+						<div class="pjAsTableTimes">
+
+						 <!-- Month header -->
+                          <div class="pj-calendar-actions">
+                           <div class="pj-calendar-ym">
+                            <span id="calendar_month">{$smarty.now|date_format:"%B"}</span>
+                            <span id="calendar_year">{$smarty.now|date_format:"%Y"}</span>
+                            <span id="calendar_time_reference" style="display:none;">{$smarty.now}</span>
+                           </div>
+                           <a class="btn  btn-sm pull-right pjAsCalendarLinkMonth" data-direction="next">
+                           <span class="glyphicon glyphicon-chevron-right"></span>
+                           </a>
+                          </div>
+
+						<!-- Weekdays header -->
+						<div class="pj-calendar-head pj-calendar-7-columns">
+							{for $day_nr=6 to 12}
+					    		<div class="pj-calendar-day-header"><p>{mktime(0, 0, 0, 0, $day_nr, 0)|date_format:"%a"}</p></div>
+							{/for}
+				    	</div>
+							    	
+						<!-- Days table -->  
+						<div id="month_table">
+							{include file="days_table.html" month_days_array=$month_available}	
+						</div>
+						<div class="timeerror" style="display:none; color:#FF0000; padding:5px;  font-size:11px">
+						Bitte geben Sie Terminzeit an!
+						</div>
+
+						<div id="timeslot_table">
+							{include file="hours_table.html" day_hours_array=$day_available}			
+		    			</div>
+
+	    				<span class="selected_employee_id" style="display:none;"></span>
+						<span class="selected_start_ts"  style="display:none;"></span>
+						<span class="selected_end_ts" style="display:none;"></span>
+										
+    				
+	    				</div><!-- /.pjAsTableTimes -->
+					</div><!-- /.col-lg-8 col-md-8 col-sm-8 col-sx-12 -->
+				</div><!-- /.form-group -->
+				    		
+				<div class="form-group">
+					<div class="col-lg-9 col-lg-offset-3 col-md-9 col-md-offset-3 col-sm-9 col-sm-offset-3 col-sx-12 text-right">  
+						<input class="pjAsBtn pjAsBtnPrimary pjAsBtnAppointment" {$service_id} value="den Termin wählen" type="submit" '.($start_ts != 0 ? "" : 'disabled="disabled"' ).'>
+							<!--a href="#" class="btn pjAsBtn pjAsBtnSecondary pjAsBtnBackToServices">Cancel</a-->
+					</div><!-- /.col-lg-8 col-lg-offset-4 col-md-8 col-md-offset-4 col-sm-8 col-sm-offset-4 col-sx-12 -->
+				</div><!-- /.form-group -->
+			</div>							
+			</div>
+		</div>
+	</div><!-- /.panel-body pjAsCalendarInline -->
+
+<div class="calendarData calendarsteps col-sm-4 disabledservice">
+    <h3>3. Bestätigen </h3>
+    <p>Ihr Termin:</p>
+	<div class="pjAsCalendarInline selectedTimeSlotsList" {$service_id} style="display:none;">
+				<ul id="pjAsAsideCart" class="list-group pjAsAsideServices">
+					
+					<li class="list-group-item pjAsAsideService"  >
+						<h3 class="pjAsAsideTitle">Gewähltes Datum</h3><!-- /.pjAsAsideTitle -->
+					</li><!-- /.list-group-item pjAsAsideService -->	
+					
+					
+					<li class="list-group-item pjAsAsideService selectedTimeSlotItem" style="display:none;">
+						<dl>
+							<dd>
+								<p>
+                                    <strong>Ihr Termin:<span class="selectedTimeSlotPriority"></span></strong><br><span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="selectedTimeSlotDate"></span>
+                                </p>
+								<p>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <span class="selectedTimeSlotStartTime"></span> - <span class="selectedTimeSlotEndTime"></span>
+                                </p>
+							</dd>
+						</dl>
+						<input type="hidden" name="ca_end_ts[{$service_id}][1]" class="ca_end_ts">
+						<input type="hidden" name="ca_start_ts[{$service_id}][1]" class="ca_start_ts">
+						<input type="hidden" name="ca_priority[{$service_id}][1]" class="ca_priority">
+						<input type="hidden" name="ca_employee_id[{$service_id}][1]" class="ca_employee_id">
+						<button class="pjAsBtn pjAsBtnRemove pjAsBtnRemoveSelectedAppointment" id="0">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</li><!-- /.list-group-item pjAsAsideService -->
+					<!--
+					<li class="list-group-item pjAsAsideService selectedTimeSlotItem" style="display:none;">
+						<dl>
+							<dd>
+								<p>
+                                    <strong>Priorität<span class="selectedTimeSlotPriority"></span></strong>
+                                    <br><span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="selectedTimeSlotDate"></span>
+                                </p>
+								<p>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <span class="selectedTimeSlotStartTime"></span> - <span class="selectedTimeSlotEndTime"></span>
+                                </p>
+							</dd>
+						</dl>
+						<input type="hidden" name="ca_end_ts[{$service_id}][2]" class="ca_end_ts">
+						<input type="hidden" name="ca_start_ts[{$service_id}][2]" class="ca_start_ts">
+						<input type="hidden" name="ca_priority[{$service_id}][2]" class="ca_priority">
+						<input type="hidden" name="ca_employee_id[{$service_id}][2]" class="ca_employee_id">
+						<button class="pjAsBtn pjAsBtnRemove pjAsBtnRemoveSelectedAppointment" id="1">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</li>
+					
+					<li class="list-group-item pjAsAsideService selectedTimeSlotItem" style="display:none;">
+						<dl>
+							<dd>
+								<p><strong>Priorität<span class="selectedTimeSlotPriority"></span></strong>
+                                    <br><span class="glyphicon glyphicon-calendar"></span>
+                                    <span class="selectedTimeSlotDate"></span></p>
+								<p>
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <span class="selectedTimeSlotStartTime"></span> - <span class="selectedTimeSlotEndTime"></span>
+                                </p>
+							</dd>
+						</dl>
+						<input type="hidden" name="ca_end_ts[{$service_id}][3]" class="ca_end_ts">
+						<input type="hidden" name="ca_start_ts[{$service_id}][3]" class="ca_start_ts">
+						<input type="hidden" name="ca_priority[{$service_id}][3]" class="ca_priority">
+						<input type="hidden" name="ca_employee_id[{$service_id}][3]" class="ca_employee_id">
+						<button class="pjAsBtn pjAsBtnRemove pjAsBtnRemoveSelectedAppointment" id="2">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</li>	
+					 -->
+				</ul><!-- /.list-group pjAsAsideServices -->
+                
+                <span id="calendar_debug"></span>
+                
+			</div><!-- /.panel panel-default pjAsContainer pjAsAside -->
+</div>
+
+</div>
+
+<script>
+/*getWeek = function(time) {
+var date = new Date(time);
+
+ date.setHours(0, 0, 0, 0);
+// Thursday in current week decides the year.
+date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+// January 4 is always in week 1.
+var week1 = new Date(date.getFullYear(), 0, 4);
+// Adjust to Thursday in week 1 and count number of weeks from date to week1.
+return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
+                      - 3 + (week1.getDay() + 6) % 7) / 7);
+};*/
+//assumption - there can be more then one calendar on the page
+//navigation previous/next month
+
+    
+    
+(function(service_id){
+
+var zipcodes = [
+  [1010, 1230],
+  [2000, 2899],
+  [3000, 3699],
+  [7000, 7599], 
+  [8000, 8999]
+];
+    
+var monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+	              "Juli", "August", "September", "Oktober", "November", "Dezember"];
+    
+document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen ohne Termin";
+    
+var calendar = document.getElementsByClassName("calendarFor"+service_id)[0];
+
+//month changers
+var monthChangers = calendar.getElementsByClassName("pjAsCalendarLinkMonth");
+for(var i=0;i<monthChangers.length;i++){
+	monthChangers[i].onclick = function(e) {
+
+		$monthChanger = $(this);
+		$direction = $(this).attr('data-direction');
+		$currentMonth = new Date().getMonth();
+		$currentYear = new Date().getFullYear();
+
+		$.ajax({
+			type: "post",
+			url: "calendar/month",
+			data: "&direction="+$direction
+		})
+		.done(function (data, textStatus, request) {
+			if($direction == "next"){
+				$direction_sign = $(".glyphicon-chevron-right");
+				$direction_sign.removeClass("glyphicon-chevron-right");	
+				$direction_sign.addClass("glyphicon-chevron-left");
+				$monthChanger.attr('data-direction',"prev");
+				if($currentMonth == 11){
+					$('#calendar_month').text(monthNames[0]);//monthNames
+					$('#calendar_year').text($currentYear+1);
+				}
+				else {
+					$('#calendar_month').text(monthNames[$currentMonth+1]);
+					$('#calendar_year').text($currentYear);
+				}
+					
+			}
+			else{
+				$direction_sign = $(".glyphicon-chevron-left");
+				$direction_sign.removeClass("glyphicon-chevron-left");	
+				$direction_sign.addClass("glyphicon-chevron-right");
+				$monthChanger.attr('data-direction',"next");
+				$('#calendar_month').text(monthNames[$currentMonth]);
+				$('#calendar_year').text($currentYear);
+			}
+			$month_table = $("#month_table");
+			$month_table.hide().html(data).fadeIn();
+			updateDayLinks();
+		})
+		.fail(function (jqXHR, textStatus, errorThrown) {
+			if (typeof jqXHR.responseJSON !== 'undefined') {
+				if (jqXHR.responseJSON.hasOwnProperty('form')) {
+					$('#form_body').html(jqXHR.responseJSON.form);
+				}
+				$('.form_error').html(jqXHR.responseJSON.message);
+			} else {
+				alert(errorThrown);
+			}
+		});
+	}
+};
+
+//set date onclick
+function updateDayLinks(){
+	
+	var dateChoice = calendar.getElementsByClassName("pj-calendar-day");
+	for(var i=0;i<dateChoice.length;i++){
+        
+        if(!dateChoice[i].classList.contains('pj-calendar-day-past') && !dateChoice[i].classList.contains('pj-calendar-day-inactive')){
+		dateChoice[i].onclick = function(e) {
+			calendar.getElementsByClassName("timeerror")[0].style.display = 'none';
+			//remove today class from previous day
+			$currentToday =$('.pj-calendar-day-today');
+			$currentToday.removeClass('pj-calendar-day-today');
+			$currentToday.addClass('pjAsCalendarDate');
+			
+			//add today to this element
+			$(this).removeClass('pjAsCalendarDate');
+			$(this).addClass('pj-calendar-day-today');
+			
+			$dayStartTS = $(this).attr('data-start_ts');
+			$dayStopTS  = $(this).attr('data-stop_ts');
+			
+			$.ajax({
+				type: "post",
+				url: "calendar/day",
+				data: "&start_ts="+$dayStartTS+"&stop_ts="+$dayStopTS
+			})
+			.done(function (data, textStatus, request) {
+				$timeslot_table = $("#timeslot_table");
+				$timeslot_table.hide().html(data).fadeIn();
+				updateTimeslotLinks();
+			})
+			.fail(function (jqXHR, textStatus, errorThrown) {
+				if (typeof jqXHR.responseJSON !== 'undefined') {
+					if (jqXHR.responseJSON.hasOwnProperty('form')) {
+						$('#form_body').html(jqXHR.responseJSON.form);
+					}
+					$('.form_error').html(jqXHR.responseJSON.message);
+				} else {
+					alert(errorThrown);
+				}
+			});
+		}
+    }
+	}
+}
+updateDayLinks();
+
+var selectedStartTs = calendar.getElementsByClassName("selected_start_ts")[0];
+var selectedEndTs = calendar.getElementsByClassName("selected_end_ts")[0];
+var selectedEmployeeId = calendar.getElementsByClassName("selected_employee_id")[0];
+
+//selecting a timeslot
+//set timeslot onclick
+function updateTimeslotLinks(){
+	var timeSlots = calendar.getElementsByClassName("asSlotBlock");
+	for(var i=0;i<timeSlots.length;i++){
+		timeSlots[i].onclick = function(e){
+			e.preventDefault();
+			calendar.getElementsByClassName("timeerror")[0].style.display = 'none';
+			//TODO remove lastSelectedTimeSlot if not in the list
+			//TODO remove timeSlot selected when it is removed from the list
+			className = this.parentNode.className;
+			currentTimeslot = calendar.getElementsByClassName('pjAsTimeSelected')[0];
+            if(currentTimeslot){
+                currentTimeslot.classList.remove('pjAsTimeSelected');
+                currentTimeslot.classList.add('pjAsTimeAvailable');                
+            }
+			if(className.indexOf("pjAsTimeUnavailable") < 0 && className.indexOf("pjAsTimeBooked") < 0)
+			{
+				selectedStartTs.textContent = this.getAttribute("data-start_ts");
+				selectedEndTs.textContent = this.getAttribute("data-end_ts");
+				selectedEmployeeId.textContent = this.getAttribute("data-employee_id");
+
+				
+				
+				if(className.indexOf("pjAsTimeAvailable")>-1)
+				if(!className.indexOf("pjAsTimeSelected")>-1)
+					this.parentNode.className =className+ " pjAsTimeSelected";
+				var lastSelectedTimeSlot = this;
+			}
+			else {
+				selectedStartTs.textContent = "";
+				selectedEndTs.textContent = "";
+				selectedEmployeeId.textContent = "";	
+			};
+		}
+	};
+}
+updateTimeslotLinks();
+
+//get selected appointments
+var selectedTimeSlotsList = calendar.getElementsByClassName("selectedTimeSlotsList")[0];
+var selectedTimeSlotItems = calendar.getElementsByClassName("selectedTimeSlotItem");
+
+for(var i=0;i<selectedTimeSlotItems.length;i++){
+	selectedTimeSlotItems[i].setAttribute("priority",i+1);
+}
+
+var setAppointmentValues = function(st_pos,priority,start_ts,end_ts,employee_id){
+	timeslot = selectedTimeSlotItems[st_pos];
+
+	if(timeslot != null){
+		timeslot.style.display = "";
+		slot_date = new Date(start_ts*1000);
+		//timeslot.getElementsByClassName("selectedTimeSlotPriority")[0].textContent = priority;
+		timeslot.getElementsByClassName("selectedTimeSlotDate")[0].textContent = slot_date.toLocaleDateString('de-DE');
+		//start_time = slot_date.toLocaleTimeString('de-DE');
+		
+		hours = slot_date.getHours();
+		if (hours < 10)  hours = '0'+hours;
+		
+		minutes = slot_date.getMinutes();
+		if (minutes < 10)  minutes = '0'+minutes;
+		
+		timeslot.getElementsByClassName("selectedTimeSlotStartTime")[0].textContent = hours + ":" + minutes;
+		//end_time = (new Date(end_ts*1000)).toLocaleTimeString('de-DE');
+		
+		slot_date = new Date(end_ts*1000);
+		hours = slot_date.getHours();
+		if (hours < 10)  hours = '0'+hours;
+		
+		minutes = slot_date.getMinutes();
+		if (minutes < 10)  minutes = '0'+minutes;		
+		
+		timeslot.getElementsByClassName("selectedTimeSlotEndTime")[0].textContent = hours + ":" + minutes;
+		
+		timeslot.getElementsByClassName("ca_priority")[0].value = priority;
+		timeslot.getElementsByClassName("ca_start_ts")[0].value = start_ts;
+		timeslot.getElementsByClassName("ca_end_ts")[0].value = end_ts;
+		timeslot.getElementsByClassName("ca_employee_id")[0].value = employee_id;
+		//Buchen mit Termin
+		document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen mit Termin";
+	}
+}
+
+var setAppointmentEmpty = function(st_pos){
+	timeslot = selectedTimeSlotItems[st_pos];
+	if(timeslot != null){
+		//timeslot.getElementsByClassName("selectedTimeSlotPriority")[0].textContent = "";
+		timeslot.getElementsByClassName("selectedTimeSlotDate")[0].textContent = "";
+		timeslot.getElementsByClassName("selectedTimeSlotStartTime")[0].textContent = "";
+		timeslot.getElementsByClassName("selectedTimeSlotEndTime")[0].textContent = "";
+		
+		timeslot.getElementsByClassName("ca_priority")[0].value = "";
+		timeslot.getElementsByClassName("ca_start_ts")[0].value = "";
+		timeslot.getElementsByClassName("ca_end_ts")[0].value = "";
+		timeslot.getElementsByClassName("ca_employee_id")[0].value = "";
+		timeslot.style.display = "none";
+	}
+}
+
+var removeAppointmentValues = function(st_pos){
+	timeSlotEmpty = 0;
+	for(j=parseInt(st_pos);j<selectedTimeSlotItems.length-1;j++){ //move each appointment one slot lower => 2->1 1->0
+		timeslot = selectedTimeSlotItems[j+1];
+
+		if(timeslot.style.display != "none"){ //if we reach a slot that is not shown go to the end and set slot with id st_pos as empty
+			setAppointmentValues(j,j+1,
+				timeslot.getElementsByClassName("ca_start_ts")[0].value,
+				timeslot.getElementsByClassName("ca_end_ts")[0].value,
+				timeslot.getElementsByClassName("ca_employee_id")[0].value);
+		timeSlotEmpty = j+1;
+		}
+		else {
+			j = selectedTimeSlotItems.length;
+			timeSlotEmpty = st_pos;
+		}
+	}
+	setAppointmentEmpty(timeSlotEmpty);
+}
+
+//schedule appointment TODO populate list also from controller
+var scheduleAppointmentButton = calendar.getElementsByClassName("pjAsBtnAppointment")[0];
+scheduleAppointmentButton.onclick = function(e){
+	e.preventDefault();
+
+	//find an empty slot
+	selected_timeslots_nr = 0;
+	/*for(i=0;i<selectedTimeSlotItems.length;i++){
+		if(selectedTimeSlotItems[i].style.display == "none"){
+			selected_timeslots_nr = i;
+			i = selectedTimeSlotItems.length; //exit for
+		}	
+	};*/
+	
+	selectedTimeSlotsList.style.display = "";
+	
+	if(selected_timeslots_nr == -1){ //3 choices have already been made remove the first one
+		removeAppointmentValues(0);
+		setAppointmentValues(selected_timeslots_nr,selected_timeslots_nr+1,selectedStartTs.textContent,selectedEndTs.textContent,selectedEmployeeId.textContent);
+	}
+	else{ //there is still at least one more choice 
+	
+	if(selectedStartTs.textContent != "" && selectedEndTs.textContent != "" && selectedEmployeeId.textContent != "")
+		setAppointmentValues(selected_timeslots_nr,selected_timeslots_nr+1,selectedStartTs.textContent,selectedEndTs.textContent,selectedEmployeeId.textContent);
+	else 
+		//alert("Bitte geben Sie Terminzeit an!");
+	 calendar.getElementsByClassName("timeerror")[0].style.display = 'block';
+	}
+	
+	//clear selected 
+	selectedStartTs.textContent = "";
+	selectedEndTs.textContent = "";
+	selectedEmployeeId.textContent = "";
+}
+
+//remove selected appointment
+var removeSelectedAppointmentButtons = calendar.getElementsByClassName("pjAsBtnRemoveSelectedAppointment");
+for(var i=0;i<removeSelectedAppointmentButtons.length;i++){
+	removeSelectedAppointmentButtons[i].onclick = function(e){
+		e.preventDefault();
+		removeAppointmentValues(this.getAttribute("id"));
+		document.getElementsByClassName("{$btn_booking}")[0].textContent = "Buchen ohne Termin";
+	}
+}
+
+//check zipcode
+var zipcodeInput = calendar.getElementsByClassName('service_zipcode')[0];
+   document.getElementById("form-product-details").onkeypress = function(e) {
+       if((e.keyCode || e.which || e.charCode || 0) == 13)
+        e.preventDefault();
+    }
+   var calendarColumns = calendar.getElementsByClassName("calendarsteps");
+zipcodeInput.oninput = function(e){
+    
+    this.value = this.value.replace(/[^0-9.]/g, ""); 
+    //this.value = this.value.replace(/(\..*)\./g, '$1');
+
+    isAvailable = false;
+  for(var j=0;j<zipcodes.length;j++){
+	  if(this.value >= zipcodes[j][0] && this.value <= zipcodes[j][1])
+          isAvailable = true;
+  }
+  
+
+	
+  
+    if(isAvailable) {    
+  for(var i=0;i<calendarColumns.length;i++){
+ 
+      calendarColumns[i].classList.add("fade-in");
+      calendarColumns[i].classList.remove("disabledservice");
+
+  }
+  }
+ else 
+     if(this.value.length > 4)
+        this.value = this.value.slice(0,4);
+     else if(this.value.length == 4){
+
+    	 calendar.getElementsByClassName("error")[0].style.display = 'block';
+     }
+    
+    else{
+    	calendar.getElementsByClassName("error")[0].style.display = 'none';
+  for(var i=0;i<calendarColumns.length;i++){
+      
+      calendarColumns[i].classList.remove("fade-in");
+      calendarColumns[i].classList.add("disabledservice");
+
+      window.setTimeout(function(){
+       
+    }, 2000); //<-- Delay in milliseconds
+      
+    
+  }    
+  }
+   
+};
+})({$service_id});
+
+
+
+//var calendar_for_{$service_id} = attachToCalendar({$service_id});
+</script>
+

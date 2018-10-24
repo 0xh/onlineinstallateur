@@ -1,0 +1,210 @@
+{loop type="auth" name="is.admin" role="ADMIN"}
+    {* Check if a custom back office path is set by the BackOfficePath module *}
+    {$backOfficePath = {config key="back_office_path"}}
+    {if empty($backOfficePath)}
+        {$backOfficePath = 'admin'}
+    {/if}
+    
+    <nav id="hook-toolbar" class="navbar" style="z-index: 10000">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hook-toolbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            
+            <div class="collapse navbar-collapse" id="hook-toolbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class='dropdown'>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="fa fa-dashboard"></span>
+                            {config key="store_name"}
+                        </a>
+                        <ul class="dropdown-menu">
+                            {loop name="admin.customer.view" type="auth" role="ADMIN" resource="admin.customer" access="VIEW"}
+                                <li>
+                                    <a href="{url path="/$backOfficePath/customers"}" target="_blank">
+                                        {intl d="hooktoolbar.fo.default" l="Customers"}
+                                    </a>
+                                </li>
+                            {/loop}
+                            {loop name="admin.order.view" type="auth" role="ADMIN" resource="admin.order" access="VIEW"}
+                                <li>
+                                    <a href="{url path="/$backOfficePath/orders"}" target="_blank">
+                                        {intl d="hooktoolbar.fo.default" l="Orders"}
+                                    </a>
+                                </li>
+                            {/loop}
+                            {loop name="admin.category.view" type="auth" role="ADMIN" resource="admin.category" access="VIEW"}
+                                <li>
+                                    <a href="{url path="/$backOfficePath/categories"}" target="_blank">
+                                        {intl d="hooktoolbar.fo.default" l="Catalog"}
+                                    </a>
+                                </li>
+                            {/loop}
+                            {loop name="admin.folder.view" type="auth" role="ADMIN" resource="admin.folder" access="VIEW"}
+                                <li>
+                                    <a href="{url path="/$backOfficePath/folders"}" target="_blank">
+                                        {intl d="hooktoolbar.fo.default" l="Folders"}
+                                    </a>
+                                </li>
+                            {/loop}
+                        </ul>
+                    </li>
+                    
+                    {loop name="admin.tools.view" type="auth" role="ADMIN" resource="admin.tools" access="VIEW"}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="fa fa-cubes"></span>
+                                {intl d="hooktoolbar.fo.default" l="Tools"}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {loop name="admin.coupon.view" type="auth" role="ADMIN" resource="admin.coupon" access="VIEW"}
+                                    <li>
+                                        <a href="{url path="/$backOfficePath/coupon"}" target="_blank">
+                                            {intl d="hooktoolbar.fo.default" l="Coupons"}
+                                        </a>
+                                    </li>
+                                {/loop}
+                                {loop name="admin.sale.view" type="auth" role="ADMIN" resource="admin.sales" access="VIEW"}
+                                    <li>
+                                        <a href="{url path="/$backOfficePath/sales"}" target="_blank">
+                                            {intl d="hooktoolbar.fo.default" l="Sales management"}
+                                        </a>
+                                    </li>
+                                {/loop}
+                                {loop name="admin.brand.view" type="auth" role="ADMIN" resource="admin.brand" access="VIEW"}
+                                    <li>
+                                        <a href="{url path="/$backOfficePath/brand"}" target="_blank">
+                                            {intl d="hooktoolbar.fo.default" l="Brands"}
+                                        </a>
+                                    </li>
+                                {/loop}
+                                {loop name="admin.export.view" type="auth" role="ADMIN" resource="admin.export" access="VIEW"}
+                                    <li>
+                                        <a href="{url path="/$backOfficePath/export"}" target="_blank">
+                                            {intl d="hooktoolbar.fo.default" l="Export"}
+                                        </a>
+                                    </li>
+                                {/loop}
+                                {loop name="admin.import.view" type="auth" role="ADMIN" resource="admin.import" access="VIEW"}
+                                    <li>
+                                        <a href="{url path="/$backOfficePath/import"}" target="_blank">
+                                            {intl d="hooktoolbar.fo.default" l="Import"}
+                                        </a>
+                                    </li>
+                                {/loop}
+                            </ul>
+                        </li>
+                    {/loop}
+                    {loop name="admin.modules.view" type="auth" role="ADMIN" resource="admin.modules" access="VIEW"}
+                        <li>
+                            <a href="{url path="/$backOfficePath/modules"}" target="_blank">
+                                <span class="fa fa-plug"></span>
+                                {intl d="hooktoolbar.fo.default" l="Modules"}
+                            </a>
+                        </li>
+                    {/loop}
+                    {loop name="admin.configuration.view" type="auth" role="ADMIN" resource="admin.configuration" access="VIEW"}
+                        <li>
+                            <a href="{url path="/$backOfficePath/configuration"}" target="_blank">
+                                <span class="fa fa-cogs"></span>
+                                {intl d="hooktoolbar.fo.default" l="Configuration"}
+                            </a>
+                        </li>
+                    {/loop}
+                    
+                    {if $mode == 'dev'}
+                        {loop name="admin.clear-cache.view" type="auth" role="ADMIN" resource="admin.cache" access="VIEW"}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="fa fa-recycle"></span>
+                                    {intl d="hooktoolbar.fo.default" l="Clear caches"}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{url path="/admin-toolbar/clear-cache/internal"}">{intl d="hooktoolbar.fo.default" l="Flush internal cache"}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{url path="/admin-toolbar/clear-cache/assets"}">{intl d="hooktoolbar.fo.default" l="Flush assets cache"}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{url path="/admin-toolbar/clear-cache/files"}">{intl d="hooktoolbar.fo.default" l="Flush images and documents cache"}</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {/loop}
+                    {/if}
+                </ul>
+                
+                <ul id="hook-toolbar-center" class="nav navbar-nav">
+                    {loop name="admin.category.update" type="auth" role="ADMIN" resource="admin.category" access="UPDATE"}
+                    {if {category attr="id"}}
+                        <li>
+                            <a href="{url path="/$backOfficePath/categories/update" category_id={category attr="id"}}" target="_blank">
+                                <span class="fa fa-edit"></span>
+                                {intl d="hooktoolbar.fo.default" l="Update category"}
+                            </a>
+                        </li>
+                    {/if}
+                    {/loop}
+                    {loop name="admin.product.update" type="auth" role="ADMIN" resource="admin.product" access="UPDATE"}
+                    {if {product attr="id"}}
+                        <li>
+                            <a href="{url path="/$backOfficePath/products/update" product_id={product attr="id"}}" target="_blank">
+                                <span class="fa fa-edit"></span>
+                                {intl d="hooktoolbar.fo.default" l="Update product"}
+                            </a>
+                        </li>
+                    {/if}
+                    {/loop}
+                    {loop name="admin.folder.update" type="auth" role="ADMIN" resource="admin.folder" access="UPDATE"}
+                    {$folderId = {folder attr='id'}}
+                    {if $folderId}
+                        <li>
+                            <a href="{url path="/$backOfficePath/folders/update/$folderId"}" target="_blank">
+                                <span class="fa fa-edit"></span>
+                                {intl d="hooktoolbar.fo.default" l="Update folder"}
+                            </a>
+                        </li>
+                    {/if}
+                    {/loop}
+                    {loop name="admin.content.update" type="auth" role="ADMIN" resource="admin.content" access="UPDATE"}
+                    {if {content attr="id"}}
+                        <li>
+                            {$contentId = {content attr='id'}}
+                            <a href="{url path="/$backOfficePath/content/update/$contentId"}" target="_blank">
+                                <span class="fa fa-edit"></span>
+                                {intl d="hooktoolbar.fo.default" l="Update content"}
+                            </a>
+                        </li>
+                    {/if}
+                    {/loop}
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="fa fa-user"></span>
+                            {intl d="hooktoolbar.fo.default" l="Hi, %firstname %lastname" firstname={admin attr='firstname'} lastname={admin attr='lastname'}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{url path="/$backOfficePath/configuration/administrators"}" target="_blank">
+                                    {intl d="hooktoolbar.fo.default" l="Profile"}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{url path="/$backOfficePath/logout"}" target="_blank">
+                                    {intl d="hooktoolbar.fo.default" l="Logout"}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{/loop}

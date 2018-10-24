@@ -62,6 +62,60 @@ class WebBrowserController extends BaseAdminController {
     }
 
     public function test() {
+        echo '<pre>';
+        $this->init();
+        //$this->test_product_info('https://www.skybad.de/catalogsearch/result/?q=','38528001','POST','.product-image-col','href','.product-image','alt');
+        //$this->test_product_info('https://www.reuter.de/katalogsuche/?q=','26187000','GET','.c-product-tile__link','href','.product-image','data-caption');
+        $this->test_product_info('https://search.epoq.de/inbound-servletapi/getSearchResult?full&callback=jQuery331038174002391130446_1537445518039&_bIsAjax=1&session-ro=1&tenantId=megabad&sessionId=9e4a1f79729e5aa479a2e546289f169e&orderBy=&order=desc&limit=24&offset=0&locakey=de&style=compact&format=json&nrf=&query=26187000&_=1537445518040','','GET','.img-square','href','.img-responsive','alt');
+        
+        die("end");
+    }
+    
+    
+    
+    public function test_product_info($searchBase,$searchQuerry,$requestType,$resultSelector,$resultAttributeName,$productSelector,$productAttributeName){
+        var_dump('Searching '.$searchBase.' for '.$searchQuerry);
+        $productPageLinks = $this->test_product_search($searchBase.$searchQuerry,$requestType,$resultSelector,$resultAttributeName);
+        var_dump($productPageLinks);
+        
+        if($productPageLinks != NULL) {
+            foreach ($productPageLinks as $value) {
+                $productInfo = $this->test_product_search($value,$requestType,$productSelector,$productAttributeName);
+                var_dump($productInfo);
+            }
+        }
+        else var_dump("No product Info");
+  
+    }
+    
+    public function test_product_search($searchUrl,$requestType,$resultSelector,$attributeName){
+        var_dump('SearchUrl '.$searchUrl. " selector ".$resultSelector." attribute ".$attributeName);
+        $searchPageResult = $this->getPage($searchUrl,$requestType);
+        
+        $html = new SimpleHtmlDomController();
+        $html->load($searchPageResult);
+        $productResults = $html->find($resultSelector);
+        $productCollector = null;
+
+        if($productResults != null ) {//&& empty($productResults) != FALSE
+            /** @var SimpleHtmlDomNodeController $value */
+            foreach ($productResults as $value) {
+                   //var_dump($value->getAttribute($attributeName));
+                $productUrl = $value->getAttribute($attributeName);
+                if($productUrl[0] == '/')
+                    $productUrl = "https://www.reuter.de".$productUrl;
+                    $productCollector[] = $productUrl;
+            } 
+        }
+        else {
+            var_dump("No products found");
+            var_dump($searchPageResult);
+        }
+        
+        return $productCollector;
+    }
+    
+    public function test_old() {
 
         echo '<pre>';
         $this->init();
@@ -128,7 +182,7 @@ class WebBrowserController extends BaseAdminController {
 
     public function getPage($url, $fields = null, $typeRequest = "POST") {
 
-        curl_setopt_array($this->curl, array(
+        $curlOptions = array(
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
@@ -136,11 +190,16 @@ class WebBrowserController extends BaseAdminController {
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => $typeRequest,
-            CURLOPT_POSTFIELDS => $fields,
+            // CURLOPT_CUSTOMREQUEST => $typeRequest,
+            //CURLOPT_POSTFIELDS => $fields,
             CURLOPT_COOKIEFILE => $this->cookiefile,
             CURLOPT_COOKIEJAR => $this->cookiefile
-        ));
+        );
+        if($fields != null) 
+            $curlOptions[] = [CURLOPT_POSTFIELDS => $fields];
+        if($typeRequest == 'POST')
+            $curlOptions[] = [CURLOPT_CUSTOMREQUEST => $typeRequest];
+        curl_setopt_array($this->curl, $curlOptions);
 
         $response = curl_exec($this->curl);
         $err = curl_error($this->curl);
@@ -148,7 +207,7 @@ class WebBrowserController extends BaseAdminController {
         if ($err) {
             $this->setLogger()->error("Error response #: " . $err);
         } else {
-            $this->setLogger()->error("Success response #: " . $response);
+           // $this->setLogger()->error("Success response #: " . $response);
         }
 
         return $response;

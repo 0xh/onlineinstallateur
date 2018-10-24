@@ -58,7 +58,7 @@ class SelectionI18nTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class SelectionI18nTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the ID field
@@ -86,14 +86,9 @@ class SelectionI18nTableMap extends TableMap
     const TITLE = 'selection_i18n.TITLE';
 
     /**
-     * the column name for the HEADER field
+     * the column name for the DESCRIPTION field
      */
-    const HEADER = 'selection_i18n.HEADER';
-
-    /**
-     * the column name for the FOOTER field
-     */
-    const FOOTER = 'selection_i18n.FOOTER';
+    const DESCRIPTION = 'selection_i18n.DESCRIPTION';
 
     /**
      * the column name for the CHAPO field
@@ -132,12 +127,12 @@ class SelectionI18nTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Locale', 'Title', 'Header', 'Footer', 'Chapo', 'Postscriptum', 'MetaTitle', 'MetaDescription', 'MetaKeywords', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'locale', 'title', 'header', 'footer', 'chapo', 'postscriptum', 'metaTitle', 'metaDescription', 'metaKeywords', ),
-        self::TYPE_COLNAME       => array(SelectionI18nTableMap::ID, SelectionI18nTableMap::LOCALE, SelectionI18nTableMap::TITLE, SelectionI18nTableMap::HEADER, SelectionI18nTableMap::FOOTER, SelectionI18nTableMap::CHAPO, SelectionI18nTableMap::POSTSCRIPTUM, SelectionI18nTableMap::META_TITLE, SelectionI18nTableMap::META_DESCRIPTION, SelectionI18nTableMap::META_KEYWORDS, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'LOCALE', 'TITLE', 'HEADER', 'FOOTER', 'CHAPO', 'POSTSCRIPTUM', 'META_TITLE', 'META_DESCRIPTION', 'META_KEYWORDS', ),
-        self::TYPE_FIELDNAME     => array('id', 'locale', 'title', 'header', 'footer', 'chapo', 'postscriptum', 'meta_title', 'meta_description', 'meta_keywords', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id', 'Locale', 'Title', 'Description', 'Chapo', 'Postscriptum', 'MetaTitle', 'MetaDescription', 'MetaKeywords', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'locale', 'title', 'description', 'chapo', 'postscriptum', 'metaTitle', 'metaDescription', 'metaKeywords', ),
+        self::TYPE_COLNAME       => array(SelectionI18nTableMap::ID, SelectionI18nTableMap::LOCALE, SelectionI18nTableMap::TITLE, SelectionI18nTableMap::DESCRIPTION, SelectionI18nTableMap::CHAPO, SelectionI18nTableMap::POSTSCRIPTUM, SelectionI18nTableMap::META_TITLE, SelectionI18nTableMap::META_DESCRIPTION, SelectionI18nTableMap::META_KEYWORDS, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'LOCALE', 'TITLE', 'DESCRIPTION', 'CHAPO', 'POSTSCRIPTUM', 'META_TITLE', 'META_DESCRIPTION', 'META_KEYWORDS', ),
+        self::TYPE_FIELDNAME     => array('id', 'locale', 'title', 'description', 'chapo', 'postscriptum', 'meta_title', 'meta_description', 'meta_keywords', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -147,12 +142,12 @@ class SelectionI18nTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Locale' => 1, 'Title' => 2, 'Header' => 3, 'Footer' => 4, 'Chapo' => 5, 'Postscriptum' => 6, 'MetaTitle' => 7, 'MetaDescription' => 8, 'MetaKeywords' => 9, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'locale' => 1, 'title' => 2, 'header' => 3, 'footer' => 4, 'chapo' => 5, 'postscriptum' => 6, 'metaTitle' => 7, 'metaDescription' => 8, 'metaKeywords' => 9, ),
-        self::TYPE_COLNAME       => array(SelectionI18nTableMap::ID => 0, SelectionI18nTableMap::LOCALE => 1, SelectionI18nTableMap::TITLE => 2, SelectionI18nTableMap::HEADER => 3, SelectionI18nTableMap::FOOTER => 4, SelectionI18nTableMap::CHAPO => 5, SelectionI18nTableMap::POSTSCRIPTUM => 6, SelectionI18nTableMap::META_TITLE => 7, SelectionI18nTableMap::META_DESCRIPTION => 8, SelectionI18nTableMap::META_KEYWORDS => 9, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'LOCALE' => 1, 'TITLE' => 2, 'HEADER' => 3, 'FOOTER' => 4, 'CHAPO' => 5, 'POSTSCRIPTUM' => 6, 'META_TITLE' => 7, 'META_DESCRIPTION' => 8, 'META_KEYWORDS' => 9, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'locale' => 1, 'title' => 2, 'header' => 3, 'footer' => 4, 'chapo' => 5, 'postscriptum' => 6, 'meta_title' => 7, 'meta_description' => 8, 'meta_keywords' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Locale' => 1, 'Title' => 2, 'Description' => 3, 'Chapo' => 4, 'Postscriptum' => 5, 'MetaTitle' => 6, 'MetaDescription' => 7, 'MetaKeywords' => 8, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'locale' => 1, 'title' => 2, 'description' => 3, 'chapo' => 4, 'postscriptum' => 5, 'metaTitle' => 6, 'metaDescription' => 7, 'metaKeywords' => 8, ),
+        self::TYPE_COLNAME       => array(SelectionI18nTableMap::ID => 0, SelectionI18nTableMap::LOCALE => 1, SelectionI18nTableMap::TITLE => 2, SelectionI18nTableMap::DESCRIPTION => 3, SelectionI18nTableMap::CHAPO => 4, SelectionI18nTableMap::POSTSCRIPTUM => 5, SelectionI18nTableMap::META_TITLE => 6, SelectionI18nTableMap::META_DESCRIPTION => 7, SelectionI18nTableMap::META_KEYWORDS => 8, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'LOCALE' => 1, 'TITLE' => 2, 'DESCRIPTION' => 3, 'CHAPO' => 4, 'POSTSCRIPTUM' => 5, 'META_TITLE' => 6, 'META_DESCRIPTION' => 7, 'META_KEYWORDS' => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'locale' => 1, 'title' => 2, 'description' => 3, 'chapo' => 4, 'postscriptum' => 5, 'meta_title' => 6, 'meta_description' => 7, 'meta_keywords' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -174,10 +169,9 @@ class SelectionI18nTableMap extends TableMap
         $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'selection', 'ID', true, null, null);
         $this->addPrimaryKey('LOCALE', 'Locale', 'VARCHAR', true, 5, 'en_US');
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
-        $this->addColumn('HEADER', 'Header', 'VARCHAR', false, 255, null);
-        $this->addColumn('FOOTER', 'Footer', 'VARCHAR', false, 255, null);
-        $this->addColumn('CHAPO', 'Chapo', 'VARCHAR', false, 255, null);
-        $this->addColumn('POSTSCRIPTUM', 'Postscriptum', 'VARCHAR', false, 255, null);
+        $this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('CHAPO', 'Chapo', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('POSTSCRIPTUM', 'Postscriptum', 'LONGVARCHAR', false, null, null);
         $this->addColumn('META_TITLE', 'MetaTitle', 'VARCHAR', false, 255, null);
         $this->addColumn('META_DESCRIPTION', 'MetaDescription', 'LONGVARCHAR', false, null, null);
         $this->addColumn('META_KEYWORDS', 'MetaKeywords', 'LONGVARCHAR', false, null, null);
@@ -381,8 +375,7 @@ class SelectionI18nTableMap extends TableMap
             $criteria->addSelectColumn(SelectionI18nTableMap::ID);
             $criteria->addSelectColumn(SelectionI18nTableMap::LOCALE);
             $criteria->addSelectColumn(SelectionI18nTableMap::TITLE);
-            $criteria->addSelectColumn(SelectionI18nTableMap::HEADER);
-            $criteria->addSelectColumn(SelectionI18nTableMap::FOOTER);
+            $criteria->addSelectColumn(SelectionI18nTableMap::DESCRIPTION);
             $criteria->addSelectColumn(SelectionI18nTableMap::CHAPO);
             $criteria->addSelectColumn(SelectionI18nTableMap::POSTSCRIPTUM);
             $criteria->addSelectColumn(SelectionI18nTableMap::META_TITLE);
@@ -392,8 +385,7 @@ class SelectionI18nTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.LOCALE');
             $criteria->addSelectColumn($alias . '.TITLE');
-            $criteria->addSelectColumn($alias . '.HEADER');
-            $criteria->addSelectColumn($alias . '.FOOTER');
+            $criteria->addSelectColumn($alias . '.DESCRIPTION');
             $criteria->addSelectColumn($alias . '.CHAPO');
             $criteria->addSelectColumn($alias . '.POSTSCRIPTUM');
             $criteria->addSelectColumn($alias . '.META_TITLE');

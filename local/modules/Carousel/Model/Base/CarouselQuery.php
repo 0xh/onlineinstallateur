@@ -23,52 +23,83 @@ use Propel\Runtime\Exception\PropelException;
  * 
  *
  * @method     ChildCarouselQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildCarouselQuery orderByCarouselId($order = Criteria::ASC) Order by the carousel_id column
+ * @method     ChildCarouselQuery orderByVisible($order = Criteria::ASC) Order by the visible column
  * @method     ChildCarouselQuery orderByFile($order = Criteria::ASC) Order by the file column
  * @method     ChildCarouselQuery orderByPosition($order = Criteria::ASC) Order by the position column
  * @method     ChildCarouselQuery orderByUrl($order = Criteria::ASC) Order by the url column
- * @method     ChildCarouselQuery orderByVisible($order = Criteria::ASC) Order by the visible column
  * @method     ChildCarouselQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildCarouselQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
+ * @method     ChildCarouselQuery orderByVersion($order = Criteria::ASC) Order by the version column
+ * @method     ChildCarouselQuery orderByVersionCreatedAt($order = Criteria::ASC) Order by the version_created_at column
+ * @method     ChildCarouselQuery orderByVersionCreatedBy($order = Criteria::ASC) Order by the version_created_by column
  *
  * @method     ChildCarouselQuery groupById() Group by the id column
+ * @method     ChildCarouselQuery groupByCarouselId() Group by the carousel_id column
+ * @method     ChildCarouselQuery groupByVisible() Group by the visible column
  * @method     ChildCarouselQuery groupByFile() Group by the file column
  * @method     ChildCarouselQuery groupByPosition() Group by the position column
  * @method     ChildCarouselQuery groupByUrl() Group by the url column
- * @method     ChildCarouselQuery groupByVisible() Group by the visible column
  * @method     ChildCarouselQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildCarouselQuery groupByUpdatedAt() Group by the updated_at column
+ * @method     ChildCarouselQuery groupByVersion() Group by the version column
+ * @method     ChildCarouselQuery groupByVersionCreatedAt() Group by the version_created_at column
+ * @method     ChildCarouselQuery groupByVersionCreatedBy() Group by the version_created_by column
  *
  * @method     ChildCarouselQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildCarouselQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method     ChildCarouselQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
+ * @method     ChildCarouselQuery leftJoinCarouselName($relationAlias = null) Adds a LEFT JOIN clause to the query using the CarouselName relation
+ * @method     ChildCarouselQuery rightJoinCarouselName($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CarouselName relation
+ * @method     ChildCarouselQuery innerJoinCarouselName($relationAlias = null) Adds a INNER JOIN clause to the query using the CarouselName relation
+ *
  * @method     ChildCarouselQuery leftJoinCarouselI18n($relationAlias = null) Adds a LEFT JOIN clause to the query using the CarouselI18n relation
  * @method     ChildCarouselQuery rightJoinCarouselI18n($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CarouselI18n relation
  * @method     ChildCarouselQuery innerJoinCarouselI18n($relationAlias = null) Adds a INNER JOIN clause to the query using the CarouselI18n relation
+ *
+ * @method     ChildCarouselQuery leftJoinCarouselVersion($relationAlias = null) Adds a LEFT JOIN clause to the query using the CarouselVersion relation
+ * @method     ChildCarouselQuery rightJoinCarouselVersion($relationAlias = null) Adds a RIGHT JOIN clause to the query using the CarouselVersion relation
+ * @method     ChildCarouselQuery innerJoinCarouselVersion($relationAlias = null) Adds a INNER JOIN clause to the query using the CarouselVersion relation
  *
  * @method     ChildCarousel findOne(ConnectionInterface $con = null) Return the first ChildCarousel matching the query
  * @method     ChildCarousel findOneOrCreate(ConnectionInterface $con = null) Return the first ChildCarousel matching the query, or a new ChildCarousel object populated from the query conditions when no match is found
  *
  * @method     ChildCarousel findOneById(int $id) Return the first ChildCarousel filtered by the id column
+ * @method     ChildCarousel findOneByCarouselId(int $carousel_id) Return the first ChildCarousel filtered by the carousel_id column
+ * @method     ChildCarousel findOneByVisible(int $visible) Return the first ChildCarousel filtered by the visible column
  * @method     ChildCarousel findOneByFile(string $file) Return the first ChildCarousel filtered by the file column
  * @method     ChildCarousel findOneByPosition(int $position) Return the first ChildCarousel filtered by the position column
  * @method     ChildCarousel findOneByUrl(string $url) Return the first ChildCarousel filtered by the url column
- * @method     ChildCarousel findOneByVisible(int $visible) Return the first ChildCarousel filtered by the visible column
  * @method     ChildCarousel findOneByCreatedAt(string $created_at) Return the first ChildCarousel filtered by the created_at column
  * @method     ChildCarousel findOneByUpdatedAt(string $updated_at) Return the first ChildCarousel filtered by the updated_at column
+ * @method     ChildCarousel findOneByVersion(int $version) Return the first ChildCarousel filtered by the version column
+ * @method     ChildCarousel findOneByVersionCreatedAt(string $version_created_at) Return the first ChildCarousel filtered by the version_created_at column
+ * @method     ChildCarousel findOneByVersionCreatedBy(string $version_created_by) Return the first ChildCarousel filtered by the version_created_by column
  *
  * @method     array findById(int $id) Return ChildCarousel objects filtered by the id column
+ * @method     array findByCarouselId(int $carousel_id) Return ChildCarousel objects filtered by the carousel_id column
+ * @method     array findByVisible(int $visible) Return ChildCarousel objects filtered by the visible column
  * @method     array findByFile(string $file) Return ChildCarousel objects filtered by the file column
  * @method     array findByPosition(int $position) Return ChildCarousel objects filtered by the position column
  * @method     array findByUrl(string $url) Return ChildCarousel objects filtered by the url column
- * @method     array findByVisible(int $visible) Return ChildCarousel objects filtered by the visible column
  * @method     array findByCreatedAt(string $created_at) Return ChildCarousel objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildCarousel objects filtered by the updated_at column
+ * @method     array findByVersion(int $version) Return ChildCarousel objects filtered by the version column
+ * @method     array findByVersionCreatedAt(string $version_created_at) Return ChildCarousel objects filtered by the version_created_at column
+ * @method     array findByVersionCreatedBy(string $version_created_by) Return ChildCarousel objects filtered by the version_created_by column
  *
  */
 abstract class CarouselQuery extends ModelCriteria
 {
     
+    // versionable behavior
+    
+    /**
+     * Whether the versioning is enabled
+     */
+    static $isVersioningEnabled = true;
+
     /**
      * Initializes internal state of \Carousel\Model\Base\CarouselQuery object.
      *
@@ -152,7 +183,7 @@ abstract class CarouselQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, FILE, POSITION, URL, VISIBLE, CREATED_AT, UPDATED_AT FROM carousel WHERE ID = :p0';
+        $sql = 'SELECT ID, CAROUSEL_ID, VISIBLE, FILE, POSITION, URL, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_AT, VERSION_CREATED_BY FROM carousel WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -283,6 +314,90 @@ abstract class CarouselQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the carousel_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCarouselId(1234); // WHERE carousel_id = 1234
+     * $query->filterByCarouselId(array(12, 34)); // WHERE carousel_id IN (12, 34)
+     * $query->filterByCarouselId(array('min' => 12)); // WHERE carousel_id > 12
+     * </code>
+     *
+     * @see       filterByCarouselName()
+     *
+     * @param     mixed $carouselId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByCarouselId($carouselId = null, $comparison = null)
+    {
+        if (is_array($carouselId)) {
+            $useMinMax = false;
+            if (isset($carouselId['min'])) {
+                $this->addUsingAlias(CarouselTableMap::CAROUSEL_ID, $carouselId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($carouselId['max'])) {
+                $this->addUsingAlias(CarouselTableMap::CAROUSEL_ID, $carouselId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::CAROUSEL_ID, $carouselId, $comparison);
+    }
+
+    /**
+     * Filter the query on the visible column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVisible(1234); // WHERE visible = 1234
+     * $query->filterByVisible(array(12, 34)); // WHERE visible IN (12, 34)
+     * $query->filterByVisible(array('min' => 12)); // WHERE visible > 12
+     * </code>
+     *
+     * @param     mixed $visible The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByVisible($visible = null, $comparison = null)
+    {
+        if (is_array($visible)) {
+            $useMinMax = false;
+            if (isset($visible['min'])) {
+                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($visible['max'])) {
+                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible, $comparison);
+    }
+
+    /**
      * Filter the query on the file column
      *
      * Example usage:
@@ -382,47 +497,6 @@ abstract class CarouselQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the visible column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByVisible(1234); // WHERE visible = 1234
-     * $query->filterByVisible(array(12, 34)); // WHERE visible IN (12, 34)
-     * $query->filterByVisible(array('min' => 12)); // WHERE visible > 12
-     * </code>
-     *
-     * @param     mixed $visible The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildCarouselQuery The current query, for fluid interface
-     */
-    public function filterByVisible($visible = null, $comparison = null)
-    {
-        if (is_array($visible)) {
-            $useMinMax = false;
-            if (isset($visible['min'])) {
-                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($visible['max'])) {
-                $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(CarouselTableMap::VISIBLE, $visible, $comparison);
-    }
-
-    /**
      * Filter the query on the created_at column
      *
      * Example usage:
@@ -509,6 +583,194 @@ abstract class CarouselQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the version column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVersion(1234); // WHERE version = 1234
+     * $query->filterByVersion(array(12, 34)); // WHERE version IN (12, 34)
+     * $query->filterByVersion(array('min' => 12)); // WHERE version > 12
+     * </code>
+     *
+     * @param     mixed $version The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByVersion($version = null, $comparison = null)
+    {
+        if (is_array($version)) {
+            $useMinMax = false;
+            if (isset($version['min'])) {
+                $this->addUsingAlias(CarouselTableMap::VERSION, $version['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($version['max'])) {
+                $this->addUsingAlias(CarouselTableMap::VERSION, $version['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::VERSION, $version, $comparison);
+    }
+
+    /**
+     * Filter the query on the version_created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVersionCreatedAt('2011-03-14'); // WHERE version_created_at = '2011-03-14'
+     * $query->filterByVersionCreatedAt('now'); // WHERE version_created_at = '2011-03-14'
+     * $query->filterByVersionCreatedAt(array('max' => 'yesterday')); // WHERE version_created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $versionCreatedAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByVersionCreatedAt($versionCreatedAt = null, $comparison = null)
+    {
+        if (is_array($versionCreatedAt)) {
+            $useMinMax = false;
+            if (isset($versionCreatedAt['min'])) {
+                $this->addUsingAlias(CarouselTableMap::VERSION_CREATED_AT, $versionCreatedAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($versionCreatedAt['max'])) {
+                $this->addUsingAlias(CarouselTableMap::VERSION_CREATED_AT, $versionCreatedAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::VERSION_CREATED_AT, $versionCreatedAt, $comparison);
+    }
+
+    /**
+     * Filter the query on the version_created_by column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByVersionCreatedBy('fooValue');   // WHERE version_created_by = 'fooValue'
+     * $query->filterByVersionCreatedBy('%fooValue%'); // WHERE version_created_by LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $versionCreatedBy The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByVersionCreatedBy($versionCreatedBy = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($versionCreatedBy)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $versionCreatedBy)) {
+                $versionCreatedBy = str_replace('*', '%', $versionCreatedBy);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CarouselTableMap::VERSION_CREATED_BY, $versionCreatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query by a related \Carousel\Model\CarouselName object
+     *
+     * @param \Carousel\Model\CarouselName|ObjectCollection $carouselName The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByCarouselName($carouselName, $comparison = null)
+    {
+        if ($carouselName instanceof \Carousel\Model\CarouselName) {
+            return $this
+                ->addUsingAlias(CarouselTableMap::CAROUSEL_ID, $carouselName->getId(), $comparison);
+        } elseif ($carouselName instanceof ObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(CarouselTableMap::CAROUSEL_ID, $carouselName->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByCarouselName() only accepts arguments of type \Carousel\Model\CarouselName or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CarouselName relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function joinCarouselName($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CarouselName');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CarouselName');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CarouselName relation CarouselName object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Carousel\Model\CarouselNameQuery A secondary query class using the current class as primary query
+     */
+    public function useCarouselNameQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCarouselName($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CarouselName', '\Carousel\Model\CarouselNameQuery');
+    }
+
+    /**
      * Filter the query by a related \Carousel\Model\CarouselI18n object
      *
      * @param \Carousel\Model\CarouselI18n|ObjectCollection $carouselI18n  the related object to use as filter
@@ -579,6 +841,79 @@ abstract class CarouselQuery extends ModelCriteria
         return $this
             ->joinCarouselI18n($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'CarouselI18n', '\Carousel\Model\CarouselI18nQuery');
+    }
+
+    /**
+     * Filter the query by a related \Carousel\Model\CarouselVersion object
+     *
+     * @param \Carousel\Model\CarouselVersion|ObjectCollection $carouselVersion  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function filterByCarouselVersion($carouselVersion, $comparison = null)
+    {
+        if ($carouselVersion instanceof \Carousel\Model\CarouselVersion) {
+            return $this
+                ->addUsingAlias(CarouselTableMap::ID, $carouselVersion->getId(), $comparison);
+        } elseif ($carouselVersion instanceof ObjectCollection) {
+            return $this
+                ->useCarouselVersionQuery()
+                ->filterByPrimaryKeys($carouselVersion->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByCarouselVersion() only accepts arguments of type \Carousel\Model\CarouselVersion or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the CarouselVersion relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildCarouselQuery The current query, for fluid interface
+     */
+    public function joinCarouselVersion($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('CarouselVersion');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'CarouselVersion');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the CarouselVersion relation CarouselVersion object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Carousel\Model\CarouselVersionQuery A secondary query class using the current class as primary query
+     */
+    public function useCarouselVersionQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinCarouselVersion($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'CarouselVersion', '\Carousel\Model\CarouselVersionQuery');
     }
 
     /**
@@ -793,6 +1128,34 @@ abstract class CarouselQuery extends ModelCriteria
         return $this
             ->joinI18n($locale, $relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'CarouselI18n', '\Carousel\Model\CarouselI18nQuery');
+    }
+
+    // versionable behavior
+    
+    /**
+     * Checks whether versioning is enabled
+     *
+     * @return boolean
+     */
+    static public function isVersioningEnabled()
+    {
+        return self::$isVersioningEnabled;
+    }
+    
+    /**
+     * Enables versioning
+     */
+    static public function enableVersioning()
+    {
+        self::$isVersioningEnabled = true;
+    }
+    
+    /**
+     * Disables versioning
+     */
+    static public function disableVersioning()
+    {
+        self::$isVersioningEnabled = false;
     }
 
 } // CarouselQuery

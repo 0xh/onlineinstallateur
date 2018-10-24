@@ -1,0 +1,46 @@
+
+.radio-konfigurator {
+	display:inline-block;
+}
+
+.radio-group-konfigurator {
+	display:inline-block;
+}
+
+.legend-konfigurator {
+	width: 250px;
+	display: inline-block;
+}
+
+.bottom5 { margin-bottom:5%; }
+
+ul.thumbnails.image_picker_selector {
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px; }
+  ul.thumbnails.image_picker_selector ul {
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px; 
+}
+
+    ul.thumbnails.image_picker_selector li.thumbnail {
+      padding: 15px;
+      border: 3px solid #dddddd;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none; }
+      ul.thumbnails.image_picker_selector li .thumbnail img {
+        -webkit-user-drag: none; 
+}
+
+    ul.thumbnails.image_picker_selector li.thumbnail.selected {
+      border: 3px solid #80ad46 !important;
+
+}
+      
+    

@@ -1,0 +1,26 @@
+<li> 
+    {form_field field="{$element.name}"} 
+    <div class="frage">
+        <div>
+            <label class="fragelabel fs-field-label fs-anim-upper" for="{$for}">
+                <h3 class="question_label">{intl l="{$label}"}</h3>
+            </label>
+        </div>
+        <div class="fs-radio-group fs-radio-custom clearfix fs-anim-lower">
+            <div class="fs-radio-group fs-radio-normal clearfix fs-anim-lower">
+                {foreach $choices as $choice}
+                    {assign var=choiceArray value="|"|explode:$choice->label}
+                    <div class="frontIcons {$element.name}{$choice->value} next" radio-id="{$element.name}{$choice->value}" next-question="{$choiceArray[1]}">
+                        <div class="IconHolder" data-icon="{$element.attr.answer.values[$choice->data].data_icon nofilter}"></div>
+                        <p>
+                            <input name="{$name}" type="radio" value="{$choice->value}" {if $value === {$choice->value}} checked{/if}>
+                            <span for="{$name}" class="radio{$choice->text} fs-field-label-sm radiop">{$choiceArray[0]}</span>
+                        </p>
+                    </div>
+                {/foreach}
+            </div>
+
+        </div>
+    </div>
+    {/form_field}
+</li>

@@ -1,0 +1,141 @@
+{extends file="layout.tpl"}
+
+{* Body Class *}
+{block name="body-class"}page-badezimmer{/block}
+
+{* Breadcrumb *}
+{block name='no-return-functions' append}
+    {$breadcrumbs = [['title' => {intl l="Badezimmer" d="hookkonfigurator.fo.easybad"}, 'url'=>{url path="/badezimmer"}]]}
+{/block}
+
+{block name="main-content"}
+
+
+
+
+
+
+
+<div class="container" id="container2">
+    <h2>PURAVIDA - DURAVIT</h2>
+ <!--div class="popover top pop2" data-easein="cardInTop" data-easeout="cardOutTop" id="pop2">
+    <div class="arrow"></div>
+    <div class="popover-inner">
+      <h3 class="popover-title"><a href="http://codecanyon.net/user/sike">Visit my profile</a></h3>
+      <div class="popover-content">
+        <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+        <h2>2026€ </h2>
+      </div>
+    </div>
+  </div-->
+  <div class="popover top" data-easein="cardInTop" data-easeout="cardOutTop" id="pop5">
+    <div class="arrow"></div>
+    <div class="popover-inner">
+      <h3 class="popover-title">PuraVida bathtub</h3>
+      <div class="popover-content">
+          <img src="{image file='assets/dist/img/sets/badezimmer/set1/bathtube.jpg'}">
+        <p>The free-standing PuraVida bathtubs features simple, uninterrupted lines. The collection of PuraVida baths comprises one free-standing, one console and three built-in versions.</p>
+          <h2>3.173€ </h2>
+      </div>
+    </div>
+  </div>
+
+ <div class="popover left" data-easein="cardInLeft" data-easeout="cardOutLeft" id="pop6">
+    <div class="arrow"></div>
+    <div class="popover-inner">
+      <h3 class="popover-title">PuraVida Mirror with lighting</h3>
+      <div class="popover-content">
+    <img src="{image file='assets/dist/img/sets/badezimmer/set1/mirror.jpg'}">
+
+        <p>IP 44, Design by Phoenix Design, switch (touch LED) central below is coevally LED night light including light sensor, ground plate mirror: (85) White High Gloss, Energy class: A, 1... </p>
+          <h2>681€ </h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="popover left" data-easein="cardInLeft" data-easeout="cardOutLeft" id="pop7">
+    <div class="arrow"></div>
+    <div class="popover-inner">
+      <h3 class="popover-title">PuraVida Low cabinet for console</h3>
+      <div class="popover-content">
+          <img src="{image file='assets/dist/img/sets/badezimmer/set1/schrank.jpg'}">
+        <p>2 drawers, Design by Phoenix Design</p>
+        <h2>2026€ </h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="popover left" data-easein="cardInLeft" data-easeout="cardOutLeft" id="pop8">
+    <div class="arrow"></div>
+    <div class="popover-inner">
+      <div class="popover-content">
+          <h3 class="popover-title">PuraVida Tall Cabinet</h3>
+                    <img src="{image file='assets/dist/img/sets/badezimmer/set1/cabinet.jpg'}">
+
+        <p>2 doors, each door including 2 integrated shelves and rails inside, Design by Phoenix Design, 4 glass shelves, 1 central shelf including integrated tray drawer, width 530 mm... </p>
+          <h2>2672€ </h2>
+      </div>
+    </div>
+  </div>
+    <div class="set-info" >
+        <h2><span>SUMME:</span> 8552€</h2>
+        <button class="btn btn-1 btn-1a" >DIESES SET KAUFEN</button>
+    </div>
+  <img src="{image file='assets/dist/img/sets/badezimmer/arrow1.png'}" alt="info" class="info-icon info-icon1" data-target="pop5"  />
+  <img src="{image file='assets/dist/img/sets/badezimmer/arrow1.png'}" alt="info" class="info-icon info-icon2" data-target="pop6"  />
+  <img src="{image file='assets/dist/img/sets/badezimmer/arrow1.png'}" alt="info" class="info-icon info-icon3" data-target="pop7"  />
+  <img src="{image file='assets/dist/img/sets/badezimmer/arrow1.png'}" alt="info" class="info-icon info-icon4" data-target="pop8"  />
+  <img src="{image file='assets/dist/img/sets/badezimmer/set1.jpg'}" alt="" class="largeimage" id="image2">
+    
+
+{/block}
+
+{block name="stylesheet"}
+    
+    {stylesheets file='assets/dist/css/jquery.hotspot.css'}
+        <link rel="stylesheet" href="{$asset_url}">
+    {/stylesheets}
+
+{hook name="register.stylesheet"}
+
+{/block}
+
+
+{block name="after-javascript-include"}
+
+
+
+<script>
+
+</script>
+
+
+
+
+ <script src="{javascript file='assets/dist/js/vendors/jquery.hotspot.min.js'}"></script>
+ 
+
+
+
+{hook name="register.after-javascript-include"}
+  <script>
+    jQuery(document).ready(function($) {
+
+
+        var _pop2 = $('#container2').hotSpot({
+            slideshow : false,
+            triggerBy : 'click',
+            autoHide : false
+        });
+
+        $('#image2').on('click', function(event) {
+            _pop2.hideCurrentPop();
+        });
+    });
+  </script>
+{/block}
+
+{block name="javascript-initialization"}
+
+{hook name="register.javascript-initialization"}
+{/block}

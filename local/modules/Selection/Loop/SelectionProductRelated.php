@@ -73,6 +73,7 @@ class SelectionProductRelated extends BaseLoop implements PropelSearchLoopInterf
             $search->addJoinObject($join, 'search')
                 ->addJoinCondition('search', ProductI18nTableMap::TITLE."=". $product_title);
         }
+
         return $search->orderByPosition(Criteria::ASC);
     }
 

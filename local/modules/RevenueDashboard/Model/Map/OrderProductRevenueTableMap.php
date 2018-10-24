@@ -152,8 +152,8 @@ class OrderProductRevenueTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('ORDER_ID', 'OrderId', 'INTEGER', false, null, null);
-        $this->addColumn('PRODUCT_REF', 'ProductRef', 'VARCHAR', false, 255, null);
+        $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', false, null, null);
+        $this->addForeignKey('PRODUCT_REF', 'ProductRef', 'VARCHAR', 'product', 'REF', false, 255, null);
         $this->addColumn('PRICE', 'Price', 'DECIMAL', false, 16, 0);
         $this->addColumn('PURCHASE_PRICE', 'PurchasePrice', 'DECIMAL', false, 16, 0);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
@@ -164,6 +164,8 @@ class OrderProductRevenueTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
+        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_ref' => 'ref', ), 'CASCADE', null);
     } // buildRelations()
 
     /**

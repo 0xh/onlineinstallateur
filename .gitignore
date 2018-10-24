@@ -6,11 +6,6 @@ web/install/*
 log/*
 local/session
 web/schedule/app/config/config.inc.php
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/layout.tpl
-templates/frontOffice/default/order-placed.html
-local/modules/AmazonIntegration/Controller/Admin/AmazonIntegrationContoller.php
 /nbproject/private/
 nbproject/project.properties
 nbproject/project.xml
@@ -21,3 +16,6 @@ local/config/cookies/
 /local/media/documents/
 local/config/database.yml
 templates/frontOffice/default/assets/dist/css/custom-tinymce.css
+/local/media/
+/web/media/
+local/modules/Scraper/Log/

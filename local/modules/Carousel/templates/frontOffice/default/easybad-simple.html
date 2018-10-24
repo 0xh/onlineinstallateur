@@ -1,0 +1,46 @@
+{stylesheets source="Carousel" file='assets/css/easybad.css'}
+  <link rel="stylesheet" href="{$asset_url}">
+{/stylesheets}
+
+        <div class ="carousel_wrapper">
+            <div id="carousel" class="carousel slide  carousel-fade" data-ride="carousel" data-interval="false">
+                <div class="carousel-wrapper">
+                    <div class="carousel-inner">
+                        {$sliders=0}
+                        {loop type="carousel" name="carousel{$carousel_id}" carousel_id=$carousel_id visible="1" showTitle=true height="650" resize_mode="borders" }
+                        <div class="item  item-carousel {if $LOOP_COUNT == 1}active{/if}">
+                            {if $URL}<a href="{$URL|default:'#'}">{/if}
+                                <img src="{$IMAGE_URL}" alt="{$ALT}" style="width: 100%; padding: 0px;">
+                            {if $URL}</a>{/if}
+
+                            <div class="carousel_custom_caption" style="background-color: transparent;">
+                                {if $TITLE}<h3>{$TITLE}</h3>{/if}
+                                {if $DESCRIPTION}<div class="slide_description">{$DESCRIPTION nofilter}</div>{/if}
+                            </div>
+                        </div>
+                        {$sliders=$LOOP_COUNT}
+                        {/loop}
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <div class = "spearatorText">
+                    <div id="slidetext"></div>
+                </div>
+                <div class = "spearatorControlls">
+                    <div class="arrowControlls">
+                        <div class="goLeftControll">
+                            <div class="goLeft" data-slide="prev" onclick="$('#carousel').carousel('prev')">‹</div>
+                        </div>
+                        <div class ="goRightControll">
+                            <div class="goRight" data-slide="next" onclick="$('#carousel').carousel('next')">›</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- #carousel -->
+    
+{javascripts source="Carousel" file='assets/js/easybad.js'}
+    <script src="{$asset_url}"></script>
+{/javascripts}

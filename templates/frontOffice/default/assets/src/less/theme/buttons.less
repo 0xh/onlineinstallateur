@@ -3,7 +3,14 @@
     .transition(all 0.3s ease-in-out);
     border-radius: 0;
     text-align: left;
-    font-weight: 600;
+    font-weight: 700;
+    background:none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    text-transform: uppercase;
+    display: inline-block;
 
     &:active,
     &.active {
@@ -17,12 +24,14 @@
 
 .btn-primary {
     font-style: italic;
-    border-left: 3px solid lighten(@brand-primary, 20%);
-
+    border-left: 3px solid #86ac34;
+    color: #000;
+    background-color:transparent;
     &:hover,
     &:focus {
-        background-color: @brand-primary;
-        color: @link-hover-color;
+        background-color: #86AC34;
+        color: #000;
+        
     }
 }
 

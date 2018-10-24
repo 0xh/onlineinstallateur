@@ -4,17 +4,17 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="admin.configuration.feature-av.update" path="/admin/configuration/feature-av/update/{feature_id}/{feature_av_id}">
+    <route id="admin.configuration.feature-av.update" path="/admin/configuration/feature-av/update/{feature_id}/{feature_av_id}">
         <default key="_controller">FilterConfigurator\Controller\Admin\FeatureAvController::updateAction</default>
         <requirement key="feature_av_id">\d+</requirement>
         <requirement key="feature_id">\d+</requirement>
-	</route>
+    </route>
 
-	<route id="admin.configuration.feature-av.save" path="/admin/configuration/feature-av/save">
+    <route id="admin.configuration.feature-av.save" path="/admin/configuration/feature-av/save">
         <default key="_controller">FilterConfigurator\Controller\Admin\FeatureAvController::saveAction</default>
-	</route>
+    </route>
 	
-	<route id="filter.configurator.module.config" path="/admin/module/FilterConfigurator">
+    <route id="filter.configurator.module.config" path="/admin/module/FilterConfigurator">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::viewAction</default>
     </route>
     
@@ -58,7 +58,7 @@
         <requirement key="id">\d+</requirement>
     </route>
     
-   <route id="filter.configurator.image.list" path="/admin/modules/filter-configurator/image/{id}/list-ajax">
+    <route id="filter.configurator.image.list" path="/admin/modules/filter-configurator/image/{id}/list-ajax">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::getImageListAjaxAction</default>
         <requirement key="id">\d+</requirement> 
     </route>
@@ -73,14 +73,26 @@
         <requirement key="id">\d+</requirement>
     </route>
   
- 	<route id="filter.configurator.image.add" path="/admin/modules/filter-configurator/image/{id}/add-image">
+    <route id="filter.configurator.image.add" path="/admin/modules/filter-configurator/image/{id}/add-image">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::saveImageAction</default>
         <requirement key="id">\d+</requirement>
     </route> 
     
-     <route id="filter.configurator.image.update-position" path="/admin/modules/filter-configurator/image/{id}/update-position">
+    <route id="filter.configurator.image.update-position" path="/admin/modules/filter-configurator/image/{id}/update-position">
         <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::updateImagePosition</default>
         <requirement key="id">\d+</requirement>
     </route>
     
+    <route id="filter.configurator.add.new.hook.id" path="/admin/module/filter-configurator-add-new-hook-id">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::addNewHookIdConfigurator</default>
+    </route>
+
+    <route id="filter.configurator.delete.hook.id" path="/admin/module/filter-configurator-delete-hook-id/{id}">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::deleteHookIdConfigurator</default>
+    </route>
+    
+    <route id="configurator.edit.hook.id" path="/admin/module/filter-configurator-edit-hook-id">
+        <default key="_controller">FilterConfigurator\Controller\Admin\FilterConfiguratorController::editHookIdConfigurator</default>
+    </route>
+
 </routes>

@@ -1,8 +1,9 @@
 <?php
 namespace Selection\Controller;
 
-use Selection\Model\SelectionI18nQuery;
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Core\Event\UpdatePositionEvent;
+use Thelia\Model\RewritingUrlQuery;
 
 class SelectionController extends BaseAdminController
 {
@@ -13,53 +14,49 @@ class SelectionController extends BaseAdminController
      */
     public function viewAction()
     {
-        return $this->render("selectionlist");
+        return $this->render("selection-list",
+            array(
+                'selection_order' => $this->getAttributeSelectionOrder(),
+                'selection_container_order' => $this->getAttributeContainerOrder()
+            ));
     }
 
-    /**
-     * @return \Thelia\Core\HttpFoundation\Response
-     * @throws \Exception
-     */
-    public function updateAction()
+    protected function createUpdatePositionEvent($positionChangeMode, $positionValue)
     {
-        $selectionID = $this->getRequest()->get('selectionId');
-        $response = array();
+        return new UpdatePositionEvent(
+            $this->getRequest()->get('selection_id', null),
+            $positionChangeMode,
+            $positionValue
+        );
+    }
 
-        try {
-            $selection = SelectionI18nQuery::create()
-                ->filterById($selectionID)
-                ->findOne();
+    private function getAttributeContainerOrder()
+    {
+        return $this->getListOrderFromSession(
+            'selectioncontainer',
+            'selection_container_order',
+            'manual'
+        );
+    }
 
-            if ($selection !== null) {
-                $id          = $selection->getId();
-                $title       = $selection->getTitle();
-                $summary     = $selection->getChapo();
-                $header = $selection->getHeader();
-                $footer = $selection->getFooter();
-                $conclusion  = $selection->getPostscriptum();
-                $locale = $this->getRequest()->getSession()->get('thelia.current.lang')->getLocale();
+    private function getAttributeSelectionOrder()
+    {
+        return $this->getListOrderFromSession(
+            'selection',
+            'selection_order',
+            'manual'
+        );
+    }
 
-                $response = [
-                    'id'          => $id,
-                    'title'       => $title,
-                    'summary'     => $summary,
-                    'header' => $header,
-                    'footer' => $footer,
-                    'conclusion'  => $conclusion,
-                ];
-                $selectionSeo = new SelectionUpdateController();
-                $selectionSeo->updateAction(
-                    $id,
-                    $locale = $this->getRequest()
-                                    ->getSession()
-                                    ->get('thelia.current.lang')
-                                    ->getLocale()
-                );
-            }
-        } catch (\Exception $ex) {
-            throw $ex;
-        }
+    public function testSelection(){
+       /* $view = "jiji.html";
+        $test = RewritingUrlQuery::create()
+            ->filterByUrl($view)
+            ->filterByViewLocale('de_DE')
+            ->findOne();
 
-        return $this->render("selection-edit", $response);
+        echo "<pre>";
+        var_dump( $test->getViewId() );
+        die("Aici");*/
     }
 }

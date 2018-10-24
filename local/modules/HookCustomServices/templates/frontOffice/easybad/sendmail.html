@@ -1,0 +1,44 @@
+<div class="products-content">
+	<ul class="list-unstyled">
+		{loop type="product_heizung" name="product_list" category=$category_id limit="8" }
+			{include file="includes/product-suggestion.html" product_id=$ID hasBtn=true hasDescription=true hasPower=true hasGrade=true hasWarmwater=true hasQuickView=true width="300" height="230"}
+		{/loop}
+	</ul>
+</div>    
+
+{block name="after-javascript-include"}
+<script>
+$('.products-content').on('click', '.thumbnail', function (event) {
+	if($(this).hasClass("selected")){
+   
+	$(this).removeClass("selected");
+    //now disable inputs
+     $(this).find($("[name^=service]")).prop('disabled',true);
+    //remove price
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //remove service price from product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productObject.text(parseInt($productObject.text())-parseInt($serviceObject.text()) );
+	}
+	else  {
+		$(this).addClass("selected");
+	    $(this).find($("[name^=service]")).prop('disabled',false);
+	    //add service price to product
+	    $serviceObject = $(this).find($("[name=price_service_o]"));
+	    $productid = $serviceObject.attr('product');
+	    $productObject = $("[name=price_product_"+$productid+"]");
+	    $productObject.text(parseInt($productObject.text())+parseInt($serviceObject.text()) );
+	    
+	   // alert($("[name=price_product_"+$productid+"]").text());
+	 //   alert($(this).find($("[name=price_product_o]")).text()+"   "+$(this).find($("[name=price_service_o]")).attr('product'));
+	}
+	
+//	if($(this).hasClass("selected")){
+	
+});
+</script>
+
+{hook name="register.after-javascript-include"}
+{/block}

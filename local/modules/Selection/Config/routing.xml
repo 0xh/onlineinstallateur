@@ -6,7 +6,7 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <!-- ******************************* Root link to selection list ******************************* -->
-    <route id="selection.list" path="/admin/Selection">
+    <route id="selection.list" path="/admin/selection">
         <default key="_controller">Selection\Controller\SelectionController::viewAction</default>
     </route>
 
@@ -30,13 +30,19 @@
         <requirement key="folderID">\d+</requirement>
     </route>
 
-    <route id="selection.update.addProductRelated" path="admin/selection/update/addProductRelated/{productID}{selectionID}">
+    <route id="admin.selection.update.addProductRelated" path="admin/selection/update/addProductRelated/{productID}/{selectionID}">
         <default key="_controller">Selection\Controller\SelectionRelatedProductController::addProductRelated</default>
         <requirement key="productID">\d+</requirement>
         <requirement key="selectionID">\d+</requirement>
     </route>
 
-    <route id="selection.update.addContentRelated" path="/admin/selection/update/addContentRelated/{contentID}{selectionID}">
+    <route id="admin.selection.update.addSelectionFeautersRelated" path="admin/selection/update/addSelectionFeautersRelated/{selectionID}">
+        <default key="_controller">Selection\Controller\SelectionRelatedContentController::addSelectionFeautersRelated</default>
+        <requirement key="selectionID">\d+</requirement>
+    </route>
+
+
+    <route id="admin.selection.update.addContentRelated" path="/admin/selection/update/addContentRelated/{contentID}/{selectionID}">
         <default key="_controller">Selection\Controller\SelectionRelatedContentController::addContentRelated</default>
         <requirement key="contentID">\d+</requirement>
         <requirement key="selectionID">\d+</requirement>
@@ -64,15 +70,48 @@
     </route>
 
     <!-- ***** Root to function which delete a selection from the list-->
-    <route id="admin.delete.selection" path="/admin/selection/delete/{selection_ID}">
-        <default key="_controller">Selection\Controller\SelectionUpdateController::deleteSelection</default>
-        <requirement key="selectionID">\d+</requirement>
+    <route id="admin.delete.selection" path="/admin/selection/delete">
+        <default key="_controller">Selection\Controller\SelectionUpdateController::deleteAction</default>
     </route>
 
+    <!-- ***** Root to function which create and save a new selection container-->
+    <route id="selection.create.create.selection.container" path="/admin/selection/container/create">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::createAction</default>
+    </route>
+
+    <!-- ***** Root to function which delete a selection container from the list-->
+    <route id="admin.delete.selection.container" path="/admin/selection/container/delete">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::deleteAction</default>
+    </route>
+
+    <!-- ***** Root to function which update selection container-->
+    <route id="admin.selection.container.view" path="/admin/selection/container/view/{selectionContainerId}">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::viewAction</default>
+        <requirement key="selectionContainerId">\d+</requirement>
+    </route>
+
+    <!-- ***** Root to function which update selection container-->
+    <route id="admin.selection.container.update" path="/admin/selection/container/update/{selectionContainerId}" methods="get">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::updateContainerAction</default>
+        <requirement key="selectionContainerId">\d+</requirement>
+    </route>
+
+    <route id="admin.selection.container.update-position" path="/admin/selection/container/update-position">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::updatePositionAction</default>
+    </route>
+
+    <!-- Visiblity of a selection container-->
+    <route id="admin.selection.container.set-default" path="/admin/selection/container/toggle-online">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::setToggleVisibilityAction</default>
+    </route>
     <!-- ***** Root to function which save SEO content-->
 
     <route id="admin.selection.seo.save" path="/admin/selection/seo/save">
         <default key="_controller">Selection\Controller\SelectionUpdateController::processUpdateSeoAction</default>
+    </route>
+
+    <route id="admin.selection.container.seo.save" path="/admin/selection/container/seo/save">
+        <default key="_controller">Selection\Controller\SelectionContainerUpdateController::processUpdateSeoAction</default>
     </route>
 
     <!-- ***** Root to function which modify a related product position-->
@@ -113,6 +152,12 @@
         <requirement key="imageId">\d+</requirement>
     </route>
 
+    <route id="selection.image.update.edit/admin/image/type/" path="/selection/image/type/{parentType}/{imageId}/update" methods="post">
+        <default key="_controller">Selection\Controller\ImageUploadController::updateImageAction</default>
+        <requirement key="parentType">.*</requirement>
+        <requirement key="imageId">\d+</requirement>
+    </route>
+
     <route id="selection.image.toggle.process" path="admin/selection/image/type/{parentType}/{documentId}/{parentId}/toggle">
         <default key="_controller">Selection\Controller\ImageUploadController::toggleVisibilityImageAction</default>
         <requirement key="parentType">.*</requirement>
@@ -120,10 +165,10 @@
         <requirement key="parentId">\d+</requirement>
     </route>
 
-    <route id="selection.image.delete" path="/admin/selection/image/type/{parentType}/delete/{parentId}/{documentId}">
-        <default key="_controller">Selection\Controller\ImageUploadController::deleteDocumentAction</default>
+    <route id="selection.image.delete" path="/admin/selection/image/type/{parentType}/delete/{parentId}/{imageId}">
+        <default key="_controller">Selection\Controller\ImageUploadController::deleteImageAction</default>
         <requirement key="parentType">.*</requirement>
-        <requirement key="documentId">\d+</requirement>
+        <requirement key="imageId">\d+</requirement>
         <requirement key="parentId">\d+</requirement>
     </route>
 
@@ -133,7 +178,9 @@
         <requirement key="parentId">\d+</requirement>
     </route>
 
-
+    <route id="test" path="/test">
+        <default key="_controller">Selection\Controller\SelectionController::testSelection</default>
+    </route>        
     <!-- Related to a selection root -->
 
     <!-- Delete -->
@@ -142,7 +189,7 @@
         <requirement key="selectionID">\d+</requirement>
         <requirement key="productID">\d+</requirement>
     </route>
-   <route id="admin.delete.selection.content" path="admin/selection/delete/relatedContent/{selectionID}/{contentID}">
+    <route id="admin.delete.selection.content" path="admin/selection/delete/relatedContent/{selectionID}/{contentID}">
         <default key="_controller">Selection\Controller\SelectionUpdateController::deleteRelatedContent</default>
         <requirement key="selectionID">\d+</requirement>
         <requirement key="contentID">\d+</requirement>
@@ -153,8 +200,38 @@
     <route id="admin.selection.set-default" path="/admin/selection/toggle-online">
         <default key="_controller">Selection\Controller\SelectionUpdateController::setToggleVisibilityAction</default>
     </route>
+    
+    <route id="admin.selection.set-type" path="/admin/selection/toggle-type">
+        <default key="_controller">Selection\Controller\SelectionUpdateController::setToggleTypeAction</default>
+    </route>
 
+    <route id="admin.selection.update-position" path="/admin/selection/update-position">
+        <default key="_controller">Selection\Controller\SelectionUpdateController::updateSelectionPositionAction</default>
+    </route>    
 
+    <route id="admin.selection.update-feautures" path="/admin/selection/{selectionId}/update-attributes-and-features">
+        <default key="_controller">Selection\Controller\SelectionUpdateController::updateSelectionFeauturesAction</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
+
+    <route id="front.inspiration.bad.anzeigen" path="/inspiration/bad-anzeigen/{selectionId}">
+        <default key="_controller">Selection\Controller\Front\FrontSelectionController::viewBadAnzeigen</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
+
+    <route id="front.selection.wishlist.add" path="/selection-wishlist/add/{selectionId}">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::addSelection</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
+
+    <route id="front.selection.wishlist.remove" path="/selection-wishlist/remove/{selectionId}">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::removeSelection</default>
+        <requirement key="selectionId">\d+</requirement>
+    </route>
+
+    <route id="front.selection.wishlist.clear" path="/selection-wishlist/clear">
+        <default key="_controller">Selection\Controller\Front\SelectionWishListController::clear</default>
+    </route>
 </routes>
 
 

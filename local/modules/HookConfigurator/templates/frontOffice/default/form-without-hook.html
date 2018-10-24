@@ -1,0 +1,99 @@
+<section class="clearfix">
+    <ol class="fs-fields">
+        {form name="hookconfig.form.configure"}
+
+        <div class="alert alert-success hide"></div>
+        <form action="{url path='/get_configurator_data'}/{$configurator}" method="post" class="dropzone" enctype="multipart/form-data" id="regiration-form">
+            {form_hidden_fields form=$form}
+            {if $form_error}
+                <div class="alert alert-danger">{$form_error_message}</div>
+            {/if}
+
+            <div id="alert-from-front" class="alert alert-danger"></div>
+
+            {form_field form=$form field='success_url'}
+            <input type="hidden" name="{$name}" value="{url path='/'}" />
+            {/form_field}
+
+            {assign var=val value=1}
+            {foreach $arrElements as $element}
+
+                <fieldset row item-number={$val} style="background-image: url({$background_image}); background-size: cover;">
+                          {if  $val !=1 }
+                              <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
+                              </button>
+                          {else}
+                              <button class="previous_hide previous" disabled>
+                                  <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                              </button>
+                          {/if}
+
+                          {if  $element.type eq 'choice'}
+                              {if  $element.attr.image eq '1'}
+                                  {if  $element.multiple eq 'true'}
+                                      {include file="includes/choices_images_multiple_template.html"}
+                                  {else}
+                                      {include file="includes/choices_images_template.html"}
+                                  {/if}
+                              {else}
+                                  {if  $element.multiple eq 'true'}
+                                      {include file="includes/choices_multiple_template.html"}
+                                  {else}
+                                      {include file="includes/choices_template.html"}
+                                  {/if}
+                              {/if}
+                          {/if}
+                          {if  $element.type eq 'text'}
+                              {include file="includes/field_text_templates.html"}
+                          {/if}
+                          {if  $element.type eq 'range'}
+                              {include file="includes/field_range_templates.html"}
+                          {/if}
+                          {if  $element.type eq 'textarea'}
+                              {include file="includes/field_textarea_templates.html"}
+                          {/if}
+                          {if  $element.type eq 'file'}
+                              {include file="includes/file_upload_templates.html"} 
+                          {/if}
+                </fieldset>
+                {assign var=val value=$val+1}
+            {/foreach}
+            {if $contactArr.visible_form_contact}
+                <fieldset>
+                    {if  $val !=1 }
+                        <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
+                        </button>
+                    {else}
+                        <button class="previous_hide previous" disabled>
+                            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+                        </button>
+                    {/if}
+
+                    {include file="includes/contact_form_template.html"}   
+                </fieldset>
+            {/if}
+            {*<fieldset>
+            {if  $val !=1 }
+            <button class="previous" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="glyphicon glyphicon-menu-left white" aria-hidden="true"></span>
+            </button>
+            {else}
+            <button class="previous_hide" disabled>
+            <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+            </button>
+            {/if}
+
+            </fieldset>*}
+        </form>
+        <div class="progress">
+            <div class="progress-bar active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        {/form}
+    </ol>
+</section>
+
+{if $smarty.get.criteria}
+    {hook name="configurator.results" category=$contactArr.id_category_search}
+{/if}

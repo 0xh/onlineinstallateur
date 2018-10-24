@@ -1,0 +1,102 @@
+<li>
+    <div class="frage contactform">
+        <span class="parentholder" style="position: initial;">
+
+            {if $contactArr.visible_vorname}
+                {form_field field="vorname"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_vorname}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" placeholder="" oninvalid="alertFromFront('{intl l='Please fill out first name.'}');" {if $contactArr.required_vorname} required {/if}></textarea>  
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_nachname}
+                {form_field field="nachname"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_nachname}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out last name.'}');" placeholder="" {if $contactArr.required_nachname}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_str}
+                {form_field field="str"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_str}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out str.'}');" placeholder="" {if $contactArr.required_str}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_plz}
+                {form_field field="plz"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_plz}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out plz.'}');" placeholder="" {if $contactArr.required_plz}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_ort}
+                {form_field field="ort"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_ort}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out ort.'}');" placeholder="" {if $contactArr.required_ort}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_telefon}
+                {form_field field="telefon"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_telefon}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="text" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out telefon.'}');" placeholder="" {if $contactArr.required_telefon}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_email}
+                {form_field field="email"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_email}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="email" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please fill out email.'}');" placeholder="" {if $contactArr.required_email}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_terms}
+                {form_field field="terms"} 
+                <span>
+                    <label class="fs-field-label fs-anim-upper" for="q15">{intl l="{$label}"} {if $contactArr.required_terms}*{/if}</label>
+                    <div class="inputholder">
+                        <input type="checkbox" class="fs-anim-lower" id="{$name}" name="{$name}" oninvalid="alertFromFront('{intl l='Please check terms.'}');" placeholder="{$element.placeholder}" {if $contactArr.required_terms}required{/if}></textarea>
+                    </div>
+                </span>
+                {/form_field}
+            {/if}
+
+            {if $contactArr.visible_send}
+                {form_field field="Send"} 
+                <span class="span-btn-submit">
+                    <input   class="fs-anim-lower pushformdata btn btn-send-submit" type="submit" name="submit" onclick="resetAlert();" value="{intl l='Send'}" id="push_configurator_data">
+                </span>
+                {/form_field}
+            {/if}
+        </span>
+    </div>
+</li>

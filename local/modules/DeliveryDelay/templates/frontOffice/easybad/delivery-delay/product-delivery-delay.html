@@ -1,0 +1,15 @@
+ {if $type === 'preorder' }
+  {intl l="Dieses Produkt ist auf Vorbestellung und kann geliefert sein von : " d="deliverydelay.fo.default"}{format_date date={$preOrder} output="date"}
+{elseif $type === 'onorder'}
+  {intl l="This product is only available on order, contact us for more informations" d="deliverydelay.fo.default"}
+
+{elseif $deliveryMax <3}
+  {intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}" min={format_date date={$deliveryMin} format="z"}-{format_date date={$smarty.now|date_format} format="z"} max={format_date date={$deliveryMax} format="z" output="date"}-{format_date date={$smarty.now|date_format} format="z" output="date"} d="deliverydelay.fo.default"}
+{elseif $deliveryMax >3 && $deliveryMax <6}
+  {intl l="ca. 1 Woche" min=({format_date date={$deliveryMin} format="z"}-{format_date date={$smarty.now|date_format} format="z"})/5 max=({format_date date={$deliveryMax} format="z" output="date"}-{format_date date={$smarty.now|date_format} format="z" output="date"})/5 d="deliverydelay.fo.default"}
+{elseif $deliveryMax >6 && $deliveryMax <14}
+  {intl l="ca. 1-2 Wochen" min=({format_date date={$deliveryMin} format="z"}-{format_date date={$smarty.now|date_format} format="z"})/5 max=({format_date date={$deliveryMax} format="z" output="date"}-{format_date date={$smarty.now|date_format} format="z" output="date"})/5 d="deliverydelay.fo.default"}
+{elseif $deliveryMax >14}
+  {intl l="ca. 2-3 Wochen" min=({format_date date={$deliveryMin} format="z"}-{format_date date={$smarty.now|date_format} format="z"})/5 max=({format_date date={$deliveryMax} format="z" output="date"}-{format_date date={$smarty.now|date_format} format="z" output="date"})/5 d="deliverydelay.fo.default"}
+
+{/if} 

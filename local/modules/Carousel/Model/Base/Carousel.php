@@ -8,8 +8,14 @@ use \PDO;
 use Carousel\Model\Carousel as ChildCarousel;
 use Carousel\Model\CarouselI18n as ChildCarouselI18n;
 use Carousel\Model\CarouselI18nQuery as ChildCarouselI18nQuery;
+use Carousel\Model\CarouselName as ChildCarouselName;
+use Carousel\Model\CarouselNameQuery as ChildCarouselNameQuery;
+use Carousel\Model\CarouselNameVersionQuery as ChildCarouselNameVersionQuery;
 use Carousel\Model\CarouselQuery as ChildCarouselQuery;
+use Carousel\Model\CarouselVersion as ChildCarouselVersion;
+use Carousel\Model\CarouselVersionQuery as ChildCarouselVersionQuery;
 use Carousel\Model\Map\CarouselTableMap;
+use Carousel\Model\Map\CarouselVersionTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -64,6 +70,19 @@ abstract class Carousel implements ActiveRecordInterface
     protected $id;
 
     /**
+     * The value for the carousel_id field.
+     * @var        int
+     */
+    protected $carousel_id;
+
+    /**
+     * The value for the visible field.
+     * Note: this column has a database default value of: 1
+     * @var        int
+     */
+    protected $visible;
+
+    /**
      * The value for the file field.
      * @var        string
      */
@@ -82,12 +101,6 @@ abstract class Carousel implements ActiveRecordInterface
     protected $url;
 
     /**
-     * The value for the visible field.
-     * @var        int
-     */
-    protected $visible;
-
-    /**
      * The value for the created_at field.
      * @var        string
      */
@@ -100,10 +113,40 @@ abstract class Carousel implements ActiveRecordInterface
     protected $updated_at;
 
     /**
+     * The value for the version field.
+     * Note: this column has a database default value of: 0
+     * @var        int
+     */
+    protected $version;
+
+    /**
+     * The value for the version_created_at field.
+     * @var        string
+     */
+    protected $version_created_at;
+
+    /**
+     * The value for the version_created_by field.
+     * @var        string
+     */
+    protected $version_created_by;
+
+    /**
+     * @var        CarouselName
+     */
+    protected $aCarouselName;
+
+    /**
      * @var        ObjectCollection|ChildCarouselI18n[] Collection to store aggregation of ChildCarouselI18n objects.
      */
     protected $collCarouselI18ns;
     protected $collCarouselI18nsPartial;
+
+    /**
+     * @var        ObjectCollection|ChildCarouselVersion[] Collection to store aggregation of ChildCarouselVersion objects.
+     */
+    protected $collCarouselVersions;
+    protected $collCarouselVersionsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -127,6 +170,14 @@ abstract class Carousel implements ActiveRecordInterface
      */
     protected $currentTranslations;
 
+    // versionable behavior
+    
+    
+    /**
+     * @var bool
+     */
+    protected $enforceVersion = false;
+            
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
@@ -134,10 +185,30 @@ abstract class Carousel implements ActiveRecordInterface
     protected $carouselI18nsScheduledForDeletion = null;
 
     /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $carouselVersionsScheduledForDeletion = null;
+
+    /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->visible = 1;
+        $this->version = 0;
+    }
+
+    /**
      * Initializes internal state of Carousel\Model\Base\Carousel object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -403,6 +474,28 @@ abstract class Carousel implements ActiveRecordInterface
     }
 
     /**
+     * Get the [carousel_id] column value.
+     * 
+     * @return   int
+     */
+    public function getCarouselId()
+    {
+
+        return $this->carousel_id;
+    }
+
+    /**
+     * Get the [visible] column value.
+     * 
+     * @return   int
+     */
+    public function getVisible()
+    {
+
+        return $this->visible;
+    }
+
+    /**
      * Get the [file] column value.
      * 
      * @return   string
@@ -433,17 +526,6 @@ abstract class Carousel implements ActiveRecordInterface
     {
 
         return $this->url;
-    }
-
-    /**
-     * Get the [visible] column value.
-     * 
-     * @return   int
-     */
-    public function getVisible()
-    {
-
-        return $this->visible;
     }
 
     /**
@@ -487,6 +569,48 @@ abstract class Carousel implements ActiveRecordInterface
     }
 
     /**
+     * Get the [version] column value.
+     * 
+     * @return   int
+     */
+    public function getVersion()
+    {
+
+        return $this->version;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [version_created_at] column value.
+     * 
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw \DateTime object will be returned.
+     *
+     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getVersionCreatedAt($format = NULL)
+    {
+        if ($format === null) {
+            return $this->version_created_at;
+        } else {
+            return $this->version_created_at instanceof \DateTime ? $this->version_created_at->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [version_created_by] column value.
+     * 
+     * @return   string
+     */
+    public function getVersionCreatedBy()
+    {
+
+        return $this->version_created_by;
+    }
+
+    /**
      * Set the value of [id] column.
      * 
      * @param      int $v new value
@@ -506,6 +630,52 @@ abstract class Carousel implements ActiveRecordInterface
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [carousel_id] column.
+     * 
+     * @param      int $v new value
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setCarouselId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->carousel_id !== $v) {
+            $this->carousel_id = $v;
+            $this->modifiedColumns[CarouselTableMap::CAROUSEL_ID] = true;
+        }
+
+        if ($this->aCarouselName !== null && $this->aCarouselName->getId() !== $v) {
+            $this->aCarouselName = null;
+        }
+
+
+        return $this;
+    } // setCarouselId()
+
+    /**
+     * Set the value of [visible] column.
+     * 
+     * @param      int $v new value
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setVisible($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->visible !== $v) {
+            $this->visible = $v;
+            $this->modifiedColumns[CarouselTableMap::VISIBLE] = true;
+        }
+
+
+        return $this;
+    } // setVisible()
 
     /**
      * Set the value of [file] column.
@@ -571,27 +741,6 @@ abstract class Carousel implements ActiveRecordInterface
     } // setUrl()
 
     /**
-     * Set the value of [visible] column.
-     * 
-     * @param      int $v new value
-     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
-     */
-    public function setVisible($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->visible !== $v) {
-            $this->visible = $v;
-            $this->modifiedColumns[CarouselTableMap::VISIBLE] = true;
-        }
-
-
-        return $this;
-    } // setVisible()
-
-    /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      * 
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
@@ -634,6 +783,69 @@ abstract class Carousel implements ActiveRecordInterface
     } // setUpdatedAt()
 
     /**
+     * Set the value of [version] column.
+     * 
+     * @param      int $v new value
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setVersion($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->version !== $v) {
+            $this->version = $v;
+            $this->modifiedColumns[CarouselTableMap::VERSION] = true;
+        }
+
+
+        return $this;
+    } // setVersion()
+
+    /**
+     * Sets the value of [version_created_at] column to a normalized version of the date/time value specified.
+     * 
+     * @param      mixed $v string, integer (timestamp), or \DateTime value.
+     *               Empty strings are treated as NULL.
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setVersionCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
+        if ($this->version_created_at !== null || $dt !== null) {
+            if ($dt !== $this->version_created_at) {
+                $this->version_created_at = $dt;
+                $this->modifiedColumns[CarouselTableMap::VERSION_CREATED_AT] = true;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setVersionCreatedAt()
+
+    /**
+     * Set the value of [version_created_by] column.
+     * 
+     * @param      string $v new value
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function setVersionCreatedBy($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->version_created_by !== $v) {
+            $this->version_created_by = $v;
+            $this->modifiedColumns[CarouselTableMap::VERSION_CREATED_BY] = true;
+        }
+
+
+        return $this;
+    } // setVersionCreatedBy()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -643,6 +855,14 @@ abstract class Carousel implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->visible !== 1) {
+                return false;
+            }
+
+            if ($this->version !== 0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -673,29 +893,44 @@ abstract class Carousel implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CarouselTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CarouselTableMap::translateFieldName('File', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->file = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CarouselTableMap::translateFieldName('CarouselId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->carousel_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CarouselTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->position = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CarouselTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->url = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CarouselTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CarouselTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
             $this->visible = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CarouselTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CarouselTableMap::translateFieldName('File', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->file = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CarouselTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->position = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CarouselTableMap::translateFieldName('Url', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->url = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CarouselTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CarouselTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CarouselTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CarouselTableMap::translateFieldName('Version', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->version = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CarouselTableMap::translateFieldName('VersionCreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->version_created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CarouselTableMap::translateFieldName('VersionCreatedBy', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->version_created_by = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -704,7 +939,7 @@ abstract class Carousel implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = CarouselTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = CarouselTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \Carousel\Model\Carousel object", 0, $e);
@@ -726,6 +961,9 @@ abstract class Carousel implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aCarouselName !== null && $this->carousel_id !== $this->aCarouselName->getId()) {
+            $this->aCarouselName = null;
+        }
     } // ensureConsistency
 
     /**
@@ -765,7 +1003,10 @@ abstract class Carousel implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCarouselName = null;
             $this->collCarouselI18ns = null;
+
+            $this->collCarouselVersions = null;
 
         } // if (deep)
     }
@@ -835,6 +1076,14 @@ abstract class Carousel implements ActiveRecordInterface
         $isInsert = $this->isNew();
         try {
             $ret = $this->preSave($con);
+            // versionable behavior
+            if ($this->isVersioningNecessary()) {
+                $this->setVersion($this->isNew() ? 1 : $this->getLastVersionNumber($con) + 1);
+                if (!$this->isColumnModified(CarouselTableMap::VERSION_CREATED_AT)) {
+                    $this->setVersionCreatedAt(time());
+                }
+                $createVersion = true; // for postSave hook
+            }
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
@@ -859,6 +1108,10 @@ abstract class Carousel implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
+                // versionable behavior
+                if (isset($createVersion)) {
+                    $this->addVersion($con);
+                }
                 CarouselTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
@@ -889,6 +1142,18 @@ abstract class Carousel implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aCarouselName !== null) {
+                if ($this->aCarouselName->isModified() || $this->aCarouselName->isNew()) {
+                    $affectedRows += $this->aCarouselName->save($con);
+                }
+                $this->setCarouselName($this->aCarouselName);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -911,6 +1176,23 @@ abstract class Carousel implements ActiveRecordInterface
 
                 if ($this->collCarouselI18ns !== null) {
             foreach ($this->collCarouselI18ns as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->carouselVersionsScheduledForDeletion !== null) {
+                if (!$this->carouselVersionsScheduledForDeletion->isEmpty()) {
+                    \Carousel\Model\CarouselVersionQuery::create()
+                        ->filterByPrimaryKeys($this->carouselVersionsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->carouselVersionsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collCarouselVersions !== null) {
+            foreach ($this->collCarouselVersions as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -946,6 +1228,12 @@ abstract class Carousel implements ActiveRecordInterface
         if ($this->isColumnModified(CarouselTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
+        if ($this->isColumnModified(CarouselTableMap::CAROUSEL_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'CAROUSEL_ID';
+        }
+        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) {
+            $modifiedColumns[':p' . $index++]  = 'VISIBLE';
+        }
         if ($this->isColumnModified(CarouselTableMap::FILE)) {
             $modifiedColumns[':p' . $index++]  = 'FILE';
         }
@@ -955,14 +1243,20 @@ abstract class Carousel implements ActiveRecordInterface
         if ($this->isColumnModified(CarouselTableMap::URL)) {
             $modifiedColumns[':p' . $index++]  = 'URL';
         }
-        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) {
-            $modifiedColumns[':p' . $index++]  = 'VISIBLE';
-        }
         if ($this->isColumnModified(CarouselTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
         if ($this->isColumnModified(CarouselTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
+        }
+        if ($this->isColumnModified(CarouselTableMap::VERSION)) {
+            $modifiedColumns[':p' . $index++]  = 'VERSION';
+        }
+        if ($this->isColumnModified(CarouselTableMap::VERSION_CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_AT';
+        }
+        if ($this->isColumnModified(CarouselTableMap::VERSION_CREATED_BY)) {
+            $modifiedColumns[':p' . $index++]  = 'VERSION_CREATED_BY';
         }
 
         $sql = sprintf(
@@ -978,6 +1272,12 @@ abstract class Carousel implements ActiveRecordInterface
                     case 'ID':                        
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
+                    case 'CAROUSEL_ID':                        
+                        $stmt->bindValue($identifier, $this->carousel_id, PDO::PARAM_INT);
+                        break;
+                    case 'VISIBLE':                        
+                        $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
+                        break;
                     case 'FILE':                        
                         $stmt->bindValue($identifier, $this->file, PDO::PARAM_STR);
                         break;
@@ -987,14 +1287,20 @@ abstract class Carousel implements ActiveRecordInterface
                     case 'URL':                        
                         $stmt->bindValue($identifier, $this->url, PDO::PARAM_STR);
                         break;
-                    case 'VISIBLE':                        
-                        $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
-                        break;
                     case 'CREATED_AT':                        
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                     case 'UPDATED_AT':                        
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case 'VERSION':                        
+                        $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
+                        break;
+                    case 'VERSION_CREATED_AT':                        
+                        $stmt->bindValue($identifier, $this->version_created_at ? $this->version_created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case 'VERSION_CREATED_BY':                        
+                        $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1062,22 +1368,34 @@ abstract class Carousel implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getFile();
+                return $this->getCarouselId();
                 break;
             case 2:
-                return $this->getPosition();
-                break;
-            case 3:
-                return $this->getUrl();
-                break;
-            case 4:
                 return $this->getVisible();
                 break;
+            case 3:
+                return $this->getFile();
+                break;
+            case 4:
+                return $this->getPosition();
+                break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getUrl();
                 break;
             case 6:
+                return $this->getCreatedAt();
+                break;
+            case 7:
                 return $this->getUpdatedAt();
+                break;
+            case 8:
+                return $this->getVersion();
+                break;
+            case 9:
+                return $this->getVersionCreatedAt();
+                break;
+            case 10:
+                return $this->getVersionCreatedBy();
                 break;
             default:
                 return null;
@@ -1109,12 +1427,16 @@ abstract class Carousel implements ActiveRecordInterface
         $keys = CarouselTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getFile(),
-            $keys[2] => $this->getPosition(),
-            $keys[3] => $this->getUrl(),
-            $keys[4] => $this->getVisible(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[1] => $this->getCarouselId(),
+            $keys[2] => $this->getVisible(),
+            $keys[3] => $this->getFile(),
+            $keys[4] => $this->getPosition(),
+            $keys[5] => $this->getUrl(),
+            $keys[6] => $this->getCreatedAt(),
+            $keys[7] => $this->getUpdatedAt(),
+            $keys[8] => $this->getVersion(),
+            $keys[9] => $this->getVersionCreatedAt(),
+            $keys[10] => $this->getVersionCreatedBy(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1122,8 +1444,14 @@ abstract class Carousel implements ActiveRecordInterface
         }
         
         if ($includeForeignObjects) {
+            if (null !== $this->aCarouselName) {
+                $result['CarouselName'] = $this->aCarouselName->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collCarouselI18ns) {
                 $result['CarouselI18ns'] = $this->collCarouselI18ns->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collCarouselVersions) {
+                $result['CarouselVersions'] = $this->collCarouselVersions->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1163,22 +1491,34 @@ abstract class Carousel implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setFile($value);
+                $this->setCarouselId($value);
                 break;
             case 2:
-                $this->setPosition($value);
-                break;
-            case 3:
-                $this->setUrl($value);
-                break;
-            case 4:
                 $this->setVisible($value);
                 break;
+            case 3:
+                $this->setFile($value);
+                break;
+            case 4:
+                $this->setPosition($value);
+                break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setUrl($value);
                 break;
             case 6:
+                $this->setCreatedAt($value);
+                break;
+            case 7:
                 $this->setUpdatedAt($value);
+                break;
+            case 8:
+                $this->setVersion($value);
+                break;
+            case 9:
+                $this->setVersionCreatedAt($value);
+                break;
+            case 10:
+                $this->setVersionCreatedBy($value);
                 break;
         } // switch()
     }
@@ -1205,12 +1545,16 @@ abstract class Carousel implements ActiveRecordInterface
         $keys = CarouselTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setFile($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setPosition($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setUrl($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setVisible($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[1], $arr)) $this->setCarouselId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setVisible($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setFile($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setPosition($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUrl($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setVersion($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setVersionCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setVersionCreatedBy($arr[$keys[10]]);
     }
 
     /**
@@ -1223,12 +1567,16 @@ abstract class Carousel implements ActiveRecordInterface
         $criteria = new Criteria(CarouselTableMap::DATABASE_NAME);
 
         if ($this->isColumnModified(CarouselTableMap::ID)) $criteria->add(CarouselTableMap::ID, $this->id);
+        if ($this->isColumnModified(CarouselTableMap::CAROUSEL_ID)) $criteria->add(CarouselTableMap::CAROUSEL_ID, $this->carousel_id);
+        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) $criteria->add(CarouselTableMap::VISIBLE, $this->visible);
         if ($this->isColumnModified(CarouselTableMap::FILE)) $criteria->add(CarouselTableMap::FILE, $this->file);
         if ($this->isColumnModified(CarouselTableMap::POSITION)) $criteria->add(CarouselTableMap::POSITION, $this->position);
         if ($this->isColumnModified(CarouselTableMap::URL)) $criteria->add(CarouselTableMap::URL, $this->url);
-        if ($this->isColumnModified(CarouselTableMap::VISIBLE)) $criteria->add(CarouselTableMap::VISIBLE, $this->visible);
         if ($this->isColumnModified(CarouselTableMap::CREATED_AT)) $criteria->add(CarouselTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(CarouselTableMap::UPDATED_AT)) $criteria->add(CarouselTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(CarouselTableMap::VERSION)) $criteria->add(CarouselTableMap::VERSION, $this->version);
+        if ($this->isColumnModified(CarouselTableMap::VERSION_CREATED_AT)) $criteria->add(CarouselTableMap::VERSION_CREATED_AT, $this->version_created_at);
+        if ($this->isColumnModified(CarouselTableMap::VERSION_CREATED_BY)) $criteria->add(CarouselTableMap::VERSION_CREATED_BY, $this->version_created_by);
 
         return $criteria;
     }
@@ -1292,12 +1640,16 @@ abstract class Carousel implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setCarouselId($this->getCarouselId());
+        $copyObj->setVisible($this->getVisible());
         $copyObj->setFile($this->getFile());
         $copyObj->setPosition($this->getPosition());
         $copyObj->setUrl($this->getUrl());
-        $copyObj->setVisible($this->getVisible());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setVersion($this->getVersion());
+        $copyObj->setVersionCreatedAt($this->getVersionCreatedAt());
+        $copyObj->setVersionCreatedBy($this->getVersionCreatedBy());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1307,6 +1659,12 @@ abstract class Carousel implements ActiveRecordInterface
             foreach ($this->getCarouselI18ns() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addCarouselI18n($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getCarouselVersions() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addCarouselVersion($relObj->copy($deepCopy));
                 }
             }
 
@@ -1340,6 +1698,57 @@ abstract class Carousel implements ActiveRecordInterface
         return $copyObj;
     }
 
+    /**
+     * Declares an association between this object and a ChildCarouselName object.
+     *
+     * @param                  ChildCarouselName $v
+     * @return                 \Carousel\Model\Carousel The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCarouselName(ChildCarouselName $v = null)
+    {
+        if ($v === null) {
+            $this->setCarouselId(NULL);
+        } else {
+            $this->setCarouselId($v->getId());
+        }
+
+        $this->aCarouselName = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCarouselName object, it will not be re-added.
+        if ($v !== null) {
+            $v->addCarousel($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCarouselName object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCarouselName The associated ChildCarouselName object.
+     * @throws PropelException
+     */
+    public function getCarouselName(ConnectionInterface $con = null)
+    {
+        if ($this->aCarouselName === null && ($this->carousel_id !== null)) {
+            $this->aCarouselName = ChildCarouselNameQuery::create()->findPk($this->carousel_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCarouselName->addCarousels($this);
+             */
+        }
+
+        return $this->aCarouselName;
+    }
+
 
     /**
      * Initializes a collection based on the name of a relation.
@@ -1353,6 +1762,9 @@ abstract class Carousel implements ActiveRecordInterface
     {
         if ('CarouselI18n' == $relationName) {
             return $this->initCarouselI18ns();
+        }
+        if ('CarouselVersion' == $relationName) {
+            return $this->initCarouselVersions();
         }
     }
 
@@ -1582,19 +1994,245 @@ abstract class Carousel implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collCarouselVersions collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addCarouselVersions()
+     */
+    public function clearCarouselVersions()
+    {
+        $this->collCarouselVersions = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collCarouselVersions collection loaded partially.
+     */
+    public function resetPartialCarouselVersions($v = true)
+    {
+        $this->collCarouselVersionsPartial = $v;
+    }
+
+    /**
+     * Initializes the collCarouselVersions collection.
+     *
+     * By default this just sets the collCarouselVersions collection to an empty array (like clearcollCarouselVersions());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initCarouselVersions($overrideExisting = true)
+    {
+        if (null !== $this->collCarouselVersions && !$overrideExisting) {
+            return;
+        }
+        $this->collCarouselVersions = new ObjectCollection();
+        $this->collCarouselVersions->setModel('\Carousel\Model\CarouselVersion');
+    }
+
+    /**
+     * Gets an array of ChildCarouselVersion objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildCarousel is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildCarouselVersion[] List of ChildCarouselVersion objects
+     * @throws PropelException
+     */
+    public function getCarouselVersions($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCarouselVersionsPartial && !$this->isNew();
+        if (null === $this->collCarouselVersions || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collCarouselVersions) {
+                // return empty collection
+                $this->initCarouselVersions();
+            } else {
+                $collCarouselVersions = ChildCarouselVersionQuery::create(null, $criteria)
+                    ->filterByCarousel($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collCarouselVersionsPartial && count($collCarouselVersions)) {
+                        $this->initCarouselVersions(false);
+
+                        foreach ($collCarouselVersions as $obj) {
+                            if (false == $this->collCarouselVersions->contains($obj)) {
+                                $this->collCarouselVersions->append($obj);
+                            }
+                        }
+
+                        $this->collCarouselVersionsPartial = true;
+                    }
+
+                    reset($collCarouselVersions);
+
+                    return $collCarouselVersions;
+                }
+
+                if ($partial && $this->collCarouselVersions) {
+                    foreach ($this->collCarouselVersions as $obj) {
+                        if ($obj->isNew()) {
+                            $collCarouselVersions[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collCarouselVersions = $collCarouselVersions;
+                $this->collCarouselVersionsPartial = false;
+            }
+        }
+
+        return $this->collCarouselVersions;
+    }
+
+    /**
+     * Sets a collection of CarouselVersion objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $carouselVersions A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildCarousel The current object (for fluent API support)
+     */
+    public function setCarouselVersions(Collection $carouselVersions, ConnectionInterface $con = null)
+    {
+        $carouselVersionsToDelete = $this->getCarouselVersions(new Criteria(), $con)->diff($carouselVersions);
+
+        
+        //since at least one column in the foreign key is at the same time a PK
+        //we can not just set a PK to NULL in the lines below. We have to store
+        //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
+        $this->carouselVersionsScheduledForDeletion = clone $carouselVersionsToDelete;
+
+        foreach ($carouselVersionsToDelete as $carouselVersionRemoved) {
+            $carouselVersionRemoved->setCarousel(null);
+        }
+
+        $this->collCarouselVersions = null;
+        foreach ($carouselVersions as $carouselVersion) {
+            $this->addCarouselVersion($carouselVersion);
+        }
+
+        $this->collCarouselVersions = $carouselVersions;
+        $this->collCarouselVersionsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related CarouselVersion objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related CarouselVersion objects.
+     * @throws PropelException
+     */
+    public function countCarouselVersions(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collCarouselVersionsPartial && !$this->isNew();
+        if (null === $this->collCarouselVersions || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collCarouselVersions) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getCarouselVersions());
+            }
+
+            $query = ChildCarouselVersionQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByCarousel($this)
+                ->count($con);
+        }
+
+        return count($this->collCarouselVersions);
+    }
+
+    /**
+     * Method called to associate a ChildCarouselVersion object to this object
+     * through the ChildCarouselVersion foreign key attribute.
+     *
+     * @param    ChildCarouselVersion $l ChildCarouselVersion
+     * @return   \Carousel\Model\Carousel The current object (for fluent API support)
+     */
+    public function addCarouselVersion(ChildCarouselVersion $l)
+    {
+        if ($this->collCarouselVersions === null) {
+            $this->initCarouselVersions();
+            $this->collCarouselVersionsPartial = true;
+        }
+
+        if (!in_array($l, $this->collCarouselVersions->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddCarouselVersion($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param CarouselVersion $carouselVersion The carouselVersion object to add.
+     */
+    protected function doAddCarouselVersion($carouselVersion)
+    {
+        $this->collCarouselVersions[]= $carouselVersion;
+        $carouselVersion->setCarousel($this);
+    }
+
+    /**
+     * @param  CarouselVersion $carouselVersion The carouselVersion object to remove.
+     * @return ChildCarousel The current object (for fluent API support)
+     */
+    public function removeCarouselVersion($carouselVersion)
+    {
+        if ($this->getCarouselVersions()->contains($carouselVersion)) {
+            $this->collCarouselVersions->remove($this->collCarouselVersions->search($carouselVersion));
+            if (null === $this->carouselVersionsScheduledForDeletion) {
+                $this->carouselVersionsScheduledForDeletion = clone $this->collCarouselVersions;
+                $this->carouselVersionsScheduledForDeletion->clear();
+            }
+            $this->carouselVersionsScheduledForDeletion[]= clone $carouselVersion;
+            $carouselVersion->setCarousel(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
+        $this->carousel_id = null;
+        $this->visible = null;
         $this->file = null;
         $this->position = null;
         $this->url = null;
-        $this->visible = null;
         $this->created_at = null;
         $this->updated_at = null;
+        $this->version = null;
+        $this->version_created_at = null;
+        $this->version_created_by = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1617,6 +2255,11 @@ abstract class Carousel implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collCarouselVersions) {
+                foreach ($this->collCarouselVersions as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         // i18n behavior
@@ -1624,6 +2267,8 @@ abstract class Carousel implements ActiveRecordInterface
         $this->currentTranslations = null;
 
         $this->collCarouselI18ns = null;
+        $this->collCarouselVersions = null;
+        $this->aCarouselName = null;
     }
 
     /**
@@ -1869,6 +2514,315 @@ abstract class Carousel implements ActiveRecordInterface
         return $this;
     }
 
+    // versionable behavior
+    
+    /**
+     * Enforce a new Version of this object upon next save.
+     *
+     * @return \Carousel\Model\Carousel
+     */
+    public function enforceVersioning()
+    {
+        $this->enforceVersion = true;
+    
+        return $this;
+    }
+            
+    /**
+     * Checks whether the current state must be recorded as a version
+     *
+     * @return  boolean
+     */
+    public function isVersioningNecessary($con = null)
+    {
+        if ($this->alreadyInSave) {
+            return false;
+        }
+    
+        if ($this->enforceVersion) {
+            return true;
+        }
+    
+        if (ChildCarouselQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
+            return true;
+        }
+        if (null !== ($object = $this->getCarouselName($con)) && $object->isVersioningNecessary($con)) {
+            return true;
+        }
+    
+    
+        return false;
+    }
+    
+    /**
+     * Creates a version of the current object and saves it.
+     *
+     * @param   ConnectionInterface $con the connection to use
+     *
+     * @return  ChildCarouselVersion A version object
+     */
+    public function addVersion($con = null)
+    {
+        $this->enforceVersion = false;
+    
+        $version = new ChildCarouselVersion();
+        $version->setId($this->getId());
+        $version->setCarouselId($this->getCarouselId());
+        $version->setVisible($this->getVisible());
+        $version->setFile($this->getFile());
+        $version->setPosition($this->getPosition());
+        $version->setUrl($this->getUrl());
+        $version->setCreatedAt($this->getCreatedAt());
+        $version->setUpdatedAt($this->getUpdatedAt());
+        $version->setVersion($this->getVersion());
+        $version->setVersionCreatedAt($this->getVersionCreatedAt());
+        $version->setVersionCreatedBy($this->getVersionCreatedBy());
+        $version->setCarousel($this);
+        if (($related = $this->getCarouselName($con)) && $related->getVersion()) {
+            $version->setCarouselIdVersion($related->getVersion());
+        }
+        $version->save($con);
+    
+        return $version;
+    }
+    
+    /**
+     * Sets the properties of the current object to the value they had at a specific version
+     *
+     * @param   integer $versionNumber The version number to read
+     * @param   ConnectionInterface $con The connection to use
+     *
+     * @return  ChildCarousel The current object (for fluent API support)
+     */
+    public function toVersion($versionNumber, $con = null)
+    {
+        $version = $this->getOneVersion($versionNumber, $con);
+        if (!$version) {
+            throw new PropelException(sprintf('No ChildCarousel object found with version %d', $version));
+        }
+        $this->populateFromVersion($version, $con);
+    
+        return $this;
+    }
+    
+    /**
+     * Sets the properties of the current object to the value they had at a specific version
+     *
+     * @param ChildCarouselVersion $version The version object to use
+     * @param ConnectionInterface   $con the connection to use
+     * @param array                 $loadedObjects objects that been loaded in a chain of populateFromVersion calls on referrer or fk objects.
+     *
+     * @return ChildCarousel The current object (for fluent API support)
+     */
+    public function populateFromVersion($version, $con = null, &$loadedObjects = array())
+    {
+        $loadedObjects['ChildCarousel'][$version->getId()][$version->getVersion()] = $this;
+        $this->setId($version->getId());
+        $this->setCarouselId($version->getCarouselId());
+        $this->setVisible($version->getVisible());
+        $this->setFile($version->getFile());
+        $this->setPosition($version->getPosition());
+        $this->setUrl($version->getUrl());
+        $this->setCreatedAt($version->getCreatedAt());
+        $this->setUpdatedAt($version->getUpdatedAt());
+        $this->setVersion($version->getVersion());
+        $this->setVersionCreatedAt($version->getVersionCreatedAt());
+        $this->setVersionCreatedBy($version->getVersionCreatedBy());
+        if ($fkValue = $version->getCarouselId()) {
+            if (isset($loadedObjects['ChildCarouselName']) && isset($loadedObjects['ChildCarouselName'][$fkValue]) && isset($loadedObjects['ChildCarouselName'][$fkValue][$version->getCarouselIdVersion()])) {
+                $related = $loadedObjects['ChildCarouselName'][$fkValue][$version->getCarouselIdVersion()];
+            } else {
+                $related = new ChildCarouselName();
+                $relatedVersion = ChildCarouselNameVersionQuery::create()
+                    ->filterById($fkValue)
+                    ->filterByVersion($version->getCarouselIdVersion())
+                    ->findOne($con);
+                $related->populateFromVersion($relatedVersion, $con, $loadedObjects);
+                $related->setNew(false);
+            }
+            $this->setCarouselName($related);
+        }
+    
+        return $this;
+    }
+    
+    /**
+     * Gets the latest persisted version number for the current object
+     *
+     * @param   ConnectionInterface $con the connection to use
+     *
+     * @return  integer
+     */
+    public function getLastVersionNumber($con = null)
+    {
+        $v = ChildCarouselVersionQuery::create()
+            ->filterByCarousel($this)
+            ->orderByVersion('desc')
+            ->findOne($con);
+        if (!$v) {
+            return 0;
+        }
+    
+        return $v->getVersion();
+    }
+    
+    /**
+     * Checks whether the current object is the latest one
+     *
+     * @param   ConnectionInterface $con the connection to use
+     *
+     * @return  Boolean
+     */
+    public function isLastVersion($con = null)
+    {
+        return $this->getLastVersionNumber($con) == $this->getVersion();
+    }
+    
+    /**
+     * Retrieves a version object for this entity and a version number
+     *
+     * @param   integer $versionNumber The version number to read
+     * @param   ConnectionInterface $con the connection to use
+     *
+     * @return  ChildCarouselVersion A version object
+     */
+    public function getOneVersion($versionNumber, $con = null)
+    {
+        return ChildCarouselVersionQuery::create()
+            ->filterByCarousel($this)
+            ->filterByVersion($versionNumber)
+            ->findOne($con);
+    }
+    
+    /**
+     * Gets all the versions of this object, in incremental order
+     *
+     * @param   ConnectionInterface $con the connection to use
+     *
+     * @return  ObjectCollection A list of ChildCarouselVersion objects
+     */
+    public function getAllVersions($con = null)
+    {
+        $criteria = new Criteria();
+        $criteria->addAscendingOrderByColumn(CarouselVersionTableMap::VERSION);
+    
+        return $this->getCarouselVersions($criteria, $con);
+    }
+    
+    /**
+     * Compares the current object with another of its version.
+     * <code>
+     * print_r($book->compareVersion(1));
+     * => array(
+     *   '1' => array('Title' => 'Book title at version 1'),
+     *   '2' => array('Title' => 'Book title at version 2')
+     * );
+     * </code>
+     *
+     * @param   integer             $versionNumber
+     * @param   string              $keys Main key used for the result diff (versions|columns)
+     * @param   ConnectionInterface $con the connection to use
+     * @param   array               $ignoredColumns  The columns to exclude from the diff.
+     *
+     * @return  array A list of differences
+     */
+    public function compareVersion($versionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
+    {
+        $fromVersion = $this->toArray();
+        $toVersion = $this->getOneVersion($versionNumber, $con)->toArray();
+    
+        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
+    }
+    
+    /**
+     * Compares two versions of the current object.
+     * <code>
+     * print_r($book->compareVersions(1, 2));
+     * => array(
+     *   '1' => array('Title' => 'Book title at version 1'),
+     *   '2' => array('Title' => 'Book title at version 2')
+     * );
+     * </code>
+     *
+     * @param   integer             $fromVersionNumber
+     * @param   integer             $toVersionNumber
+     * @param   string              $keys Main key used for the result diff (versions|columns)
+     * @param   ConnectionInterface $con the connection to use
+     * @param   array               $ignoredColumns  The columns to exclude from the diff.
+     *
+     * @return  array A list of differences
+     */
+    public function compareVersions($fromVersionNumber, $toVersionNumber, $keys = 'columns', $con = null, $ignoredColumns = array())
+    {
+        $fromVersion = $this->getOneVersion($fromVersionNumber, $con)->toArray();
+        $toVersion = $this->getOneVersion($toVersionNumber, $con)->toArray();
+    
+        return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
+    }
+    
+    /**
+     * Computes the diff between two versions.
+     * <code>
+     * print_r($book->computeDiff(1, 2));
+     * => array(
+     *   '1' => array('Title' => 'Book title at version 1'),
+     *   '2' => array('Title' => 'Book title at version 2')
+     * );
+     * </code>
+     *
+     * @param   array     $fromVersion     An array representing the original version.
+     * @param   array     $toVersion       An array representing the destination version.
+     * @param   string    $keys            Main key used for the result diff (versions|columns).
+     * @param   array     $ignoredColumns  The columns to exclude from the diff.
+     *
+     * @return  array A list of differences
+     */
+    protected function computeDiff($fromVersion, $toVersion, $keys = 'columns', $ignoredColumns = array())
+    {
+        $fromVersionNumber = $fromVersion['Version'];
+        $toVersionNumber = $toVersion['Version'];
+        $ignoredColumns = array_merge(array(
+            'Version',
+            'VersionCreatedAt',
+            'VersionCreatedBy',
+        ), $ignoredColumns);
+        $diff = array();
+        foreach ($fromVersion as $key => $value) {
+            if (in_array($key, $ignoredColumns)) {
+                continue;
+            }
+            if ($toVersion[$key] != $value) {
+                switch ($keys) {
+                    case 'versions':
+                        $diff[$fromVersionNumber][$key] = $value;
+                        $diff[$toVersionNumber][$key] = $toVersion[$key];
+                        break;
+                    default:
+                        $diff[$key] = array(
+                            $fromVersionNumber => $value,
+                            $toVersionNumber => $toVersion[$key],
+                        );
+                        break;
+                }
+            }
+        }
+    
+        return $diff;
+    }
+    /**
+     * retrieve the last $number versions.
+     *
+     * @param Integer $number the number of record to return.
+     * @return PropelCollection|array \Carousel\Model\CarouselVersion[] List of \Carousel\Model\CarouselVersion objects
+     */
+    public function getLastVersions($number = 10, $criteria = null, $con = null)
+    {
+        $criteria = ChildCarouselVersionQuery::create(null, $criteria);
+        $criteria->addDescendingOrderByColumn(CarouselVersionTableMap::VERSION);
+        $criteria->limit($number);
+    
+        return $this->getCarouselVersions($criteria, $con);
+    }
     /**
      * Code to be run before persisting the object
      * @param  ConnectionInterface $con

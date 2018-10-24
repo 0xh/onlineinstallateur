@@ -1,0 +1,12 @@
+{include
+    file="view-includes/generic-view-selector.html"
+    sourceType = 'category'
+    sourceId = $category_id
+    successUrl = {url path="/admin/categories/update?category_id=$category_id&current_tab=modules"}
+    hasSubTree = 1
+    objectLabel = {intl d='view.ai' l='cette catégorie'}
+    subTreeObjectLabel = {intl d='view.ai' l='sous-catégories'}
+
+    childrenObjectLabel = {intl d='view.ai' l='produits'}
+    childrenSourceType = 'product'
+}

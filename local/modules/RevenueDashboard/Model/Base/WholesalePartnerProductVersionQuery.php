@@ -24,6 +24,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     ChildWholesalePartnerProductVersionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerProductVersionQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
  * @method     ChildWholesalePartnerProductVersionQuery orderByProductId($order = Criteria::ASC) Order by the product_id column
+ * @method     ChildWholesalePartnerProductVersionQuery orderByPartnerProdRef($order = Criteria::ASC) Order by the partner_product_ref column
  * @method     ChildWholesalePartnerProductVersionQuery orderByPrice($order = Criteria::ASC) Order by the price column
  * @method     ChildWholesalePartnerProductVersionQuery orderByPackageSize($order = Criteria::ASC) Order by the package_size column
  * @method     ChildWholesalePartnerProductVersionQuery orderByDeliveryCost($order = Criteria::ASC) Order by the delivery_cost column
@@ -36,10 +37,12 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     ChildWholesalePartnerProductVersionQuery orderByValidUntil($order = Criteria::ASC) Order by the valid_until column
  * @method     ChildWholesalePartnerProductVersionQuery orderByVersion($order = Criteria::ASC) Order by the version column
  * @method     ChildWholesalePartnerProductVersionQuery orderByVersionCreatedBy($order = Criteria::ASC) Order by the version_created_by column
+ * @method     ChildWholesalePartnerProductVersionQuery orderByProductIdVersion($order = Criteria::ASC) Order by the product_id_version column
  *
  * @method     ChildWholesalePartnerProductVersionQuery groupById() Group by the id column
  * @method     ChildWholesalePartnerProductVersionQuery groupByPartnerId() Group by the partner_id column
  * @method     ChildWholesalePartnerProductVersionQuery groupByProductId() Group by the product_id column
+ * @method     ChildWholesalePartnerProductVersionQuery groupByPartnerProdRef() Group by the partner_product_ref column
  * @method     ChildWholesalePartnerProductVersionQuery groupByPrice() Group by the price column
  * @method     ChildWholesalePartnerProductVersionQuery groupByPackageSize() Group by the package_size column
  * @method     ChildWholesalePartnerProductVersionQuery groupByDeliveryCost() Group by the delivery_cost column
@@ -52,6 +55,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     ChildWholesalePartnerProductVersionQuery groupByValidUntil() Group by the valid_until column
  * @method     ChildWholesalePartnerProductVersionQuery groupByVersion() Group by the version column
  * @method     ChildWholesalePartnerProductVersionQuery groupByVersionCreatedBy() Group by the version_created_by column
+ * @method     ChildWholesalePartnerProductVersionQuery groupByProductIdVersion() Group by the product_id_version column
  *
  * @method     ChildWholesalePartnerProductVersionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildWholesalePartnerProductVersionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -67,6 +71,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     ChildWholesalePartnerProductVersion findOneById(int $id) Return the first ChildWholesalePartnerProductVersion filtered by the id column
  * @method     ChildWholesalePartnerProductVersion findOneByPartnerId(int $partner_id) Return the first ChildWholesalePartnerProductVersion filtered by the partner_id column
  * @method     ChildWholesalePartnerProductVersion findOneByProductId(int $product_id) Return the first ChildWholesalePartnerProductVersion filtered by the product_id column
+ * @method     ChildWholesalePartnerProductVersion findOneByPartnerProdRef(string $partner_product_ref) Return the first ChildWholesalePartnerProductVersion filtered by the partner_product_ref column
  * @method     ChildWholesalePartnerProductVersion findOneByPrice(string $price) Return the first ChildWholesalePartnerProductVersion filtered by the price column
  * @method     ChildWholesalePartnerProductVersion findOneByPackageSize(int $package_size) Return the first ChildWholesalePartnerProductVersion filtered by the package_size column
  * @method     ChildWholesalePartnerProductVersion findOneByDeliveryCost(string $delivery_cost) Return the first ChildWholesalePartnerProductVersion filtered by the delivery_cost column
@@ -79,10 +84,12 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     ChildWholesalePartnerProductVersion findOneByValidUntil(string $valid_until) Return the first ChildWholesalePartnerProductVersion filtered by the valid_until column
  * @method     ChildWholesalePartnerProductVersion findOneByVersion(int $version) Return the first ChildWholesalePartnerProductVersion filtered by the version column
  * @method     ChildWholesalePartnerProductVersion findOneByVersionCreatedBy(string $version_created_by) Return the first ChildWholesalePartnerProductVersion filtered by the version_created_by column
+ * @method     ChildWholesalePartnerProductVersion findOneByProductIdVersion(int $product_id_version) Return the first ChildWholesalePartnerProductVersion filtered by the product_id_version column
  *
  * @method     array findById(int $id) Return ChildWholesalePartnerProductVersion objects filtered by the id column
  * @method     array findByPartnerId(int $partner_id) Return ChildWholesalePartnerProductVersion objects filtered by the partner_id column
  * @method     array findByProductId(int $product_id) Return ChildWholesalePartnerProductVersion objects filtered by the product_id column
+ * @method     array findByPartnerProdRef(string $partner_product_ref) Return ChildWholesalePartnerProductVersion objects filtered by the partner_product_ref column
  * @method     array findByPrice(string $price) Return ChildWholesalePartnerProductVersion objects filtered by the price column
  * @method     array findByPackageSize(int $package_size) Return ChildWholesalePartnerProductVersion objects filtered by the package_size column
  * @method     array findByDeliveryCost(string $delivery_cost) Return ChildWholesalePartnerProductVersion objects filtered by the delivery_cost column
@@ -95,6 +102,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  * @method     array findByValidUntil(string $valid_until) Return ChildWholesalePartnerProductVersion objects filtered by the valid_until column
  * @method     array findByVersion(int $version) Return ChildWholesalePartnerProductVersion objects filtered by the version column
  * @method     array findByVersionCreatedBy(string $version_created_by) Return ChildWholesalePartnerProductVersion objects filtered by the version_created_by column
+ * @method     array findByProductIdVersion(int $product_id_version) Return ChildWholesalePartnerProductVersion objects filtered by the product_id_version column
  *
  */
 abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
@@ -183,7 +191,7 @@ abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY FROM wholesale_partner_product_version WHERE ID = :p0 AND VERSION = :p1';
+        $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PARTNER_PRODUCT_REF, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY, PRODUCT_ID_VERSION FROM wholesale_partner_product_version WHERE ID = :p0 AND VERSION = :p1';
         try {
             $stmt = $con->prepare($sql);            
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
@@ -407,6 +415,35 @@ abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(WholesalePartnerProductVersionTableMap::PRODUCT_ID, $productId, $comparison);
+    }
+
+    /**
+     * Filter the query on the partner_product_ref column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPartnerProdRef('fooValue');   // WHERE partner_product_ref = 'fooValue'
+     * $query->filterByPartnerProdRef('%fooValue%'); // WHERE partner_product_ref LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $partnerProdRef The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildWholesalePartnerProductVersionQuery The current query, for fluid interface
+     */
+    public function filterByPartnerProdRef($partnerProdRef = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($partnerProdRef)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $partnerProdRef)) {
+                $partnerProdRef = str_replace('*', '%', $partnerProdRef);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(WholesalePartnerProductVersionTableMap::PARTNER_PRODUCT_REF, $partnerProdRef, $comparison);
     }
 
     /**
@@ -829,6 +866,47 @@ abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(WholesalePartnerProductVersionTableMap::VERSION_CREATED_BY, $versionCreatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the product_id_version column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByProductIdVersion(1234); // WHERE product_id_version = 1234
+     * $query->filterByProductIdVersion(array(12, 34)); // WHERE product_id_version IN (12, 34)
+     * $query->filterByProductIdVersion(array('min' => 12)); // WHERE product_id_version > 12
+     * </code>
+     *
+     * @param     mixed $productIdVersion The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildWholesalePartnerProductVersionQuery The current query, for fluid interface
+     */
+    public function filterByProductIdVersion($productIdVersion = null, $comparison = null)
+    {
+        if (is_array($productIdVersion)) {
+            $useMinMax = false;
+            if (isset($productIdVersion['min'])) {
+                $this->addUsingAlias(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION, $productIdVersion['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($productIdVersion['max'])) {
+                $this->addUsingAlias(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION, $productIdVersion['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(WholesalePartnerProductVersionTableMap::PRODUCT_ID_VERSION, $productIdVersion, $comparison);
     }
 
     /**

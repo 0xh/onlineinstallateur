@@ -1,0 +1,38 @@
+<li>
+    {form_field field="{$element.name}"} 
+    <div class="frage {$element.name}">
+        <div>
+            <label class="fragelabel fs-field-label fs-anim-upper" for="{$for}">
+                <h3 class="question_label">{intl l="{$label}"}{if $element.required eq true }*{/if}</h3>
+            </label>
+        </div>
+            <span style="margin:6%;">
+	            <p><span style="display: block; float: left;">€ {$element.attr.min}</span> <span style="display: block; float: right;">€ {$element.attr.max}</span></p>
+	            <input type="range" min="{$element.attr.min}" max="{$element.attr.max}" value="{($element.attr.max/2)|string_format:"%d"}" name="{$name}" class="slider" oninput="setValue({$element.name})" id="myRange_{$element.name}" {if $element.required eq true }required{/if}>
+	            <p style="margin-top: 20px;">€ <span id="value_selected_{$element.name}">{($element.attr.max/2)|string_format:"%d"}</span></p>
+			</span>
+			<div class="fs-radio-group fs-radio-custom clearfix">
+            	<div class="fs-radio-group fs-radio-normal clearfix">
+            	 {if $last_slide == $current_slide && $contactArr.visible_form_contact == "false"}
+	             	{include file="includes/submit_template.html"}
+	             {else}
+	             	<div class="next  btn-weiter">{intl l='Weiter'} </div>
+	             {/if}
+        		</div>
+    		</div>
+    {/form_field}
+</li>
+
+
+<script>
+    function setValue(id) {
+        var slider = document.getElementById("myRange_" + id);
+        var output = document.getElementById("value_selected_" + id);
+        output.innerHTML = slider.value;
+
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+        }
+    }
+
+</script>

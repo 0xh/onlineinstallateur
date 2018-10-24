@@ -3,79 +3,92 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
 
-    <table name="configurator" idMethod="native" phpName="Configurator"  namespace="FilterConfigurator\Model">
+    <table name="filterconfigurator_configurator" idMethod="native" phpName="FilterConfigurator"  namespace="FilterConfigurator\Model">
         <column autoIncrement="true" name="id" phpName="Id" primaryKey="true" required="true" type="INTEGER" />
         <column name="category_id" phpName="CategoryId" type="INTEGER" />
         <column defaultValue="0" name="visible" phpName="Visible" required="true" type="TINYINT" />
         <column defaultValue="0" name="position" phpName="Position" required="true" type="INTEGER" />
-        <foreign-key foreignTable="category" name="fk_configurator_category" onDelete="CASCADE">
-	      <reference local="category_id" foreign="id"/>
-	    </foreign-key>
+        <foreign-key foreignTable="category" name="fk_filterconfigurator_configurator_category" onDelete="CASCADE">
+            <reference local="category_id" foreign="id"/>
+        </foreign-key>
         <behavior name="timestampable" />
     </table>
+    
+    <table name="filterconfigurator_configurator_hook" phpName="FilterConfiguratorHook" namespace="FilterConfigurator\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="filter_configurator_id" type="INTEGER" />
+        <column name="hook_id" type="INTEGER" />
+        <column name="hook_code" size="255" type="VARCHAR" />
+        <foreign-key foreignTable="filterconfigurator_configurator" name="fk_filter_configurator_hook" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="filter_configurator_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="hook" name="fk_filter_configurator_hook_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="hook_id"/>
+        </foreign-key>
+    </table>
 
-	<table name="configurator_i18n" idMethod="native" phpName="ConfiguratorI18n" namespace="FilterConfigurator\Model">
-	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
-	    <column name="locale" phpName="Locale" type="VARCHAR" size="5" primaryKey="true" required="true" defaultValue="en_US"/>
-	    <column name="title" phpName="Title" type="VARCHAR" size="255"/>
-	    <column name="description" phpName="Description" type="CLOB"/>
-	    <column name="chapo" phpName="Chapo" type="LONGVARCHAR"/>
-	    <column name="postscriptum" phpName="Postscriptum" type="LONGVARCHAR"/>
-	    <foreign-key foreignTable="configurator" name="fk_configurator_i18n" onDelete="CASCADE">
-	      <reference local="id" foreign="id"/>
-	    </foreign-key>
-	    <vendor type="mysql">
-	      <parameter name="Engine" value="InnoDB"/>
-	    </vendor>
-	</table>
+    <table name="filterconfigurator_configurator_i18n" idMethod="native" phpName="FilterConfiguratorI18n" namespace="FilterConfigurator\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="locale" phpName="Locale" type="VARCHAR" size="5" primaryKey="true" required="true" defaultValue="en_US"/>
+        <column name="title" phpName="Title" type="VARCHAR" size="255"/>
+        <column name="description" phpName="Description" type="CLOB"/>
+        <column name="chapo" phpName="Chapo" type="LONGVARCHAR"/>
+        <column name="postscriptum" phpName="Postscriptum" type="LONGVARCHAR"/>
+        <foreign-key foreignTable="filterconfigurator_configurator" name="fk_filterconfigurator_configurator_i18n" onDelete="CASCADE">
+            <reference local="id" foreign="id"/>
+        </foreign-key>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
 	
-	<table name="configurator_image" idMethod="native" phpName="ConfiguratorImage" namespace="FilterConfigurator\Model">
-	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-	    <column name="configurator_id" phpName="ConfiguratorId" type="INTEGER" required="true"/>
-	    <column name="file" phpName="File" type="VARCHAR" size="255" required="true"/>
-	    <column name="visible" phpName="Visible" type="TINYINT" required="true" defaultValue="1"/>
-	    <column name="position" phpName="Position" type="INTEGER"/>
-	    <foreign-key foreignTable="configurator" name="fk_configurator_image_id" onDelete="CASCADE">
-	      <reference local="configurator_id" foreign="id"/>
-	    </foreign-key>
-	    <index name="idx_configurator_image_id">
-	      <index-column name="configurator_id"/>
-	    </index>
-	    <behavior name="timestampable" />
-	    <vendor type="mysql">
-	      <parameter name="Engine" value="InnoDB"/>
-	    </vendor>
-	</table>
+    <table name="filterconfigurator_configurator_image" idMethod="native" phpName="FilterConfiguratorImage" namespace="FilterConfigurator\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+        <column name="configurator_id" phpName="ConfiguratorId" type="INTEGER" required="true"/>
+        <column name="file" phpName="File" type="VARCHAR" size="255" required="true"/>
+        <column name="visible" phpName="Visible" type="TINYINT" required="true" defaultValue="1"/>
+        <column name="position" phpName="Position" type="INTEGER"/>
+        <foreign-key foreignTable="filterconfigurator_configurator" name="fk_filterconfigurator_configurator_image_id" onDelete="CASCADE">
+            <reference local="configurator_id" foreign="id"/>
+        </foreign-key>
+        <index name="idx_configurator_image_id">
+            <index-column name="configurator_id"/>
+        </index>
+        <behavior name="timestampable" />
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
 	
-	<table name="configurator_image_i18n" idMethod="native" phpName="ConfiguratorImageI18n" namespace="FilterConfigurator\Model">
-	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
-	    <column name="locale" phpName="Locale" type="VARCHAR" size="5" primaryKey="true" required="true" defaultValue="en_US"/>
-	    <column name="title" phpName="Title" type="VARCHAR" size="255"/>
-	    <column name="description" phpName="Description" type="CLOB"/>
-	    <column name="chapo" phpName="Chapo" type="LONGVARCHAR"/>
-	    <column name="postscriptum" phpName="Postscriptum" type="LONGVARCHAR"/>
-	    <foreign-key foreignTable="configurator_image" name="fk_configurator_image_i18n_id" onDelete="CASCADE">
-	      <reference local="id" foreign="id"/>
-	    </foreign-key>
-	    <vendor type="mysql">
-	      <parameter name="Engine" value="InnoDB"/>
-	    </vendor>
-	</table>
+    <table name="filterconfigurator_configurator_image_i18n" idMethod="native" phpName="FilterConfiguratorImageI18n" namespace="FilterConfigurator\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
+        <column name="locale" phpName="Locale" type="VARCHAR" size="5" primaryKey="true" required="true" defaultValue="en_US"/>
+        <column name="title" phpName="Title" type="VARCHAR" size="255"/>
+        <column name="description" phpName="Description" type="CLOB"/>
+        <column name="chapo" phpName="Chapo" type="LONGVARCHAR"/>
+        <column name="postscriptum" phpName="Postscriptum" type="LONGVARCHAR"/>
+        <foreign-key foreignTable="filterconfigurator_configurator_image" name="fk_filterconfigurator_configurator_image_i18n_id" onDelete="CASCADE">
+            <reference local="id" foreign="id"/>
+        </foreign-key>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
 	
-	<table name="configurator_features" idMethod="native" phpName="ConfiguratorFeatures" namespace="FilterConfigurator\Model">
-	    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true"/>
-	    <column name="configurator_id" phpName="ConfiguratorId" type="INTEGER" />
-	    <column name="feature_id" phpName="FeatureId" type="INTEGER" />
-	    <foreign-key foreignTable="configurator" name="fk_conf_configurator_id" onDelete="CASCADE">
-	      <reference local="configurator_id" foreign="id"/>
-	    </foreign-key>
-	    <foreign-key foreignTable="feature" name="fk_conf_feature_id" onDelete="CASCADE">
-	      <reference local="feature_id" foreign="id"/>
-	    </foreign-key>
-	    <vendor type="mysql">
-	      <parameter name="Engine" value="InnoDB"/>
-	    </vendor>
-	</table>
+    <table name="filterconfigurator_configurator_features" idMethod="native" phpName="FilterConfiguratorFeatures" namespace="FilterConfigurator\Model">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true" autoIncrement="true"/>
+        <column name="configurator_id" phpName="ConfiguratorId" type="INTEGER" />
+        <column name="feature_id" phpName="FeatureId" type="INTEGER" />
+        <foreign-key foreignTable="filterconfigurator_configurator" name="fk_filterconfigurator_conf_configurator_id" onDelete="CASCADE">
+            <reference local="configurator_id" foreign="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="feature" name="fk_filterconfigurator_conf_feature_id" onDelete="CASCADE">
+            <reference local="feature_id" foreign="id"/>
+        </foreign-key>
+        <vendor type="mysql">
+            <parameter name="Engine" value="InnoDB"/>
+        </vendor>
+    </table>
   
 	
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
