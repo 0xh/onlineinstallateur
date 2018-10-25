@@ -92,7 +92,7 @@ span.criteria-pagination{
     display: inline-block;
 }
 
-/* configurator */
+ configurator 
 
 .nav-tabs>li, .nav-tabs>li>a {
     display: block;
@@ -296,9 +296,9 @@ ul.category-container:first-child {
     color: #fff;
 }
 
-/*.category-container.nav-tabs li a:hover span {
+.category-container.nav-tabs li a:hover span {
     color: #fff;
-}*/
+}
 
 .category-container li{
     padding-left: 0px;
@@ -371,7 +371,7 @@ ul.category-container:first-child {
     border: 1px solid #D1D3D4;
 }
 
-/*.card .tab-content .checkbox*/
+
 @media (-moz-touch-enabled: 0), (pointer:fine) {
     .tab-content .checkbox label:hover{
         border: 1px solid #86AC34;
@@ -381,6 +381,7 @@ ul.category-container:first-child {
         color: #86AC34; 
     }
 }
+
 .tab-content .checkbox input[type="checkbox"]:checked ~ label:before {
     color: #fff;
     background-color: #86AC34;
