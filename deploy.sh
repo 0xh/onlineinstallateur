@@ -1,27 +1,6 @@
 #!/bin/bash
 
-#oove to relese folder
-cd $RELESE_NUMBER
-
-
-
-if [ -d "stable_backup" ]; then
-    sudo rm -rf ./stable_backup
-fi
-
-
-RELEASE_FOLDER=$RELESE_NUMBER
-mkdir $RELEASE_FOLDER
-
-
-printf "STEP2: GIT CLONE REPOSITORY \n "
-#git clone
-git clone -b master-dev git@github.com:sepaengineering/hausfabrik.git $RELEASE_FOLDER
-cd  $RELEASE_FOLDER 
-git fetch 
-printf "STEP3: GIT CHECKOUT   branch "
-git checkout master-dev
-git pull origin master-dev
+#!/bin/bash
 
 CONFIG_DIR="local/config"
 MEDIA_DIR="local/media"
@@ -33,7 +12,9 @@ LOG="log"
 SESSION="local/session"
 WEB_CONFIGURATOR="web/configurator"
 
+
 #remove config and static content folder  
+
 if [ -d "$MEDIA_DIR" ]; then
   if [ -L "$MEDIA_DIR" ]; then
   	rm  $MEDIA_DIR
@@ -111,8 +92,9 @@ ln -s /data/hausfabrik/configurator web/configurator
 #link the web/media and config from outside the app 
 ln -s /data/hausfabrik/web_media web/media
 
+composer install
+composer require "doctrine/cache"
 composer require "elasticsearch/elasticsearch: ~6.0"
-
 
 
 #move all content to stable vestion
