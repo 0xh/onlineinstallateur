@@ -7,9 +7,9 @@
             </label>
         </div>
             <span style="margin:6%;">
-	            <p><span style="display: block; float: left;">€ {$element.attr.min}</span> <span style="display: block; float: right;">€ {$element.attr.max}</span></p>
+	            <p><span style="display: block; float: left;">{$element.attr.currency} {$element.attr.min|number_format:0:".":"."}</span> <span style="display: block; float: right;">{$element.attr.currency} {$element.attr.max|number_format:0:".":"."}</span></p>
 	            <input type="range" min="{$element.attr.min}" max="{$element.attr.max}" value="{($element.attr.max/2)|string_format:"%d"}" name="{$name}" class="slider" oninput="setValue({$element.name})" id="myRange_{$element.name}" {if $element.required eq true }required{/if}>
-	            <p style="margin-top: 20px;">€ <span id="value_selected_{$element.name}">{($element.attr.max/2)|string_format:"%d"}</span></p>
+	            <p style="margin-top: 20px;">{$element.attr.currency} <span id="value_selected_{$element.name}">{($element.attr.max/2)|string_format:"%d"|number_format:0:".":"."}</span></p>
 			</span>
 			<div class="fs-radio-group fs-radio-custom clearfix">
             	<div class="fs-radio-group fs-radio-normal clearfix">

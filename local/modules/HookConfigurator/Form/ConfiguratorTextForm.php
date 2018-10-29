@@ -18,7 +18,8 @@ class ConfiguratorTextForm extends BaseForm {
             "label" => "label",
             "required" => true,
             "attr" => array(
-                "placeholder" => ""
+                "placeholder" => "",
+                "answer_type" => "text"
             ),
             "label_attr" => array(
                 "for" => 'name_text',
