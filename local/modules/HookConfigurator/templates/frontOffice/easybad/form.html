@@ -18,4 +18,12 @@
         $("#alert-from-front").html('');
     }
 
+    function showNext(str) {
+        if ($(".answer-type-" + str).val())
+        {
+            $(".class-" + str).css("visibility", "visible");
+        } else {
+            $(".class-" + str).css("visibility", "hidden");
+        }
+    }
 </script>

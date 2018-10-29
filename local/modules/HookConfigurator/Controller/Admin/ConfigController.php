@@ -272,6 +272,11 @@ class ConfigController extends BaseAdminController {
         if ($params["type"] === "range") {
             $params["attr"]["min"] = $this->getRequest()->request->get("min_val");
             $params["attr"]["max"] = $this->getRequest()->request->get("max_val");
+            $params["attr"]["currency"] = $this->getRequest()->request->get("currency");
+        }
+
+        if ($params["type"] === "text") {
+            $params["attr"]["answer_type"] = $this->getRequest()->request->get("answer_type");
         }
 
         $params['attr']["data_icon"] = $this->getRequest()->request->get("data_icon");
