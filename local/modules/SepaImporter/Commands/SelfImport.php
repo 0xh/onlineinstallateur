@@ -14,6 +14,7 @@ use Thelia\Handler\ImportHandler;
 use Thelia\Model\ImportQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
+use Thelia\Tools\URL;
 use const DS;
 use const THELIA_LOCAL_DIR;
 
@@ -30,6 +31,9 @@ class SelfImport extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Running Command !");
+
+
+        $UR = new URL();
 
 //          $url = "https://netix.dl.sourceforge.net/project/fotohound/fotohound/fotohound-1.0.6/FotoHound-1.0.6.zip";
         // //        $url = "https://www.sht-gruppe.at/alleartikel.zip";
