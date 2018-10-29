@@ -19,7 +19,8 @@ class ConfiguratorRangeForm extends BaseForm {
             "required" => true,
             "attr" => array(
                 'min' => 5,
-                'max' => 50
+                'max' => 50,
+                'currency' => '€'
             ),
             "label_attr" => array(
                 "for" => 'name_range',

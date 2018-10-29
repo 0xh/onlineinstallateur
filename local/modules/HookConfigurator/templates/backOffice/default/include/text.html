@@ -26,25 +26,17 @@
 </td>
 
 <td class="text-center">
-
-    {foreach from=$params.attr.answer.values item=entry}
     <div class="form-group">
         <div class="control-input">
-            <input type="text" name="{$entry.value}" value="{$entry.text}" class="form-control" aria-required="true" required>
+            <strong>{intl l='Set answer type:'}</strong> <input type="text" name="answer_type" autocomplete="off" value="{$params.attr.answer_type}" class="form-control" aria-required="true" >
         </div>
     </div>
-    {/foreach}
-
-</td>
-
-<td>
-    
 </td>
 
 <td class="text-center">
     <div class="form-group">
         <div class="control-input">
-            <input type="text" name="placeholder" value="{$params.attr.placeholder}" class="form-control" aria-required="true" >
+            <input type="text" name="placeholder" value="{$params.attr.placeholder}" autocomplete="off" class="form-control" aria-required="true" >
         </div>
     </div>
 </td>
