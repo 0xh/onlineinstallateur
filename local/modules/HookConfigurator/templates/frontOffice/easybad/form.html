@@ -22,9 +22,11 @@
         str = $(this).attr("data-id");
         if ($(this).val())
         {
-            $(".class-" + str).css("visibility", "visible");
+            $(".class-" + str).removeAttr("disabled");
+            $(".class-" + str).css("background-color", "#15589c");
         } else {
-            $(".class-" + str).css("visibility", "hidden");
+            $(".class-" + str).attr("disabled", true);
+            $(".class-" + str).css("background-color", "#f1f1f1");
         }
     });
 </script>
