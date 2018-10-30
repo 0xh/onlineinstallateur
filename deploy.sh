@@ -34,7 +34,7 @@ if [ -d "$CONFIG_DIR" ]; then
 fi
 
 if [ -d "$WEB_MEDIA" ]; then
-	if [ -l "$WEB_MEDIA" ]; then
+	if [ -L "$WEB_MEDIA" ]; then
   		rm  $WEB_MEDIA
     else
     	rm -rf $WEB_MEDIA
@@ -43,7 +43,7 @@ if [ -d "$WEB_MEDIA" ]; then
 fi
 
 if [ -d "$WEB_CONFIGURATOR" ]; then
-	if [ -l "$WEB_CONFIGURATOR" ]; then
+	if [ -L "$WEB_CONFIGURATOR" ]; then
   		rm  $WEB_CONFIGURATOR
     else
     	rm -rf $WEB_CONFIGURATOR
@@ -106,13 +106,9 @@ if [ ! -d "../stable_backup" ]; then
     rm -rf ../stable_backup
 fi
 
+sudo rsync -arv --progress ./* ../stable_new
 
-mv ../stable ../stable_backup
-
-
-sudo rsync -arv --progress ./* ../stable
-
-cd ../stable 
+cd ../stable_new
 
 
 chmod -R 0777 templates/frontOffice/default/assets/dist/
@@ -133,7 +129,12 @@ sudo chmod -R 0777 $SESSION
 php Thelia cache:clear --env=prod
 php Thelia cache:clear --env=dev
 
-printf "STEP6: Remvoe Backup \n "
+#create backup 
 
-sudo rm -rf ../stable_backup
+mv ../stable ../stable_backup
+#move new release to stable version
+mv ../stable_new ../stable
+
+
+
 
