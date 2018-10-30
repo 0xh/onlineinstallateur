@@ -391,11 +391,13 @@ section .product-image{
 }
 .btn-1{
     background:#15589c!important;
-    color:#000!important;
+    color:#fff!important;
+    width: 100%;
+    text-align: center;
 }
 .btn-1:hover{
     background:#15589c!important;
-    color:#000!important;
+    color:#fff!important;
 }
 
 #contact-bank-information {
