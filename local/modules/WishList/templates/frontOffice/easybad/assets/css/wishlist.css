@@ -23,7 +23,7 @@
 .page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary,
 .page-wish-list #wishlist-box #category-products .products-content .wish-list-button a{
     text-align: center;
-    background-color: #10B4CF;
+    background-color: #15589c;
     color: #fff;
     border-color: unset !important;
     border: 1px solid #347C92 !important;
@@ -37,7 +37,7 @@
 }
 
 .page-wish-list #wishlist-box #category-products .products-content .badge-hersteller{
-    color: #10B4CF !important;
+    color: #15589c !important;
 }
 
 .page-wish-list #wishlist-box #category-products .products-content .product-price .highlightcolor {

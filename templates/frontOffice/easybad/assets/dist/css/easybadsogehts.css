@@ -46,7 +46,7 @@ background-size: cover;
 }
 .bg-gray {
     color: white;
-    background-color: #10b4cf;
+    background-color: #15589c;
 }
 div.media{
 height:416px;
@@ -63,18 +63,18 @@ width: fit-content;
     position: absolute;
     bottom: 35px;
     font-size:1.5em;
-    color: #10b4cf;
+    color: #15589c;
     text-decoration: none;
 }
 
 .raquo:hover{
     text-decoration: underline;
-    color: #10b4cf;
+    color: #15589c;
 }
 
 .bg-gray {
     color: white;
-    background-color: #10b4cf;
+    background-color: #15589c;
 }
 
 .media-wrapper > .media {

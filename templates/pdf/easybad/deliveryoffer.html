@@ -133,7 +133,7 @@
     <page_footer style="padding:20px">
 
 
-        <hr style="border:solid  #10B4CF 1px;">
+        <hr style="border:solid  #15589c 1px;">
         <table style="font-size:11px; padding:10px">
             <tr>
                 <td style="width:25%">
@@ -190,7 +190,7 @@
             </td>
         </tr>
         <tr>
-            <td style="border-left: solid 1mm #10B4CF;">
+            <td style="border-left: solid 1mm #15589c;">
                 <h3>{intl l="Delivery address"}</h3>
                 {ifhook rel="invoice.delivery-address"}
                 {* delivery module can customize the delivery address *}
@@ -200,7 +200,7 @@
                 {format_address order_address=$DELIVERY_ADDRESS locale=$locale}
                	{/elsehook}
             </td>
-            <td style="border-left: solid 1mm #10B4CF;">
+            <td style="border-left: solid 1mm #15589c;">
                 <h3>{intl l="Offer address"}</h3>
                 {format_address order_address=$INVOICE_ADDRESS locale=$locale}
             </td>
@@ -252,7 +252,7 @@
             <td style="border:solid 1px #dddddd;background:#f1f3f4;">
                 <h3 style="color:#58585a;">{intl l="product"}</h3>
             </td>
-            <td style="border:solid 1px #dddddd;background-color:#10B4CF;">
+            <td style="border:solid 1px #dddddd;background-color:#15589c;">
                 <h3 style="color:white; text-align:center;">{intl l="Quantity"}</h3>
             </td>
         </tr>
@@ -279,7 +279,7 @@
     <table style="padding-top: 5mm;">
         <col style="width: 40%; padding: 3mm;" />
         <tr>
-            <td  class="table-3-module" style="border-left:solid 3px #10B4CF; padding-top: 2mm">
+            <td  class="table-3-module" style="border-left:solid 3px #15589c; padding-top: 2mm">
                 <h3>{intl l="Delivery module"}</h3>
 
                 {ifhook rel="product.order-pdf-fulfilment-center-address"}

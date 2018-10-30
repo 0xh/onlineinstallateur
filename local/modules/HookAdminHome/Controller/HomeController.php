@@ -127,7 +127,7 @@ class HomeController extends BaseAdminController
         
         /* first order */
         $data->series[] = $firstOrderSeries = new \stdClass();
-        $firstOrderSeries->color = self::testHexColor('first_orders_color', '#5bc0de');
+        $firstOrderSeries->color = self::testHexColor('first_orders_color', '#15589c');
         $firstOrderSeries->data = OrderQuery::getFirstOrdersStats($month, $year);
         $firstOrderSeries->valueFormat = "%d";
         
