@@ -225,7 +225,7 @@ web : http://www.hausfabrik.at
                         <div class="hotlineTxt">
                             <span class="hotline-holder"> 
                                 <img src="{image file='assets/dist/img/phone.gif'}"/>
-                                0800 969 699
+                                0800 022 573
                             </span>
                         </div>  
                     </div>
