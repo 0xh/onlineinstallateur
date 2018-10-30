@@ -35,59 +35,42 @@ class SelfImport extends ContainerAwareCommand
 
         $UR = new URL();
 
-//          $url = "https://netix.dl.sourceforge.net/project/fotohound/fotohound/fotohound-1.0.6/FotoHound-1.0.6.zip";
-        // //        $url = "https://www.sht-gruppe.at/alleartikel.zip";
+        $url = "https://www.sht-gruppe.at/alleartikel.zip";
 
         $current_date = date("Y-m-d H:i:s");
-        // $zip_name     = "import" . md5($current_date) . ".zip";
-        // $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $zip_name;
-        // $zipResource = fopen($zipFile, "w");
-        // $ch          = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_FAILONERROR, true);
-        // curl_setopt($ch, CURLOPT_HEADER, 0);
-        // curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        // curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-        // curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
-        // curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        // curl_setopt($ch, CURLOPT_FILE, $zipResource);
-        // $page        = curl_exec($ch);
-        // if (!$page) {
-        //     echo "Error :- " . curl_error($ch);
-        // }
-        // curl_close($ch);
-        // $zip         = new ZipArchive;
-        // $extractPath = THELIA_LOCAL_DIR . "sepa" . DS . "import";
-        // if ($zip->open($zipFile) != "true") {
-        //     echo "Error :- Unable to open the Zip File";
-        // }
-        // $zip->extractTo($extractPath);
-        // $zip->close();
+        $zip_name     = "import" . md5($current_date) . ".zip";
+        $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $zip_name;
+        $zipResource  = fopen($zipFile, "w");
+        $ch           = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_FILE, $zipResource);
+        $page         = curl_exec($ch);
+        if (!$page) {
+            echo "Error :- " . curl_error($ch);
+        }
+        curl_close($ch);
+        $zip         = new ZipArchive;
+        $extractPath = THELIA_LOCAL_DIR . "sepa" . DS . "import";
+        if ($zip->open($zipFile) != "true") {
+            echo "Error :- Unable to open the Zip File";
+        }
+        $zip->extractTo($extractPath);
+        $zip->close();
 
         $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . "/wwwroot/";
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if ($file !== "." && $file !== "..") {
-
-//                        $doc        = new DOMDocument();
-//                        $doc->load($dir . $file);
-//                        $products = $doc->getElementsByTagName("produkt");
-//
-//
-//                        foreach ($products as $product) {
-//                            var_dump($product); die;
-//                            $arrValue = explode("\n", $product->nodeValue);
-//                            unset($arrValue[0]);
-//                            unset($arrValue[count($arrValue)]);
-//                            $arrKey   = [
-//                             "megabildnr", "matchcode", "zeile1", "zeile2", "ausschreibungstext",
-//                             "bruttopreis","warengruppe", "warengruppetext", "versandfaehig"
-//                            ];
-//                            $data     = array_combine($arrKey, $arrValue);
-//                            unset($data);
+                        echo "opening folder, getting file " . $file;
 
                         $importDBReference = "thelia.import.from.xml"; //ex: thelia.export.catalog.idealo
                         //get export Object from DB based on reference
