@@ -110,9 +110,9 @@ fi
 mv ../stable ../stable_backup
 
 
-sudo rsync -arv --progress ./* ../stable
+sudo rsync -arv --progress ./* ../stable_new
 
-cd ../stable 
+cd ../stable_new
 
 
 chmod -R 0777 templates/frontOffice/default/assets/dist/
@@ -133,7 +133,12 @@ sudo chmod -R 0777 $SESSION
 php Thelia cache:clear --env=prod
 php Thelia cache:clear --env=dev
 
-printf "STEP6: Remvoe Backup \n "
+#create backup 
 
-sudo rm -rf ../stable_backup
+mv ../stable ../stable_backup
+#move new release to stable version
+mv ../stable_new ../stable
+
+
+
 
