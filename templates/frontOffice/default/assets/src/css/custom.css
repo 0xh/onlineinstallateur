@@ -354,6 +354,8 @@ media screen and (min-width: 768px){
 .btn-1{
 	background:#85ac37!important;
 	color:#000!important;
+	width: 100%;
+    text-align: center;
 }
 .btn-1:hover{
 	background:#85ac37!important;

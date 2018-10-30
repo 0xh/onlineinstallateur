@@ -7,14 +7,14 @@
 	    {loop type="auth" name="customer_info_block" role="CUSTOMER"}
 	        {if !{is_saved_in_wishlist product_id=$product_id}}
 	            <p>This product is not really in your wish list. To really add, click the button below.</p>
-	            <a class="btn btn-primary" href="{url path="/wishlist/add/$product_id"}">
+	            <a class="btn btn-1 btn-primary" href="{url path="/wishlist/add/$product_id"}">
 	            	<i class="fa fa-heart-o"></i>
 	            	<span class="text">{intl l="Add to wish list" d="wishlist.fo.easybad"}</span>
 	            </a>
 	        {/if}
 	    {/loop}
 	{else}
-	    <a class="btn btn-primary" href="{url path="/wishlist/add/$product_id"}">
+	    <a class="btn btn-1 btn-primary" href="{url path="/wishlist/add/$product_id"}">
 	    	<i class="fa fa-heart-o"></i>
 	    	<span class="text">{intl l="Add to wish list" d="wishlist.fo.easybad"}</span>
 	    </a>
