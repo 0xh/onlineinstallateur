@@ -7,14 +7,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
-use Thelia\Core\Serializer\Serializer\CSVSerializer;
-use Thelia\Core\Serializer\SerializerManager;
 use Thelia\Handler\ImportHandler;
 use Thelia\Model\ImportQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
 use Thelia\Tools\URL;
+use ZipArchive;
 use const DS;
 use const THELIA_LOCAL_DIR;
 
