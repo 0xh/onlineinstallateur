@@ -7,12 +7,12 @@
 .page-register .content_register #form-register #register-info .panel-heading,
 .page-register .content_register #form-register #register-delivery .panel-heading,
 .page-register .content_register #form-register #register-login .panel-heading{
-    background-color: #10B4CF;
+    background-color: #15589c;
     color:#fff;
 }
 
 .page-register .content_register #form-register label{
-    color:#10B4CF;
+    color:#15589c;
 }
 
 .page-register .content_register #form-register .group-newsletter,
@@ -30,9 +30,9 @@
     background-color: #347C92;
     color: #fff;
     border-color: unset !important;
-    border-left: 1px solid #10B4CF !important;
-    border-color: #10B4CF !important
-    border: solid 1px #10B4CF !important;
+    border-left: 1px solid #15589c !important;
+    border-color: #15589c !important
+    border: solid 1px #15589c !important;
     width: 50%;
 }
 

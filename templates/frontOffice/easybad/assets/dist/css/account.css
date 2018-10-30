@@ -5,7 +5,7 @@
     background: #347C92;
 }
 .page-account #account .panel-heading .panel-title>a.collapsed{
-    background-color: #10B4CF;
+    background-color: #15589c;
     color: #fff;
 }
 .page-account #account #account-info .list-info .email:before, 
@@ -18,9 +18,9 @@
 }
 .page-account #account #account-address .btn-primary{
     border-color: unset !important;
-    border-left: 1px solid #10B4CF !important;
-    border-color: #10B4CF !important
-    border: solid 1px #10B4CF !important;
+    border-left: 1px solid #15589c !important;
+    border-color: #15589c !important
+    border: solid 1px #15589c !important;
 }
 
 .page-account #account #account-address .btn-primary:focus,
@@ -30,7 +30,7 @@
 }
 
 .page-account #account #account-orders .panel-body .table-orders .label-success{
-    background-color: #10B4CF !important;
+    background-color: #15589c !important;
 }
 
 .page-account #account #account-orders .btn-link,

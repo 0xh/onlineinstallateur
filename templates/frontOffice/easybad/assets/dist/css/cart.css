@@ -11,7 +11,7 @@
     
 }
 .page-cart .main #cart .checkout-progress a{
-    background-color: #10B4CF;
+    background-color: #15589c;
     color:#fff;
     border-right: 1px solid #fff !important;
 }
@@ -36,15 +36,15 @@
 .page-cart .main #cart .table-responsive .table-cart #form-coupon .input-group .input-group-btn .open>.dropdown-toggle.btn-default,
 .page-cart .main #cart .btn-default,
 .page-cart .main #cart .btn-primary{
-    color: #10B4CF;
+    color: #15589c;
 }
 
 .page-cart .main #cart .btn-default,
 .page-cart .main #cart .btn-primary{
     border-color: unset !important;
-    border-left: 1px solid #10B4CF !important;
-    border-color: #10B4CF !important
-    border: solid 1px #10B4CF !important;
+    border-left: 1px solid #15589c !important;
+    border-color: #15589c !important
+    border: solid 1px #15589c !important;
 }
 
 .page-cart .main #cart .btn-default:focus,
@@ -74,5 +74,5 @@
 }
 
 .page-cart #products-upsell .products-heading h3{
-    color: #10B4CF;
+    color: #15589c;
 }

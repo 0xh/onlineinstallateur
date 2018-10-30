@@ -89,7 +89,7 @@ h1.name{
     background-color: transparent;
 }
 .navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hover{
-    background-color: #10B4CF;
+    background-color: #15589c;
 }
 /*End WhisList*/
 
@@ -278,10 +278,10 @@ h1.name{
     padding: 0px;
     margin: 0px;
     padding-top: 7px;
-    background-color: #10B4CF;
+    background-color: #15589c;
 }
 .navbar-default .navbar-wish-list>li>a:hover{
-    background-color: #10B4CF !important;
+    background-color: #15589c !important;
 }
 .nav-tabs>li.active>a,
 .nav-tabs>li.active>a:focus,
@@ -625,7 +625,7 @@ section .product-image{
 }
 
 figure.effect-honey {
-  background: #10B4CF;
+  background: #15589c;
   overflow: hidden;
   cursor: pointer;
 }
