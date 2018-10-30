@@ -34,7 +34,7 @@ if [ -d "$CONFIG_DIR" ]; then
 fi
 
 if [ -d "$WEB_MEDIA" ]; then
-	if [ -l "$WEB_MEDIA" ]; then
+	if [ -L "$WEB_MEDIA" ]; then
   		rm  $WEB_MEDIA
     else
     	rm -rf $WEB_MEDIA
@@ -43,7 +43,7 @@ if [ -d "$WEB_MEDIA" ]; then
 fi
 
 if [ -d "$WEB_CONFIGURATOR" ]; then
-	if [ -l "$WEB_CONFIGURATOR" ]; then
+	if [ -L "$WEB_CONFIGURATOR" ]; then
   		rm  $WEB_CONFIGURATOR
     else
     	rm -rf $WEB_CONFIGURATOR
@@ -105,10 +105,6 @@ printf "STEP6: Genereate Backup \n "
 if [ ! -d "../stable_backup" ]; then	
     rm -rf ../stable_backup
 fi
-
-
-mv ../stable ../stable_backup
-
 
 sudo rsync -arv --progress ./* ../stable_new
 
