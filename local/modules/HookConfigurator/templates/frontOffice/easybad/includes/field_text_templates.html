@@ -15,7 +15,7 @@
                 {if $last_slide == $current_slide && $contactArr.visible_form_contact == "false"}
                     {include file="includes/submit_template.html"}
                 {else}
-                    <div class="next btn-weiter class-{$element.name}" {if $element.required eq true } style="visibility: hidden;" {/if}>{intl l='Weiter'} </div>
+                    <input type="button" class="next btn-weiter class-{$element.name}" {if $element.required eq true } disabled="true" style="background-color: #f1f1f1;" {/if} value="{intl l='Weiter'}" />
                 {/if}
             </div>
         </div>
