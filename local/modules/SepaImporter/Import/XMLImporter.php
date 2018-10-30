@@ -14,13 +14,13 @@ use Thelia\Core\Event\Product\ProductCreateEvent;
 use Thelia\Core\Event\Product\ProductUpdateEvent;
 use Thelia\Core\Event\ProductSaleElement\ProductSaleElementUpdateEvent;
 use Thelia\Core\Event\TheliaEvents;
+use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\ProductImage;
 use Thelia\Model\ProductImageI18n;
-use Thelia\Model\ProductPriceQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
@@ -70,6 +70,8 @@ class XMLImporter extends AbstractImport
             }
         }
 
+        $locale = 'de_DE';
+
         $productQuerry      = ProductQuery::create();
         $productQuerry->clear();
         $productExists      = null;
@@ -85,8 +87,8 @@ class XMLImporter extends AbstractImport
         //USED
         $brand_import               = $this->rowHasField($row, "lieferantenname");
         $category_import            = $this->rowHasField($row, "warengruppetext");
-        $brutto_price_import        = $this->rowHasField($row, "bruttopreis") * 116 / 100;
-        $netto_price_import         = $this->rowHasField($row, "nettopreis") * 116 / 100;
+        $brutto_price_import        = (float) $this->rowHasField($row, "bruttopreis") * 116 / 100;
+        $netto_price_import         = (float) $this->rowHasField($row, "nettopreis") * 116 / 100;
         $material_number_import     = $this->rowHasField($row, "werknr");
         $stock_import               = $this->rowHasField($row, "versandfaehig");
         $product_title_import       = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
@@ -183,7 +185,6 @@ class XMLImporter extends AbstractImport
             $log->debug("No match found for partner_product_ref ");
         }
 
-
         $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
         $createBrandEvent     = new RevenueDashboardBrandEvent();
         $createBrandEvent->setBrand_extern($brand_import);
@@ -214,12 +215,11 @@ class XMLImporter extends AbstractImport
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
+            $log->debug("Full ref: " . $refBuild);
         }
 
         $productExists = count($productQuerry->findByRef($refBuild));
         $log->debug("Product Exists? " . $productExists);
-
-
         if ($productExists == 0 && $matchingSuccessful) {
             $time_before_newProduct        = microtime(true);
             $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
@@ -228,7 +228,6 @@ class XMLImporter extends AbstractImport
             $log->debug("Product does not exist, creating product! ");
             $eventDispatcher = $this->getContainer()->get('event_dispatcher');
             $createEvent     = new ProductCreateEvent();
-            $locale          = "de_DE";
 
             $createEvent
              ->setBasePrice($netto_price_import)
@@ -251,6 +250,7 @@ class XMLImporter extends AbstractImport
 
             $log->debug("New Product Ref: " . $createEvent->getProduct()->getRef());
             $product_id = $product->getId();
+            echo "Prod id= " . $product_id . "\n";
             $log->debug("New Product id: " . $product_id);
 
             $productPse = ProductSaleElementsQuery::create()
@@ -355,13 +355,14 @@ class XMLImporter extends AbstractImport
                 $product_image->setFile($image_name);
                 $product_image->save();
 
+
                 $product_image_i18n = new ProductImageI18n();
                 $product_image_i18n->setProductImage($product_image);
                 $product_image_i18n->setTitle($refBuild);
                 $product_image_i18n->setDescription($refBuild . "1");
                 $product_image_i18n->setChapo($refBuild . "1");
                 $product_image_i18n->setPostscriptum($refBuild . "1");
-                $product_image_i18n->setLocale("de_DE");
+                $product_image_i18n->setLocale($locale);
                 $product_image_i18n->save();
 
                 $product->addProductImage($product_image);
