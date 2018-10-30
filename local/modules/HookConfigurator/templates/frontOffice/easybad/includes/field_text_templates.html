@@ -8,7 +8,7 @@
         </div>
         <div class="fs-radio-group fs-radio-custom clearfix">
             <div class="fs-radio-group fs-radio-normal clearfix"> 
-                <input type="{$element.attr.answer_type}" class="fs-anim-lower inputText answer-type-{$element.name}" style="width:50%; margin:7.5% auto" name="{$name}" {if $element.required eq true } onchange="showNext('{$element.name}');" {/if} oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
+                <input type="{$element.attr.answer_type}" data-id="{$element.name}" class="fs-anim-lower inputText answer-type" style="width:50%; margin:7.5% auto" name="{$name}" value="" oninvalid="alertFromFront('{intl l='Please fill out '}{intl l="{$label}"}');" placeholder="{$element.attr.placeholder}" {if $element.required eq true }required{/if}>
                 {if $element.description }
                     <label class="text_description">{$element.description}</label>
                 {/if}
