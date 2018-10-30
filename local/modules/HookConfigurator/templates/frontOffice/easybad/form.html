@@ -18,4 +18,13 @@
         $("#alert-from-front").html('');
     }
 
+    $(".answer-type").on("input", function () {
+        str = $(this).attr("data-id");
+        if ($(this).val())
+        {
+            $(".class-" + str).css("visibility", "visible");
+        } else {
+            $(".class-" + str).css("visibility", "hidden");
+        }
+    });
 </script>

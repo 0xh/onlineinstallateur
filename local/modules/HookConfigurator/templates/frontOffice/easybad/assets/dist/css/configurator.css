@@ -68,11 +68,12 @@
 	position:absolute;
 	bottom:0px;
 	background:#FFF;
-	width:100%;
+	/*width:100%;*/
+	width:86%;
 	margin-bottom:-5px
 }
 .multistepForm .selected .textHolder {
-	background:#10b4cf;
+	background:#15589c;
 }
 
 
@@ -128,10 +129,10 @@
 }
 /*.frontIcons:hover,*/
 .multistepForm .selected {
-    border: 4px /* 19 */ solid #10b4cf;
+    border: 4px /* 19 */ solid #15589c;
     color: #FFF;
     cursor: pointer;
-	background:#10b4cf
+	background:#15589c
 }
 .frontIcons:hover span {
     cursor: pointer;  
@@ -182,7 +183,7 @@ fieldset .previous {
     border: none;
     padding: 0;
     font-size: 25px;
-    background-color: #10b4cf;
+    background-color: #15589c;
     min-width: 40px;
     border-radius: 50%;
 }
@@ -299,7 +300,7 @@ fieldset .previous .white {
     margin-top: 14px;
 }
 .multistepForm .progress-bar{
-    background-color: #10b4cf;
+    background-color: #15589c;
     text-align: right;
 }
 
@@ -528,7 +529,7 @@ fieldset .previous .white {
 
 .btn-send-submit, .btn-send-submit:hover {
     min-width: 170px;
-    background-color: #10B4CF;
+    background-color: #15589c;
     color: #fff;
     font-weight: bolder;
     padding: 6px;
@@ -559,7 +560,7 @@ fieldset .previous .white {
 	margin-right:23px;
     min-width: 170px;
 	max-width: 250px;
-    background-color: #10B4CF;
+    background-color: #15589c;
     color: #fff;
     font-weight: bolder;
     padding: 6px;
@@ -574,7 +575,7 @@ fieldset .previous .white {
     width: 100%;
     height: 5px;
     border-radius: 5px;   
-    background: #10b4cf;
+    background: #15589c;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
