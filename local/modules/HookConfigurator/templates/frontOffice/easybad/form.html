@@ -18,12 +18,13 @@
         $("#alert-from-front").html('');
     }
 
-    function showNext(str) {
-        if ($(".answer-type-" + str).val())
+    $(".answer-type").on("input", function () {
+        str = $(this).attr("data-id");
+        if ($(this).val())
         {
             $(".class-" + str).css("visibility", "visible");
         } else {
             $(".class-" + str).css("visibility", "hidden");
         }
-    }
+    });
 </script>
