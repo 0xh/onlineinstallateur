@@ -22,14 +22,14 @@
     background-color: #FFF;
 }
 .navbar-default .navbar-cart>li>a:hover{
-    background-color: #10B4CF !important;
+    background-color: #15589c !important;
 }
 .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account{
     line-height: unset;
     background-color: transparent;
 }
 .navbar .navbar-nav>.open>a, .navbar .navbar-nav>.open>a:focus, .navbar .navbar-nav>.open>a:hove{
-    background-color: #10B4CF;
+    background-color: #15589c;
 }
 .cart .badge,
 .cart-not-empty .badge{
