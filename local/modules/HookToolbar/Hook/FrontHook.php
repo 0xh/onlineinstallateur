@@ -34,6 +34,13 @@ class FrontHook extends BaseHook
         $content = $this->render("main-body-top.html", [ 'mode' => $this->mode ]);
         $event->add($content);
     }
+    
+    public function onCategoryAfterJavascriptInclude(HookRenderEvent $event)
+    {
+        $content = $this->render("assets/dist/js/product-position-js.html");
+        $event->add($content);
+    }
+    
 
     public function onMainStyleSheet(HookRenderEvent $event)
     {
