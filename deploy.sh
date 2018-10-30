@@ -86,7 +86,7 @@ chmod -R 0775 web/.htaccess
 printf "STEP4: link the media and config from outside the app \n "
 #link the media and config from outside the app 
 ln -s /data/hausfabrik/media local/media
-ln -s /data/hausfabrik/demo_config/ local/config
+ln -s /data/hausfabrik/config/ local/config
 #link the web/configurator and config from outside the app 
 ln -s /data/hausfabrik/configurator web/configurator
 #link the web/media and config from outside the app 
