@@ -16,10 +16,10 @@
     <hooks>
         <hook id="hooktoolbar.hook.front" class="HookToolbar\Hook\FrontHook" scope="request">
             <argument>%kernel.debug%</argument>
-            <tag name="hook.event_listener" event="main.body-top" />
-            <tag name="hook.event_listener" event="main.stylesheet" />
-            <tag name="hook.event_listener" event="singleproduct.top" />
-            <tag name="hook.event_listener" event="category.after-javascript-include" templates="render:assets/dist/js/product-position-js.html" />
+            <tag name="hook.event_listener" event="main.body-top" method="onMainBodyTop"/>
+            <tag name="hook.event_listener" event="main.stylesheet" method="onMainStyleSheet"/>
+            <tag name="hook.event_listener" event="singleproduct.top" method="onSingleProductTop"/>
+            <tag name="hook.event_listener" event="category.after-javascript-include" method="onCategoryAfterJavascriptInclude" />
         </hook>
     </hooks>
 
