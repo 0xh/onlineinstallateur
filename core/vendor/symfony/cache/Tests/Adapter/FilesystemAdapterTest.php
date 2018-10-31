@@ -11,21 +11,17 @@
 
 namespace Symfony\Component\Cache\Tests\Adapter;
 
-use Cache\IntegrationTests\CachePoolTest;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * @group time-sensitive
  */
-class FilesystemAdapterTest extends CachePoolTest
+class FilesystemAdapterTest extends AdapterTestCase
 {
-    public function createCachePool()
+    public function createCachePool($defaultLifetime = 0)
     {
-        if (defined('HHVM_VERSION')) {
-            $this->skippedTests['testDeferredSaveWithoutCommit'] = 'Fails on HHVM';
-        }
-
-        return new FilesystemAdapter('sf-cache');
+        return new FilesystemAdapter('', $defaultLifetime);
     }
 
     public static function tearDownAfterClass()
@@ -38,7 +34,7 @@ class FilesystemAdapterTest extends CachePoolTest
         if (!file_exists($dir)) {
             return;
         }
-        if (!$dir || 0 !== strpos(dirname($dir), sys_get_temp_dir())) {
+        if (!$dir || 0 !== strpos(\dirname($dir), sys_get_temp_dir())) {
             throw new \Exception(__METHOD__."() operates only on subdirs of system's temp dir");
         }
         $children = new \RecursiveIteratorIterator(
@@ -53,5 +49,13 @@ class FilesystemAdapterTest extends CachePoolTest
             }
         }
         rmdir($dir);
+    }
+
+    protected function isPruned(CacheItemPoolInterface $cache, $name)
+    {
+        $getFileMethod = (new \ReflectionObject($cache))->getMethod('getFile');
+        $getFileMethod->setAccessible(true);
+
+        return !file_exists($getFileMethod->invoke($cache, $name));
     }
 }

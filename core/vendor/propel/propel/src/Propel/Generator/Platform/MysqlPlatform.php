@@ -144,7 +144,8 @@ class MysqlPlatform extends DefaultPlatform
         $ret = '';
         foreach ($database->getTablesForSql() as $table) {
             $ret .= $this->getCommentBlockDDL($table->getName());
-            $ret .= $this->getDropTableDDL($table);
+            #we don't want to delete table in thelia.sql
+//             $ret .= $this->getDropTableDDL($table);
             $ret .= $this->getAddTableDDL($table);
         }
         if ($ret) {
@@ -250,8 +251,9 @@ SET FOREIGN_KEY_CHECKS = 1;
         $sep = ",
     ";
 
+        # add 'if not exists'
         $pattern = "
-CREATE TABLE %s
+CREATE TABLE if not exists %s
 (
     %s
 ) %s=%s%s;
