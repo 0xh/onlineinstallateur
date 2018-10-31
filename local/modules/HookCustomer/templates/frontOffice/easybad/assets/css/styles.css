@@ -37,7 +37,6 @@
     vertical-align: middle;
     display: block;
     position: relative;
-/*     left: 40%; */
 }
 
 .navbar-customer li a.logout{
@@ -46,12 +45,13 @@
 .navbar-customer{
     margin-top: 0px !important;
 }
-/* .navbar-customer li a.login{ */
-/*     padding-right: 12px; */
-/* } */
-
-/* @media (max-width: 991px) { */
-/* 	.navbar-customer img{ */
-/* 	    left: 80%; */
-/* 	} */
+.navbar-customer .dropdown-menu #form-login-mini .btn-login-mini,
+.navbar-customer .dropdown-menu #form-login-mini .btn-register-mini{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+.navbar-customer .dropdown-menu #form-login-mini .btn-login-mini:hover{
+    color: #fff;
 }

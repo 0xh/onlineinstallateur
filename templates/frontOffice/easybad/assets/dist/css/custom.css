@@ -734,26 +734,38 @@ figure.effect-honey:hover h2 i{
 }
 
 @media (min-width: 992px) {  
-.navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account {
-    
-    line-height: 0px;
-}
+    .navbar .navbar-customer li a.login, .navbar .navbar-cart li a.cart, .navbar.navbar-secondary .search-container, .navbar li a.logout, .navbar li a.account {       
+        line-height: 0px;
+    }
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
- .form-product .product-cart { 
- min-width: 300px;
- padding-right: 20px;
-  }
+    .form-product .product-cart { 
+        min-width: 300px;
+        padding-right: 20px;
+    }
 
- 
- .text-intro { 
- font-size: 15px !important;
-  }
-<<<<<<< HEAD
- }
- 
->>>>>>> HFP-349_Testing_Hausfabrik_sepa_at
-=======
- }
->>>>>>> 51ebabc52cd6746febf2740873e2f96bcc354ecb
+    .text-intro { 
+        font-size: 15px !important;
+    }
+}
+
+.page-home .full_with_noContainer .item-carousel{
+    max-height: 73vh !important;
+    overflow: hidden;    
+}
+
+.page-konfigurator #form-heizungangebot .control-btn #btn-submit:hover{
+    color: #fff !important;
+}
+
+.page-login .radio label input[type="radio"]{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    display: block !important;
+}
+
+.full_with_noContainer .allTabs .prducts-container .products-content .img-responsive{
+    padding-left: 2.5%;
+    width: 95%;
+}
