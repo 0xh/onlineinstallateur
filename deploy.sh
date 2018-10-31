@@ -93,6 +93,8 @@ ln -s /data/hausfabrik/config/ local/config
 ln -s /data/hausfabrik/configurator web/configurator
 #link the web/media and config from outside the app 
 ln -s /data/hausfabrik/web_media web/media
+#link the symfony/vendor autside src
+rm -rf core/vendor/symfony/cache
 ln -s /data/hausfabrik/symnfoy_cache core/vendor/symfony/cache
 
 
