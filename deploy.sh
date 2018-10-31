@@ -81,6 +81,8 @@ chmod -R 0777 web
 chmod -R 0775 web/index*
 chmod -R 0775 web/.htaccess
 
+#install elastic-search
+composer require "elasticsearch/elasticsearch: ~6.0"
 
 
 printf "STEP4: link the media and config from outside the app \n "
@@ -91,10 +93,9 @@ ln -s /data/hausfabrik/config/ local/config
 ln -s /data/hausfabrik/configurator web/configurator
 #link the web/media and config from outside the app 
 ln -s /data/hausfabrik/web_media web/media
+ln -s /data/hausfabrik/symnfoy_cache core/vendor/symfony/cache
 
-composer install
-composer require "doctrine/cache"
-composer require "elasticsearch/elasticsearch: ~6.0"
+
 
 
 #move all content to stable vestion
