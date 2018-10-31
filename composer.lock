@@ -3327,34 +3327,7 @@
             ],
             "description": "php 5.4 currency tools",
             "time": "2015-11-05T16:15:32+00:00"
-        },
-        {
-            "name": "thelia/hook-toolbar-module",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thelia-modules/HookToolbar.git",
-                "reference": "38eee4f98b25c79d605c625913ad4f07511765d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thelia-modules/HookToolbar/zipball/38eee4f98b25c79d605c625913ad4f07511765d7",
-                "reference": "38eee4f98b25c79d605c625913ad4f07511765d7",
-                "shasum": ""
-            },
-            "require": {
-                "thelia/installer": "~1.1"
-            },
-            "type": "thelia-module",
-            "extra": {
-                "installer-name": "HookToolbar"
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "time": "2015-03-14T19:32:44+00:00"
-        },
+        },        
         {
             "name": "thelia/installer",
             "version": "1.2",
