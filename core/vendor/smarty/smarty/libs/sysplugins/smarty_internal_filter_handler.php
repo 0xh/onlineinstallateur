@@ -14,6 +14,7 @@
  * @package    Smarty
  * @subpackage PluginsInternal
  */
+use Thelia\Log\Tlog;
 class Smarty_Internal_Filter_Handler
 {
     /**
@@ -33,6 +34,7 @@ class Smarty_Internal_Filter_Handler
     public static function runFilter($type, $content, Smarty_Internal_Template $template)
     {
         $output = $content;
+        //Tlog::getInstance()->err("ab34c ".$output);
         // loop over autoload filters of specified type
         if (!empty($template->smarty->autoload_filters[$type])) {
             foreach ((array) $template->smarty->autoload_filters[$type] as $name) {
@@ -51,13 +53,16 @@ class Smarty_Internal_Filter_Handler
                 }
             }
         }
+        //Tlog::getInstance()->err("ab34c2 ".$output);
         // loop over registerd filters of specified type
         if (!empty($template->smarty->registered_filters[$type])) {
             foreach ($template->smarty->registered_filters[$type] as $key => $name) {
                 if (is_array($template->smarty->registered_filters[$type][$key])) {
-                    $output = call_user_func($template->smarty->registered_filters[$type][$key], $output, $template);
+                //    $output = call_user_func($template->smarty->registered_filters[$type][$key], $output, $template);
+                   // Tlog::getInstance()->err("ab34carray ".$output);
                 } else {
                     $output = $template->smarty->registered_filters[$type][$key]($output, $template);
+                   // Tlog::getInstance()->err("ab34csimple ".$output);
                 }
             }
         }
