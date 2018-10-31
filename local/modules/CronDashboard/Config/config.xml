@@ -11,18 +11,19 @@
     <forms>
         <form name="admin.crondashboard.cronjob.create" class="CronDashboard\Form\CronjobCreateForm"/>
         <form name="admin.crondashboard.cronjob.update" class="CronDashboard\Form\CronjobModificationForm"/>
+        <form name="admin.crondashboard.process.update" class="CronDashboard\Form\CronjobProcessUpdate"/>
     </forms>
 
     <commands>
-        <!--
-        <command class="CronDashboard\Command\MySuperCommand" />
-        -->
+        <command class="CronDashboard\Command\CronsWatchDog"/>
+        <command class="CronDashboard\Command\CronsScheduleExecute"/>
     </commands>
 
     <hooks>
         <hook id="cron.dashboard.hook.back" class="CronDashboard\Hook\Admin\BackHook">
             <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
-        </hook>
+            <tag name="hook.event_listener" event="display.processes" type="back" method="onContentTabContent" />
+        </hook>       
     </hooks>
     
 </config>

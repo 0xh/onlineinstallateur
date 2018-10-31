@@ -79,6 +79,30 @@ abstract class CronJobs implements ActiveRecordInterface
     protected $command;
 
     /**
+     * The value for the schedule field.
+     * @var        string
+     */
+    protected $schedule;
+
+    /**
+     * The value for the runflag field.
+     * @var        int
+     */
+    protected $runflag;
+
+    /**
+     * The value for the lastrun field.
+     * @var        string
+     */
+    protected $lastrun;
+
+    /**
+     * The value for the nextrun field.
+     * @var        string
+     */
+    protected $nextrun;
+
+    /**
      * The value for the position field.
      * @var        int
      */
@@ -407,6 +431,68 @@ abstract class CronJobs implements ActiveRecordInterface
     }
 
     /**
+     * Get the [schedule] column value.
+     *
+     * @return   string
+     */
+    public function getSchedule()
+    {
+
+        return $this->schedule;
+    }
+
+    /**
+     * Get the [runflag] column value.
+     *
+     * @return   int
+     */
+    public function getRunflag()
+    {
+
+        return $this->runflag;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [lastrun] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw \DateTime object will be returned.
+     *
+     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getLastrun($format = NULL)
+    {
+        if ($format === null) {
+            return $this->lastrun;
+        } else {
+            return $this->lastrun instanceof \DateTime ? $this->lastrun->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [nextrun] column value.
+     *
+     *
+     * @param      string $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw \DateTime object will be returned.
+     *
+     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getNextrun($format = NULL)
+    {
+        if ($format === null) {
+            return $this->nextrun;
+        } else {
+            return $this->nextrun instanceof \DateTime ? $this->nextrun->format($format) : null;
+        }
+    }
+
+    /**
      * Get the [position] column value.
      *
      * @return   int
@@ -542,6 +628,90 @@ abstract class CronJobs implements ActiveRecordInterface
     } // setCommand()
 
     /**
+     * Set the value of [schedule] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     */
+    public function setSchedule($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->schedule !== $v) {
+            $this->schedule = $v;
+            $this->modifiedColumns[CronJobsTableMap::SCHEDULE] = true;
+        }
+
+
+        return $this;
+    } // setSchedule()
+
+    /**
+     * Set the value of [runflag] column.
+     *
+     * @param      int $v new value
+     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     */
+    public function setRunflag($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->runflag !== $v) {
+            $this->runflag = $v;
+            $this->modifiedColumns[CronJobsTableMap::RUNFLAG] = true;
+        }
+
+
+        return $this;
+    } // setRunflag()
+
+    /**
+     * Sets the value of [lastrun] column to a normalized version of the date/time value specified.
+     *
+     * @param      mixed $v string, integer (timestamp), or \DateTime value.
+     *               Empty strings are treated as NULL.
+     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     */
+    public function setLastrun($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
+        if ($this->lastrun !== null || $dt !== null) {
+            if ($dt !== $this->lastrun) {
+                $this->lastrun = $dt;
+                $this->modifiedColumns[CronJobsTableMap::LASTRUN] = true;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setLastrun()
+
+    /**
+     * Sets the value of [nextrun] column to a normalized version of the date/time value specified.
+     *
+     * @param      mixed $v string, integer (timestamp), or \DateTime value.
+     *               Empty strings are treated as NULL.
+     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     */
+    public function setNextrun($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
+        if ($this->nextrun !== null || $dt !== null) {
+            if ($dt !== $this->nextrun) {
+                $this->nextrun = $dt;
+                $this->modifiedColumns[CronJobsTableMap::NEXTRUN] = true;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setNextrun()
+
+    /**
      * Set the value of [position] column.
      *
      * @param      int $v new value
@@ -653,16 +823,34 @@ abstract class CronJobs implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CronJobsTableMap::translateFieldName('Command', TableMap::TYPE_PHPNAME, $indexType)];
             $this->command = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CronJobsTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CronJobsTableMap::translateFieldName('Schedule', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->schedule = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CronJobsTableMap::translateFieldName('Runflag', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->runflag = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CronJobsTableMap::translateFieldName('Lastrun', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->lastrun = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CronJobsTableMap::translateFieldName('Nextrun', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->nextrun = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CronJobsTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
             $this->position = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CronJobsTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CronJobsTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CronJobsTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CronJobsTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -675,7 +863,7 @@ abstract class CronJobs implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = CronJobsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 11; // 11 = CronJobsTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \CronDashboard\Model\CronJobs object", 0, $e);
@@ -907,6 +1095,18 @@ abstract class CronJobs implements ActiveRecordInterface
         if ($this->isColumnModified(CronJobsTableMap::COMMAND)) {
             $modifiedColumns[':p' . $index++]  = 'COMMAND';
         }
+        if ($this->isColumnModified(CronJobsTableMap::SCHEDULE)) {
+            $modifiedColumns[':p' . $index++]  = 'SCHEDULE';
+        }
+        if ($this->isColumnModified(CronJobsTableMap::RUNFLAG)) {
+            $modifiedColumns[':p' . $index++]  = 'RUNFLAG';
+        }
+        if ($this->isColumnModified(CronJobsTableMap::LASTRUN)) {
+            $modifiedColumns[':p' . $index++]  = 'LASTRUN';
+        }
+        if ($this->isColumnModified(CronJobsTableMap::NEXTRUN)) {
+            $modifiedColumns[':p' . $index++]  = 'NEXTRUN';
+        }
         if ($this->isColumnModified(CronJobsTableMap::POSITION)) {
             $modifiedColumns[':p' . $index++]  = 'POSITION';
         }
@@ -938,6 +1138,18 @@ abstract class CronJobs implements ActiveRecordInterface
                         break;
                     case 'COMMAND':
                         $stmt->bindValue($identifier, $this->command, PDO::PARAM_STR);
+                        break;
+                    case 'SCHEDULE':
+                        $stmt->bindValue($identifier, $this->schedule, PDO::PARAM_STR);
+                        break;
+                    case 'RUNFLAG':
+                        $stmt->bindValue($identifier, $this->runflag, PDO::PARAM_INT);
+                        break;
+                    case 'LASTRUN':
+                        $stmt->bindValue($identifier, $this->lastrun ? $this->lastrun->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                        break;
+                    case 'NEXTRUN':
+                        $stmt->bindValue($identifier, $this->nextrun ? $this->nextrun->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                     case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
@@ -1023,12 +1235,24 @@ abstract class CronJobs implements ActiveRecordInterface
                 return $this->getCommand();
                 break;
             case 4:
-                return $this->getPosition();
+                return $this->getSchedule();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getRunflag();
                 break;
             case 6:
+                return $this->getLastrun();
+                break;
+            case 7:
+                return $this->getNextrun();
+                break;
+            case 8:
+                return $this->getPosition();
+                break;
+            case 9:
+                return $this->getCreatedAt();
+                break;
+            case 10:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1063,9 +1287,13 @@ abstract class CronJobs implements ActiveRecordInterface
             $keys[1] => $this->getVisible(),
             $keys[2] => $this->getTitle(),
             $keys[3] => $this->getCommand(),
-            $keys[4] => $this->getPosition(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedAt(),
+            $keys[4] => $this->getSchedule(),
+            $keys[5] => $this->getRunflag(),
+            $keys[6] => $this->getLastrun(),
+            $keys[7] => $this->getNextrun(),
+            $keys[8] => $this->getPosition(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1118,12 +1346,24 @@ abstract class CronJobs implements ActiveRecordInterface
                 $this->setCommand($value);
                 break;
             case 4:
-                $this->setPosition($value);
+                $this->setSchedule($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setRunflag($value);
                 break;
             case 6:
+                $this->setLastrun($value);
+                break;
+            case 7:
+                $this->setNextrun($value);
+                break;
+            case 8:
+                $this->setPosition($value);
+                break;
+            case 9:
+                $this->setCreatedAt($value);
+                break;
+            case 10:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1154,9 +1394,13 @@ abstract class CronJobs implements ActiveRecordInterface
         if (array_key_exists($keys[1], $arr)) $this->setVisible($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setCommand($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPosition($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
+        if (array_key_exists($keys[4], $arr)) $this->setSchedule($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setRunflag($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setLastrun($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNextrun($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setPosition($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
     /**
@@ -1172,6 +1416,10 @@ abstract class CronJobs implements ActiveRecordInterface
         if ($this->isColumnModified(CronJobsTableMap::VISIBLE)) $criteria->add(CronJobsTableMap::VISIBLE, $this->visible);
         if ($this->isColumnModified(CronJobsTableMap::TITLE)) $criteria->add(CronJobsTableMap::TITLE, $this->title);
         if ($this->isColumnModified(CronJobsTableMap::COMMAND)) $criteria->add(CronJobsTableMap::COMMAND, $this->command);
+        if ($this->isColumnModified(CronJobsTableMap::SCHEDULE)) $criteria->add(CronJobsTableMap::SCHEDULE, $this->schedule);
+        if ($this->isColumnModified(CronJobsTableMap::RUNFLAG)) $criteria->add(CronJobsTableMap::RUNFLAG, $this->runflag);
+        if ($this->isColumnModified(CronJobsTableMap::LASTRUN)) $criteria->add(CronJobsTableMap::LASTRUN, $this->lastrun);
+        if ($this->isColumnModified(CronJobsTableMap::NEXTRUN)) $criteria->add(CronJobsTableMap::NEXTRUN, $this->nextrun);
         if ($this->isColumnModified(CronJobsTableMap::POSITION)) $criteria->add(CronJobsTableMap::POSITION, $this->position);
         if ($this->isColumnModified(CronJobsTableMap::CREATED_AT)) $criteria->add(CronJobsTableMap::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(CronJobsTableMap::UPDATED_AT)) $criteria->add(CronJobsTableMap::UPDATED_AT, $this->updated_at);
@@ -1241,6 +1489,10 @@ abstract class CronJobs implements ActiveRecordInterface
         $copyObj->setVisible($this->getVisible());
         $copyObj->setTitle($this->getTitle());
         $copyObj->setCommand($this->getCommand());
+        $copyObj->setSchedule($this->getSchedule());
+        $copyObj->setRunflag($this->getRunflag());
+        $copyObj->setLastrun($this->getLastrun());
+        $copyObj->setNextrun($this->getNextrun());
         $copyObj->setPosition($this->getPosition());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1281,6 +1533,10 @@ abstract class CronJobs implements ActiveRecordInterface
         $this->visible = null;
         $this->title = null;
         $this->command = null;
+        $this->schedule = null;
+        $this->runflag = null;
+        $this->lastrun = null;
+        $this->nextrun = null;
         $this->position = null;
         $this->created_at = null;
         $this->updated_at = null;

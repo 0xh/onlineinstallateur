@@ -28,6 +28,12 @@ class CronjobCreateForm extends BaseForm {
                 ],
                 'label' => $this->translator->trans('Cron Command', [], CronDashboard::DOMAIN_NAME)
             ])
+             ->add("schedule", "text", [
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'label' => $this->translator->trans('Cron Schedule', [], CronDashboard::DOMAIN_NAME)
+            ])
             ->add("position", "text", [
                 'label' => $this->translator->trans('Position', [], CronDashboard::DOMAIN_NAME)
             ])

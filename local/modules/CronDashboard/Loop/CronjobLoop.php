@@ -28,11 +28,17 @@ class CronjobLoop extends BaseLoop implements PropelSearchLoopInterface {
         $log->err("listingresults " . $loopResult->getCount());
 
         foreach ($loopResult->getResultDataCollection() as $listing) {
+            /*var_dump( $listing->getRunflag() );
+            die();*/
             $loopResultRow = new LoopResultRow($listing);
             $loopResultRow->set("id", $listing->getId())
                     ->set("TITLE", $listing->getTitle())
                     ->set("COMMAND", $listing->getCommand())
                     ->set("POSITION", $listing->getPosition())
+                    ->set("SCHEDULE", $listing->getSchedule())
+                    ->set("NEXTRUN", $listing->getNextrun() )
+                    ->set("LASTTRUN", $listing->getLastrun() )
+                    ->set("RUNFLAG", $listing->getRunflag() )
                     ->set("CREATE_DATE", $listing->getCreatedAt())
                     ->set("UPDATE_DATE", $listing->getUpdatedAt());
 

@@ -25,4 +25,9 @@
         <requirement key="comment_id">\d+</requirement>
     </route>
 
+    <route id="process.update" path="admin/crondashboard/processupdate/{processId}" methods="post">
+        <default key="_controller">CronDashboard\Controller\CronDashboardProcessController::processUpdateState</default>
+        <requirement key="processId">\d+</requirement>
+    </route>
+
 </routes>

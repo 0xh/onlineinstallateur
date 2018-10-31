@@ -58,7 +58,7 @@ class CronJobsTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 11;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class CronJobsTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 11;
 
     /**
      * the column name for the ID field
@@ -89,6 +89,26 @@ class CronJobsTableMap extends TableMap
      * the column name for the COMMAND field
      */
     const COMMAND = 'cron_jobs.COMMAND';
+
+    /**
+     * the column name for the SCHEDULE field
+     */
+    const SCHEDULE = 'cron_jobs.SCHEDULE';
+
+    /**
+     * the column name for the RUNFLAG field
+     */
+    const RUNFLAG = 'cron_jobs.RUNFLAG';
+
+    /**
+     * the column name for the LASTRUN field
+     */
+    const LASTRUN = 'cron_jobs.LASTRUN';
+
+    /**
+     * the column name for the NEXTRUN field
+     */
+    const NEXTRUN = 'cron_jobs.NEXTRUN';
 
     /**
      * the column name for the POSITION field
@@ -117,12 +137,12 @@ class CronJobsTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Title', 'Command', 'Position', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'title', 'command', 'position', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(CronJobsTableMap::ID, CronJobsTableMap::VISIBLE, CronJobsTableMap::TITLE, CronJobsTableMap::COMMAND, CronJobsTableMap::POSITION, CronJobsTableMap::CREATED_AT, CronJobsTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'TITLE', 'COMMAND', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'visible', 'title', 'command', 'position', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'Visible', 'Title', 'Command', 'Schedule', 'Runflag', 'Lastrun', 'Nextrun', 'Position', 'CreatedAt', 'UpdatedAt', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'visible', 'title', 'command', 'schedule', 'runflag', 'lastrun', 'nextrun', 'position', 'createdAt', 'updatedAt', ),
+        self::TYPE_COLNAME       => array(CronJobsTableMap::ID, CronJobsTableMap::VISIBLE, CronJobsTableMap::TITLE, CronJobsTableMap::COMMAND, CronJobsTableMap::SCHEDULE, CronJobsTableMap::RUNFLAG, CronJobsTableMap::LASTRUN, CronJobsTableMap::NEXTRUN, CronJobsTableMap::POSITION, CronJobsTableMap::CREATED_AT, CronJobsTableMap::UPDATED_AT, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'VISIBLE', 'TITLE', 'COMMAND', 'SCHEDULE', 'RUNFLAG', 'LASTRUN', 'NEXTRUN', 'POSITION', 'CREATED_AT', 'UPDATED_AT', ),
+        self::TYPE_FIELDNAME     => array('id', 'visible', 'title', 'command', 'schedule', 'runflag', 'lastrun', 'nextrun', 'position', 'created_at', 'updated_at', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -132,12 +152,12 @@ class CronJobsTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Title' => 2, 'Command' => 3, 'Position' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'title' => 2, 'command' => 3, 'position' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
-        self::TYPE_COLNAME       => array(CronJobsTableMap::ID => 0, CronJobsTableMap::VISIBLE => 1, CronJobsTableMap::TITLE => 2, CronJobsTableMap::COMMAND => 3, CronJobsTableMap::POSITION => 4, CronJobsTableMap::CREATED_AT => 5, CronJobsTableMap::UPDATED_AT => 6, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'TITLE' => 2, 'COMMAND' => 3, 'POSITION' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'title' => 2, 'command' => 3, 'position' => 4, 'created_at' => 5, 'updated_at' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Visible' => 1, 'Title' => 2, 'Command' => 3, 'Schedule' => 4, 'Runflag' => 5, 'Lastrun' => 6, 'Nextrun' => 7, 'Position' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'visible' => 1, 'title' => 2, 'command' => 3, 'schedule' => 4, 'runflag' => 5, 'lastrun' => 6, 'nextrun' => 7, 'position' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
+        self::TYPE_COLNAME       => array(CronJobsTableMap::ID => 0, CronJobsTableMap::VISIBLE => 1, CronJobsTableMap::TITLE => 2, CronJobsTableMap::COMMAND => 3, CronJobsTableMap::SCHEDULE => 4, CronJobsTableMap::RUNFLAG => 5, CronJobsTableMap::LASTRUN => 6, CronJobsTableMap::NEXTRUN => 7, CronJobsTableMap::POSITION => 8, CronJobsTableMap::CREATED_AT => 9, CronJobsTableMap::UPDATED_AT => 10, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'VISIBLE' => 1, 'TITLE' => 2, 'COMMAND' => 3, 'SCHEDULE' => 4, 'RUNFLAG' => 5, 'LASTRUN' => 6, 'NEXTRUN' => 7, 'POSITION' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'visible' => 1, 'title' => 2, 'command' => 3, 'schedule' => 4, 'runflag' => 5, 'lastrun' => 6, 'nextrun' => 7, 'position' => 8, 'created_at' => 9, 'updated_at' => 10, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
     /**
@@ -160,6 +180,10 @@ class CronJobsTableMap extends TableMap
         $this->addColumn('VISIBLE', 'Visible', 'TINYINT', true, null, null);
         $this->addColumn('TITLE', 'Title', 'VARCHAR', false, 255, null);
         $this->addColumn('COMMAND', 'Command', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('SCHEDULE', 'Schedule', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('RUNFLAG', 'Runflag', 'TINYINT', false, null, null);
+        $this->addColumn('LASTRUN', 'Lastrun', 'TIMESTAMP', false, null, null);
+        $this->addColumn('NEXTRUN', 'Nextrun', 'TIMESTAMP', false, null, null);
         $this->addColumn('POSITION', 'Position', 'INTEGER', false, null, null);
         $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
@@ -327,6 +351,10 @@ class CronJobsTableMap extends TableMap
             $criteria->addSelectColumn(CronJobsTableMap::VISIBLE);
             $criteria->addSelectColumn(CronJobsTableMap::TITLE);
             $criteria->addSelectColumn(CronJobsTableMap::COMMAND);
+            $criteria->addSelectColumn(CronJobsTableMap::SCHEDULE);
+            $criteria->addSelectColumn(CronJobsTableMap::RUNFLAG);
+            $criteria->addSelectColumn(CronJobsTableMap::LASTRUN);
+            $criteria->addSelectColumn(CronJobsTableMap::NEXTRUN);
             $criteria->addSelectColumn(CronJobsTableMap::POSITION);
             $criteria->addSelectColumn(CronJobsTableMap::CREATED_AT);
             $criteria->addSelectColumn(CronJobsTableMap::UPDATED_AT);
@@ -335,6 +363,10 @@ class CronJobsTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.VISIBLE');
             $criteria->addSelectColumn($alias . '.TITLE');
             $criteria->addSelectColumn($alias . '.COMMAND');
+            $criteria->addSelectColumn($alias . '.SCHEDULE');
+            $criteria->addSelectColumn($alias . '.RUNFLAG');
+            $criteria->addSelectColumn($alias . '.LASTRUN');
+            $criteria->addSelectColumn($alias . '.NEXTRUN');
             $criteria->addSelectColumn($alias . '.POSITION');
             $criteria->addSelectColumn($alias . '.CREATED_AT');
             $criteria->addSelectColumn($alias . '.UPDATED_AT');

@@ -31,11 +31,34 @@ class CronDashboard extends BaseModule
 	
 	public function postActivation(ConnectionInterface $con = null)
     {
-        if (!self::getConfigValue('is_initialized', false)) {
+        if (!self::getConfigValue('is_initialized', false)) { 
             $database = new Database($con);
             $database->insertSql(null, [__DIR__ . "/Config/thelia.sql"]);
             self::setConfigValue('is_initialized', true);
         }
     }
 
+    public function getHooks()
+    {
+        return array(
+            array(
+                "type" => TemplateDefinition::BACK_OFFICE,
+                "code" => "display.processes",
+                "title" => array(
+                    "en_US" => "Manage processes in backoffice",
+                    "de_DE" => "Manage processes in backoffice",
+                ),
+                "description" => array(
+                    "en_US" => "",
+                    "de_DE" => "",
+                ),
+                "chapo" => array(
+                    "en_US" => "",
+                    "de_DE" => "",
+                ),
+                "block" => false,
+                "active" => true
+            )
+        );
+    }
 }

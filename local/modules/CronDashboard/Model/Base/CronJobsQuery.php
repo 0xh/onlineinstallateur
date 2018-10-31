@@ -22,6 +22,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCronJobsQuery orderByVisible($order = Criteria::ASC) Order by the visible column
  * @method     ChildCronJobsQuery orderByTitle($order = Criteria::ASC) Order by the title column
  * @method     ChildCronJobsQuery orderByCommand($order = Criteria::ASC) Order by the command column
+ * @method     ChildCronJobsQuery orderBySchedule($order = Criteria::ASC) Order by the schedule column
+ * @method     ChildCronJobsQuery orderByRunflag($order = Criteria::ASC) Order by the runflag column
+ * @method     ChildCronJobsQuery orderByLastrun($order = Criteria::ASC) Order by the lastrun column
+ * @method     ChildCronJobsQuery orderByNextrun($order = Criteria::ASC) Order by the nextrun column
  * @method     ChildCronJobsQuery orderByPosition($order = Criteria::ASC) Order by the position column
  * @method     ChildCronJobsQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildCronJobsQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -30,6 +34,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCronJobsQuery groupByVisible() Group by the visible column
  * @method     ChildCronJobsQuery groupByTitle() Group by the title column
  * @method     ChildCronJobsQuery groupByCommand() Group by the command column
+ * @method     ChildCronJobsQuery groupBySchedule() Group by the schedule column
+ * @method     ChildCronJobsQuery groupByRunflag() Group by the runflag column
+ * @method     ChildCronJobsQuery groupByLastrun() Group by the lastrun column
+ * @method     ChildCronJobsQuery groupByNextrun() Group by the nextrun column
  * @method     ChildCronJobsQuery groupByPosition() Group by the position column
  * @method     ChildCronJobsQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildCronJobsQuery groupByUpdatedAt() Group by the updated_at column
@@ -45,6 +53,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCronJobs findOneByVisible(int $visible) Return the first ChildCronJobs filtered by the visible column
  * @method     ChildCronJobs findOneByTitle(string $title) Return the first ChildCronJobs filtered by the title column
  * @method     ChildCronJobs findOneByCommand(string $command) Return the first ChildCronJobs filtered by the command column
+ * @method     ChildCronJobs findOneBySchedule(string $schedule) Return the first ChildCronJobs filtered by the schedule column
+ * @method     ChildCronJobs findOneByRunflag(int $runflag) Return the first ChildCronJobs filtered by the runflag column
+ * @method     ChildCronJobs findOneByLastrun(string $lastrun) Return the first ChildCronJobs filtered by the lastrun column
+ * @method     ChildCronJobs findOneByNextrun(string $nextrun) Return the first ChildCronJobs filtered by the nextrun column
  * @method     ChildCronJobs findOneByPosition(int $position) Return the first ChildCronJobs filtered by the position column
  * @method     ChildCronJobs findOneByCreatedAt(string $created_at) Return the first ChildCronJobs filtered by the created_at column
  * @method     ChildCronJobs findOneByUpdatedAt(string $updated_at) Return the first ChildCronJobs filtered by the updated_at column
@@ -53,6 +65,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     array findByVisible(int $visible) Return ChildCronJobs objects filtered by the visible column
  * @method     array findByTitle(string $title) Return ChildCronJobs objects filtered by the title column
  * @method     array findByCommand(string $command) Return ChildCronJobs objects filtered by the command column
+ * @method     array findBySchedule(string $schedule) Return ChildCronJobs objects filtered by the schedule column
+ * @method     array findByRunflag(int $runflag) Return ChildCronJobs objects filtered by the runflag column
+ * @method     array findByLastrun(string $lastrun) Return ChildCronJobs objects filtered by the lastrun column
+ * @method     array findByNextrun(string $nextrun) Return ChildCronJobs objects filtered by the nextrun column
  * @method     array findByPosition(int $position) Return ChildCronJobs objects filtered by the position column
  * @method     array findByCreatedAt(string $created_at) Return ChildCronJobs objects filtered by the created_at column
  * @method     array findByUpdatedAt(string $updated_at) Return ChildCronJobs objects filtered by the updated_at column
@@ -144,7 +160,7 @@ abstract class CronJobsQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, VISIBLE, TITLE, COMMAND, POSITION, CREATED_AT, UPDATED_AT FROM cron_jobs WHERE ID = :p0';
+        $sql = 'SELECT ID, VISIBLE, TITLE, COMMAND, SCHEDULE, RUNFLAG, LASTRUN, NEXTRUN, POSITION, CREATED_AT, UPDATED_AT FROM cron_jobs WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -371,6 +387,162 @@ abstract class CronJobsQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CronJobsTableMap::COMMAND, $command, $comparison);
+    }
+
+    /**
+     * Filter the query on the schedule column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySchedule('fooValue');   // WHERE schedule = 'fooValue'
+     * $query->filterBySchedule('%fooValue%'); // WHERE schedule LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $schedule The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCronJobsQuery The current query, for fluid interface
+     */
+    public function filterBySchedule($schedule = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($schedule)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $schedule)) {
+                $schedule = str_replace('*', '%', $schedule);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(CronJobsTableMap::SCHEDULE, $schedule, $comparison);
+    }
+
+    /**
+     * Filter the query on the runflag column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByRunflag(1234); // WHERE runflag = 1234
+     * $query->filterByRunflag(array(12, 34)); // WHERE runflag IN (12, 34)
+     * $query->filterByRunflag(array('min' => 12)); // WHERE runflag > 12
+     * </code>
+     *
+     * @param     mixed $runflag The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCronJobsQuery The current query, for fluid interface
+     */
+    public function filterByRunflag($runflag = null, $comparison = null)
+    {
+        if (is_array($runflag)) {
+            $useMinMax = false;
+            if (isset($runflag['min'])) {
+                $this->addUsingAlias(CronJobsTableMap::RUNFLAG, $runflag['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($runflag['max'])) {
+                $this->addUsingAlias(CronJobsTableMap::RUNFLAG, $runflag['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CronJobsTableMap::RUNFLAG, $runflag, $comparison);
+    }
+
+    /**
+     * Filter the query on the lastrun column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLastrun('2011-03-14'); // WHERE lastrun = '2011-03-14'
+     * $query->filterByLastrun('now'); // WHERE lastrun = '2011-03-14'
+     * $query->filterByLastrun(array('max' => 'yesterday')); // WHERE lastrun > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $lastrun The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCronJobsQuery The current query, for fluid interface
+     */
+    public function filterByLastrun($lastrun = null, $comparison = null)
+    {
+        if (is_array($lastrun)) {
+            $useMinMax = false;
+            if (isset($lastrun['min'])) {
+                $this->addUsingAlias(CronJobsTableMap::LASTRUN, $lastrun['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lastrun['max'])) {
+                $this->addUsingAlias(CronJobsTableMap::LASTRUN, $lastrun['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CronJobsTableMap::LASTRUN, $lastrun, $comparison);
+    }
+
+    /**
+     * Filter the query on the nextrun column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNextrun('2011-03-14'); // WHERE nextrun = '2011-03-14'
+     * $query->filterByNextrun('now'); // WHERE nextrun = '2011-03-14'
+     * $query->filterByNextrun(array('max' => 'yesterday')); // WHERE nextrun > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $nextrun The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildCronJobsQuery The current query, for fluid interface
+     */
+    public function filterByNextrun($nextrun = null, $comparison = null)
+    {
+        if (is_array($nextrun)) {
+            $useMinMax = false;
+            if (isset($nextrun['min'])) {
+                $this->addUsingAlias(CronJobsTableMap::NEXTRUN, $nextrun['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($nextrun['max'])) {
+                $this->addUsingAlias(CronJobsTableMap::NEXTRUN, $nextrun['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CronJobsTableMap::NEXTRUN, $nextrun, $comparison);
     }
 
     /**

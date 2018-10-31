@@ -38,9 +38,10 @@
                                 	{include file="includes/inner-form-toolbar.html" close_url="{url path='/admin/crondashboard/'}"}
                         			{form_hidden_fields form=$form}
 								    {render_form_field form=$form field="success_url" value="{url path='/admin/crondashboard/'}"}
-								    {render_form_field field="title"}
-								    {render_form_field field="command"}
-								    {render_form_field field="position"}
+								    {render_form_field field="title" value=$TITLE}
+								    {render_form_field field="command" value=$COMMAND}
+                                    {render_form_field field="schedule" value=$SCHEDULE}
+								    {render_form_field field="position" value=$POSITION}
 								    <div class="control-group">
 	                                    <div class="controls">
 	                                        <p>{intl d='crondashboard.bo.default' l='CronJob created on %date_create. Last modification: %date_change' date_create="{format_date date=$CREATE_DATE}" date_change="{format_date date=$UPDATE_DATE}"}</p>
@@ -54,7 +55,6 @@
             </div>
 
         </div>
-
         {/loop}
 
         {elseloop rel="crondashboard.cronjob.loop"}
