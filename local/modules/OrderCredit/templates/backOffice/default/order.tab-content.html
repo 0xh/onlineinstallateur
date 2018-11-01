@@ -2,10 +2,29 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">{intl l="OrderCredit configuration" d='ordercredit.bo.default'}</h4>
-            <input type="submit" class="btn btn-sm btn-default btn-info" value="{intl l='Generate order Credit'}" title="{intl l='Generate order Credit'}" />
+
+            {ifloop rel="order.credit.loop"}
+            {loop type="order.credit.loop" name="order.credit.loop" order_id=$order_id}
+            {include file="order.tab-content.credit.html" order_id=$order_credit_id}
+            {/loop}
+            {/ifloop}
+            {elseloop rel="order.credit.loop"}
+            <input type="submit" id="generate_order_credit" class="btn btn-sm btn-default btn-info" value="{intl l='Generate order Credit'}" title="{intl l='Generate order Credit'}" />
+            {/elseloop}
+
         </div>
         <div class="panel-body order_credit_panel_body">
 
         </div>
     </div>
 </form>
+<script>
+
+    var generate_order_credit = document.getElementById("generate_order_credit");
+
+    if (generate_order_credit) {
+        generate_order_credit.addEventListener('click', function () {
+            generate_order_credit.style.display = 'none';
+        });
+    }
+</script>

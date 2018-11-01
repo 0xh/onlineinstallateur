@@ -2,6 +2,7 @@
 
 namespace OrderCredit\Controller\Admin;
 
+use OrderCredit\Model\OrderCredit;
 use Propel\Runtime\Propel;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
@@ -42,9 +43,11 @@ class OrderCreditAdminController extends BaseAdminController
         $lastCreditRefString = str_replace($newCreditRef, '', $lastCreditRefString);
 
         // $lastCreditRefString
-        for ($i = 0; $i < strlen($lastCreditRefString); $i++)
-            $newCreditRefString  .= '0';
-        $newCreditRefString  .= $newCreditRef + 1;
+        for ($i = 0; $i < strlen($lastCreditRefString); $i++) {
+            $newCreditRefString .= '0';
+        }
+
+        $newCreditRefString .= $newCreditRef + 1;
 
         $creditOrder   = $this->saveOrder($existingOrder, $newCreditRefString, $orderStatusCredit, $con);
         $creditOrderId = $creditOrder->getId();
@@ -55,11 +58,24 @@ class OrderCreditAdminController extends BaseAdminController
             $this->saveOrderProductTax($orderProductExisting, $newOrderProduct, $con);
         }
 
+        $this->saveOrderCredit($existingOrder, $creditOrder, $con);
+
         $con->commit();
 
         $downloadPdf = URL::getInstance()->absoluteUrl('/admin/order/pdf/credit/' . $creditOrderId);
 
         return $this->render("order.tab-content.credit", array('order_id' => $creditOrderId, 'downloadPdf' => $downloadPdf));
+    }
+
+    protected function saveOrderCredit($existingOrder, $creditOrder, $con)
+    {
+        $orderCredit = new OrderCredit();
+        $orderCredit->setOrderId($existingOrder->getId());
+        $orderCredit->setOrderRef($existingOrder->getRef());
+        $orderCredit->setOrderCreditRef($creditOrder->getRef());
+        $orderCredit->setOrderCreditId($creditOrder->getId());
+
+        $orderCredit->save($con);
     }
 
     protected function saveOrderProductTax($orderProductExisting, $newOrderProduct, $con)
@@ -143,7 +159,7 @@ class OrderCreditAdminController extends BaseAdminController
 
     private function generateBackOfficeOrderPdf($order_id, $fileName)
     {
-        if (null === $response = $this->generateOrderPdf($order_id, $fileName, true, true)) {
+        if (null === $response = $this->generateOrderPdf($order_id, $fileName, true, true, 0)) {
             return $this->generateRedirectFromRoute(
               "admin.order.update.view", [], ['order_id' => $order_id]
             );
