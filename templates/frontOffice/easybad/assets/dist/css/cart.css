@@ -17,7 +17,7 @@
 }
 
 .page-cart .main #cart .checkout-progress a.active{
-    background: #347C92;
+    background: #15589c;
 }
 
 .page-cart .main #cart .checkout-progress .btn-step .step-nb{
@@ -50,9 +50,11 @@
 .page-cart .main #cart .btn-default:focus,
 .page-cart .main #cart .btn-primary:focus,
 .page-cart .main #cart .btn-default:hover,
-.page-cart .main #cart .btn-primary:hover{
+.page-cart .main #cart .btn-primary:hover,
+.page-cart .input-group-btn .btn-default:hover,
+.page-cart .input-group-btn .btn-primary:hover{
     background-color: #347C92;
-    color: #fff;
+    color: #fff !important;
 }
 
 @media screen and (max-width: 455px){
