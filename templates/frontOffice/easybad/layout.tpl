@@ -289,7 +289,7 @@ web : http://www.hausfabrik.at
                     <small><sup>3)</sup>Das Angebot bezieht sich auf Ihre Angaben und beinhaltet nur das Produkt ohne Montagematerial</small><br>
                     <small>Produktabbildung kann abweichen</small><br>
                     <small>Die Ergebnisse aus dem Konfigurator haben keinen Anspruch auf Vollständigkeit der Produkte und Pakete.</small><br>
-                    <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="{url path="/heizungskonfigurator-angebot"}"> <span style="color:#74A027;">NEUE HEIZUNG</span></a> aus.</small><br>
+                    <small>Wenn Sie aber ein Angebot benötigen welches genau auf Sie zugeschnitten ist, füllen Sie bitte das Formular <a href="{url path="/heizungskonfigurator-angebot"}"> <span style="color:rgb(41, 93, 167);">NEUE HEIZUNG</span></a> aus.</small><br>
                     <br>
                 </div>
             </div>

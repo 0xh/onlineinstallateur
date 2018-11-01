@@ -765,7 +765,64 @@ figure.effect-honey:hover h2 i{
     display: block !important;
 }
 
-.full_with_noContainer .allTabs .prducts-container .products-content .img-responsive{
+.full_with_noContainer .allTabs .prducts-container .products-content .img-responsive,
+.page-wish-list .wishlist-box .products-content, .img-responsive{
     padding-left: 2.5%;
-    width: 95%;
+    width: 95% !important;
+}
+
+.page-doit .carousel_wrapper .controls {
+    width: 50% !important;
+    left: 50% !important;
+}
+
+.page-doit .carousel_wrapper .controls .spearatorText {
+    float: left !important;
+    width: auto;
+}
+
+.page-doit .carousel_wrapper .controls .spearatorControlls {
+    width: 90% !important;
+}
+
+.modal-dialog .modal-content .btn-primary:focus,
+.modal-dialog .modal-content .btn-primary:hover,
+#newsletter-footer-body #form-newsletter-mini .btn-primary:focus,
+#newsletter-footer-body #form-newsletter-mini .btn-primary:hover,
+#form-cart-mini .btn-primary:focus,
+#form-cart-mini .btn-primary:hover{
+    color: #fff !important;
+}
+
+#form-cart-mini .btn-primary{
+    width: 86% !important;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+  and (min-resolution:.001dpcm) {
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goLeftControll #toTheLeft{
+        box-shadow: -1px 1px 0px rgba(255, 255, 255, 1) !important;
+    }
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll #toTheRight{
+        box-shadow: -1px 1px 0px rgba(255, 255, 255, 1) !important;
+    }
+}
+@media screen and(-webkit-min-device-pixel-ratio:0){
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goLeftControll #toTheLeft{
+        box-shadow: -1px 1px 0px rgba(255, 255, 255, 1) !important;
+    }
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll #toTheRight{
+        box-shadow: -1px 1px 0px rgba(255, 255, 255, 1) !important;
+    }
+}
+@-moz-document url-prefix(){
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goLeftControll #toTheLeft{
+        box-shadow: -1px 1px 1px rgba(255, 255, 255, 1) !important;
+    }    
+}
+
+@-moz-document url-prefix(){
+    .carousel_wrapper .controls .spearatorControlls .arrowControlls .goRightControll #toTheRight{
+        box-shadow: -1px 1px 1px rgba(255, 255, 255, 1) !important;
+    }
 }

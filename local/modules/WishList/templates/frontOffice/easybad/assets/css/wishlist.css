@@ -27,7 +27,8 @@
     color: #fff;
     border-color: unset !important;
     border: 1px solid #347C92 !important;
-    border-color: #347C92 !important;   
+    border-color: #347C92 !important;
+    width: 100%;
 }
 .page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary:active,
 .page-wish-list #wishlist-box #category-products .products-content .product-price .form-product .btn-primary:hover,
