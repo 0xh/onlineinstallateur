@@ -5,7 +5,7 @@
 
             {ifloop rel="order.credit.loop"}
             {loop type="order.credit.loop" name="order.credit.loop" order_id=$order_id}
-            {include file="order.tab-content.credit.html" order_id=$order_credit_id}
+            {include file="order.tab-content.credit.html" order_id=$order_credit_id order_ref=$order_ref}
             {/loop}
             {/ifloop}
             {elseloop rel="order.credit.loop"}

@@ -57,6 +57,21 @@ class FilterConfigurator extends BaseModule
          ),
          array(
           "type"        => TemplateDefinition::FRONT_OFFICE,
+          "code"        => "configurator.filters.selection.css",
+          "title"       => array(
+           "fr_FR" => "configurator.filters.selection.css",
+           "en_US" => "configurator.filters.selection.css",
+           "de_DE" => "configurator.filters.selection.css",
+          ),
+          "description" => array(
+           "fr_FR" => "configurator.filters.selection.css",
+           "en_US" => "configurator.filters.selection.css",
+           "de_DE" => "configurator.filters.selection.css",
+          ),
+          "active"      => true
+         ),
+         array(
+          "type"        => TemplateDefinition::FRONT_OFFICE,
           "code"        => "configurator.filters",
           "title"       => array(
            "fr_FR" => "configurator.filters",

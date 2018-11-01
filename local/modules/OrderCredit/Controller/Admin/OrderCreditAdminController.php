@@ -15,7 +15,6 @@ use Thelia\Model\OrderProductTax;
 use Thelia\Model\OrderProductTaxQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Model\OrderStatusQuery;
-use Thelia\Tools\URL;
 
 class OrderCreditAdminController extends BaseAdminController
 {
@@ -58,13 +57,11 @@ class OrderCreditAdminController extends BaseAdminController
             $this->saveOrderProductTax($orderProductExisting, $newOrderProduct, $con);
         }
 
-        $this->saveOrderCredit($existingOrder, $creditOrder, $con);
+        $orderCredit = $this->saveOrderCredit($existingOrder, $creditOrder, $con);
 
         $con->commit();
 
-        $downloadPdf = URL::getInstance()->absoluteUrl('/admin/order/pdf/credit/' . $creditOrderId);
-
-        return $this->render("order.tab-content.credit", array('order_id' => $creditOrderId, 'downloadPdf' => $downloadPdf));
+        return $this->render("order.tab-content.credit", array('order_id' => $creditOrderId, 'order_ref' => $orderCredit->getOrderRef()));
     }
 
     protected function saveOrderCredit($existingOrder, $creditOrder, $con)
@@ -76,6 +73,8 @@ class OrderCreditAdminController extends BaseAdminController
         $orderCredit->setOrderCreditId($creditOrder->getId());
 
         $orderCredit->save($con);
+
+        return $orderCredit;
     }
 
     protected function saveOrderProductTax($orderProductExisting, $newOrderProduct, $con)

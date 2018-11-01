@@ -29,7 +29,7 @@
             <tag name="hook.event_listener" event="configurator.description" type="front" method="configuratorDescription" />
             <tag name="hook.event_listener" event="configurator.filters" type="front" method="configuratorFilters" />
             <tag name="hook.event_listener" event="configurator.filters.selection" type="front" method="configuratorFiltersSelection" />
-            <tag name="hook.event_listener" event="main.body-bottom"  type='front' method="onMainCss"/>
+            <tag name="hook.event_listener" event="configurator.filters.selection.css"  type='front' method="onMainCss"/>
             <tag name="hook.event_listener" event="main.body-bottom"  type='front' method="onMainJs"/>
         </hook>
         <hook id="filter.configurator.configuration.hook" class="FilterConfigurator\Hook\Admin\HookManager" scope="request">

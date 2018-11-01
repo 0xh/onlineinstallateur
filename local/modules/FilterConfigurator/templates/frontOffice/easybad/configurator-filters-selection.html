@@ -1,3 +1,4 @@
+{hook name="configurator.filters.selection.css"}
 <div class="row filter_row">
     <div class="col-md-12">
         <div class="match-filter bg-light-grey clean" id="filterCollection">
@@ -14,7 +15,7 @@
                 </li>
                 {if $elements%4==0 && $elements>0 }
                 </ul>
-{*                {$features=$smarty.get.features}*}
+                {*                {$features=$smarty.get.features}*}
                 <div class="tab-content col-md-12 options_collection">
                     {foreach from=$featureCollection key=k item=fID}
                         {if $featureCollection.{$k} != null}
