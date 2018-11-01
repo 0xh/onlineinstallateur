@@ -16,19 +16,19 @@ use ZipArchive;
 use const DS;
 use const THELIA_LOCAL_DIR;
 
-class SelfImport extends ContainerAwareCommand
+class ImportProductsMySht extends ContainerAwareCommand
 {
 
     protected function configure()
     {
         $this
-         ->setName("selfimport:start")
-         ->setDescription("Script will start importing.");
+         ->setName("importShtProducts:start")
+         ->setDescription("Starting mySht stock import!\n");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("Running Command !");
+        $output->writeln("Command started\n !");
 
 
         $UR = new URL();
@@ -62,6 +62,8 @@ class SelfImport extends ContainerAwareCommand
         }
         $zip->extractTo($extractPath);
         $zip->close();
+
+        echo"Zip fetched and extracted. \n";
 
         $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . "/wwwroot/";
         if (is_dir($dir)) {
@@ -108,6 +110,8 @@ class SelfImport extends ContainerAwareCommand
 
                         $filePath = new File($dir . $file);
 
+                        echo "Eveything in order, starting import. \n";
+
                         $importEvent = $importHandler->import($import, $filePath, $lang);
 
                         echo "Import done.";
@@ -116,19 +120,8 @@ class SelfImport extends ContainerAwareCommand
             }
             closedir($dh);
         }
-
-
-        //            unlink($zipFile);
+        echo "Zip operations completed, deleting archive! ";
+        unlink($zipFile);
     }
 
-//    public function parseToArray(SimpleXMLElement $parent)
-//    {
-//        $array = array();
-//
-//        foreach ($parent as $name => $element) {
-//            ($node = & $array[$name]) && (1 === count($node) ? $node = array($node) : 1) && $node = & $node[];
-//            $node = $element->count() ? $this->parseToArray($element) : trim($element);
-//        }
-//        return $array;
-//    }
 }
