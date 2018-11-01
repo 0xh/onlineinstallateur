@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="ordercredit.create.credit" path="/admin/module/ordercredit/create/{orderId}">
+        <default key="_controller">OrderCredit\Controller\Admin\OrderCreditAdminController::create</default>
+        <requirement key="orderId">\d+</requirement>
+    </route>
+    
+    <route id="admin.order.pdf.credit" path="/admin/order/pdf/credit/{order_id}">
+        <default key="_controller">OrderCredit\Controller\Admin\OrderCreditAdminController::generateCreditPdf</default>
+        <requirement key="order_id">\d+</requirement>
+    </route>
+
+</routes>

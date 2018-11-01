@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <hooks>
+        <hook id="ordercredit.hook" class="OrderCredit\Hook\BackHookManger" scope="request">
+            <tag name="hook.event_listener" event="order.tab-content" type="back" method="onCreateCreditOrderBack" />
+            <tag name="hook.event_listener" event="order.edit-js" type="back" method="onOrderEditJs" />
+        </hook>
+    </hooks>
+    
+    <loops>
+        <loop name="order.credit.loop" class="OrderCredit\Loop\OrderCreditLoop" />
+    </loops>
+
+</config>
