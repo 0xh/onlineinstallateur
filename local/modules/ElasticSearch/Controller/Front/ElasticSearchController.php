@@ -32,21 +32,23 @@ class ElasticSearchController extends BaseFrontController
         $start   = $page > 1 ? ($page * $limit) : 0;
         $search  = new ElasticConnection();
         $results = $search->fullTextSearch($this->getRequest()->get('q'), $start, $end, $limit, $order);
-        if ($results == NULL || count($results) == 1) {
+        
+        if ($results["items"] == NULL || count($results["items"]) == 1) {
             $results[] = "no results where found!!";
         } else {
 
-            $results['start']        = $start;
-            $results['end']          = $end;
-            $results['limit']        = $limit;
-            $results['order']        = $order;
-            $results['current_page'] = $page;
+            $results["items"]['start']        = $start;
+            $results["items"]['end']          = $end;
+            $results["items"]['limit']        = $limit;
+            $results["items"]['order']        = $order;
+            $results["items"]['current_page'] = $page;
         }
 
         return $this->render("search_results_page",
                              array(
-          "RESULTS" => $results,
-          "PAGES"   => ceil($results['total'] / $limit)));
+          "RESULTS_SELECTION" => $results['selections'],
+          "RESULTS_ITEMS" => $results['items'],
+          "PAGES"   => ceil($results['items']['total'] / $limit)));
     }
 
     protected function getDefaultCategoryId($product)

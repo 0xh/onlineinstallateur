@@ -210,6 +210,7 @@ class ElasticConnection
         $field                      = null;
         $objElasticConnection       = new ElasticConnection();
         $objElasticSearchConnection = $objElasticConnection::getConnection();
+
         if ($order == null) {
             $order = 'desc';
         }
@@ -276,30 +277,45 @@ class ElasticConnection
         if ($field == NULL) {
             $field = "product_title";
         }
-
-
+       
+                
+//search for selection             
         $params = [
          'index' => 'product_de',
          'type'  => 'default',
-         'body'  => ($text == NULL || $text == "") ? $this->matchAll($field, $order_by) : $json
+         'body'  => ($text == NULL || $text == "") ? $json  : 
+                    $this->mulitMatchQuery($text, $order_by,0,3,1)
         ];
-
-        $result                          = $objElasticSearchConnection->search($params);
-        $result['hits']['hits']['total'] = $result['hits']['total'];
-
-        if ($result['hits']['total'] == 0) {
-            $params                          = [
+        
+//search for_items
+        $result_selection = $objElasticSearchConnection->search($params);
+        $result_selection['hits']['hits']['total'] = $result_selection['hits']['total'];
+        
+        
+            $params = [
              'index' => 'product_de',
              'type'  => 'default',
-             'body'  => ($text == NULL || $text == "") ? $this->matchAll($field, $order_by) : 
-                                                         $this->matchQuery($text,$limit,$start)
+                'body'  => ($text == NULL || $text == "") ? $json  : 
+                            $this->mulitMatchQuery($text, $order_by,$start,$limit,0)
             ];
+            
             
             $result                          = $objElasticSearchConnection->search($params);
             $result['hits']['hits']['total'] = $result['hits']['total'];
-        }
+            
+            if ($result['hits']['hits']['total'] ==0 )
+            {
+                $params = [
+                 'index' => 'product_de',
+                 'type'  => 'default',
+                    'body'  => $json
+                ];
 
-        return $result['hits']['hits'];
+                $result                          = $objElasticSearchConnection->search($params);
+                $result['hits']['hits']['total'] = $result['hits']['total'];
+           }
+            
+        return  array("selections" => $result_selection['hits']['hits'], "items"=>$result['hits']['hits']);
     }
 
     public function orderByPriceAsc()
@@ -393,8 +409,9 @@ class ElasticConnection
               }';
     }
 
-    public function matchQuery($text,$limit, $start)
+    public function matchQuery($text, $limit, $start)
     {
+        die("mach");
         $json = '
              {
               "sort": [
@@ -408,7 +425,7 @@ class ElasticConnection
                 "query": {
                     "match_phrase" : {
                         "product_title" : {
-                            "query" : "'.$text.'",
+                            "query" : "' . $text . '",
                             "analyzer" : "word_join_analyzer"
                         }
                     }
@@ -417,30 +434,44 @@ class ElasticConnection
               ';
         return $json;
     }
+   
     
-    
-    public function mulitMatchQuery($text,$limit, $start)
-    {
-        $json = '
-             {
-              "sort": [
-                {
-                  "product_title": {
-                    "order": "desc"
-                  }
-                }
-              ], 
-               "from" : "' . $start . '","size":"' . $limit . '",
-                "query": {
-                    "multi_match" : {                        
-                            "query" : "'.$text.'",
-                            "fields" : ["product_title", "product_description"]
-                        }
-                }
-                
-            }
-              ';
-        return $json;
-    }
 
+
+    public function mulitMatchQuery($text, $order_by ,$start, $limit,$is_selection = 0)
+    {
+        
+        
+            $json = '{
+                     "sort": [
+                       {
+                         "product_title": {
+                           "order": "asc"
+                         }
+                       }
+                     ], 
+                     "from" : "' . $start . '","size":"' . $limit . '",
+                     "query": {
+                          "bool": { 
+                            "must": [
+                                {"match": {
+                                  "is_selection": '.$is_selection.'
+                                  }
+                                },
+                             {"multi_match": {
+                                       "query" : "' . $text . '",
+                                        "fields": ["product_title","product_description", "features.feature_title",
+                                              "features.feature_desc"],
+                                        "type": "phrase",
+                                        "slop": 2
+                                    }
+                                  } 
+                              ]                            
+                           }
+                        }
+                    }';                    
+        return $json;
+        
+    }
+ 
 }
