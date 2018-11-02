@@ -20,7 +20,7 @@ use Thelia\Model\Order;
 /**
  * Base class that represents a query for the 'order_revenue' table.
  *
- * 
+ *
  *
  * @method     ChildOrderRevenueQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildOrderRevenueQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
@@ -84,7 +84,7 @@ use Thelia\Model\Order;
  */
 abstract class OrderRevenueQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\OrderRevenueQuery object.
      *
@@ -170,7 +170,7 @@ abstract class OrderRevenueQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, ORDER_ID, DELIVERY_COST, DELIVERY_METHOD, PARTNER_ID, PAYMENT_PROCESSOR_COST, PRICE, PURCHASE_PRICE, TOTAL_PURCHASE_PRICE, REVENUE, COMMENT FROM order_revenue WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -837,10 +837,10 @@ abstract class OrderRevenueQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         OrderRevenueTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             OrderRevenueTableMap::clearRelatedInstancePool();
             $con->commit();

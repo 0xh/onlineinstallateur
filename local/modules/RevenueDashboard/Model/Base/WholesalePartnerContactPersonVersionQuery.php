@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerContactPersonVersionTableMap;
 /**
  * Base class that represents a query for the 'wholesale_partner_contact_person_version' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerContactPersonVersionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerContactPersonVersionQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -87,7 +87,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerContactPersonVersionTableMap;
  */
 abstract class WholesalePartnerContactPersonVersionQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerContactPersonVersionQuery object.
      *
@@ -173,8 +173,8 @@ abstract class WholesalePartnerContactPersonVersionQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, TITLE, FIRSTNAME, LASTNAME, TELEFON, EMAIL, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VERSION, VERSION_CREATED_BY FROM wholesale_partner_contact_person_version WHERE ID = :p0 AND VERSION = :p1';
         try {
-            $stmt = $con->prepare($sql);            
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -811,10 +811,10 @@ abstract class WholesalePartnerContactPersonVersionQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerContactPersonVersionTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerContactPersonVersionTableMap::clearRelatedInstancePool();
             $con->commit();

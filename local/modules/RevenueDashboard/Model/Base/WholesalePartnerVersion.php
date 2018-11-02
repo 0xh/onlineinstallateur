@@ -21,7 +21,7 @@ use RevenueDashboard\Model\WholesalePartnerQuery as ChildWholesalePartnerQuery;
 use RevenueDashboard\Model\WholesalePartnerVersionQuery as ChildWholesalePartnerVersionQuery;
 use RevenueDashboard\Model\Map\WholesalePartnerVersionTableMap;
 
-abstract class WholesalePartnerVersion implements ActiveRecordInterface 
+abstract class WholesalePartnerVersion implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -426,7 +426,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -437,7 +437,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [name] column value.
-     * 
+     *
      * @return   string
      */
     public function getName()
@@ -448,7 +448,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [description] column value.
-     * 
+     *
      * @return   string
      */
     public function getDescription()
@@ -459,7 +459,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [comment] column value.
-     * 
+     *
      * @return   string
      */
     public function getComment()
@@ -470,7 +470,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [priority] column value.
-     * 
+     *
      * @return   int
      */
     public function getPriority()
@@ -481,7 +481,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [address] column value.
-     * 
+     *
      * @return   string
      */
     public function getAddress()
@@ -492,7 +492,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [deposit_address] column value.
-     * 
+     *
      * @return   string
      */
     public function getDepositAddress()
@@ -503,7 +503,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [contact_person] column value.
-     * 
+     *
      * @return   string
      */
     public function getContactPerson()
@@ -514,7 +514,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [delivery_types] column value.
-     * 
+     *
      * @return   string
      */
     public function getDeliveryTypes()
@@ -525,7 +525,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [return_policy] column value.
-     * 
+     *
      * @return   string
      */
     public function getReturnPolicy()
@@ -536,7 +536,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [created_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -556,7 +556,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [updated_at] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -576,7 +576,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [version] column value.
-     * 
+     *
      * @return   int
      */
     public function getVersion()
@@ -587,7 +587,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Get the [version_created_by] column value.
-     * 
+     *
      * @return   string
      */
     public function getVersionCreatedBy()
@@ -598,7 +598,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -623,7 +623,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [name] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -644,7 +644,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [description] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -665,7 +665,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [comment] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -686,7 +686,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [priority] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -707,7 +707,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [address] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -728,7 +728,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [deposit_address] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -749,7 +749,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [contact_person] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -770,7 +770,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [delivery_types] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -791,7 +791,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [return_policy] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -812,7 +812,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
@@ -833,7 +833,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
@@ -854,7 +854,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [version] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -875,7 +875,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
 
     /**
      * Set the value of [version_created_by] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerVersion The current object (for fluent API support)
      */
@@ -1264,46 +1264,46 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'NAME':                        
+                    case 'NAME':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'DESCRIPTION':                        
+                    case 'DESCRIPTION':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
-                    case 'COMMENT':                        
+                    case 'COMMENT':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
-                    case 'PRIORITY':                        
+                    case 'PRIORITY':
                         $stmt->bindValue($identifier, $this->priority, PDO::PARAM_INT);
                         break;
-                    case 'ADDRESS':                        
+                    case 'ADDRESS':
                         $stmt->bindValue($identifier, $this->address, PDO::PARAM_STR);
                         break;
-                    case 'DEPOSIT_ADDRESS':                        
+                    case 'DEPOSIT_ADDRESS':
                         $stmt->bindValue($identifier, $this->deposit_address, PDO::PARAM_STR);
                         break;
-                    case 'CONTACT_PERSON':                        
+                    case 'CONTACT_PERSON':
                         $stmt->bindValue($identifier, $this->contact_person, PDO::PARAM_STR);
                         break;
-                    case 'DELIVERY_TYPES':                        
+                    case 'DELIVERY_TYPES':
                         $stmt->bindValue($identifier, $this->delivery_types, PDO::PARAM_STR);
                         break;
-                    case 'RETURN_POLICY':                        
+                    case 'RETURN_POLICY':
                         $stmt->bindValue($identifier, $this->return_policy, PDO::PARAM_STR);
                         break;
-                    case 'CREATED_AT':                        
+                    case 'CREATED_AT':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':                        
+                    case 'UPDATED_AT':
                         $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'VERSION':                        
+                    case 'VERSION':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
                         break;
-                    case 'VERSION_CREATED_BY':                        
+                    case 'VERSION_CREATED_BY':
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
@@ -1451,7 +1451,7 @@ abstract class WholesalePartnerVersion implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aWholesalePartner) {
                 $result['WholesalePartner'] = $this->aWholesalePartner->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

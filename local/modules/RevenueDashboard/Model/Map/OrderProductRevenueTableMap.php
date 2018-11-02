@@ -153,7 +153,7 @@ class OrderProductRevenueTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('ORDER_ID', 'OrderId', 'INTEGER', 'order', 'ID', false, null, null);
-        $this->addForeignKey('PRODUCT_REF', 'ProductRef', 'VARCHAR', 'product', 'REF', false, 255, null);
+        $this->addColumn('PRODUCT_REF', 'ProductRef', 'VARCHAR', false, 255, null);
         $this->addColumn('PRICE', 'Price', 'DECIMAL', false, 16, 0);
         $this->addColumn('PURCHASE_PRICE', 'PurchasePrice', 'DECIMAL', false, 16, 0);
         $this->addColumn('PARTNER_ID', 'PartnerId', 'INTEGER', false, null, null);
@@ -165,7 +165,6 @@ class OrderProductRevenueTableMap extends TableMap
     public function buildRelations()
     {
         $this->addRelation('Order', '\\Thelia\\Model\\Order', RelationMap::MANY_TO_ONE, array('order_id' => 'id', ), 'CASCADE', null);
-        $this->addRelation('Product', '\\Thelia\\Model\\Product', RelationMap::MANY_TO_ONE, array('product_ref' => 'ref', ), 'CASCADE', null);
     } // buildRelations()
 
     /**
@@ -210,7 +209,7 @@ class OrderProductRevenueTableMap extends TableMap
                             : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
                         ];
     }
-    
+
     /**
      * The class that the tableMap will make instances of.
      *
@@ -270,7 +269,7 @@ class OrderProductRevenueTableMap extends TableMap
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
         $results = array();
-    
+
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
         // populate the object(s)

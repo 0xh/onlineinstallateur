@@ -20,7 +20,7 @@ use Thelia\Model\Brand;
 /**
  * Base class that represents a query for the 'wholesale_partner_brand_matching' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerBrandMatchingQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerBrandMatchingQuery orderByBrandIntern($order = Criteria::ASC) Order by the brand_intern column
@@ -60,7 +60,7 @@ use Thelia\Model\Brand;
  */
 abstract class WholesalePartnerBrandMatchingQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerBrandMatchingQuery object.
      *
@@ -146,7 +146,7 @@ abstract class WholesalePartnerBrandMatchingQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, BRAND_INTERN, BRAND_EXTERN, PARTNER_ID, BRAND_CODE FROM wholesale_partner_brand_matching WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -567,10 +567,10 @@ abstract class WholesalePartnerBrandMatchingQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerBrandMatchingTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerBrandMatchingTableMap::clearRelatedInstancePool();
             $con->commit();

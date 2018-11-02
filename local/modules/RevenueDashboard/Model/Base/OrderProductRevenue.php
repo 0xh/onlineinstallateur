@@ -17,11 +17,9 @@ use Propel\Runtime\Parser\AbstractParser;
 use RevenueDashboard\Model\OrderProductRevenueQuery as ChildOrderProductRevenueQuery;
 use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
 use Thelia\Model\Order as ChildOrder;
-use Thelia\Model\Product as ChildProduct;
 use Thelia\Model\OrderQuery;
-use Thelia\Model\ProductQuery;
 
-abstract class OrderProductRevenue implements ActiveRecordInterface 
+abstract class OrderProductRevenue implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -97,11 +95,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
      * @var        Order
      */
     protected $aOrder;
-
-    /**
-     * @var        Product
-     */
-    protected $aProduct;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -385,7 +378,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -396,7 +389,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [order_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getOrderId()
@@ -407,7 +400,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [product_ref] column value.
-     * 
+     *
      * @return   string
      */
     public function getProductRef()
@@ -418,7 +411,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [price] column value.
-     * 
+     *
      * @return   string
      */
     public function getPrice()
@@ -429,7 +422,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [purchase_price] column value.
-     * 
+     *
      * @return   string
      */
     public function getPurchasePrice()
@@ -440,7 +433,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Get the [partner_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getPartnerId()
@@ -451,7 +444,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -472,7 +465,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [order_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -497,7 +490,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [product_ref] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -512,17 +505,13 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $this->modifiedColumns[OrderProductRevenueTableMap::PRODUCT_REF] = true;
         }
 
-        if ($this->aProduct !== null && $this->aProduct->getRef() !== $v) {
-            $this->aProduct = null;
-        }
-
 
         return $this;
     } // setProductRef()
 
     /**
      * Set the value of [price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -543,7 +532,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [purchase_price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -564,7 +553,7 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
      */
@@ -678,9 +667,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($this->aOrder !== null && $this->order_id !== $this->aOrder->getId()) {
             $this->aOrder = null;
         }
-        if ($this->aProduct !== null && $this->product_ref !== $this->aProduct->getRef()) {
-            $this->aProduct = null;
-        }
     } // ensureConsistency
 
     /**
@@ -721,7 +707,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aOrder = null;
-            $this->aProduct = null;
         } // if (deep)
     }
 
@@ -845,13 +830,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
                 $this->setOrder($this->aOrder);
             }
 
-            if ($this->aProduct !== null) {
-                if ($this->aProduct->isModified() || $this->aProduct->isNew()) {
-                    $affectedRows += $this->aProduct->save($con);
-                }
-                $this->setProduct($this->aProduct);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -918,22 +896,22 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'ORDER_ID':                        
+                    case 'ORDER_ID':
                         $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
                         break;
-                    case 'PRODUCT_REF':                        
+                    case 'PRODUCT_REF':
                         $stmt->bindValue($identifier, $this->product_ref, PDO::PARAM_STR);
                         break;
-                    case 'PRICE':                        
+                    case 'PRICE':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
                         break;
-                    case 'PURCHASE_PRICE':                        
+                    case 'PURCHASE_PRICE':
                         $stmt->bindValue($identifier, $this->purchase_price, PDO::PARAM_STR);
                         break;
-                    case 'PARTNER_ID':                        
+                    case 'PARTNER_ID':
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
                 }
@@ -1056,13 +1034,10 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aOrder) {
                 $result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aProduct) {
-                $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1311,59 +1286,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProduct object.
-     *
-     * @param                  ChildProduct $v
-     * @return                 \RevenueDashboard\Model\OrderProductRevenue The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProduct(ChildProduct $v = null)
-    {
-        if ($v === null) {
-            $this->setProductRef(NULL);
-        } else {
-            $this->setProductRef($v->getRef());
-        }
-
-        $this->aProduct = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProduct object, it will not be re-added.
-        if ($v !== null) {
-            $v->addOrderProductRevenue($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProduct object
-     *
-     * @param      ConnectionInterface $con Optional Connection object.
-     * @return                 ChildProduct The associated ChildProduct object.
-     * @throws PropelException
-     */
-    public function getProduct(ConnectionInterface $con = null)
-    {
-        if ($this->aProduct === null && (($this->product_ref !== "" && $this->product_ref !== null))) {
-            $this->aProduct = ProductQuery::create()
-                ->filterByOrderProductRevenue($this) // here
-                ->findOne($con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProduct->addOrderProductRevenues($this);
-             */
-        }
-
-        return $this->aProduct;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1397,7 +1319,6 @@ abstract class OrderProductRevenue implements ActiveRecordInterface
         } // if ($deep)
 
         $this->aOrder = null;
-        $this->aProduct = null;
     }
 
     /**

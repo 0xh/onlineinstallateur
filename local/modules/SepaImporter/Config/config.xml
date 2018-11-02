@@ -11,8 +11,10 @@
     </services>
     
      <commands>
-        <command class="SepaImporter\Commands\SelfImport"/>
-    </commands>
+        <command class="SepaImporter\Commands\ImportStockMySht"/>
+        <command class="SepaImporter\Commands\ImportProductsMySht"/>
+        <command class="SepaImporter\Commands\ImportETCMySht"/>
+     </commands>
     
     <import_categories>
         <import_category id="thelia.import.features">

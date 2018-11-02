@@ -20,7 +20,7 @@ use Thelia\Model\Category;
 /**
  * Base class that represents a query for the 'wholesale_partner_category_matching' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerCategoryMatchingQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerCategoryMatchingQuery orderByCategoryInternId($order = Criteria::ASC) Order by the category_intern_id column
@@ -68,7 +68,7 @@ use Thelia\Model\Category;
  */
 abstract class WholesalePartnerCategoryMatchingQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerCategoryMatchingQuery object.
      *
@@ -154,7 +154,7 @@ abstract class WholesalePartnerCategoryMatchingQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, CATEGORY_INTERN_ID, CATEGORY_INTERN_NAME, CATEGORY_EXTERN_ID, CATEGORY_EXTERN_NAME, PARTNER_ID, CATEGORY_ID FROM wholesale_partner_category_matching WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -633,10 +633,10 @@ abstract class WholesalePartnerCategoryMatchingQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerCategoryMatchingTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerCategoryMatchingTableMap::clearRelatedInstancePool();
             $con->commit();
