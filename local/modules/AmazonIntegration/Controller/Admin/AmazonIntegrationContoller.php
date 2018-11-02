@@ -187,10 +187,10 @@ class AmazonIntegrationContoller extends BaseAdminController
             if ($orders) {
                 foreach ($orders as $i => $order) {
 
-//                     if ($order->OrderStatus == 'Pending' || $order->OrderStatus == 'Unshipped') {
-//                         //$_SESSION['ordersWithTotalZero'] = true;
-//                         break;
-//                     }
+                     if ($order->OrderStatus == 'Pending') {
+                         //$_SESSION['ordersWithTotalZero'] = true;
+                         break;
+                     }
                     $this->getLogger()->error("amazonOrderId " . isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
 
                     if (isset($order->ShippingAddress->CountryCode)) {
