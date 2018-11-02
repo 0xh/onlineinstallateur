@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
 /**
  * Base class that represents a query for the 'wholesale_partner_product_version' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerProductVersionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerProductVersionQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
@@ -107,7 +107,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerProductVersionTableMap;
  */
 abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerProductVersionQuery object.
      *
@@ -193,8 +193,8 @@ abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PARTNER_PRODUCT_REF, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY, PRODUCT_ID_VERSION FROM wholesale_partner_product_version WHERE ID = :p0 AND VERSION = :p1';
         try {
-            $stmt = $con->prepare($sql);            
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -1062,10 +1062,10 @@ abstract class WholesalePartnerProductVersionQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerProductVersionTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerProductVersionTableMap::clearRelatedInstancePool();
             $con->commit();

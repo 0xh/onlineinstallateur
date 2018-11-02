@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerBrandMatchingTableMap;
 use Thelia\Model\BrandQuery;
 use Thelia\Model\Brand as ChildBrand;
 
-abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface 
+abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -356,7 +356,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -367,7 +367,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Get the [brand_intern] column value.
-     * 
+     *
      * @return   int
      */
     public function getBrandIntern()
@@ -378,7 +378,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Get the [brand_extern] column value.
-     * 
+     *
      * @return   string
      */
     public function getBrandExtern()
@@ -389,7 +389,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Get the [partner_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getPartnerId()
@@ -400,7 +400,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Get the [brand_code] column value.
-     * 
+     *
      * @return   string
      */
     public function getBrandCode()
@@ -411,7 +411,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerBrandMatching The current object (for fluent API support)
      */
@@ -432,7 +432,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [brand_intern] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerBrandMatching The current object (for fluent API support)
      */
@@ -457,7 +457,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [brand_extern] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerBrandMatching The current object (for fluent API support)
      */
@@ -478,7 +478,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerBrandMatching The current object (for fluent API support)
      */
@@ -499,7 +499,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [brand_code] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerBrandMatching The current object (for fluent API support)
      */
@@ -828,19 +828,19 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_INTERN':                        
+                    case 'BRAND_INTERN':
                         $stmt->bindValue($identifier, $this->brand_intern, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_EXTERN':                        
+                    case 'BRAND_EXTERN':
                         $stmt->bindValue($identifier, $this->brand_extern, PDO::PARAM_STR);
                         break;
-                    case 'PARTNER_ID':                        
+                    case 'PARTNER_ID':
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
-                    case 'BRAND_CODE':                        
+                    case 'BRAND_CODE':
                         $stmt->bindValue($identifier, $this->brand_code, PDO::PARAM_STR);
                         break;
                 }
@@ -959,7 +959,7 @@ abstract class WholesalePartnerBrandMatching implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aBrand) {
                 $result['Brand'] = $this->aBrand->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

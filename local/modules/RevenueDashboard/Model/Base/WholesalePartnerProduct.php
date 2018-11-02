@@ -27,7 +27,7 @@ use Thelia\Model\Product as ChildProduct;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\ProductVersionQuery;
 
-abstract class WholesalePartnerProduct implements ActiveRecordInterface 
+abstract class WholesalePartnerProduct implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -181,13 +181,13 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     // versionable behavior
-    
-    
+
+
     /**
      * @var bool
      */
     protected $enforceVersion = false;
-            
+
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
@@ -470,7 +470,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -481,7 +481,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [partner_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getPartnerId()
@@ -492,7 +492,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [product_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getProductId()
@@ -503,7 +503,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [partner_product_ref] column value.
-     * 
+     *
      * @return   string
      */
     public function getPartnerProdRef()
@@ -514,7 +514,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [price] column value.
-     * 
+     *
      * @return   string
      */
     public function getPrice()
@@ -525,7 +525,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [package_size] column value.
-     * 
+     *
      * @return   int
      */
     public function getPackageSize()
@@ -536,7 +536,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [delivery_cost] column value.
-     * 
+     *
      * @return   string
      */
     public function getDeliveryCost()
@@ -547,7 +547,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [discount] column value.
-     * 
+     *
      * @return   string
      */
     public function getDiscount()
@@ -558,7 +558,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [discount_description] column value.
-     * 
+     *
      * @return   string
      */
     public function getDiscountDescription()
@@ -569,7 +569,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [profile_website] column value.
-     * 
+     *
      * @return   string
      */
     public function getProfileWebsite()
@@ -580,7 +580,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     * 
+     *
      * @return   string
      */
     public function getPosition()
@@ -591,7 +591,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [department] column value.
-     * 
+     *
      * @return   string
      */
     public function getDepartment()
@@ -602,7 +602,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [comment] column value.
-     * 
+     *
      * @return   string
      */
     public function getComment()
@@ -613,7 +613,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [optionally formatted] temporal [valid_until] column value.
-     * 
+     *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw \DateTime object will be returned.
@@ -633,7 +633,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [version] column value.
-     * 
+     *
      * @return   int
      */
     public function getVersion()
@@ -644,7 +644,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Get the [version_created_by] column value.
-     * 
+     *
      * @return   string
      */
     public function getVersionCreatedBy()
@@ -655,7 +655,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -676,7 +676,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -697,7 +697,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [product_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -722,7 +722,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_product_ref] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -743,7 +743,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -764,7 +764,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [package_size] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -785,7 +785,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [delivery_cost] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -806,7 +806,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [discount] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -827,7 +827,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [discount_description] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -848,7 +848,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [profile_website] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -869,7 +869,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -890,7 +890,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [department] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -911,7 +911,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [comment] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -932,7 +932,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Sets the value of [valid_until] column to a normalized version of the date/time value specified.
-     * 
+     *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
@@ -953,7 +953,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [version] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -974,7 +974,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
     /**
      * Set the value of [version_created_by] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerProduct The current object (for fluent API support)
      */
@@ -1416,52 +1416,52 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'PARTNER_ID':                        
+                    case 'PARTNER_ID':
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
-                    case 'PRODUCT_ID':                        
+                    case 'PRODUCT_ID':
                         $stmt->bindValue($identifier, $this->product_id, PDO::PARAM_INT);
                         break;
-                    case 'PARTNER_PRODUCT_REF':                        
+                    case 'PARTNER_PRODUCT_REF':
                         $stmt->bindValue($identifier, $this->partner_product_ref, PDO::PARAM_STR);
                         break;
-                    case 'PRICE':                        
+                    case 'PRICE':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
                         break;
-                    case 'PACKAGE_SIZE':                        
+                    case 'PACKAGE_SIZE':
                         $stmt->bindValue($identifier, $this->package_size, PDO::PARAM_INT);
                         break;
-                    case 'DELIVERY_COST':                        
+                    case 'DELIVERY_COST':
                         $stmt->bindValue($identifier, $this->delivery_cost, PDO::PARAM_STR);
                         break;
-                    case 'DISCOUNT':                        
+                    case 'DISCOUNT':
                         $stmt->bindValue($identifier, $this->discount, PDO::PARAM_STR);
                         break;
-                    case 'DISCOUNT_DESCRIPTION':                        
+                    case 'DISCOUNT_DESCRIPTION':
                         $stmt->bindValue($identifier, $this->discount_description, PDO::PARAM_STR);
                         break;
-                    case 'PROFILE_WEBSITE':                        
+                    case 'PROFILE_WEBSITE':
                         $stmt->bindValue($identifier, $this->profile_website, PDO::PARAM_STR);
                         break;
-                    case 'POSITION':                        
+                    case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_STR);
                         break;
-                    case 'DEPARTMENT':                        
+                    case 'DEPARTMENT':
                         $stmt->bindValue($identifier, $this->department, PDO::PARAM_STR);
                         break;
-                    case 'COMMENT':                        
+                    case 'COMMENT':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
-                    case 'VALID_UNTIL':                        
+                    case 'VALID_UNTIL':
                         $stmt->bindValue($identifier, $this->valid_until ? $this->valid_until->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
-                    case 'VERSION':                        
+                    case 'VERSION':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
                         break;
-                    case 'VERSION_CREATED_BY':                        
+                    case 'VERSION_CREATED_BY':
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
@@ -1624,7 +1624,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aProduct) {
                 $result['Product'] = $this->aProduct->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -2085,7 +2085,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         $wholesalePartnerProductVersionsToDelete = $this->getWholesalePartnerProductVersions(new Criteria(), $con)->diff($wholesalePartnerProductVersions);
 
-        
+
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -2252,7 +2252,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     }
 
     // versionable behavior
-    
+
     /**
      * Enforce a new Version of this object upon next save.
      *
@@ -2261,10 +2261,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     public function enforceVersioning()
     {
         $this->enforceVersion = true;
-    
+
         return $this;
     }
-            
+
     /**
      * Checks whether the current state must be recorded as a version
      *
@@ -2275,22 +2275,22 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if ($this->alreadyInSave) {
             return false;
         }
-    
+
         if ($this->enforceVersion) {
             return true;
         }
-    
+
         if (ChildWholesalePartnerProductQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
             return true;
         }
         if (null !== ($object = $this->getProduct($con)) && $object->isVersioningNecessary($con)) {
             return true;
         }
-    
-    
+
+
         return false;
     }
-    
+
     /**
      * Creates a version of the current object and saves it.
      *
@@ -2301,7 +2301,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     public function addVersion($con = null)
     {
         $this->enforceVersion = false;
-    
+
         $version = new ChildWholesalePartnerProductVersion();
         $version->setId($this->getId());
         $version->setPartnerId($this->getPartnerId());
@@ -2324,10 +2324,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             $version->setProductIdVersion($related->getVersion());
         }
         $version->save($con);
-    
+
         return $version;
     }
-    
+
     /**
      * Sets the properties of the current object to the value they had at a specific version
      *
@@ -2343,10 +2343,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             throw new PropelException(sprintf('No ChildWholesalePartnerProduct object found with version %d', $version));
         }
         $this->populateFromVersion($version, $con);
-    
+
         return $this;
     }
-    
+
     /**
      * Sets the properties of the current object to the value they had at a specific version
      *
@@ -2389,10 +2389,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             }
             $this->setProduct($related);
         }
-    
+
         return $this;
     }
-    
+
     /**
      * Gets the latest persisted version number for the current object
      *
@@ -2409,10 +2409,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         if (!$v) {
             return 0;
         }
-    
+
         return $v->getVersion();
     }
-    
+
     /**
      * Checks whether the current object is the latest one
      *
@@ -2424,7 +2424,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         return $this->getLastVersionNumber($con) == $this->getVersion();
     }
-    
+
     /**
      * Retrieves a version object for this entity and a version number
      *
@@ -2440,7 +2440,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
             ->filterByVersion($versionNumber)
             ->findOne($con);
     }
-    
+
     /**
      * Gets all the versions of this object, in incremental order
      *
@@ -2452,10 +2452,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         $criteria = new Criteria();
         $criteria->addAscendingOrderByColumn(WholesalePartnerProductVersionTableMap::VERSION);
-    
+
         return $this->getWholesalePartnerProductVersions($criteria, $con);
     }
-    
+
     /**
      * Compares the current object with another of its version.
      * <code>
@@ -2477,10 +2477,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         $fromVersion = $this->toArray();
         $toVersion = $this->getOneVersion($versionNumber, $con)->toArray();
-    
+
         return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
     }
-    
+
     /**
      * Compares two versions of the current object.
      * <code>
@@ -2503,10 +2503,10 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
     {
         $fromVersion = $this->getOneVersion($fromVersionNumber, $con)->toArray();
         $toVersion = $this->getOneVersion($toVersionNumber, $con)->toArray();
-    
+
         return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
     }
-    
+
     /**
      * Computes the diff between two versions.
      * <code>
@@ -2552,7 +2552,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
                 }
             }
         }
-    
+
         return $diff;
     }
     /**
@@ -2566,7 +2566,7 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
         $criteria = ChildWholesalePartnerProductVersionQuery::create(null, $criteria);
         $criteria->addDescendingOrderByColumn(WholesalePartnerProductVersionTableMap::VERSION);
         $criteria->limit($number);
-    
+
         return $this->getWholesalePartnerProductVersions($criteria, $con);
     }
     /**

@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerVersionTableMap;
 /**
  * Base class that represents a query for the 'wholesale_partner_version' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerVersionQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerVersionQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -95,7 +95,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerVersionTableMap;
  */
 abstract class WholesalePartnerVersionQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\WholesalePartnerVersionQuery object.
      *
@@ -181,8 +181,8 @@ abstract class WholesalePartnerVersionQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, NAME, DESCRIPTION, COMMENT, PRIORITY, ADDRESS, DEPOSIT_ADDRESS, CONTACT_PERSON, DELIVERY_TYPES, RETURN_POLICY, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_BY FROM wholesale_partner_version WHERE ID = :p0 AND VERSION = :p1';
         try {
-            $stmt = $con->prepare($sql);            
-            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);            
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
             $stmt->bindValue(':p1', $key[1], PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -905,10 +905,10 @@ abstract class WholesalePartnerVersionQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerVersionTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerVersionTableMap::clearRelatedInstancePool();
             $con->commit();

@@ -20,7 +20,7 @@ use Thelia\Model\CustomerTitle;
 /**
  * Base class that represents a query for the 'wholesale_partner_contact_person' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerContactPersonQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerContactPersonQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -92,9 +92,9 @@ use Thelia\Model\CustomerTitle;
  */
 abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
 {
-    
+
     // versionable behavior
-    
+
     /**
      * Whether the versioning is enabled
      */
@@ -185,7 +185,7 @@ abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, TITLE, FIRSTNAME, LASTNAME, TELEFON, EMAIL, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VERSION, VERSION_CREATED_BY FROM wholesale_partner_contact_person WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -882,10 +882,10 @@ abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerContactPersonTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerContactPersonTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -898,7 +898,7 @@ abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
     }
 
     // versionable behavior
-    
+
     /**
      * Checks whether versioning is enabled
      *
@@ -908,7 +908,7 @@ abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
     {
         return self::$isVersioningEnabled;
     }
-    
+
     /**
      * Enables versioning
      */
@@ -916,7 +916,7 @@ abstract class WholesalePartnerContactPersonQuery extends ModelCriteria
     {
         self::$isVersioningEnabled = true;
     }
-    
+
     /**
      * Disables versioning
      */

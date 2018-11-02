@@ -149,14 +149,9 @@ CREATE TABLE `order_product_revenue`
     `partner_id` INTEGER,
     PRIMARY KEY (`id`),
     INDEX `FI_order_product_revenue_order_id` (`order_id`),
-    INDEX `FI_order_product_revenue_product_ref` (`product_ref`),
     CONSTRAINT `fk_order_product_revenue_order_id`
         FOREIGN KEY (`order_id`)
         REFERENCES `order` (`id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `fk_order_product_revenue_product_ref`
-        FOREIGN KEY (`product_ref`)
-        REFERENCES `product` (`ref`)
         ON DELETE CASCADE
 ) ENGINE=InnoDB;
 

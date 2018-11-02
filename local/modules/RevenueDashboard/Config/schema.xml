@@ -114,9 +114,6 @@
         <foreign-key foreignTable="order" name="fk_order_product_revenue_order_id" onDelete="CASCADE">
 	      <reference local="order_id" foreign="id"/>
 	    </foreign-key>
-        <foreign-key foreignTable="product" name="fk_order_product_revenue_product_ref" onDelete="CASCADE">
-	      <reference local="product_ref" foreign="ref"/>
-	    </foreign-key>
         <vendor type="mysql">
             <parameter name="Engine" value="InnoDB"/>
         </vendor>

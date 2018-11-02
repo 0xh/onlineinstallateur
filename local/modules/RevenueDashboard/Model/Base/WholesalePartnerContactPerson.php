@@ -24,7 +24,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerContactPersonVersionTableMap;
 use Thelia\Model\CustomerTitle as ChildCustomerTitle;
 use Thelia\Model\CustomerTitleQuery;
 
-abstract class WholesalePartnerContactPerson implements ActiveRecordInterface 
+abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -151,13 +151,13 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     // versionable behavior
-    
-    
+
+
     /**
      * @var bool
      */
     protected $enforceVersion = false;
-            
+
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection
@@ -437,7 +437,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -448,7 +448,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [title] column value.
-     * 
+     *
      * @return   int
      */
     public function getTitle()
@@ -459,7 +459,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [firstname] column value.
-     * 
+     *
      * @return   string
      */
     public function getFirstname()
@@ -470,7 +470,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [lastname] column value.
-     * 
+     *
      * @return   string
      */
     public function getLastname()
@@ -481,7 +481,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [telefon] column value.
-     * 
+     *
      * @return   string
      */
     public function getTelefon()
@@ -492,7 +492,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [email] column value.
-     * 
+     *
      * @return   string
      */
     public function getEmail()
@@ -503,7 +503,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [profile_website] column value.
-     * 
+     *
      * @return   string
      */
     public function getProfileWebsite()
@@ -514,7 +514,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [position] column value.
-     * 
+     *
      * @return   string
      */
     public function getPosition()
@@ -525,7 +525,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [department] column value.
-     * 
+     *
      * @return   string
      */
     public function getDepartment()
@@ -536,7 +536,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [comment] column value.
-     * 
+     *
      * @return   string
      */
     public function getComment()
@@ -547,7 +547,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [version] column value.
-     * 
+     *
      * @return   int
      */
     public function getVersion()
@@ -558,7 +558,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Get the [version_created_by] column value.
-     * 
+     *
      * @return   string
      */
     public function getVersionCreatedBy()
@@ -569,7 +569,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -590,7 +590,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [title] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -615,7 +615,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [firstname] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -636,7 +636,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [lastname] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -657,7 +657,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [telefon] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -678,7 +678,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [email] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -699,7 +699,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [profile_website] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -720,7 +720,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [position] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -741,7 +741,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [department] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -762,7 +762,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [comment] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -783,7 +783,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [version] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -804,7 +804,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
 
     /**
      * Set the value of [version_created_by] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPerson The current object (for fluent API support)
      */
@@ -1207,40 +1207,40 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'TITLE':                        
+                    case 'TITLE':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_INT);
                         break;
-                    case 'FIRSTNAME':                        
+                    case 'FIRSTNAME':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
-                    case 'LASTNAME':                        
+                    case 'LASTNAME':
                         $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
-                    case 'TELEFON':                        
+                    case 'TELEFON':
                         $stmt->bindValue($identifier, $this->telefon, PDO::PARAM_STR);
                         break;
-                    case 'EMAIL':                        
+                    case 'EMAIL':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'PROFILE_WEBSITE':                        
+                    case 'PROFILE_WEBSITE':
                         $stmt->bindValue($identifier, $this->profile_website, PDO::PARAM_STR);
                         break;
-                    case 'POSITION':                        
+                    case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_STR);
                         break;
-                    case 'DEPARTMENT':                        
+                    case 'DEPARTMENT':
                         $stmt->bindValue($identifier, $this->department, PDO::PARAM_STR);
                         break;
-                    case 'COMMENT':                        
+                    case 'COMMENT':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
-                    case 'VERSION':                        
+                    case 'VERSION':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
                         break;
-                    case 'VERSION_CREATED_BY':                        
+                    case 'VERSION_CREATED_BY':
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
@@ -1387,7 +1387,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aCustomerTitle) {
                 $result['CustomerTitle'] = $this->aCustomerTitle->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
@@ -1824,7 +1824,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     {
         $wholesalePartnerContactPersonVersionsToDelete = $this->getWholesalePartnerContactPersonVersions(new Criteria(), $con)->diff($wholesalePartnerContactPersonVersions);
 
-        
+
         //since at least one column in the foreign key is at the same time a PK
         //we can not just set a PK to NULL in the lines below. We have to store
         //a backup of all values, so we are able to manipulate these items based on the onDelete value later.
@@ -1987,7 +1987,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     }
 
     // versionable behavior
-    
+
     /**
      * Enforce a new Version of this object upon next save.
      *
@@ -1996,10 +1996,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     public function enforceVersioning()
     {
         $this->enforceVersion = true;
-    
+
         return $this;
     }
-            
+
     /**
      * Checks whether the current state must be recorded as a version
      *
@@ -2010,18 +2010,18 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         if ($this->alreadyInSave) {
             return false;
         }
-    
+
         if ($this->enforceVersion) {
             return true;
         }
-    
+
         if (ChildWholesalePartnerContactPersonQuery::isVersioningEnabled() && ($this->isNew() || $this->isModified()) || $this->isDeleted()) {
             return true;
         }
-    
+
         return false;
     }
-    
+
     /**
      * Creates a version of the current object and saves it.
      *
@@ -2032,7 +2032,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     public function addVersion($con = null)
     {
         $this->enforceVersion = false;
-    
+
         $version = new ChildWholesalePartnerContactPersonVersion();
         $version->setId($this->getId());
         $version->setTitle($this->getTitle());
@@ -2048,10 +2048,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         $version->setVersionCreatedBy($this->getVersionCreatedBy());
         $version->setWholesalePartnerContactPerson($this);
         $version->save($con);
-    
+
         return $version;
     }
-    
+
     /**
      * Sets the properties of the current object to the value they had at a specific version
      *
@@ -2067,10 +2067,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
             throw new PropelException(sprintf('No ChildWholesalePartnerContactPerson object found with version %d', $version));
         }
         $this->populateFromVersion($version, $con);
-    
+
         return $this;
     }
-    
+
     /**
      * Sets the properties of the current object to the value they had at a specific version
      *
@@ -2095,10 +2095,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         $this->setComment($version->getComment());
         $this->setVersion($version->getVersion());
         $this->setVersionCreatedBy($version->getVersionCreatedBy());
-    
+
         return $this;
     }
-    
+
     /**
      * Gets the latest persisted version number for the current object
      *
@@ -2115,10 +2115,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         if (!$v) {
             return 0;
         }
-    
+
         return $v->getVersion();
     }
-    
+
     /**
      * Checks whether the current object is the latest one
      *
@@ -2130,7 +2130,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     {
         return $this->getLastVersionNumber($con) == $this->getVersion();
     }
-    
+
     /**
      * Retrieves a version object for this entity and a version number
      *
@@ -2146,7 +2146,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
             ->filterByVersion($versionNumber)
             ->findOne($con);
     }
-    
+
     /**
      * Gets all the versions of this object, in incremental order
      *
@@ -2158,10 +2158,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     {
         $criteria = new Criteria();
         $criteria->addAscendingOrderByColumn(WholesalePartnerContactPersonVersionTableMap::VERSION);
-    
+
         return $this->getWholesalePartnerContactPersonVersions($criteria, $con);
     }
-    
+
     /**
      * Compares the current object with another of its version.
      * <code>
@@ -2183,10 +2183,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     {
         $fromVersion = $this->toArray();
         $toVersion = $this->getOneVersion($versionNumber, $con)->toArray();
-    
+
         return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
     }
-    
+
     /**
      * Compares two versions of the current object.
      * <code>
@@ -2209,10 +2209,10 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
     {
         $fromVersion = $this->getOneVersion($fromVersionNumber, $con)->toArray();
         $toVersion = $this->getOneVersion($toVersionNumber, $con)->toArray();
-    
+
         return $this->computeDiff($fromVersion, $toVersion, $keys, $ignoredColumns);
     }
-    
+
     /**
      * Computes the diff between two versions.
      * <code>
@@ -2258,7 +2258,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
                 }
             }
         }
-    
+
         return $diff;
     }
     /**
@@ -2272,7 +2272,7 @@ abstract class WholesalePartnerContactPerson implements ActiveRecordInterface
         $criteria = ChildWholesalePartnerContactPersonVersionQuery::create(null, $criteria);
         $criteria->addDescendingOrderByColumn(WholesalePartnerContactPersonVersionTableMap::VERSION);
         $criteria->limit($number);
-    
+
         return $this->getWholesalePartnerContactPersonVersions($criteria, $con);
     }
     /**

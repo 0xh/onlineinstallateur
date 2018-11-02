@@ -19,7 +19,7 @@ use RevenueDashboard\Model\WholesalePartnerContactPersonQuery as ChildWholesaleP
 use RevenueDashboard\Model\WholesalePartnerContactPersonVersionQuery as ChildWholesalePartnerContactPersonVersionQuery;
 use RevenueDashboard\Model\Map\WholesalePartnerContactPersonVersionTableMap;
 
-abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInterface 
+abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -412,7 +412,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -423,7 +423,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [title] column value.
-     * 
+     *
      * @return   int
      */
     public function getTitle()
@@ -434,7 +434,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [firstname] column value.
-     * 
+     *
      * @return   string
      */
     public function getFirstname()
@@ -445,7 +445,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [lastname] column value.
-     * 
+     *
      * @return   string
      */
     public function getLastname()
@@ -456,7 +456,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [telefon] column value.
-     * 
+     *
      * @return   string
      */
     public function getTelefon()
@@ -467,7 +467,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [email] column value.
-     * 
+     *
      * @return   string
      */
     public function getEmail()
@@ -478,7 +478,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [profile_website] column value.
-     * 
+     *
      * @return   string
      */
     public function getProfileWebsite()
@@ -489,7 +489,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [position] column value.
-     * 
+     *
      * @return   string
      */
     public function getPosition()
@@ -500,7 +500,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [department] column value.
-     * 
+     *
      * @return   string
      */
     public function getDepartment()
@@ -511,7 +511,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [comment] column value.
-     * 
+     *
      * @return   string
      */
     public function getComment()
@@ -522,7 +522,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [version] column value.
-     * 
+     *
      * @return   int
      */
     public function getVersion()
@@ -533,7 +533,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Get the [version_created_by] column value.
-     * 
+     *
      * @return   string
      */
     public function getVersionCreatedBy()
@@ -544,7 +544,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -569,7 +569,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [title] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -590,7 +590,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [firstname] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -611,7 +611,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [lastname] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -632,7 +632,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [telefon] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -653,7 +653,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [email] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -674,7 +674,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [profile_website] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -695,7 +695,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [position] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -716,7 +716,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [department] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -737,7 +737,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [comment] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -758,7 +758,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [version] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -779,7 +779,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
 
     /**
      * Set the value of [version_created_by] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerContactPersonVersion The current object (for fluent API support)
      */
@@ -1150,40 +1150,40 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'TITLE':                        
+                    case 'TITLE':
                         $stmt->bindValue($identifier, $this->title, PDO::PARAM_INT);
                         break;
-                    case 'FIRSTNAME':                        
+                    case 'FIRSTNAME':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
                         break;
-                    case 'LASTNAME':                        
+                    case 'LASTNAME':
                         $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
                         break;
-                    case 'TELEFON':                        
+                    case 'TELEFON':
                         $stmt->bindValue($identifier, $this->telefon, PDO::PARAM_STR);
                         break;
-                    case 'EMAIL':                        
+                    case 'EMAIL':
                         $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'PROFILE_WEBSITE':                        
+                    case 'PROFILE_WEBSITE':
                         $stmt->bindValue($identifier, $this->profile_website, PDO::PARAM_STR);
                         break;
-                    case 'POSITION':                        
+                    case 'POSITION':
                         $stmt->bindValue($identifier, $this->position, PDO::PARAM_STR);
                         break;
-                    case 'DEPARTMENT':                        
+                    case 'DEPARTMENT':
                         $stmt->bindValue($identifier, $this->department, PDO::PARAM_STR);
                         break;
-                    case 'COMMENT':                        
+                    case 'COMMENT':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
-                    case 'VERSION':                        
+                    case 'VERSION':
                         $stmt->bindValue($identifier, $this->version, PDO::PARAM_INT);
                         break;
-                    case 'VERSION_CREATED_BY':                        
+                    case 'VERSION_CREATED_BY':
                         $stmt->bindValue($identifier, $this->version_created_by, PDO::PARAM_STR);
                         break;
                 }
@@ -1323,7 +1323,7 @@ abstract class WholesalePartnerContactPersonVersion implements ActiveRecordInter
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aWholesalePartnerContactPerson) {
                 $result['WholesalePartnerContactPerson'] = $this->aWholesalePartnerContactPerson->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

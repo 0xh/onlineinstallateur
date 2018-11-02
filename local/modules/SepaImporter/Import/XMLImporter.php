@@ -53,6 +53,8 @@ class XMLImporter extends AbstractImport
 
     public function importData(array $row)
     {
+
+//logging intialise
         $time_start = microtime(true);
         $errors     = null;
 
@@ -70,8 +72,8 @@ class XMLImporter extends AbstractImport
             }
         }
 
-        $locale = 'de_DE';
-
+//declare global variables
+        $locale             = 'de_DE';
         $productQuerry      = ProductQuery::create();
         $productQuerry->clear();
         $productExists      = null;
@@ -84,7 +86,7 @@ class XMLImporter extends AbstractImport
         $wholesaleProduct   = null;
 
 
-        //USED
+//USED
         $brand_import               = $this->rowHasField($row, "lieferantenname");
         $category_import            = $this->rowHasField($row, "warengruppetext");
         $brutto_price_import        = (float) $this->rowHasField($row, "bruttopreis") * 116 / 100;
@@ -97,6 +99,8 @@ class XMLImporter extends AbstractImport
         $product_description_import = $this->rowHasField($row, "ausschreibungstext");
         $partner_product_ref        = $this->rowHasField($row, "matchcode");
 
+
+//Insanity check
         if ($partner_product_ref == null) {
             $partner_product_ref = $this->rowHasField($row, "Matchcode");
             $log->debug("Import ref is for updating from csv not xml.");
@@ -106,33 +110,6 @@ class XMLImporter extends AbstractImport
             $stock_import = $this->rowHasField($row, "Verf.Menge");
             $log->debug("Import menge is for updating from csv not xml.");
         }
-
-
-        //NOT USED
-//        $kurze_beschreibung = $this->rowHasField($row, "Kurze_beschreibung");
-//        $postscriptum      = $this->rowHasField($row, "Postscriptum");
-//        $meta_titel        = $this->rowHasField($row, "Meta_titel");
-//        $meta_beschreibung = $this->rowHasField($row, "Meta_beschreibung");
-//        $meta_keywords     = $this->rowHasField($row, "Meta_keywords");
-//        $fulfilment_center = $this->rowHasField($row, "Fulfilment_center");
-//        $ist_in_Angebot    = $this->rowHasField($row, "Ist_in_Angebot");
-//        $ist_neu           = $this->rowHasField($row, "Ist_neu");
-//        $ist_online        = $this->rowHasField($row, "Ist_online");
-//        $gewicht           = $this->rowHasField($row, "Gewicht");
-//        $bild_titel             = $this->rowHasField($row, "Bild_titel");
-//        $bild_beschreibung      = $this->rowHasField($row, "Bild_beschreibung");
-//        $bild_kurz_beschreibung = $this->rowHasField($row, "Bild_kurz_beschreibung");
-//        $bild_postscriptum      = $this->rowHasField($row, "Bild_postscriptum");
-//        $bild_file              = $this->rowHasField($row, "Bild_file");
-//        $promo_price            = $this->rowHasField($row, "Promo_price");
-//        $ek_preis_sht           = $this->rowHasField($row, "Ek_preis_sht");
-//        $ek_preis_gc            = $this->rowHasField($row, "Ek_preis_gc");
-//        $ek_preis_oag           = $this->rowHasField($row, "Ek_preis_oag");
-//        $ek_preis_holter        = $this->rowHasField($row, "Ek_preis_holter");
-//        $preis_reuter           = $this->rowHasField($row, "Preis_reuter");
-//        $vergleich_ek           = $this->rowHasField($row, "Vergleich_ek");
-//        $aufschlag              = $this->rowHasField($row, "Aufschlag");
-//        $template_id            = $this->rowHasField($row, "Template_id");
 
         if ($material_number_import == null) {
             $log->debug("There's no Material number. This is bad!");
@@ -185,6 +162,7 @@ class XMLImporter extends AbstractImport
             $log->debug("No match found for partner_product_ref ");
         }
 
+//Brand and category check
         $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
         $createBrandEvent     = new RevenueDashboardBrandEvent();
         $createBrandEvent->setBrand_extern($brand_import);
@@ -212,194 +190,199 @@ class XMLImporter extends AbstractImport
             $log->debug("Category not found!");
         }
 
+
+//If both checks (brand and category have a match)
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
-        }
 
-        $productExists = count($productQuerry->findByRef($refBuild));
-        $log->debug("Product Exists? " . $productExists);
-        if ($productExists == 0 && $matchingSuccessful) {
-            $time_before_newProduct        = microtime(true);
-            $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
-            $log->debug("Exec-time before new product " . $execution_time_before_product . " ms.");
+            $productExists = count($productQuerry->findByRef($refBuild));
+            $log->debug("Product Exists? " . $productExists);
 
-            $log->debug("Product does not exist, creating product! ");
-            $eventDispatcher = $this->getContainer()->get('event_dispatcher');
-            $createEvent     = new ProductCreateEvent();
+//creating a new product
+            if ($productExists == 0 && $matchingSuccessful) {
+                $time_before_newProduct        = microtime(true);
+                $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
+                $log->debug("Exec-time before new product " . $execution_time_before_product . " ms.");
 
-            $createEvent
-             ->setBasePrice($netto_price_import)
-             ->setBaseQuantity($stock_import)
-             ->setRef($refBuild)
-             ->setTitle($product_title_import)
-             ->setLocale($locale)
-             ->setDefaultCategory($categoryComponent)
-             ->setTaxRuleId(1)
-             ->setTemplateId(1)
-             ->setCurrencyId(1);
+                $log->debug("Product does not exist, creating product! ");
+                $eventDispatcher = $this->getContainer()->get('event_dispatcher');
+                $createEvent     = new ProductCreateEvent();
 
-            $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
+                $createEvent
+                 ->setBasePrice($netto_price_import)
+                 ->setBaseQuantity($stock_import)
+                 ->setRef($refBuild)
+                 ->setTitle($product_title_import)
+                 ->setLocale($locale)
+                 ->setDefaultCategory($categoryComponent)
+                 ->setTaxRuleId(1)
+                 ->setTemplateId(1)
+                 ->setCurrencyId(1);
 
-            $product = ProductQuery::create()
-             ->filterByRef($createEvent->getProduct()->getRef())
-             ->withColumn('product.id', 'product_id')
-             ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-             ->findOne();
+                $eventDispatcher->dispatch(TheliaEvents::PRODUCT_CREATE, $createEvent);
 
-            $log->debug("New Product Ref: " . $createEvent->getProduct()->getRef());
-            $product_id = $product->getId();
-            echo "Prod id= " . $product_id . "\n";
-            $log->debug("New Product id: " . $product_id);
+                $product = ProductQuery::create()
+                 ->filterByRef($createEvent->getProduct()->getRef())
+                 ->withColumn('product.id', 'product_id')
+                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+                 ->findOne();
 
-            $productPse = ProductSaleElementsQuery::create()
-             ->filterByProductId($product_id)
-             ->withColumn('product_sale_elements.id', 'pse_id')
-             ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
-             ->findOne();
+                $log->debug("New Product Ref: " . $createEvent->getProduct()->getRef());
+                $product_id = $product->getId();
+                echo "Prod id= " . $product_id . "\n";
+                $log->debug("New Product id: " . $product_id);
 
-            $pse_id = $productPse->getId();
+                $productPse = ProductSaleElementsQuery::create()
+                 ->filterByProductId($product_id)
+                 ->withColumn('product_sale_elements.id', 'pse_id')
+                 ->setFormatter(ModelCriteria::FORMAT_ON_DEMAND)
+                 ->findOne();
 
-            $updatePse = new ProductSaleElementUpdateEvent($product, $pse_id);
+                $pse_id = $productPse->getId();
 
-
-            $log->debug("New Product Ref PSE ID: " . $pse_id);
-
-            if ($netto_price_import != null) {
-                $updatePse->setPrice($netto_price_import);
-                $log->debug("New Product price :" . $updatePse->getPrice());
-            }
-            if ($brutto_price_import != null) {
-                $updatePse->setListenPrice($brutto_price_import);
-                $log->debug("New Product Listen price :" . $updatePse->getListenPrice());
-            }
-
-            if ($ean_code_import != null) {
-                $updatePse->setEanCode($ean_code_import);
-                $log->debug("New Product EAN :" . $updatePse->getEanCode());
-            }
-
-            $updatePse
-             ->setReference($refBuild)
-             ->setSalePrice(0)
-             ->setTaxRuleId(1)
-             ->setQuantity($stock_import)
-             ->setOnsale(0)
-             ->setIsdefault(1)
-             ->setCurrencyId(1);
-
-            $eventDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE_PRODUCT_SALE_ELEMENT, $updatePse);
-
-            $eventProductUpdateDispatcher = $this->getContainer()->get('event_dispatcher');
-
-            $updateEvent = new ProductUpdateEvent($product_id);
-
-            $updateEvent
-             ->setLocale($locale)
-             ->setBasePrice($netto_price_import)
-             ->setBaseQuantity($stock_import)
-             ->setQuantity($stock_import)
-             ->setRef($refBuild)
-             ->setTitle($product_title_import)
-             ->setLocale($locale)
-             ->setDefaultCategory($categoryComponent)
-             ->setTaxRuleId(1)
-             ->setTemplateId(1)
-             ->setBrandId($brandRefId);
+                $updatePse = new ProductSaleElementUpdateEvent($product, $pse_id);
 
 
+                $log->debug("New Product Ref PSE ID: " . $pse_id);
 
-            if ($product_description_import != null) {
-                $updateEvent->setDescription($product_description_import);
-                $log->debug("New Product descrip: " . $updateEvent->getDescription() . " on product_id: " . $product_id);
-            }
+                if ($netto_price_import != null) {
+                    $updatePse->setPrice($netto_price_import);
+                    $log->debug("New Product price :" . $updatePse->getPrice());
+                }
+                if ($brutto_price_import != null) {
+                    $updatePse->setListenPrice($brutto_price_import);
+                    $log->debug("New Product Listen price :" . $updatePse->getListenPrice());
+                }
 
-            $eventProductUpdateDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE, $updateEvent);
+                if ($ean_code_import != null) {
+                    $updatePse->setEanCode($ean_code_import);
+                    $log->debug("New Product EAN :" . $updatePse->getEanCode());
+                }
+
+                $updatePse
+                 ->setReference($refBuild)
+                 ->setSalePrice(0)
+                 ->setTaxRuleId(1)
+                 ->setQuantity($stock_import)
+                 ->setOnsale(0)
+                 ->setIsdefault(1)
+                 ->setCurrencyId(1);
+
+                $eventDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE_PRODUCT_SALE_ELEMENT, $updatePse);
+
+                $eventProductUpdateDispatcher = $this->getContainer()->get('event_dispatcher');
+
+                $updateEvent = new ProductUpdateEvent($product_id);
+
+                $updateEvent
+                 ->setLocale($locale)
+                 ->setBasePrice($netto_price_import)
+                 ->setBaseQuantity($stock_import)
+                 ->setQuantity($stock_import)
+                 ->setRef($refBuild)
+                 ->setTitle($product_title_import)
+                 ->setLocale($locale)
+                 ->setDefaultCategory($categoryComponent)
+                 ->setTaxRuleId(1)
+                 ->setTemplateId(1)
+                 ->setBrandId($brandRefId);
 
 
-            $revenueDash = new WholesalePartnerProduct();
 
-            if ($netto_price_import != null) {
-                $revenueDash->setPartnerProdRef($partner_product_ref)
-                 ->setProductId($product_id)
-                 ->setPrice($netto_price_import)
-                 ->setPartnerId(1)
+                if ($product_description_import != null) {
+                    $updateEvent->setDescription($product_description_import);
+                    $log->debug("New Product descrip: " . $updateEvent->getDescription() . " on product_id: " . $product_id);
+                }
+
+                $eventProductUpdateDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE, $updateEvent);
+
+
+                $revenueDash = new WholesalePartnerProduct();
+
+                if ($netto_price_import != null) {
+                    $revenueDash->setPartnerProdRef($partner_product_ref)
+                     ->setProductId($product_id)
+                     ->setPrice($netto_price_import)
+                     ->setPartnerId(1)
+                     ->save();
+                    $log->debug("New wholesale partner product price: " . $revenueDash->getPrice());
+                }
+
+                $image_path  = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
+                $image_name  = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $refBuild) . ".jpg";
+                $currentDate = date("Y-m-d H:i:s");
+
+                try {
+                    $log->debug("Importing from Mysht picture");
+                    $time_after_before_picture     = microtime(true);
+                    $execution_time_before_picture = round(($time_after_before_picture - $time_start) * 1000);
+                    $log->debug("Exec-time before picture " . $execution_time_before_picture . " ms.");
+                    $image_from_server             = @file_get_contents($product_picture_link);
+                } catch (Exception $e) {
+                    $log->debug("ProductImageException :" . $e->getMessage());
+                }
+
+                if ($image_from_server) {
+                    $log->debug("New Product importing image saved to " . $image_path . $image_name);
+                    file_put_contents($image_path . $image_name, $image_from_server);
+
+                    $product_image = new ProductImage ();
+                    $product_image->setProduct($product);
+                    $product_image->setVisible(1);
+                    $product_image->setCreatedAt($currentDate);
+                    $product_image->setUpdatedAt($currentDate);
+                    $product_image->setFile($image_name);
+                    $product_image->save();
+
+
+                    $product_image_i18n = new ProductImageI18n();
+                    $product_image_i18n->setProductImage($product_image);
+                    $product_image_i18n->setTitle($refBuild);
+                    $product_image_i18n->setDescription($refBuild . "1");
+                    $product_image_i18n->setChapo($refBuild . "1");
+                    $product_image_i18n->setPostscriptum($refBuild . "1");
+                    $product_image_i18n->setLocale($locale);
+                    $product_image_i18n->save();
+
+                    $product->addProductImage($product_image);
+                } else {
+                    $log->debug(" Image not saved.");
+                }
+
+                $time_after_newProduct        = microtime(true);
+                $execution_time_after_product = round(($time_after_newProduct - $time_start) * 1000);
+                $log->debug("Exec-time after new product " . $execution_time_after_product . " ms.");
+            } else if ($wPIdMatch) {
+                $time_before_update           = microtime(true);
+                $execution_time_before_update = round(($time_before_update - $time_start) * 1000);
+                $log->debug("Exec-time before product update " . $execution_time_before_update . " ms.");
+
+                $newProdId = $wholesaleProduct->getProductId();
+
+                $product    = ProductQuery::create()
+                 ->findOneById($newProdId);
+                $product_id = $product->getId();
+                $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
+
+                $productPse = ProductSaleElementsQuery::create()
+                 ->findOneByProductId($product_id);
+
+                $pse_id = $productPse->getId();
+                $log->debug("In WPID MATCH, pse_id: " . $pse_id);
+
+                $productPseImport = $productPse;
+                $productPseImport->setQuantity($stock_import)
                  ->save();
-                $log->debug("New wholesale partner product price: " . $revenueDash->getPrice());
-            }
 
-            $image_path  = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
-            $image_name  = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $refBuild) . ".jpg";
-            $currentDate = date("Y-m-d H:i:s");
+                $log->debug("Modified quantity, new quantity: " . $productPseImport->getQuantity());
 
-            try {
-                $log->debug("Importing from Mysht picture");
-                $time_after_before_picture     = microtime(true);
-                $execution_time_before_picture = round(($time_after_before_picture - $time_start) * 1000);
-                $log->debug("Exec-time before picture " . $execution_time_before_picture . " ms.");
-                $image_from_server             = @file_get_contents($product_picture_link);
-            } catch (Exception $e) {
-                $log->debug("ProductImageException :" . $e->getMessage());
-            }
+                $time_after_update           = microtime(true);
+                $execution_time_after_update = round(($time_after_update - $time_start) * 1000);
+                $log->debug("Exec-time after product update " . $execution_time_after_update . " ms.");
 
-            if ($image_from_server) {
-                $log->debug("New Product importing image saved to " . $image_path . $image_name);
-                file_put_contents($image_path . $image_name, $image_from_server);
-
-                $product_image = new ProductImage ();
-                $product_image->setProduct($product);
-                $product_image->setVisible(1);
-                $product_image->setCreatedAt($currentDate);
-                $product_image->setUpdatedAt($currentDate);
-                $product_image->setFile($image_name);
-                $product_image->save();
-
-
-                $product_image_i18n = new ProductImageI18n();
-                $product_image_i18n->setProductImage($product_image);
-                $product_image_i18n->setTitle($refBuild);
-                $product_image_i18n->setDescription($refBuild . "1");
-                $product_image_i18n->setChapo($refBuild . "1");
-                $product_image_i18n->setPostscriptum($refBuild . "1");
-                $product_image_i18n->setLocale($locale);
-                $product_image_i18n->save();
-
-                $product->addProductImage($product_image);
-            } else {
-                $log->debug(" Image not saved.");
-            }
-
-            $time_after_newProduct        = microtime(true);
-            $execution_time_after_product = round(($time_after_newProduct - $time_start) * 1000);
-            $log->debug("Exec-time after new product " . $execution_time_after_product . " ms.");
-        } else if ($wPIdMatch) {
-            $time_before_update           = microtime(true);
-            $execution_time_before_update = round(($time_before_update - $time_start) * 1000);
-            $log->debug("Exec-time before product update " . $execution_time_before_update . " ms.");
-
-            $newProdId = $wholesaleProduct->getProductId();
-
-            $product    = ProductQuery::create()
-             ->findOneById($newProdId);
-            $product_id = $product->getId();
-            $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
-
-            $productPse = ProductSaleElementsQuery::create()
-             ->findOneByProductId($product_id);
-
-            $pse_id = $productPse->getId();
-            $log->debug("In WPID MATCH, pse_id: " . $pse_id);
-
-            $productPseImport = $productPse;
-            $productPseImport->setQuantity($stock_import)
-             ->save();
-
-            $log->debug("Modified quantity, new quantity: " . $productPseImport->getQuantity());
-
-            $time_after_update           = microtime(true);
-            $execution_time_after_update = round(($time_after_update - $time_start) * 1000);
-            $log->debug("Exec-time after product update " . $execution_time_after_update . " ms.");
+//commented code alternative for a price update.
 //        } else if ($wPIdMatch && $brutto_price_import != null) {
 //            $errors .= " Product already in database and no match found for WPP: " . $refBuild . "." . PHP_EOL;
 //            $product = ProductQuery::create()
@@ -432,47 +415,47 @@ class XMLImporter extends AbstractImport
 //             ->save();
 //
 //            $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
-        } else {
-            $log->debug("NO match");
-            $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
-        }
-
-        ini_set('max_execution_time', $max_time);
-
-        if ($errors == null) {
-            $this->importedRows++;
-        }        // create csv with wrong rows
-        else {
-
-            $current_date  = date("Y-m-d H:i:s");
-            $csv_file_name = 'product_import_errors_' . md5($current_date) . '.txt';
-//            $session = $this->container->get('request_stack')->getCurrentRequest()->getSession();
-//            $session->set('csvFileName', $csv_file_name);
-
-            $filepath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $csv_file_name;
-
-            if (file_exists($filepath)) {
-                $fp = fopen($filepath, 'a');
-                fwrite($fp, $errors . PHP_EOL);
+                //if no match and no update, there's no route for this response
             } else {
-                $fp = fopen($filepath, 'w');
-                fwrite($fp, $errors . PHP_EOL);
+                $log->debug("NO match");
+                $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
             }
 
-            rewind($fp);
-            fclose($fp);
+            ini_set('max_execution_time', $max_time);
 
-            if ($this->is_error_filecreated == FALSE) {
-                $errors                     = "<br><br><p>Download the CSV with the products which were not imported</p><input type=\"button\" value=\"Download\" onclick=\"window.location = '/admin/import/full-product-import/download-csv/" . $csv_file_name . "';
+            if ($errors == null) {
+                $this->importedRows++;
+            }        // create csv with wrong rows
+            else {
+
+                $current_date  = date("Y-m-d H:i:s");
+                $csv_file_name = 'product_import_errors_' . md5($current_date) . '.txt';
+
+                $filepath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $csv_file_name;
+
+                if (file_exists($filepath)) {
+                    $fp = fopen($filepath, 'a');
+                    fwrite($fp, $errors . PHP_EOL);
+                } else {
+                    $fp = fopen($filepath, 'w');
+                    fwrite($fp, $errors . PHP_EOL);
+                }
+
+                rewind($fp);
+                fclose($fp);
+
+                if ($this->is_error_filecreated == FALSE) {
+                    $errors                     = "<br><br><p>Download the CSV with the products which were not imported</p><input type=\"button\" value=\"Download\" onclick=\"window.location = '/admin/import/full-product-import/download-csv/" . $csv_file_name . "';
                 \"><br>" . $errors;
-                $this->is_error_filecreated = TRUE;
+                    $this->is_error_filecreated = TRUE;
+                }
             }
-        }
 
-        $time_end       = microtime(true);
-        $execution_time = round(($time_end - $time_start) * 1000);
-        $log->debug("Import duration was: " . $execution_time . " ms." . PHP_EOL);
-        return $errors;
+            $time_end       = microtime(true);
+            $execution_time = round(($time_end - $time_start) * 1000);
+            $log->debug("Import duration was: " . $execution_time . " ms." . PHP_EOL);
+            return $errors;
+        }
     }
 
     public function getLogger()
