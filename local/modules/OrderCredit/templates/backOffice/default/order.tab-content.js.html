@@ -1,0 +1,20 @@
+<script type="text/javascript">
+  $('.order_credit_create_form').submit(function(event){
+      event.preventDefault();
+      var form = $(this);
+      $('.order_credit_create_form button[type="submit"]').addClass('disabled').html('{intl l="Please wait..." d="ordercredit.bo.default"} <span class="glyphicon glyphicon-hourglass"></span>');
+      $.ajax({
+          url: form.attr('action'),
+          type: form.attr('method'),
+          data: form.serialize()
+      }).done(function(data){
+          $(".order_credit_panel_body").prepend('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data+'</div>');
+          $('.order_credit_create_form button[type="submit"]').removeClass('disabled').html('{intl l="Save"} <span class="glyphicon glyphicon-ok"></span>');
+      }).fail(function(jqXHR, textStatus ){
+          console.log(jqXHR);
+          console.log(textStatus);
+          $(".order_credit_panel_body").prepend('<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+jqXHR.responseText+'</div>');
+          $('.order_credit_create_form button[type="submit"]').removeClass('disabled').html('{intl l="Save"} <span class="glyphicon glyphicon-ok"></span>');
+      });
+  });
+</script>
