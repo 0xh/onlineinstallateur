@@ -410,7 +410,7 @@ class SelectionUpdateController extends AbstractSeoCrudController
     protected function getExistingObject()
         {
         $selection = SelectionQuery::create()
-          ->findPk($this->getRequest()->get('selection_id', 0));
+          ->findPk($this->getRequest()->get('selectionId', 0));
 
         if (null !== $selection) {
             $selection->setLocale($this->getCurrentEditionLocale());
