@@ -53,6 +53,8 @@ class XMLImporter extends AbstractImport
 
     public function importData(array $row)
     {
+
+        //logging intialise
         $time_start = microtime(true);
         $errors     = null;
 
@@ -70,8 +72,8 @@ class XMLImporter extends AbstractImport
             }
         }
 
-        $locale = 'de_DE';
-
+        //declare global variables
+        $locale             = 'de_DE';
         $productQuerry      = ProductQuery::create();
         $productQuerry->clear();
         $productExists      = null;
@@ -97,6 +99,8 @@ class XMLImporter extends AbstractImport
         $product_description_import = $this->rowHasField($row, "ausschreibungstext");
         $partner_product_ref        = $this->rowHasField($row, "matchcode");
 
+
+        //Insanity check
         if ($partner_product_ref == null) {
             $partner_product_ref = $this->rowHasField($row, "Matchcode");
             $log->debug("Import ref is for updating from csv not xml.");
@@ -106,33 +110,6 @@ class XMLImporter extends AbstractImport
             $stock_import = $this->rowHasField($row, "Verf.Menge");
             $log->debug("Import menge is for updating from csv not xml.");
         }
-
-
-        //NOT USED
-//        $kurze_beschreibung = $this->rowHasField($row, "Kurze_beschreibung");
-//        $postscriptum      = $this->rowHasField($row, "Postscriptum");
-//        $meta_titel        = $this->rowHasField($row, "Meta_titel");
-//        $meta_beschreibung = $this->rowHasField($row, "Meta_beschreibung");
-//        $meta_keywords     = $this->rowHasField($row, "Meta_keywords");
-//        $fulfilment_center = $this->rowHasField($row, "Fulfilment_center");
-//        $ist_in_Angebot    = $this->rowHasField($row, "Ist_in_Angebot");
-//        $ist_neu           = $this->rowHasField($row, "Ist_neu");
-//        $ist_online        = $this->rowHasField($row, "Ist_online");
-//        $gewicht           = $this->rowHasField($row, "Gewicht");
-//        $bild_titel             = $this->rowHasField($row, "Bild_titel");
-//        $bild_beschreibung      = $this->rowHasField($row, "Bild_beschreibung");
-//        $bild_kurz_beschreibung = $this->rowHasField($row, "Bild_kurz_beschreibung");
-//        $bild_postscriptum      = $this->rowHasField($row, "Bild_postscriptum");
-//        $bild_file              = $this->rowHasField($row, "Bild_file");
-//        $promo_price            = $this->rowHasField($row, "Promo_price");
-//        $ek_preis_sht           = $this->rowHasField($row, "Ek_preis_sht");
-//        $ek_preis_gc            = $this->rowHasField($row, "Ek_preis_gc");
-//        $ek_preis_oag           = $this->rowHasField($row, "Ek_preis_oag");
-//        $ek_preis_holter        = $this->rowHasField($row, "Ek_preis_holter");
-//        $preis_reuter           = $this->rowHasField($row, "Preis_reuter");
-//        $vergleich_ek           = $this->rowHasField($row, "Vergleich_ek");
-//        $aufschlag              = $this->rowHasField($row, "Aufschlag");
-//        $template_id            = $this->rowHasField($row, "Template_id");
 
         if ($material_number_import == null) {
             $log->debug("There's no Material number. This is bad!");
@@ -185,6 +162,8 @@ class XMLImporter extends AbstractImport
             $log->debug("No match found for partner_product_ref ");
         }
 
+
+        //Brand and category check
         $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
         $createBrandEvent     = new RevenueDashboardBrandEvent();
         $createBrandEvent->setBrand_extern($brand_import);
@@ -212,14 +191,18 @@ class XMLImporter extends AbstractImport
             $log->debug("Category not found!");
         }
 
+
+        //If both checks (brand and category have a match)
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
         }
-
         $productExists = count($productQuerry->findByRef($refBuild));
         $log->debug("Product Exists? " . $productExists);
+
+
+        //creating a new product
         if ($productExists == 0 && $matchingSuccessful) {
             $time_before_newProduct        = microtime(true);
             $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
@@ -400,6 +383,8 @@ class XMLImporter extends AbstractImport
             $time_after_update           = microtime(true);
             $execution_time_after_update = round(($time_after_update - $time_start) * 1000);
             $log->debug("Exec-time after product update " . $execution_time_after_update . " ms.");
+
+            //commented code alternative for a price update.
 //        } else if ($wPIdMatch && $brutto_price_import != null) {
 //            $errors .= " Product already in database and no match found for WPP: " . $refBuild . "." . PHP_EOL;
 //            $product = ProductQuery::create()
@@ -432,6 +417,7 @@ class XMLImporter extends AbstractImport
 //             ->save();
 //
 //            $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
+            //if no match and no update, there's no route for this response
         } else {
             $log->debug("NO match");
             $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
@@ -441,13 +427,12 @@ class XMLImporter extends AbstractImport
 
         if ($errors == null) {
             $this->importedRows++;
-        }        // create csv with wrong rows
+        }
+        // create csv with wrong rows
         else {
 
             $current_date  = date("Y-m-d H:i:s");
             $csv_file_name = 'product_import_errors_' . md5($current_date) . '.txt';
-//            $session = $this->container->get('request_stack')->getCurrentRequest()->getSession();
-//            $session->set('csvFileName', $csv_file_name);
 
             $filepath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $csv_file_name;
 

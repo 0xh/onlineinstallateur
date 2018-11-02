@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerCategoryMatchingTableMap;
 use Thelia\Model\CategoryQuery;
 use Thelia\Model\Category as ChildCategory;
 
-abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface 
+abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -368,7 +368,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -379,7 +379,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [category_intern_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getCategoryInternId()
@@ -390,7 +390,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [category_intern_name] column value.
-     * 
+     *
      * @return   string
      */
     public function getCategoryInternName()
@@ -401,7 +401,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [category_extern_id] column value.
-     * 
+     *
      * @return   string
      */
     public function getCategoryExternId()
@@ -412,7 +412,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [category_extern_name] column value.
-     * 
+     *
      * @return   string
      */
     public function getCategoryExternName()
@@ -423,7 +423,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [partner_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getPartnerId()
@@ -434,7 +434,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Get the [category_id] column value.
-     * 
+     *
      * @return   string
      */
     public function getCategoryCode()
@@ -445,7 +445,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -466,7 +466,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [category_intern_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -491,7 +491,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [category_intern_name] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -512,7 +512,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [category_extern_id] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -533,7 +533,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [category_extern_name] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -554,7 +554,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -575,7 +575,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
 
     /**
      * Set the value of [category_id] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\WholesalePartnerCategoryMatching The current object (for fluent API support)
      */
@@ -916,25 +916,25 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'CATEGORY_INTERN_ID':                        
+                    case 'CATEGORY_INTERN_ID':
                         $stmt->bindValue($identifier, $this->category_intern_id, PDO::PARAM_INT);
                         break;
-                    case 'CATEGORY_INTERN_NAME':                        
+                    case 'CATEGORY_INTERN_NAME':
                         $stmt->bindValue($identifier, $this->category_intern_name, PDO::PARAM_STR);
                         break;
-                    case 'CATEGORY_EXTERN_ID':                        
+                    case 'CATEGORY_EXTERN_ID':
                         $stmt->bindValue($identifier, $this->category_extern_id, PDO::PARAM_STR);
                         break;
-                    case 'CATEGORY_EXTERN_NAME':                        
+                    case 'CATEGORY_EXTERN_NAME':
                         $stmt->bindValue($identifier, $this->category_extern_name, PDO::PARAM_STR);
                         break;
-                    case 'PARTNER_ID':                        
+                    case 'PARTNER_ID':
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
-                    case 'CATEGORY_ID':                        
+                    case 'CATEGORY_ID':
                         $stmt->bindValue($identifier, $this->category_id, PDO::PARAM_STR);
                         break;
                 }
@@ -1061,7 +1061,7 @@ abstract class WholesalePartnerCategoryMatching implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aCategory) {
                 $result['Category'] = $this->aCategory->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

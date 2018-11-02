@@ -16,14 +16,14 @@ use DOMDocument;
 use const DS;
 use const THELIA_LOCAL_DIR;
 
-class ImportStockMySht extends ContainerAwareCommand
+class ImportETCMySht extends ContainerAwareCommand
 {
 
     protected function configure()
     {
         $this
-         ->setName("importShtStock:start")
-         ->setDescription("Starting mySht stock import!\n");
+         ->setName("importShtPrice:start")
+         ->setDescription("Starting mySht ETC import!\n");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -34,7 +34,7 @@ class ImportStockMySht extends ContainerAwareCommand
 
         $local_file = $this->fetchfromFTP();
 
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelliste1.csv";
 
         $output = $this->formatFileForImport($local_file, $newFile);
 
@@ -62,14 +62,18 @@ class ImportStockMySht extends ContainerAwareCommand
                 $num = count($data);
                 if ($row == 1) {
                     $data[0] = "KEY" . ",";
-                    $data[1] = "verf.Menge" . ",";
-                    $data[2] = "matchcode";
+                    $data[1] = "matchcode" . ",";
+                    $data[2] = "Lieferantenartikel" . ",";
+                    $data[2] = "EAN" . ",";
+                    $data[2] = "Bezeichnung";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
                 } else {
-                    $data[0] = $data[0] . ",";
-                    $data[1] = intval($data[1]) . ",";
+                    $data[0] = $data[0] . ", ";
+                    $data[1] = intval($data[1]) . ", ";
                     $data[2] = $data[2];
+                    $data[3] = $data[3];
+                    $data[4] = $data[4];
                     array_push($data, PHP_EOL);
 
                     file_put_contents($newFile, $data, FILE_APPEND);
@@ -126,6 +130,9 @@ class ImportStockMySht extends ContainerAwareCommand
 
     private function fetchfromFTP()
     {
+
+        $server_file = "Artikelliste.csv";
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
 //        $ftp_user   = "mmai1018";
 //        $ftp_pass   = "PreiCra!2018";
 //        $ftp_server = "ftp.sht-net.at";
@@ -142,8 +149,7 @@ class ImportStockMySht extends ContainerAwareCommand
 //        ftp_close($ftp_conn);
         //        $local_file_new     = $this->replaceDelimiters($local_file);
 
-        $server_file = "Artikelverfuegbarkeit.csv";
-        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
+
         return $local_file;
     }
 

@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\OrderRevenueTableMap;
 use Thelia\Model\Order as ChildOrder;
 use Thelia\Model\OrderQuery;
 
-abstract class OrderRevenue implements ActiveRecordInterface 
+abstract class OrderRevenue implements ActiveRecordInterface
 {
     /**
      * TableMap class name
@@ -416,7 +416,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [id] column value.
-     * 
+     *
      * @return   int
      */
     public function getId()
@@ -427,7 +427,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [order_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getOrderId()
@@ -438,7 +438,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [delivery_cost] column value.
-     * 
+     *
      * @return   string
      */
     public function getDeliveryCost()
@@ -449,7 +449,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [delivery_method] column value.
-     * 
+     *
      * @return   string
      */
     public function getDeliveryMethod()
@@ -460,7 +460,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [partner_id] column value.
-     * 
+     *
      * @return   int
      */
     public function getPartnerId()
@@ -471,7 +471,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [payment_processor_cost] column value.
-     * 
+     *
      * @return   string
      */
     public function getPaymentProcessorCost()
@@ -482,7 +482,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [price] column value.
-     * 
+     *
      * @return   string
      */
     public function getPrice()
@@ -493,7 +493,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [purchase_price] column value.
-     * 
+     *
      * @return   string
      */
     public function getPurchasePrice()
@@ -504,7 +504,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [total_purchase_price] column value.
-     * 
+     *
      * @return   string
      */
     public function getTotalPurchasePrice()
@@ -515,7 +515,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [revenue] column value.
-     * 
+     *
      * @return   string
      */
     public function getRevenue()
@@ -526,7 +526,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Get the [comment] column value.
-     * 
+     *
      * @return   string
      */
     public function getComment()
@@ -537,7 +537,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -558,7 +558,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [order_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -583,7 +583,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [delivery_cost] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -604,7 +604,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [delivery_method] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -625,7 +625,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [partner_id] column.
-     * 
+     *
      * @param      int $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -646,7 +646,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [payment_processor_cost] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -667,7 +667,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -688,7 +688,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [purchase_price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -709,7 +709,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [total_purchase_price] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -730,7 +730,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [revenue] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -751,7 +751,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
 
     /**
      * Set the value of [comment] column.
-     * 
+     *
      * @param      string $v new value
      * @return   \RevenueDashboard\Model\OrderRevenue The current object (for fluent API support)
      */
@@ -1140,37 +1140,37 @@ abstract class OrderRevenue implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':                        
+                    case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'ORDER_ID':                        
+                    case 'ORDER_ID':
                         $stmt->bindValue($identifier, $this->order_id, PDO::PARAM_INT);
                         break;
-                    case 'DELIVERY_COST':                        
+                    case 'DELIVERY_COST':
                         $stmt->bindValue($identifier, $this->delivery_cost, PDO::PARAM_STR);
                         break;
-                    case 'DELIVERY_METHOD':                        
+                    case 'DELIVERY_METHOD':
                         $stmt->bindValue($identifier, $this->delivery_method, PDO::PARAM_STR);
                         break;
-                    case 'PARTNER_ID':                        
+                    case 'PARTNER_ID':
                         $stmt->bindValue($identifier, $this->partner_id, PDO::PARAM_INT);
                         break;
-                    case 'PAYMENT_PROCESSOR_COST':                        
+                    case 'PAYMENT_PROCESSOR_COST':
                         $stmt->bindValue($identifier, $this->payment_processor_cost, PDO::PARAM_STR);
                         break;
-                    case 'PRICE':                        
+                    case 'PRICE':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
                         break;
-                    case 'PURCHASE_PRICE':                        
+                    case 'PURCHASE_PRICE':
                         $stmt->bindValue($identifier, $this->purchase_price, PDO::PARAM_STR);
                         break;
-                    case 'TOTAL_PURCHASE_PRICE':                        
+                    case 'TOTAL_PURCHASE_PRICE':
                         $stmt->bindValue($identifier, $this->total_purchase_price, PDO::PARAM_STR);
                         break;
-                    case 'REVENUE':                        
+                    case 'REVENUE':
                         $stmt->bindValue($identifier, $this->revenue, PDO::PARAM_STR);
                         break;
-                    case 'COMMENT':                        
+                    case 'COMMENT':
                         $stmt->bindValue($identifier, $this->comment, PDO::PARAM_STR);
                         break;
                 }
@@ -1313,7 +1313,7 @@ abstract class OrderRevenue implements ActiveRecordInterface
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
-        
+
         if ($includeForeignObjects) {
             if (null !== $this->aOrder) {
                 $result['Order'] = $this->aOrder->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);

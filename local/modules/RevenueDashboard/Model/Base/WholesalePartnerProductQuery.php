@@ -20,7 +20,7 @@ use Thelia\Model\Product;
 /**
  * Base class that represents a query for the 'wholesale_partner_product' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerProductQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerProductQuery orderByPartnerId($order = Criteria::ASC) Order by the partner_id column
@@ -108,9 +108,9 @@ use Thelia\Model\Product;
  */
 abstract class WholesalePartnerProductQuery extends ModelCriteria
 {
-    
+
     // versionable behavior
-    
+
     /**
      * Whether the versioning is enabled
      */
@@ -201,7 +201,7 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, PARTNER_ID, PRODUCT_ID, PARTNER_PRODUCT_REF, PRICE, PACKAGE_SIZE, DELIVERY_COST, DISCOUNT, DISCOUNT_DESCRIPTION, PROFILE_WEBSITE, POSITION, DEPARTMENT, COMMENT, VALID_UNTIL, VERSION, VERSION_CREATED_BY FROM wholesale_partner_product WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -1088,10 +1088,10 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerProductTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerProductTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -1104,7 +1104,7 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
     }
 
     // versionable behavior
-    
+
     /**
      * Checks whether versioning is enabled
      *
@@ -1114,7 +1114,7 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
     {
         return self::$isVersioningEnabled;
     }
-    
+
     /**
      * Enables versioning
      */
@@ -1122,7 +1122,7 @@ abstract class WholesalePartnerProductQuery extends ModelCriteria
     {
         self::$isVersioningEnabled = true;
     }
-    
+
     /**
      * Disables versioning
      */

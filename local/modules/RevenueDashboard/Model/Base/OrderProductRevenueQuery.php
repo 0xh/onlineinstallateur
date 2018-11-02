@@ -16,12 +16,11 @@ use RevenueDashboard\Model\OrderProductRevenue as ChildOrderProductRevenue;
 use RevenueDashboard\Model\OrderProductRevenueQuery as ChildOrderProductRevenueQuery;
 use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
 use Thelia\Model\Order;
-use Thelia\Model\Product;
 
 /**
  * Base class that represents a query for the 'order_product_revenue' table.
  *
- * 
+ *
  *
  * @method     ChildOrderProductRevenueQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildOrderProductRevenueQuery orderByOrderId($order = Criteria::ASC) Order by the order_id column
@@ -45,10 +44,6 @@ use Thelia\Model\Product;
  * @method     ChildOrderProductRevenueQuery rightJoinOrder($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Order relation
  * @method     ChildOrderProductRevenueQuery innerJoinOrder($relationAlias = null) Adds a INNER JOIN clause to the query using the Order relation
  *
- * @method     ChildOrderProductRevenueQuery leftJoinProduct($relationAlias = null) Adds a LEFT JOIN clause to the query using the Product relation
- * @method     ChildOrderProductRevenueQuery rightJoinProduct($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Product relation
- * @method     ChildOrderProductRevenueQuery innerJoinProduct($relationAlias = null) Adds a INNER JOIN clause to the query using the Product relation
- *
  * @method     ChildOrderProductRevenue findOne(ConnectionInterface $con = null) Return the first ChildOrderProductRevenue matching the query
  * @method     ChildOrderProductRevenue findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOrderProductRevenue matching the query, or a new ChildOrderProductRevenue object populated from the query conditions when no match is found
  *
@@ -69,7 +64,7 @@ use Thelia\Model\Product;
  */
 abstract class OrderProductRevenueQuery extends ModelCriteria
 {
-    
+
     /**
      * Initializes internal state of \RevenueDashboard\Model\Base\OrderProductRevenueQuery object.
      *
@@ -155,7 +150,7 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, ORDER_ID, PRODUCT_REF, PRICE, PURCHASE_PRICE, PARTNER_ID FROM order_product_revenue WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -554,81 +549,6 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Thelia\Model\Product object
-     *
-     * @param \Thelia\Model\Product|ObjectCollection $product The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
-     */
-    public function filterByProduct($product, $comparison = null)
-    {
-        if ($product instanceof \Thelia\Model\Product) {
-            return $this
-                ->addUsingAlias(OrderProductRevenueTableMap::PRODUCT_REF, $product->getRef(), $comparison);
-        } elseif ($product instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(OrderProductRevenueTableMap::PRODUCT_REF, $product->toKeyValue('PrimaryKey', 'Ref'), $comparison);
-        } else {
-            throw new PropelException('filterByProduct() only accepts arguments of type \Thelia\Model\Product or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Product relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return ChildOrderProductRevenueQuery The current query, for fluid interface
-     */
-    public function joinProduct($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Product');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Product');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Product relation Product object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Thelia\Model\ProductQuery A secondary query class using the current class as primary query
-     */
-    public function useProductQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinProduct($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Product', '\Thelia\Model\ProductQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildOrderProductRevenue $orderProductRevenue Object to remove from the list of results
@@ -704,10 +624,10 @@ abstract class OrderProductRevenueQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         OrderProductRevenueTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             OrderProductRevenueTableMap::clearRelatedInstancePool();
             $con->commit();

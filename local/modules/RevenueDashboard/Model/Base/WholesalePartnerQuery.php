@@ -19,7 +19,7 @@ use RevenueDashboard\Model\Map\WholesalePartnerTableMap;
 /**
  * Base class that represents a query for the 'wholesale_partner' table.
  *
- * 
+ *
  *
  * @method     ChildWholesalePartnerQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildWholesalePartnerQuery orderByName($order = Criteria::ASC) Order by the name column
@@ -95,9 +95,9 @@ use RevenueDashboard\Model\Map\WholesalePartnerTableMap;
  */
 abstract class WholesalePartnerQuery extends ModelCriteria
 {
-    
+
     // versionable behavior
-    
+
     /**
      * Whether the versioning is enabled
      */
@@ -188,7 +188,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         $sql = 'SELECT ID, NAME, DESCRIPTION, COMMENT, PRIORITY, ADDRESS, DEPOSIT_ADDRESS, CONTACT_PERSON, DELIVERY_TYPES, RETURN_POLICY, CREATED_AT, UPDATED_AT, VERSION, VERSION_CREATED_BY FROM wholesale_partner WHERE ID = :p0';
         try {
-            $stmt = $con->prepare($sql);            
+            $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
             $stmt->execute();
         } catch (Exception $e) {
@@ -894,10 +894,10 @@ abstract class WholesalePartnerQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            
+
 
         WholesalePartnerTableMap::removeInstanceFromPool($criteria);
-        
+
             $affectedRows += ModelCriteria::delete($con);
             WholesalePartnerTableMap::clearRelatedInstancePool();
             $con->commit();
@@ -910,7 +910,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     }
 
     // timestampable behavior
-    
+
     /**
      * Filter by the latest updated
      *
@@ -922,7 +922,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return $this->addUsingAlias(WholesalePartnerTableMap::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-    
+
     /**
      * Filter by the latest created
      *
@@ -934,7 +934,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return $this->addUsingAlias(WholesalePartnerTableMap::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
     }
-    
+
     /**
      * Order by update date desc
      *
@@ -944,7 +944,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(WholesalePartnerTableMap::UPDATED_AT);
     }
-    
+
     /**
      * Order by update date asc
      *
@@ -954,7 +954,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return $this->addAscendingOrderByColumn(WholesalePartnerTableMap::UPDATED_AT);
     }
-    
+
     /**
      * Order by create date desc
      *
@@ -964,7 +964,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return $this->addDescendingOrderByColumn(WholesalePartnerTableMap::CREATED_AT);
     }
-    
+
     /**
      * Order by create date asc
      *
@@ -976,7 +976,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     }
 
     // versionable behavior
-    
+
     /**
      * Checks whether versioning is enabled
      *
@@ -986,7 +986,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         return self::$isVersioningEnabled;
     }
-    
+
     /**
      * Enables versioning
      */
@@ -994,7 +994,7 @@ abstract class WholesalePartnerQuery extends ModelCriteria
     {
         self::$isVersioningEnabled = true;
     }
-    
+
     /**
      * Disables versioning
      */
