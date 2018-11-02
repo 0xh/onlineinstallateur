@@ -826,3 +826,18 @@ figure.effect-honey:hover h2 i{
         box-shadow: -1px 1px 1px rgba(255, 255, 255, 1) !important;
     }
 }
+.page-cart .main #cart .checkout-progress a,
+.page-order-delivery .main #cart .checkout-progress a,
+.page-order-invoice .main .checkout-progress a{
+    background-color: #15589c;
+    color:#fff;
+    border-right: 1px solid #fff !important;
+    opacity: 0.65 !important;
+}
+.page-cart .main #cart .checkout-progress a.active,
+.page-order-delivery .main #cart .checkout-progress a.active,
+.page-order-invoice .main .checkout-progress a.active{
+    color:#fff;
+    border-right: 1px solid #fff !important;
+    opacity: 1 !important;
+}
