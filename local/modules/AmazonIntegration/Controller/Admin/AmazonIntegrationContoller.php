@@ -187,137 +187,136 @@ class AmazonIntegrationContoller extends BaseAdminController
             if ($orders) {
                 foreach ($orders as $i => $order) {
 
-                     if ($order->OrderStatus == 'Pending') {
-                         //$_SESSION['ordersWithTotalZero'] = true;
-                         break;
-                     }
-                    $this->getLogger()->error("amazonOrderId " . isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
+                    if ($order->OrderStatus != 'Pending') {
 
-                    if (isset($order->ShippingAddress->CountryCode)) {
-                        $countryId = CountryQuery::create()->select('id')
-                         ->filterByIsoalpha2($order->ShippingAddress->CountryCode)
-                         ->findOne();
-                    } else {
-                        $countryId = '13';
-                    }
+                        $this->getLogger()->error("amazonOrderId " . isset($order->AmazonOrderId) ? $order->AmazonOrderId : 'noOrderId');
 
-                    // Insert new customers from Amazon or get the id
-                    $customerId = $this->createCustomer($order, $con, $countryId);
-
-                    /*
-                     * Check if amazon order exists in amazon_orders table
-                     * if doesn't exist insert the new order in 
-                     * - shipping address in order_address
-                     * - order
-                     * - all info from amazon in amazon_orders
-                     * - order_product
-                     * - all info from amazon in amazon_order_product
-                     * - if product doesn't exist insert it in 
-                     * 		- product
-                     * 		- product_price
-                     * 		- product_sale_elements
-                     * 		- product_i18n
-                     * 		- product_category
-                     */
-
-                    switch ($order->OrderStatus) {
-                        case 'Canceled':
-                            $statusId = '5';
-                            break;
-                        case 'Pending':
-                            $statusId = '1';
-                            break;
-                        case 'Unshipped':
-                            $statusId = '3';
-                            break;
-                        case 'Shipped':
-                            $statusId = '4';
-                            break;
-                        default:
-                            $statusId = '1';
-                            break;
-                    }
-
-                    $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
-                    if ($checkAmazonOrder) {
-
-                        if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
-                         $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
-
-                            $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
-                            if (isset($order->OrderTotal)) {
-                                $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
-                                $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
-                            }
-                            $checkAmazonOrder->setOrderStatus($order->OrderStatus);
-                            $checkAmazonOrder->save($con);
-
-                            $updateOrderStatus = OrderQuery::create()
-                             ->filterById($checkAmazonOrder->getOrderId())
+                        if (isset($order->ShippingAddress->CountryCode)) {
+                            $countryId = CountryQuery::create()->select('id')
+                             ->filterByIsoalpha2($order->ShippingAddress->CountryCode)
                              ->findOne();
-                            if ($updateOrderStatus)
-                                $updateOrderStatus->setStatusId($statusId)->save($con);
+                        } else {
+                            $countryId = '13';
                         }
-                    } elseif ($statusId != '5') {
-                        // Insert delivery address in order_address table
-                        $orderAddressId = $this->createOrderAddress($order, $con, $countryId);
 
-                        // Insert order from amazon in order table
-                        $arrCreateOrder = $this->createOrder($order, $customerId, $orderAddressId, $con, $statusId);
+                        // Insert new customers from Amazon or get the id
+                        $customerId = $this->createCustomer($order, $con, $countryId);
 
-                        $lang        = $arrCreateOrder['lang'];
-                        $newOrder    = $arrCreateOrder['order'];
-                        $orderId     = $newOrder->getId();
-                        $marketplace = $arrCreateOrder['marketplace'];
+                        /*
+                         * Check if amazon order exists in amazon_orders table
+                         * if doesn't exist insert the new order in 
+                         * - shipping address in order_address
+                         * - order
+                         * - all info from amazon in amazon_orders
+                         * - order_product
+                         * - all info from amazon in amazon_order_product
+                         * - if product doesn't exist insert it in 
+                         * 		- product
+                         * 		- product_price
+                         * 		- product_sale_elements
+                         * 		- product_i18n
+                         * 		- product_category
+                         */
 
-                        // Insert order from amazon to amazon_orders table
-                        $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
+                        switch ($order->OrderStatus) {
+                            case 'Canceled':
+                                $statusId = '5';
+                                break;
+                            case 'Pending':
+                                $statusId = '1';
+                                break;
+                            case 'Unshipped':
+                                $statusId = '3';
+                                break;
+                            case 'Shipped':
+                                $statusId = '4';
+                                break;
+                            default:
+                                $statusId = '1';
+                                break;
+                        }
 
-                        // Get products for each order from amazon
-                        $amazonOrderId = $order->AmazonOrderId;
-                        // $amazonOrderId = '305-3292380-9658727';
+                        $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
+                        if ($checkAmazonOrder) {
 
-                        $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
+                            if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
+                             $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
 
-                        sleep(4);
+                                $checkAmazonOrder->setShipServiceLevel($order->ShipServiceLevel);
+                                if (isset($order->OrderTotal)) {
+                                    $checkAmazonOrder->setOrderTotalCurrencyCode($order->OrderTotal->CurrencyCode);
+                                    $checkAmazonOrder->setOrderTotalAmount($order->OrderTotal->Amount);
+                                }
+                                $checkAmazonOrder->setOrderStatus($order->OrderStatus);
+                                $checkAmazonOrder->save($con);
 
-                        if (isset($order->FulfillmentChannel))
-                            $fulfillmentChannel = $order->FulfillmentChannel;
-                        else
-                            $fulfillmentChannel = 'MFN';
+                                $updateOrderStatus = OrderQuery::create()
+                                 ->filterById($checkAmazonOrder->getOrderId())
+                                 ->findOne();
+                                if ($updateOrderStatus)
+                                    $updateOrderStatus->setStatusId($statusId)->save($con);
+                            }
+                        } elseif ($statusId != '5') {
+                            // Insert delivery address in order_address table
+                            $orderAddressId = $this->createOrderAddress($order, $con, $countryId);
 
-                        $totalPostage = 0;
+                            // Insert order from amazon in order table
+                            $arrCreateOrder = $this->createOrder($order, $customerId, $orderAddressId, $con, $statusId);
 
-                        if (isset($productsOrderItem->OrderItem)) {
-                            $orderProduct = $productsOrderItem->OrderItem;
-                            // More items for an order
-                            if (is_array($orderProduct)) {
-                                $orderProducts = $orderProduct;
-                                foreach ($orderProducts as $orderProduct) {
+                            $lang        = $arrCreateOrder['lang'];
+                            $newOrder    = $arrCreateOrder['order'];
+                            $orderId     = $newOrder->getId();
+                            $marketplace = $arrCreateOrder['marketplace'];
 
+                            // Insert order from amazon to amazon_orders table
+                            $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
+
+                            // Get products for each order from amazon
+                            $amazonOrderId = $order->AmazonOrderId;
+                            // $amazonOrderId = '305-3292380-9658727';
+
+                            $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
+
+                            sleep(4);
+
+                            if (isset($order->FulfillmentChannel))
+                                $fulfillmentChannel = $order->FulfillmentChannel;
+                            else
+                                $fulfillmentChannel = 'MFN';
+
+                            $totalPostage = 0;
+
+                            if (isset($productsOrderItem->OrderItem)) {
+                                $orderProduct = $productsOrderItem->OrderItem;
+                                // More items for an order
+                                if (is_array($orderProduct)) {
+                                    $orderProducts = $orderProduct;
+                                    foreach ($orderProducts as $orderProduct) {
+
+                                        if (isset($orderProduct->ShippingPrice->Amount))
+                                            $totalPostage += $orderProduct->ShippingPrice->Amount;
+
+                                        $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
+                                    }
+                                }
+                                else {
                                     if (isset($orderProduct->ShippingPrice->Amount))
-                                        $totalPostage += $orderProduct->ShippingPrice->Amount;
+                                        $totalPostage = $orderProduct->ShippingPrice->Amount;
 
                                     $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
                                 }
                             }
-                            else {
-                                if (isset($orderProduct->ShippingPrice->Amount))
-                                    $totalPostage = $orderProduct->ShippingPrice->Amount;
 
-                                $this->insertOrderProduct($orderProduct, $lang, $con, $newOrder->getId(), $amazonOrderId, $marketplace, $countryId);
+                            if ($countryId == '5') {
+                                $taxPostage = round(($totalPostage / 1.19) * 0.19, 2);
+                            } else {
+                                $taxPostage = round(($totalPostage / 1.2) * 0.2, 2);
                             }
-                        }
 
-                        if ($countryId == '5') {
-                            $taxPostage = round(($totalPostage / 1.19) * 0.19, 2);
-                        } else {
-                            $taxPostage = round(($totalPostage / 1.2) * 0.2, 2);
+                            $newOrder->setPostage($totalPostage)
+                             ->setPostageTax($taxPostage)
+                             ->save($con);
                         }
-
-                        $newOrder->setPostage($totalPostage)
-                         ->setPostageTax($taxPostage)
-                         ->save($con);
                     }
                 }
 
@@ -1032,7 +1031,7 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setLowestPrice($priceAmazon['lowestPrice'])
          ->setListPrice($priceAmazon['listPrice'])
          ->save();
-         Common::saveInCrawlerProductListing($productId, $platform = "Amazon", $priceAmazon['lowestPrice']);
+        Common::saveInCrawlerProductListing($productId, $platform   = "Amazon", $priceAmazon['lowestPrice']);
     }
 
     public function saveProductCategories($productCategories)
