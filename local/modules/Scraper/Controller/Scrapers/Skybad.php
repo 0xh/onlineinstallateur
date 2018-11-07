@@ -3,13 +3,8 @@
 namespace Scraper\Controller\Scrapers;
 
 use Scraper\Controller\SimpleHtmlDomController;
-use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Log\Tlog;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  * Description of Skybad
@@ -19,9 +14,9 @@ use Thelia\Controller\Admin\BaseAdminController;
 class Skybad extends PriceScraper
 {
     
-    public function getDataSkybad()
+    public function getDataSkybad($online)
     {
-        $this->getData('skybad');
+        $this->getData('skybad',$online);
         die('end-skybad');
     }
     

@@ -2,10 +2,10 @@
 
 namespace SepaImporter\Import;
 
+use RevenueDashboard\Model\WholesalePartnerBrandMatchingQuery;
 use Thelia\ImportExport\Import\AbstractImport;
 use BackOffice\Controller\Admin\ExportDataFromMyshtController;
 use MultipleFullfilmentCenters\MultipleFullfilmentCenters;
-use RevenueDashboard\Model\BrandMatchingPartnersQuery;
 use Thelia\Log\Tlog;
 
 class CreateMyshtProductImport extends AbstractImport {
@@ -69,7 +69,7 @@ class CreateMyshtProductImport extends AbstractImport {
 			       
 			       $brand = $this->rowHasField($row,'Lief.Bezeichnung');
 			       
-			       $brandMatching = BrandMatchingPartnersQuery::create()
+			       $brandMatching = WholesalePartnerBrandMatchingQuery::create()
 			       						->findOneByBrandExtern($brand);
 			       						
 			       		

@@ -5,6 +5,7 @@ namespace Scraper\Controller;
 use Scraper\Config\ScraperConst;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
+use Thelia\Log\Destination\TlogDestinationRotatingFile;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -236,10 +237,11 @@ class WebBrowserController extends BaseAdminController {
     public function setLogger() {
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
-
             self::$logger->setPrefix("#DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
             self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $this->getLogFile());
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_SIZE_KB_DEFAULT, "1");
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_COUNT_DEFAULT, "100");
             self::$logger->setLevel(Tlog::ERROR);
         }
         return self::$logger;

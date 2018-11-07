@@ -15,9 +15,9 @@ namespace Scraper\Controller\Scrapers;
  */
 class Megabad extends PriceScraper
 {
-    public function getDataMegabad()
+    public function getDataMegabad($online)
     {
-        $this->getData('megabad');
+        $this->getData('megabad',$online);
         die('end-megabad');
     }
     
