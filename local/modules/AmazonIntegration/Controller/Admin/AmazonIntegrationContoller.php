@@ -841,6 +841,36 @@ class AmazonIntegrationContoller extends BaseAdminController
         }
         return self::$logger;
     }
+    
+    public function getAmazonRankingForProducts($online, $startid, $stopid)
+    {
+        /** @var ProductSaleElementsQuery */
+        $productQuery = ProductSaleElementsQuery::create()
+        ->addJoin(ProductSaleElementsTableMap::PRODUCT_ID, ProductTableMap::ID)
+        ->where(ProductSaleElementsTableMap::EAN_CODE . " is not NULL and " . ProductSaleElementsTableMap::EAN_CODE . " <> ''");
+        if($online)
+            $productQuery = $productQuery->where(ProductTableMap::VISIBLE . " = 1 ");
+        if($startid)
+            $productQuery = $productQuery->where(ProductTableMap::ID . " >= " . $startid);
+        
+        if($stopid)
+            $productQuery = $productQuery->where(ProductTableMap::ID . " <= " . $stopid);
+            
+        $allProdOnline = "";
+        foreach ($productQuery as $product) {
+            if (strlen($product->getRef()) < 13)
+                $allProdOnline .= $product->getEanCode() . " ";
+        }
+
+        $allProdOnline = rtrim($allProdOnline);
+        if(strlen($allProdOnline) > 0) {
+            echo "Getting Amazon Ranking and prices for " . $productQuery->count() . "\n";
+            $this->saveRankingProductsBase($allProdOnline);
+        }
+        else 
+            echo "No products for the given arguments";
+        
+    }
 
     public function getAllProductsForRanking()
     {
@@ -866,6 +896,127 @@ class AmazonIntegrationContoller extends BaseAdminController
           )
         );
     }
+    
+    public function saveRankingProductsBase($reference){
+        $refArray = explode(' ', $reference);
+
+        $idType = 'EAN';
+        
+        include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
+        
+        $max_time = ini_get("max_execution_time");
+        ini_set('max_execution_time', 3000);
+        
+        // object or array of parameters
+        foreach ($refArray as $ref) {
+            $this->getLogger()->error("AMAZON - get informations for ean - " . $ref);
+            $idList->setId(array($ref));
+            $request->setIdList($idList);
+            
+            $this->getLogger()->error($request);
+            $result = invokeGetMatchingProductForId($service, $request);
+            
+            if ($result) {
+                $this->getLogger()->error("AMAZON - is result for ean - " . $ref);
+                include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetProductCategoriesForASINSample.php';
+                if (isset($result->GetMatchingProductForIdResult->Products)) {
+                    foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
+                        $this->getLogger()->error("AMAZON - result product for ean - " . $ref);
+                        $this->getLogger()->error($prd);
+                        
+                        if (is_array($prd)) {
+                            $prd = $prd[0];
+                        }
+                        
+                        if ($idType == 'SellerSKU') {
+                            $pse = ProductSaleElementsQuery::create()
+                            ->filterByRef($ref)
+                            ->findOne();
+                            if ($pse) {
+                                $eanCode   = $pse->getEanCode();
+                                $productId = $pse->getProductId();
+                            } else {
+                                $eanCode   = '';
+                                $productId = '';
+                            }
+                        } elseif ($idType == 'EAN') {
+                            $pse = ProductSaleElementsQuery::create()
+                            ->filterByEanCode($ref)
+                            ->findOne();
+                            
+                            if ($pse) {
+                                $productId = $pse->getProductId();
+                            } else {
+                                $productId = '';
+                            }
+                            
+                            $eanCode = $ref;
+                        }
+                        
+                        if (isset($prd->Identifiers)) {
+                            $asin = $prd->Identifiers->MarketplaceASIN->ASIN;
+                        } else {
+                            if (isset($prd->MarketplaceASIN))
+                                $asin = $prd->MarketplaceASIN->ASIN;
+                                else
+                                    $asin = '';
+                        }
+                        $this->getLogger()->error("AMAZON asin - " . $asin . ' for ean ' . $ref);
+                        // get price from amazon
+                        $amazonAPI   = new AmazonAWSController;
+                        $priceAmazon = $amazonAPI->getLowestPrice($eanCode);
+                        $this->getLogger()->error("AMAZON - lowest price - " . $priceAmazon['lowestPrice']);
+                        $this->getLogger()->error("AMAZON - list price - " . $priceAmazon['listPrice']);
+                        
+                        if (isset($prd->SalesRankings->SalesRank)) {
+                            $this->getLogger()->error("AMAZON - '.$ref.' has salesRank");
+                            if (is_array($prd->SalesRankings->SalesRank)) {
+                                foreach ($prd->SalesRankings->SalesRank as $ranks) {
+                                    $this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId, $priceAmazon);
+                                    echo $eanCode . " " . $productId . " " . $ref . " " . $asin . " " . $ranks->Rank . " " . 
+                                    $ranks->ProductCategoryId . " " . $priceAmazon['lowestPrice'] . " " . $priceAmazon['listPrice']. "\n";
+                                }
+                            }
+                            
+                            $requestCat->setASIN($asin);
+                            $productCategories = invokeGetProductCategoriesForASIN($service, $requestCat);
+                            
+                            if ($productCategories) {
+                                $this->getLogger()->error("AMAZON - product categories");
+                                $this->getLogger()->error($productCategories);
+                                if (is_array($productCategories->GetProductCategoriesForASINResult->Self)) {
+                                    $this->getLogger()->error('AMAZON - productCategories is an array');
+                                    foreach ($productCategories->GetProductCategoriesForASINResult->Self as $prodCat) {
+                                        $this->getLogger()->error('AMAZON - product category');
+                                        $this->getLogger()->error($prodCat);
+                                        
+                                        $this->saveProductCategories($prodCat);
+                                    }
+                                } else {
+                                    $this->getLogger()->error('AMAZON - productCategories is an object');
+                                    $this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
+                                }
+                            }
+                        } else {
+                            $this->getLogger()->error($ref . " doesn't have SalesRankings");
+                        }
+                    }
+                } else {
+                    if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
+                        $this->saveRanking($ref, null, $ref, null, '', '', null);
+                        $this->getLogger()->error($ref . " is an invalid EAN for the marketplace ");
+                }
+            } else {
+                if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
+                    $this->saveRanking($ref, null, $ref, null, '', '', null);
+                    echo ('error decoding json');
+            }
+            
+            sleep(2);
+        }
+        
+        ini_set('max_execution_time', $max_time);
+    }
 
     public function saveRankingProducts($allProdOnline = null)
     {
@@ -885,123 +1036,8 @@ class AmazonIntegrationContoller extends BaseAdminController
                 $reference = $allProdOnline;
             }
 
-            $refArray = explode(' ', $reference);
-
-            $idType = 'EAN';
-
-            include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Samples/GetMatchingProductForIdSample.php';
-
-            $max_time = ini_get("max_execution_time");
-            ini_set('max_execution_time', 3000);
-
-            // object or array of parameters
-            foreach ($refArray as $ref) {
-                $this->getLogger()->error("AMAZON - get informations for ean - " . $ref);
-
-                $idList->setId(array($ref));
-                $request->setIdList($idList);
-
-                $this->getLogger()->error($request);
-                $result = invokeGetMatchingProductForId($service, $request);
-
-                if ($result) {
-                    $this->getLogger()->error("AMAZON - is result for ean - " . $ref);
-                    include __DIR__ . '/../../Classes/API/src/MarketplaceWebServiceOrders/Products/MarketplaceWebServiceProducts/Samples/GetProductCategoriesForASINSample.php';
-                    if (isset($result->GetMatchingProductForIdResult->Products)) {
-                        foreach ($result->GetMatchingProductForIdResult->Products as $prd) {
-                            $this->getLogger()->error("AMAZON - result product for ean - " . $ref);
-                            $this->getLogger()->error($prd);
-
-                            if (is_array($prd)) {
-                                $prd = $prd[0];
-                            }
-
-                            if ($idType == 'SellerSKU') {
-                                $pse = ProductSaleElementsQuery::create()
-                                 ->filterByRef($ref)
-                                 ->findOne();
-                                if ($pse) {
-                                    $eanCode   = $pse->getEanCode();
-                                    $productId = $pse->getProductId();
-                                } else {
-                                    $eanCode   = '';
-                                    $productId = '';
-                                }
-                            } elseif ($idType == 'EAN') {
-                                $pse = ProductSaleElementsQuery::create()
-                                 ->filterByEanCode($ref)
-                                 ->findOne();
-
-                                if ($pse) {
-                                    $productId = $pse->getProductId();
-                                } else {
-                                    $productId = '';
-                                }
-
-                                $eanCode = $ref;
-                            }
-
-                            if (isset($prd->Identifiers)) {
-                                $asin = $prd->Identifiers->MarketplaceASIN->ASIN;
-                            } else {
-                                if (isset($prd->MarketplaceASIN))
-                                    $asin = $prd->MarketplaceASIN->ASIN;
-                                else
-                                    $asin = '';
-                            }
-                            $this->getLogger()->error("AMAZON asin - " . $asin . ' for ean ' . $ref);
-                            // get price from amazon
-                            $amazonAPI   = new AmazonAWSController;
-                            $priceAmazon = $amazonAPI->getLowestPrice($eanCode);
-                            $this->getLogger()->error("AMAZON - lowest price - " . $priceAmazon['lowestPrice']);
-                            $this->getLogger()->error("AMAZON - list price - " . $priceAmazon['listPrice']);
-
-                            if (isset($prd->SalesRankings->SalesRank)) {
-                                $this->getLogger()->error("AMAZON - '.$ref.' has salesRank");
-                                if (is_array($prd->SalesRankings->SalesRank)) {
-                                    foreach ($prd->SalesRankings->SalesRank as $ranks) {
-                                        $this->saveRanking($eanCode, $productId, $ref, $asin, $ranks->Rank, $ranks->ProductCategoryId, $priceAmazon);
-                                    }
-                                }
-
-                                $requestCat->setASIN($asin);
-                                $productCategories = invokeGetProductCategoriesForASIN($service, $requestCat);
-
-                                if ($productCategories) {
-                                    $this->getLogger()->error("AMAZON - product categories");
-                                    $this->getLogger()->error($productCategories);
-                                    if (is_array($productCategories->GetProductCategoriesForASINResult->Self)) {
-                                        $this->getLogger()->error('AMAZON - productCategories is an array');
-                                        foreach ($productCategories->GetProductCategoriesForASINResult->Self as $prodCat) {
-                                            $this->getLogger()->error('AMAZON - product category');
-                                            $this->getLogger()->error($prodCat);
-
-                                            $this->saveProductCategories($prodCat);
-                                        }
-                                    } else {
-                                        $this->getLogger()->error('AMAZON - productCategories is an object');
-                                        $this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
-                                    }
-                                }
-                            } else {
-                                $this->getLogger()->error($ref . " doesn't have SalesRankings");
-                            }
-                        }
-                    } else {
-                        if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
-                            $this->saveRanking($ref, null, $ref, null, '', '', null);
-                        $this->getLogger()->error($ref . " is an invalid EAN for the marketplace ");
-                    }
-                } else {
-                    if (ProductAmazonQuery::create()->findOneByEanCode($ref) == null)
-                        $this->saveRanking($ref, null, $ref, null, '', '', null);
-                    echo ('error decoding json');
-                }
-
-                sleep(4);
-            }
-
-            ini_set('max_execution_time', $max_time);
+            $this->saveRankingProductsBase($reference);
+            
             $params        = array();
             $params["tab"] = $this->getRequest()->get("tab", 'amazon-feeds');
 
