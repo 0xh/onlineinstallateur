@@ -24,16 +24,28 @@ use Thelia\Model\ProductQuery;
 class Common extends BaseAdminController
 {
 
-    public static function getProductsExternId()
+    public static function getProductsExternId($online, $startid,$stopid)
     {
-        $prods      = ProductQuery::create()
-         ->where(ProductTableMap::VISIBLE . " = 1");
-        $arrayProds = array();
-        foreach ($prods as $prod) {
-            array_push($arrayProds, array("extern_id" => substr($prod->getRef(), 3), "prod_id" => $prod->getId()));
+        $collectionProducts = null;
+        $productQuery      = ProductQuery::create();
+        $upperLimit = "";
+        
+        if($stopid)
+            $upperLimit = " and " . ProductTableMap::ID . " <= ".$stopid;
+            
+        if($online){
+            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1 and " . ProductTableMap::ID . " >= ".$startid . $upperLimit);
+        }
+        else {
+            $collectionProducts = $productQuery->where(ProductTableMap::ID . " > ".$startid . $upperLimit);
+        }
+            
+        $arrayProducts = array();
+        foreach ($collectionProducts as $product) {
+            array_push($arrayProducts, array("extern_id" => substr($product->getRef(), 3), "prod_id" => $product->getId()));
         }
 
-        return $arrayProds;
+        return $arrayProducts;
     }
 
     public static function saveInCrawlerProductListing($product_id, $platform, $first_price)

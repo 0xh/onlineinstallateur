@@ -2,6 +2,8 @@
 
 namespace Scraper\Controller\Scrapers;
 
+use Exception;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,9 +17,9 @@ namespace Scraper\Controller\Scrapers;
  */
 class Megabad extends PriceScraper
 {
-    public function getDataMegabad()
+    public function getDataMegabad($online,$startid,$stopid)
     {
-        $this->getData('megabad');
+        $this->getData('megabad',$online,$startid,$stopid);
         die('end-megabad');
     }
     
