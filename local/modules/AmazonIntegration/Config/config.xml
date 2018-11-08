@@ -32,4 +32,8 @@
         <loop name="amazon_product_categories" class="AmazonIntegration\Loop\AmazonProductCategories" />
     </loops>
     
+    <commands>
+    	<command class="AmazonIntegration\Commands\AmazonIntegrationCommand"/>
+    </commands>
+    
 </config>

@@ -3,7 +3,6 @@ namespace AmazonIntegration\Controller\Admin;
 
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Log\Tlog;
-use AmazonIntegration\Model\AmazonProductDescTempQuery;
 
 require __DIR__ . '/../../Config/config.php';
 

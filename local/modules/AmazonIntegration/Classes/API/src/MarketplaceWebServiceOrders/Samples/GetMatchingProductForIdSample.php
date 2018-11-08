@@ -21,7 +21,6 @@
  * Get Matching Product For Id Sample
  */
 
-use AmazonIntegration\Model\ProductAmazon;
 
 require_once ('.config.inc.php');
 include_once dirname(__FILE__) . '/../Products/MarketplaceWebServiceProducts/Client.php';
