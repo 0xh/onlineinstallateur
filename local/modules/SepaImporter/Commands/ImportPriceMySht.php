@@ -12,17 +12,18 @@ use Thelia\Model\ImportQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
 use Thelia\Tools\URL;
+use DOMDocument;
 use const DS;
 use const THELIA_LOCAL_DIR;
 
-class ImportStockMySht extends ContainerAwareCommand
+class ImportPriceMySht extends ContainerAwareCommand
 {
 
     protected function configure()
     {
         $this
-         ->setName("importShtStock:start")
-         ->setDescription("Starting mySht stock import!\n");
+         ->setName("importShtPrice:start")
+         ->setDescription("Starting mySht price import!\n");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -33,18 +34,19 @@ class ImportStockMySht extends ContainerAwareCommand
 
         $local_file = $this->fetchfromFTP();
 
-        if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv")) {
-            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv");
+        if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv")) {
+            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv");
             echo "File already existed, deleting \n";
         }
 
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv";
 
-        if ($local_file != null) {
-            $output = $this->formatFileForImport($local_file, $newFile);
-        }
+
+        $output = $this->formatFileForImport($local_file, $newFile);
 
         $this->importCall($output);
+        unlink($newFile);
+        unlink($output);
     }
 
     private function replaceDelimiters($file)
@@ -64,19 +66,16 @@ class ImportStockMySht extends ContainerAwareCommand
 
         $row    = 1;
         if (($handle = fopen($output, "r+")) !== FALSE) {
-
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 $num = count($data);
                 if ($row == 1) {
-                    $data[0] = "KEY" . ",";
-                    $data[1] = "verf.Menge" . ",";
-                    $data[2] = "matchcode";
+                    $data[0] = "MATNR" . ",";
+                    $data[1] = "YE49_plus_7";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
                 } else {
                     $data[0] = $data[0] . ",";
-                    $data[1] = intval($data[1]) . ",";
-                    $data[2] = $data[2];
+                    $data[1] = $data[1];
                     array_push($data, PHP_EOL);
 
                     file_put_contents($newFile, $data, FILE_APPEND);
@@ -134,24 +133,23 @@ class ImportStockMySht extends ContainerAwareCommand
     private function fetchfromFTP()
     {
 
-        $server_file = "Artikelverfuegbarkeit.csv";
+        $server_file = "Mappe2.csv";
         $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
 
-        $ftp_user   = "mmai1018";
-        $ftp_pass   = "PreiCra!2018";
-        $ftp_server = "ftp.sht-net.at";
-        $ftp_conn   = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
-        $login      = ftp_login($ftp_conn, $ftp_user, $ftp_pass);
-        ftp_pasv($ftp_conn, true) or die("Cannot switch to passive mode");
-
-        ftp_chdir($ftp_conn, "/preiscrawler");
-        if (ftp_get($ftp_conn, $local_file, $server_file, FTP_ASCII)) {
-            echo "Successfully written to $local_file. \n";
-        } else {
-            echo "Error downloading $server_file.";
-        }
-        ftp_close($ftp_conn);
-
+//        $ftp_user   = "mmai1018";
+//        $ftp_pass   = "PreiCra!2018";
+//        $ftp_server = "ftp.sht-net.at";
+//        $ftp_conn   = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+//        $login      = ftp_login($ftp_conn, $ftp_user, $ftp_pass);
+//        ftp_pasv($ftp_conn, true) or die("Cannot switch to passive mode");
+//
+//        ftp_chdir($ftp_conn, "/preiscrawler");
+//        if (ftp_get($ftp_conn, $local_file, $server_file, FTP_ASCII)) {
+//            echo "Successfully written to $local_file. \n";
+//        } else {
+//            echo "Error downloading $server_file.";
+//        }
+//        ftp_close($ftp_conn);
 
         return $local_file;
     }
