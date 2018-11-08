@@ -14,9 +14,9 @@ use Thelia\Log\Tlog;
 class Skybad extends PriceScraper
 {
     
-    public function getDataSkybad($online)
+    public function getDataSkybad($online,$startid,$stopid)
     {
-        $this->getData('skybad',$online);
+        $this->getData('skybad',$online,$startid,$stopid);
         die('end-skybad');
     }
     

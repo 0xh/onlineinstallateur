@@ -19,9 +19,9 @@ use Thelia\Controller\Admin\BaseAdminController;
  */
 class Reuter extends PriceScraper
 {
-    public function getDataReuter($online)
+    public function getDataReuter($online,$startid,$stopid)
     {
-        $this->getData('reuter',$online);
+        $this->getData('reuter',$online,$startid,$stopid);
         die('end-reuter');
     }
     

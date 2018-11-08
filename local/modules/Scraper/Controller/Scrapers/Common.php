@@ -24,15 +24,20 @@ use Thelia\Model\ProductQuery;
 class Common extends BaseAdminController
 {
 
-    public static function getProductsExternId($online)
+    public static function getProductsExternId($online, $startid,$stopid)
     {
         $collectionProducts = null;
         $productQuery      = ProductQuery::create();
+        $upperLimit = "";
+        
+        if($stopid)
+            $upperLimit = " and " . ProductTableMap::ID . " <= ".$stopid;
+            
         if($online){
-            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1");
+            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1 and " . ProductTableMap::ID . " >= ".$startid . $upperLimit);
         }
         else {
-            $collectionProducts = $productQuery->find();
+            $collectionProducts = $productQuery->where(ProductTableMap::ID . " > ".$startid . $upperLimit);
         }
             
         $arrayProducts = array();

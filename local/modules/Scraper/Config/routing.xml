@@ -8,22 +8,34 @@
         <default key="_controller">Scraper\Controller\WebBrowserController::test</default>
     </route>
     
-    <route id="scraper.skybad" path="/admin/scraper-skybad/{online}">
+    <route id="scraper.skybad" path="/admin/scraper-skybad/{online}/{startid}/{stopid}">
         <default key="_controller">Scraper\Controller\Scrapers\Skybad::getDataSkybad</default>
         <default key="online">1</default>
+        <default key="startid">1</default>
+        <default key="stopid">0</default>
         <requirement key="online">\d+</requirement>
+        <requirement key="startid">\d+</requirement>
+        <requirement key="stopid">\d+</requirement>
     </route>
 
-    <route id="scraper.reuter" path="/admin/scraper-reuter/{online}">
+    <route id="scraper.reuter" path="/admin/scraper-reuter/{online}/{startid}/{stopid}">
         <default key="_controller">Scraper\Controller\Scrapers\Reuter::getDataReuter</default>
         <default key="online">1</default>
+        <default key="startid">1</default>
+        <default key="stopid">0</default>
         <requirement key="online">\d+</requirement>
+        <requirement key="startid">\d+</requirement>
+        <requirement key="stopid">\d+</requirement>
     </route>
 
-    <route id="scraper.epoq" path="/admin/scraper-megabad/{online}">
+    <route id="scraper.epoq" path="/admin/scraper-megabad/{online}/{startid}/{stopid}">
         <default key="_controller">Scraper\Controller\Scrapers\Megabad::getDataMegabad</default>
         <default key="online">1</default>
+        <default key="startid">1</default>
+        <default key="stopid">0</default>
         <requirement key="online">\d+</requirement>
+        <requirement key="startid">\d+</requirement>
+        <requirement key="stopid">\d+</requirement>
     </route>
 
 </routes>
