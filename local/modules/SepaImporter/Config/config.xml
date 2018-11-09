@@ -326,5 +326,99 @@
                 </description>
             </import_descriptive>
          </import>
+         <import id="thelia.import.sht.stock" class="SepaImporter\Import\ShtStockImporter"
+                category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Import Sht Stock from file </title>
+                <description>
+                  <![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Import Sht Stock from file </title>
+                <description>
+<![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+         </import>
+         <import id="thelia.import.sht.price" class="SepaImporter\Import\ShtPriceImporter"
+                category_id="thelia.import.products">
+            <import_descriptive locale="en_US">
+                <title>Import Sht Price from file </title>
+                <description>
+                  <![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+            <import_descriptive locale="de_DE">
+                <title>Import Sht Price from file </title>
+                <description>
+<![CDATA[
+                    MySHT XML Importer.
+                    
+                    Accepts XML type files, sets multiple product variables:
+                    <ul>
+                        <li>Brand</li>
+                        <li>Category</li>
+                        <li>Price</li>
+                        <li>List Price</li>
+                        <li>Reference Nr.</li>
+                        <li>Stock</li>
+                        <li>Product Title</li>
+                        <li>Product Description</li>
+                        <li>EAN</li>
+                        <li>Picture</li>
+                    </ul>
+                    ]]>
+                </description>
+            </import_descriptive>
+         </import>
     </imports>
 </config>

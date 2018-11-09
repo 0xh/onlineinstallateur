@@ -484,7 +484,7 @@ class XMLImporter extends AbstractImport
     {
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
-            $logFilePath  = THELIA_LOG_DIR . DS . "log-generic-importer.txt";
+            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-xml-importer.txt";
             self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
             self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
