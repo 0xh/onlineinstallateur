@@ -2,6 +2,7 @@
 
 namespace SepaImporter\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -23,13 +24,18 @@ class ImportPriceMySht extends ContainerAwareCommand
     {
         $this
          ->setName("importShtPrice:start")
-         ->setDescription("Starting mySht price import!\n");
+         ->setDescription("Starting mySht price import!\n")
+         ->addArgument(
+             'startline', InputArgument::REQUIRED, 'Specify file start line')
+         ->addArgument(
+             'stopline',  InputArgument::REQUIRED, 'Specify file stop line');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Command started! \n");
-
+        $startline = $input->getArgument('startline');
+        $stopline = $input->getArgument('stopline');
         $UR = new URL();
 
         $local_file = $this->fetchfromFTP();
@@ -42,7 +48,8 @@ class ImportPriceMySht extends ContainerAwareCommand
         $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv";
 
         $output->writeln("formating input file \n");
-        $importFile = $this->formatFileForImport($local_file, $newFile);
+
+        $importFile = $this->formatFileForImport($local_file, $newFile, $startline, $stopline);
         $output->writeln("complete! \n");
         $this->importCall($importFile);
         $output->writeln("price import completed \n");
@@ -60,7 +67,7 @@ class ImportPriceMySht extends ContainerAwareCommand
         file_put_contents($file, $str);
     }
 
-    private function formatFileForImport($output, $newFile)
+    private function formatFileForImport($output, $newFile, $startline, $stopline)
     {
         $fp = fopen($newFile, "a+");
         fclose($fp);
@@ -74,7 +81,7 @@ class ImportPriceMySht extends ContainerAwareCommand
                     $data[1] = "YE49_plus_7";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
-                } else {
+                } else if($row >= $startline && $row <= $stopline){
                     $data[0] = $data[0] . ",";
                     $data[1] = $data[1];
                     array_push($data, PHP_EOL);
@@ -83,7 +90,10 @@ class ImportPriceMySht extends ContainerAwareCommand
                 }
                 $row++;
                 if($row % 1000 == 0 )
-                    echo "formated ".$row." lines \n";
+                    if($row >= $startline && $row <= $stopline)
+                        echo "formated ".$row." lines \n";
+                    else
+                        echo "skiped ".$row." lines \n";
             }
             fclose($handle);
         }

@@ -2,6 +2,7 @@
 
 namespace SepaImporter\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -22,13 +23,18 @@ class ImportStockMySht extends ContainerAwareCommand
     {
         $this
          ->setName("importShtStock:start")
-         ->setDescription("Starting mySht stock import!\n");
+         ->setDescription("Starting mySht stock import!\n")
+         ->addArgument(
+             'startline', InputArgument::REQUIRED, 'Specify file start line')
+         ->addArgument(
+             'stopline',  InputArgument::REQUIRED, 'Specify file stop line');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Command started! \n");
-
+        $startline = $input->getArgument('startline');
+        $stopline = $input->getArgument('stopline');
         $UR = new URL();
 
         $local_file = $this->fetchfromFTP();
@@ -41,7 +47,7 @@ class ImportStockMySht extends ContainerAwareCommand
         $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv";
 
         if ($local_file != null) {
-            $output = $this->formatFileForImport($local_file, $newFile);
+            $output = $this->formatFileForImport($local_file, $newFile, $startline, $stopline);
         }
 
         $this->importCall($output);
@@ -57,7 +63,7 @@ class ImportStockMySht extends ContainerAwareCommand
         file_put_contents($file, $str);
     }
 
-    private function formatFileForImport($output, $newFile)
+    private function formatFileForImport($output, $newFile, $startline, $stopline)
     {
         $fp = fopen($newFile, "a+");
         fclose($fp);
@@ -73,7 +79,7 @@ class ImportStockMySht extends ContainerAwareCommand
                     $data[2] = "matchcode";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
-                } else {
+                } else if($row >= $startline && $row <= $stopline){
                     $data[0] = $data[0] . ",";
                     $data[1] = intval($data[1]) . ",";
                     $data[2] = $data[2];
@@ -83,7 +89,10 @@ class ImportStockMySht extends ContainerAwareCommand
                 }
                 $row++;
                 if($row % 1000 == 0 )
-                    echo "formated ".$row." lines \n";
+                    if($row >= $startline && $row <= $stopline)
+                            echo "formated ".$row." lines \n";
+                        else
+                            echo "skiped ".$row." lines \n";
             }
             fclose($handle);
         }
