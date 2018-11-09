@@ -65,7 +65,7 @@ class ImportStockMySht extends ContainerAwareCommand
         $row    = 1;
         if (($handle = fopen($output, "r+")) !== FALSE) {
 
-            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+            while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
                 $num = count($data);
                 if ($row == 1) {
                     $data[0] = "KEY" . ",";
@@ -82,6 +82,8 @@ class ImportStockMySht extends ContainerAwareCommand
                     file_put_contents($newFile, $data, FILE_APPEND);
                 }
                 $row++;
+                if($row % 1000 == 0 )
+                    echo "formated ".$row." lines \n";
             }
             fclose($handle);
         }
@@ -90,7 +92,7 @@ class ImportStockMySht extends ContainerAwareCommand
 
     private function importCall($output)
     {
-        $importDBReference = "thelia.import.from.xml"; //ex: thelia.export.catalog.idealo
+        $importDBReference = "thelia.import.sht.stock"; //ex: thelia.export.catalog.idealo
         $importDBObject    = ImportQuery::create()->findOneByRef($importDBReference);
 
         if ($importDBObject === null)

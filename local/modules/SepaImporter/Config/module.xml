@@ -4,20 +4,32 @@
         xsi:schemaLocation="http://thelia.net/schema/dic/module http://thelia.net/schema/dic/module/module-2_2.xsd">
     <fullnamespace>SepaImporter\SepaImporter</fullnamespace>
     <descriptive locale="en_US">
-        <title>General Import</title>
+        <title>Sepa Engineering Importers</title>
     </descriptive>
     <descriptive locale="de_DE">
-        <title>General Import</title>
+        <title>Sepa Engineering Importers</title>
     </descriptive>
     <languages>
         <language>de_DE</language>
         <language>en_US</language>
     </languages>
-    <version>1.0</version>
+    <version>1.2</version>
     <authors>
         <author>
-            <name>Tom Pradat</name>
-            <email>tpradat@openstudio.fr</email>
+            <name>Emanuel Plopu</name>
+            <email>emanuel.plopu@sepa.at</email>
+        </author>
+        <author>
+            <name>Florin Catana</name>
+            <email>emanuel.plopu@sepa.at</email>
+        </author>
+        <author>
+            <name>Alexandra Stranici</name>
+            <email>emanuel.plopu@sepa.at</email>
+        </author>
+        <author>
+            <name>Adrian Padurean</name>
+            <email>emanuel.plopu@sepa.at</email>
         </author>
     </authors>
     <type>classic</type>
