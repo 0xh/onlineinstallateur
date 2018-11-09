@@ -5,9 +5,9 @@ namespace CronDashboard\Model\Base;
 use \DateTime;
 use \Exception;
 use \PDO;
-use CronDashboard\Model\CronJobs as ChildCronJobs;
-use CronDashboard\Model\CronJobsQuery as ChildCronJobsQuery;
-use CronDashboard\Model\Map\CronJobsTableMap;
+use CronDashboard\Model\CronDashboardProcessLog as ChildCronDashboardProcessLog;
+use CronDashboard\Model\CronDashboardProcessLogQuery as ChildCronDashboardProcessLogQuery;
+use CronDashboard\Model\Map\CronDashboardProcessLogTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -20,12 +20,12 @@ use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
 use Propel\Runtime\Util\PropelDateTime;
 
-abstract class CronJobs implements ActiveRecordInterface
+abstract class CronDashboardProcessLog implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\CronDashboard\\Model\\Map\\CronJobsTableMap';
+    const TABLE_MAP = '\\CronDashboard\\Model\\Map\\CronDashboardProcessLogTableMap';
 
 
     /**
@@ -61,16 +61,64 @@ abstract class CronJobs implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the visible field.
-     * @var        int
-     */
-    protected $visible;
-
-    /**
-     * The value for the title field.
+     * The value for the linux_user field.
      * @var        string
      */
-    protected $title;
+    protected $linux_user;
+
+    /**
+     * The value for the linux_pid field.
+     * @var        int
+     */
+    protected $linux_pid;
+
+    /**
+     * The value for the process_name field.
+     * @var        string
+     */
+    protected $process_name;
+
+    /**
+     * The value for the cpu field.
+     * @var        string
+     */
+    protected $cpu;
+
+    /**
+     * The value for the mem field.
+     * @var        string
+     */
+    protected $mem;
+
+    /**
+     * The value for the vsz field.
+     * @var        string
+     */
+    protected $vsz;
+
+    /**
+     * The value for the tty field.
+     * @var        string
+     */
+    protected $tty;
+
+    /**
+     * The value for the stat field.
+     * @var        string
+     */
+    protected $stat;
+
+    /**
+     * The value for the start field.
+     * @var        string
+     */
+    protected $start;
+
+    /**
+     * The value for the time field.
+     * @var        string
+     */
+    protected $time;
 
     /**
      * The value for the command field.
@@ -79,34 +127,28 @@ abstract class CronJobs implements ActiveRecordInterface
     protected $command;
 
     /**
-     * The value for the schedule field.
+     * The value for the thelia_user_name field.
      * @var        string
      */
-    protected $schedule;
+    protected $thelia_user_name;
 
     /**
-     * The value for the runflag field.
+     * The value for the thelia_user_id field.
      * @var        int
      */
-    protected $runflag;
+    protected $thelia_user_id;
 
     /**
-     * The value for the lastrun field.
+     * The value for the action_triggered field.
      * @var        string
      */
-    protected $lastrun;
+    protected $action_triggered;
 
     /**
-     * The value for the nextrun field.
+     * The value for the trigger_time field.
      * @var        string
      */
-    protected $nextrun;
-
-    /**
-     * The value for the position field.
-     * @var        int
-     */
-    protected $position;
+    protected $trigger_time;
 
     /**
      * The value for the created_at field.
@@ -129,7 +171,7 @@ abstract class CronJobs implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of CronDashboard\Model\Base\CronJobs object.
+     * Initializes internal state of CronDashboard\Model\Base\CronDashboardProcessLog object.
      */
     public function __construct()
     {
@@ -224,9 +266,9 @@ abstract class CronJobs implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>CronJobs</code> instance.  If
-     * <code>obj</code> is an instance of <code>CronJobs</code>, delegates to
-     * <code>equals(CronJobs)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>CronDashboardProcessLog</code> instance.  If
+     * <code>obj</code> is an instance of <code>CronDashboardProcessLog</code>, delegates to
+     * <code>equals(CronDashboardProcessLog)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -309,7 +351,7 @@ abstract class CronJobs implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return CronJobs The current object, for fluid interface
+     * @return CronDashboardProcessLog The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -341,7 +383,7 @@ abstract class CronJobs implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return CronJobs The current object, for fluid interface
+     * @return CronDashboardProcessLog The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -398,25 +440,113 @@ abstract class CronJobs implements ActiveRecordInterface
     }
 
     /**
-     * Get the [visible] column value.
-     *
-     * @return   int
-     */
-    public function getVisible()
-    {
-
-        return $this->visible;
-    }
-
-    /**
-     * Get the [title] column value.
+     * Get the [linux_user] column value.
      *
      * @return   string
      */
-    public function getTitle()
+    public function getLinuxUser()
     {
 
-        return $this->title;
+        return $this->linux_user;
+    }
+
+    /**
+     * Get the [linux_pid] column value.
+     *
+     * @return   int
+     */
+    public function getLinuxPid()
+    {
+
+        return $this->linux_pid;
+    }
+
+    /**
+     * Get the [process_name] column value.
+     *
+     * @return   string
+     */
+    public function getProcessName()
+    {
+
+        return $this->process_name;
+    }
+
+    /**
+     * Get the [cpu] column value.
+     *
+     * @return   string
+     */
+    public function getCpu()
+    {
+
+        return $this->cpu;
+    }
+
+    /**
+     * Get the [mem] column value.
+     *
+     * @return   string
+     */
+    public function getMem()
+    {
+
+        return $this->mem;
+    }
+
+    /**
+     * Get the [vsz] column value.
+     *
+     * @return   string
+     */
+    public function getVsz()
+    {
+
+        return $this->vsz;
+    }
+
+    /**
+     * Get the [tty] column value.
+     *
+     * @return   string
+     */
+    public function getTty()
+    {
+
+        return $this->tty;
+    }
+
+    /**
+     * Get the [stat] column value.
+     *
+     * @return   string
+     */
+    public function getStat()
+    {
+
+        return $this->stat;
+    }
+
+    /**
+     * Get the [start] column value.
+     *
+     * @return   string
+     */
+    public function getStart()
+    {
+
+        return $this->start;
+    }
+
+    /**
+     * Get the [time] column value.
+     *
+     * @return   string
+     */
+    public function getTime()
+    {
+
+        return $this->time;
     }
 
     /**
@@ -431,29 +561,40 @@ abstract class CronJobs implements ActiveRecordInterface
     }
 
     /**
-     * Get the [schedule] column value.
+     * Get the [thelia_user_name] column value.
      *
      * @return   string
      */
-    public function getSchedule()
+    public function getTheliaUserName()
     {
 
-        return $this->schedule;
+        return $this->thelia_user_name;
     }
 
     /**
-     * Get the [runflag] column value.
+     * Get the [thelia_user_id] column value.
      *
      * @return   int
      */
-    public function getRunflag()
+    public function getTheliaUserId()
     {
 
-        return $this->runflag;
+        return $this->thelia_user_id;
     }
 
     /**
-     * Get the [optionally formatted] temporal [lastrun] column value.
+     * Get the [action_triggered] column value.
+     *
+     * @return   string
+     */
+    public function getActionTriggered()
+    {
+
+        return $this->action_triggered;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [trigger_time] column value.
      *
      *
      * @param      string $format The date/time format string (either date()-style or strftime()-style).
@@ -463,44 +604,13 @@ abstract class CronJobs implements ActiveRecordInterface
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getLastrun($format = NULL)
+    public function getTriggerTime($format = NULL)
     {
         if ($format === null) {
-            return $this->lastrun;
+            return $this->trigger_time;
         } else {
-            return $this->lastrun instanceof \DateTime ? $this->lastrun->format($format) : null;
+            return $this->trigger_time instanceof \DateTime ? $this->trigger_time->format($format) : null;
         }
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [nextrun] column value.
-     *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getNextrun($format = NULL)
-    {
-        if ($format === null) {
-            return $this->nextrun;
-        } else {
-            return $this->nextrun instanceof \DateTime ? $this->nextrun->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [position] column value.
-     *
-     * @return   int
-     */
-    public function getPosition()
-    {
-
-        return $this->position;
     }
 
     /**
@@ -547,7 +657,7 @@ abstract class CronJobs implements ActiveRecordInterface
      * Set the value of [id] column.
      *
      * @param      int $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -557,7 +667,7 @@ abstract class CronJobs implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[CronJobsTableMap::ID] = true;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::ID] = true;
         }
 
 
@@ -565,52 +675,220 @@ abstract class CronJobs implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [visible] column.
-     *
-     * @param      int $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
-     */
-    public function setVisible($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->visible !== $v) {
-            $this->visible = $v;
-            $this->modifiedColumns[CronJobsTableMap::VISIBLE] = true;
-        }
-
-
-        return $this;
-    } // setVisible()
-
-    /**
-     * Set the value of [title] column.
+     * Set the value of [linux_user] column.
      *
      * @param      string $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
-    public function setTitle($v)
+    public function setLinuxUser($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->title !== $v) {
-            $this->title = $v;
-            $this->modifiedColumns[CronJobsTableMap::TITLE] = true;
+        if ($this->linux_user !== $v) {
+            $this->linux_user = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::LINUX_USER] = true;
         }
 
 
         return $this;
-    } // setTitle()
+    } // setLinuxUser()
+
+    /**
+     * Set the value of [linux_pid] column.
+     *
+     * @param      int $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setLinuxPid($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->linux_pid !== $v) {
+            $this->linux_pid = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::LINUX_PID] = true;
+        }
+
+
+        return $this;
+    } // setLinuxPid()
+
+    /**
+     * Set the value of [process_name] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setProcessName($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->process_name !== $v) {
+            $this->process_name = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::PROCESS_NAME] = true;
+        }
+
+
+        return $this;
+    } // setProcessName()
+
+    /**
+     * Set the value of [cpu] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setCpu($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->cpu !== $v) {
+            $this->cpu = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::CPU] = true;
+        }
+
+
+        return $this;
+    } // setCpu()
+
+    /**
+     * Set the value of [mem] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setMem($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->mem !== $v) {
+            $this->mem = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::MEM] = true;
+        }
+
+
+        return $this;
+    } // setMem()
+
+    /**
+     * Set the value of [vsz] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setVsz($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->vsz !== $v) {
+            $this->vsz = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::VSZ] = true;
+        }
+
+
+        return $this;
+    } // setVsz()
+
+    /**
+     * Set the value of [tty] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setTty($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->tty !== $v) {
+            $this->tty = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::TTY] = true;
+        }
+
+
+        return $this;
+    } // setTty()
+
+    /**
+     * Set the value of [stat] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setStat($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->stat !== $v) {
+            $this->stat = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::STAT] = true;
+        }
+
+
+        return $this;
+    } // setStat()
+
+    /**
+     * Set the value of [start] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setStart($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->start !== $v) {
+            $this->start = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::START] = true;
+        }
+
+
+        return $this;
+    } // setStart()
+
+    /**
+     * Set the value of [time] column.
+     *
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setTime($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->time !== $v) {
+            $this->time = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::TIME] = true;
+        }
+
+
+        return $this;
+    } // setTime()
 
     /**
      * Set the value of [command] column.
      *
      * @param      string $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
     public function setCommand($v)
     {
@@ -620,7 +898,7 @@ abstract class CronJobs implements ActiveRecordInterface
 
         if ($this->command !== $v) {
             $this->command = $v;
-            $this->modifiedColumns[CronJobsTableMap::COMMAND] = true;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::COMMAND] = true;
         }
 
 
@@ -628,116 +906,95 @@ abstract class CronJobs implements ActiveRecordInterface
     } // setCommand()
 
     /**
-     * Set the value of [schedule] column.
+     * Set the value of [thelia_user_name] column.
      *
      * @param      string $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
-    public function setSchedule($v)
+    public function setTheliaUserName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->schedule !== $v) {
-            $this->schedule = $v;
-            $this->modifiedColumns[CronJobsTableMap::SCHEDULE] = true;
+        if ($this->thelia_user_name !== $v) {
+            $this->thelia_user_name = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::THELIA_USER_NAME] = true;
         }
 
 
         return $this;
-    } // setSchedule()
+    } // setTheliaUserName()
 
     /**
-     * Set the value of [runflag] column.
+     * Set the value of [thelia_user_id] column.
      *
      * @param      int $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
-    public function setRunflag($v)
+    public function setTheliaUserId($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->runflag !== $v) {
-            $this->runflag = $v;
-            $this->modifiedColumns[CronJobsTableMap::RUNFLAG] = true;
+        if ($this->thelia_user_id !== $v) {
+            $this->thelia_user_id = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::THELIA_USER_ID] = true;
         }
 
 
         return $this;
-    } // setRunflag()
+    } // setTheliaUserId()
 
     /**
-     * Sets the value of [lastrun] column to a normalized version of the date/time value specified.
+     * Set the value of [action_triggered] column.
      *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
-    public function setLastrun($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->lastrun !== null || $dt !== null) {
-            if ($dt !== $this->lastrun) {
-                $this->lastrun = $dt;
-                $this->modifiedColumns[CronJobsTableMap::LASTRUN] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setLastrun()
-
-    /**
-     * Sets the value of [nextrun] column to a normalized version of the date/time value specified.
-     *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
-     */
-    public function setNextrun($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->nextrun !== null || $dt !== null) {
-            if ($dt !== $this->nextrun) {
-                $this->nextrun = $dt;
-                $this->modifiedColumns[CronJobsTableMap::NEXTRUN] = true;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setNextrun()
-
-    /**
-     * Set the value of [position] column.
-     *
-     * @param      int $v new value
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
-     */
-    public function setPosition($v)
+    public function setActionTriggered($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->position !== $v) {
-            $this->position = $v;
-            $this->modifiedColumns[CronJobsTableMap::POSITION] = true;
+        if ($this->action_triggered !== $v) {
+            $this->action_triggered = $v;
+            $this->modifiedColumns[CronDashboardProcessLogTableMap::ACTION_TRIGGERED] = true;
         }
 
 
         return $this;
-    } // setPosition()
+    } // setActionTriggered()
+
+    /**
+     * Sets the value of [trigger_time] column to a normalized version of the date/time value specified.
+     *
+     * @param      mixed $v string, integer (timestamp), or \DateTime value.
+     *               Empty strings are treated as NULL.
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
+     */
+    public function setTriggerTime($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
+        if ($this->trigger_time !== null || $dt !== null) {
+            if ($dt !== $this->trigger_time) {
+                $this->trigger_time = $dt;
+                $this->modifiedColumns[CronDashboardProcessLogTableMap::TRIGGER_TIME] = true;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setTriggerTime()
 
     /**
      * Sets the value of [created_at] column to a normalized version of the date/time value specified.
      *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
     public function setCreatedAt($v)
     {
@@ -745,7 +1002,7 @@ abstract class CronJobs implements ActiveRecordInterface
         if ($this->created_at !== null || $dt !== null) {
             if ($dt !== $this->created_at) {
                 $this->created_at = $dt;
-                $this->modifiedColumns[CronJobsTableMap::CREATED_AT] = true;
+                $this->modifiedColumns[CronDashboardProcessLogTableMap::CREATED_AT] = true;
             }
         } // if either are not null
 
@@ -758,7 +1015,7 @@ abstract class CronJobs implements ActiveRecordInterface
      *
      * @param      mixed $v string, integer (timestamp), or \DateTime value.
      *               Empty strings are treated as NULL.
-     * @return   \CronDashboard\Model\CronJobs The current object (for fluent API support)
+     * @return   \CronDashboard\Model\CronDashboardProcessLog The current object (for fluent API support)
      */
     public function setUpdatedAt($v)
     {
@@ -766,7 +1023,7 @@ abstract class CronJobs implements ActiveRecordInterface
         if ($this->updated_at !== null || $dt !== null) {
             if ($dt !== $this->updated_at) {
                 $this->updated_at = $dt;
-                $this->modifiedColumns[CronJobsTableMap::UPDATED_AT] = true;
+                $this->modifiedColumns[CronDashboardProcessLogTableMap::UPDATED_AT] = true;
             }
         } // if either are not null
 
@@ -811,46 +1068,64 @@ abstract class CronJobs implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CronJobsTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CronJobsTableMap::translateFieldName('Visible', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->visible = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('LinuxUser', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->linux_user = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CronJobsTableMap::translateFieldName('Title', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->title = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('LinuxPid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->linux_pid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CronJobsTableMap::translateFieldName('Command', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('ProcessName', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->process_name = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Cpu', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->cpu = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Mem', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->mem = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Vsz', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->vsz = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Tty', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->tty = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Stat', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->stat = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Start', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->start = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Time', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->time = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('Command', TableMap::TYPE_PHPNAME, $indexType)];
             $this->command = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : CronJobsTableMap::translateFieldName('Schedule', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->schedule = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('TheliaUserName', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->thelia_user_name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : CronJobsTableMap::translateFieldName('Runflag', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->runflag = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('TheliaUserId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->thelia_user_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : CronJobsTableMap::translateFieldName('Lastrun', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('ActionTriggered', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->action_triggered = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('TriggerTime', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->lastrun = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+            $this->trigger_time = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : CronJobsTableMap::translateFieldName('Nextrun', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->nextrun = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : CronJobsTableMap::translateFieldName('Position', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->position = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : CronJobsTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : CronJobsTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : CronDashboardProcessLogTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -863,10 +1138,10 @@ abstract class CronJobs implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 11; // 11 = CronJobsTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = CronDashboardProcessLogTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \CronDashboard\Model\CronJobs object", 0, $e);
+            throw new PropelException("Error populating \CronDashboard\Model\CronDashboardProcessLog object", 0, $e);
         }
     }
 
@@ -908,13 +1183,13 @@ abstract class CronJobs implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(CronJobsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(CronDashboardProcessLogTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildCronJobsQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildCronDashboardProcessLogQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -933,8 +1208,8 @@ abstract class CronJobs implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see CronJobs::setDeleted()
-     * @see CronJobs::isDeleted()
+     * @see CronDashboardProcessLog::setDeleted()
+     * @see CronDashboardProcessLog::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -943,12 +1218,12 @@ abstract class CronJobs implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CronJobsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CronDashboardProcessLogTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildCronJobsQuery::create()
+            $deleteQuery = ChildCronDashboardProcessLogQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -985,7 +1260,7 @@ abstract class CronJobs implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(CronJobsTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(CronDashboardProcessLogTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -995,16 +1270,16 @@ abstract class CronJobs implements ActiveRecordInterface
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
                 // timestampable behavior
-                if (!$this->isColumnModified(CronJobsTableMap::CREATED_AT)) {
+                if (!$this->isColumnModified(CronDashboardProcessLogTableMap::CREATED_AT)) {
                     $this->setCreatedAt(time());
                 }
-                if (!$this->isColumnModified(CronJobsTableMap::UPDATED_AT)) {
+                if (!$this->isColumnModified(CronDashboardProcessLogTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             } else {
                 $ret = $ret && $this->preUpdate($con);
                 // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(CronJobsTableMap::UPDATED_AT)) {
+                if ($this->isModified() && !$this->isColumnModified(CronDashboardProcessLogTableMap::UPDATED_AT)) {
                     $this->setUpdatedAt(time());
                 }
             }
@@ -1016,7 +1291,7 @@ abstract class CronJobs implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                CronJobsTableMap::addInstanceToPool($this);
+                CronDashboardProcessLogTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -1077,48 +1352,69 @@ abstract class CronJobs implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[CronJobsTableMap::ID] = true;
+        $this->modifiedColumns[CronDashboardProcessLogTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CronJobsTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . CronDashboardProcessLogTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(CronJobsTableMap::ID)) {
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(CronJobsTableMap::VISIBLE)) {
-            $modifiedColumns[':p' . $index++]  = 'VISIBLE';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::LINUX_USER)) {
+            $modifiedColumns[':p' . $index++]  = 'LINUX_USER';
         }
-        if ($this->isColumnModified(CronJobsTableMap::TITLE)) {
-            $modifiedColumns[':p' . $index++]  = 'TITLE';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::LINUX_PID)) {
+            $modifiedColumns[':p' . $index++]  = 'LINUX_PID';
         }
-        if ($this->isColumnModified(CronJobsTableMap::COMMAND)) {
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::PROCESS_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'PROCESS_NAME';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::CPU)) {
+            $modifiedColumns[':p' . $index++]  = 'CPU';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::MEM)) {
+            $modifiedColumns[':p' . $index++]  = 'MEM';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::VSZ)) {
+            $modifiedColumns[':p' . $index++]  = 'VSZ';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TTY)) {
+            $modifiedColumns[':p' . $index++]  = 'TTY';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::STAT)) {
+            $modifiedColumns[':p' . $index++]  = 'STAT';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::START)) {
+            $modifiedColumns[':p' . $index++]  = 'START';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TIME)) {
+            $modifiedColumns[':p' . $index++]  = 'TIME';
+        }
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::COMMAND)) {
             $modifiedColumns[':p' . $index++]  = 'COMMAND';
         }
-        if ($this->isColumnModified(CronJobsTableMap::SCHEDULE)) {
-            $modifiedColumns[':p' . $index++]  = 'SCHEDULE';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::THELIA_USER_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'THELIA_USER_NAME';
         }
-        if ($this->isColumnModified(CronJobsTableMap::RUNFLAG)) {
-            $modifiedColumns[':p' . $index++]  = 'RUNFLAG';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::THELIA_USER_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'THELIA_USER_ID';
         }
-        if ($this->isColumnModified(CronJobsTableMap::LASTRUN)) {
-            $modifiedColumns[':p' . $index++]  = 'LASTRUN';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::ACTION_TRIGGERED)) {
+            $modifiedColumns[':p' . $index++]  = 'ACTION_TRIGGERED';
         }
-        if ($this->isColumnModified(CronJobsTableMap::NEXTRUN)) {
-            $modifiedColumns[':p' . $index++]  = 'NEXTRUN';
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TRIGGER_TIME)) {
+            $modifiedColumns[':p' . $index++]  = 'TRIGGER_TIME';
         }
-        if ($this->isColumnModified(CronJobsTableMap::POSITION)) {
-            $modifiedColumns[':p' . $index++]  = 'POSITION';
-        }
-        if ($this->isColumnModified(CronJobsTableMap::CREATED_AT)) {
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::CREATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
         }
-        if ($this->isColumnModified(CronJobsTableMap::UPDATED_AT)) {
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
         }
 
         $sql = sprintf(
-            'INSERT INTO cron_jobs (%s) VALUES (%s)',
+            'INSERT INTO cron_dashboard_process_log (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1130,29 +1426,50 @@ abstract class CronJobs implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'VISIBLE':
-                        $stmt->bindValue($identifier, $this->visible, PDO::PARAM_INT);
+                    case 'LINUX_USER':
+                        $stmt->bindValue($identifier, $this->linux_user, PDO::PARAM_STR);
                         break;
-                    case 'TITLE':
-                        $stmt->bindValue($identifier, $this->title, PDO::PARAM_STR);
+                    case 'LINUX_PID':
+                        $stmt->bindValue($identifier, $this->linux_pid, PDO::PARAM_INT);
+                        break;
+                    case 'PROCESS_NAME':
+                        $stmt->bindValue($identifier, $this->process_name, PDO::PARAM_STR);
+                        break;
+                    case 'CPU':
+                        $stmt->bindValue($identifier, $this->cpu, PDO::PARAM_STR);
+                        break;
+                    case 'MEM':
+                        $stmt->bindValue($identifier, $this->mem, PDO::PARAM_STR);
+                        break;
+                    case 'VSZ':
+                        $stmt->bindValue($identifier, $this->vsz, PDO::PARAM_STR);
+                        break;
+                    case 'TTY':
+                        $stmt->bindValue($identifier, $this->tty, PDO::PARAM_STR);
+                        break;
+                    case 'STAT':
+                        $stmt->bindValue($identifier, $this->stat, PDO::PARAM_STR);
+                        break;
+                    case 'START':
+                        $stmt->bindValue($identifier, $this->start, PDO::PARAM_STR);
+                        break;
+                    case 'TIME':
+                        $stmt->bindValue($identifier, $this->time, PDO::PARAM_STR);
                         break;
                     case 'COMMAND':
                         $stmt->bindValue($identifier, $this->command, PDO::PARAM_STR);
                         break;
-                    case 'SCHEDULE':
-                        $stmt->bindValue($identifier, $this->schedule, PDO::PARAM_STR);
+                    case 'THELIA_USER_NAME':
+                        $stmt->bindValue($identifier, $this->thelia_user_name, PDO::PARAM_STR);
                         break;
-                    case 'RUNFLAG':
-                        $stmt->bindValue($identifier, $this->runflag, PDO::PARAM_INT);
+                    case 'THELIA_USER_ID':
+                        $stmt->bindValue($identifier, $this->thelia_user_id, PDO::PARAM_INT);
                         break;
-                    case 'LASTRUN':
-                        $stmt->bindValue($identifier, $this->lastrun ? $this->lastrun->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                    case 'ACTION_TRIGGERED':
+                        $stmt->bindValue($identifier, $this->action_triggered, PDO::PARAM_STR);
                         break;
-                    case 'NEXTRUN':
-                        $stmt->bindValue($identifier, $this->nextrun ? $this->nextrun->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
-                        break;
-                    case 'POSITION':
-                        $stmt->bindValue($identifier, $this->position, PDO::PARAM_INT);
+                    case 'TRIGGER_TIME':
+                        $stmt->bindValue($identifier, $this->trigger_time ? $this->trigger_time->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
                         break;
                     case 'CREATED_AT':
                         $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
@@ -1206,7 +1523,7 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = CronJobsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CronDashboardProcessLogTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1226,33 +1543,54 @@ abstract class CronJobs implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getVisible();
+                return $this->getLinuxUser();
                 break;
             case 2:
-                return $this->getTitle();
+                return $this->getLinuxPid();
                 break;
             case 3:
-                return $this->getCommand();
+                return $this->getProcessName();
                 break;
             case 4:
-                return $this->getSchedule();
+                return $this->getCpu();
                 break;
             case 5:
-                return $this->getRunflag();
+                return $this->getMem();
                 break;
             case 6:
-                return $this->getLastrun();
+                return $this->getVsz();
                 break;
             case 7:
-                return $this->getNextrun();
+                return $this->getTty();
                 break;
             case 8:
-                return $this->getPosition();
+                return $this->getStat();
                 break;
             case 9:
-                return $this->getCreatedAt();
+                return $this->getStart();
                 break;
             case 10:
+                return $this->getTime();
+                break;
+            case 11:
+                return $this->getCommand();
+                break;
+            case 12:
+                return $this->getTheliaUserName();
+                break;
+            case 13:
+                return $this->getTheliaUserId();
+                break;
+            case 14:
+                return $this->getActionTriggered();
+                break;
+            case 15:
+                return $this->getTriggerTime();
+                break;
+            case 16:
+                return $this->getCreatedAt();
+                break;
+            case 17:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1277,23 +1615,30 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
-        if (isset($alreadyDumpedObjects['CronJobs'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['CronDashboardProcessLog'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['CronJobs'][$this->getPrimaryKey()] = true;
-        $keys = CronJobsTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['CronDashboardProcessLog'][$this->getPrimaryKey()] = true;
+        $keys = CronDashboardProcessLogTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getVisible(),
-            $keys[2] => $this->getTitle(),
-            $keys[3] => $this->getCommand(),
-            $keys[4] => $this->getSchedule(),
-            $keys[5] => $this->getRunflag(),
-            $keys[6] => $this->getLastrun(),
-            $keys[7] => $this->getNextrun(),
-            $keys[8] => $this->getPosition(),
-            $keys[9] => $this->getCreatedAt(),
-            $keys[10] => $this->getUpdatedAt(),
+            $keys[1] => $this->getLinuxUser(),
+            $keys[2] => $this->getLinuxPid(),
+            $keys[3] => $this->getProcessName(),
+            $keys[4] => $this->getCpu(),
+            $keys[5] => $this->getMem(),
+            $keys[6] => $this->getVsz(),
+            $keys[7] => $this->getTty(),
+            $keys[8] => $this->getStat(),
+            $keys[9] => $this->getStart(),
+            $keys[10] => $this->getTime(),
+            $keys[11] => $this->getCommand(),
+            $keys[12] => $this->getTheliaUserName(),
+            $keys[13] => $this->getTheliaUserId(),
+            $keys[14] => $this->getActionTriggered(),
+            $keys[15] => $this->getTriggerTime(),
+            $keys[16] => $this->getCreatedAt(),
+            $keys[17] => $this->getUpdatedAt(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1317,7 +1662,7 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = CronJobsTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = CronDashboardProcessLogTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1337,33 +1682,54 @@ abstract class CronJobs implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setVisible($value);
+                $this->setLinuxUser($value);
                 break;
             case 2:
-                $this->setTitle($value);
+                $this->setLinuxPid($value);
                 break;
             case 3:
-                $this->setCommand($value);
+                $this->setProcessName($value);
                 break;
             case 4:
-                $this->setSchedule($value);
+                $this->setCpu($value);
                 break;
             case 5:
-                $this->setRunflag($value);
+                $this->setMem($value);
                 break;
             case 6:
-                $this->setLastrun($value);
+                $this->setVsz($value);
                 break;
             case 7:
-                $this->setNextrun($value);
+                $this->setTty($value);
                 break;
             case 8:
-                $this->setPosition($value);
+                $this->setStat($value);
                 break;
             case 9:
-                $this->setCreatedAt($value);
+                $this->setStart($value);
                 break;
             case 10:
+                $this->setTime($value);
+                break;
+            case 11:
+                $this->setCommand($value);
+                break;
+            case 12:
+                $this->setTheliaUserName($value);
+                break;
+            case 13:
+                $this->setTheliaUserId($value);
+                break;
+            case 14:
+                $this->setActionTriggered($value);
+                break;
+            case 15:
+                $this->setTriggerTime($value);
+                break;
+            case 16:
+                $this->setCreatedAt($value);
+                break;
+            case 17:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1388,19 +1754,26 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = CronJobsTableMap::getFieldNames($keyType);
+        $keys = CronDashboardProcessLogTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setVisible($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTitle($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCommand($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setSchedule($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setRunflag($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setLastrun($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setNextrun($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setPosition($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
+        if (array_key_exists($keys[1], $arr)) $this->setLinuxUser($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setLinuxPid($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setProcessName($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setCpu($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMem($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setVsz($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setTty($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setStat($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setStart($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setTime($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCommand($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setTheliaUserName($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setTheliaUserId($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setActionTriggered($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setTriggerTime($arr[$keys[15]]);
+        if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
+        if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
     }
 
     /**
@@ -1410,19 +1783,26 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(CronJobsTableMap::DATABASE_NAME);
+        $criteria = new Criteria(CronDashboardProcessLogTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(CronJobsTableMap::ID)) $criteria->add(CronJobsTableMap::ID, $this->id);
-        if ($this->isColumnModified(CronJobsTableMap::VISIBLE)) $criteria->add(CronJobsTableMap::VISIBLE, $this->visible);
-        if ($this->isColumnModified(CronJobsTableMap::TITLE)) $criteria->add(CronJobsTableMap::TITLE, $this->title);
-        if ($this->isColumnModified(CronJobsTableMap::COMMAND)) $criteria->add(CronJobsTableMap::COMMAND, $this->command);
-        if ($this->isColumnModified(CronJobsTableMap::SCHEDULE)) $criteria->add(CronJobsTableMap::SCHEDULE, $this->schedule);
-        if ($this->isColumnModified(CronJobsTableMap::RUNFLAG)) $criteria->add(CronJobsTableMap::RUNFLAG, $this->runflag);
-        if ($this->isColumnModified(CronJobsTableMap::LASTRUN)) $criteria->add(CronJobsTableMap::LASTRUN, $this->lastrun);
-        if ($this->isColumnModified(CronJobsTableMap::NEXTRUN)) $criteria->add(CronJobsTableMap::NEXTRUN, $this->nextrun);
-        if ($this->isColumnModified(CronJobsTableMap::POSITION)) $criteria->add(CronJobsTableMap::POSITION, $this->position);
-        if ($this->isColumnModified(CronJobsTableMap::CREATED_AT)) $criteria->add(CronJobsTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(CronJobsTableMap::UPDATED_AT)) $criteria->add(CronJobsTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::ID)) $criteria->add(CronDashboardProcessLogTableMap::ID, $this->id);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::LINUX_USER)) $criteria->add(CronDashboardProcessLogTableMap::LINUX_USER, $this->linux_user);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::LINUX_PID)) $criteria->add(CronDashboardProcessLogTableMap::LINUX_PID, $this->linux_pid);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::PROCESS_NAME)) $criteria->add(CronDashboardProcessLogTableMap::PROCESS_NAME, $this->process_name);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::CPU)) $criteria->add(CronDashboardProcessLogTableMap::CPU, $this->cpu);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::MEM)) $criteria->add(CronDashboardProcessLogTableMap::MEM, $this->mem);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::VSZ)) $criteria->add(CronDashboardProcessLogTableMap::VSZ, $this->vsz);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TTY)) $criteria->add(CronDashboardProcessLogTableMap::TTY, $this->tty);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::STAT)) $criteria->add(CronDashboardProcessLogTableMap::STAT, $this->stat);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::START)) $criteria->add(CronDashboardProcessLogTableMap::START, $this->start);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TIME)) $criteria->add(CronDashboardProcessLogTableMap::TIME, $this->time);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::COMMAND)) $criteria->add(CronDashboardProcessLogTableMap::COMMAND, $this->command);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::THELIA_USER_NAME)) $criteria->add(CronDashboardProcessLogTableMap::THELIA_USER_NAME, $this->thelia_user_name);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::THELIA_USER_ID)) $criteria->add(CronDashboardProcessLogTableMap::THELIA_USER_ID, $this->thelia_user_id);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::ACTION_TRIGGERED)) $criteria->add(CronDashboardProcessLogTableMap::ACTION_TRIGGERED, $this->action_triggered);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::TRIGGER_TIME)) $criteria->add(CronDashboardProcessLogTableMap::TRIGGER_TIME, $this->trigger_time);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::CREATED_AT)) $criteria->add(CronDashboardProcessLogTableMap::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(CronDashboardProcessLogTableMap::UPDATED_AT)) $criteria->add(CronDashboardProcessLogTableMap::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1437,8 +1817,8 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(CronJobsTableMap::DATABASE_NAME);
-        $criteria->add(CronJobsTableMap::ID, $this->id);
+        $criteria = new Criteria(CronDashboardProcessLogTableMap::DATABASE_NAME);
+        $criteria->add(CronDashboardProcessLogTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1479,21 +1859,28 @@ abstract class CronJobs implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \CronDashboard\Model\CronJobs (or compatible) type.
+     * @param      object $copyObj An object of \CronDashboard\Model\CronDashboardProcessLog (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setVisible($this->getVisible());
-        $copyObj->setTitle($this->getTitle());
+        $copyObj->setLinuxUser($this->getLinuxUser());
+        $copyObj->setLinuxPid($this->getLinuxPid());
+        $copyObj->setProcessName($this->getProcessName());
+        $copyObj->setCpu($this->getCpu());
+        $copyObj->setMem($this->getMem());
+        $copyObj->setVsz($this->getVsz());
+        $copyObj->setTty($this->getTty());
+        $copyObj->setStat($this->getStat());
+        $copyObj->setStart($this->getStart());
+        $copyObj->setTime($this->getTime());
         $copyObj->setCommand($this->getCommand());
-        $copyObj->setSchedule($this->getSchedule());
-        $copyObj->setRunflag($this->getRunflag());
-        $copyObj->setLastrun($this->getLastrun());
-        $copyObj->setNextrun($this->getNextrun());
-        $copyObj->setPosition($this->getPosition());
+        $copyObj->setTheliaUserName($this->getTheliaUserName());
+        $copyObj->setTheliaUserId($this->getTheliaUserId());
+        $copyObj->setActionTriggered($this->getActionTriggered());
+        $copyObj->setTriggerTime($this->getTriggerTime());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
         if ($makeNew) {
@@ -1511,7 +1898,7 @@ abstract class CronJobs implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \CronDashboard\Model\CronJobs Clone of current object.
+     * @return                 \CronDashboard\Model\CronDashboardProcessLog Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1530,14 +1917,21 @@ abstract class CronJobs implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->visible = null;
-        $this->title = null;
+        $this->linux_user = null;
+        $this->linux_pid = null;
+        $this->process_name = null;
+        $this->cpu = null;
+        $this->mem = null;
+        $this->vsz = null;
+        $this->tty = null;
+        $this->stat = null;
+        $this->start = null;
+        $this->time = null;
         $this->command = null;
-        $this->schedule = null;
-        $this->runflag = null;
-        $this->lastrun = null;
-        $this->nextrun = null;
-        $this->position = null;
+        $this->thelia_user_name = null;
+        $this->thelia_user_id = null;
+        $this->action_triggered = null;
+        $this->trigger_time = null;
         $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
@@ -1570,7 +1964,7 @@ abstract class CronJobs implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(CronJobsTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(CronDashboardProcessLogTableMap::DEFAULT_STRING_FORMAT);
     }
 
     // timestampable behavior
@@ -1578,11 +1972,11 @@ abstract class CronJobs implements ActiveRecordInterface
     /**
      * Mark the current object so that the update date doesn't get updated during next save
      *
-     * @return     ChildCronJobs The current object (for fluent API support)
+     * @return     ChildCronDashboardProcessLog The current object (for fluent API support)
      */
     public function keepUpdateDateUnchanged()
     {
-        $this->modifiedColumns[CronJobsTableMap::UPDATED_AT] = true;
+        $this->modifiedColumns[CronDashboardProcessLogTableMap::UPDATED_AT] = true;
 
         return $this;
     }

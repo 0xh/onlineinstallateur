@@ -30,6 +30,6 @@ class Proces
    		$this->stat 	= $stat;
    		$this->start 	= $start;
    		$this->time 	= $time;
-   		$this->command 	= $command;
+   		$this->command 	= $command . ' > /dev/null 2>/dev/null &' ;
    	}
 }

@@ -1,6 +1,7 @@
 <?php
 namespace CronDashboard\Classes;
 use CronDashboard\Classes\Proces;
+use CronDashboard\CronDashboard;
 
 class ProcessHandler
 {
@@ -13,16 +14,19 @@ class ProcessHandler
 
 	public function stopProcess()
 	{
-		exec("kill -9 ".$this->process->pid);
+        chdir( CronDashboard::getConfigValue('server_location') );
+		exec("kill -9 ".$this->process->pid." /dev/null 2>/dev/null &");
 	}
 
 	public function holdProcess()
 	{
-		exec("kill -STOP ".$this->process->pid);		
+		chdir( CronDashboard::getConfigValue('server_location') );
+		exec("kill -STOP ".$this->process->pid." /dev/null 2>/dev/null &");		
 	}
 
 	public function startProcess()
 	{
-		exec("kill -CONT ".$this->process->pid);
+		chdir( CronDashboard::getConfigValue('server_location') );
+		exec("kill -CONT ".$this->process->pid." /dev/null 2>/dev/null &");
 	}
 }

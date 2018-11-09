@@ -9,6 +9,8 @@ use Thelia\Tools\URL;
 use Thelia\Core\Event\Hook\HookRenderEvent;
 use CronDashboard\Controller\CronDashboardProcessController;
 use CronDashboard\Classes\Process;
+use Thelia\Model\ModuleConfig;
+use Thelia\Model\ModuleConfigQuery;
 
 class BackHook extends BaseHook
 {
@@ -30,5 +32,26 @@ class BackHook extends BaseHook
         $event->add($this->render(
             'processes.html', array("arrProcesses" => CronDashboardProcessController::getProcessLists() )
         ));
+    }
+
+    public function onContentTabContentLogs(HookRenderEvent $event)
+    {
+        $event->add($this->render(
+            'processes_logs.html'
+        ));
+    }
+
+    public function onModuleConfigure(HookRenderEvent $event) {       
+
+         if (null !== $params = ModuleConfigQuery::create()->findByModuleId(CronDashboard::getModuleId())) {
+            /** @var ModuleConfig $param */
+            foreach ($params as $param) {
+                $vars[$param->getName()] = $param->getValue();
+            }
+        }
+
+        $event->add(
+                $this->render('module-configuration.html', $vars)
+        );
     }
 }

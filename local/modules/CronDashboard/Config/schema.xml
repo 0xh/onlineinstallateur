@@ -16,5 +16,25 @@
         <behavior name="timestampable" />
     </table>
 
+    <table name="cron_dashboard_process_log" namespace="CronDashboard\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER"/>
+        <column name="linux_user" type="VARCHAR" size="255" />
+        <column name="linux_PID" type="INTEGER" />
+        <column name="process_name" type="VARCHAR" size="255" />
+        <column name="cpu" type="VARCHAR" size="25" />
+        <column name="mem" type="VARCHAR" size="25" />
+        <column name="vsz" type="VARCHAR" size="25" />
+        <column name="tty" type="VARCHAR" size="25" />
+        <column name="stat" type="VARCHAR" size="25" />
+        <column name="start" type="VARCHAR" size="25" />
+        <column name="time" type="VARCHAR" size="25" />
+        <column name="command" type="VARCHAR" size="255" />
+        <column name="thelia_user_name" type="VARCHAR" size="255" />
+        <column name="thelia_user_id" type="INTEGER" />
+        <column name="action_triggered" type="VARCHAR" size="25" />
+        <column name="trigger_time" type="TIMESTAMP" />
+        <behavior name="timestampable" />
+    </table>
+
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

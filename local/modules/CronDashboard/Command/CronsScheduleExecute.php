@@ -42,8 +42,11 @@ class CronsScheduleExecute extends ContainerAwareCommand
 
     protected function executeLinuxCommand( $command )
     {
-    	echo $command;
-    	/*exec( $command );*/
+
+    	/*echo $command;*/
+
+        chdir( CronDashboard::getConfigValue('server_location') );
+    	exec( $command." /dev/null 2>/dev/null &");
 
     	return;
     }

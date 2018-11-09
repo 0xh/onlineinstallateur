@@ -19,9 +19,6 @@ class CronsWatchDog extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /*$cronExpression = CronExpression::factory('* * 5 * *');
-        echo $cronExpression->getNextRunDate()->format('Y-m-d H:i:s');*/
-
         while ( true ) {
         	self::checkCronJobsSchedule();
         	sleep( 60 );

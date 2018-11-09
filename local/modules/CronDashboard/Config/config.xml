@@ -6,12 +6,14 @@
 
     <loops>
         <loop name="crondashboard.cronjob.loop" class="CronDashboard\Loop\CronjobLoop" />
+        <loop name="crondashboard.processlogs.loop" class="CronDashboard\Loop\ProcessesLogsLoop" />
     </loops>
 
     <forms>
         <form name="admin.crondashboard.cronjob.create" class="CronDashboard\Form\CronjobCreateForm"/>
         <form name="admin.crondashboard.cronjob.update" class="CronDashboard\Form\CronjobModificationForm"/>
         <form name="admin.crondashboard.process.update" class="CronDashboard\Form\CronjobProcessUpdate"/>
+        <form name="admin.crondashboard.form.configure" class="CronDashboard\Form\CronDashboardModuleConfigure"/>
     </forms>
 
     <commands>
@@ -23,7 +25,9 @@
         <hook id="cron.dashboard.hook.back" class="CronDashboard\Hook\Admin\BackHook">
             <tag name="hook.event_listener" event="main.top-menu-tools" type="back" />
             <tag name="hook.event_listener" event="display.processes" type="back" method="onContentTabContent" />
-        </hook>       
+            <tag name="hook.event_listener" event="display.processes_logs" type="back" method="onContentTabContentLogs" />
+            <tag name="hook.event_listener" event="module.configuration" type="back" method="onModuleConfigure" />
+        </hook>
     </hooks>
-    
+
 </config>

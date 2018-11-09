@@ -58,6 +58,24 @@ class CronDashboard extends BaseModule
                 ),
                 "block" => false,
                 "active" => true
+            ),
+            array(
+                "type" => TemplateDefinition::BACK_OFFICE,
+                "code" => "display.processes_logs",
+                "title" => array(
+                    "en_US" => "Manage processes logs in backoffice",
+                    "de_DE" => "Manage processes logs in backoffice",
+                ),
+                "description" => array(
+                    "en_US" => "",
+                    "de_DE" => "",
+                ),
+                "chapo" => array(
+                    "en_US" => "",
+                    "de_DE" => "",
+                ),
+                "block" => false,
+                "active" => true
             )
         );
     }

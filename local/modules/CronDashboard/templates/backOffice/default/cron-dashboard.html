@@ -10,6 +10,7 @@
 <ul class="nav nav-tabs" id="tabbed-menu">
     <li class="active"><a href="#general" data-toggle="tab" data-trigger="#virtual_field::change">{intl l="General"}</a></li>
     <li><a href="#processes" data-toggle="tab">{intl l="Processes"}</a></li>
+    <li><a href="#processes_log" data-toggle="tab">{intl l="Processes Logs"}</a></li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade active in" id="general">
@@ -34,16 +35,6 @@
                                 <th>{intl l="Next Run" d='crondashboard.bo.default'}</th>
                                 <th>{intl l="Last Run" d='crondashboard.bo.default'}</th>
                                 <th>{intl l="Need to Run" d='crondashboard.bo.default'}</th>
-                                <th>
-                                    {admin_sortable_header
-                                    current_order=$cronjob_order
-                                    order='manual'
-                                    reverse_order='manual_reverse'
-                                    path={url path='/admin/crondashboard' parent=$parent}
-                                    request_parameter_name='cronjob_order'
-                                    label="{intl l='Position' d='crondashboard.bo.default'}"
-                                    }
-                                </th>                       
                                 <th class="actions text-center">{intl l='Actions' d='crondashboard.bo.default'}</th>
                             </tr>
                         </thead>
@@ -64,23 +55,19 @@
                                         {format_date date=$NEXTRUN}
                                     </td>
                                     <td class="text-left">
-                                        {format_date date=$LASTTRUN}
-                                        <button type="submit" class="btn btn-success" name="start">Run Now</button>
+                                        {if $LASTTRUN == 'Never'}
+                                        <form action="{url path='admin/crondashboard/processrun'}" method="post">
+                                            <input type="hidden" name="start_cronjob_id" value={$id} />
+                                            <button type="submit" class="btn btn-success" name="start">Run Now</button>
+                                        </form>
+                                            
+                                        {else}
+                                            {format_date date=$LASTTRUN}
+                                        {/if}
                                     </td>
                                     <td class="text-left">
                                         {$RUNFLAG}
-                                    </td>
-                                    <td>
-                                        {admin_position_block
-                                        resource="admin.crondashboard"
-                                        access="UPDATE"
-                                        path={url path='admin/crondashboard/update-position' cronjobId=$id position=$POSITION}
-                                        url_parameter="cronjob_id"
-                                        in_place_edit_class="cronjobPositionChange"
-                                        position=$POSITION
-                                        id=$cronjobId
-                                        }
-                                    </td>                            
+                                    </td>                          
                                     <td class="actions text-center">
                                         <div class="btn-toolbar btn toolbar-primary">
                                             <span class="glyphicon glyphicon-cog"></span>
@@ -92,7 +79,7 @@
                                                 </a>
                                             {/loop}
                                             {loop type="auth" name="can_delete" role="ADMIN" resource="admin.crondashboard" access="DELETE"}
-                                                <a class="cronjob-delete" title="{intl l='Delete this cronjob' d='crondashboard.bo.default'}" href="#crondashboard" data-id="{$cronjobId}" data-toggle="modal">
+                                                <a class="cronjob-delete" title="{intl l='Delete this cronjob' d='crondashboard.bo.default'}" href="#cronjob_delete" data-id="{$id}" data-toggle="modal">
                                                     <span class="glyphicon glyphicon-trash"></span>
                                                 </a>
                                             {/loop}
@@ -100,6 +87,25 @@
                                     </td>
                                 </tr>
                             </tbody>
+
+                            {* Cancel offer product confirmation dialog *}
+
+                            {capture "cronjob_delete"}
+                                <input type="hidden" name="cronjob_id" value={$id} />
+                            {/capture}
+
+                            {include
+                                file = "includes/generic-confirm-dialog.html"
+
+                                dialog_id       = "cronjob_delete"
+                                dialog_title    = {intl l="Delete an cron job"}
+                                dialog_message  = {intl l="Do you really want to delete this cron job ?"}
+
+                                form_action         = {token_url path='admin/crondashboard/cronjob/delete'}
+                                form_content        = {$smarty.capture.cronjob_delete nofilter}
+                                form_id             = "delete-cronjob-form"
+                            }
+
                         {/loop}
                 </caption>
             </table>
@@ -123,11 +129,17 @@
             form_enctype       = {form_enctype}
             form_error_message = $form_error_message
         }
-        {/form}
+        {/form}       
     </div>
 
     <div class="tab-pane fade" id="processes">
         {hook name="display.processes"}
     </div>
+
+    <div class="tab-pane fade" id="processes_log">
+        {hook name="display.processes_logs"}
+    </div>    
 </div>
+
 {/block}
+

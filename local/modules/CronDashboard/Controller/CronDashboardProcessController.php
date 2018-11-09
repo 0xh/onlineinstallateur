@@ -1,20 +1,21 @@
 <?php
-
 namespace CronDashboard\Controller;
 
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Exception\PropelException;
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Tools\URL;
 use CronDashboard\Classes\Proces;
 use CronDashboard\Classes\ProcessHandler;
+use CronDashboard\Classes\ProcessLogger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Thelia\Tools\URL;
+use CronDashboard\CronDashboard;
 
 class CronDashboardProcessController extends BaseAdminController {
 	
 	public function getProcessLists()
 	{
-		$proces_name = 'Thelia';
+		$proces_name = CronDashboard::getConfigValue('process_name');
         $returnArray = [];
         $output ='';
         exec("ps axf |grep ".$proces_name." | awk '{print $1}'" , $output);
@@ -60,31 +61,39 @@ class CronDashboardProcessController extends BaseAdminController {
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if(isset($_POST['hold'])) {
 		        // hold - suspend
-		        self::holdTheliaProcess( $processId, 'Thelia');
+		        self::holdTheliaProcess( $processId, CronDashboard::getConfigValue('process_name'));
 		    }
 		    
 		    if(isset($_POST['stop'])) {
 		        // stop
-		        self::stopTheliaProcess( $processId, 'Thelia');
+		        self::stopTheliaProcess( $processId, CronDashboard::getConfigValue('process_name'));
 		    }
 
 		    if(isset($_POST['start'])) {
 		    	//start - resume
-		       	self::startTheliaProcess( $processId, 'Thelia');
+		       	self::startTheliaProcess( $processId, CronDashboard::getConfigValue('process_name'));
 		    }
 		}
+
+		return $this->generateRedirect('/admin/crondashboard');
 	}
 
-	protected function stopTheliaProcess( $processId, $proces_name )
+	public function stopTheliaProcess( $processId, $proces_name )
 	{
 		$processObject = self::buildModuleProcess( $processId, $proces_name);
 		$procesHandler = new ProcessHandler( $processObject );
-		$procesHandler->stopProcess();
+		$procesHandler->stopProcess();	
 
-		$activeRoute = '/admin/crondashboard/#processes';
-        $response = RedirectResponse::create(URL::getInstance()->absoluteUrl($activeRoute));
+        $theliaUserId = $this->getRequest()->getSession()->getAdminUser()->getId();
+        $theliaUserLogin = $this->getRequest()->getSession()->getAdminUser()->getlogin();
+        
+        $logger = new ProcessLogger( $processObject, 'stop', $theliaUserId, $theliaUserLogin );
+		$logger->log();
 
-        return $response;
+		/*return $this->generateRedirectFromRoute('cron.list', array(), array('module_code' => 'CronDashboard') );*/
+		/*return $this->generateRedirectFromRoute('cron.list');*/
+
+		return $this->generateRedirect('/admin/crondashboard');
 	}
 
 	public function holdTheliaProcess( $processId, $proces_name )
@@ -93,10 +102,16 @@ class CronDashboardProcessController extends BaseAdminController {
 		$procesHandler = new ProcessHandler( $processObject );
 		$procesHandler->holdProcess();
 
-		$activeRoute = '/admin/crondashboard/#processes';
-        $response = RedirectResponse::create(URL::getInstance()->absoluteUrl($activeRoute));
+        $theliaUserId = $this->getRequest()->getSession()->getAdminUser()->getId();
+        $theliaUserLogin = $this->getRequest()->getSession()->getAdminUser()->getlogin();
+        
+        $logger = new ProcessLogger( $processObject, 'hold', $theliaUserId, $theliaUserLogin );
+		$logger->log();
 
-        return $response;
+		/*return $this->generateRedirectFromRoute('cron.list', array(), array('module_code' => 'CronDashboard') );*/
+		/*return $this->generateRedirectFromRoute('cron.list');*/
+
+		return $this->generateRedirect('/admin/crondashboard');
 	}
 
 	public function startTheliaProcess( $processId, $proces_name )
@@ -105,9 +120,15 @@ class CronDashboardProcessController extends BaseAdminController {
 		$procesHandler = new ProcessHandler( $processObject );
 		$procesHandler->startProcess();
 
-		$activeRoute = '/admin/crondashboard/#processes';
-        $response = RedirectResponse::create(URL::getInstance()->absoluteUrl($activeRoute));
+        $theliaUserId = $this->getRequest()->getSession()->getAdminUser()->getId();
+        $theliaUserLogin = $this->getRequest()->getSession()->getAdminUser()->getlogin();
+        
+        $logger = new ProcessLogger( $processObject, 'start', $theliaUserId, $theliaUserLogin );
+		$logger->log();
 
-        return $response;
+		/*return $this->generateRedirectFromRoute('cron.list', array(), array('module_code' => 'CronDashboard') );*/
+		/*return $this->generateRedirectFromRoute('cron.list');*/
+
+		return $this->generateRedirect('/admin/crondashboard');
 	}
 }
