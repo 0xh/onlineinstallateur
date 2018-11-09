@@ -48,7 +48,7 @@ class Common extends BaseAdminController
         return $arrayProducts;
     }
 
-    public static function saveInCrawlerProductListing($product_id, $platform, $first_price)
+    public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0)
     {
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
