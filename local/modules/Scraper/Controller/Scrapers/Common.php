@@ -52,7 +52,9 @@ class Common extends BaseAdminController
     {
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
-
+        if(!$first_price || $first_price == null || $first_price == "")
+            $first_price = 0;
+        
         if ($crawlerProductBase) {
             $crawlerProductBaseId = $crawlerProductBase->getId();
         } else {
