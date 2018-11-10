@@ -126,7 +126,8 @@ class ShtPriceImporter extends AbstractImport
             $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
             
             $newListen = $price_from_separate_list * 120 / 100;
-
+            $brutto_price_import = $priceQ->getListenPrice();
+            
             if ($priceQ->getListenPrice() < $newListen) {
                 $brutto_price_import = $newListen;
             }
@@ -138,7 +139,7 @@ class ShtPriceImporter extends AbstractImport
             $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
-            echo ("pseid:" . $priceQ->getProductSaleElementsId() . " old:" . $priceQ->getPrice() . " listen:" . $priceQ->getListenPrice()
+            echo ("modifying pseid:" . $priceQ->getProductSaleElementsId() . " old:" . $priceQ->getPrice() . " listen:" . $priceQ->getListenPrice()
                 ." new:".$price_from_separate_list." listen:".$brutto_price_import."\n");
         } else {
             if($this->no_match_count == $this->match_threshold) {
