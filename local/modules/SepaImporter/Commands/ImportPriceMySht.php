@@ -74,7 +74,7 @@ class ImportPriceMySht extends ContainerAwareCommand
 
         $row    = 1;
         if (($handle = fopen($output, "r+")) !== FALSE) {
-            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            while (($data = fgetcsv($handle, 10000, ";")) !== FALSE) {
                 $num = count($data);
                 if ($row == 1) {
                     $data[0] = "MATNR" . ",";
@@ -83,7 +83,7 @@ class ImportPriceMySht extends ContainerAwareCommand
                     file_put_contents($newFile, $data, FILE_APPEND);
                 } else if($row >= $startline && $row <= $stopline){
                     $data[0] = $data[0] . ",";
-                    $data[1] = $data[1];
+                    $data[1] = '"'.$data[1].'"';
                     array_push($data, PHP_EOL);
 
                     file_put_contents($newFile, $data, FILE_APPEND);
@@ -137,7 +137,6 @@ class ImportPriceMySht extends ContainerAwareCommand
         $filePath = new File($output);
 
         echo "Eveything in order, starting import. \n";
-
         $importEvent = $importHandler->import($import, $filePath, $lang);
 
         echo "Import done.";

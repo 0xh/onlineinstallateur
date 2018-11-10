@@ -100,14 +100,13 @@ class ShtPriceImporter extends AbstractImport
              ->findOneByPartnerProdRef($partner_product_ref_price_list);
         } else {
             $log->debug("NO matchcode! ");
-            echo ("NO matchcode! ");
         }
 
         if ($wholesaleProduct && $price_from_separate_list) {
             $log->debug("Starting price update.");
             $newProdId = $wholesaleProduct->getProductId();
 
-            echo "Modifying price " . $newProdId . "\n";
+            
 
             $product    = ProductQuery::create()
              ->findOneById($newProdId);
@@ -125,7 +124,7 @@ class ShtPriceImporter extends AbstractImport
              ->findOneByCurrencyId(1);
 
             $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
-
+            
             $newListen = $price_from_separate_list * 120 / 100;
 
             if ($priceQ->getListenPrice() < $newListen) {
@@ -139,6 +138,8 @@ class ShtPriceImporter extends AbstractImport
             $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
+            echo ("pseid:" . $priceQ->getProductSaleElementsId() . " old:" . $priceQ->getPrice() . " listen:" . $priceQ->getListenPrice()
+                ." new:".$price_from_separate_list." listen:".$brutto_price_import."\n");
         } else {
             if($this->no_match_count == $this->match_threshold) {
                 $this->total_parsed = $this->total_parsed + $this->no_match_count;
