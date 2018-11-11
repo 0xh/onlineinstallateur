@@ -24,7 +24,7 @@ class FrontHook extends BaseHook
 
     public function displayCarouselOnHook(HookRenderEvent $event)
     {
-        Tlog::getInstance()->error("carousel got here onhook");
+        
         $carouselIDs = self::getIdHook($event->getCode());
 
         foreach ($carouselIDs as $carouselID) {

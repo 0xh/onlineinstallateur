@@ -980,10 +980,10 @@ class AmazonIntegrationContoller extends BaseAdminController
                             
                             $requestCat->setASIN($asin);
                             $productCategories = invokeGetProductCategoriesForASIN($service, $requestCat);
-                            
                             if ($productCategories) {
-                                $this->getLogger()->error("AMAZON - product categories");
+                                $this->getLogger()->error('AMAZON - product categories');
                                 $this->getLogger()->error($productCategories);
+                                if(!empty( (array)$productCategories->GetProductCategoriesForASINResult)) {
                                 if (is_array($productCategories->GetProductCategoriesForASINResult->Self)) {
                                     $this->getLogger()->error('AMAZON - productCategories is an array');
                                     foreach ($productCategories->GetProductCategoriesForASINResult->Self as $prodCat) {
@@ -995,6 +995,10 @@ class AmazonIntegrationContoller extends BaseAdminController
                                 } else {
                                     $this->getLogger()->error('AMAZON - productCategories is an object');
                                     $this->saveProductCategories($productCategories->GetProductCategoriesForASINResult->Self);
+                                }
+                                }
+                                else {
+                                    $this->getLogger()->error($ref . ' AMAZON - productCategories is empty' );
                                 }
                             }
                         } else {
