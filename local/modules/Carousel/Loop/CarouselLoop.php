@@ -146,8 +146,6 @@ class CarouselLoop extends Image
                 ->set('VISIBLE',$carousel->getVisible())
             ;
             
-            Tlog::getInstance()->err("Is visible ".$carousel->getVisible()." Carousel Id: ".$carousel->getId());
-            
             $loopResult->addRow($loopResultRow);
         }
 
