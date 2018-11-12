@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 CONFIG_DIR="local/config"
 MEDIA_DIR="local/media"
 WEB_MEDIA="web/media"
@@ -112,8 +110,9 @@ fi
 
 sudo rsync -arv --progress ./* ../stable_new
 
-cd ../stable_new
+sudo chown -R www-data:www-data ../stable_new
 
+cd ../stable_new
 
 chmod -R 0777 templates/frontOffice/default/assets/dist/
 sudo chmod -R 0777 local/sepa/*
