@@ -1,0 +1,145 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'tools'}
+{/block}
+
+{block name="page-title"}{intl l='Cron Dashboard'}{/block}
+
+{block name="main-content"}
+<ul class="nav nav-tabs" id="tabbed-menu">
+    <li class="active"><a href="#general" data-toggle="tab" data-trigger="#virtual_field::change">{intl l="General"}</a></li>
+    <li><a href="#processes" data-toggle="tab">{intl l="Processes"}</a></li>
+    <li><a href="#processes_log" data-toggle="tab">{intl l="Processes Logs"}</a></li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="general">
+        <div class="general-block-decorator dashboard">
+            <table class="table table-striped table-condensed">
+                <caption class="clearfix">
+                    {intl l='CronJobs Containers' d='crondashboard.bo.default'}
+                        {loop type="auth" name="can_create" role="ADMIN" resource="admin.crondashboard" access="CREATE"}
+                            <span class="pull-right">
+                                <a href="#cron_job_creation_dialog" class="btn btn-primary btn-cron-job-container" id="showModalCreateJob" title="{intl l='Add a new cron job ' d='crondashboard.bo.default'}" href="#creation_dialog" data-toggle="modal">
+                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                </a>
+                            </span>
+                        {/loop}
+
+                        <thead>
+                            <tr>
+                                <th class="text-center">{intl l='ID' d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Title" d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Command" d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Schedule" d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Next Run" d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Last Run" d='crondashboard.bo.default'}</th>
+                                <th>{intl l="Need to Run" d='crondashboard.bo.default'}</th>
+                                <th class="actions text-center">{intl l='Actions' d='crondashboard.bo.default'}</th>
+                            </tr>
+                        </thead>
+                        {loop name="crondashboard.cronjob.loop" type="crondashboard.cronjob.loop"}
+                            <tbody>
+                                <tr>
+                                    <td class="text-center">{$id}</td>
+                                    <td>
+                                        {$TITLE}
+                                    </td>
+                                    <td class="text-left">
+                                        {$COMMAND}
+                                    </td>
+                                    <td class="text-left">
+                                        {$SCHEDULE}
+                                    </td>
+                                    <td class="text-left">
+                                        {format_date date=$NEXTRUN}
+                                    </td>
+                                    <td class="text-left">
+                                        {if $LASTTRUN == 'Never'}
+                                        <form action="{url path='admin/crondashboard/processrun'}" method="post">
+                                            <input type="hidden" name="start_cronjob_id" value={$id} />
+                                            <button type="submit" class="btn btn-success" name="start">Run Now</button>
+                                        </form>
+                                            
+                                        {else}
+                                            {format_date date=$LASTTRUN}
+                                        {/if}
+                                    </td>
+                                    <td class="text-left">
+                                        {$RUNFLAG}
+                                    </td>                          
+                                    <td class="actions text-center">
+                                        <div class="btn-toolbar btn toolbar-primary">
+                                            <span class="glyphicon glyphicon-cog"></span>
+                                        </div>
+                                        <div class="toolbar-options hidden">
+                                            {loop type="auth" name="can_change" role="ADMIN" resource="admin.crondashboard"}
+                                                <a class="cronjob-change" title="{intl l='Change this cronjob' d='crondashboard.bo.default'}" href="{url path="admin/crondashboard/cronjob/update/%cronjobId" cronjobId=$id}">
+                                                    <span class="glyphicon glyphicon-edit"></span>
+                                                </a>
+                                            {/loop}
+                                            {loop type="auth" name="can_delete" role="ADMIN" resource="admin.crondashboard" access="DELETE"}
+                                                <a class="cronjob-delete" title="{intl l='Delete this cronjob' d='crondashboard.bo.default'}" href="#cronjob_delete" data-id="{$id}" data-toggle="modal">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                </a>
+                                            {/loop}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                            {* Cancel offer product confirmation dialog *}
+
+                            {capture "cronjob_delete"}
+                                <input type="hidden" name="cronjob_id" value={$id} />
+                            {/capture}
+
+                            {include
+                                file = "includes/generic-confirm-dialog.html"
+
+                                dialog_id       = "cronjob_delete"
+                                dialog_title    = {intl l="Delete an cron job"}
+                                dialog_message  = {intl l="Do you really want to delete this cron job ?"}
+
+                                form_action         = {token_url path='admin/crondashboard/cronjob/delete'}
+                                form_content        = {$smarty.capture.cronjob_delete nofilter}
+                                form_id             = "delete-cronjob-form"
+                            }
+
+                        {/loop}
+                </caption>
+            </table>
+        </div>
+
+        {form name="admin.crondashboard.cronjob.create"}
+        {capture "cron_job_creation_dialog"}
+            {form_hidden_fields form=$form}
+            {render_form_field form=$form field="success_url" value="{url path='/admin/crondashboard/'}"}
+            {render_form_field field="title"}
+            {render_form_field field="command"}
+            {render_form_field field="schedule"}
+        {/capture}
+        {include
+            file = "includes/generic-create-dialog.html"
+            dialog_id    = "cron_job_creation_dialog"
+            dialog_title = {intl l="Create a cron job entry"}
+            dialog_body  = {$smarty.capture.cron_job_creation_dialog nofilter}
+            dialog_ok_label     = {intl l="Save"}
+            form_action        = {url path='/admin/crondashboard/cronjob/create'}
+            form_enctype       = {form_enctype}
+            form_error_message = $form_error_message
+        }
+        {/form}       
+    </div>
+
+    <div class="tab-pane fade" id="processes">
+        {hook name="display.processes"}
+    </div>
+
+    <div class="tab-pane fade" id="processes_log">
+        {hook name="display.processes_logs"}
+    </div>    
+</div>
+
+{/block}
+
