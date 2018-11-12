@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12 general-block-decorator">
+        <div class="row">
+            <div class="col-md-12 title title-without-tabs">
+            	{intl d='crondashboard.bo.default' l="Configuration variables"}
+            </div>
+        </div>
+    </div>
+    <div class="form-container">
+        <div class="row">
+            <div class="col-md-12">
+                {form name="admin.crondashboard.form.configure"}
+                <form action="{url path="/admin/module/CronDashboard/configure"}" method="post">
+                    {form_hidden_fields form=$form}         
+                    <div class="row">
+                        <div class="col-md-4">
+                            {render_form_field form=$form field="process_name" value=$process_name}
+                        </div>    
+                        <div class="col-md-4">
+                            {render_form_field form=$form field="server_location" value=$server_location}
+                        </div>
+                        {if $form_error}
+                          <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            </div>
+                         </div>
+                        {/if}
+                        <div class="col-md-12 col-lg-12 col-xlg-12">
+                        	{include file="includes/inner-form-toolbar.html" close_url="{url path='/admin/module/CronDashboard/configure'}"}
+                        </div>
+                    </div>
+                </form>
+                {/form}
+            </div>
+        </div>
+    </div>
+</div>

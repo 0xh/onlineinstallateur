@@ -1,0 +1,51 @@
+<div class="general-block-decorator dashboard">
+    <table class="table table-striped table-condensed">
+        <caption class="clearfix">
+            <thead>
+                <tr>
+                    <th class="text-center">{intl l='ID' d='crondashboard.bo.default'}</th>
+                    <th>{intl l="LINUX_USER" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="LINUX_PID" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="PROCESS_NAME" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="CPU" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="MEM" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="VSZ" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="TTY" d='crondashboard.bo.default'}</th>
+
+                    <th>{intl l="STAT" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="START" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="TIME" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="COMMAND" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="THELIA_USER_NAME" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="THELIA_USER_ID" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="ACTION_TRIGGERED" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="TRIGGER_TIME" d='crondashboard.bo.default'}</th>
+                    <th>{intl l="CREATED_AT" d='crondashboard.bo.default'}</th>
+                </tr>
+            </thead>
+            {loop name="crondashboard.processlogs.loop" type="crondashboard.processlogs.loop"}
+				<tbody>
+			        <tr>
+			            <td class="text-center">{$ID}</td>
+			            <td class="text-center">{$LINUX_USER} </td>
+			            <td class="text-center">{$LINUX_PID}</td>
+			            <td class="text-center">{$PROCESS_NAME}</td>
+			            <td>{$CPU}</td>
+			            <td>{$MEM}</td>
+			            <td>{$VSZ}</td>
+			            <td>{$TTY}</td>
+			            <td>{$STAT}</td>
+			            <td>{$START}</td>
+			            <td>{$TIME}</td>
+			            <td>{$COMMAND}</td>
+			            <td class="text-center">{$THELIA_USER_NAME}</td>
+			            <td class="text-center">{$THELIA_USER_ID}</td>
+			            <td>{$ACTION_TRIGGERED}</td>
+			            <td>{format_date date=$TRIGGER_TIME}</td>
+			            <td>{format_date date=$CREATED_AT}</td>
+			        </tr>
+			    </tbody>
+			{/loop}
+        </caption>
+    </table>
+</div>

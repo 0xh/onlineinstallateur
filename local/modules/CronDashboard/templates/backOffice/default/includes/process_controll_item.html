@@ -1,0 +1,46 @@
+<tr>
+    <td class="text-center">{$v->user}</td>
+    <td>{$v->pid}</td>
+    <td class="text-center" >{$v->prname}</td>
+    <td>{$v->cpu}</td>
+    <td>{$v->mem}</td>
+    <td>{$v->vsz}</td>
+    <td>{$v->rss}</td>
+    <td>{$v->tty}</td>
+    <td>{$v->stat}</td>
+    <td>{$v->start}</td>
+    <td>{$v->time}</td>
+    <td class="text-center">{$v->command}</td>
+    <td class="actions text-center">
+    	{form name="admin.crondashboard.process.update"}
+		<form method="POST" action='{url path="/admin/crondashboard/processupdate/{$v->pid}"}' {form_enctype form=$form} id="form_processupdate_{$v->pid}"}">
+			{* Be sure to get the linux process ID, even if the form could not be validated *}
+			<input type="hidden" name="processId" value="{$v->pid}"/>
+		    <div class="control-group">
+		        <div class="controls">
+		        	{if $v->stat == "S+"}
+		            	<button type="submit" class="btn btn-default" name="hold">Hold</button>
+						<button type="submit" class="btn btn-danger"  name="stop">Stop</button>
+						<button type="submit" class="btn btn-success" disabled name="start">Start</button>
+					{/if}
+					{if $v->stat == "S"}
+						<button type="submit" class="btn btn-default" name="hold">Hold</button>
+						<button type="submit" class="btn btn-danger"  name="stop">Stop</button>
+						<button type="submit" class="btn btn-success" disabled name="start">Start</button>
+					{/if}
+					{if $v->stat == "T"}
+						<button type="submit" class="btn btn-default" disabled name="hold">Hold</button>
+						<button type="submit" class="btn btn-danger"  disabled name="stop">Stop</button>
+						<button type="submit" class="btn btn-success" name="start">Start</button>
+					{/if}
+					{if $v->stat == "T+"}
+						<button type="submit" class="btn btn-default" disabled name="hold">Hold</button>
+						<button type="submit" class="btn btn-danger"  disabled name="stop">Stop</button>
+						<button type="submit" class="btn btn-success" name="start">Start</button>
+					{/if}				
+		        </div>
+		    </div>
+		</form>
+		{/form}
+    </td>
+</tr>
