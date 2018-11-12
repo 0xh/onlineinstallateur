@@ -1,0 +1,71 @@
+{extends file="admin-layout.tpl"}
+
+{block name="no-return-functions"}
+{$admin_current_location = 'configuration'}
+{/block}
+
+{block name="page-title"}{intl d='crondashboard.bo.default' l='Edit cronJob'}{/block}
+
+{block name="check-module"}crondashboard{/block}
+{block name="check-access"}update{/block}
+
+{block name="main-content"}
+
+<div class="crondashboard edit-cronJob">
+
+    <div id="wrapper" class="container">
+
+        {loop name="crondashboard.cronjob.loop" type="crondashboard.cronjob.loop" hidden="*" id="$cronjobId" limit="1"}
+        <ul class="breadcrumb">
+            <li><a href="{url path='/admin/home'}">{intl d='crondashboard.bo.default' l="Home"}</a></li>
+            <li><a href="{url path='admin/crondashboard'}">{intl d='crondashboard.bo.default' l="CronJobs"}</a></li>
+            <li>{intl d='crondashboard.bo.default' l='Editing cronjob "%name"' name={$TITLE}}</li>
+        </ul>
+        <div class="row">
+            <div class="col-md-12 general-block-decorator">
+                <div class="row">
+                    <div class="col-md-12 title title-without-tabs">
+                        {intl d='crondashboard.bo.default' l="Edit cronjob id = %name" name={$cronjobId}}
+                    </div>
+
+                    <div class="form-container">
+                        <div class="col-md-12">
+                        	{form name="admin.crondashboard.cronjob.update" blo=1}
+                        		<form method="POST" action='{url path="/admin/crondashboard/cronjob/save/{$cronjobId}"}' {form_enctype form=$form}>
+                        			{* Be sure to get the cronJob ID, even if the form could not be validated *}
+                                	<input type="hidden" name="cronjobId" value="{$cronjobId}" />
+
+                                	{include file="includes/inner-form-toolbar.html" close_url="{url path='/admin/crondashboard/'}"}
+                        			{form_hidden_fields form=$form}
+								    {render_form_field form=$form field="success_url" value="{url path='/admin/crondashboard/'}"}
+								    {render_form_field field="title" value=$TITLE}
+								    {render_form_field field="command" value=$COMMAND}
+                                    {render_form_field field="schedule" value=$SCHEDULE}
+								    {render_form_field field="position" value=$POSITION}
+								    <div class="control-group">
+	                                    <div class="controls">
+	                                        <p>{intl d='crondashboard.bo.default' l='CronJob created on %date_create. Last modification: %date_change' date_create="{format_date date=$CREATE_DATE}" date_change="{format_date date=$UPDATE_DATE}"}</p>
+	                                    </div>
+	                                </div>
+                        		</form>
+                        	{/form}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {/loop}
+
+        {elseloop rel="crondashboard.cronjob.loop"}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-error">
+                    {intl d='crondashboard.bo.default' l="Sorry, cronJob ID=%id was not found." id={$cronjobId}}
+                </div>
+            </div>
+        </div>
+        {/elseloop}
+    </div>
+</div>
+{/block}
