@@ -20,4 +20,3 @@ templates/frontOffice/default/assets/dist/css/custom-tinymce.css
 /web/media/
 local/modules/Scraper/Log/
 !core/vendor/symfony/cache
-local/config/database.yml
