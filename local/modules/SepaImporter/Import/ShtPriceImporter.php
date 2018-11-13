@@ -134,7 +134,6 @@ class ShtPriceImporter extends AbstractImport
                 $this->total_parsed = $this->total_parsed + $this->no_match_count;
                 echo ("NO match ".$this->total_parsed . " \n");
                 $log->debug("NO match");
-                $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
                 $this->no_match_count = 0;
             } else {
                 $this->no_match_count++;
