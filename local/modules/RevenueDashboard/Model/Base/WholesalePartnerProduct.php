@@ -1920,9 +1920,9 @@ abstract class WholesalePartnerProduct implements ActiveRecordInterface
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildProduct object, it will not be re-added.
-        if ($v !== null) {
-            $v->addWholesalePartnerProduct($this);
-        }
+        // if ($v !== null) {
+            // $v->addWholesalePartnerProduct($this);
+        // }
 
 
         return $this;

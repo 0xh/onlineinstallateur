@@ -5,9 +5,8 @@ namespace SepaImporter\Import;
 use RevenueDashboard\Model\WholesalePartnerProductQuery;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
-use Thelia\Model\Base\ProductQuery;
-use Thelia\Model\Base\ProductSaleElementsQuery;
-use RevenueDashboard\Model\WholesalePartnerProduct;
+use Thelia\Model\ProductQuery;
+use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\ProductPriceQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
@@ -115,7 +114,6 @@ class ShtPriceImporter extends AbstractImport
             $priceQ->setPrice($price_from_separate_list)
              ->setListenPrice($brutto_price_import)
              ->save();
-
              if($wholesaleProduct){
                  $wholesaleProduct
                  ->setPrice($netto_price_from_list)
@@ -123,8 +121,8 @@ class ShtPriceImporter extends AbstractImport
                  ->setVersionCreatedBy("Xml_importer")
                  ->save();
                  $log->debug("New wholesale partner product price: " . $wholesaleProduct->getPrice());
+                 echo "New wholesale partner product price: " . $wholesaleProduct->getPrice();
              }
-             
              $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
