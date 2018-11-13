@@ -85,15 +85,14 @@ class XMLImporter extends AbstractImport
         $matchingSuccessful             = FALSE;
         $stockImport                    = FALSE;
         $price_import                   = FALSE;
-        $partner_product_ref_price_list = null;
         $brutto_price_import            = null;
 
 
         //USED
         $brand_import                   = $this->rowHasField($row, "lieferantenname");
         $category_import                = $this->rowHasField($row, "warengruppetext");
-        $brutto_price_import            = (float) $this->rowHasField($row, "bruttopreis") * 116 / 100;
-        $netto_price_import             = (float) $this->rowHasField($row, "nettopreis") * 116 / 100;
+        $brutto_price_import            = (float) str_replace(',', '.',$this->rowHasField($row, "bruttopreis")) * 116 / 100;
+        $netto_price_import             = (float) str_replace(',', '.',$this->rowHasField($row, "nettopreis")) * 116 / 100;
         $material_number_import         = $this->rowHasField($row, "werknr");
         $stock_import                   = $this->rowHasField($row, "versandfaehig");
         $product_title_import           = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
@@ -101,8 +100,6 @@ class XMLImporter extends AbstractImport
         $product_picture_link           = $this->rowHasField($row, "produktbild");
         $product_description_import     = $this->rowHasField($row, "ausschreibungstext");
         $partner_product_ref            = $this->rowHasField($row, "matchcode");
-        $partner_product_ref_price_list = $this->rowHasField($row, "MATNR");
-        $price_from_separate_list       = $this->rowHasField($row, "YE49_plus_7") * 120 / 100;
 
 
 
@@ -142,10 +139,7 @@ class XMLImporter extends AbstractImport
         if ($partner_product_ref) {
             $wholesaleProduct = WholesalePartnerProductQuery::create()
              ->findOneByPartnerProdRef($partner_product_ref);
-        } else if ($partner_product_ref_price_list) {
-            $wholesaleProduct = WholesalePartnerProductQuery::create()
-             ->findOneByPartnerProdRef($partner_product_ref_price_list);
-        } else {
+        }  else {
             $log->debug("NO matchcode! ");
         }
 
@@ -154,21 +148,6 @@ class XMLImporter extends AbstractImport
             $log->debug("After WPPQ, found product by partner ref, will update stock: " . $wPId);
             $stockImport = TRUE;
             $log->debug("After WPPQ , before brand create! WPP id: " . $wPId);
-        } else {
-            $log->debug("No match found for partner_product_ref ");
-        }
-
-
-        if ($partner_product_ref == null && $partner_product_ref_price_list != null) {
-            $partner_product_ref = $partner_product_ref_price_list;
-            $log->debug("Import ref is for updating from csv not xml.");
-        }
-
-        if ($wholesaleProduct && $price_from_separate_list) {
-            $wPId         = $wholesaleProduct->getProductId();
-            $log->debug("After WPPQ, found product by partner ref, will update price: " . $wPId);
-            $price_import = TRUE;
-            $log->debug("Price from file found, " . $wPId);
         } else {
             $log->debug("No match found for partner_product_ref ");
         }
@@ -370,72 +349,6 @@ class XMLImporter extends AbstractImport
             $time_after_newProduct        = microtime(true);
             $execution_time_after_product = round(($time_after_newProduct - $time_start) * 1000);
             $log->debug("Exec-time after new product " . $execution_time_after_product . " ms.");
-        } else if ($stockImport) {
-            $time_before_update           = microtime(true);
-            $execution_time_before_update = round(($time_before_update - $time_start) * 1000);
-            $log->debug("Starting stock update.");
-            $log->debug("Exec-time before product update " . $execution_time_before_update . " ms.");
-
-            $newProdId = $wholesaleProduct->getProductId();
-
-            echo "Modifying stock " . $newProdId . "\n";
-
-            $product    = ProductQuery::create()
-             ->findOneById($newProdId);
-            $product_id = $product->getId();
-            $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
-
-            $productPse = ProductSaleElementsQuery::create()
-             ->findOneByProductId($product_id);
-
-            $pse_id = $productPse->getId();
-            $log->debug("In WPID MATCH, pse_id: " . $pse_id);
-
-            $productPseImport = $productPse;
-            $productPseImport->setQuantity($stock_import)
-             ->save();
-
-            $log->debug("Modified quantity, new quantity: " . $productPseImport->getQuantity());
-
-            $time_after_update           = microtime(true);
-            $execution_time_after_update = round(($time_after_update - $time_start) * 1000);
-            $log->debug("Exec-time after product update " . $execution_time_after_update . " ms.");
-        } else if ($price_import) {
-            $log->debug("Starting price update.");
-            $newProdId = $wholesaleProduct->getProductId();
-
-            echo "Modifying price " . $newProdId . "\n";
-
-            $product    = ProductQuery::create()
-             ->findOneById($newProdId);
-            $product_id = $product->getId();
-            $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
-
-            $productPse = ProductSaleElementsQuery::create()
-             ->findOneByProductId($product_id);
-
-            $pse_id = $productPse->getId();
-            $log->debug("Pse Id from PSE query is: " . $pse_id);
-
-            $priceQ = ProductPriceQuery::create()
-             ->filterByProductSaleElementsId($pse_id)
-             ->findOneByCurrencyId(1);
-
-            $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
-
-            $newListen = $price_from_separate_list * 120 / 100;
-
-            if ($priceQ->getListenPrice() < $newListen) {
-                $brutto_price_import = $newListen;
-            }
-
-            $priceQ->setPrice($price_from_separate_list)
-             ->setListenPrice($brutto_price_import)
-             ->save();
-
-            $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
-
-            $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
         } else {
             $log->debug("NO match");
             $errors .= " Product ref not found! " . $refBuild . "." . PHP_EOL;
