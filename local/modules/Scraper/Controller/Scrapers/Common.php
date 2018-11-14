@@ -70,15 +70,17 @@ class Common extends BaseAdminController
          ->findOneByProductBaseId($crawlerProductBaseId);
 
         if ($crawlerProductListing) {
-            $crawlerProductListing->setFirstPrice($first_price);
-            $crawlerProductListing->save();
+            $crawlerProductListing->setFirstPrice($first_price)
+                ->setVersionCreatedBy("scraper.1.2")
+                ->save();
         } else {
             $crawlerProductListing = new CrawlerProductListing();
-            $crawlerProductListing->setProductBaseId($crawlerProductBaseId);
-            $crawlerProductListing->setFirstPosition(1);
-            $crawlerProductListing->setFirstPrice($first_price);
-            $crawlerProductListing->setPlatform($platform);
-            $crawlerProductListing->save();
+            $crawlerProductListing->setProductBaseId($crawlerProductBaseId)
+                ->setFirstPosition(1)
+                ->setFirstPrice($first_price)
+                ->setPlatform($platform)
+                ->setVersionCreatedBy("scraper.1.2")
+                ->save();
         }
         
         return $crawlerProductListing->getId();
