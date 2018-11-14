@@ -3,7 +3,7 @@ namespace Scraper\Controller\Scrapers;
 use Scraper\Controller\WebBrowserController;
 use Thelia\Controller\Admin\BaseAdminController;
 
-class PriceScraper extends BaseAdminController
+class PriceScraper extends BaseAdminController implements PriceScraperInterface
 {
     
     public function getData($platform,$online,$startid,$stopid,$outputConsole = 0)
@@ -24,6 +24,11 @@ class PriceScraper extends BaseAdminController
         }
         
         $webBrowser->close();
+    }
+    
+    public function getPriceForProduct($webBrowser, $prodId)
+    {
+        trigger_error("Scraper is not implementing the required methods");
     }
 }
 

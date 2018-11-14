@@ -12,7 +12,7 @@ use Thelia\Controller\Admin\BaseAdminController;
  * and open the template in the editor.
  */
 
-/**s
+/**
  * Description of Reuter
  *
  * @author Catana Florin
