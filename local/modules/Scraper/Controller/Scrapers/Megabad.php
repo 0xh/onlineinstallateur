@@ -3,7 +3,6 @@
 namespace Scraper\Controller\Scrapers;
 
 use Exception;
-use PriceScaperInterface;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,7 +15,7 @@ use PriceScaperInterface;
  *
  * @author Catana Florin
  */
-class Megabad extends PriceScraper implements PriceScaperInterface
+class Megabad extends PriceScraper implements PriceScraperInterface
 {
     public function getDataMegabad($online,$startid,$stopid)
     {
