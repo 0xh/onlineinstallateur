@@ -48,15 +48,17 @@ class ScraperCommand extends ContainerAwareCommand
         
         if($platform != null){
             switch($platform) {
-                case "megabad":
+                case "Megabad":
                     $scraperClass = new Megabad();
                 break;
-                case "reuter":
+                case "Reuter":
                     $scraperClass = new Reuter();
                     break;
-                case "skybad":
+                case "Skybad":
                     $scraperClass = new Skybad();
                     break;
+                default:
+                    echo "Platform ".$platform." not supported, sample: Reuter";
             }
         } else {
             echo "Platform argument not given";

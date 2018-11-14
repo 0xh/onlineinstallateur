@@ -12,12 +12,12 @@ use Thelia\Controller\Admin\BaseAdminController;
  * and open the template in the editor.
  */
 
-/**
+/**s
  * Description of Reuter
  *
  * @author Catana Florin
  */
-class Reuter extends PriceScraper
+class Reuter extends PriceScraper implements PriceScraperInterface
 {
     public function getDataReuter($online,$startid,$stopid)
     {
