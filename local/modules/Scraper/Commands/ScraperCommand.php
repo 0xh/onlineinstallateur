@@ -3,18 +3,14 @@ namespace Scraper\Commands;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Yaml\Exception\RuntimeException;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Model\ImportQuery;
-use Thelia\Model\Lang;
-use Thelia\Model\LangQuery;
-use Thelia\Tools\URL;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use Scraper\Controller\Scrapers\Megabad;
 use Scraper\Controller\Scrapers\Reuter;
 use Scraper\Controller\Scrapers\Skybad;
+use Scraper\Controller\Scrapers\Google;
+use Scraper\Controller\Scrapers\Idealo;
 class ScraperCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -56,6 +52,12 @@ class ScraperCommand extends ContainerAwareCommand
                     break;
                 case "Skybad":
                     $scraperClass = new Skybad();
+                    break;
+                case "Google":
+                    $scraperClass = new Google();
+                    break;
+                case "Idealo":
+                    $scraperClass = new Idealo();
                     break;
                 default:
                     echo "Platform ".$platform." not supported, sample: Reuter";
