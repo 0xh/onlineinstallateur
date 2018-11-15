@@ -65,7 +65,7 @@ class ImportProductsMySht extends ContainerAwareCommand
 
         echo"Zip fetched and extracted. \n";
 
-        $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot";
+        $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot" . DS;
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
