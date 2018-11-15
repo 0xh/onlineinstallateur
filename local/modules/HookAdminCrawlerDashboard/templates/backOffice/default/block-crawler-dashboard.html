@@ -103,19 +103,11 @@
                         </td>
 
                         <td>
-                            <table class="crawler-product table-responsive">
-                            <tr>
-                                <td>GC {$EK_PREIS_GC}</td>
-                            </tr>
-                            <tr>
-                                <td>SHT {$EK_PREIS_SHT}</td>                        
-                            </tr>
-                            <tr>
-                                <td>ÖAG {$EK_PREIS_OAG}</td>
-                            </tr>
-                         </table>
+                            {loop type="wholesale_partner" name="wholesale_partner_price" product_id=$ID partner_id=1}
+                                {$PRICE}
+                            {/loop}
                         </td>
-                        <td >Erster Preis</td>
+                        <td >Preis</td>
                         <td class="text-center">
                             <a href="{url path='/admin/products/update' product_id=$ID page=$page current_tab='prices'}" title="{intl l='Edit Prices On'} Hausfabrik">{format_money number=$BEST_TAXED_PRICE symbol=$currency_symbol}</a>
                         </td>
