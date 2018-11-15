@@ -4,13 +4,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thelia\Command\ContainerAwareCommand;
-use const DS;
-use const THELIA_LOCAL_DIR;
 use Scraper\Controller\Scrapers\Megabad;
 use Scraper\Controller\Scrapers\Reuter;
 use Scraper\Controller\Scrapers\Skybad;
 use Scraper\Controller\Scrapers\Google;
 use Scraper\Controller\Scrapers\Idealo;
+use const DS;
+use const THELIA_LOCAL_DIR;
+
 class ScraperCommand extends ContainerAwareCommand
 {
     protected function configure()

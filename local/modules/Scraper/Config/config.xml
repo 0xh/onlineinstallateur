@@ -6,6 +6,7 @@
 
      <commands>
     	<command class="Scraper\Commands\ScraperCommand"/>
+    	<command class="Scraper\Commands\ScraperListCommand"/>
      </commands>
 
 </config>

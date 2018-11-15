@@ -39,12 +39,12 @@ class ImportStockMySht extends ContainerAwareCommand
 
         $local_file = $this->fetchfromFTP();
 
-        if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv")) {
-            echo "File already existed, deleting \n";
-            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv");
-        }
+//         if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv")) {
+//             echo "File already existed, deleting \n";
+//             unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv");
+//         }
 
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtStock" . DS . "Artikelverfuegbarkeit" . date('_m.d.Y_H.i.s') . ".csv";
 
         if ($local_file != null) {
             $output = $this->formatFileForImport($local_file, $newFile, $startline, $stopline);
@@ -146,7 +146,7 @@ class ImportStockMySht extends ContainerAwareCommand
     {
 
         $server_file = "Artikelverfuegbarkeit.csv";
-        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtStock" . DS .$server_file;
 
         $ftp_user   = "mmai1018";
         $ftp_pass   = "PreiCra!2018";

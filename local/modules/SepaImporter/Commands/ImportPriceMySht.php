@@ -34,16 +34,16 @@ class ImportPriceMySht extends ContainerAwareCommand
         $output->writeln("Command started! \n");
         $startline = $input->getArgument('startline');
         $stopline = $input->getArgument('stopline');
-        $UR = new URL();
+        $URL = new URL();
 
         $local_file = $this->fetchfromFTP();
 
-        if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv")) {
-            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv");
+        if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS . "Mappe2new.csv")) {
+            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  "Mappe2new.csv");
             $output->writeln("File already existed, deleting \n");
         }
 
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Mappe2new.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  "Mappe2new.csv";
 
         $output->writeln("formating input file \n");
 
@@ -144,22 +144,7 @@ class ImportPriceMySht extends ContainerAwareCommand
     {
 
         $server_file = "Mappe2.csv";
-        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
-
-//        $ftp_user   = "mmai1018";
-//        $ftp_pass   = "PreiCra!2018";
-//        $ftp_server = "ftp.sht-net.at";
-//        $ftp_conn   = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
-//        $login      = ftp_login($ftp_conn, $ftp_user, $ftp_pass);
-//        ftp_pasv($ftp_conn, true) or die("Cannot switch to passive mode");
-//
-//        ftp_chdir($ftp_conn, "/preiscrawler");
-//        if (ftp_get($ftp_conn, $local_file, $server_file, FTP_ASCII)) {
-//            echo "Successfully written to $local_file. \n";
-//        } else {
-//            echo "Error downloading $server_file.";
-//        }
-//        ftp_close($ftp_conn);
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  $server_file;
 
         return $local_file;
     }
