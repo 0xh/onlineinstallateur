@@ -29,7 +29,33 @@ class WebBrowserController extends BaseAdminController {
     private $imageFile = ScraperConst::SCRAPER_IMAGES_DIR;
     private $videoFile = ScraperConst::SCRAPER_VIDEO_DIR;
     private $curl;
-    private $cookiefile = ScraperConst::SCRAPER_COOKIE_DIR;
+    private $cookiefile = ScraperConst::SCRAPER_COOKIE_DIR . DS . "cookie.txt";
+    private $userAgents = array(1 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/601.4.4 (KHTML, like Gecko) Version/9.0.3 Safari/601.4.4',
+        2 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2767.4 Safari/537.36',
+        3 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+        4 => 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1',
+        5 => 'Mozilla/5.0 (Windows NT 6.3; rv:36.0) Gecko/20100101 Firefox/36.0',
+        6 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10; rv:33.0) Gecko/20100101 Firefox/33.0',
+        7 => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
+        8 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+        9 => 'Opera/9.80 (X11; Linux i686; Ubuntu/14.10) Presto/2.12.388 Version/12.16',
+        10 => 'Opera/12.80 (Windows NT 5.1; U; en) Presto/2.10.289 Version/12.02',
+        11 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A',
+        12 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.13+ (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
+        13 => 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_2_1 like Mac OS X; en-US) AppleWebKit/534.11.7 (KHTML, like Gecko) Version/4.0.5 Mobile/8B114 Safari/6534.11.7',
+        14 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3608.4 Safari/537.36',
+        15 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+        16 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+        17 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0',
+        18 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1.2 Safari/605.1.15',
+        19 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134',
+        20 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15',
+        21 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.0 Safari/605.1.15',
+        22 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+        23 => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+        24 => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36',
+        25 => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
+    );
 
     /*
      * date/time when to create the files
@@ -168,7 +194,10 @@ class WebBrowserController extends BaseAdminController {
             CURLOPT_CUSTOMREQUEST => $typeRequest,
             CURLOPT_POSTFIELDS => $fields,
             CURLOPT_COOKIEFILE => $this->cookiefile,
-            CURLOPT_COOKIEJAR => $this->cookiefile
+            CURLOPT_COOKIEJAR => $this->cookiefile,
+            CURLOPT_USERAGENT, $this->userAgents[rand(1,25)],
+            CURLOPT_FOLLOWLOCATION, true,
+            CURLOPT_CAINFO, THELIA_CONF_DIR."key".DS."cacert-2018-10-17.pem"
         ));
 
         $response = curl_exec($this->curl);
@@ -194,7 +223,10 @@ class WebBrowserController extends BaseAdminController {
             // CURLOPT_CUSTOMREQUEST => $typeRequest,
             //CURLOPT_POSTFIELDS => $fields,
             CURLOPT_COOKIEFILE => $this->cookiefile,
-            CURLOPT_COOKIEJAR => $this->cookiefile
+            CURLOPT_COOKIEJAR => $this->cookiefile,
+            CURLOPT_USERAGENT, $this->userAgents[rand(1,25)],
+            CURLOPT_FOLLOWLOCATION, true,
+            CURLOPT_CAINFO, THELIA_CONF_DIR."key".DS."cacert-2018-10-17.pem"
         );
         if($fields != null) 
             $curlOptions[] = [CURLOPT_POSTFIELDS => $fields];

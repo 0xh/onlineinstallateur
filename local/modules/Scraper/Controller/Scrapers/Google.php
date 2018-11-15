@@ -3,6 +3,7 @@
 namespace Scraper\Controller\Scrapers;
 
 use Scraper\Controller\SimpleHtmlDomController;
+use Scraper\Controller\WebBrowserController;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,8 +26,7 @@ class Google extends PriceScraper implements PriceScraperInterface
     
     public function getPriceForProduct($webBrowser, $prodId)
     {
-        $searchUrl = 'https://www.google.com/search?hl=en-AT&tbm=shop&ei=QE_sW52MGcqlsAHzxbKAAw&q=' . $prodId['extern_id'] . '&oq=' . $prodId['extern_id'];
-
+        $searchUrl = 'https://www.google.com/search?hl=en-AT&tbm=shop&ei=u07tW46wLYn8swH4tKfwDw&q=' . $prodId['extern_id'] . '&oq=' . $prodId['extern_id'] ;
             $searchPageResult = $webBrowser->getPage($searchUrl);
             $resultSelector = ".A8OWCb";
             $notFound = "did not match any documents";
@@ -52,12 +52,8 @@ class Google extends PriceScraper implements PriceScraperInterface
                 if (strpos($searchPageResult,$notFound) !== FALSE)
                     $priceFromGoogle = -1;
             }
+            sleep(1);
             return $priceFromGoogle;
-    }
-    
-    public function savePageToFile($platform,$folder,$product,$content){
-        $newFile = THELIA_MODULE_DIR . "Scraper" . DS . "Log" . DS . $platform . DS . $folder . DS . $product["prod_id"] . "_" . $product['extern_id'] . "_".date("Y-m-d_H.i.s").".html";
-        file_put_contents($newFile, $content, FILE_APPEND);
     }
 
 }
