@@ -17,7 +17,7 @@ use Thelia\Controller\Admin\BaseAdminController;
  *
  * @author Catana Florin
  */
-class Reuter extends PriceScraper
+class Reuter extends PriceScraper implements PriceScraperInterface
 {
     public function getDataReuter($online,$startid,$stopid)
     {

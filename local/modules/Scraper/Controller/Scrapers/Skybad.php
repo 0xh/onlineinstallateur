@@ -11,7 +11,7 @@ use Thelia\Log\Tlog;
  *
  * @author Catana Florin
  */
-class Skybad extends PriceScraper
+class Skybad extends PriceScraper implements PriceScraperInterface
 {
     
     public function getDataSkybad($online,$startid,$stopid)

@@ -20,11 +20,15 @@
         <language>en_US</language>
         <language>de_DE</language>
     </languages>
-    <version></version>
+    <version>1.2</version>
     <authors>
         <author>
             <name>Catana Florin</name>
             <email>florian.catana@sepa.at</email>
+        </author>
+        <author>
+            <name>Emanuel Plopu</name>
+            <email>emanuel.plopu@sepa.at</email>
         </author>
     </authors>
     <type>classic</type>

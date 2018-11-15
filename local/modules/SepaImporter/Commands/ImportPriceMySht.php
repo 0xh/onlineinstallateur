@@ -8,12 +8,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Handler\ImportHandler;
 use Thelia\Model\ImportQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
 use Thelia\Tools\URL;
-use DOMDocument;
 use const DS;
 use const THELIA_LOCAL_DIR;
 

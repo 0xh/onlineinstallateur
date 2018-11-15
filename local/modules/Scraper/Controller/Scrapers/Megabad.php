@@ -15,7 +15,7 @@ use Exception;
  *
  * @author Catana Florin
  */
-class Megabad extends PriceScraper
+class Megabad extends PriceScraper implements PriceScraperInterface
 {
     public function getDataMegabad($online,$startid,$stopid)
     {

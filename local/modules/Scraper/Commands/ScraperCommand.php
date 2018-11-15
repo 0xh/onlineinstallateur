@@ -3,18 +3,14 @@ namespace Scraper\Commands;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Yaml\Exception\RuntimeException;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Model\ImportQuery;
-use Thelia\Model\Lang;
-use Thelia\Model\LangQuery;
-use Thelia\Tools\URL;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use Scraper\Controller\Scrapers\Megabad;
 use Scraper\Controller\Scrapers\Reuter;
 use Scraper\Controller\Scrapers\Skybad;
+use Scraper\Controller\Scrapers\Google;
+use Scraper\Controller\Scrapers\Idealo;
 class ScraperCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -48,22 +44,35 @@ class ScraperCommand extends ContainerAwareCommand
         
         if($platform != null){
             switch($platform) {
-                case "megabad":
+                case "Megabad":
                     $scraperClass = new Megabad();
                 break;
-                case "reuter":
+                case "Reuter":
                     $scraperClass = new Reuter();
                     break;
-                case "skybad":
+                case "Skybad":
                     $scraperClass = new Skybad();
                     break;
+                case "Google":
+                    $scraperClass = new Google();
+                    break;
+                case "Idealo":
+                    $scraperClass = new Idealo();
+                    break;
+                default:
+                    echo "Platform ".$platform." not supported, sample: Reuter";
             }
         } else {
             echo "Platform argument not given";
             return;
         }
+        if( $scraperClass != null) {
+            $scraperClass->getData($platform, $online, $startid, $stopid,1);
+            echo "End scraping ".$platform;
+        }   
+        else {
+            echo 'Scraper did not run';
+        };
         
-        $scraperClass->getData($platform, $online, $startid, $stopid,1);
-        echo "End scraping ".$platform;
     }
 }

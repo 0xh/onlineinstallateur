@@ -2,24 +2,11 @@
 
 namespace SepaImporter\Import;
 
-use Propel\Runtime\ActiveQuery\ModelCriteria;
-use RevenueDashboard\Events\RevenueDashboardBrandEvent;
-use RevenueDashboard\Events\RevenueDashboardBrandEvents;
-use RevenueDashboard\Events\RevenueDashboardCategoryEvent;
-use RevenueDashboard\Events\RevenueDashboardCategoryEvents;
-use RevenueDashboard\Model\WholesalePartnerProduct;
 use RevenueDashboard\Model\WholesalePartnerProductQuery;
-use Symfony\Component\Serializer\Exception\Exception;
-use Thelia\Core\Event\Product\ProductCreateEvent;
-use Thelia\Core\Event\Product\ProductUpdateEvent;
-use Thelia\Core\Event\ProductSaleElement\ProductSaleElementUpdateEvent;
-use Thelia\Core\Event\TheliaEvents;
 use Thelia\ImportExport\Import\AbstractImport;
 use Thelia\Log\Tlog;
-use Thelia\Model\Base\ProductQuery;
-use Thelia\Model\Base\ProductSaleElementsQuery;
-use Thelia\Model\ProductImage;
-use Thelia\Model\ProductImageI18n;
+use Thelia\Model\ProductQuery;
+use Thelia\Model\ProductSaleElementsQuery;
 use Thelia\Model\ProductPriceQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
@@ -77,14 +64,7 @@ class ShtPriceImporter extends AbstractImport
 
         //declare global variables
         $locale                         = 'de_DE';
-        $productExists                  = null;
-        $brandRefComponent              = null;
-        $categoryComponent              = null;
-        $brandRefId                     = null;
-        $refBuild                       = null;
         $wholesaleProduct               = null;
-        $matchingSuccessful             = FALSE;
-        $stockImport                    = FALSE;
         $price_import                   = FALSE;
         $partner_product_ref_price_list = null;
         $brutto_price_import            = null;
@@ -92,7 +72,8 @@ class ShtPriceImporter extends AbstractImport
 
         //USED
         $partner_product_ref_price_list = $this->rowHasField($row, "MATNR");
-        $price_from_separate_list       = $this->rowHasField($row, "YE49_plus_7") * 120 / 100;
+        $netto_price_from_list          = str_replace(',', '.', $this->rowHasField($row, "YE49_plus_7"));
+        $price_from_separate_list       = $netto_price_from_list * 120 / 100;
 
         //Insanity check
         if ($partner_product_ref_price_list) {
@@ -105,8 +86,6 @@ class ShtPriceImporter extends AbstractImport
         if ($wholesaleProduct && $price_from_separate_list) {
             $log->debug("Starting price update.");
             $newProdId = $wholesaleProduct->getProductId();
-
-            
 
             $product    = ProductQuery::create()
              ->findOneById($newProdId);
@@ -128,19 +107,28 @@ class ShtPriceImporter extends AbstractImport
             $newListen = $price_from_separate_list * 120 / 100;
             $brutto_price_import = $priceQ->getListenPrice();
             
-            if ($priceQ->getListenPrice() < $newListen) {
+            if ($brutto_price_import < $newListen) {
                 $brutto_price_import = $newListen;
             }
 
             $priceQ->setPrice($price_from_separate_list)
              ->setListenPrice($brutto_price_import)
              ->save();
-
-            $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
+             if($wholesaleProduct){
+                 $wholesaleProduct
+                 ->setPrice($netto_price_from_list)
+                 ->setPartnerId(1)
+                 ->setVersionCreatedBy("Xml_importer")
+                 ->save();
+                 $log->debug("New wholesale partner product price: " . $wholesaleProduct->getPrice());
+                 echo "New wholesale partner product price: " . $wholesaleProduct->getPrice();
+             }
+             $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
             echo ("modifying pseid:" . $priceQ->getProductSaleElementsId() . " old:" . $priceQ->getPrice() . " listen:" . $priceQ->getListenPrice()
-                ." new:".$price_from_separate_list." listen:".$brutto_price_import."\n");
+                ." new:".$price_from_separate_list." listen:".$brutto_price_import."\n");  
+            
         } else {
             if($this->no_match_count == $this->match_threshold) {
                 $this->total_parsed = $this->total_parsed + $this->no_match_count;

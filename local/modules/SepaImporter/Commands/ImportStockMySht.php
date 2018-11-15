@@ -40,8 +40,8 @@ class ImportStockMySht extends ContainerAwareCommand
         $local_file = $this->fetchfromFTP();
 
         if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv")) {
-            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv");
             echo "File already existed, deleting \n";
+            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv");
         }
 
         $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "Artikelverfuegbarkeit1.csv";
