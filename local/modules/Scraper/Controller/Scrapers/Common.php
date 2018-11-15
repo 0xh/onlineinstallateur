@@ -24,22 +24,21 @@ use Thelia\Model\ProductQuery;
 class Common extends BaseAdminController
 {
 
-    public static function getProductsExternId($online, $startid,$stopid)
+    public static function getProductsExternId($online, $startid, $stopid)
     {
         $collectionProducts = null;
-        $productQuery      = ProductQuery::create();
-        $upperLimit = "";
-        
-        if($stopid)
-            $upperLimit = " and " . ProductTableMap::ID . " <= ".$stopid;
-            
-        if($online){
-            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1 and " . ProductTableMap::ID . " >= ".$startid . $upperLimit);
+        $productQuery       = ProductQuery::create();
+        $upperLimit         = "";
+
+        if ($stopid)
+            $upperLimit = " and " . ProductTableMap::ID . " <= " . $stopid;
+
+        if ($online) {
+            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1 and " . ProductTableMap::ID . " >= " . $startid . $upperLimit);
+        } else {
+            $collectionProducts = $productQuery->where(ProductTableMap::ID . " > " . $startid . $upperLimit);
         }
-        else {
-            $collectionProducts = $productQuery->where(ProductTableMap::ID . " > ".$startid . $upperLimit);
-        }
-            
+
         $arrayProducts = array();
         foreach ($collectionProducts as $product) {
             array_push($arrayProducts, array("extern_id" => substr($product->getRef(), 3), "prod_id" => $product->getId()));
@@ -52,9 +51,9 @@ class Common extends BaseAdminController
     {
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
-        if(!$first_price || $first_price == null || $first_price == "")
-            $first_price = 0;
-        
+        if (!$first_price || $first_price == null || $first_price == "")
+            $first_price        = 0;
+
         if ($crawlerProductBase) {
             $crawlerProductBaseId = $crawlerProductBase->getId();
         } else {
@@ -71,18 +70,18 @@ class Common extends BaseAdminController
 
         if ($crawlerProductListing) {
             $crawlerProductListing->setFirstPrice($first_price)
-                ->setVersionCreatedBy("scraper.1.2")
-                ->save();
+             ->setVersionCreatedBy("scraper.1.2")
+             ->save();
         } else {
             $crawlerProductListing = new CrawlerProductListing();
             $crawlerProductListing->setProductBaseId($crawlerProductBaseId)
-                ->setFirstPosition(1)
-                ->setFirstPrice($first_price)
-                ->setPlatform($platform)
-                ->setVersionCreatedBy("scraper.1.2")
-                ->save();
+             ->setFirstPosition(1)
+             ->setFirstPrice($first_price)
+             ->setPlatform($platform)
+             ->setVersionCreatedBy("scraper.1.2")
+             ->save();
         }
-        
+
         return $crawlerProductListing->getId();
     }
 
