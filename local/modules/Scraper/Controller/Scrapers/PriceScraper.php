@@ -24,9 +24,9 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
         }  
     }
     
-    public function getDataFromArray($platform, $productArray)
+    public function getDataFromArray($platform, $productArray,$outputConsole = 0)
     {
-        foreach ($prodIds as $prodId) {
+        foreach ($productArray as $prodId) {
             $max_time = ini_get("max_execution_time");
             ini_set('max_execution_time', 10000);
             $webBrowser = new WebBrowserController($platform);

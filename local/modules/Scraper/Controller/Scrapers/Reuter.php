@@ -5,6 +5,7 @@ namespace Scraper\Controller\Scrapers;
 use Scraper\Controller\SimpleHtmlDomController;
 use Scraper\Controller\WebBrowserController;
 use Thelia\Controller\Admin\BaseAdminController;
+use Exception;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -39,8 +40,12 @@ class Reuter extends PriceScraper implements PriceScraperInterface
         $priceFromReuter = 0;
 
         foreach ($productResults as $value) {
+            try{
             $priceFromReuter = $value->parent->attr["qa-data-price"];
             $priceFromReuter = floatval($priceFromReuter);
+            }
+            catch (Exception $e) {
+            }
             break;
         }
         return $priceFromReuter;

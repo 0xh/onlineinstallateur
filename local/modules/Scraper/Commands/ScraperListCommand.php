@@ -15,6 +15,7 @@ use const THELIA_LOCAL_DIR;
 use Scraper\Controller\Scrapers\Common;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
+use Thelia\Model\Product;
 
 class ScraperListCommand extends ContainerAwareCommand
 {
@@ -54,7 +55,33 @@ class ScraperListCommand extends ContainerAwareCommand
             echo "Error copying file from ftp \n";
             return;
         }
-
+        
+        $arrayProducts = array();
+        if (($handle = fopen($csv_output, "r+")) !== FALSE) {
+            $row = 0;
+            $productQuery = ProductQuery::create();
+            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                if($row != 0) {
+                    $productQuery->clear();
+                    $product = $productQuery->
+                    where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
+                    ->findOne();
+                    if($product == null)
+                    {
+                        $product = new Product();
+                        $product->setRef("SCRAPER_".$data[2]); // must be unique
+                        $product->setVisible(0);
+                        $product->setDefaultCategory("379");
+                        $product->setVersionCreatedBy("scraper.15.11");
+                        $product->save();
+                        echo 'created '.$product->getRef()."\n";
+                    }
+                    array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
+                }
+                $row++;
+            }
+            fclose($handle);
+        }
         
         
         /** @var \Scraper\Controller\Scrapers\PriceScraper */
@@ -64,7 +91,7 @@ class ScraperListCommand extends ContainerAwareCommand
             switch($platform) {
                 case "Megabad":
                     $scraperClass = new Megabad();
-                break;
+                    break;
                 case "Reuter":
                     $scraperClass = new Reuter();
                     break;
@@ -85,30 +112,8 @@ class ScraperListCommand extends ContainerAwareCommand
             return;
         }
         
-        $arrayProducts = array();
-        if (($handle = fopen($csv_output, "r+")) !== FALSE) {
-            $row = 0;
-            $productQuery = ProductQuery::create();
-            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
-                if($row != 0) {
-                    $productQuery->clear();
-                    $product = $productQuery->
-                    where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
-                    ->findOne();
-                    if($product != null)
-                        echo 'FOUND '.$data[2]. " ".$product->getId(). " ".$product->getRef()."\n";
-                    else 
-                        echo 'NOTFOUND ' . $data[2] . "\n";
-                    array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $row));
-                }
-                $row++;
-            }
-            fclose($handle);
-        }
-        
         if( $scraperClass != null) {
-
-            $scraperClass->getDataFromArray($platform, $productArray);
+            $scraperClass->getDataFromArray($platform, $arrayProducts,1);
             echo "End list scraping ".$platform;
         }   
         else {
