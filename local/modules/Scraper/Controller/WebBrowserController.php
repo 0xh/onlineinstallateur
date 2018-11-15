@@ -47,7 +47,7 @@ class WebBrowserController extends BaseAdminController {
 
         $this->date = date('_m.d.Y_H.i.s', time());
 
-        $this->setLogFile($nameLogFile . $this->date . ".txt");
+        $this->setLogFile($nameLogFile . DS . "log-".$this->date . ".txt");
 
         if ($nameZipFile) {
             $this->setZipFile($nameZipFile . $this->date . ".zip");

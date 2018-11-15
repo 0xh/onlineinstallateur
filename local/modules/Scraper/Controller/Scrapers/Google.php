@@ -28,12 +28,14 @@ class Google extends PriceScraper implements PriceScraperInterface
         $searchUrl = 'https://www.google.com/search?hl=en-AT&tbm=shop&ei=QE_sW52MGcqlsAHzxbKAAw&q=' . $prodId['extern_id'] . '&oq=' . $prodId['extern_id'];
 
             $searchPageResult = $webBrowser->getPage($searchUrl);
-            $resultSelector = '.A8OWCb';
-            
+            $resultSelector = ".A8OWCb";
+            $notFound = "did not match any documents";
+            $this->savePageToFile('Google', 'Search', $prodId, $searchPageResult);
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
 
             $productResults = $html->find($resultSelector);
+            
             $priceFromGoogle = 0;
             
             foreach ($productResults as $value) {
@@ -45,7 +47,17 @@ class Google extends PriceScraper implements PriceScraperInterface
                 }
                 break;
             }
+            
+            if($priceFromGoogle == 0) {
+                if (strpos($searchPageResult,$notFound) !== FALSE)
+                    $priceFromGoogle = -1;
+            }
             return $priceFromGoogle;
+    }
+    
+    public function savePageToFile($platform,$folder,$product,$content){
+        $newFile = THELIA_MODULE_DIR . "Scraper" . DS . "Log" . DS . $platform . DS . $folder . DS . $product["prod_id"] . "_" . $product['extern_id'] . "_".date("Y-m-d_H.i.s").".html";
+        file_put_contents($newFile, $content, FILE_APPEND);
     }
 
 }

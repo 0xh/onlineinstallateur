@@ -66,8 +66,13 @@ class ScraperCommand extends ContainerAwareCommand
             echo "Platform argument not given";
             return;
         }
+        if( $scraperClass != null) {
+            $scraperClass->getData($platform, $online, $startid, $stopid,1);
+            echo "End scraping ".$platform;
+        }   
+        else {
+            echo 'Scraper did not run';
+        };
         
-        $scraperClass->getData($platform, $online, $startid, $stopid,1);
-        echo "End scraping ".$platform;
     }
 }

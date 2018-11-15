@@ -8,7 +8,7 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
     
     public function getData($platform,$online,$startid,$stopid,$outputConsole = 0)
     {
-        $webBrowser = new WebBrowserController($platform."-log");
+        $webBrowser = new WebBrowserController($platform);
         $webBrowser->init();
         $prodIds = Common::getProductsExternId($online,$startid,$stopid);
         foreach ($prodIds as $prodId) {
@@ -17,7 +17,7 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
             //each subclass must implement this
             $price = $this->getPriceForProduct($webBrowser, $prodId);
             if($outputConsole)
-                echo "PriceScraper ".$prodId["prod_id"]." ".$platform." ".$price." \n";
+                echo "PriceScraper ".$prodId["prod_id"]." ".$prodId['extern_id']." ".$platform." ".$price." \n";
             $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
             $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
             ini_set('max_execution_time', $max_time);
