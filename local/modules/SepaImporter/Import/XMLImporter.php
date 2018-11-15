@@ -42,6 +42,7 @@ class XMLImporter extends AbstractImport
 
     protected static $logger;
     protected $is_error_filecreated = FALSE;
+    protected $mandatoryColumns = [];
 
     public function rowHasField($row, $field)
     {
@@ -62,8 +63,6 @@ class XMLImporter extends AbstractImport
         $max_time = ini_get("max_execution_time");
         ini_set('max_execution_time', 60000);
         $i        = 0;
-
-        $log->debug("STARTED");
 
         $log->debug("XML PRODUCT IMPORT");
         foreach ($row as $key => $value) {
@@ -102,7 +101,7 @@ class XMLImporter extends AbstractImport
         $partner_product_ref            = $this->rowHasField($row, "matchcode");
 
 
-
+        echo 'XMLImporter ' .$partner_product_ref."\n";
         //Insanity check
         if ($stock_import == null) {
             $stock_import = $this->rowHasField($row, "verf.Menge");
@@ -142,6 +141,8 @@ class XMLImporter extends AbstractImport
         }  else {
             $log->debug("NO matchcode! ");
         }
+        
+        
 
         if ($wholesaleProduct && $partner_product_ref) {
             $wPId        = $wholesaleProduct->getProductId();
@@ -189,12 +190,32 @@ class XMLImporter extends AbstractImport
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
         }
-        $productExists = count($productQuerry->findByRef($refBuild));
-        $log->debug("Product Exists? " . $productExists);
+        
+        $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
+        $foundProductCount = count($foundExistingfProduct);
+
+        if($refBuild && $foundProductCount > 0) {
+            echo "Creating WWP for ".$refBuild."\n";
+            $productQuerry->clear();
+            $foundProduct = $productQuerry->findOneByRef($refBuild)->getId();
+            
+            $revenueDash2 = new WholesalePartnerProduct();
+            
+            if ($partner_product_ref != null) {
+                $revenueDash2->setPartnerProdRef($partner_product_ref)
+                ->setProductId($foundProduct)
+                ->setPrice($netto_price_import)
+                ->setPartnerId(1)
+                ->setVersionCreatedBy("Xml_importer")
+                ->save();
+                $log->debug("New wholesale partner product price: " . $revenueDash2->getPrice());
+            }
+        }
 
 
+        
         //creating a new product
-        if ($productExists == 0 && $matchingSuccessful) {
+        if ($foundProductCount == 0 && $matchingSuccessful) {
             $time_before_newProduct        = microtime(true);
             $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
             $log->debug("Exec-time before new product " . $execution_time_before_product . " ms.");
