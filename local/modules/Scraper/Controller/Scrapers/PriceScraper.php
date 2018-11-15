@@ -24,7 +24,7 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
         }  
     }
     
-    public function getDataFromArray($platform, $productArray,$outputConsole = 0)
+    public function getDataFromArray($platform, $productArray,$outputConsole = 0,$version = "scraper")
     {
         foreach ($productArray as $prodId) {
             $max_time = ini_get("max_execution_time");
@@ -35,7 +35,7 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
             $price = $this->getPriceForProduct($webBrowser, $prodId);
             if($outputConsole)
                 echo "PriceScraper ".$prodId["prod_id"]." ".$prodId['extern_id']." ".$platform." ".$price." \n";
-                $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
+                $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price, $version));
                 $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
                 $webBrowser->close();
                 ini_set('max_execution_time', $max_time);

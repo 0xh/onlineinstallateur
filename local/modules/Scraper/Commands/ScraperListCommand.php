@@ -26,6 +26,8 @@ class ScraperListCommand extends ContainerAwareCommand
          ->setDescription("List based price scraper")
          ->addArgument(
           'platform', InputArgument::REQUIRED, 'Specify paltform - skybad,reuter,megabad')
+         ->addArgument(
+          'version', InputArgument::REQUIRED, 'Specify list stop line number')
         ->addArgument(
             'startline', InputArgument::REQUIRED, 'Specify list start line number')
         ->addArgument(
@@ -41,6 +43,7 @@ class ScraperListCommand extends ContainerAwareCommand
         $platform = $input->getArgument('platform');
         $startline = $input->getArgument('startline');
         $stopline = $input->getArgument('stopline');
+        $version = $input->getArgument('version');
         
         $URL = new URL();
         $local_file = $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
@@ -113,7 +116,7 @@ class ScraperListCommand extends ContainerAwareCommand
         }
         
         if( $scraperClass != null) {
-            $scraperClass->getDataFromArray($platform, $arrayProducts,1);
+            $scraperClass->getDataFromArray($platform, $arrayProducts, 1, $version);
             echo "End list scraping ".$platform;
         }   
         else {
