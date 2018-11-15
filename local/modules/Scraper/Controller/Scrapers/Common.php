@@ -48,7 +48,7 @@ class Common extends BaseAdminController
         return $arrayProducts;
     }
 
-    public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0)
+    public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0,$version = "scraper.1.2")
     {
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
@@ -71,7 +71,7 @@ class Common extends BaseAdminController
 
         if ($crawlerProductListing) {
             $crawlerProductListing->setFirstPrice($first_price)
-                ->setVersionCreatedBy("scraper.1.2")
+            ->setVersionCreatedBy($version)
                 ->save();
         } else {
             $crawlerProductListing = new CrawlerProductListing();
@@ -79,7 +79,7 @@ class Common extends BaseAdminController
                 ->setFirstPosition(1)
                 ->setFirstPrice($first_price)
                 ->setPlatform($platform)
-                ->setVersionCreatedBy("scraper.1.2")
+                ->setVersionCreatedBy($version)
                 ->save();
         }
         
