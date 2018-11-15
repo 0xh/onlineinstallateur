@@ -37,7 +37,7 @@ class ImportProductsMySht extends ContainerAwareCommand
 
         $current_date = date("Y-m-d H:i:s");
         $zip_name     = "import" . md5($current_date) . ".zip";
-        $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $zip_name;
+        $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . $zip_name;
         $zipResource  = fopen($zipFile, "w");
         $ch           = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -56,7 +56,7 @@ class ImportProductsMySht extends ContainerAwareCommand
         }
         curl_close($ch);
         $zip         = new ZipArchive;
-        $extractPath = THELIA_LOCAL_DIR . "sepa" . DS . "import";
+        $extractPath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts";
         if ($zip->open($zipFile) != "true") {
             echo "Error :- Unable to open the Zip File";
         }
@@ -65,7 +65,7 @@ class ImportProductsMySht extends ContainerAwareCommand
 
         echo"Zip fetched and extracted. \n";
 
-        $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . "/wwwroot/";
+        $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot";
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {

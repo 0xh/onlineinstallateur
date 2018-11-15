@@ -5,10 +5,8 @@ use Thelia\Controller\Admin\BaseAdminController;
 
 class PriceScraper extends BaseAdminController implements PriceScraperInterface
 {
-    
     public function getData($platform,$online,$startid,$stopid,$outputConsole = 0)
     {
-        
         $prodIds = Common::getProductsExternId($online,$startid,$stopid);
         foreach ($prodIds as $prodId) {
             $max_time = ini_get("max_execution_time");
@@ -21,10 +19,27 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
                 echo "PriceScraper ".$prodId["prod_id"]." ".$prodId['extern_id']." ".$platform." ".$price." \n";
             $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
             $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
+            $webBrowser->close();
             ini_set('max_execution_time', $max_time);
-        }
-        
-        $webBrowser->close();
+        }  
+    }
+    
+    public function getDataFromArray($platform, $productArray)
+    {
+        foreach ($prodIds as $prodId) {
+            $max_time = ini_get("max_execution_time");
+            ini_set('max_execution_time', 10000);
+            $webBrowser = new WebBrowserController($platform);
+            $webBrowser->init();
+            //each subclass must implement this
+            $price = $this->getPriceForProduct($webBrowser, $prodId);
+            if($outputConsole)
+                echo "PriceScraper ".$prodId["prod_id"]." ".$prodId['extern_id']." ".$platform." ".$price." \n";
+                $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
+                $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
+                $webBrowser->close();
+                ini_set('max_execution_time', $max_time);
+        } 
     }
     
     public function getPriceForProduct($webBrowser, $prodId)

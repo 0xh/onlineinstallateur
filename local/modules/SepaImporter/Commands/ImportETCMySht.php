@@ -133,21 +133,6 @@ class ImportETCMySht extends ContainerAwareCommand
 
         $server_file = "Artikelliste.csv";
         $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $server_file;
-//        $ftp_user   = "mmai1018";
-//        $ftp_pass   = "PreiCra!2018";
-//        $ftp_server = "ftp.sht-net.at";
-//        $ftp_conn   = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
-//        $login      = ftp_login($ftp_conn, $ftp_user, $ftp_pass);
-//        ftp_pasv($ftp_conn, true) or die("Cannot switch to passive mode");
-//
-//        ftp_chdir($ftp_conn, "/preiscrawler");
-        //        if (ftp_get($ftp_conn, $local_file, $server_file, FTP_ASCII)) {
-//            echo "Successfully written to $local_file. \n";
-//        } else {
-//            echo "Error downloading $server_file.";
-//        }
-//        ftp_close($ftp_conn);
-        //        $local_file_new     = $this->replaceDelimiters($local_file);
 
 
         return $local_file;
