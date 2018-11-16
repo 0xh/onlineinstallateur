@@ -89,10 +89,10 @@ class ScraperListCommand extends ContainerAwareCommand
                             echo 'created '.$product->getRef()."\n";
                         }
                         array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
-                        file_put_contents($versionFile, array($data[2],$product->getId()), FILE_APPEND);
+                        file_put_contents($versionFile, array($data[2].",",$product->getId().PHP_EOL), FILE_APPEND);
                     }
                     else {
-                        file_put_contents($versionFile, array("extern_id", "prod_id"), FILE_APPEND);
+                        file_put_contents($versionFile, array("extern_id,", "prod_id".PHP_EOL), FILE_APPEND);
                     }
                     $row++;
                     if($this->no_match_count == $this->match_threshold) {
