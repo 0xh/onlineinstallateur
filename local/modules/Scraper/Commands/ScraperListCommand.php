@@ -152,7 +152,7 @@ class ScraperListCommand extends ContainerAwareCommand
         
         if( $scraperClass != null) {
             $scraperClass->getDataFromArray($platform, $arrayProducts, 1, $version);
-            echo "End list scraping ".$platform;
+            echo "End list scraping ".$platform. "\n";
         }   
         else {
             echo 'ScraperList did not run';
