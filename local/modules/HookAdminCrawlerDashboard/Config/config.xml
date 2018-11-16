@@ -13,6 +13,7 @@
         <loop name="crawler_product" class="HookAdminCrawlerDashboard\Loop\CrawlerProductLoop" />
         <loop name="crawler_listing" class="HookAdminCrawlerDashboard\Loop\CrawlerListingLoop" />
         <loop name="wholesale_partner" class="HookAdminCrawlerDashboard\Loop\WholesalePartnerPurchaseLoop" />
+        <loop name="crowled_versions" class="HookAdminCrawlerDashboard\Loop\WholesaleCrowledDistinctVersions" />
     </loops>
     <forms>
         <!--
