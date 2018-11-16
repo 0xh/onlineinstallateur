@@ -115,15 +115,15 @@
                             <a href="{url path='/admin/products/update' product_id=$ID page=$page}" title="{intl l='Edit this product'}">{$REF}</a>
                         </td>
 
-                        <td>
+                        <td class="text-center">
                             {loop type="wholesale_partner" name="wholesale_partner_price" product_id=$ID partner_id=1}
                                 {$PRICE}
                             {/loop}
                         </td>
-                        <td >Preis</td>
+                        <td class="text-center">Preis</td>
                         <td class="text-center">
                             <a href="{url path='/admin/products/update' product_id=$ID page=$page current_tab='prices'}" title="{intl l='Edit Prices On'} Hausfabrik">{format_money number=$BEST_TAXED_PRICE symbol=$currency_symbol}</a>
-                        </td>
+                        </td class="text-center">
                         {loop name="crawler_product_listing" type="crawler_listing" product_base_id=$CRAWLER_ID}
                             {if $PLATFORM != 'Idealo'}
                                 <td class="product_listing  text-center">
