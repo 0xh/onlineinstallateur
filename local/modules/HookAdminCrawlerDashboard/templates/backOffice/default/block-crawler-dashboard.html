@@ -6,14 +6,14 @@
 {$platform_filter={$smarty.get.platform|default:''}}
 {$position_sorting={$smarty.get.position|default:'asc'}}
 {$search_term={$smarty.get.search_term|default:''}}
-
+{$version={$smarty.get.version|default:''}}
 <div class="general-block-decorator dashboard">
     <div class="title title-without-tabs clearfix">
         {intl l='Dashboard Crawler' d='hookadmincrawlerdashboard.bo.default'}
     </div>
     <section class="clearfix">
         {ifloop rel="brand-filter"}
-            <div class="block block-nav col-md-2 col-lg-2 col-xlg-2 col-sm-6 col-xs-12 text-left" role="navigation" aria-labelledby="search-label">
+            <div class="block block-nav col-md-2 col-lg-2 col-xlg-2 col-sm-5 col-xs-12 text-left" role="navigation" aria-labelledby="search-label">
                 <h5  id="search-label">{intl l="Brand" d="criteriasearch.fo.default"}</h5>
                 <select class="filter filter_brand">
                     <option value="">{intl l="All brands"}</option>
@@ -24,7 +24,7 @@
             </div>
         {/ifloop}
         
-        <div class="block block-nav col-md-2 col-lg-2 col-xlg-2 col-sm-6 col-xs-12  text-left" role="navigation" aria-labelledby="search-label">
+        <div class="block block-nav col-md-2 col-lg-2 col-xlg-2 col-sm-5 col-xs-12  text-left" role="navigation" aria-labelledby="search-label">
             <h5  id="search-label">{intl l="Platform" d="criteriasearch.fo.default"}</h5>
             <select class="filter filter_platform">
                 <option value="">{intl l="All platforms"}</option>
@@ -36,9 +36,22 @@
                 <option value="Skybad" {if $platform_filter|strstr:"Skybad"}selected{/if}>SKYBAD</option>
             </select>
         </div>
+        
+        {ifloop rel="crowled_versions_number"}
+            <div class="block block-nav col-md-2 col-lg-2 col-xlg-2 col-sm-2 col-xs-12  text-left" role="navigation" aria-labelledby="search-label">
+                <h5  id="search-label">{intl l="Version" d="admincrawlerdashboard.fo.default"}</h5>
+                <select class="filter filter_version">
+                    <option value="">{intl l="All versions"}</option>
+                    {loop type="crowled_versions" name="crowled_versions_number"}
+                        <option value="{$VERSION_NUMBER}" {if $version|strstr:"{$VERSION_NUMBER}"}selected{/if}>{$VERSION_NUMBER}</option>
+                    {/loop}
+                </select>
+            </div>
+        {/ifloop}
+        
         {assign var="position_sorting" value="asc" nocache}
 
-        <div class="sidebar-search col-md-6 col-xlg-6 col-sm-12 co-xs-12">
+        <div class="sidebar-search col-md-6 col-lg-6 col-xlg-6 col-sm-12 co-xs-12">
             <h5  id="search-label">{intl l="Search" d="criteriasearch.fo.default"}</h5>
             <form action="{url path='/admin/module/HookAdminCrawlerDashboard'}">                                        
                 <div class="input-group">
@@ -88,7 +101,7 @@
                     </tr> 
                 </thead> 
                 <tbody>  
-                {loop name="product_position_list" type="crawler_product" position=$position_sorting search_mode="sentence" search_term=$search_term search_in="ean_code,ref,title,id" platform=$platform_filter visible="*" brand=$brand_filter has_ean="1" order=$product_order page=$page  limit={config key="number_default_results_per_page.category_list" default=10} return_url=false}
+                {loop name="product_position_list" type="crawler_product" position=$position_sorting search_mode="sentence" search_term=$search_term search_in="ean_code,ref,title,id" platform=$platform_filter visible="*" brand=$brand_filter has_ean="1" order=$product_order page=$page version=$version limit={config key="number_default_results_per_page.category_list" default=10} return_url=false}
                     <tr>
                         <td>{$ID}</td>
                         <td>
@@ -134,7 +147,7 @@
                      file = "includes/pagination.html"
                      loop_ref       = "product_position_list"
                      max_page_count = 10
-                     page_url       = {url path="/admin/module/HookAdminCrawlerDashboard" product_order=$product_order brand=$brand_filter position=$position_sorting platform=$platform_filter search_term=$search_term}
+                     page_url       = {url path="/admin/module/HookAdminCrawlerDashboard" product_order=$product_order brand=$brand_filter position=$position_sorting platform=$platform_filter search_term=$search_term version=$version}
                      }
                  </td>
              </tr>

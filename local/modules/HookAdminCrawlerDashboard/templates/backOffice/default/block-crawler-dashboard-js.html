@@ -17,19 +17,27 @@ $( '.filter' ).change(function() {
   	
 	platform = $('.filter_platform').val();
 	brand = $('.filter_brand').val();
-	
-  	if(platform &&  brand)
-  		window.location.href = '?platform=' + platform + '&brand='+ brand + pos;
-   	else if(brand || platform) {
-	  	if(brand)
-	  		window.location.href = '?brand=' + brand;
-	  	if(platform) 
-	  		window.location.href = '?platform=' + platform + pos;
-  	}
-  	else {
-  		window.location.href = 'HookAdminCrawlerDashboard';
-  	}
-  	
+	version = $('.filter_version').val();
+        
+        if(platform && brand && version){
+            window.location.href = '?platform=' + platform + '&brand='+ brand + '&version=' + version + pos;
+        } else if(platform && ( brand || version ) ) {
+            if( brand ){
+                window.location.href = '?platform=' + platform + '&brand='+ brand + pos;
+            } else if(version){
+                window.location.href = '?platform=' + platform + '&version=' + version + pos;
+            } else{
+                window.location.href = '?platform=' + platform + pos;
+            }
+        } else if( brand || version ){
+            if( brand ){
+                window.location.href = '?brand='+ brand + pos;
+            } else {
+                window.location.href = '?version=' + version + pos;
+            }
+        } else{
+            window.location.href = 'HookAdminCrawlerDashboard';
+        }
 });
 
 $( '.crawler-start' ).click(function() {
