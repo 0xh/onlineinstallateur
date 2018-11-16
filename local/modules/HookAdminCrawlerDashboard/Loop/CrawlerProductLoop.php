@@ -36,7 +36,8 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 					Argument::createBooleanTypeArgument('active'),
 					Argument::createBooleanTypeArgument('action_required'),
 					Argument::createAnyTypeArgument('platform'),
-					Argument::createAnyTypeArgument('position')
+					Argument::createAnyTypeArgument('position'),
+                                        Argument::createAnyTypeArgument('version')
 				]
 				);
 	}
@@ -54,6 +55,7 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		$action_required = $this->getActionRequired();
 		$platform = $this->getPlatform();
 		$position = $this->getPosition();
+                $version = $this->getVersion();
 		
 		$crawlerProductBaseJoin = new Join();
 		$crawlerProductBaseJoin->addExplicitCondition(ProductTableMap::TABLE_NAME, 'ID', null, CrawlerProductBaseTableMap::TABLE_NAME, 'PRODUCT_ID','cpb');
@@ -78,6 +80,9 @@ class CrawlerProductLoop extends Product implements PropelSearchLoopInterface
 		if($action_required)
 			$query->where('cpb.action_required =?', $action_required, \PDO::PARAM_BOOL);
 		
+                if($version)
+                    $query->where('cpb.version =?', $version, \PDO::PARAM_INT);
+                
 		return $query;
 	}
 	
