@@ -78,7 +78,7 @@ class ScraperListCommand extends ContainerAwareCommand
                         $product->setRef("SCRAPER_".$data[2]); // must be unique
                         $product->setVisible(0);
                         $product->setDefaultCategory("382");
-                        $product->setVersionCreatedBy("scraper.15.11");
+                        $product->setVersionCreatedBy($version);
                         $product->save();
                         echo 'created '.$product->getRef()."\n";
                     }
