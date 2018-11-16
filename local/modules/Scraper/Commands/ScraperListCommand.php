@@ -12,17 +12,16 @@ use Scraper\Controller\Scrapers\Google;
 use Scraper\Controller\Scrapers\Idealo;
 use const DS;
 use const THELIA_LOCAL_DIR;
-use Scraper\Controller\Scrapers\Common;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Product;
 
-private $match_threshold = 100;
-private $no_match_count = 0;
-private $total_parsed = 0;
-
 class ScraperListCommand extends ContainerAwareCommand
 {
+    private $match_threshold = 100;
+    private $no_match_count = 0;
+    private $total_parsed = 0;
+    
     protected function configure()
     {
         $this
