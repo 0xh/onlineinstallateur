@@ -12,13 +12,16 @@ use Scraper\Controller\Scrapers\Google;
 use Scraper\Controller\Scrapers\Idealo;
 use const DS;
 use const THELIA_LOCAL_DIR;
-use Scraper\Controller\Scrapers\Common;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Product;
 
 class ScraperListCommand extends ContainerAwareCommand
 {
+    private $match_threshold = 100;
+    private $no_match_count = 0;
+    private $total_parsed = 0;
+    
     protected function configure()
     {
         $this
@@ -62,31 +65,60 @@ class ScraperListCommand extends ContainerAwareCommand
             return;
         }
         
+        $versionFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . $version . ".csv";
+        
         $arrayProducts = array();
-        if (($handle = fopen($csv_output, "r+")) !== FALSE) {
-            $row = 0;
-            $productQuery = ProductQuery::create();
-            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
-                if($row != 0) {
-                    $productQuery->clear();
-                    $product = $productQuery->
-                    where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
-                    ->findOne();
-                    if($product == null && $createProducts == 1)
-                    {
-                        $product = new Product();
-                        $product->setRef("SCRAPER_".$data[2]); // must be unique
-                        $product->setVisible(0);
-                        $product->setDefaultCategory("382");
-                        $product->setVersionCreatedBy("scraper.15.11");
-                        $product->save();
-                        echo 'created '.$product->getRef()."\n";
+        if(!file_exists($versionFile)) {
+            if (($handle = fopen($csv_output, "r+")) !== FALSE) {
+                $row = 0;
+                $productQuery = ProductQuery::create();
+                while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                    if($row != 0) {
+                        $productQuery->clear();
+                        $product = $productQuery->
+                        where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
+                        ->findOne();
+                        if($product == null && $createProducts == 1)
+                        {
+                            $product = new Product();
+                            $product->setRef("SCRAPER_".$data[2]); // must be unique
+                            $product->setVisible(0);
+                            $product->setDefaultCategory("382");
+                            $product->setVersionCreatedBy($version);
+                            $product->save();
+                            echo 'created '.$product->getRef()."\n";
+                        }
+                        array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
+                        file_put_contents($versionFile, array($data[2].",",$product->getId().PHP_EOL), FILE_APPEND);
                     }
-                    array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
+                    else {
+                        file_put_contents($versionFile, array("extern_id,", "prod_id".PHP_EOL), FILE_APPEND);
+                    }
+                    $row++;
+                    if($this->no_match_count == $this->match_threshold) {
+                        $this->total_parsed = $this->total_parsed + $this->no_match_count;
+                        echo ("Loaded ".$this->total_parsed . " products \n");
+                        $this->no_match_count = 0;
+                    } else {
+                        $this->no_match_count++;
+                    }
                 }
-                $row++;
+                fclose($handle);
             }
-            fclose($handle);
+        } else {if (($handle = fopen($versionFile, "r+")) !== FALSE) {
+            echo "CompleteCSV found ".$versionFile." \n";
+            while (($completeCSV = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                $row = 0;
+                    if($row != 0) {
+                        array_push($arrayProducts, array("extern_id" => $completeCSV[0], "prod_id" => $completeCSV[1]));
+                    }
+                    $row++;
+                }
+                }
+        
+        $fp = fopen($versionFile, "a+");
+        fclose($fp);
+
         }
         
         
@@ -120,7 +152,7 @@ class ScraperListCommand extends ContainerAwareCommand
         
         if( $scraperClass != null) {
             $scraperClass->getDataFromArray($platform, $arrayProducts, 1, $version);
-            echo "End list scraping ".$platform;
+            echo "End list scraping ".$platform. "\n";
         }   
         else {
             echo 'ScraperList did not run';
