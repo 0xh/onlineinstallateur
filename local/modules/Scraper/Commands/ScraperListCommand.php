@@ -17,6 +17,10 @@ use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Product;
 
+private $match_threshold = 100;
+private $no_match_count = 0;
+private $total_parsed = 0;
+
 class ScraperListCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -85,6 +89,13 @@ class ScraperListCommand extends ContainerAwareCommand
                     array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
                 }
                 $row++;
+                if($this->no_match_count == $this->match_threshold) {
+                    $this->total_parsed = $this->total_parsed + $this->no_match_count;
+                    echo ("Loaded ".$this->total_parsed . " products \n");
+                    $this->no_match_count = 0;
+                } else {
+                    $this->no_match_count++;
+                }
             }
             fclose($handle);
         }
