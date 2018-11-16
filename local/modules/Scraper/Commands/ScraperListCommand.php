@@ -27,11 +27,13 @@ class ScraperListCommand extends ContainerAwareCommand
          ->addArgument(
           'platform', InputArgument::REQUIRED, 'Specify paltform - skybad,reuter,megabad')
          ->addArgument(
-          'version', InputArgument::REQUIRED, 'Specify list stop line number')
+          'version', InputArgument::REQUIRED, 'Specify import version')
         ->addArgument(
             'startline', InputArgument::REQUIRED, 'Specify list start line number')
         ->addArgument(
             'stopline', InputArgument::REQUIRED, 'Specify list stop line number')
+        ->addArgument(
+            'createproducts', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
         ;
     }
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -44,6 +46,7 @@ class ScraperListCommand extends ContainerAwareCommand
         $startline = $input->getArgument('startline');
         $stopline = $input->getArgument('stopline');
         $version = $input->getArgument('version');
+        $createProducts = $input->getArgument('createproducts');
         
         $URL = new URL();
         $local_file = $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
@@ -69,12 +72,12 @@ class ScraperListCommand extends ContainerAwareCommand
                     $product = $productQuery->
                     where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
                     ->findOne();
-                    if($product == null)
+                    if($product == null && $createProducts == 1)
                     {
                         $product = new Product();
                         $product->setRef("SCRAPER_".$data[2]); // must be unique
                         $product->setVisible(0);
-                        $product->setDefaultCategory("379");
+                        $product->setDefaultCategory("382");
                         $product->setVersionCreatedBy("scraper.15.11");
                         $product->save();
                         echo 'created '.$product->getRef()."\n";
