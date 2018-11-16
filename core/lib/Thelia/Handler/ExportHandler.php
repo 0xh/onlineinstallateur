@@ -158,6 +158,7 @@ class ExportHandler
         $includeDocuments = false,
         $rangeDate = null,
         $exportFrom = null,
+        $exportFromPartner = null,
         $tvaTaxes = null
     ) {
         $exportHandleClass = $export->getHandleClass();
@@ -191,20 +192,24 @@ class ExportHandler
                 $rangeDate['end']['year'] . '-' . ($rangeDate['end']['month'] + 1) . '-0 23:59:59'
             );
         }
+        
+        
         $instance->setRangeDate($rangeDate);
         
         $instance->setExportFrom($exportFrom);
+        $instance->setExportFromPartner($exportFromPartner);
         $instance->setTvaTaxes($tvaTaxes);
 
         // Process export
         $event = new ExportEvent($instance, $serializer, $archiver);
 
         $this->eventDispatcher->dispatch(TheliaEvents::EXPORT_BEGIN, $event);
-
+//var_dump($event->getExport());
+//die("Saa1s");
         $filePath = $this->processExport($event->getExport(), $event->getSerializer());
 
         $event->setFilePath($filePath);
-
+        
         $this->eventDispatcher->dispatch(TheliaEvents::EXPORT_FINISHED, $event);
 
 
@@ -254,26 +259,36 @@ class ExportHandler
 
         $filePath = THELIA_CACHE_DIR . 'export' . DS . $filename;
 
+       
         $fileSystem = new Filesystem;
         $fileSystem->mkdir(dirname($filePath));
 
         $file = new \SplFileObject($filePath, 'w+b');
 
         $serializer->prepareFile($file);
-
+ 
         foreach ($export as $idx => $data) {
+         
             $data = $export->beforeSerialize($data);
             $data = $export->applyOrderAndAliases($data);
+
             $data = $serializer->serialize($data);
             $data = $export->afterSerialize($data);
-
+             
             if ($idx > 0) {
                 $data = $serializer->separator() . $data;
             }
 
             $file->fwrite($data);
+            
+//            echo '<pre>';
+//  var_dump(count($export));
+//  var_dump($data);
+//        die;           
+            
         }
-
+// var_dump($filePath);
+//        die;  
         $serializer->finalizeFile($file);
 
         unset($file);

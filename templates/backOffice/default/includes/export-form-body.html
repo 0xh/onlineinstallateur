@@ -94,14 +94,37 @@
    		{/form_field}
 		</div>
 	{/if}
-	
-	{if $useTvaTaxes} 
+
+	{if $useExportFromPartner} 
 		<div class="col-md-4">
-			{form_field field="tva_taxes"}
+		 {form_field field="export_from_partner"}
 			<div class="row">
 			     <div class="col-md-12">
 			         <label for="{$label_attr.for}">
 			             {$label}
+			         </label>
+			     </div>
+			     <div class="col-md-12">
+				    <select name="{$name}">
+				        <option value="ALL">All</option>
+                        {loop name="revenue.partner.loop" type="revenue.partner.loop"}
+                            <option value="{$id}" {if $id == $partner_id }selected{/if}>{$partnerName}</option>
+                        {/loop}
+				       
+				    </select>
+			    </div>
+    		</div>
+   		{/form_field}
+		</div>
+	{/if}
+
+    {if $useTvaTaxes} 
+        <div class="col-md-4">
+            {form_field field="tva_taxes"}
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="{$label_attr.for}">
+                        {$label}
 			         </label>
 </div>
 			     <div class="col-md-12">
