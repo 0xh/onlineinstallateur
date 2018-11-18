@@ -33,7 +33,8 @@
     </loops>
     
     <commands>
-    	<command class="AmazonIntegration\Commands\AmazonIntegrationCommand"/>
+    	<command class="AmazonIntegration\Commands\AmazonIntegrationRankingCommand"/>
+    	<command class="AmazonIntegration\Commands\AmazonIntegrationRankingListCommand"/>
     </commands>
     
 </config>

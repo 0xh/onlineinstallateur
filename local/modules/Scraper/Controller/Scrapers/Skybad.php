@@ -3,7 +3,6 @@
 namespace Scraper\Controller\Scrapers;
 
 use Scraper\Controller\SimpleHtmlDomController;
-use Thelia\Log\Tlog;
 
 
 /**

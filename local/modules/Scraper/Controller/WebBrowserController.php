@@ -152,8 +152,6 @@ class WebBrowserController extends BaseAdminController {
         $this->login($urlLogin, $fields);
         $r = $this->getPage("https://www.mysht.at/myprofishop/suchergebnis?meintensie=&q=30079000");
         $r = $this->getPage("https://www.mysht.at/myprofishop/suchergebnis?meintensie=&q=G28794");
-//        $r = $this->getPage("https://www.mysht.at/21069_DE.json?q=G30079");
-//
 
         $html = new SimpleHtmlDomController();
         $html->load($r);
@@ -178,7 +176,6 @@ class WebBrowserController extends BaseAdminController {
      * $urlLogin: link to login
      * $fields: array with user, pass, version, .... params for login
      */
-
     public function login($urlLogin, $fields, $typeRequest = "POST") {
 
         $this->cookiefile .= "cookie" . $this->date . ".txt";

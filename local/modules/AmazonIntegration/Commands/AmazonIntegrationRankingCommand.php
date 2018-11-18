@@ -5,12 +5,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thelia\Command\ContainerAwareCommand;
 use AmazonIntegration\Controller\Admin\AmazonIntegrationContoller;
-class AmazonIntegrationCommand extends ContainerAwareCommand
+class AmazonIntegrationRankingCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-         ->setName("amazonIntegration:ranking")
+         ->setName("amazonRanking")
          ->setDescription("AmazonIntegration Ranking and Price")
         ->addArgument(
             'online', InputArgument::REQUIRED, 'Specify if only online products are to be scraped')
@@ -31,6 +31,6 @@ class AmazonIntegrationCommand extends ContainerAwareCommand
         $amazonIntegration->getAmazonRankingForProducts($online, $startid, $stopid);
         
 
-        echo "End AmazonIntegration ";
+        echo "End AmazonIntegration \n";
     }
 }

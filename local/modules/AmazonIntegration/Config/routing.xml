@@ -33,11 +33,6 @@
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAmazonOrders
 		</default>
 	</route>
-	
-		<route id="amazon.orders.front" path="/amazonintegration/save-amazon-orders-front">
-		<default key="_controller">AmazonIntegration\Controller\Front\AmazonFrontIntegrationContoller::saveAmazonOrders
-		</default>
-	</route>
 		
 	<route id="amazon.asin.save" path="/admin/module/amazonintegration/save-asin-from-amazon">
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAsinFromAmazon

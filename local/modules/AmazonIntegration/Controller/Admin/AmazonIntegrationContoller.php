@@ -842,6 +842,22 @@ class AmazonIntegrationContoller extends BaseAdminController
         return self::$logger;
     }
     
+    public function getAmazonRankingEAN($productList)
+    {
+        $allProdOnline = "";
+        foreach ($productList as $product) {
+            $allProdOnline .= trim($product['EAN']) . " ";
+                
+        }
+        $allProdOnline = trim($allProdOnline);
+        if(strlen($allProdOnline) > 0) {
+            echo "Getting Amazon Ranking and prices for List with " . count($productList) . "\n";
+            $this->saveRankingProductsBase($allProdOnline);
+        }
+        else
+            echo "No products for the given arguments \n";
+    }
+    
     public function getAmazonRankingForProducts($online, $startid, $stopid)
     {
         /** @var ProductSaleElementsQuery */
@@ -868,7 +884,7 @@ class AmazonIntegrationContoller extends BaseAdminController
             $this->saveRankingProductsBase($allProdOnline);
         }
         else 
-            echo "No products for the given arguments";
+            echo "No products for the given arguments \n";
         
     }
 
@@ -898,7 +914,7 @@ class AmazonIntegrationContoller extends BaseAdminController
     }
     
     public function saveRankingProductsBase($reference){
-        $refArray = explode(' ', $reference);
+        $refArray = explode(" ", $reference);
 
         $idType = 'EAN';
         
@@ -909,6 +925,9 @@ class AmazonIntegrationContoller extends BaseAdminController
         
         // object or array of parameters
         foreach ($refArray as $ref) {
+            echo "EAN ".$ref." \n";
+            if( trim($ref) != "" ) 
+            {
             $this->getLogger()->error("AMAZON - get informations for ean - " . $ref);
             $idList->setId(array($ref));
             $request->setIdList($idList);
@@ -1015,7 +1034,7 @@ class AmazonIntegrationContoller extends BaseAdminController
                     $this->saveRanking($ref, null, $ref, null, '', '', null);
                     echo ('error decoding json');
             }
-            
+        }
             sleep(2);
         }
         

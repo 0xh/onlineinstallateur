@@ -49,7 +49,7 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
     
     
     public function savePageToFile($platform,$folder,$product,$content){
-        $newFile = THELIA_MODULE_DIR . "Scraper" . DS . "Log" . DS . $platform . DS . $folder . DS . $product["prod_id"] . "_" . $product['extern_id'] . "_".date("Y-m-d_H.i.s").".html";
+        $newFile = THELIA_LOG_DIR . "Scraper" . DS . $platform . DS . $folder . DS . $product["prod_id"] . "_" . str_replace('/', '_', $product['extern_id']) . "_".date("Y-m-d_H.i.s").".html";
         file_put_contents($newFile, $content, FILE_APPEND);
     }
 }

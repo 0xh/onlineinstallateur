@@ -3,8 +3,6 @@
 namespace Scraper\Controller\Scrapers;
 
 use Scraper\Controller\SimpleHtmlDomController;
-use Scraper\Controller\WebBrowserController;
-use Thelia\Controller\Admin\BaseAdminController;
 use Exception;
 
 /*

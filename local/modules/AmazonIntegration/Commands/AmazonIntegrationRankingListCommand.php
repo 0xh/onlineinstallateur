@@ -1,22 +1,16 @@
 <?php
-namespace Scraper\Commands;
+namespace AmazonIntegration\Commands;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Tools\URL;
-use Scraper\Controller\Scrapers\Megabad;
-use Scraper\Controller\Scrapers\Reuter;
-use Scraper\Controller\Scrapers\Skybad;
-use Scraper\Controller\Scrapers\Google;
-use Scraper\Controller\Scrapers\Idealo;
-use const DS;
-use const THELIA_LOCAL_DIR;
+use Thelia\Model\Product;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
-use Thelia\Model\Product;
+use Thelia\Tools\URL;
+use AmazonIntegration\Controller\Admin\AmazonIntegrationContoller;
 
-class ScraperListCommand extends ContainerAwareCommand
+class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
 {
     private $match_threshold = 100;
     private $no_match_count = 0;
@@ -25,37 +19,29 @@ class ScraperListCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-         ->setName("scraperListPrice")
-         ->setDescription("List based price scraper")
+         ->setName("amazonRankingList")
+         ->setDescription("AmazonIntegration Ranking and Price")
          ->addArgument(
-          'platform', InputArgument::REQUIRED, 'Specify paltform - skybad,reuter,megabad')
-         ->addArgument(
-          'version', InputArgument::REQUIRED, 'Specify import version')
+             'version', InputArgument::REQUIRED, 'Specify import version')
         ->addArgument(
             'startline', InputArgument::REQUIRED, 'Specify list start line number')
         ->addArgument(
             'stopline', InputArgument::REQUIRED, 'Specify list stop line number')
         ->addArgument(
-            'createproducts', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
+            'createproducts', InputArgument::REQUIRED, 'Specify if amazon ranking should create products or not')
         ;
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $import_type = null;
-        $import_file = null;
-        $errors      = null;
-        
-        $platform = $input->getArgument('platform');
         $startline = $input->getArgument('startline');
         $stopline = $input->getArgument('stopline');
         $version = $input->getArgument('version');
-        $createProducts = $input->getArgument('createproducts');
         
         $URL = new URL();
-        $local_file = $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
-        //$local_file = Common::fetchfromFTP("ShtScraper","Artikelliste.csv");
         
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste" . date('_m.d.Y_H.i.s') . ".csv";
+        //$local_file = $this->fetchfromFTP("AmazonRanking","Artikelliste.csv");
+        $local_file = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "AmazonRanking" . DS . "Artikelliste.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "AmazonRanking" . DS . "Artikelliste" . date('_m.d.Y_H.i.s') . ".csv";
         
         if ($local_file != null) {
             echo "copied file from ftp \n";
@@ -65,7 +51,7 @@ class ScraperListCommand extends ContainerAwareCommand
             return;
         }
         
-        $versionFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . $version . ".csv";
+        $versionFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "AmazonRanking" . DS . $version . ".csv";
         
         $arrayProducts = array();
         if(!file_exists($versionFile)) {
@@ -86,14 +72,25 @@ class ScraperListCommand extends ContainerAwareCommand
                             $product->setDefaultCategory("382");
                             $product->setVersionCreatedBy($version);
                             $product->save();
-                            echo 'created '.$product->getRef()."\n";
+                            echo "created ".$product->getRef()."\n";
                         }
+                        if($createProducts == 1) {
+                            if(count($product->getProductSaleElementss()) > 0) {
+                                $pse = $product->getProductSaleElementss()[0];
+                                $pse->setEanCode($data[3]);
+                                $pse->save();
+                            }
+                            else {
+                                echo "ERROR:no pse created \n";
+                            }
+                        }
+                        
                         array_push($arrayProducts, array("KEY" => $data[0],
-                            "Logistik_MC" => $data[1],
-                            "extern_id" => $data[2],
-                            "EAN" => $data[3],
-                            "Description" => $data[4],
-                            "prod_id" => $product->getId()
+                                                         "Logistik_MC" => $data[1],
+                                                         "extern_id" => $data[2],
+                                                         "EAN" => $data[3],
+                                                         "Description" => $data[4],
+                                                         "prod_id" => $product->getId()
                         ));
                         file_put_contents($versionFile, array($data[0].",",$data[1].",",$data[2].",",$data[3].",",$data[4].",",$product->getId().PHP_EOL), FILE_APPEND);
                     }
@@ -111,7 +108,8 @@ class ScraperListCommand extends ContainerAwareCommand
                 }
                 fclose($handle);
             }
-        } else {if (($handle = fopen($versionFile, "r+")) !== FALSE) {
+        } else {
+            if (($handle = fopen($versionFile, "r+")) !== FALSE) {
             echo "CompleteCSV found ".$versionFile." \n";
             $row = 0;
             while (($completeCSV = fgetcsv($handle, 10000, ",")) !== FALSE) {
@@ -121,54 +119,20 @@ class ScraperListCommand extends ContainerAwareCommand
                         "extern_id" => $completeCSV[2],
                         "EAN" => $completeCSV[3],
                         "Description" => $completeCSV[4],
-                        "prod_id" => $product->getId()));
+                        "prod_id" => $completeCSV[5]));
                 }
                 $row++;
-                }
-                }
-        
+            }
+        }
         $fp = fopen($versionFile, "a+");
         fclose($fp);
+        }
 
-        }
+        /** @var AmazonIntegrationContoller */
+        $amazonIntegration = new AmazonIntegrationContoller();
+        $amazonIntegration->getAmazonRankingEAN($arrayProducts);
         
-        
-        /** @var \Scraper\Controller\Scrapers\PriceScraper */
-        $scraperClass = null;
-        
-        if($platform != null){
-            switch($platform) {
-                case "Megabad":
-                    $scraperClass = new Megabad();
-                    break;
-                case "Reuter":
-                    $scraperClass = new Reuter();
-                    break;
-                case "Skybad":
-                    $scraperClass = new Skybad();
-                    break;
-                case "Google":
-                    $scraperClass = new Google();
-                    break;
-                case "Idealo":
-                    $scraperClass = new Idealo();
-                    break;
-                default:
-                    echo "Platform ".$platform." not supported, sample: Reuter \n";
-            }
-        } else {
-            echo "Platform argument not given";
-            return;
-        }
-        
-        if( $scraperClass != null) {
-            $scraperClass->getDataFromArray($platform, $arrayProducts, 1, $version);
-            echo "End list scraping ".$platform. "\n";
-        }   
-        else {
-            echo 'ScraperList did not run';
-        };
-        
+        echo "End AmazonIntegration \n";
     }
     
     private function formatFileForImport($output, $newFile, $startline, $stopline)
@@ -205,4 +169,29 @@ class ScraperListCommand extends ContainerAwareCommand
         }
         return $newFile;
     }
+    
+    public static function fetchfromFTP($local_folder,$filename)
+    {
+        $server_file = $filename;
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $local_folder . DS . $server_file;
+        
+        $ftp_user   = "mmai1018";
+        $ftp_pass   = "PreiCra!2018";
+        $ftp_server = "ftp.sht-net.at";
+        $ftp_conn   = ftp_connect($ftp_server) or die("Could not connect to $ftp_server");
+        $login      = ftp_login($ftp_conn, $ftp_user, $ftp_pass);
+        ftp_pasv($ftp_conn, true) or die("Cannot switch to passive mode");
+        echo "Connected to FTP \n";
+        ftp_chdir($ftp_conn, "/preiscrawler");
+        if (ftp_get($ftp_conn, $local_file, $server_file, FTP_ASCII)) {
+            echo "Successfully written to $local_file. \n";
+        } else {
+            echo "Error downloading $server_file.";
+        }
+        ftp_close($ftp_conn);
+        
+        
+        return $local_file;
+    }
+    
 }
