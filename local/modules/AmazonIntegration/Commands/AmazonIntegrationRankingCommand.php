@@ -31,6 +31,6 @@ class AmazonIntegrationRankingCommand extends ContainerAwareCommand
         $amazonIntegration->getAmazonRankingForProducts($online, $startid, $stopid);
         
 
-        echo "End AmazonIntegration ";
+        echo "End AmazonIntegration \n";
     }
 }

@@ -88,11 +88,17 @@ class ScraperListCommand extends ContainerAwareCommand
                             $product->save();
                             echo 'created '.$product->getRef()."\n";
                         }
-                        array_push($arrayProducts, array("extern_id" => $data[2], "prod_id" => $product->getId()));
-                        file_put_contents($versionFile, array($data[2].",",$product->getId().PHP_EOL), FILE_APPEND);
+                        array_push($arrayProducts, array("KEY" => $data[0],
+                            "Logistik_MC" => $data[1],
+                            "extern_id" => $data[2],
+                            "EAN" => $data[3],
+                            "Description" => $data[4],
+                            "prod_id" => $product->getId()
+                        ));
+                        file_put_contents($versionFile, array($data[0].",",$data[1].",",$data[2].",",$data[3].",",$data[4].",",$product->getId().PHP_EOL), FILE_APPEND);
                     }
                     else {
-                        file_put_contents($versionFile, array("extern_id,", "prod_id".PHP_EOL), FILE_APPEND);
+                        file_put_contents($versionFile, array("KEY,","Logistik_MC,","extern_id,","EAN,","Description,", "prod_id".PHP_EOL), FILE_APPEND);
                     }
                     $row++;
                     if($this->no_match_count == $this->match_threshold) {
@@ -107,12 +113,17 @@ class ScraperListCommand extends ContainerAwareCommand
             }
         } else {if (($handle = fopen($versionFile, "r+")) !== FALSE) {
             echo "CompleteCSV found ".$versionFile." \n";
+            $row = 0;
             while (($completeCSV = fgetcsv($handle, 10000, ",")) !== FALSE) {
-                $row = 0;
-                    if($row != 0) {
-                        array_push($arrayProducts, array("extern_id" => $completeCSV[0], "prod_id" => $completeCSV[1]));
-                    }
-                    $row++;
+                if($row != 0) {
+                    array_push($arrayProducts, array("KEY" => $completeCSV[0],
+                        "Logistik_MC" => $completeCSV[1],
+                        "extern_id" => $completeCSV[2],
+                        "EAN" => $completeCSV[3],
+                        "Description" => $completeCSV[4],
+                        "prod_id" => $product->getId()));
+                }
+                $row++;
                 }
                 }
         

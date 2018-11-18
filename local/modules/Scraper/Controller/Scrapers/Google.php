@@ -3,7 +3,6 @@
 namespace Scraper\Controller\Scrapers;
 
 use Scraper\Controller\SimpleHtmlDomController;
-use Scraper\Controller\WebBrowserController;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
