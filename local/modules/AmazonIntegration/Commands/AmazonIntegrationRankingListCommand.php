@@ -9,6 +9,7 @@ use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Tools\URL;
 use AmazonIntegration\Controller\Admin\AmazonIntegrationContoller;
+use Thelia\Model\ProductSaleElements;
 
 class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
 {
@@ -36,6 +37,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
         $startline = $input->getArgument('startline');
         $stopline = $input->getArgument('stopline');
         $version = $input->getArgument('version');
+        $createProducts = $input->getArgument('createproducts');
         
         $URL = new URL();
         
@@ -64,7 +66,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                         $product = $productQuery->
                         where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
                         ->findOne();
-                        if($product == null && $createProducts == 1)
+                        if($createProducts == 1 && $product == null)
                         {
                             $product = new Product();
                             $product->setRef("SCRAPER_".$data[2]); // must be unique
@@ -74,16 +76,18 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                             $product->save();
                             echo "created ".$product->getRef()."\n";
                         }
-                        if($createProducts == 1) {
-                            if(count($product->getProductSaleElementss()) > 0) {
+                            if($createProducts == 1 && count($product->getProductSaleElementss()) > 0) {
                                 $pse = $product->getProductSaleElementss()[0];
                                 $pse->setEanCode($data[3]);
                                 $pse->save();
+                                echo "PSE Updated \n";
                             }
                             else {
-                                echo "ERROR:no pse created \n";
+                                $pse = new ProductSaleElements();
+                                $pse->setProduct($product);
+                                $pse->setEanCode($data[3]);
+                                echo "Pse Created \n";
                             }
-                        }
                         
                         array_push($arrayProducts, array("KEY" => $data[0],
                                                          "Logistik_MC" => $data[1],
