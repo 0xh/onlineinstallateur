@@ -18,9 +18,11 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
             ini_set('max_execution_time', 3000);
             //each subclass must implement this
             $price    = $this->getPriceForProduct($webBrowser, $prodId);
-            if ($outputConsole)
-                echo "PriceScraper " . $prodId["prod_id"] . " " . $platform . " " . $price . " \n";
+            if ($outputConsole) {
+                echo "PriceScraper " . $prodId["prod_id"] . " " . $platform . " " . $price . " ref= " . $prodId["extern_id"] . " \n";
+            }
             $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
+            $webBrowser->setLogger()->error("ref# : " . $prodId["extern_id"]);
             $webBrowser->setLogger()->error("PriceScraper Prod_id:" . $prodId["prod_id"] . " Platform:" . $platform . " Price:" . $price);
             ini_set('max_execution_time', $max_time);
         }

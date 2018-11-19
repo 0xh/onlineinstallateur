@@ -7,6 +7,7 @@ use HookAdminCrawlerDashboard\Model\CrawlerProductBaseQuery;
 use HookAdminCrawlerDashboard\Model\CrawlerProductListing;
 use HookAdminCrawlerDashboard\Model\CrawlerProductListingQuery;
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Model\Map\BrandI18nTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\ProductQuery;
 
@@ -27,21 +28,26 @@ class Common extends BaseAdminController
     public static function getProductsExternId($online, $startid, $stopid)
     {
         $collectionProducts = null;
-        $productQuery       = ProductQuery::create();
-        $upperLimit         = "";
+        $productQuery       = ProductQuery::create()
+         ->addJoin(ProductTableMap::BRAND_ID, BrandI18nTableMap::ID)
+         ->withColumn(BrandI18nTableMap::TITLE, 'TITLE')
+         ->where(BrandI18nTableMap::LOCALE . " = 'de_DE'");
+
+        $upperLimit = "";
 
         if ($stopid)
             $upperLimit = " and " . ProductTableMap::ID . " <= " . $stopid;
 
         if ($online) {
-            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = 1 and " . ProductTableMap::ID . " >= " . $startid . $upperLimit);
+            $collectionProducts = $productQuery->where(ProductTableMap::VISIBLE . " = '1' and " . ProductTableMap::ID . " >= " . $startid . $upperLimit);
         } else {
             $collectionProducts = $productQuery->where(ProductTableMap::ID . " > " . $startid . $upperLimit);
         }
 
         $arrayProducts = array();
         foreach ($collectionProducts as $product) {
-            array_push($arrayProducts, array("extern_id" => substr($product->getRef(), 3), "prod_id" => $product->getId()));
+            array_push($arrayProducts, array("extern_id" => substr($product->getRef(), 3), "prod_id"   => $product->getId(),
+             "brand"     => strtoupper($product->getVirtualColumn("TITLE"))));
         }
 
         return $arrayProducts;
