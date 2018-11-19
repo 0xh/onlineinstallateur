@@ -1,5 +1,7 @@
 <?php
+
 namespace Scraper\Controller\Scrapers;
+
 use Scraper\Controller\WebBrowserController;
 use Thelia\Controller\Admin\BaseAdminController;
 
@@ -21,9 +23,9 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
             $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
             $webBrowser->close();
             ini_set('max_execution_time', $max_time);
-        }  
+        }
     }
-    
+
     public function getDataFromArray($platform, $productArray,$outputConsole = 0,$version = "scraper")
     {
         foreach ($productArray as $prodId) {
@@ -39,18 +41,19 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
                 $webBrowser->setLogger()->error("PriceScraper Prod_id:".$prodId["prod_id"]." Platform:".$platform." Price:".$price);
                 $webBrowser->close();
                 ini_set('max_execution_time', $max_time);
-        } 
+        }
     }
-    
+
     public function getPriceForProduct($webBrowser, $prodId)
     {
         trigger_error("Scraper is not implementing the required methods");
     }
-    
-    
+
+
     public function savePageToFile($platform,$folder,$product,$content){
         $newFile = THELIA_LOG_DIR . "Scraper" . DS . $platform . DS . $folder . DS . $product["prod_id"] . "_" . str_replace('/', '_', $product['extern_id']) . "_".date("Y-m-d_H.i.s").".html";
         file_put_contents($newFile, $content, FILE_APPEND);
     }
 }
 
+}
