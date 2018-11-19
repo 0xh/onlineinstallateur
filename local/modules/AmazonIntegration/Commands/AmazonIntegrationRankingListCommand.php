@@ -66,7 +66,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                         $product = $productQuery->
                         where(ProductTableMap::REF . " like '%" . $data[2] ."%'")
                         ->findOne();
-                        if($product == null && $createProducts == 1)
+                        if($createProducts == 1 && $product == null)
                         {
                             $product = new Product();
                             $product->setRef("SCRAPER_".$data[2]); // must be unique
@@ -76,8 +76,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                             $product->save();
                             echo "created ".$product->getRef()."\n";
                         }
-                        if($createProducts == 1) {
-                            if(count($product->getProductSaleElementss()) > 0) {
+                            if($createProducts == 1 && count($product->getProductSaleElementss()) > 0) {
                                 $pse = $product->getProductSaleElementss()[0];
                                 $pse->setEanCode($data[3]);
                                 $pse->save();
@@ -89,7 +88,6 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                                 $pse->setEanCode($data[3]);
                                 echo "Pse Created \n";
                             }
-                        }
                         
                         array_push($arrayProducts, array("KEY" => $data[0],
                                                          "Logistik_MC" => $data[1],
