@@ -25,7 +25,7 @@ class WebBrowserController extends BaseAdminController {
 
     protected static $logger;
     private $logFile = ScraperConst::SCRAPER_LOG_DIR;
-    private $zipFile = ScraperConst::SCRAPER_ARHIVE_DIR;
+    private $zipFile = ScraperConst::SCRAPER_ARCHIVE_DIR;
     private $imageFile = ScraperConst::SCRAPER_IMAGES_DIR;
     private $videoFile = ScraperConst::SCRAPER_VIDEO_DIR;
     private $curl;
