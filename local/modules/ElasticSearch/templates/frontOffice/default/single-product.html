@@ -101,11 +101,9 @@
 
                 <div class="vat-info"><small>Alle Preise inkl. 20% MwSt.</small></div>
             </div>
-            <div class="availability">
+          {*  <div class="availability">
                 <span class="availibity-label sr-only">{intl l="Availability"}: </span>
-
                 <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
-
                     {if $QUANTITY && $fulfilment_center_active != "false"}
                         <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> {intl l='Can be shipped immediately'}</small></em></span>
                                 {else}
@@ -115,9 +113,8 @@
                             <span class="delivery-info"><span class="fa-truck highlightcolor fa "></span> <em><small>Versand {hook name="product.delivery-delay" product={$product_id}}</small></em>
                             {/if}
                         {/if}
-
                     </span>
-            </div>
+            </div> *}
 
             {if $hasBtn == true}
                 {if $hasSubmit == true && $current_stock_content == "in_stock"}
