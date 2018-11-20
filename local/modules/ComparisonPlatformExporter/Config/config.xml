@@ -33,8 +33,8 @@
 
     <exports>
         <export id="thelia.export.catalog.preisroboterde"
-                        class="ComparisonPlatformExporter\Export\PreisRoboterProductExport"
-                        category_id="thelia.export.products">
+                class="ComparisonPlatformExporter\Export\PreisRoboterProductExport"
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>PreisRoboter Product Catalog Export</title>
                 <description>
@@ -80,7 +80,7 @@
         </export>
 
         <export id="thelia.export.catalog.idealo" class="ComparisonPlatformExporter\Export\IdealoProductExport"
-                        category_id="thelia.export.products">
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Idealo Product Catalog Export</title>
                 <description>
@@ -126,8 +126,8 @@
         </export>
 
         <export id="thelia.export.catalog.preisroboterde"
-                        class="ComparisonPlatformExporter\Export\PreisRoboterProductExport"
-                        category_id="thelia.export.products">
+                class="ComparisonPlatformExporter\Export\PreisRoboterProductExport"
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>PreisRoboter Product Catalog Export</title>
                 <description>
@@ -173,7 +173,7 @@
         </export>
 
         <export id="thelia.export.catalog.billiger" class="ComparisonPlatformExporter\Export\BilligerProductExport"
-                        category_id="thelia.export.products">
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Billiger Product Catalog Export</title>
                 <description>
@@ -213,7 +213,7 @@
         </export>
 
         <export id="thelia.export.catalog.geizhals" class="ComparisonPlatformExporter\Export\GeizhalsProductExport"
-                        category_id="thelia.export.products">
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Geizhals Product Catalog Export</title>
                 <description>
@@ -256,8 +256,8 @@
         </export>
 
         <export id="thelia.export.stock.geizhals"
-                        class="ComparisonPlatformExporter\Export\GeizhalsProductStockExport"
-                        category_id="thelia.export.products">
+                class="ComparisonPlatformExporter\Export\GeizhalsProductStockExport"
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Geizhals Product Stock And Locations Export</title>
                 <description>
@@ -293,7 +293,7 @@
             </export_descriptive>
         </export>
         <export id="thelia.export.bmd_order" class="ComparisonPlatformExporter\Export\BMDOrderExport"
-                        category_id="thelia.export.orders">
+                category_id="thelia.export.orders">
             <export_descriptive locale="en_US">
                 <title>BMD orders</title>
                 <description>
@@ -314,7 +314,7 @@
             </export_descriptive>
         </export>        
         <export id="thelia.export.bmd_order.extended" class="ComparisonPlatformExporter\Export\BMDOrderExtendedExport"
-                        category_id="thelia.export.orders">
+                category_id="thelia.export.orders">
             <export_descriptive locale="en_US">
                 <title>BMD exdended orders</title>
                 <description>
@@ -335,7 +335,7 @@
             </export_descriptive>
         </export>
         <export id="thelia.export.catalog.triworx" class="ComparisonPlatformExporter\Export\TriworxProductExport"
-                        category_id="thelia.export.products">
+                category_id="thelia.export.products">
             <export_descriptive locale="en_US">
                 <title>Triworx Product Catalog Export</title>
                 <description>
@@ -367,6 +367,28 @@
                         <li>ean_code, title, ref, extern_id</li>
                     </ul>
                     ]]>
+                </description>
+            </export_descriptive>
+        </export>
+        
+        <export id="thelia.export.price.partener" class="ComparisonPlatformExporter\Export\PriceExportbyPartener"
+                 category_id="thelia.export.products">
+            <export_descriptive locale="en_US">
+                <title>Export products prices by parteners</title>
+                <description>
+                    Export products prices by parteners
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="fr_FR">
+                <title>Export products prices by parteners</title>
+                <description>
+                Export products prices by parteners
+                </description>
+            </export_descriptive>
+            <export_descriptive locale="de_DE">
+                <title>Export products prices by parteners</title>
+                <description>
+                    Export products prices by parteners
                 </description>
             </export_descriptive>
         </export>

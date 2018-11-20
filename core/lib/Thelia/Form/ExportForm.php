@@ -90,6 +90,17 @@ class ExportForm extends BaseForm
                     ],
                 ]
             )
+          ->add(
+                'export_from_partner',
+                'text',
+                [
+                    'required' => false,
+                    'label' => $this->translator->trans('Export from partner:'),
+                    'label_attr' => [
+                        'for' => 'export_from_partner'
+                    ],
+                ]
+            )
             // Todo: use list
             ->add(
                 'tva_taxes',

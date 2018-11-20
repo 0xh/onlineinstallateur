@@ -99,6 +99,15 @@ class Export extends BaseExport
 
         return static::$cache->useExportFrom();
     }
+    
+    
+    public function useExportFromPartner()
+    {
+        if (static::$cache === null) {
+            static::$cache = $this->getHandleClassInstance();
+        }
+        return static::$cache->useExportFromParteners();
+    }
 
     public function useTvaTaxes()
     {
