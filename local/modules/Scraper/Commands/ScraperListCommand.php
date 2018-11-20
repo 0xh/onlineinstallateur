@@ -121,7 +121,7 @@ class ScraperListCommand extends ContainerAwareCommand
                         "extern_id" => $completeCSV[2],
                         "EAN" => $completeCSV[3],
                         "Description" => $completeCSV[4],
-                        "prod_id" => $product->getId()));
+                        "prod_id" => $completeCSV[5]));
                 }
                 $row++;
                 }
