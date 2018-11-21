@@ -20,7 +20,6 @@ use Thelia\Model\Base\ProductQuery;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\ProductImage;
 use Thelia\Model\ProductImageI18n;
-use Thelia\Model\ProductPriceQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
@@ -54,8 +53,7 @@ class XMLImporter extends AbstractImport
 
     public function importData(array $row)
     {
-
-//logging intialise
+        //logging intialise
         $time_start = microtime(true);
         $errors     = null;
 
@@ -82,7 +80,6 @@ class XMLImporter extends AbstractImport
         $refBuild                       = null;
         $wholesaleProduct               = null;
         $matchingSuccessful             = FALSE;
-        $stockImport                    = FALSE;
         $price_import                   = FALSE;
         $brutto_price_import            = null;
 
@@ -147,7 +144,6 @@ class XMLImporter extends AbstractImport
         if ($wholesaleProduct && $partner_product_ref) {
             $wPId        = $wholesaleProduct->getProductId();
             $log->debug("After WPPQ, found product by partner ref, will update stock: " . $wPId);
-            $stockImport = TRUE;
             $log->debug("After WPPQ , before brand create! WPP id: " . $wPId);
         } else {
             $log->debug("No match found for partner_product_ref ");
@@ -182,13 +178,15 @@ class XMLImporter extends AbstractImport
             $log->debug("Category not found!");
         }
 
-
-
         //If both checks (brand and category have a match)
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
+        }
+        else 
+        {
+            echo ' brand '.$brandRefComponent. " category ".$categoryComponent." not found\n";
         }
         
         $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
