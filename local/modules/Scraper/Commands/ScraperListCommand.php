@@ -119,6 +119,7 @@ class ScraperListCommand extends ContainerAwareCommand
                             ->setProductId($product->getId())
                             ->setPartnerId(1)
                             ->setVersionCreatedBy($version)
+                            ->setComment($data[0])
                             ->save();
                             $log->debug("New wholesale partner product: " . $wpp->getId());
                             echo "New wholesale partner product: " . $wpp->getId()." \n";
