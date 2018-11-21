@@ -4,7 +4,6 @@ namespace Scraper\Controller\Scrapers;
 
 use Scraper\Config\ScraperConst;
 use Scraper\Controller\SimpleHtmlDomController;
-use Exception;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -99,10 +98,50 @@ class Reuter extends PriceScraper implements PriceScraperInterface
         $html           = new SimpleHtmlDomController();
         $html->load($searchPageResult);
         $productResults = $html->find($resultSelector);
-        $value          = $productResults[0];
+
+        if (isset($productResults) && isset($productResults[0])) {
+            $value = $productResults[0];
+        } else {
+            $value = $this->getProductPrice3rd($webBrowser, $link);
+
+            if (!$value) {
+                return -3;
+            } else {
+                return $value;
+            }
+        }
 
         if (isset($value->nodes[0]) && isset($value->children[0]) && isset($value->children[0]->nodes[0])) {
             $priceFromReuter = $value->nodes[0]->_[4] . $value->children[0]->nodes[0]->_[4];
+            $priceFromReuter = str_replace(".", "", $priceFromReuter);
+            $priceFromReuter = str_replace(",", ".", $priceFromReuter);
+            $priceFromReuter = floatval($priceFromReuter);
+
+            return $priceFromReuter;
+        }
+
+        return -1;
+    }
+
+    protected function getProductPrice3rd($webBrowser, $link)
+    {
+        $searchUrl      = 'https://www.reuter.de' . $link;
+        $resultSelector = '.c-price-block__price';
+
+        $searchPageResult = $webBrowser->getPage($searchUrl);
+
+        $html           = new SimpleHtmlDomController();
+        $html->load($searchPageResult);
+        $productResults = $html->find($resultSelector);
+
+        if (isset($productResults) && isset($productResults[0])) {
+            $value = $productResults[0];
+        } else {
+            return FALSE;
+        }
+
+        if (isset($value->nodes[0])) {
+            $priceFromReuter = $value->nodes[0]->_[4];
             $priceFromReuter = str_replace(".", "", $priceFromReuter);
             $priceFromReuter = str_replace(",", ".", $priceFromReuter);
             $priceFromReuter = floatval($priceFromReuter);
