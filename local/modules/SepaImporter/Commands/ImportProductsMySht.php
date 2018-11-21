@@ -2,6 +2,7 @@
 
 namespace SepaImporter\Commands;
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
@@ -22,19 +23,14 @@ class ImportProductsMySht extends ContainerAwareCommand
     protected function configure()
     {
         $this
-         ->setName("importShtProducts:start")
-         ->setDescription("Starting mySht stock import!\n");
+         ->setName("importShtProducts")
+         ->setDescription("Starting mySht stock import!\n")
+         ->addArgument(
+             'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported');
     }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    
+    private function getProductsList($url)
     {
-        $output->writeln("Command started\n !");
-
-
-        $UR = new URL();
-
-        $url = "https://www.sht-gruppe.at/alleartikel.zip";
-
         $current_date = date("Y-m-d H:i:s");
         $zip_name     = "import" . md5($current_date) . ".zip";
         $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . $zip_name;
@@ -62,8 +58,18 @@ class ImportProductsMySht extends ContainerAwareCommand
         }
         $zip->extractTo($extractPath);
         $zip->close();
-
+        
         echo"Zip fetched and extracted. \n";
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln("Command started!\n");
+        $reimport = $input->getArgument('reimport');
+        $UR = new URL();
+
+        if($reimport == 0)
+            $this->getProductsList("https://www.sht-gruppe.at/alleartikel.zip");
 
         $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot" . DS;
         if (is_dir($dir)) {

@@ -17,6 +17,9 @@ use const THELIA_LOCAL_DIR;
 use Thelia\Model\ProductQuery;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\Product;
+use Thelia\Model\ProductSaleElements;
+use RevenueDashboard\Model\WholesalePartnerProduct;
+use RevenueDashboard\Model\WholesalePartnerProductQuery;
 
 class ScraperListCommand extends ContainerAwareCommand
 {
@@ -39,7 +42,7 @@ class ScraperListCommand extends ContainerAwareCommand
          ->addArgument(
           'stopline', InputArgument::REQUIRED, 'Specify list stop line number')
          ->addArgument(
-          'createproducts', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
+          'firstrun', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
         ;
     }
 
@@ -53,7 +56,7 @@ class ScraperListCommand extends ContainerAwareCommand
         $startline      = $input->getArgument('startline');
         $stopline       = $input->getArgument('stopline');
         $version        = $input->getArgument('version');
-        $createProducts = $input->getArgument('createproducts');
+        $firstrun = $input->getArgument('firstrun');
 
         $URL        = new URL();
         $local_file = $newFile    = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
@@ -76,21 +79,51 @@ class ScraperListCommand extends ContainerAwareCommand
             if (($handle = fopen($csv_output, "r+")) !== FALSE) {
                 $row          = 0;
                 $productQuery = ProductQuery::create();
+                $partnerProductRef = $data[2];
                 while (($data         = fgetcsv($handle, 10000, ",")) !== FALSE) {
                     if ($row != 0) {
                         $productQuery->clear();
                         $product = $productQuery->
-                         where(ProductTableMap::REF . " like '%" . $data[2] . "%'")
+                        where(ProductTableMap::REF . " like '%" . $partnerProductRef . "%'")
                          ->findOne();
-                        if ($product == null && $createProducts == 1) {
+                         if ($product == null && $firstrun == 1) {
                             $product = new Product();
-                            $product->setRef("SCRAPER_" . $data[2]); // must be unique
+                            $product->setRef("SCRAPER_" . $partnerProductRef); // must be unique
                             $product->setVisible(0);
                             $product->setDefaultCategory("382");
                             $product->setVersionCreatedBy($version);
                             $product->save();
                             echo 'created ' . $product->getRef() . "\n";
                         }
+                        
+                        if($firstrun == 1 && count($product->getProductSaleElementss()) > 0) {
+                            $pse = $product->getProductSaleElementss()[0];
+                            $pse->setEanCode($data[3]);
+                            $pse->save();
+                        }
+                        else {
+                            $pse = new ProductSaleElements();
+                            $pse->setProduct($product);
+                            $pse->setEanCode($data[3]);
+                            echo "Pse Created \n";
+                        }
+                        
+                        if ($firstrun == 1) {
+                            $findWPP = WholesalePartnerProductQuery::create()->findOneByPartnerProdRef($partner_product_ref);
+                            if($findWPP == null) {
+                                $wpp = new WholesalePartnerProduct();
+                            } else {
+                                $wpp = $findWPP;
+                            }
+                            $wpp->setPartnerProdRef($partnerProductRef)
+                            ->setProductId($product->getId())
+                            ->setPartnerId(1)
+                            ->setVersionCreatedBy($version)
+                            ->save();
+                            $log->debug("New wholesale partner product: " . $wpp->getId());
+                            echo "New wholesale partner product: " . $wpp->getId()." \n";
+                        }
+                        
                         array_push($arrayProducts, array("KEY"         => $data[0],
                          "Logistik_MC" => $data[1],
                          "extern_id"   => $data[2],
