@@ -79,9 +79,10 @@ class ScraperListCommand extends ContainerAwareCommand
             if (($handle = fopen($csv_output, "r+")) !== FALSE) {
                 $row          = 0;
                 $productQuery = ProductQuery::create();
-                $partnerProductRef = $data[2];
+                
                 while (($data         = fgetcsv($handle, 10000, ",")) !== FALSE) {
                     if ($row != 0) {
+                        $partnerProductRef = $data[2];
                         $productQuery->clear();
                         $product = $productQuery->
                         where(ProductTableMap::REF . " like '%" . $partnerProductRef . "%'")
@@ -109,7 +110,7 @@ class ScraperListCommand extends ContainerAwareCommand
                         }
                         
                         if ($firstrun == 1) {
-                            $findWPP = WholesalePartnerProductQuery::create()->findOneByPartnerProdRef($partner_product_ref);
+                            $findWPP = WholesalePartnerProductQuery::create()->findOneByPartnerProdRef($partnerProductRef);
                             if($findWPP == null) {
                                 $wpp = new WholesalePartnerProduct();
                             } else {
@@ -121,8 +122,7 @@ class ScraperListCommand extends ContainerAwareCommand
                             ->setVersionCreatedBy($version)
                             ->setComment($data[0])
                             ->save();
-                            $log->debug("New wholesale partner product: " . $wpp->getId());
-                            echo "New wholesale partner product: " . $wpp->getId()." \n";
+                            echo "New wholesale partner product: " . $wpp->getId()." KEY ".$data[0]." \n";
                         }
                         
                         array_push($arrayProducts, array("KEY"         => $data[0],
