@@ -13,15 +13,18 @@
 namespace Thelia\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Thelia\Core\Archiver\ArchiverManager;
 use Thelia\Core\DependencyInjection\Compiler\RegisterArchiverPass;
 use Thelia\Core\DependencyInjection\Compiler\RegisterSerializerPass;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\Event\UpdatePositionEvent;
+use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Security\AccessManager;
 use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Serializer\SerializerManager;
 use Thelia\Form\Definition\AdminForm;
-use Thelia\Form\Exception\FormValidationException;
 use Thelia\Model\LangQuery;
 
 /**
@@ -35,7 +38,7 @@ class ExportController extends BaseAdminController
      *
      * @param string $_view View to render
      *
-     * @return \Thelia\Core\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction($_view = 'export')
     {
@@ -55,7 +58,7 @@ class ExportController extends BaseAdminController
     /**
      * Handle export position change action
      *
-     * @return \Thelia\Core\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function changeExportPositionAction()
     {
@@ -81,7 +84,7 @@ class ExportController extends BaseAdminController
     /**
      * Handle export category position change action
      *
-     * @return \Thelia\Core\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function changeCategoryPositionAction()
     {
@@ -129,7 +132,7 @@ class ExportController extends BaseAdminController
      *
      * @param integer $id An export identifier
      *
-     * @return \Thelia\Core\HttpFoundation\Response
+     * @return Response
      */
     public function configureAction($id)
     {
@@ -155,6 +158,7 @@ class ExportController extends BaseAdminController
                 'hasDocuments' => $export->hasDocuments(),
                 'useRange' => $export->useRangeDate(),
                 'useExportFrom' => $export->useExportFrom(),
+                'useExportFromPartner' => $export->useExportFromPartner(),
                 'useTvaTaxes' => $export->useTvaTaxes()
                                 
             ]
@@ -166,13 +170,12 @@ class ExportController extends BaseAdminController
      *
      * @param integer $id An export identifier
      *
-     * @return \Thelia\Core\HttpFoundation\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return Response|BinaryFileResponse
      */
     public function exportAction($id)
     {
         /** @var \Thelia\Handler\Exporthandler $exportHandler */
         $exportHandler = $this->container->get('thelia.export.handler');
-
         $export = $exportHandler->getExport($id);
         if ($export === null) {
             return $this->pageNotFound();
@@ -180,20 +183,20 @@ class ExportController extends BaseAdminController
 
         $form = $this->createForm(AdminForm::EXPORT);
 
-        try {
+//        try {
             $validatedForm = $this->validateForm($form);
 
             set_time_limit(0);
 
             $lang = (new LangQuery)->findPk($validatedForm->get('language')->getData());
 
-            /** @var \Thelia\Core\Serializer\SerializerManager $serializerManager */
+            /** @var SerializerManager $serializerManager */
             $serializerManager = $this->container->get(RegisterSerializerPass::MANAGER_SERVICE_ID);
             $serializer = $serializerManager->get($validatedForm->get('serializer')->getData());
 
             $archiver = null;
             if ($validatedForm->get('do_compress')->getData()) {
-                /** @var \Thelia\Core\Archiver\ArchiverManager $archiverManager */
+                /** @var ArchiverManager $archiverManager */
                 $archiverManager = $this->container->get(RegisterArchiverPass::MANAGER_SERVICE_ID);
                 $archiver = $archiverManager->get($validatedForm->get('archiver')->getData());
             }
@@ -207,7 +210,17 @@ class ExportController extends BaseAdminController
                     'end' =>$validatedForm->get('range_date_end')->getData()
                 ];
             }
+            
 
+            
+//            var_dump($validatedForm->get("export_from_partner")->getData());
+//            var_dump($serializer);
+//            var_dump($export);
+//            var_dump($export);
+            
+            
+//            die("SAdadssssasdasdasdas");
+            
             $exportEvent = $exportHandler->export(
                 $export,
                 $serializer,
@@ -217,9 +230,15 @@ class ExportController extends BaseAdminController
                 $validatedForm->get('documents')->getData(),
                 $rangeDate,
                 $validatedForm->get("export_from")->getData(),
+                $validatedForm->get("export_from_partner")->getData(),
                 $validatedForm->get("tva_taxes")->getData()
             );
-
+            
+            
+            
+            
+            
+            
             $contentType = $exportEvent->getSerializer()->getMimeType();
             $fileExt = $exportEvent->getSerializer()->getExtension();
 
@@ -239,11 +258,11 @@ class ExportController extends BaseAdminController
             ];
 
             return new BinaryFileResponse($exportEvent->getFilePath(), 200, $header, false);
-        } catch (FormValidationException $e) {
-            $form->setErrorMessage($this->createStandardFormValidationErrorMessage($e));
-        } catch (\Exception $e) {
-            $this->getParserContext()->setGeneralError($e->getMessage());
-        }
+//        } catch (FormValidationException $e) {
+//            $form->setErrorMessage($this->createStandardFormValidationErrorMessage($e));
+//        } catch (\Exception $e) {
+//            $this->getParserContext()->setGeneralError($e->getMessage());
+//        }
 
         $this->getParserContext()
             ->addForm($form)

@@ -56,4 +56,3 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
     }
 }
 
-}

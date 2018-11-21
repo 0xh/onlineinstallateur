@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*      This file is part of the Thelia package.                                     */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
@@ -8,7 +9,7 @@
 /*                                                                                   */
 /*      For the full copyright and license information, please view the LICENSE.txt  */
 /*      file that was distributed with this source code.                             */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace Thelia\ImportExport\Export;
 
@@ -24,6 +25,7 @@ use Thelia\Model\Lang;
  */
 abstract class AbstractExport implements \Iterator
 {
+
     /**
      * @var string Default file name
      */
@@ -48,6 +50,11 @@ abstract class AbstractExport implements \Iterator
      * @var boolean Use export from country/amazon/....
      */
     const USE_EXPORT_FROM = false;
+
+    /**
+     * @var boolean Use export from crawler/partener ....
+     */
+    const USE_EXPORT_FROM_PARTNER = false;
 
     /**
      * @var boolean Use tva/taxes
@@ -108,17 +115,22 @@ abstract class AbstractExport implements \Iterator
      * @var null|array Export date range
      */
     protected $rangeDate;
-    
+
     /**
      * @var string export_from
      */
     protected $exportFrom;
-    
+
+    /**
+     * @var string export_from_partner
+     */
+    protected $exportFromPartner;
+
     /**
      * @var string tva_taxes
      */
     protected $tvaTaxes;
-    
+
     /**
      * @return the $tvaTaxes
      */
@@ -151,6 +163,22 @@ abstract class AbstractExport implements \Iterator
         $this->exportFrom = $exportFrom;
     }
 
+    /**
+     * @return the $exportFrom
+     */
+    public function getExportFromPartenr()
+    {
+        return $this->exportFromPartner;
+    }
+
+    /**
+     * @param string $exportFrom
+     */
+    public function setExportFromPartner($exportFromPartner)
+    {
+        $this->exportFromPartner = $exportFromPartner;
+    }
+
     public function current()
     {
         if ($this->dataIsArray) {
@@ -159,7 +187,7 @@ abstract class AbstractExport implements \Iterator
 
         $data = $this->data->getIterator()->current()->toArray(TableMap::TYPE_COLNAME, true, [], true);
         foreach ($this->data->getQuery()->getWith() as $withKey => $with) {
-            
+
             $data = array_merge($data, $data[$withKey]);
             unset($data[$withKey]);
         }
@@ -201,7 +229,7 @@ abstract class AbstractExport implements \Iterator
             $data = $this->getData();
 
             if (is_array($data)) {
-                $this->data = $data;
+                $this->data        = $data;
                 $this->dataIsArray = true;
                 reset($this->getData());
 
@@ -216,7 +244,7 @@ abstract class AbstractExport implements \Iterator
             }
 
             throw new \DomainException(
-                'Data must an array or an instance of \\Propel\\Runtime\\ActiveQuery\\ModelCriteria'
+            'Data must an array or an instance of \\Propel\\Runtime\\ActiveQuery\\ModelCriteria'
             );
         }
 
@@ -231,7 +259,6 @@ abstract class AbstractExport implements \Iterator
 
         return $this->data->getIterator()->valid();
     }
-
 
     /**
      * Get language
@@ -280,7 +307,6 @@ abstract class AbstractExport implements \Iterator
     {
         return empty($this->data);
     }
-
 
     /**
      * Whether images has to be exported as data
@@ -340,7 +366,6 @@ abstract class AbstractExport implements \Iterator
         return $this;
     }
 
-
     /**
      * Whether documents has to be exported as data
      *
@@ -399,7 +424,6 @@ abstract class AbstractExport implements \Iterator
         return $this;
     }
 
-
     /**
      * Get range date
      *
@@ -444,6 +468,10 @@ abstract class AbstractExport implements \Iterator
         return static::USE_TVA_TAXES;
     }
 
+    public function useExportFromParteners()
+    {
+        return static::USE_EXPORT_FROM_PARTNER;
+    }
 
     /**
      * Get file name
@@ -472,10 +500,10 @@ abstract class AbstractExport implements \Iterator
 
         foreach ($this->orderAndAliases as $key => $value) {
             if (is_integer($key)) {
-                $fieldName = $value;
+                $fieldName  = $value;
                 $fieldAlias = $value;
             } else {
-                $fieldName = $key;
+                $fieldName  = $key;
                 $fieldAlias = $value;
             }
 

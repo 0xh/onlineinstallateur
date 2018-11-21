@@ -10,6 +10,8 @@ use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Model\Map\BrandI18nTableMap;
 use Thelia\Model\Map\ProductTableMap;
 use Thelia\Model\ProductQuery;
+use const DS;
+use const THELIA_LOCAL_DIR;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -53,7 +55,8 @@ class Common extends BaseAdminController
         return $arrayProducts;
     }
 
-    public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0,$version = "scraper.1.2")
+    public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0,
+                                                       $version = "scraper.1.2")
     {
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
@@ -76,22 +79,22 @@ class Common extends BaseAdminController
 
         if ($crawlerProductListing) {
             $crawlerProductListing->setFirstPrice($first_price)
-            ->setVersionCreatedBy($version)
-                ->save();
+             ->setVersionCreatedBy($version)
+             ->save();
         } else {
             $crawlerProductListing = new CrawlerProductListing();
             $crawlerProductListing->setProductBaseId($crawlerProductBaseId)
-                ->setFirstPosition(1)
-                ->setFirstPrice($first_price)
-                ->setPlatform($platform)
-                ->setVersionCreatedBy($version)
-                ->save();
+             ->setFirstPosition(1)
+             ->setFirstPrice($first_price)
+             ->setPlatform($platform)
+             ->setVersionCreatedBy($version)
+             ->save();
         }
 
         return $crawlerProductListing->getId();
     }
 
-    public static function fetchfromFTP($local_folder,$filename)
+    public static function fetchfromFTP($local_folder, $filename)
     {
         $server_file = $filename;
         $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $local_folder . DS . $server_file;
