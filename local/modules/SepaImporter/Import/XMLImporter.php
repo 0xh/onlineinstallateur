@@ -194,12 +194,10 @@ class XMLImporter extends AbstractImport
             if ($wholesaleProduct) {
                 echo "WPP found " . $wholesaleProduct->getId() . " " . $wholesaleProduct->getPartnerProdRef() . " \n";
             } else {
-
                 $productQuerry->clear();
                 $foundProduct = $productQuerry->findOneByRef($refBuild)->getId();
 
                 $wpp = new WholesalePartnerProduct();
-
                 $wpp->setPartnerProdRef($partner_product_ref)
                  ->setProductId($foundProduct)
                  ->setPrice($netto_price_import)
