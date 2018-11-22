@@ -2,6 +2,7 @@
 
 namespace Scraper\Controller\Scrapers;
 
+use Exception;
 use Scraper\Config\ScraperConst;
 use Scraper\Controller\SimpleHtmlDomController;
 
@@ -21,94 +22,115 @@ class Skybad extends PriceScraper implements PriceScraperInterface
 
     public function getPriceForProduct($webBrowser, $prodId)
     {
-        $ref            = $prodId['extern_id'];
-        $searchUrl      = 'https://www.skybad.de/catalogsearch/result/?q=' . $ref;
-        $resultSelector = '.product-item-link';
+        try {
+            $ref            = $prodId['extern_id'];
+            $searchUrl      = 'https://www.skybad.de/catalogsearch/result/?q=' . $ref;
+            $resultSelector = '.product-item-link';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        foreach ($productResults as $value) {
-            $link = $value->attr['href'];
+            foreach ($productResults as $value) {
+                $link = $value->attr['href'];
 
-            if ($this->searchRefInProductPage($webBrowser, $link, $ref)) {
-                return $this->getProductPrice($webBrowser, $link);
+                if ($this->searchRefInProductPage($webBrowser, $link, $ref)) {
+                    return $this->getProductPrice($webBrowser, $link);
+                }
             }
-        }
 
-        return -2;
+            return -0.02;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getPriceForProduct:" . $ex->getMessage());
+            return -0.04;
+        }
     }
 
     protected function searchProdInList($webBrowser, $prodId)
     {
-        $searchUrl = 'https://www.skybad.de/catalogsearch/result/?q=' . $prodId['extern_id'];
+        try {
+            $searchUrl = 'https://www.skybad.de/catalogsearch/result/?q=' . $prodId['extern_id'];
 
-        $resultSelector = '.product-item-link';
+            $resultSelector = '.product-item-link';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        $existIndex = -1;
+            $existIndex = -0.01;
 
-        foreach ($productResults as $key => $value) {
-            $priceFromSkybad = strtoupper(trim($value->nodes[0]->_[4]));
+            foreach ($productResults as $key => $value) {
+                $priceFromSkybad = strtoupper(trim($value->nodes[0]->_[4]));
 
-            if (strpos($priceFromSkybad, $prodId["brand"]) !== FALSE) {
-                return $key;
+                if (strpos($priceFromSkybad, $prodId["brand"]) !== FALSE) {
+                    return $key;
+                }
             }
-        }
 
-        return $existIndex;
+            return $existIndex;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR searchProdInList:" . $ex->getMessage());
+            return -0.04;
+        }
     }
 
     protected function searchRefInProductPage($webBrowser, $link, $ref)
     {
-        $searchUrl      = $link;
-        $resultSelector = '.product-part-number';
+        try {
+            $searchUrl      = $link;
+            $resultSelector = '.product-part-number';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        $string = $productResults[0]->children[0]->nodes[0]->_[4];
-        $string = explode(":", $string);
+            $string = $productResults[0]->children[0]->nodes[0]->_[4];
+            $string = explode(":", $string);
 
-        if (trim($string[1]) === $ref) {
-            return TRUE;
+            if (trim($string[1]) === $ref) {
+                return TRUE;
+            }
+
+            return FALSE;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR searchRefInProductPage:" . $ex->getMessage());
+            return FALSE;
         }
-        return FALSE;
     }
 
     protected function getProductPrice($webBrowser, $link)
     {
-        $searchUrl      = $link;
-        $resultSelector = '.price';
+        try {
+            $searchUrl      = $link;
+            $resultSelector = '.price';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
-        $value          = $productResults[0];
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
+            $value          = $productResults[0];
 
-        if (isset($value->nodes[0])) {
-            $priceFromSkybad = $value->nodes[0]->_[4];
-            $priceFromSkybad = str_replace(".", "", $priceFromSkybad);
-            $priceFromSkybad = str_replace(",", ".", $priceFromSkybad);
-            $priceFromSkybad = floatval($priceFromSkybad);
+            if (isset($value->nodes[0])) {
+                $priceFromSkybad = $value->nodes[0]->_[4];
+                $priceFromSkybad = str_replace(".", "", $priceFromSkybad);
+                $priceFromSkybad = str_replace(",", ".", $priceFromSkybad);
+                $priceFromSkybad = floatval($priceFromSkybad);
 
-            return $priceFromSkybad;
+                return $priceFromSkybad;
+            }
+
+            return -0.01;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getProductPrice:" . $ex->getMessage());
+            return -0.04;
         }
-
-        return -1;
     }
 
 }
