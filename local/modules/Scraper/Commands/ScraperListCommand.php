@@ -52,11 +52,11 @@ class ScraperListCommand extends ContainerAwareCommand
         $import_file = null;
         $errors      = null;
 
-        $platform       = $input->getArgument('platform');
-        $startline      = $input->getArgument('startline');
-        $stopline       = $input->getArgument('stopline');
-        $version        = $input->getArgument('version');
-        $firstrun = $input->getArgument('firstrun');
+        $platform  = $input->getArgument('platform');
+        $startline = $input->getArgument('startline');
+        $stopline  = $input->getArgument('stopline');
+        $version   = $input->getArgument('version');
+        $firstrun  = $input->getArgument('firstrun');
 
         $URL        = new URL();
         $local_file = $newFile    = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
@@ -79,15 +79,15 @@ class ScraperListCommand extends ContainerAwareCommand
             if (($handle = fopen($csv_output, "r+")) !== FALSE) {
                 $row          = 0;
                 $productQuery = ProductQuery::create();
-                
-                while (($data         = fgetcsv($handle, 10000, ",")) !== FALSE) {
+
+                while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
                     if ($row != 0) {
                         $partnerProductRef = $data[2];
                         $productQuery->clear();
-                        $product = $productQuery->
-                        where(ProductTableMap::REF . " like '%" . $partnerProductRef . "%'")
+                        $product           = $productQuery->
+                         where(ProductTableMap::REF . " like '%" . $partnerProductRef . "%'")
                          ->findOne();
-                         if ($product == null && $firstrun == 1) {
+                        if ($product == null && $firstrun == 1) {
                             $product = new Product();
                             $product->setRef("SCRAPER_" . $partnerProductRef); // must be unique
                             $product->setVisible(0);
@@ -96,35 +96,34 @@ class ScraperListCommand extends ContainerAwareCommand
                             $product->save();
                             echo 'created ' . $product->getRef() . "\n";
                         }
-                        
-                        if($firstrun == 1 && count($product->getProductSaleElementss()) > 0) {
+
+                        if ($firstrun == 1 && count($product->getProductSaleElementss()) > 0) {
                             $pse = $product->getProductSaleElementss()[0];
                             $pse->setEanCode($data[3]);
                             $pse->save();
-                        }
-                        else {
+                        } else {
                             $pse = new ProductSaleElements();
                             $pse->setProduct($product);
                             $pse->setEanCode($data[3]);
                             echo "Pse Created \n";
                         }
-                        
+
                         if ($firstrun == 1) {
                             $findWPP = WholesalePartnerProductQuery::create()->findOneByPartnerProdRef($partnerProductRef);
-                            if($findWPP == null) {
+                            if ($findWPP == null) {
                                 $wpp = new WholesalePartnerProduct();
                             } else {
                                 $wpp = $findWPP;
                             }
                             $wpp->setPartnerProdRef($partnerProductRef)
-                            ->setProductId($product->getId())
-                            ->setPartnerId(1)
-                            ->setVersionCreatedBy($version)
-                            ->setComment($data[0])
-                            ->save();
-                            echo "New wholesale partner product: " . $wpp->getId()." KEY ".$data[0]." \n";
+                             ->setProductId($product->getId())
+                             ->setPartnerId(1)
+                             ->setVersionCreatedBy($version)
+                             ->setComment($data[0])
+                             ->save();
+                            echo "New wholesale partner product: " . $wpp->getId() . " KEY " . $data[0] . " \n";
                         }
-                        
+
                         array_push($arrayProducts, array("KEY"         => $data[0],
                          "Logistik_MC" => $data[1],
                          "extern_id"   => $data[2],
