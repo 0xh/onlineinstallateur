@@ -26,6 +26,7 @@ class IndexElasticSearch extends ContainerAwareCommand
         $this->addArgument(
          "reindex", InputArgument::OPTIONAL
         );
+        
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
