@@ -41,7 +41,7 @@ class XMLImporter extends AbstractImport
 
     protected static $logger;
     protected $is_error_filecreated = FALSE;
-    protected $mandatoryColumns = [];
+    protected $mandatoryColumns     = [];
 
     public function rowHasField($row, $field)
     {
@@ -70,35 +70,35 @@ class XMLImporter extends AbstractImport
         }
 
         //declare global variables
-        $locale                         = 'de_DE';
-        $productQuerry                  = ProductQuery::create();
+        $locale              = 'de_DE';
+        $productQuerry       = ProductQuery::create();
         $productQuerry->clear();
-        $productExists                  = null;
-        $brandRefComponent              = null;
-        $categoryComponent              = null;
-        $brandRefId                     = null;
-        $refBuild                       = null;
-        $wholesaleProduct               = null;
-        $matchingSuccessful             = FALSE;
-        $price_import                   = FALSE;
-        $brutto_price_import            = null;
+        $productExists       = null;
+        $brandRefComponent   = null;
+        $categoryComponent   = null;
+        $brandRefId          = null;
+        $refBuild            = null;
+        $wholesaleProduct    = null;
+        $matchingSuccessful  = FALSE;
+        $price_import        = FALSE;
+        $brutto_price_import = null;
 
 
         //USED
-        $brand_import                   = $this->rowHasField($row, "lieferantenname");
-        $category_import                = $this->rowHasField($row, "warengruppetext");
-        $brutto_price_import            = (float) str_replace(',', '.',$this->rowHasField($row, "bruttopreis")) * 116 / 100;
-        $netto_price_import             = (float) str_replace(',', '.',$this->rowHasField($row, "nettopreis")) * 116 / 100;
-        $material_number_import         = $this->rowHasField($row, "werknr");
-        $stock_import                   = $this->rowHasField($row, "versandfaehig");
-        $product_title_import           = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
-        $ean_code_import                = $this->rowHasField($row, "ean");
-        $product_picture_link           = $this->rowHasField($row, "produktbild");
-        $product_description_import     = $this->rowHasField($row, "ausschreibungstext");
-        $partner_product_ref            = $this->rowHasField($row, "matchcode");
+        $brand_import               = $this->rowHasField($row, "lieferantenname");
+        $category_import            = $this->rowHasField($row, "warengruppetext");
+        $brutto_price_import        = (float) str_replace(',', '.', $this->rowHasField($row, "bruttopreis")) * 116 / 100;
+        $netto_price_import         = (float) str_replace(',', '.', $this->rowHasField($row, "nettopreis")) * 116 / 100;
+        $material_number_import     = $this->rowHasField($row, "werknr");
+        $stock_import               = $this->rowHasField($row, "versandfaehig");
+        $product_title_import       = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
+        $ean_code_import            = $this->rowHasField($row, "ean");
+        $product_picture_link       = $this->rowHasField($row, "produktbild");
+        $product_description_import = $this->rowHasField($row, "ausschreibungstext");
+        $partner_product_ref        = $this->rowHasField($row, "matchcode");
 
 
-        echo 'XMLImporter ' .$partner_product_ref."\n";
+        echo 'XMLImporter ' . $partner_product_ref . "\n";
         //Insanity check
         if ($stock_import == null) {
             $stock_import = $this->rowHasField($row, "verf.Menge");
@@ -135,14 +135,14 @@ class XMLImporter extends AbstractImport
         if ($partner_product_ref) {
             $wholesaleProduct = WholesalePartnerProductQuery::create()
              ->findOneByPartnerProdRef($partner_product_ref);
-        }  else {
+        } else {
             $log->debug("NO matchcode! ");
         }
-        
-        
+
+
 
         if ($wholesaleProduct && $partner_product_ref) {
-            $wPId        = $wholesaleProduct->getProductId();
+            $wPId = $wholesaleProduct->getProductId();
             $log->debug("After WPPQ, found product by partner ref, will update stock: " . $wPId);
             $log->debug("After WPPQ , before brand create! WPP id: " . $wPId);
         } else {
@@ -183,35 +183,35 @@ class XMLImporter extends AbstractImport
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
+        } else {
+            echo ' brand ' . $brandRefComponent . " category " . $categoryComponent . " not found\n";
         }
-        else 
-        {
-            echo ' brand '.$brandRefComponent. " category ".$categoryComponent." not found\n";
-        }
-        
-        $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
-        $foundProductCount = count($foundExistingfProduct);
 
-        if($refBuild && $foundProductCount > 0) {
-            echo "Creating WWP for ".$refBuild."\n";
-            $productQuerry->clear();
-            $foundProduct = $productQuerry->findOneByRef($refBuild)->getId();
-            
-            $revenueDash2 = new WholesalePartnerProduct();
-            
-            if ($partner_product_ref != null) {
-                $revenueDash2->setPartnerProdRef($partner_product_ref)
-                ->setProductId($foundProduct)
-                ->setPrice($netto_price_import)
-                ->setPartnerId(1)
-                ->setVersionCreatedBy("Xml_importer")
-                ->save();
+        $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
+        $foundProductCount     = count($foundExistingfProduct);
+
+        if ($refBuild && $foundProductCount > 0) {
+            if ($wholesaleProduct) {
+                echo "WPP found " . $wholesaleProduct->getId() . " " . $wholesaleProduct->getPartnerProdRef() . " \n";
+            } else {
+
+                $productQuerry->clear();
+                $foundProduct = $productQuerry->findOneByRef($refBuild)->getId();
+
+                $wpp = new WholesalePartnerProduct();
+
+                $wpp->setPartnerProdRef($partner_product_ref)
+                 ->setProductId($foundProduct)
+                 ->setPrice($netto_price_import)
+                 ->setPartnerId(1)
+                 ->setVersionCreatedBy("Xml_importer")
+                 ->save();
                 $log->debug("New wholesale partner product price: " . $revenueDash2->getPrice());
             }
         }
 
 
-        
+
         //creating a new product
         if ($foundProductCount == 0 && $matchingSuccessful) {
             $time_before_newProduct        = microtime(true);
@@ -310,19 +310,6 @@ class XMLImporter extends AbstractImport
             }
 
             $eventProductUpdateDispatcher->dispatch(TheliaEvents::PRODUCT_UPDATE, $updateEvent);
-
-
-            $revenueDash = new WholesalePartnerProduct();
-
-            if ($netto_price_import != null) {
-                $revenueDash->setPartnerProdRef($partner_product_ref)
-                 ->setProductId($product_id)
-                 ->setPrice($netto_price_import)
-                 ->setPartnerId(1)
-                 ->setVersionCreatedBy("Xml_importer")
-                 ->save();
-                $log->debug("New wholesale partner product price: " . $revenueDash->getPrice());
-            }
 
             $image_path  = THELIA_LOCAL_DIR . "media" . DS . "images" . DS . "product" . DS;
             $image_name  = 'PROD_' . preg_replace("/[^a-zA-Z0-9.]/", "", $refBuild) . ".jpg";
