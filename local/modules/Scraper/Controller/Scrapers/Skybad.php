@@ -24,10 +24,10 @@ class Skybad extends PriceScraper implements PriceScraperInterface
     {
         try {
             $ref            = $prodId['extern_id'];
-            $searchUrl      = 'https://www.skybad.de/catalogsearch/result/?q=' . $ref;
+            $this->searchUrl      = 'https://www.skybad.de/catalogsearch/result/?q=' . $ref;
             $resultSelector = '.product-item-link';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -51,11 +51,11 @@ class Skybad extends PriceScraper implements PriceScraperInterface
     protected function searchProdInList($webBrowser, $prodId)
     {
         try {
-            $searchUrl = 'https://www.skybad.de/catalogsearch/result/?q=' . $prodId['extern_id'];
+            $this->searchUrl = 'https://www.skybad.de/catalogsearch/result/?q=' . $prodId['extern_id'];
 
             $resultSelector = '.product-item-link';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -81,10 +81,10 @@ class Skybad extends PriceScraper implements PriceScraperInterface
     protected function searchRefInProductPage($webBrowser, $link, $ref)
     {
         try {
-            $searchUrl      = $link;
+            $this->searchUrl      = $link;
             $resultSelector = '.product-part-number';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -107,10 +107,10 @@ class Skybad extends PriceScraper implements PriceScraperInterface
     protected function getProductPrice($webBrowser, $link)
     {
         try {
-            $searchUrl      = $link;
+            $this->searchUrl      = $link;
             $resultSelector = '.price';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);

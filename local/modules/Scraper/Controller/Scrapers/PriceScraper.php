@@ -8,6 +8,8 @@ use Thelia\Controller\Admin\BaseAdminController;
 class PriceScraper extends BaseAdminController implements PriceScraperInterface
 {
 
+    private $searchUrl;
+
     public function getData($platform, $online, $startid, $stopid, $outputConsole = 0)
     {
         $prodIds = Common::getProductsExternId($online, $startid, $stopid);
@@ -18,11 +20,11 @@ class PriceScraper extends BaseAdminController implements PriceScraperInterface
             $webBrowser->init();
             //each subclass must implement this
             $price      = $this->getPriceForProduct($webBrowser, $prodId);
-            
+
             if ($outputConsole) {
                 echo "PriceScraper " . $prodId["prod_id"] . " " . $prodId['extern_id'] . " " . $platform . " " . $price . " \n";
             }
-            
+
             $webBrowser->setLogger()->error("saveInCrawlerProductListing# : " . Common::saveInCrawlerProductListing($prodId["prod_id"], $platform, $price));
             $webBrowser->setLogger()->error("PriceScraper Prod_id:" . $prodId["prod_id"] . " Platform:" . $platform . " Price:" . $price);
             $webBrowser->close();

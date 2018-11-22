@@ -63,10 +63,10 @@ class Reuter extends PriceScraper implements PriceScraperInterface
     protected function isProductOnline($webBrowser, $prodId)
     {
         try {
-            $searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
+            $this->searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
             $resultSelector = '.text-line-through';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -86,10 +86,10 @@ class Reuter extends PriceScraper implements PriceScraperInterface
     protected function searchRefInProductPage($webBrowser, $link, $ref)
     {
         try {
-            $searchUrl      = 'https://www.reuter.de' . $link;
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
             $resultSelector = '.c-definition-list__value';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -108,10 +108,10 @@ class Reuter extends PriceScraper implements PriceScraperInterface
     protected function getProductPrice($webBrowser, $link)
     {
         try {
-            $searchUrl      = 'https://www.reuter.de' . $link;
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
             $resultSelector = '.c-price-block__price-price';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
@@ -148,10 +148,10 @@ class Reuter extends PriceScraper implements PriceScraperInterface
     protected function getProductPrice3rd($webBrowser, $link)
     {
         try {
-            $searchUrl      = 'https://www.reuter.de' . $link;
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
             $resultSelector = '.c-price-block__price';
 
-            $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
             $html           = new SimpleHtmlDomController();
             $html->load($searchPageResult);
