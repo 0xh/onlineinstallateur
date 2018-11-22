@@ -2,6 +2,7 @@
 
 namespace Scraper\Controller\Scrapers;
 
+use Exception;
 use Scraper\Config\ScraperConst;
 use Scraper\Controller\SimpleHtmlDomController;
 
@@ -27,129 +28,155 @@ class Reuter extends PriceScraper implements PriceScraperInterface
 
     public function getPriceForProduct($webBrowser, $prodId)
     {
-        if (!$this->isProductOnline($webBrowser, $prodId)) {
-            return -2;
-        }
-
-        $ref       = $prodId['extern_id'];
-        $searchUrl = 'https://www.reuter.de/katalogsuche/?q=' . $ref;
-
-        $resultSelector = '.c-product-tile__link';
-
-        $searchPageResult = $webBrowser->getPage($searchUrl);
-
-        $html = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-
-        $productResults = $html->find($resultSelector);
-
-        foreach ($productResults as $value) {
-            $link = $value->attr['href'];
-
-            if ($this->searchRefInProductPage($webBrowser, $link, $ref)) {
-                return $this->getProductPrice($webBrowser, $link);
+        try {
+            if (!$this->isProductOnline($webBrowser, $prodId)) {
+                return -0.02;
             }
-        }
 
-        return -1;
+            $ref       = $prodId['extern_id'];
+            $searchUrl = 'https://www.reuter.de/katalogsuche/?q=' . $ref;
+
+            $resultSelector = '.c-product-tile__link';
+
+            $searchPageResult = $webBrowser->getPage($searchUrl);
+
+            $html = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+
+            $productResults = $html->find($resultSelector);
+
+            foreach ($productResults as $value) {
+                $link = $value->attr['href'];
+
+                if ($this->searchRefInProductPage($webBrowser, $link, $ref)) {
+                    return $this->getProductPrice($webBrowser, $link);
+                }
+            }
+
+            return -0.01;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getPriceForProduct:" . $ex->getMessage());
+            return -0.04;
+        }
     }
 
     protected function isProductOnline($webBrowser, $prodId)
     {
-        $searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
-        $resultSelector = '.text-line-through';
+        try {
+            $this->searchUrl      = 'https://www.reuter.de/katalogsuche/?q=' . $prodId['extern_id'];
+            $resultSelector = '.text-line-through';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        if ($productResults) {
+            if ($productResults) {
+                return FALSE;
+            }
+
+            return TRUE;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR isProductOnline:" . $ex->getMessage());
             return FALSE;
         }
-        return TRUE;
     }
 
     protected function searchRefInProductPage($webBrowser, $link, $ref)
     {
-        $searchUrl      = 'https://www.reuter.de' . $link;
-        $resultSelector = '.c-definition-list__value';
+        try {
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
+            $resultSelector = '.c-definition-list__value';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        if (trim($productResults[0]->nodes[0]->_[4]) === $ref) {
-            return TRUE;
+            if (trim($productResults[0]->nodes[0]->_[4]) === $ref) {
+                return TRUE;
+            }
+            return FALSE;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR searchRefInProductPage:" . $ex->getMessage());
+            return FALSE;
         }
-        return FALSE;
     }
 
     protected function getProductPrice($webBrowser, $link)
     {
-        $searchUrl      = 'https://www.reuter.de' . $link;
-        $resultSelector = '.c-price-block__price-price';
+        try {
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
+            $resultSelector = '.c-price-block__price-price';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        if (isset($productResults) && isset($productResults[0])) {
-            $value = $productResults[0];
-        } else {
-            $value = $this->getProductPrice3rd($webBrowser, $link);
-
-            if (!$value) {
-                return -3;
+            if (isset($productResults) && isset($productResults[0])) {
+                $value = $productResults[0];
             } else {
-                return $value;
+                $value = $this->getProductPrice3rd($webBrowser, $link);
+
+                if (!$value) {
+                    return -0.03;
+                } else {
+                    return $value;
+                }
             }
+
+            if (isset($value->nodes[0]) && isset($value->children[0]) && isset($value->children[0]->nodes[0])) {
+                $priceFromReuter = $value->nodes[0]->_[4] . $value->children[0]->nodes[0]->_[4];
+                $priceFromReuter = str_replace(".", "", $priceFromReuter);
+                $priceFromReuter = str_replace(",", ".", $priceFromReuter);
+                $priceFromReuter = floatval($priceFromReuter);
+
+                return $priceFromReuter;
+            }
+
+            return -0.01;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getProductPrice:" . $ex->getMessage());
+            return -0.04;
         }
-
-        if (isset($value->nodes[0]) && isset($value->children[0]) && isset($value->children[0]->nodes[0])) {
-            $priceFromReuter = $value->nodes[0]->_[4] . $value->children[0]->nodes[0]->_[4];
-            $priceFromReuter = str_replace(".", "", $priceFromReuter);
-            $priceFromReuter = str_replace(",", ".", $priceFromReuter);
-            $priceFromReuter = floatval($priceFromReuter);
-
-            return $priceFromReuter;
-        }
-
-        return -1;
     }
 
     protected function getProductPrice3rd($webBrowser, $link)
     {
-        $searchUrl      = 'https://www.reuter.de' . $link;
-        $resultSelector = '.c-price-block__price';
+        try {
+            $this->searchUrl      = 'https://www.reuter.de' . $link;
+            $resultSelector = '.c-price-block__price';
 
-        $searchPageResult = $webBrowser->getPage($searchUrl);
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
 
-        $html           = new SimpleHtmlDomController();
-        $html->load($searchPageResult);
-        $productResults = $html->find($resultSelector);
+            $html           = new SimpleHtmlDomController();
+            $html->load($searchPageResult);
+            $productResults = $html->find($resultSelector);
 
-        if (isset($productResults) && isset($productResults[0])) {
-            $value = $productResults[0];
-        } else {
-            return FALSE;
+            if (isset($productResults) && isset($productResults[0])) {
+                $value = $productResults[0];
+            } else {
+                return FALSE;
+            }
+
+            if (isset($value->nodes[0])) {
+                $priceFromReuter = $value->nodes[0]->_[4];
+                $priceFromReuter = str_replace(".", "", $priceFromReuter);
+                $priceFromReuter = str_replace(",", ".", $priceFromReuter);
+                $priceFromReuter = floatval($priceFromReuter);
+
+                return $priceFromReuter;
+            }
+
+            return -0.01;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getProductPrice3rd:" . $ex->getMessage());
+            return -0.04;
         }
-
-        if (isset($value->nodes[0])) {
-            $priceFromReuter = $value->nodes[0]->_[4];
-            $priceFromReuter = str_replace(".", "", $priceFromReuter);
-            $priceFromReuter = str_replace(",", ".", $priceFromReuter);
-            $priceFromReuter = floatval($priceFromReuter);
-
-            return $priceFromReuter;
-        }
-
-        return -1;
     }
 
 }

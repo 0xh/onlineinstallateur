@@ -27,21 +27,23 @@ class Megabad extends PriceScraper implements PriceScraperInterface
 
     public function getPriceForProduct($webBrowser, $prodId)
     {
-        $searchUrl = 'https://search.epoq.de/inbound-servletapi/getSearchResult?full&callback=jQuery331038174002391130446_1537445518039&_bIsAjax=1&session-ro=1&tenantId=megabad&sessionId=9e4a1f79729e5aa479a2e546289f169e&orderBy=&order=desc&limit=24&offset=0&locakey=de&style=compact&format=json&nrf=&query=' . $prodId['extern_id'] . '&_=1537445518040';
-
-        $searchPageResult = $webBrowser->getPage($searchUrl);
-        $priceFromMegabad = -2;
-
-        $searchPageResult = str_replace("jQuery331038174002391130446_1537445518039(", "", $searchPageResult);
-        $searchPageResult = rtrim($searchPageResult, ");");
-        $searchPageResult = json_decode($searchPageResult, true);
         try {
-            $priceFromMegabad = floatval($searchPageResult['result']['findings']["finding"]["match-item"]["g:price"]["$"]);
-        } catch (Exception $e) {
-            
-        }
+            $this->searchUrl = 'https://search.epoq.de/inbound-servletapi/getSearchResult?full&callback=jQuery331038174002391130446_1537445518039&_bIsAjax=1&session-ro=1&tenantId=megabad&sessionId=9e4a1f79729e5aa479a2e546289f169e&orderBy=&order=desc&limit=24&offset=0&locakey=de&style=compact&format=json&nrf=&query=' . $prodId['extern_id'] . '&_=1537445518040';
 
-        return $priceFromMegabad;
+            $searchPageResult = $webBrowser->getPage($this->searchUrl);
+            $priceFromMegabad = -2;
+
+            $searchPageResult = str_replace("jQuery331038174002391130446_1537445518039(", "", $searchPageResult);
+            $searchPageResult = rtrim($searchPageResult, ");");
+            $searchPageResult = json_decode($searchPageResult, true);
+
+            $priceFromMegabad = floatval($searchPageResult['result']['findings']["finding"]["match-item"]["g:price"]["$"]);
+
+            return $priceFromMegabad;
+        } catch (Exception $ex) {
+            $webBrowser->setLogger()->error("ERROR getPriceForProduct:" . $ex->getMessage());
+            return -0.04;
+        }
     }
 
 }

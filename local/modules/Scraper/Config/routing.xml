@@ -37,5 +37,7 @@
         <requirement key="startid">\d+</requirement>
         <requirement key="stopid">\d+</requirement>
     </route>
-
+    <route id="scraper.scrape.product" path="/admin/module/scraper/scrapeproduct" methods="post">
+        <default key="_controller">Scraper\Controller\ScraperController::scrapeSearch</default>
+    </route>
 </routes>
