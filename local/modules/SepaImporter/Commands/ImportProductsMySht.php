@@ -23,23 +23,30 @@ class ImportProductsMySht extends ContainerAwareCommand
     {
         $this
          ->setName("importShtProducts:start")
-         ->setDescription("Starting mySht stock import!\n");
+         ->setDescription("Starting mySht product import!\n");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("Command started\n !");
-
+        $output->writeln("Command started!\n");
+        $time_start = microtime(true);
 
         $UR = new URL();
 
         $url = "https://www.sht-gruppe.at/alleartikel.zip";
 
-        $current_date = date("Y-m-d H:i:s");
-        $zip_name     = "import" . md5($current_date) . ".zip";
-        $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . $zip_name;
-        $zipResource  = fopen($zipFile, "w");
-        $ch           = curl_init();
+        $current_date  = date("Y-m-d H:i:s");
+        $zip_name      = "import" . md5($current_date) . ".zip";
+        $zipFile       = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . $zip_name;
+        $backup_folder = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "Backup" . DS;
+        if (file_exists($backup_folder)) {
+            copy($zipFile, $backup_folder . $zip_name);
+        } else {
+            mkdir(dirname($backup_folder), 0777, true);
+            copy($zipFile, $backup_folder . $zip_name);
+        }
+        $zipResource = fopen($zipFile, "w");
+        $ch          = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -50,7 +57,7 @@ class ImportProductsMySht extends ContainerAwareCommand
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($ch, CURLOPT_FILE, $zipResource);
-        $page         = curl_exec($ch);
+        $page        = curl_exec($ch);
         if (!$page) {
             echo "Error :- " . curl_error($ch);
         }
@@ -70,8 +77,7 @@ class ImportProductsMySht extends ContainerAwareCommand
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if ($file !== "." && $file !== "..") {
-                        echo "opening folder, getting file " . $file . "\n";
-                        echo $dir.$file."\n";
+                        echo "Opening folder, getting file " . $file . "\n";
                         $importDBReference = "thelia.import.from.xml"; //ex: thelia.export.catalog.idealo
                         //get export Object from DB based on reference
                         $importDBObject    = ImportQuery::create()->findOneByRef($importDBReference);
@@ -112,9 +118,10 @@ class ImportProductsMySht extends ContainerAwareCommand
 
                         echo "Eveything in order, starting import. \n";
 
-                        $importEvent = $importHandler->import($import, $filePath, $lang);
-
-                        echo "Import done.";
+                        $importEvent    = $importHandler->import($import, $filePath, $lang);
+                        $time_end       = microtime(true);
+                        $execution_time = round(($time_end - $time_start) * 1000);
+                        echo "Import done. Total duration was: " . $execution_time;
                     }
                 }
             }

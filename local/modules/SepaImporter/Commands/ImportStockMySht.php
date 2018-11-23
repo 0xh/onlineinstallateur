@@ -25,17 +25,18 @@ class ImportStockMySht extends ContainerAwareCommand
          ->setName("importShtStock:start")
          ->setDescription("Starting mySht stock import!\n")
          ->addArgument(
-             'startline', InputArgument::REQUIRED, 'Specify file start line')
+          'startline', InputArgument::REQUIRED, 'Specify file start line')
          ->addArgument(
-             'stopline',  InputArgument::REQUIRED, 'Specify file stop line');
+          'stopline', InputArgument::REQUIRED, 'Specify file stop line');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Command started! \n");
-        $startline = $input->getArgument('startline');
-        $stopline = $input->getArgument('stopline');
-        $UR = new URL();
+        $time_start = microtime(true);
+        $startline  = $input->getArgument('startline');
+        $stopline   = $input->getArgument('stopline');
+        $UR         = new URL();
 
         $local_file = $this->fetchfromFTP();
 
@@ -79,7 +80,7 @@ class ImportStockMySht extends ContainerAwareCommand
                     $data[2] = "matchcode";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
-                } else if($row >= $startline && $row <= $stopline){
+                } else if ($row >= $startline && $row <= $stopline) {
                     $data[0] = $data[0] . ",";
                     $data[1] = intval($data[1]) . ",";
                     $data[2] = $data[2];
@@ -88,11 +89,11 @@ class ImportStockMySht extends ContainerAwareCommand
                     file_put_contents($newFile, $data, FILE_APPEND);
                 }
                 $row++;
-                if($row % 1000 == 0 )
-                    if($row >= $startline && $row <= $stopline)
-                            echo "formated ".$row." lines \n";
-                        else
-                            echo "skiped ".$row." lines \n";
+                if ($row % 1000 == 0)
+                    if ($row >= $startline && $row <= $stopline)
+                        echo "formated " . $row . " lines \n";
+                    else
+                        echo "skiped " . $row . " lines \n";
             }
             fclose($handle);
         }
@@ -137,16 +138,17 @@ class ImportStockMySht extends ContainerAwareCommand
 
         echo "Eveything in order, starting import. \n";
 
-        $importEvent = $importHandler->import($import, $filePath, $lang);
-
-        echo "Import done.";
+        $importEvent    = $importHandler->import($import, $filePath, $lang);
+        $time_end       = microtime(true);
+        $execution_time = round(($time_end - $time_start) * 1000);
+        echo "Import done. Total duration was: " . $execution_time;
     }
 
     private function fetchfromFTP()
     {
 
         $server_file = "Artikelverfuegbarkeit.csv";
-        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtStock" . DS .$server_file;
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtStock" . DS . $server_file;
 
         $ftp_user   = "mmai1018";
         $ftp_pass   = "PreiCra!2018";

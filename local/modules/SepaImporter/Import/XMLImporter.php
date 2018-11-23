@@ -15,12 +15,12 @@ use Thelia\Core\Event\Product\ProductUpdateEvent;
 use Thelia\Core\Event\ProductSaleElement\ProductSaleElementUpdateEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\ImportExport\Import\AbstractImport;
+use Thelia\Log\Destination\TlogDestinationRotatingFile;
 use Thelia\Log\Tlog;
 use Thelia\Model\Base\ProductQuery;
 use Thelia\Model\Base\ProductSaleElementsQuery;
 use Thelia\Model\ProductImage;
 use Thelia\Model\ProductImageI18n;
-use Thelia\Model\ProductPriceQuery;
 use const DS;
 use const THELIA_LOCAL_DIR;
 use const THELIA_LOG_DIR;
@@ -42,7 +42,8 @@ class XMLImporter extends AbstractImport
 
     protected static $logger;
     protected $is_error_filecreated = FALSE;
-    protected $mandatoryColumns = [];
+    protected $mandatoryColumns     = [];
+    protected $counter              = 0;
 
     public function rowHasField($row, $field)
     {
@@ -54,15 +55,14 @@ class XMLImporter extends AbstractImport
 
     public function importData(array $row)
     {
-
-//logging intialise
+        $this->counter++;
+        //logging intialise
         $time_start = microtime(true);
         $errors     = null;
+        $log        = $this->setLogger();
+        $max_time   = ini_get("max_execution_time");
 
-        $log      = $this->getLogger();
-        $max_time = ini_get("max_execution_time");
         ini_set('max_execution_time', 60000);
-        $i        = 0;
 
         $log->debug("XML PRODUCT IMPORT");
         foreach ($row as $key => $value) {
@@ -70,39 +70,41 @@ class XMLImporter extends AbstractImport
                 $log->debug($key . ': ' . $value);
             }
         }
+        if ($this->counter % 100 == 0) {
+            echo "Counter at: " . $this->counter . PHP_EOL;
+            $log->debug("Counter at: " . $this->counter . PHP_EOL);
+        }
 
-        //declare global variables
-        $locale                         = 'de_DE';
-        $productQuerry                  = ProductQuery::create();
+//declare global variables
+        $locale              = 'de_DE';
+        $productQuerry       = ProductQuery::create();
         $productQuerry->clear();
-        $productExists                  = null;
-        $brandRefComponent              = null;
-        $categoryComponent              = null;
-        $brandRefId                     = null;
-        $refBuild                       = null;
-        $wholesaleProduct               = null;
-        $matchingSuccessful             = FALSE;
-        $stockImport                    = FALSE;
-        $price_import                   = FALSE;
-        $brutto_price_import            = null;
+        $productExists       = null;
+        $brandRefComponent   = null;
+        $categoryComponent   = null;
+        $brandRefId          = null;
+        $refBuild            = null;
+        $wholesaleProduct    = null;
+        $matchingSuccessful  = FALSE;
+        $stockImport         = FALSE;
+        $price_import        = FALSE;
+        $brutto_price_import = null;
 
 
-        //USED
-        $brand_import                   = $this->rowHasField($row, "lieferantenname");
-        $category_import                = $this->rowHasField($row, "warengruppetext");
-        $brutto_price_import            = (float) str_replace(',', '.',$this->rowHasField($row, "bruttopreis")) * 116 / 100;
-        $netto_price_import             = (float) str_replace(',', '.',$this->rowHasField($row, "nettopreis")) * 116 / 100;
-        $material_number_import         = $this->rowHasField($row, "werknr");
-        $stock_import                   = $this->rowHasField($row, "versandfaehig");
-        $product_title_import           = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
-        $ean_code_import                = $this->rowHasField($row, "ean");
-        $product_picture_link           = $this->rowHasField($row, "produktbild");
-        $product_description_import     = $this->rowHasField($row, "ausschreibungstext");
-        $partner_product_ref            = $this->rowHasField($row, "matchcode");
+//USED
+        $brand_import               = $this->rowHasField($row, "lieferantenname");
+        $category_import            = $this->rowHasField($row, "warengruppetext");
+        $brutto_price_import        = (float) str_replace(',', '.', $this->rowHasField($row, "bruttopreis")) * 116 / 100;
+        $netto_price_import         = (float) str_replace(',', '.', $this->rowHasField($row, "nettopreis")) * 116 / 100;
+        $material_number_import     = $this->rowHasField($row, "werknr");
+        $stock_import               = $this->rowHasField($row, "versandfaehig");
+        $product_title_import       = $this->rowHasField($row, "zeile1") . " " . $this->rowHasField($row, "zeile1");
+        $ean_code_import            = $this->rowHasField($row, "ean");
+        $product_picture_link       = $this->rowHasField($row, "produktbild");
+        $product_description_import = $this->rowHasField($row, "ausschreibungstext");
+        $partner_product_ref        = $this->rowHasField($row, "matchcode");
 
-
-        echo 'XMLImporter ' .$partner_product_ref."\n";
-        //Insanity check
+//Insanity check
         if ($stock_import == null) {
             $stock_import = $this->rowHasField($row, "verf.Menge");
             $log->debug("Import menge is for updating from csv not xml." . $stock_import);
@@ -138,11 +140,11 @@ class XMLImporter extends AbstractImport
         if ($partner_product_ref) {
             $wholesaleProduct = WholesalePartnerProductQuery::create()
              ->findOneByPartnerProdRef($partner_product_ref);
-        }  else {
+        } else {
             $log->debug("NO matchcode! ");
         }
-        
-        
+
+
 
         if ($wholesaleProduct && $partner_product_ref) {
             $wPId        = $wholesaleProduct->getProductId();
@@ -154,7 +156,7 @@ class XMLImporter extends AbstractImport
         }
 
 
-        //Brand and category check
+//Brand and category check
         $eventBrandDispatcher = $this->getContainer()->get('event_dispatcher');
         $createBrandEvent     = new RevenueDashboardBrandEvent();
         $createBrandEvent->setBrand_extern($brand_import);
@@ -184,37 +186,35 @@ class XMLImporter extends AbstractImport
 
 
 
-        //If both checks (brand and category have a match)
+//If both checks (brand and category have a match)
         if ($brandRefComponent != null && $categoryComponent != null) {
             $refBuild           = $brandRefComponent . $material_number_import;
             $matchingSuccessful = TRUE;
             $log->debug("Full ref: " . $refBuild);
         }
-        
-        $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
-        $foundProductCount = count($foundExistingfProduct);
 
-        if($refBuild && $foundProductCount > 0) {
-            echo "Creating WWP for ".$refBuild."\n";
+        $foundExistingfProduct = $productQuerry->findOneByRef($refBuild);
+        $foundProductCount     = count($foundExistingfProduct);
+
+        if ($refBuild && $foundProductCount > 0) {
+            echo "Creating WWP for " . $refBuild . "\n";
             $productQuerry->clear();
             $foundProduct = $productQuerry->findOneByRef($refBuild)->getId();
-            
+
             $revenueDash2 = new WholesalePartnerProduct();
-            
+
             if ($partner_product_ref != null) {
                 $revenueDash2->setPartnerProdRef($partner_product_ref)
-                ->setProductId($foundProduct)
-                ->setPrice($netto_price_import)
-                ->setPartnerId(1)
-                ->setVersionCreatedBy("Xml_importer")
-                ->save();
+                 ->setProductId($foundProduct)
+                 ->setPrice($netto_price_import)
+                 ->setPartnerId(1)
+                 ->setVersionCreatedBy("Xml_importer")
+                 ->save();
                 $log->debug("New wholesale partner product price: " . $revenueDash2->getPrice());
             }
         }
 
-
-        
-        //creating a new product
+//creating a new product
         if ($foundProductCount == 0 && $matchingSuccessful) {
             $time_before_newProduct        = microtime(true);
             $execution_time_before_product = round(($time_before_newProduct - $time_start) * 1000);
@@ -305,7 +305,6 @@ class XMLImporter extends AbstractImport
              ->setBrandId($brandRefId);
 
 
-
             if ($product_description_import != null) {
                 $updateEvent->setDescription($product_description_import);
                 $log->debug("New Product descrip: " . $updateEvent->getDescription() . " on product_id: " . $product_id);
@@ -380,11 +379,11 @@ class XMLImporter extends AbstractImport
         if ($errors == null) {
             $this->importedRows++;
         }
-        // create csv with wrong rows
+// create csv with wrong rows
         else {
-
-            $current_date  = date("Y-m-d H:i:s");
-            $csv_file_name = 'product_import_errors_' . md5($current_date) . '.txt';
+            $current_date_errors = date("Y-m-d H");
+            $current_date        = date("Y-m-d H:i:s");
+            $csv_file_name       = 'product_import_errors_' . md5($current_date_errors) . 'txt';
 
             $filepath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . $csv_file_name;
 
@@ -400,7 +399,10 @@ class XMLImporter extends AbstractImport
             fclose($fp);
 
             if ($this->is_error_filecreated == FALSE) {
+                echo "creating error file";
                 $errors                     = "<br><br><p>Download the CSV with the products which were not imported</p><input type=\"button\" value=\"Download\" onclick=\"window.location = ' / admin / import / full - product - import / download - csv / " . $csv_file_name . "
+
+
 
             ';
                 \"><br>" . $errors;
@@ -414,16 +416,28 @@ class XMLImporter extends AbstractImport
         return $errors;
     }
 
-    public function getLogger()
+    public function setLogger()
     {
-        if (self::$logger == null) {
+
+        $log_size  = 4096;
+        $log_count = 200;
+
+        if (self::$logger === null) {
             self::$logger = Tlog::getNewInstance();
-            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-xml-importer.txt";
-            self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
-            self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
-            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
-            self::$logger->setLevel(Tlog::DEBUG);
+        } else {
+            self:$logger      = Tlog::getInstance();
+            $destination = "\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile";
+            $logFilePath = THELIA_LOG_DIR . DS . "log-sht-xml-importer.txt";
+
+            self::$logger->setDestinations($destination)
+             ->setPrefix("#DATE #HOUR: ")
+             ->setDestinations($destination)
+             ->setLevel(Tlog::DEBUG)
+             ->setConfig($destination, TlogDestinationRotatingFile::VAR_PATH_FILE, $logFilePath) // Or whatever the filename should be
+             ->setConfig($destination, TlogDestinationRotatingFile::VAR_MAX_FILE_SIZE_KB, $log_size)
+             ->setConfig($destination, TlogDestinationRotatingFile::VAR_MAX_FILE_COUNT, $log_count);
         }
+
         return self::$logger;
     }
 

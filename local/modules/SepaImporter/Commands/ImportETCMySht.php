@@ -29,6 +29,7 @@ class ImportETCMySht extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Command started! \n");
+        $time_end = microtime(true);
 
         $UR = new URL();
 
@@ -125,7 +126,8 @@ class ImportETCMySht extends ContainerAwareCommand
 
         $importEvent = $importHandler->import($import, $filePath, $lang);
 
-        echo "Import done.";
+        $execution_time = round(($time_end - $time_start) * 1000);
+        echo "Import done. Total duration was: " . $execution_time;
     }
 
     private function fetchfromFTP()

@@ -29,9 +29,9 @@ class ShtPriceImporter extends AbstractImport
 
     protected static $logger;
     protected $is_error_filecreated = FALSE;
-    private $match_threshold = 100;
-    private $no_match_count = 0;
-    private $total_parsed = 0;
+    private $match_threshold        = 100;
+    private $no_match_count         = 0;
+    private $total_parsed           = 0;
 
     public function rowHasField($row, $field)
     {
@@ -103,10 +103,10 @@ class ShtPriceImporter extends AbstractImport
              ->findOneByCurrencyId(1);
 
             $log->debug("Price found: " . $priceQ->getProductSaleElementsId() . " Product Price Was: " . $priceQ->getPrice() . " Product Listen Price was: " . $priceQ->getListenPrice());
-            
-            $newListen = $price_from_separate_list * 120 / 100;
+
+            $newListen           = $price_from_separate_list * 120 / 100;
             $brutto_price_import = $priceQ->getListenPrice();
-            
+
             if ($brutto_price_import < $newListen) {
                 $brutto_price_import = $newListen;
             }
@@ -114,31 +114,29 @@ class ShtPriceImporter extends AbstractImport
             $priceQ->setPrice($price_from_separate_list)
              ->setListenPrice($brutto_price_import)
              ->save();
-             if($wholesaleProduct){
-                 $wholesaleProduct
+            if ($wholesaleProduct) {
+                $wholesaleProduct
                  ->setPrice($netto_price_from_list)
                  ->setPartnerId(1)
                  ->setVersionCreatedBy("Xml_importer")
                  ->save();
-                 $log->debug("New wholesale partner product price: " . $wholesaleProduct->getPrice());
-                 echo "New wholesale partner product price: " . $wholesaleProduct->getPrice();
-             }
-             $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
+                $log->debug("New wholesale partner product price: " . $wholesaleProduct->getPrice());
+                echo "New wholesale partner product price: " . $wholesaleProduct->getPrice();
+            }
+            $log->debug("Price from list: " . $price_from_separate_list . " Price from list listen: " . $brutto_price_import);
 
             $log->debug("Product modified: " . $priceQ->getProductSaleElementsId() . " Product Price is: " . $priceQ->getPrice() . " Product Listen Price is: " . $priceQ->getListenPrice());
             echo ("modifying pseid:" . $priceQ->getProductSaleElementsId() . " old:" . $priceQ->getPrice() . " listen:" . $priceQ->getListenPrice()
-                ." new:".$price_from_separate_list." listen:".$brutto_price_import."\n");  
-            
+            . " new:" . $price_from_separate_list . " listen:" . $brutto_price_import . "\n");
         } else {
-            if($this->no_match_count == $this->match_threshold) {
-                $this->total_parsed = $this->total_parsed + $this->no_match_count;
-                echo ("NO match ".$this->total_parsed . " \n");
+            if ($this->no_match_count == $this->match_threshold) {
+                $this->total_parsed   = $this->total_parsed + $this->no_match_count;
+                echo ("NO match " . $this->total_parsed . " \n");
                 $log->debug("NO match");
                 $this->no_match_count = 0;
             } else {
                 $this->no_match_count++;
             }
-
         }
 
         ini_set('max_execution_time', $max_time);
@@ -182,13 +180,16 @@ class ShtPriceImporter extends AbstractImport
 
     public function getLogger()
     {
+
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
-            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-price-importer.txt";
+            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-xml-price-importer.txt";
             self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
-            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
             self::$logger->setLevel(Tlog::DEBUG);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_SIZE_KB_DEFAULT, "4096");
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_COUNT_DEFAULT, "200");
         }
         return self::$logger;
     }

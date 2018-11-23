@@ -42,6 +42,7 @@ class ShtStockImporter extends AbstractImport
 
     protected static $logger;
     protected $is_error_filecreated = FALSE;
+    protected $counter              = 0;
 
     public function rowHasField($row, $field)
     {
@@ -71,6 +72,12 @@ class ShtStockImporter extends AbstractImport
                 $log->debug($key . ': ' . $value);
             }
         }
+        if ($this->counter % 100 == 0) {
+            echo "Counter at: " . $this->counter . PHP_EOL;
+
+            $log->debug("Counter at: " . $this->counter . PHP_EOL);
+        }
+
 
         //declare global variables
         $locale                         = 'de_DE';
@@ -88,8 +95,8 @@ class ShtStockImporter extends AbstractImport
 
 
         //USED
-        $partner_product_ref            = $this->rowHasField($row, "matchcode");
-        $stock_import                   = $this->rowHasField($row, "verf.Menge");
+        $partner_product_ref = $this->rowHasField($row, "matchcode");
+        $stock_import        = $this->rowHasField($row, "verf.Menge");
         //Insanity check
         if ($stock_import == null) {
             $log->debug("There's no stock_import !");
@@ -187,13 +194,16 @@ class ShtStockImporter extends AbstractImport
 
     public function getLogger()
     {
+
         if (self::$logger == null) {
             self::$logger = Tlog::getNewInstance();
-            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-stock-importer.txt";
+            $logFilePath  = THELIA_LOG_DIR . DS . "log-sht-xml-stock-importer.txt";
             self::$logger->setPrefix("#LEVEL: #DATE #HOUR: ");
             self::$logger->setDestinations("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile");
-            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
             self::$logger->setLevel(Tlog::DEBUG);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", 0, $logFilePath);
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_SIZE_KB_DEFAULT, "4096");
+            self::$logger->setConfig("\\Thelia\\Log\\Destination\\TlogDestinationRotatingFile", TlogDestinationRotatingFile::MAX_FILE_COUNT_DEFAULT, "200");
         }
         return self::$logger;
     }
