@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'A descriptive title' => 'A descriptive title',
+    'A descriptive title' => 'Descriptive title',
     'A short description, used when a summary or an introduction is required' => 'A short description, used when a summary or an introduction is required',
     'A short text, used when an additional or supplemental information is required.' => 'A short text, used when an additional or supplemental information is required.',
     'Alternative image text' => 'Alternative image text',
