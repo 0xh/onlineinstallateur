@@ -26,9 +26,9 @@ class ImportProductsMySht extends ContainerAwareCommand
          ->setName("importShtProducts")
          ->setDescription("Starting mySht stock import!\n")
          ->addArgument(
-             'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported');
+          'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported');
     }
-    
+
     private function getProductsList($url)
     {
         $current_date = date("Y-m-d H:i:s");
@@ -58,7 +58,7 @@ class ImportProductsMySht extends ContainerAwareCommand
         }
         $zip->extractTo($extractPath);
         $zip->close();
-        
+
         echo"Zip fetched and extracted. \n";
     }
 
@@ -66,10 +66,11 @@ class ImportProductsMySht extends ContainerAwareCommand
     {
         $output->writeln("Command started!\n");
         $reimport = $input->getArgument('reimport');
-        $UR = new URL();
+        $UR       = new URL();
 
-        if($reimport == 0)
+        if ($reimport == 0) {
             $this->getProductsList("https://www.sht-gruppe.at/alleartikel.zip");
+        }
 
         $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot" . DS;
         if (is_dir($dir)) {
@@ -77,7 +78,7 @@ class ImportProductsMySht extends ContainerAwareCommand
                 while (($file = readdir($dh)) !== false) {
                     if ($file !== "." && $file !== "..") {
                         echo "opening folder, getting file " . $file . "\n";
-                        echo $dir.$file."\n";
+                        echo $dir . $file . "\n";
                         $importDBReference = "thelia.import.from.xml"; //ex: thelia.export.catalog.idealo
                         //get export Object from DB based on reference
                         $importDBObject    = ImportQuery::create()->findOneByRef($importDBReference);
