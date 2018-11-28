@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
     'Coupon code can\'t be empty' => 'Gutschein-Code darf nicht leer sein',
     'Delivery address does not belong to the current customer' => 'Lieferadresse gehört nicht zum aktuellen Kunden',
     'Delivery module cannot be use with selected delivery address' => 'Lieferung-Modul kann nicht mit ausgewählten Lieferadresse verwendet werden',
@@ -18,5 +18,6 @@ return [
     'Thanks for signing up! We\'ll keep you posted whenever we have any new updates.' => 'Vielen Dank für Ihre Anmeldung! Wir halten Sie auf dem Laufenden über neuen Updates.',
     'To enable the virtual product feature, the VirtualProductDelivery module should be activated' => 'Um das virtuelle Produkt-Feature zu aktivieren, sollte das VirtualProductDelivery-Modul aktiviert werden',
     'Wrong email or password. Please try again' => 'E-Mail oder Passwort falsch. Bitte erneut versuchen',
+    'You should <a href="%sign">sign in</a> or <a href="%register">register</a> to use this coupon' => 'Sie sollten sich <a href="%sign"> anmelden </a> oder <a href="%register"> registrieren </a>, um diesen Gutschein zu verwenden',
     'You\'re currently logged in. Please log out before requesting a new password.' => 'Sie sind derzeit angemeldet. Bitte melden Sie sich ab, bevor Sie ein neues Passwort anfordern.',
-];
+);

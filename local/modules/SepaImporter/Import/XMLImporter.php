@@ -204,7 +204,7 @@ class XMLImporter extends AbstractImport
                  ->setPartnerId(1)
                  ->setVersionCreatedBy("Xml_importer")
                  ->save();
-                $log->debug("New wholesale partner product price: " . $revenueDash2->getPrice());
+                $log->debug("New wholesale partner product price: " . $wpp->getPrice());
             }
         }
 

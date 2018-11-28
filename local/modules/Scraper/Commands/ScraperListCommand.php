@@ -43,6 +43,8 @@ class ScraperListCommand extends ContainerAwareCommand
           'stopline', InputArgument::REQUIRED, 'Specify list stop line number')
          ->addArgument(
           'firstrun', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
+         ->addArgument(
+          'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported')
         ;
     }
 
@@ -57,10 +59,16 @@ class ScraperListCommand extends ContainerAwareCommand
         $stopline  = $input->getArgument('stopline');
         $version   = $input->getArgument('version');
         $firstrun  = $input->getArgument('firstrun');
+        $reimport  = $input->getArgument('reimport');
 
         $URL        = new URL();
-        $local_file = $newFile    = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
-        //$local_file = Common::fetchfromFTP("ShtScraper","Artikelliste.csv");
+        $local_file = "";
+        if ($reimport == 0) {
+            $local_file = Common::fetchfromFTP("ShtScraper", "Artikelliste.csv");
+        } else {
+            $local_file = $newFile    = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste.csv";
+        }
+
 
         $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtScraper" . DS . "Artikelliste" . date('_m.d.Y_H.i.s') . ".csv";
 

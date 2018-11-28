@@ -16,40 +16,46 @@ use Thelia\Controller\Admin\BaseAdminController;
  *
  * @author Catana Florin
  */
-class SimpleHtmlDomNodeController extends BaseAdminController {
+class SimpleHtmlDomNodeController extends BaseAdminController
+{
 
     public $nodetype = ScraperConst::HDOM_TYPE_TEXT;
-    public $tag = 'text';
-    public $attr = array();
+    public $tag      = 'text';
+    public $attr     = array();
     public $children = array();
-    public $nodes = array();
-    public $parent = null;
-    public $_ = array();
-    private $dom = null;
+    public $nodes    = array();
+    public $parent   = null;
+    public $_        = array();
+    private $dom     = null;
 
-    function __construct($dom) {
-        $this->dom = $dom;
+    function __construct($dom)
+    {
+        $this->dom    = $dom;
         $dom->nodes[] = $this;
     }
 
-    function __destruct() {
+    function __destruct()
+    {
         $this->clear();
     }
 
-    function __toString() {
+    function __toString()
+    {
         return $this->outertext();
     }
 
     // clean up memory due to php5 circular references memory leak...
-    function clear() {
-        $this->dom = null;
-        $this->nodes = null;
-        $this->parent = null;
+    function clear()
+    {
+        $this->dom      = null;
+        $this->nodes    = null;
+        $this->parent   = null;
         $this->children = null;
     }
 
     // dump node's tree
-    function dump($show_attr = true) {
+    function dump($show_attr = true)
+    {
         dump_html_tree($this, $show_attr);
     }
 
@@ -57,9 +63,9 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
 //    function parent() {
 //        return $this->parent;
 //    }
-    
 // returns children of node
-    function children($idx = -1) {
+    function children($idx = -1)
+    {
         if ($idx === -1)
             return $this->children;
         if (isset($this->children[$idx]))
@@ -68,24 +74,27 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // returns the first child of node
-    function first_child() {
+    function first_child()
+    {
         if (count($this->children) > 0)
             return $this->children[0];
         return null;
     }
 
 // returns the last child of node
-    function last_child() {
+    function last_child()
+    {
         if (($count = count($this->children)) > 0)
             return $this->children[$count - 1];
         return null;
     }
 
 // returns the next sibling of node    
-    function next_sibling() {
+    function next_sibling()
+    {
         if ($this->parent === null)
             return null;
-        $idx = 0;
+        $idx   = 0;
         $count = count($this->parent->children);
         while ($idx < $count && $this !== $this->parent->children[$idx])
             ++$idx;
@@ -95,10 +104,11 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // returns the previous sibling of node
-    function prev_sibling() {
+    function prev_sibling()
+    {
         if ($this->parent === null)
             return null;
-        $idx = 0;
+        $idx   = 0;
         $count = count($this->parent->children);
         while ($idx < $count && $this !== $this->parent->children[$idx])
             ++$idx;
@@ -108,7 +118,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // get dom node's inner html
-    function innertext() {
+    function innertext()
+    {
         if (isset($this->_[ScraperConst::HDOM_INFO_INNER]))
             return $this->_[ScraperConst::HDOM_INFO_INNER];
         if (isset($this->_[ScraperConst::HDOM_INFO_TEXT]))
@@ -121,7 +132,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // get dom node's outer text (with tag)
-    function outertext() {
+    function outertext()
+    {
         if ($this->tag === 'root')
             return $this->innertext();
 
@@ -152,7 +164,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // get dom node's plain text
-    function text() {
+    function text()
+    {
         if (isset($this->_[ScraperConst::HDOM_INFO_INNER]))
             return $this->_[ScraperConst::HDOM_INFO_INNER];
         switch ($this->nodetype) {
@@ -171,7 +184,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         return $ret;
     }
 
-    function xmltext() {
+    function xmltext()
+    {
         $ret = $this->innertext();
         $ret = str_ireplace('<![CDATA[', '', $ret);
         $ret = str_replace(']]>', '', $ret);
@@ -179,13 +193,14 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // build node's text with tag
-    function makeup() {
+    function makeup()
+    {
         // text, comment, unknown
         if (isset($this->_[ScraperConst::HDOM_INFO_TEXT]))
             return $this->dom->restore_noise($this->_[ScraperConst::HDOM_INFO_TEXT]);
 
         $ret = '<' . $this->tag;
-        $i = -1;
+        $i   = -1;
 
         foreach ($this->attr as $key => $val) {
             ++$i;
@@ -214,10 +229,11 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // find elements by css selector
-    function find($selector, $idx = null) {
+    function find($selector, $idx = null)
+    {
         $selectors = $this->parse_selector($selector);
 
-        if (($count = count($selectors)) === 0)
+        if (($count      = count($selectors)) === 0)
             return array();
         $found_keys = array();
 
@@ -248,7 +264,7 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         // sort keys
         ksort($found_keys);
 
-        $found = array();
+        $found   = array();
         foreach ($found_keys as $k => $v)
             $found[] = $this->dom->nodes[$k];
 
@@ -261,7 +277,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
     }
 
 // seek for given conditions
-    protected function seek($selector, &$ret) {
+    protected function seek($selector, &$ret)
+    {
         list($tag, $key, $val, $exp, $no_key) = $selector;
 
         // xpath index
@@ -282,7 +299,7 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         if ($end == 0) {
             $parent = $this->parent;
             while (!isset($parent->_[ScraperConst::HDOM_INFO_END]) && $parent !== null) {
-                $end -= 1;
+                $end    -= 1;
                 $parent = $parent->parent;
             }
             $end += $parent->_[ScraperConst::HDOM_INFO_END];
@@ -331,7 +348,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         }
     }
 
-    protected function match($exp, $pattern, $value) {
+    protected function match($exp, $pattern, $value)
+    {
         switch ($exp) {
             case '=':
                 return ($value === $pattern);
@@ -349,12 +367,13 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         return false;
     }
 
-    protected function parse_selector($selector_string) {
+    protected function parse_selector($selector_string)
+    {
         // pattern of CSS selectors, modified from mootools
-        $pattern = "/([\w-:\*]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[@?(!?[\w-]+)(?:([!*^$]?=)[\"']?(.*?)[\"']?)?\])?([\/, ]+)/is";
+        $pattern   = "/([\w-:\*]*)(?:\#([\w-]+)|\.([\w-]+))?(?:\[@?(!?[\w-]+)(?:([!*^$]?=)[\"']?(.*?)[\"']?)?\])?([\/, ]+)/is";
         preg_match_all($pattern, trim($selector_string) . ' ', $matches, PREG_SET_ORDER);
         $selectors = array();
-        $result = array();
+        $result    = array();
         //print_r($matches);
 
         foreach ($matches as $m) {
@@ -391,14 +410,14 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
             }
             //elements that do NOT have the specified attribute
             if (isset($key[0]) && $key[0] === '!') {
-                $key = substr($key, 1);
+                $key    = substr($key, 1);
                 $no_key = true;
             }
 
             $result[] = array($tag, $key, $val, $exp, $no_key);
             if (trim($m[7]) === ',') {
                 $selectors[] = $result;
-                $result = array();
+                $result      = array();
             }
         }
         if (count($result) > 0)
@@ -406,7 +425,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         return $selectors;
     }
 
-    function __get($name) {
+    function __get($name)
+    {
         if (isset($this->attr[$name]))
             return $this->attr[$name];
         switch ($name) {
@@ -418,12 +438,13 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         }
     }
 
-    function __set($name, $value) {
+    function __set($name, $value)
+    {
         switch ($name) {
             case 'outertext': return $this->_[ScraperConst::HDOM_INFO_OUTER] = $value;
             case 'innertext':
                 if (isset($this->_[ScraperConst::HDOM_INFO_TEXT]))
-                    return $this->_[ScraperConst::HDOM_INFO_TEXT] = $value;
+                    return $this->_[ScraperConst::HDOM_INFO_TEXT]  = $value;
                 return $this->_[ScraperConst::HDOM_INFO_INNER] = $value;
         }
         if (!isset($this->attr[$name])) {
@@ -433,7 +454,8 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         $this->attr[$name] = $value;
     }
 
-    function __isset($name) {
+    function __isset($name)
+    {
         switch ($name) {
             case 'outertext': return true;
             case 'innertext': return true;
@@ -443,69 +465,85 @@ class SimpleHtmlDomNodeController extends BaseAdminController {
         return (array_key_exists($name, $this->attr)) ? true : isset($this->attr[$name]);
     }
 
-    function __unset($name) {
+    function __unset($name)
+    {
         if (isset($this->attr[$name]))
             unset($this->attr[$name]);
     }
 
 // camel naming conventions
-    function getAllAttributes() {
+    function getAllAttributes()
+    {
         return $this->attr;
     }
 
-    function getAttribute($name) {
+    function getAttribute($name)
+    {
         return $this->__get($name);
     }
 
-    function setAttribute($name, $value) {
+    function setAttribute($name, $value)
+    {
         $this->__set($name, $value);
     }
 
-    function hasAttribute($name) {
+    function hasAttribute($name)
+    {
         return $this->__isset($name);
     }
 
-    function removeAttribute($name) {
+    function removeAttribute($name)
+    {
         $this->__set($name, null);
     }
 
-    function getElementById($id) {
+    function getElementById($id)
+    {
         return $this->find("#$id", 0);
     }
 
-    function getElementsById($id, $idx = null) {
+    function getElementsById($id, $idx = null)
+    {
         return $this->find("#$id", $idx);
     }
 
-    function getElementByTagName($name) {
+    function getElementByTagName($name)
+    {
         return $this->find($name, 0);
     }
 
-    function getElementsByTagName($name, $idx = null) {
+    function getElementsByTagName($name, $idx = null)
+    {
         return $this->find($name, $idx);
     }
 
-    function parentNode() {
+    function parentNode()
+    {
         return $this->parent();
     }
 
-    function childNodes($idx = -1) {
+    function childNodes($idx = -1)
+    {
         return $this->children($idx);
     }
 
-    function firstChild() {
+    function firstChild()
+    {
         return $this->first_child();
     }
 
-    function lastChild() {
+    function lastChild()
+    {
         return $this->last_child();
     }
 
-    function nextSibling() {
+    function nextSibling()
+    {
         return $this->next_sibling();
     }
 
-    function previousSibling() {
+    function previousSibling()
+    {
         return $this->prev_sibling();
     }
 
