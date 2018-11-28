@@ -1,5 +1,6 @@
 <?php
-/*************************************************************************************/
+
+/* * ********************************************************************************** */
 /*                                                                                   */
 /*      Thelia	                                                                     */
 /*                                                                                   */
@@ -17,9 +18,9 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/* 	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
-/*************************************************************************************/
+/* * ********************************************************************************** */
 
 namespace LocalPickup\Listener;
 
@@ -39,6 +40,7 @@ use Thelia\Model\ConfigQuery;
  */
 class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterface
 {
+
     /**
      * @param  OrderEvent $event
      * @throws \Exception
@@ -47,32 +49,21 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
     {
         if ($event->getOrder()->getDeliveryModuleId() === LocalPickup::getModCode()) {
             $address_id = $event->getOrder()->getDeliveryOrderAddressId();
-            $address = OrderAddressQuery::create()->findPk($address_id);
+            $address    = OrderAddressQuery::create()->findPk($address_id);
 
             if ($address !== null) {
-                $config = new ConfigQuery();
+                $config   = new ConfigQuery();
                 $address1 = $config->read("pickupaddress");
                 $address2 = $config->read("store_address2");
                 $address3 = $config->read("store_address3");
-                $zipcode = $config->read("store_zipcode");
-                $city = $config->read("store_city");
-                $country = $config->read("store_country");
-                $name = $config->read("store_name");
+                $zipcode  = ""; //$config->read("store_zipcode");
+                $city     = ""; //$config->read("store_city");
+                $country  = $config->read("store_country");
+                $name     = $config->read("store_name");
 
                 if ($address1 !== null && $zipcode !== null && $city !== null && $country !== null) {
                     $address_event = new OrderAddressEvent(
-                        $address->getCustomerTitleId(),
-                        $address->getFirstname(),
-                        $address->getLastname(),
-                        $address1,
-                        $address2,
-                        $address3,
-                        $zipcode,
-                        $city,
-                        $country,
-                        $address->getPhone(),
-                        $name,
-                        $address->getCellphone()
+                     $address->getCustomerTitleId(), $address->getFirstname(), $address->getLastname(), $address1, $address2, $address3, $zipcode, $city, $country, $address->getPhone(), $name, $address->getCellphone()
                     );
 
                     $address_event->setOrderAddress($address);
@@ -115,8 +106,9 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return array(
-            TheliaEvents::ORDER_BEFORE_PAYMENT=>array("update_address", 130),
-            TheliaEvents::ORDER_SET_DELIVERY_MODULE=>array("set_address", 128)
+         TheliaEvents::ORDER_BEFORE_PAYMENT      => array("update_address", 130),
+         TheliaEvents::ORDER_SET_DELIVERY_MODULE => array("set_address", 128)
         );
     }
+
 }
