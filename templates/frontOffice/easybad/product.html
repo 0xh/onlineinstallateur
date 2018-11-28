@@ -267,7 +267,9 @@
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 	                        
 	                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
-                    				<span>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}</span>
+                    				<span>{intl l="Lager:"} {$QUANTITY} {intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}</span>
+                                    <div><small>{intl l="{config key='stock_available_delivery_message' default='Delivery in 1-3 Workdays'}"}</small></div>
+                                    
                     				{else}
                           
 	                
