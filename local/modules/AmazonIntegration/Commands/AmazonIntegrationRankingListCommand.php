@@ -71,7 +71,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
             if (($handle = fopen($csv_output, "r+")) !== FALSE) {
                 $row          = 0;
                 $productQuery = ProductQuery::create();
-                while (($data         = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                while (($data         = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if ($row != 0) {
                         $productQuery->clear();
                         $product = $productQuery->
@@ -86,17 +86,20 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
                             $product->save();
                             echo "created " . $product->getRef() . "\n";
                         }
-                        if ($createProducts == 1 && count($product->getProductSaleElementss()) > 0) {
-                            $pse = $product->getProductSaleElementss()[0];
-                            $pse->setEanCode($data[3]);
-                            $pse->save();
-                            echo "PSE Updated \n";
-                        } else {
-                            $pse = new ProductSaleElements();
-                            $pse->setProduct($product);
-                            $pse->setEanCode($data[3]);
-                            echo "Pse Created \n";
+                        if ($createProducts == 1) {
+                            if (count($product->getProductSaleElementss()) > 0) {
+                                $pse = $product->getProductSaleElementss()[0];
+                                $pse->setEanCode($data[3]);
+                                $pse->save();
+                                echo "PSE Updated \n";
+                            } else {
+                                $pse = new ProductSaleElements();
+                                $pse->setProduct($product);
+                                $pse->setEanCode($data[3]);
+                                echo "Pse Created \n";
+                            }
                         }
+
 
                         array_push($arrayProducts, array("KEY"         => $data[0],
                          "Logistik_MC" => $data[1],
