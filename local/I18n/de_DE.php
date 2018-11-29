@@ -24,7 +24,8 @@ return [
  ],
  'fo.easybad'                                                                                                                                => [
   'Can be shipped shortly'                                                              => 'Sofort versandfertig',
-  'Delivery in 1-3 Workdays'                                                            => 'Lieferzeit ca. 1-3 Werktage',
+  'Delivery in 1 - 3 Workdays'                                                          => 'Lieferzeit ca. 1 - 3 Werktage',
+  'Delivery in 1 - 2 Workdays'                                                          => 'Lieferzeit ca. 1 - 2 Werktage',
   'Continue Shopping'                                                                   => 'Weitere Artikeln aussuchen',
   'Proceed checkout'                                                                    => 'Zur Kasse',
   'Product Name'                                                                        => 'Produktname',

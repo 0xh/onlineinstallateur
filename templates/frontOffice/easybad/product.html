@@ -263,103 +263,107 @@
 
                 <div class="product-price col-xs-12 col-sm-6 col-lg-12 col-xl-12" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <div class="availability">
-<span class="availibity-label sr-only">{intl l="Availability"}: </span>
+                            <span class="availibity-label sr-only">{intl l="Availability"}: </span>
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 	                        
 	                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
                     			  <span>{intl l="Auf Lager:"} {$QUANTITY} {intl l="Stück"} </span>
-                                  <div><span>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}</span><div>
-                                    <div><small>{intl l="{config key='stock_available_delivery_message' default='Delivery in 1-2 Workdays'}"}</small></div>
-                                    
-                    				{else}
-                          
-	                
-                    			{/if}
-
+                                  <div>
+                                      <span>
+                                          <small>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}
+                                          </small>
+                                      </span>
+                                  <div>
+                                    <div>
+                                        <small>{intl l="{config key='stock_available_delivery_message' default='Delivery in 1 - 2 Workdays'}"}
+                                        </small>
+                                    </div>
+                    		{else}
+                            {/if}
 	                        </span>
-</div>
+                </div>
 
-                    <div class="price-container">
-                        {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
-                            <meta itemprop="category" content="{$TITLE}">
-                        {/loop}
-                        {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
-                        <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
-                        {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
-                        <meta itemprop="priceCurrency" content="{currency attr="code"}">
+                <div class="price-container">
+                    {loop type="category" name="category_tag" id=$DEFAULT_CATEGORY}
+                        <meta itemprop="category" content="{$TITLE}">
+                    {/loop}
+                    {* List of condition : NewCondition, DamagedCondition, UsedCondition, RefurbishedCondition *}
+                    <meta itemprop="itemCondition" itemtype="http://schema.org/ItemCondition" content="NewCondition">
+                    {* List of currency : The currency used to describe the product price, in three-letter ISO format. *}
+                    <meta itemprop="priceCurrency" content="{currency attr="code"}">
 
-                        {assign var="parent_category" value={category attr="parent"}}
-                        
-                        <span id="pse-promo">
-                            <span class="special-price">
-                            {if $parent_category != #services_category_id# AND $LISTEN_PRICE!=0}
-                            <table class="price-table align-right" >
+                    {assign var="parent_category" value={category attr="parent"}}
 
-                                <tr class="align-right">
-                                    <td>     
-                                        <span class="price-label">{intl l="Special Price:"}</span>
-                            	<span id="pse-price" style="display: none;" class="price">{format_money number=$TAXED_PROMO_PRICE symbol={currency attr="symbol"}}</span>
-                                 <span  class="line-through">{format_money number=$LISTEN_PRICE}*</span>
-                                    <span class="listprice">
-                                {format_money number=$BEST_TAXED_PRICE}</span></td>
-                                </tr>
+                    <span id="pse-promo">
+                        <span class="special-price">
+                        {if $parent_category != #services_category_id# AND $LISTEN_PRICE!=0}
+                        <table class="price-table align-right" >
+
+                            <tr class="align-right">
+                                <td>     
+                                    <span class="price-label">{intl l="Special Price:"}</span>
+                            <span id="pse-price" style="display: none;" class="price">{format_money number=$TAXED_PROMO_PRICE symbol={currency attr="symbol"}}</span>
+                             <span  class="line-through">{format_money number=$LISTEN_PRICE}*</span>
+                                <span class="listprice">
+                            {format_money number=$BEST_TAXED_PRICE}</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span>Sie sparen: {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
+                                            ({if $LISTEN_PRICE!=0} 
+                                            {$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%
+                                            {/if})</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="table-height-space-sm"></td>
+                            </tr>
+
+                            <tr id="zwischensumme" style="display:none;">
+                                <td ><span>Zwischensumme:</span> <span name="price_product_{$product_id}" class="highlighted-price">  {$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+                           <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
+                            </tr>
+                            <tr>
+                                <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
+                            </tr>
+                        </table>
+                        {else}  
+                            <table class="price-table">
                                 <tr>
                                     <td>
-                                    	<div>
-                                			<span>Sie sparen: {$SPAREN=$LISTEN_PRICE-$BEST_TAXED_PRICE}{format_money number=$SPAREN}
-                                        		({if $LISTEN_PRICE!=0} 
-                                        		{$percent=100-($BEST_TAXED_PRICE*100)/$LISTEN_PRICE }{$percent|string_format:"%d"}%
-                                        		{/if})</span>
-                                        </div>
+                                    <div style="font-size:20px; font-weight:bold;">
+                                    {$BEST_TAXED_PRICE|string_format:"%.2f"}€</div>
                                     </td>
                                 </tr>
-								<tr>
-									<td class="table-height-space-sm"></td>
-								</tr>
-									
-                                <tr id="zwischensumme" style="display:none;">
-                                    <td ><span>Zwischensumme:</span> <span name="price_product_{$product_id}" class="highlighted-price">  {$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
-                               <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
-                                </tr>
                                 <tr>
-                                    <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
+                                <td style="height:50px" colspan="2"></td>
                                 </tr>
+                                <tr id="zwischensumme" style="display:none">
+                                 <td><div>Zwischensumme:</div></td>
+                                <td class="highlighted-price"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
+                           <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
+                            </tr>
+                                <tr>
+                                <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
+                                </tr>
+
                             </table>
-                            {else}  
-                                <table class="price-table">
-                                    <tr>
-                                        <td>
-                                        <div style="font-size:20px; font-weight:bold;">
-                                        {$BEST_TAXED_PRICE|string_format:"%.2f"}€</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    <td style="height:50px" colspan="2"></td>
-                                    </tr>
-                                    <tr id="zwischensumme" style="display:none">
-                                     <td><div>Zwischensumme:</div></td>
-                                    <td class="highlighted-price"><span name="price_product_{$product_id}" >{$BEST_TAXED_PRICE|string_format:"%.2f"}</span></td>
-                               <span name="org_price_product_{$product_id}" style="display:none">{$BEST_TAXED_PRICE|string_format:"%.2f"}</span>
-                                </tr>
-                                    <tr>
-                                    <td ><small><br>Alle Preise inkl. 20% MwSt. und zzgl. <a href="{url path="/versandkosten.html"}">Versandkosten</a></small></td>
-                                    </tr>
+                        {/if}
 
-                                </table>
-                            {/if}
-                           
-                            </span>
-                            <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
-                            {if $SHOW_ORIGINAL_PRICE!=false}
-                                
-                            {/if}
                         </span>
-                    </div>
+                        <meta itemprop="price" content="{$TAXED_PROMO_PRICE}">
+                        {if $SHOW_ORIGINAL_PRICE!=false}
 
-                    <div id="pse-validity" class="validity alert alert-warning" style="display: none;" >
-                        {intl l="Sorry but this combination does not exist."}
-                    </div>
+                        {/if}
+                    </span>
                 </div>
+
+                <div id="pse-validity" class="validity alert alert-warning" style="display: none;" >
+                    {intl l="Sorry but this combination does not exist."}
+                </div>
+            </div>
                 
                 <div class="buying-options col-xs-12 col-sm-6 col-lg-12 col-xl-12">
                    	<div class="order-online">
