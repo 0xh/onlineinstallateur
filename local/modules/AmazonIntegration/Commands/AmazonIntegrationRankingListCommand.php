@@ -50,6 +50,7 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
         $local_file = "";
         if ($reimport == 0) {
             $local_file = $this->fetchfromFTP("AmazonRanking", "Artikelliste.csv");
+            echo "copied file from ftp \n";
         } else {
             $local_file = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "AmazonRanking" . DS . "Artikelliste.csv";
         }
@@ -57,7 +58,6 @@ class AmazonIntegrationRankingListCommand extends ContainerAwareCommand
         $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "AmazonRanking" . DS . "Artikelliste" . date('_m.d.Y_H.i.s') . ".csv";
 
         if ($local_file != null) {
-            echo "copied file from ftp \n";
             $csv_output = $this->formatFileForImport($local_file, $newFile, $startline, $stopline);
         } else {
             echo "Error copying file from ftp \n";
