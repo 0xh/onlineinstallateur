@@ -88,8 +88,11 @@ class ShtPriceImporter extends AbstractImport
             $log->debug("Starting price update.");
             $newProdId = $wholesaleProduct->getProductId();
 
-            $product    = ProductQuery::create()
+            $product = ProductQuery::create()
              ->findOneById($newProdId);
+            if ($product == null) {
+                echo 'product is null ' . $newProdId . "\n";
+            }
             $product_id = $product->getId();
             $log->debug("Product already in database, found match for WPP_id: " . $wholesaleProduct->getId() . "for product id: " . $product_id . " and ref: " . $product->getRef() . PHP_EOL);
 
@@ -100,6 +103,10 @@ class ShtPriceImporter extends AbstractImport
                 $productPse = new ProductSaleElements();
                 $productPse->setProduct($product)
                  ->save();
+            }
+
+            if ($productPse == null) {
+                echo 'pse is null' . $product . "\n";
             }
             $pse_id = $productPse->getId();
             $log->debug("Pse Id from PSE query is: " . $pse_id);
