@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Handler\ImportHandler;
+use SepaImporter\Handler\SepaImportHandler;
 use Thelia\Model\ImportQuery;
 use Thelia\Model\Lang;
 use Thelia\Model\LangQuery;
@@ -25,6 +25,10 @@ class ImportProductsMySht extends ContainerAwareCommand
         $this
          ->setName("importShtProducts")
          ->setDescription("Starting mySht stock import!\n")
+         ->addArgument(
+          'startline', InputArgument::REQUIRED, 'Specify file start line')
+         ->addArgument(
+          'stopline', InputArgument::REQUIRED, 'Specify file stop line')
          ->addArgument(
           'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported');
     }
@@ -64,6 +68,9 @@ class ImportProductsMySht extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $startline = $input->getArgument('startline');
+        $stopline  = $input->getArgument('stopline');
+
         $output->writeln("Command started!\n");
         $reimport = $input->getArgument('reimport');
         $UR       = new URL();
@@ -87,9 +94,13 @@ class ImportProductsMySht extends ContainerAwareCommand
                             $this->pageNotFound();
 
                         //get the service for the thelia import handler
-                        /** @var ImportHandler $importHandler */
-                        $importHandler = $this->getContainer()->get('thelia.import.handler');
-                        $import        = $importHandler->getImport($importDBObject->getId());
+                        /** @var SepaImportHandler $importHandler */
+                        $importHandler            = new SepaImportHandler(
+                         $this->getContainer()->get('event_dispatcher'), $this->getContainer()->get('thelia.serializer.manager'), $this->getContainer()->get('thelia.archiver.manager'), $this->getContainer());
+                        $importHandler->start_idx = $startline;
+                        $importHandler->stop_idx  = $stopline;
+                        //$importHandler = $this->getContainer()->get('thelia.import.handler');
+                        $import                   = $importHandler->getImport($importDBObject->getId());
 
                         $lang = "";
 

@@ -21,29 +21,29 @@ class ImportPriceMySht extends ContainerAwareCommand
     protected function configure()
     {
         $this
-         ->setName("importShtPrice:start")
+         ->setName("importShtPrice")
          ->setDescription("Starting mySht price import!\n")
          ->addArgument(
-             'startline', InputArgument::REQUIRED, 'Specify file start line')
+          'startline', InputArgument::REQUIRED, 'Specify file start line')
          ->addArgument(
-             'stopline',  InputArgument::REQUIRED, 'Specify file stop line');
+          'stopline', InputArgument::REQUIRED, 'Specify file stop line');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Command started! \n");
         $startline = $input->getArgument('startline');
-        $stopline = $input->getArgument('stopline');
-        $URL = new URL();
+        $stopline  = $input->getArgument('stopline');
+        $URL       = new URL();
 
         $local_file = $this->fetchfromFTP();
 
         if (file_exists(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS . "Mappe2new.csv")) {
-            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  "Mappe2new.csv");
+            unlink(THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS . "Mappe2new.csv");
             $output->writeln("File already existed, deleting \n");
         }
 
-        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  "Mappe2new.csv";
+        $newFile = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS . "Mappe2new.csv";
 
         $output->writeln("formating input file \n");
 
@@ -79,19 +79,19 @@ class ImportPriceMySht extends ContainerAwareCommand
                     $data[1] = "YE49_plus_7";
                     array_push($data, PHP_EOL);
                     file_put_contents($newFile, $data, FILE_APPEND);
-                } else if($row >= $startline && $row <= $stopline){
+                } else if ($row >= $startline && $row <= $stopline) {
                     $data[0] = $data[0] . ",";
-                    $data[1] = '"'.$data[1].'"';
+                    $data[1] = '"' . $data[1] . '"';
                     array_push($data, PHP_EOL);
 
                     file_put_contents($newFile, $data, FILE_APPEND);
                 }
                 $row++;
-                if($row % 1000 == 0 )
-                    if($row >= $startline && $row <= $stopline)
-                        echo "formated ".$row." lines \n";
+                if ($row % 1000 == 0)
+                    if ($row >= $startline && $row <= $stopline)
+                        echo "formated " . $row . " lines \n";
                     else
-                        echo "skiped ".$row." lines \n";
+                        echo "skiped " . $row . " lines \n";
             }
             fclose($handle);
         }
@@ -144,7 +144,7 @@ class ImportPriceMySht extends ContainerAwareCommand
     {
 
         $server_file = "Mappe2.csv";
-        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS .  $server_file;
+        $local_file  = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtPrice" . DS . $server_file;
 
         return $local_file;
     }
