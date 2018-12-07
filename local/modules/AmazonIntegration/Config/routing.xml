@@ -38,6 +38,11 @@
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAsinFromAmazon
 		</default>
 	</route>
+		
+	<route id="amazon.save.all.products" path="/admin/module/amazonintegration/save-all-products-from-amazon/{locale}">
+		<default key="_controller">AmazonIntegration\Controller\Admin\GetProductsFromAmazonController::getAllProductsFromAmazon
+		</default>
+	</route>
 	
 	<route id="amazon.order.product.save" path="/admin/module/amazonintegration/save-amazon-order-product">
 		<default key="_controller">AmazonIntegration\Controller\Admin\AmazonIntegrationContoller::saveAmazonOrderProduct
