@@ -14,8 +14,9 @@ class SendProductToAmazonContoller extends BaseAdminController
     public function addProductsToAmazon()
     {
         $prodToSend = array();
-        $amazonMarketplaceId = (explode(";", $_GET["amazon_marketplace"]))[0];
-        $amazonMarketplaceLocale = (explode(";", $_GET["amazon_marketplace"]))[1];
+        $amazon_marketplace = explode(";", $_GET["amazon_marketplace"]);
+        $amazonMarketplaceId = $amazon_marketplace[0];
+        $amazonMarketplaceLocale = $amazon_marketplace[1];
         $amazonCurrency = $_GET["amazon_currency"];
         
         $radioChecked = $_GET['radioChecked'] ? $this->getRadioChecked($_GET['radioChecked']) : array();
