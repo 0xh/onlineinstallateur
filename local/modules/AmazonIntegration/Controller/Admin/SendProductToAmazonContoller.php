@@ -5,7 +5,6 @@ use AmazonIntegration\AmazonIntegration;
 use AmazonIntegration\Classes\API\src\MarketplaceWebService\Samples\SubmitFeedClass;
 use AmazonIntegration\Model\AmazonProductsHf;
 use AmazonIntegration\Model\AmazonProductsHfQuery;
-use function Composer\Autoload\includeFile;
 use Thelia\Controller\Admin\BaseAdminController;
 
 class SendProductToAmazonContoller extends BaseAdminController
@@ -14,8 +13,9 @@ class SendProductToAmazonContoller extends BaseAdminController
     public function addProductsToAmazon()
     {
         $prodToSend = array();
-        $amazonMarketplaceId = (explode(";", $_GET["amazon_marketplace"]))[0];
-        $amazonMarketplaceLocale = (explode(";", $_GET["amazon_marketplace"]))[1];
+        $amazon_marketplace = explode(";", $_GET["amazon_marketplace"]);
+        $amazonMarketplaceId = $amazon_marketplace[0];
+        $amazonMarketplaceLocale = $amazon_marketplace[1];
         $amazonCurrency = $_GET["amazon_currency"];
         
         $radioChecked = $_GET['radioChecked'] ? $this->getRadioChecked($_GET['radioChecked']) : array();
@@ -43,7 +43,7 @@ class SendProductToAmazonContoller extends BaseAdminController
         return $this->generateRedirect("/admin/module/amazonintegration?" . $redirectLink, 303);
     }
     
-    protected function addProdToHfTable($prods, $marketPlaceId, $marketPlaceLocale, $amazonCurrency)
+    public function addProdToHfTable($prods, $marketPlaceId, $marketPlaceLocale, $amazonCurrency)
     {
         foreach ($prods as $key => $prod)
         {
@@ -118,7 +118,7 @@ class SendProductToAmazonContoller extends BaseAdminController
         $test->invokeSubmitFeed();
     }
     
-    protected function updateQuantityProductAmazon($prods, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_INVENTORY_AVAILABILITY_DATA_")
+    public function updateQuantityProductAmazon($prods, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_INVENTORY_AVAILABILITY_DATA_")
     {
         $feed ='<?xml version="1.0" encoding="UTF-8"?>
             <AmazonEnvelope xsi:noNamespaceSchemaLocation="amzn-envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -150,7 +150,7 @@ class SendProductToAmazonContoller extends BaseAdminController
         $test->invokeSubmitFeed();
     }
     
-    protected function updatePriceProductAmazon($prods, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_PRODUCT_PRICING_DATA_")
+    public function updatePriceProductAmazon($prods, $amazonCurrency, $amazonMarketplaceId, $amazonMarketplaceLocale, $feedType = "_POST_PRODUCT_PRICING_DATA_")
     {
         $feed ='<?xml version="1.0" encoding="UTF-8"?>
             <AmazonEnvelope xsi:noNamespaceSchemaLocation="amzn-envelope.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">

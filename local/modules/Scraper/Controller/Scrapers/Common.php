@@ -58,6 +58,9 @@ class Common extends BaseAdminController
     public static function saveInCrawlerProductListing($product_id, $platform, $first_price = 0,
                                                        $version = "scraper.1.2")
     {
+        if ($product_id == null || $product_id == "") {
+            return null;
+        }
         $crawlerProductBase = CrawlerProductBaseQuery::create()
          ->findOneByProductId($product_id);
         if (!$first_price || $first_price == null || $first_price == "")

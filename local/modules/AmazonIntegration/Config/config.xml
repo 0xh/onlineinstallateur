@@ -35,6 +35,7 @@
     <commands>
     	<command class="AmazonIntegration\Commands\AmazonIntegrationRankingCommand"/>
     	<command class="AmazonIntegration\Commands\AmazonIntegrationRankingListCommand"/>
+    	<command class="AmazonIntegration\Commands\AmazonIntegrationUpdateQuantityAndPriceCommand"/>
     </commands>
     
 </config>
