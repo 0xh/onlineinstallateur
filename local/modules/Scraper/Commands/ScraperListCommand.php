@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thelia\Command\ContainerAwareCommand;
-use Thelia\Tools\URL;
+use Scraper\Controller\Scrapers\Common;
 use Scraper\Controller\Scrapers\Megabad;
 use Scraper\Controller\Scrapers\Reuter;
 use Scraper\Controller\Scrapers\Skybad;
@@ -33,27 +33,17 @@ class ScraperListCommand extends ContainerAwareCommand
         $this
          ->setName("scraperListPrice")
          ->setDescription("List based price scraper")
-         ->addArgument(
-          'platform', InputArgument::REQUIRED, 'Specify paltform - skybad,reuter,megabad')
-         ->addArgument(
-          'version', InputArgument::REQUIRED, 'Specify import version')
-         ->addArgument(
-          'startline', InputArgument::REQUIRED, 'Specify list start line number')
-         ->addArgument(
-          'stopline', InputArgument::REQUIRED, 'Specify list stop line number')
-         ->addArgument(
-          'firstrun', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
-         ->addArgument(
-          'reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported')
+         ->addArgument('platform', InputArgument::REQUIRED, 'Specify paltform - skybad,reuter,megabad')
+         ->addArgument('version', InputArgument::REQUIRED, 'Specify import version')
+         ->addArgument('startline', InputArgument::REQUIRED, 'Specify list start line number')
+         ->addArgument('stopline', InputArgument::REQUIRED, 'Specify list stop line number')
+         ->addArgument('firstrun', InputArgument::REQUIRED, 'Specify if the scraper should create products or not')
+         ->addArgument('reimport', InputArgument::OPTIONAL, 'Specify if any existing files should be reimported')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $import_type = null;
-        $import_file = null;
-        $errors      = null;
-
         $platform  = $input->getArgument('platform');
         $startline = $input->getArgument('startline');
         $stopline  = $input->getArgument('stopline');
@@ -61,7 +51,7 @@ class ScraperListCommand extends ContainerAwareCommand
         $firstrun  = $input->getArgument('firstrun');
         $reimport  = $input->getArgument('reimport');
 
-        $URL        = new URL();
+        //$URL        = new URL();
         $local_file = "";
         if ($reimport == 0) {
             $local_file = Common::fetchfromFTP("ShtScraper", "Artikelliste.csv");
@@ -176,7 +166,6 @@ class ScraperListCommand extends ContainerAwareCommand
             $fp = fopen($versionFile, "a+");
             fclose($fp);
         }
-
 
         /** @var \Scraper\Controller\Scrapers\PriceScraper */
         $scraperClass = null;
