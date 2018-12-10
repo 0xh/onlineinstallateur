@@ -118,7 +118,7 @@ sudo chown -R www-data:www-data ./
 
 
 
-chmod -R 0777 templates/frontOffice/default/assets/dist/
+sudo chmod -R 0777 templates/frontOffice/default/assets/dist/
 sudo chmod -R 0777 local/sepa/*
 sudo chmod -R 0777 local/I18n/*
 sudo chmod -R 0777 local/modules/Selection/I18n/*
