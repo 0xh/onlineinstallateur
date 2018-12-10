@@ -177,11 +177,11 @@
             </tr>
             <tr>
                  <td style="border-left: solid 1mm #15589c;">
-                    <h3>{intl l="Invoice address"}</h3>
+                    <h3>{intl l="Invoice address" d="pdf.easybad"}</h3>
                     {format_address order_address=$INVOICE_ADDRESS locale=$locale}
                 </td>
                 <td style="border-left: solid 1mm #15589c;" >
-                    <h3>{intl l="Delivery address"}</h3>
+                    <h3>{intl l="Delivery address" d="pdf.easybad"}</h3>
     				{ifhook rel="invoice.delivery-address"}
                         {* delivery module can customize the delivery address *}
                         {hook name="invoice.delivery-address" module={$DELIVERY_MODULE} order=$order_id}
@@ -203,13 +203,13 @@
                         <col style="width: 100%; padding: 0mm;" />
                        
                         <tr>
-                            <td><h3>{intl l="Invoice date"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
+                            <td><h3>{intl l="Invoice date" d="pdf.easybad"} : <span>{format_date date=$INVOICE_DATE output="date"}</span></h3></td>
                         </tr>
                         <tr>
-                            <td><h3>{intl l="Invoice REF"} : <span>{$REF}</span></h3></td>
+                            <td><h3>{intl l="Invoice REF" d="pdf.easybad"} : <span>{$REF}</span></h3></td>
                         </tr>
                         <tr>
-                            <td><h3>{intl l="Customer Number"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
+                            <td><h3>{intl l="Customer Number" d="pdf.easybad"} : <span>{loop type="customer" name="customer.invoice" id=$CUSTOMER current="0"}{$REF}{/loop}</span></h3></td>
                         </tr>
                         {hookblock name="invoice.information" order=$order_id fields="title,value"}
                         {forhook rel="invoice.information"}
@@ -241,12 +241,12 @@
         {/loop}
         
             <tr class="table-1">
-                <td><h4>{intl l="Product"}</h4></td>
-                <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
-                <td><h4 class="align-center">{intl l=$taxTitle}</h4></td>
-                <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
-                <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
-                <td style="background:#15589c"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
+                <td><h4>{intl l="Product" d="pdf.easybad"}</h4></td>
+                <td><h4 class="align-center">{intl l="Unit. price" d="pdf.easybad"}</h4></td>
+                <td><h4 class="align-center">{intl l=$VatTitle d="pdf.easybad"}</h4></td>
+                <td><h4 class="align-center">{intl l="Unit taxed price" d="pdf.easybad"}</h4></td>
+                <td><h4 class="align-center">{intl l="Quantity" d="pdf.easybad"}</h4></td>
+                <td style="background:#15589c"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis" d="pdf.easybad"}</h4></td>
             </tr>
             {loop type="order_product" name="order-products" order=$ID}
                 {if $WAS_IN_PROMO == 1}
@@ -304,12 +304,12 @@
         <table cellspacing="0" cellpadding="0" style="padding-top: 5mm;">
             <tr>
                 <td class="table-3-module" style="width: 50%; padding: 1mm;" >
-                    <h3>{intl l="Payment module"}</h3>
+                    <h3>{intl l="Payment module" d="pdf.easybad"}</h3>
                     <p>
                         <span>{loop name="payment-module" type="module" id=$PAYMENT_MODULE}{$TITLE}{/loop}</span>
                     </p>
                     {hook name="invoice.after-payment-module" order=$order_id module_id=$PAYMENT_MODULE}
-                    <h3>{intl l="Delivery module"}</h3>
+                    <h3>{intl l="Delivery module" d="pdf.easybad"}</h3>
                     <p>
     	                <span>{loop name="delivery-module" type="module" id=$DELIVERY_MODULE}{$TITLE}{/loop}</span>
     	            </p>                  
@@ -321,12 +321,12 @@
                         <col style="width: 50%; padding: 1mm;">
                         {if $DISCOUNT!=0}
                         <tr>
-                            <td class="table-3-1"><p>{intl l="Discount"}</p></td>
+                            <td class="table-3-1"><p>{intl l="Discount" d="pdf.easybad"}</p></td>
                             <td class="table-3-1 align-right"><p>{format_money number=$DISCOUNT currency_id=$CURRENCY}</p></td>
                         </tr>
                         {/if}
                         <tr>
-                            <td class="table-3-1"><p>{intl l="Gesamtpreis exkl. Mehrwertsteuer"}</p></td>
+                            <td class="table-3-1"><p>{intl l="Gesamtpreis exkl. Mehrwertsteuer" d="pdf.easybad"}</p></td>
                             <td class="table-3-1 align-right"><p>{format_money number={$TOTAL_AMOUNT - $POSTAGE_UNTAXED} currency_id=$CURRENCY}</p></td>
                         </tr>
                         {strip}
@@ -345,7 +345,7 @@
                                 {/foreach}
                                 {if $POSTAGE_TAX != 0}
                                 <tr>
-                                    <td class="table-3-2"><p>{intl l="Postage"}<br>{$POSTAGE_TAX_RULE_TITLE}</p></td>
+                                    <td class="table-3-2"><p>{intl l="Postage" d="pdf.easybad"}<br>{$POSTAGE_TAX_RULE_TITLE}</p></td>
                                     <td class="table-3-2 align-right"><p>{format_money number=$POSTAGE_TAX currency_id=$CURRENCY}</p></td>
                                 </tr>
                                 {/if}
@@ -353,7 +353,7 @@
                         {/strip}
                         {if $smarty.capture.tax ne ""}
                         <tr>
-                            <td class="table-3-1"><p>{intl l=$VatTitle}</p></td>
+                            <td class="table-3-1"><p>{intl l=$VatTitle} d="pdf.easybad"</p></td>
                             <td class="table-3-1 align-right"><p>{format_money number=$TOTAL_TAX currency_id=$CURRENCY}</p></td>
                         </tr>
                         {$smarty.capture.tax nofilter}
@@ -364,12 +364,12 @@
                         </tr-->
                         {if $POSTAGE!=0}
                         <tr>
-                            <td class="table-3-1"><p>{intl l="Postage"}</p></td>
+                            <td class="table-3-1"><p>{intl l="Postage" d="pdf.easybad"}</p></td>
                             <td class="table-3-1 align-right"><p>{format_money number=$POSTAGE currency_id=$CURRENCY}</p></td>
                         </tr>
                         {/if}
                         <tr>
-                            <td class="table-3-1" style="background:#15589c;"><h3 style="color:white;">{intl l="Gesamtbetrag"}</h3></td>
+                            <td class="table-3-1" style="background:#15589c;"><h3 style="color:white;">{intl l="Gesamtbetrag" d="pdf.easybad"}</h3></td>
                             <td class="table-3-1 align-right" style="background:#15589c;"><h3 style="color:white;">{format_money number=$TOTAL_TAXED_AMOUNT currency_id=$CURRENCY}</h3></td>
                         </tr>
                     </table>
