@@ -14,9 +14,9 @@ use Thelia\Action\BaseAction;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\HttpFoundation\Request;
-use Thelia\Model\OrderQuery;
-use Thelia\Core\Template\Loop\OrderProduct;
+use Thelia\Log\Tlog;
 use Thelia\Model\OrderProductQuery;
+use Thelia\Model\OrderQuery;
 
 /**
  * Description of OrderRevenueListener
@@ -26,22 +26,28 @@ use Thelia\Model\OrderProductQuery;
 class OrderRevenueListener extends BaseAction implements EventSubscriberInterface {
 
     protected $request;
-
+    
     public function __construct(Request $request) {
         $this->request = $request;
     }
 
     protected function updateOrderRevenue($orderId) {
+        Tlog::getInstance()->debug("ORL: Update Order Revenue");
         $orderProdRevenue = OrderProductRevenueQuery::create()
                 ->findByOrderId($orderId);
-
+        Tlog::getInstance()->debug("ORL: Order product revenue query ".$orderProdRevenue);
+        
+        
         $orderRevenue = OrderRevenueQuery::create()
                 ->findByOrderId($orderId);
 
+        Tlog::getInstance()->debug("ORL: Order revenue query ".$orderRevenue);
         $paymentProcessorCost = $this->getDeliveryCostMethodPay($orderId);
         $totalPaymentProcessorCost = $paymentProcessorCost["cost_module"] + $paymentProcessorCost["cost_transaction_module"];
         $deliveryCostMethod = $this->getDeliveryCostMethod($orderId);
 
+        Tlog::getInstance()->debug("ORL: Payment processor Cost: ".$paymentProcessorCost." Total payment processor cost ".$totalPaymentProcessorCost." Delivery cost method ".$deliveryCostMethod);
+        
         if ($orderRevenue->getData()) {
             foreach ($orderRevenue as $orderRev) {
                 $orderRev->delete();
@@ -53,6 +59,7 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
     }
 
     protected function addNewOrderRevenue($orderProdRevenue, $paymentProcessorCost, $totalPaymentProcessorCost, $deliveryCostMethod) {
+        Tlog::getInstance()->debug("ORL: add new order revenue ");
         $orderProduct = OrderProductQuery::create()
         ->filterByOrderId($orderProdRevenue->getOrderId())
         ->findOneByProductRef($orderProdRevenue->getProductRef());
@@ -77,6 +84,7 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
     }
 
     protected function getDeliveryCostMethod($orderId) {
+        Tlog::getInstance()->debug("ORL: get deliverly cost method");
         $center = FulfilmentCenterOrderQuery::create()
                 ->addJoin(FulfilmentCenterOrderTableMap::CENTER_ID, FulfilmentCenterTableMap::ID)
                 ->withColumn(FulfilmentCenterTableMap::DELIVERY_COST, 'delivery_cost')
@@ -97,6 +105,7 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
     }
 
     protected function getDeliveryCostMethodPay($orderId) {
+        Tlog::getInstance()->debug("ORL: get deliverly cost method pay");
         $order = OrderQuery::create()
                 ->findOneById($orderId);
 
@@ -113,6 +122,7 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
     }
 
     public function updateOrderStatus(OrderEvent $event) {
+       Tlog::getInstance()->debug("ORL: update order status"); 
         $completedStatus = 8;
         $newStatus = $event->getStatus();
         $order = $event->getOrder();
@@ -121,6 +131,15 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
             $this->updateOrderRevenue($order->getId());
         }
     }
+    
+    public function updateWPPonOrderCreate(OrderEvent $event) {
+       Tlog::getInstance()->debug("ORL: updateWPPonOrderCreate"); 
+        $orderStatus = $event->getStatus();
+        $order = $event->getOrder();
+
+            $this->updateOrderRevenue($order->getId());
+    }
+    
 
 
     /**
@@ -145,7 +164,8 @@ class OrderRevenueListener extends BaseAction implements EventSubscriberInterfac
      */
     public static function getSubscribedEvents() {
         return array(
-            TheliaEvents::ORDER_UPDATE_STATUS => array("updateOrderStatus", 128)
+            TheliaEvents::ORDER_UPDATE_STATUS => array("updateOrderStatus", 128),
+            TheliaEvents::ORDER_UPDATE_STATUS => array("updateWPPonOrderCreate", 128)
         );
     }
 

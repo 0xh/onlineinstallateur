@@ -36,7 +36,8 @@ class ImportProductsMySht extends ContainerAwareCommand
     private function getProductsList($url)
     {
         $current_date = date("Y-m-d H:i:s");
-        $zip_name     = "import" . md5($current_date) . ".zip";
+//        $zip_name     = "import" . md5($current_date) . ".zip";
+        $zip_name     = "import" . "bo" . ".zip";
         $zipFile      = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . $zip_name;
         $zipResource  = fopen($zipFile, "w");
         $ch           = curl_init();
@@ -58,25 +59,27 @@ class ImportProductsMySht extends ContainerAwareCommand
         $zip         = new ZipArchive;
         $extractPath = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts";
         if ($zip->open($zipFile) != "true") {
-            echo "Error :- Unable to open the Zip File";
+            echo "Error :- Unable to open the Zip File".PHP_EOL;
         }
         $zip->extractTo($extractPath);
         $zip->close();
 
-        echo"Zip fetched and extracted. \n";
+        echo"Zip fetched and extracted.".PHP_EOL;
+        return $zipFile;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $zipFile=null;
         $startline = $input->getArgument('startline');
         $stopline  = $input->getArgument('stopline');
 
-        $output->writeln("Command started!\n");
+        $output->writeln("Command started!".PHP_EOL);
         $reimport = $input->getArgument('reimport');
         $UR       = new URL();
 
         if ($reimport == 0) {
-            $this->getProductsList("https://www.sht-gruppe.at/alleartikel.zip");
+            $zipFile=$this->getProductsList("https://www.sht-gruppe.at/alleartikel.zip");
         }
 
         $dir = THELIA_LOCAL_DIR . "sepa" . DS . "import" . DS . "ShtProducts" . DS . "wwwroot" . DS;
@@ -84,8 +87,8 @@ class ImportProductsMySht extends ContainerAwareCommand
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if ($file !== "." && $file !== "..") {
-                        echo "opening folder, getting file " . $file . "\n";
-                        echo $dir . $file . "\n";
+                        echo "opening folder, getting file " . $file .PHP_EOL;
+                        echo $dir . $file .PHP_EOL;
                         $importDBReference = "thelia.import.from.xml"; //ex: thelia.export.catalog.idealo
                         //get export Object from DB based on reference
                         $importDBObject    = ImportQuery::create()->findOneByRef($importDBReference);
@@ -128,17 +131,17 @@ class ImportProductsMySht extends ContainerAwareCommand
 
                         $filePath = new File($dir . $file);
 
-                        echo "Eveything in order, starting import. \n";
+                        echo "Eveything in order, starting import.".PHP_EOL;
 
                         $importEvent = $importHandler->import($import, $filePath, $lang);
 
-                        echo "Import done.";
+                        echo "Import done.".PHP_EOL;
                     }
                 }
             }
             closedir($dh);
         }
-        echo "Zip operations completed, deleting archive! ";
+        echo "Zip operations completed, deleting archive!".PHP_EOL;
         unlink($zipFile);
     }
 
