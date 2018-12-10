@@ -141,8 +141,3 @@ php Thelia cache:clear --env=dev
 sudo mv ../stable ../stable_backup
 #move new release to stable version
 sudo  mv ../stable_new ../stable
-
-
-
-
-
