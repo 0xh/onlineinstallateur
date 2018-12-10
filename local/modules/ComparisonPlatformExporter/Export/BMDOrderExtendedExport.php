@@ -24,7 +24,7 @@ use function mb_convert_encoding;
 
 /**
  * Class BilligerProductExport
- * 
+ *
  * @author Emanuel Plopu <emanuel.plopu@sepa.at>
  */
 class BMDOrderExtendedExport extends AbstractExport
@@ -34,7 +34,7 @@ class BMDOrderExtendedExport extends AbstractExport
     const USE_EXPORT_FROM = true;
     const FILE_NAME       = 'order_bmd';
 
-    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol 
+    // konto;gkto;belegnr;extbelegnr;betrag;steuer;mwst;buchdat;belegdat;bucod;text;zziel;skontopz;skontotage;steucod;ebkennz;symbol
     protected $orderAndAliases = [
      'customer_REF'                          => 'konto',
      OrderTableMap::CREATED_AT               => 'gkto',
@@ -54,7 +54,9 @@ class BMDOrderExtendedExport extends AbstractExport
      'delivery_address_COMPANY'              => 'ebkennz',
      'delivery_address_COUNTRY'              => 'symbol',
      'delivery_address_PHONE'                => 'logistik',
-     'delivery_address_ADDRESS3'             => 'amazon_id'
+     'delivery_address_ADDRESS3'             => 'amazon_id',
+     'testytest'                             => 'testy_test',
+     'vatty'                                 => 'VAT'
     ];
 
     /**
@@ -62,7 +64,7 @@ class BMDOrderExtendedExport extends AbstractExport
      *
      * @param array $data
      *            Raw data
-     *            
+     *
      * @return array Ordered and aliased data
      */
     public function applyOrderAndAliases(array $data)
@@ -95,6 +97,7 @@ class BMDOrderExtendedExport extends AbstractExport
          ->addSelfSelectColumns()
          ->useOrderQuery()
          ->addAsColumn('`order_REF`', 'REF')
+         ->addAsColumn('`trans_ref`', 'TRANSACTION_REF')
          ->endUse()
          ->where('REF' . " = ?", $processedData['belegnr'], PDO::PARAM_STR)
          ->findOne();
