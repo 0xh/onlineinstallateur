@@ -23,7 +23,7 @@ fi
 
 
 if [ -d "$CONFIG_DIR" ]; then
-	if [ -l "$CONFIG_DIR" ]; then
+	if [ -L "$CONFIG_DIR" ]; then
   		rm  $CONFIG_DIR
     else
     	rm -rf $CONFIG_DIR
