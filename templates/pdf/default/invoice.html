@@ -234,18 +234,16 @@
             <col style="width: 7%; padding: 1mm;" />
             <col style="width: 14%; padding: 1mm;" />
 
-            {loop type="order_product" name="order-products" order=$ID limit=1}
-
-                {if $TAX_RULE_TITLE|strstr:"19"}
-                    {assign "VatTitle" "19% Mehrwertsteuer"}
-                {else}
-                    {assign "VatTitle" "20% Mehrwertsteuer"}
-                {/if}
+            {loop type="order_product" name="order-products_a" order=$ID limit=1}
+            {loop type="order_product_tax" name="order-products_taxes" order_product=$ID limit=1}
+              {assign var="taxTitle" value=$TITLE}
             {/loop}
+        {/loop}
+
             <tr class="table-1">
                 <td><h4>{intl l="Product"}</h4></td>
                 <td><h4 class="align-center">{intl l="Unit. price"}</h4></td>
-                <td><h4 class="align-center">{intl l=$VatTitle}</h4></td>
+                <td><h4 class="align-center">{intl l=$taxTitle}</h4></td>
                 <td><h4 class="align-center">{intl l="Unit taxed price"}</h4></td>
                 <td><h4 class="align-center">{intl l="Quantity"}</h4></td>
                 <td style="background:#86ac34"><h4 style="color:white;" class="align-center">{intl l="Gesamtpreis"}</h4></td>
