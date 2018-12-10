@@ -105,7 +105,7 @@ sleep 5
 printf "STEP6: Genereate Backup \n "
 
 if [ ! -d "../stable_backup" ]; then	
-    rm -rf ../stable_backup
+  sudo  rm -rf ../stable_backup
 fi
 
 sudo rsync -arv --progress ./* ../stable_new
@@ -136,11 +136,12 @@ sudo chmod -R 0777 $SESSION
 php Thelia cache:clear --env=prod
 php Thelia cache:clear --env=dev
 
-#create backup 
+#creaee backup 
+printf("Current Path:  " . $PWD)
 
-mv ../stable ../stable_backup
+sudo mv ../stable ../stable_backup
 #move new release to stable version
-mv ../stable_new ../stable
+sudo  ../stable_new ../stable
 
 
 
