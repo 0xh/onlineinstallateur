@@ -69,8 +69,7 @@ fi
 
 mkdir  $WEB_ASSETS
 chmod -R 0777 $WEB_ASSETS
-mkdir $SESSION
-chmod -R 0777 $SESSION
+rm -rf 0777 $SESSION
 
 mkdir  $WEB_CACHE
 chmod -R 0777  $WEB_CACHE
@@ -87,6 +86,7 @@ printf "STEP4: link the media and config from outside the app \n "
 #link the media and config from outside the app 
 ln -s /data/hausfabrik/media local/media
 ln -s /data/hausfabrik/config/ local/config
+ln -s /data/hausfabrik/session local/session
 #link the web/configurator and config from outside the app 
 ln -s /data/hausfabrik/configurator web/configurator
 #link the web/media and config from outside the app 
@@ -113,6 +113,10 @@ sudo rsync -arv --progress ./* ../stable_new
 sudo chown -R www-data:www-data ../stable_new
 
 cd ../stable_new
+
+sudo chown -R www-data:www-data ./
+
+
 
 chmod -R 0777 templates/frontOffice/default/assets/dist/
 sudo chmod -R 0777 local/sepa/*
