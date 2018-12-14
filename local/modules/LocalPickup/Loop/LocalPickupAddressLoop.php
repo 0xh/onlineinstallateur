@@ -2,9 +2,7 @@
 
 namespace LocalPickup\Loop;
 
-use LocalPickup\Model\LocalPickup as LocalPickupModel;
 use LocalPickup\Model\OrderLocalPickupAddress;
-use LocalPickup\Model\LocalPickupQuery;
 use Thelia\Core\Template\Element\BaseI18nLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -80,12 +78,8 @@ class LocalPickupAddressLoop extends BaseI18nLoop implements PropelSearchLoopInt
             Tlog::getInstance()->error("parseResult LocalPickupAddressLoop" . $localPickupAddress->getLocalPickupCartId() . " " . $localPickupAddress);
             $loopResult->addRow($row);
         }
-        //Tlog::getInstance()->error($loopResult);
         Tlog::getInstance()->error("AfterFor");
         return $loopResult;
     }
 
 }
-
-// SELECT statement [SELECT local_pickup.ID, local_pickup.ADDRESS, local_pickup.GPS_LAT, local_pickup.GPS_LONG, local_pickup.HINT, 
-// local_pickup.CREATED_AT, local_pickup.UPDATED_AT FROM `local_pickup` LIMIT 9223372036854775807]

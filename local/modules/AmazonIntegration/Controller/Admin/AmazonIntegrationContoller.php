@@ -1090,7 +1090,11 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setLowestPrice($priceAmazon['lowestPrice'])
          ->setListPrice($priceAmazon['listPrice'])
          ->save();
-        Common::saveInCrawlerProductListing($productId, $platform   = "Amazon", $priceAmazon['lowestPrice']);
+        try {
+            Common::saveInCrawlerProductListing($productId, $platform = "Amazon", $priceAmazon['lowestPrice']);
+        } catch (\Exception $e) {
+            $this->getLogger()->error("Save in crawlerProductListing error " . $eanCode . " " . $productId . " " . $ref . " " . $asin . " " . $rank . " " . $productCat . " " . $priceAmazon);
+        }
     }
 
     public function saveProductCategories($productCategories)
