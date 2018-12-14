@@ -24,14 +24,17 @@
 
 namespace LocalPickup\Listener;
 
+use Exception;
 use LocalPickup\LocalPickup;
+use LocalPickup\Model\LocalPickupQuery;
+use LocalPickup\Model\OrderLocalPickupAddressQuery;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Action\BaseAction;
 use Thelia\Core\Event\Order\OrderAddressEvent;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Core\Event\TheliaEvents;
-use Thelia\Model\OrderAddressQuery;
 use Thelia\Model\ConfigQuery;
+use Thelia\Model\OrderAddressQuery;
 
 /**
  * Class UpdateDeliveryAddress
@@ -43,7 +46,7 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
 
     /**
      * @param  OrderEvent $event
-     * @throws \Exception
+     * @throws Exception
      */
     public function update_address(OrderEvent $event)
     {
@@ -52,10 +55,20 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
             $address    = OrderAddressQuery::create()->findPk($address_id);
 
             if ($address !== null) {
-                $config   = new ConfigQuery();
-                $address1 = $config->read("pickupaddress");
-                $address2 = $config->read("store_address2");
-                $address3 = $config->read("store_address3");
+                $orderLocalPickup = OrderLocalPickupAddressQuery::create()
+                 ->findOneByOrderId($event->getOrder()->getId());
+
+                $config = new ConfigQuery();
+                if ($orderLocalPickup != null) {
+                    $localPickup = LocalPickupQuery::create()->findOneById($orderLocalPickup->getLocalPickupId());
+                    $address1    = $localPickup->getAddress();
+                } else {
+                    $address1 = $config->read("pickupaddress");
+                };
+
+
+                $address2 = ""; //$config->read("store_address2");
+                $address3 = ""; //$config->read("store_address3");
                 $zipcode  = ""; //$config->read("store_zipcode");
                 $city     = ""; //$config->read("store_city");
                 $country  = $config->read("store_country");
@@ -71,16 +84,16 @@ class UpdateDeliveryAddress extends BaseAction implements EventSubscriberInterfa
                     $event->getDispatcher()->dispatch(TheliaEvents::ORDER_UPDATE_ADDRESS, $address_event);
                 }
             } else {
-                throw new \Exception("Error: order deliery address doesn't exists");
+                throw new Exception("Error: order deliery address doesn't exists");
             }
         }
     }
 
     public function set_address(OrderEvent $event)
     {
-//         if ($event->getOrder()->getDeliveryModuleId() === LocalPickup::getModCode()) {
-//             $event->setDeliveryAddress(null);
-//         }
+        if ($event->getOrder()->getDeliveryModuleId() === LocalPickup::getModCode()) {
+            $event->setDeliveryAddress(null);
+        }
     }
 
     /**
