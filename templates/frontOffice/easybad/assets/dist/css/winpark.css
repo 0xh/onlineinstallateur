@@ -1,3 +1,83 @@
-body {
-    color: green !important;
+.main-container {
+
+     
+    background-image: url("../img/outlet/backgrounphotohd.png");
+    background-size: contain;
 }
+
+
+
+.product {
+    
+    
+    margin: 1rem auto;
+    background-color: #FFF;
+}
+
+.product  .winparkprice {
+    color: #ff3c5f;
+    font-size: 18px;
+    font-weight: bold!important;
+    white-space: nowrap;
+    float: right;
+    
+    
+}
+
+
+.product  .winparTitle {
+    color: #7a7a7a;;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.breadcrumb {
+    display: none;
+}
+
+.grid figure {
+
+    background: #d15616;
+}
+
+
+.grid figure img {               
+    opacity: 0.95;
+}
+
+
+figcaption>h3 {
+    color: #d15616;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+figcaption>p {
+    color: black;
+    font-weight: bold;
+}
+
+
+figure.effect-marley h3::after {                  
+    background: #ec621a;          
+}
+
+
+
+.product-price {
+    width: 100%;
+    float: none;
+}
+
+.price-container {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    
+}
+
+
+.container {
+    text-align: center;
+}
+
