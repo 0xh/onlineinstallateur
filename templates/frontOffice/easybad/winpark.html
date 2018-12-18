@@ -26,7 +26,7 @@
                     <br>
                     <div class="row">
                        
-                        {assign var='products' value=[216590,2061,4418,326104,326105,7059,2406,326106]} 
+                        {assign var='products' value=[216590,2406,326104,2061,4418,326105,7059,326106]} 
                         {assign var='i' value=0}
                         {assign var='products_in_loop' value=0}
                         {foreach $products as $product_id}
@@ -42,7 +42,7 @@
                                     <div class="col-sm-4">
                                         
                                             <a href="#">
-                                                <img src="{image file='assets/dist/img/outlet/cupon1.png'}" />
+                                                <img src="{image file='assets/dist/img/outlet/cupon1.png'}" class="img-responsive" />
                                             </a>
                                                 {assign var="i"  value = $i+1}
                                                 {if $i gte 3  }                                 
@@ -61,10 +61,48 @@
                                     <div class="col-sm-4">
                                         
                                             <a href="#">
-                                                <img src="{image file='assets/dist/img/outlet/cupon2.png'}" />
+                                                <img src="{image file='assets/dist/img/outlet/cupon2.png'}" class="img-responsive"  />
                                             </a>
                                                 {assign var="i"  value = $i+1}
                                                 {if $i gte 3  }                                 
+                                        </div>
+                                        {assign var="i"  value = 0}
+                                    {/if}
+                                    
+                                </div>
+                            {/if}
+                            {* end banner section*}
+                            
+                            
+                            
+                            
+                             {* banner section*}
+                           {if $products_in_loop eq 4 }
+                                    <div class="col-sm-4">
+                                        
+                                            <a href="#">
+                                                <img src="{image file='assets/dist/img/outlet/cupon4.png'}" class="img-responsive"  />
+                                            </a>
+                                                {assign var="i"  value = $i+1}
+                                                {if $i gte 4 }                                 
+                                        </div>
+                                        {assign var="i"  value = 0}
+                                    {/if}
+                                    
+                                </div>
+                            {/if}
+                            {* end banner section*}
+                            
+                            
+                            {* banner section*}
+                           {if $products_in_loop eq 6 }
+                                    <div class="col-sm-4">
+                                        
+                                            <a href="#">
+                                                <img src="{image file='assets/dist/img/outlet/cupon3.png'}" class="img-responsive"  />
+                                            </a>
+                                                {assign var="i"  value = $i+1}
+                                                {if $i gte 3 }                                 
                                         </div>
                                         {assign var="i"  value = 0}
                                     {/if}
@@ -160,9 +198,19 @@
                         {{assign var="products_in_loop" value=$products_in_loop+1}}
                         {/loop}
                     {/foreach}
+                  
                 </div>
+                <div class="col-sm-12">
+                                        
+                                            <a href="#">
 
+                    <img src="{image file='assets/dist/img/outlet/tmbl.png'}" class="img-responsive"  />
+                    
+                                            </a>
+                    </div>     
             </div>
+            
+            
         </div>
     </div>
 </div>

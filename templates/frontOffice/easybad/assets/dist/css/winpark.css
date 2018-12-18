@@ -1,15 +1,19 @@
 .main-container {
 
      
-    background-image: url("../img/outlet/backgrounphotohd.png");
-    background-size: contain;
+    background: url("../img/outlet/backgrounphotohd.png") no-repeat center center fixed;
+
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 
 
 .product {
     
-    
+    max-height: 448px;
     margin: 1rem auto;
     background-color: #FFF;
 }
