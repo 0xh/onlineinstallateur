@@ -219,8 +219,8 @@ web : http://www.hausfabrik.at
                 <div class="container">
                     <div class="main-header-top-bar">
                         <div class="textSlogan">
-                            <span class="text_light">Einfach & schnell</span>
-                            <span class="text_heavy">zum Traumbad</span>
+                            <span class="text_light">{intl l="Einfach & schnell"} </span>
+                            <span class="text_heavy">{intl l="zum Traumbad"} </span>     
                         </div>
                         <div class="hotlineTxt">
                             <span class="hotline-holder"> 
