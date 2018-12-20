@@ -4,6 +4,7 @@ namespace Scraper\Hook;
 
 use Scraper\Scraper;
 use Thelia\Core\Event\Hook\HookRenderBlockEvent;
+use Thelia\Core\Event\Hook\HookRenderEvent;
 use Thelia\Core\Hook\BaseHook;
 use Thelia\Tools\URL;
 
@@ -34,12 +35,12 @@ class BackHook extends BaseHook
         );
     }
 
-    public function onModuleConfiguration(HookRenderBlockEvent $event)
+    public function onModuleConfiguration(HookRenderEvent $event)
     {
         $event->add($this->render("scraper.html"));
     }
 
-    public function onModuleConfigJs(HookRenderBlockEvent $event)
+    public function onModuleConfigJs(HookRenderEvent $event)
     {
         $event->add($this->addJS('assets/js/module-configuration.js'));
     }

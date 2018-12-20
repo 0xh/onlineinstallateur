@@ -26,6 +26,7 @@ return [
   'Can be shipped shortly'                                                              => 'Kurzfristig versandfertig',
   'Delivery in 1 - 3 Workdays'                                                          => 'Lieferzeit ca. 1 - 3 Werktage',
   'Delivery in 1 - 2 Workdays'                                                          => 'Lieferzeit ca. 1 - 2 Werktage',
+  'Delivery in 2 - 3 Weeks'                                                             => 'Versand in ca. 2 - 3 Wochen',
   'Continue Shopping'                                                                   => 'Weitere Artikeln aussuchen',
   'Proceed checkout'                                                                    => 'Zur Kasse',
   'Product Name'                                                                        => 'Produktname',
