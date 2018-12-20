@@ -143,6 +143,8 @@ class AmazonIntegrationContoller extends BaseAdminController
 
     public function saveAmazonOrders()
     {
+        $this->getLogger()->error("In Save ");
+
         $_SESSION['ordersWithTotalZero'] = false;
 
         $arrDate = array();
@@ -204,13 +206,13 @@ class AmazonIntegrationContoller extends BaseAdminController
 
                         /*
                          * Check if amazon order exists in amazon_orders table
-                         * if doesn't exist insert the new order in 
+                         * if doesn't exist insert the new order in
                          * - shipping address in order_address
                          * - order
                          * - all info from amazon in amazon_orders
                          * - order_product
                          * - all info from amazon in amazon_order_product
-                         * - if product doesn't exist insert it in 
+                         * - if product doesn't exist insert it in
                          * 		- product
                          * 		- product_price
                          * 		- product_sale_elements
@@ -239,6 +241,8 @@ class AmazonIntegrationContoller extends BaseAdminController
                         $checkAmazonOrder = AmazonOrdersQuery::create()->filterById($order->AmazonOrderId)->findOne();
                         if ($checkAmazonOrder) {
 
+                            $this->getLogger()->error("AMAZON ORDER EXISTS");
+
                             if ($checkAmazonOrder->getOrderStatus() !== $order->OrderStatus ||
                              $checkAmazonOrder->getShipServiceLevel() !== $order->ShipServiceLevel) {
 
@@ -257,6 +261,10 @@ class AmazonIntegrationContoller extends BaseAdminController
                                     $updateOrderStatus->setStatusId($statusId)->save($con);
                             }
                         } elseif ($statusId != '5') {
+
+                            $this->getLogger()->error("ORDER IS NOT CANCELLED ");
+
+
                             // Insert delivery address in order_address table
                             $orderAddressId = $this->createOrderAddress($order, $con, $countryId);
 
@@ -272,8 +280,11 @@ class AmazonIntegrationContoller extends BaseAdminController
                             $this->createAmazonOrders($order, $orderAddressId, $customerId, $orderId, $con);
 
                             // Get products for each order from amazon
-                            $amazonOrderId = $order->AmazonOrderId;
-                            // $amazonOrderId = '305-3292380-9658727';
+//                            $amazonOrderId = $order->AmazonOrderId;
+                            $amazonOrderId = '306-9936638-1465129';
+//                            $amazonOrderId = '171-5112657-2705967';
+
+
 
                             $productsOrderItem = invokeListOrderItems($service, $amazonOrderId);
 
@@ -401,7 +412,7 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setTitle(isset($orderProduct->Title) ? $orderProduct->Title : '')
          ->save($con);
 
-        // insert in product_category 
+        // insert in product_category
         $categoryId = CategoryI18nQuery::create()
          ->select('id')
          ->filterByTitle('From Amazon')
@@ -672,6 +683,9 @@ class AmazonIntegrationContoller extends BaseAdminController
     public function insertOrderProduct($orderProduct, $lang, $con, $orderId, $amazonOrderId, $marketplace, $countryId)
     {
 
+
+        $this->getLogger()->error("IOP: in metoda, cu order ID:" . $orderId);
+
         $productId = ProductAmazonQuery::create()
          ->select('product_id')
          ->filterByASIN($orderProduct->ASIN)
@@ -732,11 +746,15 @@ class AmazonIntegrationContoller extends BaseAdminController
             $tax             = round(($unitPrice / 1.19) * 0.19, 2);
             $priceWithoutTax = $unitPrice - $tax;
             $taxTitle        = '19%  VAT';
+            $this->getLogger()->error("IOP: IN IF " . $tax . $priceWithoutTax . $taxTitle);
         } else {
             $tax             = round(($unitPrice / 1.2) * 0.2, 2);
             $priceWithoutTax = $unitPrice - $tax;
             $taxTitle        = '20%  VAT';
+            $this->getLogger()->error("IOP: IN ELSE" . $tax . $priceWithoutTax . $taxTitle);
         }
+
+
 
         $newOrderProduct = new OrderProduct();
         $newOrderProduct
@@ -761,6 +779,9 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setEanCode($productSaleElement->getEanCode())
          ->save($con);
 
+
+        $this->getLogger()->error("IOP: price set: " . $newOrderProduct->getPrice() . " Going for Promo Price. " . $newOrderProduct->getPromoPrice() . " get quantity :" . $newOrderProduct->getQuantity());
+
         $orderProductId = $newOrderProduct->getId();
 
         // Insert product in order_product_tax
@@ -771,6 +792,8 @@ class AmazonIntegrationContoller extends BaseAdminController
          ->setAmount($tax)
          ->setPromoAmount($tax)
          ->save($con);
+
+        $this->getLogger()->error("IOP: tax set: " . $orderProductTax->getAmount() . " Going for Promo Price. " . $orderProductTax->getPromoAmount());
 
         // Insert products from amazon to amazon_orders_product table
         $amazonOrderProduct = new AmazonOrderProduct();

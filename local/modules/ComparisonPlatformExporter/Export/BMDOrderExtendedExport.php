@@ -116,16 +116,20 @@ class BMDOrderExtendedExport extends AbstractExport
 
         $fromDBVAT   = round($processedData['steuer'], 2, PHP_ROUND_HALF_UP);
         $computedVAT = round($processedData['betrag'] / 1.19 * 0.19, 2, PHP_ROUND_HALF_UP);
+        $path=null;
 
         if (abs(round($computedVAT - $fromDBVAT, 2)) <= 0.01) {
             $processedData['gkto']   = "4200";
             $processedData['mwst']   = "";
             $processedData['steuer'] = "";
+            $path="if";
         } else {
+            $path="else";
             $processedData['gkto']   = "4000";
             $processedData['steuer'] = round(-$processedData['steuer'], 2);
+            Tlog::getInstance()->debug("IN ELSE la steuer. ".$processedData['belegnr']);
         }
-        Tlog::getInstance()->error(" bmd export " . abs(round($computedVAT - $fromDBVAT, 2)) . " " . $processedData['text'] . " " . $processedData['gkto']);
+        Tlog::getInstance()->error(" bmd export " . abs(round($computedVAT - $fromDBVAT, 2)) . " " . $processedData['text'] . " " . $processedData['gkto'].$processedData['steuer'].$path);
         $orderSource = substr($processedData['belegnr'], 0, 3);
         $orderKonto  = substr($processedData['text'], 0, 1);
         switch ($orderSource) {
@@ -233,7 +237,7 @@ class BMDOrderExtendedExport extends AbstractExport
                             break;
                         case 'W':$processedData['konto'] = "202299";
                             break;
-                        case 'X':$processedData['konto'] = "202399";
+                        case 'X':$processedData['   konto'] = "202399";
                             break;
                         case 'Z':$processedData['konto'] = "202599";
                             break;
@@ -505,20 +509,66 @@ class BMDOrderExtendedExport extends AbstractExport
          $query, OrderStatusI18nTableMap::TABLE_NAME, OrderStatusI18nTableMap::ID, OrderStatusTableMap::ID, OrderStatusI18nTableMap::LOCALE, $locale
         );
 
-        $data = $query
-         ->filterById($order[OrderTableMap::ID])
-         ->findOne();
 
-        $order = (new Order)
-         ->setId($order[OrderTableMap::ID])
-        ;
-        $order->setNew(false);
+        if ($order[OrderTableMap::ID] == 115848) {
+            $data = $query
+             ->filterById($order[OrderTableMap::ID])
+             ->findOne();
 
-        $tax                                           = 0;
-        $data['order_TOTAL_TTC']                       = $order->getTotalAmount($tax, false, false);
-        $data['order_TOTAL_WITH_DISCOUNT']             = $order->getTotalAmount($tax, false, true);
-        $data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] = $order->getTotalAmount($tax, true, true);
-        $data['order_TOTAL_TAX']                       = $tax;
+            $order = (new Order)
+             ->setId($order[OrderTableMap::ID])
+            ;
+            $order->setNew(false);
+
+            $tax                                           = 0;
+            $data['order_TOTAL_TTC']                       = $order->getTotalAmount($tax, false, false);
+            $data['order_TOTAL_WITH_DISCOUNT']             = $order->getTotalAmount($tax, false, true);
+            $data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] = $order->getTotalAmount($tax, true, true);
+            $data['order_TOTAL_TAX']                       = $tax;
+
+            Tlog::getInstance()->debug("order id: " . $order->getId() ." tax: ".$data['order_TOTAL_TAX']);
+
+            $newy = OrderQuery::create();
+            $newy->filterById(15848)
+             ->findOne();
+
+            $orderyy = (new Order)
+             ->setId(15848);
+            $orderyy->setNew(false);
+
+
+            $taxy   = 0;
+            $taxy_1 = $orderyy->getTotalAmount($taxy, false, false);
+            $taxy_2 = $orderyy->getTotalAmount($taxy, false, true);
+            $taxy_3 = $orderyy->getTotalAmount($taxy, true, true);
+            $taxy_4 = $taxy;
+
+            var_dump("<pre>" . $taxy_1 . " <--taxy1  " . PHP_EOL . $taxy_2 . " <--taxy2  " . PHP_EOL . $taxy_3 . " <--taxy3  " . PHP_EOL . $taxy_4 . " <--taxy4  " . PHP_EOL . $data['order_TOTAL_TTC'] . " === data['order_TOTAL_TTC'] " . PHP_EOL . $data['order_TOTAL_WITH_DISCOUNT'] . "=== data['order_TOTAL_WITH_DISCOUNT'] " . PHP_EOL . $data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] . " === data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] " . PHP_EOL . $data['order_TOTAL_TAX'] . " === data['order_TOTAL_TAX'] ");
+            die("Mori");
+        } else {
+            $data = $query
+             ->filterById($order[OrderTableMap::ID])
+             ->findOne();
+
+            $order = (new Order)
+             ->setId($order[OrderTableMap::ID])
+            ;
+            $order->setNew(false);
+
+            $tax                                           = 0;
+            $data['order_TOTAL_TTC']                       = $order->getTotalAmount($tax, false, false);
+            $data['order_TOTAL_WITH_DISCOUNT']             = $order->getTotalAmount($tax, false, true);
+            $data['order_TOTAL_WITH_DISCOUNT_AND_POSTAGE'] = $order->getTotalAmount($tax, true, true);
+            $data['order_TOTAL_TAX']                       = $tax;
+
+            Tlog::getInstance()->debug("order id: " . $order->getId() ." tax: ".$data['order_TOTAL_TAX']);
+
+        }
+
+
+        //           $data['taxy_de'] = $tax;
+        //$data['taxy_de'] . " <-- Total gen" .
+
 
         return $data;
     }
