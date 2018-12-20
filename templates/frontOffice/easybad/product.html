@@ -6,6 +6,7 @@
     {$product_virtual={product attr="virtual"}}
     {$check_availability={config key="check-available-stock" default="1"}}
     {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+    {$delivery_freeze = {config key="delivery_freeze" default="false"}}
     {$reserve_online_active = {config key="reserve_online_active" default="false"}}
     {$reserve_online = 0}
 {/block}
@@ -267,17 +268,24 @@
 	                        <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 	                        
 	                        {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
-                    			  <span>{intl l="Auf Lager:"} {$QUANTITY} {intl l="Stück"} </span>
-                                  <div>
-                                      <span>
-                                          <small>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}
-                                          </small>
-                                      </span>
-                                  <div>
+                                {if $delivery_freeze != "false"}
+                                    <span>{intl l="Auf Lager:"} {$QUANTITY} {intl l="Stück"} </span>
+                                    <div>
+                                        <span>
+                                            <small>{intl l="{config key='stock_available_default_message' default='Can be shipped shortly'}"}
+                                            </small>
+                                        </span>
+                                    <div>
                                     <div>
                                         <small>{intl l="{config key='stock_available_delivery_message' default='Delivery in 1 - 2 Workdays'}"}
                                         </small>
                                     </div>
+                                {else}
+                                    <div>
+                                        <small>{intl l="{config key='delivery_freeze_message' default='Delivery in 2 - 3 Weeks'}"}
+                                        </small>
+                                    </div>
+                                {/if}
                     		{else}
                             {/if}
 	                        </span>

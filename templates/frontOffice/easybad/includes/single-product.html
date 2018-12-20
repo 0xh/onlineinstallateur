@@ -1,4 +1,5 @@
 {$fulfilment_center_active = {config key="fulfilment_center_active" default="false"}}
+{$delivery_freeze = {config key="delivery_freeze" default="false"}}
 <li class="item {$colClass|default:" col-xs-12 col-sm-6 col-md-4 col-lg-4"}">
     {if $PSE_COUNT > 1}
         {assign var="hasSubmit" value = false}
@@ -110,9 +111,26 @@
                 <span itemprop="availability" href="{$current_stock_href}" class="" id="pse-availability">
 
                     {if $QUANTITY > 0 && $fulfilment_center_active != "false"}
-                        <span class="highlighted-bg"><em><small><span class="fa fa-check"></span> 
-                                    {intl l="{config key='stock_available_default_message'
-                                     default='Can be shipped shortly'}" d="fo.easybad"}</small></em></span>
+                        {if $delivery_freeze != "false"}
+                            <span class="highlighted-bg">
+                                <em>
+                                    <small>
+                                        <span class="fa fa-check"></span> 
+                                        {intl l="{config key='stock_available_default_message'
+                                     default='Can be shipped shortly'}" d="fo.easybad"}
+                                    </small>
+                                </em>
+                            </span>
+                        {else}
+                            <span class="highlighted-bg">
+                                <em>
+                                    <small>
+                                        <span class="fa fa-check"></span>
+                                        {intl l="{config key='delivery_freeze_message' default='Delivery in 2 - 3 Weeks'}" d="fo.easybad"}
+                                    </small>
+                                </em>
+                            </span>
+                        {/if}
                     {else}
                         {if $QUANTITY > 0}
                             <span class="in ">{intl l='In Stock' d="fo.easybad"}</span> 
