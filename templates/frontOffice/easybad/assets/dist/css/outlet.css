@@ -2,11 +2,12 @@
     display:none;
 }
 .outlet-banner {
-     padding-top: 100px;
-     padding-bottom: 100px;  
+    padding-top: 100px;
+    padding-bottom: 100px;
+    height: 450px;
 }
 .outlet-h1 {
-    padding-top: 30px;
+    padding-top: 30%;
     font-size: 40px;
     text-transform: uppercase;
     text-align: center;
@@ -20,7 +21,7 @@
     display:inline-block;
     width:263px;
     margin-left:-132px;
-    border-bottom:black solid 3px;
+    border-bottom:#626061 solid 3px;
 }
 .outlet-info{
     padding-top: 50px;
@@ -34,26 +35,45 @@
 }
 
 .outlet-program{
-    padding-top: 150px;
-    padding-bottom: 150px;
-    padding-left: 80px;
+    padding-top: 11%;
+    padding-bottom: 15%;
+    padding-left: 4%;
+    border-right: 3px #626061 solid;
+    height: 50px;
+    margin-top: 30px
 }
 
 .outlet-h3{
-   text-decoration: underline; 
-}
-
-.outlet-h3:after{
-    content: "";
-    position:absolute;
-    width:50px;
-    border-right:#7a7a7a solid 3px;
-    height: 200px;
-    float:right;
-    top:70px;
+    text-decoration: underline; 
+    font-size: 1.3vw;
 }
 
 .outlet-hours{
-    position:relative;
-    float: right;
+    /*    position:relative;
+        float: right;
+        bottom: 186px;*/    
+}
+
+.outlet-hours>ul{
+    list-style-type: none;
+    margin-left: -21px;
+}
+
+.outlet-hours>ul>li{
+    margin-top:75px;
+    color: #626061;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.outlet-events{
+    padding-top: 10%;
+}
+
+.outlet-inside{
+    padding-top: 10%;
+}
+
+.outlet-inside-photo{
+    padding-top: 5%;
 }
