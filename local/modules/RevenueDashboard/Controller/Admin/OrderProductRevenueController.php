@@ -8,10 +8,10 @@
 
 namespace RevenueDashboard\Controller\Admin;
 
-use RevenueDashboard\Model\Map\OrderProductRevenueTableMap;
 use RevenueDashboard\Model\OrderProductRevenue;
 use RevenueDashboard\Model\OrderProductRevenueQuery;
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Log\Tlog;
 use Thelia\Model\ProductQuery;
 
 /**
@@ -22,7 +22,7 @@ use Thelia\Model\ProductQuery;
 class OrderProductRevenueController extends BaseAdminController {
 
     function updateOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId) {
-
+     Tlog::getInstance()->debug("OPRC: in update Order Product Revenue");
         $prod = ProductQuery::create()
                 ->findOneById($prodId);
         $productRef = $prod->getRef();
@@ -41,7 +41,7 @@ class OrderProductRevenueController extends BaseAdminController {
     }
 
     protected function addNewOrderProductRevenue($orderId, $productRef, $price, $purchePrice, $partnerId, $prodId) {
-
+ Tlog::getInstance()->debug("OPRC: Add New Order Product Reven");
         $orderProductRevenue = new OrderProductRevenue();
         $orderProductRevenue->setOrderId($orderId);
         $orderProductRevenue->setProductRef($productRef);
