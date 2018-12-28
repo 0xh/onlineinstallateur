@@ -16,9 +16,11 @@
     use Thelia\Core\Event\Order\OrderEvent;
     use Thelia\Core\Event\TheliaEvents;
     use Thelia\Core\HttpFoundation\Request;
+    use Thelia\Log\Tlog;
     use Thelia\Model\OrderProductQuery;
     use Thelia\Model\OrderQuery;
     use Thelia\Model\ProductQuery;
+    use Thelia\Propel\Runtime\Parser\StringParser;
 
     /**
      * Description of OrderRevenueListener
@@ -58,8 +60,15 @@
         public static function getSubscribedEvents()
         {
             return array(
-                TheliaEvents::ORDER_UPDATE_STATUS => array("updateOrderStatus", 128),
-                TheliaEvents::ORDER_PRODUCT_AFTER_CREATE => array("updateWPPonOrderCreate", 128)
+//                TheliaEvents::ORDER_UPDATE_STATUS => array("updateOrderStatus", 128),
+                
+                /*
+                 * I have disabled this event as it was triggering when the order was updated manually and since we're
+                 * doing it automatically now, it's better if it's commented out. I also kept the methods just in case
+                 *  it has utility in different places.
+                 */
+                
+                TheliaEvents::ORDER_SEND_CONFIRMATION_EMAIL => array("updateWPPonOrderCreate", 128)
             );
         }
         
@@ -159,6 +168,12 @@
             $newOrderRevenue->save();
         }
         
+        /*
+         *Listener method call, it gets the Event object from the event, it fetches the Order Id from the event
+         *Based on the order id it gets the products from the order_products, gets the required information such as
+         *price, quantity, id, etc and sets the individual product entry in order_product_revenue, based on which the
+         *total order cost is calculated in the updateNewOrderRevenue method.
+         */
         public function updateWPPonOrderCreate(OrderEvent $event)
         {
             $orderStatus = $event->getStatus();
@@ -170,16 +185,16 @@
             $order_query = OrderQuery::create()
                 ->findOneById($order_id);
             
-            $order_query_id = $order_query->getId();
-            
             $orderProducts = null;
             $orderProductQuery = OrderProductQuery::create();
-            $orderProducts = $orderProductQuery->findByOrderId($order_id);
-            
-            $wholesalePartnerProd = new WholesalePartnerProductQuery();
+            $orderProducts = $orderProductQuery->filterByOrderId($order_id)->find();
             
             
             foreach ($orderProducts as $orderProduct) {
+                $wholesalePartnerProd = new WholesalePartnerProductQuery();
+                
+                Tlog::getInstance()->info("In foreach: prod X REF: " . $orderProduct->getProductRef());
+                
                 $order_query_prodRef = $orderProduct->getProductRef();
                 
                 $prod_query = ProductQuery::create();
@@ -188,26 +203,75 @@
                 $order_query_price = $orderProduct->getPrice();
                 $order_query_partnerId = 1;
                 $order_query_prodId = $prod_id->getId();
-
-//                echo $order_query_prodId;
                 
-                $wholesalePartnerProd->filterByProductId($order_query_prodId);
-                $wpp_item = $wholesalePartnerProd->findOne();
+                Tlog::getInstance()->info("In foreach: prod X ID: " . $order_query_prodId);
+                
+                $order_quantity = $orderProduct->getQuantity();
+                
+                $wpp_item = $wholesalePartnerProd->findOneByProductId($order_query_prodId);
                 
                 if ($wpp_item != null) {
+                    Tlog::getInstance()->info("In foreach: prod X WPP CHECK: " . $wpp_item->getId());
                     $order_query_purchasePrice = $wpp_item->getPrice();
-//
-//                    echo "orderID: " . $order_id . " Order Prod REf: " . $order_query_prodRef . " product price: " . $order_query_price . " purchase price: " . $order_query_purchasePrice
-//                        . " order partner id " . $order_query_partnerId . " prod id: " .
-//                        $order_query_prodId;
-                    
                     
                     $oprc->updateOrderProductRevenue($order_id, $order_query_prodRef, $order_query_price, $order_query_purchasePrice, $order_query_partnerId, $order_query_prodId);
+                    
                 }
+                
             }
-            
-            
-            $this->updateOrderRevenue($order_id);
+            $this->createNewOrderRevenue($order_id);
         }
         
+        /*
+         * Updates the order revenue table based on the individual revenue per the product in order_product_revenue.
+         * It receives the parent order id in the method call, it gets the general costs (transport+processing)
+         * It searches for each individual product from the order, adds up the total costs and then updates the
+         * Order Revenue table with the TOTAL cost WITHOUT VAT!
+         */
+        
+        protected function createNewOrderRevenue($orderId)
+        {
+            $orderRevQuery = OrderRevenueQuery::create();
+            $foundExistingOrderRevenue = $orderRevQuery->findOneByOrderId($orderId);
+            $foundProductCount = count($foundExistingOrderRevenue);
+            
+            if ($foundProductCount == 0) {
+                $orderProdRevenue = OrderProductRevenueQuery::create()
+                    ->findByOrderId($orderId);
+                
+                $paymentProcessorCost = $this->getDeliveryCostMethodPay($orderId);
+                $totalPaymentProcessorCost = $paymentProcessorCost["cost_module"] + $paymentProcessorCost["cost_transaction_module"];
+                $deliveryCostMethod = $this->getDeliveryCostMethod($orderId);
+                
+                $sellPrice = null;
+                $purchasePrice = null;
+                
+                foreach ($orderProdRevenue as $value) {
+                    $orderProduct = OrderProductQuery::create()
+                        ->filterByOrderId($value->getOrderId())
+                        ->findOneByProductRef($value->getProductRef());
+                    
+                    $orderQuantity = $orderProduct->getQuantity();
+                    $sellPrice += $value->getPrice() * $orderQuantity;
+                    
+                    $purchasePrice += $value->getPurchasePrice() * $orderQuantity;
+                }
+                
+                
+                $newOrderRevenue = new OrderRevenue();
+                $newOrderRevenue->setDeliveryCost($deliveryCostMethod["delivery_cost"]);
+                $newOrderRevenue->setOrderId($orderId);
+                $newOrderRevenue->setDeliveryMethod($deliveryCostMethod["delivery_method"]);
+                $newOrderRevenue->setPartnerId(1);
+                $newOrderRevenue->setPaymentProcessorCost($totalPaymentProcessorCost);
+                $newOrderRevenue->setPrice($sellPrice);
+                $newOrderRevenue->setPurchasePrice($purchasePrice);
+                $totalPurchasePrice = $purchasePrice + $deliveryCostMethod["delivery_cost"] + $totalPaymentProcessorCost;
+                
+                $newOrderRevenue->setTotalPurchasePrice($totalPurchasePrice);
+                $newOrderRevenue->setRevenue($sellPrice - $totalPurchasePrice);
+                $newOrderRevenue->save();
+                
+            }
+        }
     }
