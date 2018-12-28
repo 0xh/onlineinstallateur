@@ -18,6 +18,7 @@ local/media/documents/
 local/config/database.yml
 templates/frontOffice/default/assets/dist/css/custom-tinymce.css
 local/media/
+local/config
 web/media/
 local/modules/Scraper/Log/*
 !core/vendor/symfony/cache
